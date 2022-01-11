@@ -3,6 +3,8 @@ package com.enevti.app;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+import android.view.WindowManager;
+import android.os.Build;
 
 public class SplashActivity extends AppCompatActivity {
     @Override
