@@ -24,7 +24,7 @@ public class MainActivity extends ReactActivity {
             SplashScreen.show(this, R.style.LightTheme, false);
     }
 
-    super.onCreate(savedInstanceState);
+    super.onCreate(null);
   }
 
   /**
