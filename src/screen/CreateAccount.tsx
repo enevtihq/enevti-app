@@ -7,7 +7,7 @@ export default function CreateAccount() {
 
   return (
     <View>
-      <Text>Create Account Screens</Text>
+      <Text>Create Account Screensx</Text>
       <Caption>{JSON.stringify(theme.colors)}</Caption>
     </View>
   );
