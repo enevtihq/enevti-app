@@ -1,11 +1,27 @@
 import React, { useEffect } from 'react';
+import { useColorScheme } from 'react-native';
+import { PersistGate } from 'redux-persist/integration/react';
+import { Provider as PaperProvider } from 'react-native-paper';
+import { Provider as StoreProvider } from 'react-redux';
 
 import SplashScreen from 'react-native-splash-screen';
 import AppNavigationContainer from './navigation';
+import { persistor, store } from './store/state';
+import { getTheme } from './theme';
 
 const App = () => {
   useEffect(() => SplashScreen.hide(), []);
-  return <AppNavigationContainer />;
+  const colorScheme = useColorScheme()!;
+
+  return (
+    <StoreProvider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <PaperProvider theme={getTheme(colorScheme.toString())}>
+          <AppNavigationContainer />
+        </PaperProvider>
+      </PersistGate>
+    </StoreProvider>
+  );
 };
 
 export default App;
