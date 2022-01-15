@@ -11,18 +11,25 @@
   },
   "dependencies": {
     "@react-navigation/native": "^6.0.6",
+    "@react-navigation/native-stack": "^6.2.5",
     "@reduxjs/toolkit": "^1.7.1",
+    "@types/color": "^3.0.2",
+    "color": "^4.2.0",
     "i18next": "^21.6.6",
     "react": "17.0.2",
     "react-i18next": "^11.15.3",
     "react-native": "0.66.4",
+    "react-native-config": "^1.4.5",
     "react-native-localize": "^2.1.7",
     "react-native-paper": "^4.11.1",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "^3.10.1",
+    "react-native-sensitive-info": "^6.0.0-alpha.9",
     "react-native-splash-screen": "^3.3.0",
     "react-native-vector-icons": "^9.0.0",
-    "react-redux": "^7.2.6"
+    "react-redux": "^7.2.6",
+    "redux-persist": "^6.0.0",
+    "redux-persist-sensitive-storage": "^1.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
