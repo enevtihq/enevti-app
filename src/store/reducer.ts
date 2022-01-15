@@ -1,8 +1,18 @@
 import { combineReducers } from 'redux';
 import authReducer from './slices/auth';
 import userSettingReducer from './slices/userSetting';
+import { persistReducer } from 'redux-persist';
+import {
+  asyncStoragePersistConfig,
+  sensitiveStoragePersistConfig,
+} from './persist/config';
 
-export default combineReducers({
-  auth: authReducer,
-  userSetting: userSettingReducer,
+const rootReducer = combineReducers({
+  auth: persistReducer(sensitiveStoragePersistConfig('auth'), authReducer),
+  userSetting: persistReducer(
+    asyncStoragePersistConfig('userSetting'),
+    userSettingReducer,
+  ),
 });
+
+export default persistReducer(asyncStoragePersistConfig('root'), rootReducer);
