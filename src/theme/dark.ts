@@ -1,8 +1,8 @@
 import color from 'color';
-import defaultTheme from './default';
+import defaultTheme, { Theme } from './default';
 import { Colors } from 'react-native-paper';
 
-const darkTheme = {
+const darkTheme: Theme = {
   ...defaultTheme,
   dark: true,
   mode: 'adaptive',
@@ -10,7 +10,7 @@ const darkTheme = {
     ...defaultTheme.colors,
     primary: '#BB86FC',
     accent: '#03dac6',
-    background: '#121212',
+    background: '#12122a',
     surface: '#121212',
     error: '#CF6679',
     onSurface: '#FFFFFF',

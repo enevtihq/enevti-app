@@ -27,3 +27,4 @@ const defaultTheme = {
 };
 
 export default defaultTheme;
+export type Theme = typeof defaultTheme & { mode?: string };

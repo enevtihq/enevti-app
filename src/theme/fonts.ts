@@ -26,55 +26,55 @@ type Fonts = {
 const fontConfig = {
   web: {
     regular: {
-      fontFamily: 'Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif',
+      fontFamily: 'Poppins-Regular',
       fontWeight: '400' as '400',
     },
     medium: {
-      fontFamily: 'Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif',
+      fontFamily: 'Poppins-Medium',
       fontWeight: '500' as '500',
     },
     light: {
-      fontFamily: 'Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif',
+      fontFamily: 'Poppins-Light',
       fontWeight: '300' as '300',
     },
     thin: {
-      fontFamily: 'Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif',
+      fontFamily: 'Poppins-Thin',
       fontWeight: '100' as '100',
     },
   },
   ios: {
     regular: {
-      fontFamily: 'System',
+      fontFamily: 'Poppins-Regular',
       fontWeight: '400' as '400',
     },
     medium: {
-      fontFamily: 'System',
+      fontFamily: 'Poppins-Medium',
       fontWeight: '500' as '500',
     },
     light: {
-      fontFamily: 'System',
+      fontFamily: 'Poppins-Light',
       fontWeight: '300' as '300',
     },
     thin: {
-      fontFamily: 'System',
+      fontFamily: 'Poppins-Thin',
       fontWeight: '100' as '100',
     },
   },
   default: {
     regular: {
-      fontFamily: 'sans-serif',
+      fontFamily: 'Poppins-Regular',
       fontWeight: 'normal' as 'normal',
     },
     medium: {
-      fontFamily: 'sans-serif-medium',
+      fontFamily: 'Poppins-Medium',
       fontWeight: 'normal' as 'normal',
     },
     light: {
-      fontFamily: 'sans-serif-light',
+      fontFamily: 'Poppins-Light',
       fontWeight: 'normal' as 'normal',
     },
     thin: {
-      fontFamily: 'sans-serif-thin',
+      fontFamily: 'Poppins-Thin',
       fontWeight: 'normal' as 'normal',
     },
   },
