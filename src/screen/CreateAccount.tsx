@@ -15,8 +15,12 @@ import AppPrimaryButton from '../components/atoms/AppPrimaryButton';
 import AppSecondaryButton from '../components/atoms/AppSecondaryButton';
 import AppTextBody3 from '../components/atoms/AppTextBody3';
 import AppTertiaryButton from '../components/atoms/AppTertiaryButton';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../navigation';
 
-export default function CreateAccount() {
+type Props = NativeStackScreenProps<RootStackParamList, 'CreateAccount'>;
+
+export default function CreateAccount({ navigation }: Props) {
   const theme = useTheme() as Theme;
   const styles = makeStyle(theme);
   const { t } = useTranslation();
@@ -48,7 +52,7 @@ export default function CreateAccount() {
         </AppSecondaryButton>
 
         <AppPrimaryButton
-          onPress={() => console.log('pressed')}
+          onPress={() => navigation.navigate('SetupLocalPassword')}
           style={styles.createAccount}>
           {t('auth:createAccount')}
         </AppPrimaryButton>
@@ -75,30 +79,21 @@ export default function CreateAccount() {
 
 const makeStyle = (theme: Theme) =>
   StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: theme.colors.background,
-    },
     actionContainer: {
       flex: 1,
       flexDirection: 'column-reverse',
     },
-    headerImage: {
-      alignSelf: 'center',
-    },
-    term: {
-      alignSelf: 'center',
-      color: theme.colors.placeholder,
+    container: {
+      flex: 1,
+      backgroundColor: theme.colors.background,
     },
     createAccount: {
       marginBottom: hp('2%'),
       marginLeft: wp('5%'),
       marginRight: wp('5%'),
     },
-    orView: {
-      flexDirection: 'row',
+    headerImage: {
       alignSelf: 'center',
-      margin: 8,
     },
     orLine: {
       backgroundColor: theme.colors.placeholder,
@@ -108,5 +103,14 @@ const makeStyle = (theme: Theme) =>
       marginLeft: wp('2%'),
       marginRight: wp('2%'),
       marginBottom: hp('2%'),
+    },
+    orView: {
+      flexDirection: 'row',
+      alignSelf: 'center',
+      margin: 8,
+    },
+    term: {
+      alignSelf: 'center',
+      color: theme.colors.placeholder,
     },
   });

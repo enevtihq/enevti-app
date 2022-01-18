@@ -6,4 +6,6 @@ export default {
   importPassphrase: 'Import using Secret Recovery Phrase',
   or: 'Or',
   socialLogin: 'Log in Using Google',
+  localPasswordHeader: 'Setup Local Password',
+  localPasswordBody: 'This is required to login only on this devices!',
 };

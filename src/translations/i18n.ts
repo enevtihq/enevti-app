@@ -8,9 +8,9 @@ import { store } from '../store/state';
 
 const stateStore = store;
 
-const LANGUAGES = {
+export const LANGUAGES = {
   en,
-};
+} as const;
 
 const LANG_CODES = Object.keys(LANGUAGES);
 const DEFAULT_LANG = 'en';

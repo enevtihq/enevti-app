@@ -9,6 +9,7 @@ import AppNavigationContainer from './navigation';
 import { persistor, store } from './store/state';
 import { getTheme } from './theme';
 import './translations/i18n';
+import { IconProvider } from './components/atoms/AppIconComponent';
 
 const App = () => {
   useEffect(() => SplashScreen.hide(), []);
@@ -17,7 +18,9 @@ const App = () => {
   return (
     <StoreProvider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <PaperProvider theme={getTheme(colorScheme.toString())}>
+        <PaperProvider
+          theme={getTheme(colorScheme.toString())}
+          settings={{ icon: props => <IconProvider {...props} /> }}>
           <AppNavigationContainer />
         </PaperProvider>
       </PersistGate>

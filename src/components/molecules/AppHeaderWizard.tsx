@@ -1,26 +1,41 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
+import { IconButton } from 'react-native-paper';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import AppTextHeading1 from '../../components/atoms/AppTextHeading1';
 import AppTextBody3 from '../../components/atoms/AppTextBody3';
+import { fontMap } from '../atoms/AppIconComponent';
 
 interface AppHeaderWizardProps {
   image: JSX.Element;
   title: string;
   description: string;
+  back?: boolean;
+  navigation?: any;
+  style?: StyleProp<ViewStyle>;
 }
 
 export default function AppHeaderWizard({
   image,
   title,
   description,
+  back = false,
+  navigation,
+  style,
 }: AppHeaderWizardProps) {
   const styles = makeStyle();
 
   return (
-    <View style={styles.headerContainer}>
-      <View style={{ height: hp('6%') }} />
+    <View style={[styles.headerContainer, style]}>
+      <View style={styles.headerSpace}>
+        {back ? (
+          <IconButton
+            icon={fontMap.arrowBack}
+            onPress={() => navigation.goBack()}
+          />
+        ) : null}
+      </View>
       {image}
       <AppTextHeading1 style={styles.headerText1}>{title}</AppTextHeading1>
       <AppTextBody3 style={styles.body1}>{description}</AppTextBody3>
@@ -33,12 +48,15 @@ const makeStyle = () =>
     headerContainer: {
       flex: 1,
     },
+    headerSpace: { height: hp('6%'), justifyContent: 'center' },
     headerText1: {
       marginTop: hp('2.5%'),
       marginBottom: hp('2.5%'),
       alignSelf: 'center',
+      textAlign: 'center',
     },
     body1: {
       alignSelf: 'center',
+      textAlign: 'center',
     },
   });
