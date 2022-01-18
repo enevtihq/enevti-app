@@ -4,11 +4,12 @@ import configureFonts from './fonts';
 
 const defaultTheme = {
   dark: false,
-  roundness: 4,
+  roundness: 13,
   colors: {
-    primary: '#6200ee',
-    accent: '#03dac4',
-    background: '#f6f6f6',
+    primary: '#f72585',
+    secondary: '#7209b7',
+    accent: '#3a0ca3',
+    background: '#ffffff',
     surface: Colors.white.toString(),
     error: '#B00020',
     text: Colors.black.toString(),

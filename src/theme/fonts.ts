@@ -24,42 +24,6 @@ type Fonts = {
 };
 
 const fontConfig = {
-  web: {
-    regular: {
-      fontFamily: 'Poppins-Regular',
-      fontWeight: '400' as '400',
-    },
-    medium: {
-      fontFamily: 'Poppins-Medium',
-      fontWeight: '500' as '500',
-    },
-    light: {
-      fontFamily: 'Poppins-Light',
-      fontWeight: '300' as '300',
-    },
-    thin: {
-      fontFamily: 'Poppins-Thin',
-      fontWeight: '100' as '100',
-    },
-  },
-  ios: {
-    regular: {
-      fontFamily: 'Poppins-Regular',
-      fontWeight: '400' as '400',
-    },
-    medium: {
-      fontFamily: 'Poppins-Medium',
-      fontWeight: '500' as '500',
-    },
-    light: {
-      fontFamily: 'Poppins-Light',
-      fontWeight: '300' as '300',
-    },
-    thin: {
-      fontFamily: 'Poppins-Thin',
-      fontWeight: '100' as '100',
-    },
-  },
   default: {
     regular: {
       fontFamily: 'Poppins-Regular',
@@ -67,15 +31,15 @@ const fontConfig = {
     },
     medium: {
       fontFamily: 'Poppins-Medium',
-      fontWeight: 'normal' as 'normal',
+      fontWeight: '700' as '700',
     },
     light: {
       fontFamily: 'Poppins-Light',
-      fontWeight: 'normal' as 'normal',
+      fontWeight: '300' as '300',
     },
     thin: {
       fontFamily: 'Poppins-Thin',
-      fontWeight: 'normal' as 'normal',
+      fontWeight: '100' as '100',
     },
   },
 };
