@@ -15,7 +15,7 @@ export default function AppLightBrandBanner({
 
   return (
     <Image
-      source={require('../../assets/images/enevti-light-text-logo.png')}
+      source={require('../../../assets/images/enevti-light-text-logo.png')}
       style={[{ width: sizeRatio.width, height: sizeRatio.height }, style]}
     />
   );

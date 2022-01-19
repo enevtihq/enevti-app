@@ -15,7 +15,7 @@ export default function AppDarkBrandBanner({
 
   return (
     <Image
-      source={require('../../assets/images/enevti-dark-text-logo.png')}
+      source={require('../../../assets/images/enevti-dark-text-logo.png')}
       style={[{ width: sizeRatio.width, height: sizeRatio.height }, style]}
     />
   );

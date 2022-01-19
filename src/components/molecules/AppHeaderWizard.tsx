@@ -1,11 +1,11 @@
 import React from 'react';
 import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
-import { IconButton } from 'react-native-paper';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import AppTextHeading1 from '../../components/atoms/text/AppTextHeading1';
 import AppTextBody3 from '../atoms/text/AppTextBody3';
 import { iconMap } from '../atoms/icon/AppIconComponent';
+import AppIconButton from '../atoms/icon/AppIconButton';
 
 interface AppHeaderWizardProps {
   image: JSX.Element;
@@ -30,7 +30,7 @@ export default function AppHeaderWizard({
     <View style={[styles.headerContainer, style]}>
       <View style={styles.headerSpace}>
         {back ? (
-          <IconButton
+          <AppIconButton
             icon={iconMap.arrowBack}
             onPress={() => navigation.goBack()}
           />

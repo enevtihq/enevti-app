@@ -8,4 +8,7 @@ export default {
   socialLogin: 'Log in Using Google',
   localPasswordHeader: 'Setup Local Password',
   localPasswordBody: 'This is required to login only on this devices!',
+  newLocalPassword: 'New Local Password',
+  confirmLocalPassword: 'Confirm Local Password',
+  createAcc: 'Create Account',
 };

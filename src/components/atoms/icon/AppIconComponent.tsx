@@ -8,6 +8,7 @@ export const iconMap = {
   arrowBack: 'arrow-left',
   key: 'cellphone-key',
   google: 'google',
+  seePassword: 'eye',
 };
 
 interface AppIconComponentProps {
