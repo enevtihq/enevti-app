@@ -5,7 +5,7 @@ import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import AppTextHeading1 from '../../components/atoms/AppTextHeading1';
 import AppTextBody3 from '../../components/atoms/AppTextBody3';
-import { fontMap } from '../atoms/AppIconComponent';
+import { iconMap } from '../atoms/AppIconComponent';
 
 interface AppHeaderWizardProps {
   image: JSX.Element;
@@ -31,7 +31,7 @@ export default function AppHeaderWizard({
       <View style={styles.headerSpace}>
         {back ? (
           <IconButton
-            icon={fontMap.arrowBack}
+            icon={iconMap.arrowBack}
             onPress={() => navigation.goBack()}
           />
         ) : null}

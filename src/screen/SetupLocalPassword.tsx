@@ -6,12 +6,12 @@ import { useTranslation } from 'react-i18next';
 import { Theme } from '../theme/default';
 import AppHeaderWizard from '../components/molecules/AppHeaderWizard';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigation';
-import { fontMap } from '../components/atoms/AppIconComponent';
+import { iconMap } from '../components/atoms/AppIconComponent';
 import AppIconGradient from '../components/molecules/AppIconGradient';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'SetupLocalPassword'>;
+type Props = StackScreenProps<RootStackParamList, 'SetupLocalPassword'>;
 
 export default function SetupLocalPassword({ navigation }: Props) {
   const theme = useTheme() as Theme;
@@ -30,7 +30,7 @@ export default function SetupLocalPassword({ navigation }: Props) {
         navigation={navigation}
         image={
           <AppIconGradient
-            name={fontMap.key}
+            name={iconMap.key}
             size={wp('25%')}
             colors={[theme.colors.primary, theme.colors.secondary]}
             style={styles.headerImage}

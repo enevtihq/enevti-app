@@ -1,6 +1,9 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {
+  createStackNavigator,
+  CardStyleInterpolators,
+} from '@react-navigation/stack';
 
 import CreateAccount from '../screen/CreateAccount';
 import { useColorScheme } from 'react-native';
@@ -12,7 +15,7 @@ export type RootStackParamList = {
   SetupLocalPassword: undefined;
 };
 
-const Stack = createNativeStackNavigator();
+const Stack = createStackNavigator();
 
 export default function AppNavigationContainer() {
   const colorScheme = useColorScheme();
@@ -22,12 +25,18 @@ export default function AppNavigationContainer() {
         <Stack.Screen
           name="CreateAccount"
           component={CreateAccount}
-          options={{ headerShown: false, animation: 'slide_from_right' }}
+          options={{
+            headerShown: false,
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          }}
         />
         <Stack.Screen
           name="SetupLocalPassword"
           component={SetupLocalPassword}
-          options={{ headerShown: false, animation: 'slide_from_right' }}
+          options={{
+            headerShown: false,
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          }}
         />
       </Stack.Navigator>
     </NavigationContainer>

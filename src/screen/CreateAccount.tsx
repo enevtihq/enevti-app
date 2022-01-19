@@ -15,10 +15,11 @@ import AppPrimaryButton from '../components/atoms/AppPrimaryButton';
 import AppSecondaryButton from '../components/atoms/AppSecondaryButton';
 import AppTextBody3 from '../components/atoms/AppTextBody3';
 import AppTertiaryButton from '../components/atoms/AppTertiaryButton';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigation';
+import { iconMap } from '../components/atoms/AppIconComponent';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'CreateAccount'>;
+type Props = StackScreenProps<RootStackParamList, 'CreateAccount'>;
 
 export default function CreateAccount({ navigation }: Props) {
   const theme = useTheme() as Theme;
@@ -68,7 +69,7 @@ export default function CreateAccount({ navigation }: Props) {
 
         <AppTertiaryButton
           onPress={() => console.log('pressed')}
-          icon="google"
+          icon={iconMap.google}
           style={styles.createAccount}>
           {t('auth:socialLogin')}
         </AppTertiaryButton>

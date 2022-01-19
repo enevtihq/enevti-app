@@ -4,9 +4,10 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export const IconProvider = Icon;
 
-export const fontMap = {
+export const iconMap = {
   arrowBack: 'arrow-left',
   key: 'cellphone-key',
+  google: 'google',
 };
 
 interface AppIconComponentProps {

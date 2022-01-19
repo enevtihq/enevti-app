@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import React, { useEffect } from 'react';
 import { useColorScheme } from 'react-native';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -10,6 +11,7 @@ import { persistor, store } from './store/state';
 import { getTheme } from './theme';
 import './translations/i18n';
 import { IconProvider } from './components/atoms/AppIconComponent';
+import './utils/suppressWarning';
 
 const App = () => {
   useEffect(() => SplashScreen.hide(), []);
