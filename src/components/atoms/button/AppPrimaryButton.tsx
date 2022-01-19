@@ -5,9 +5,9 @@ import { Button } from 'react-native-paper';
 import { useTheme } from 'react-native-paper/src/core/theming';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import color from 'color';
-
-import { Theme } from '../../theme/default';
 import { IconSource } from 'react-native-paper/lib/typescript/components/Icon';
+
+import { Theme } from '../../../theme/default';
 
 interface AppPrimaryButtonProps {
   children: React.ReactNode;

@@ -1,17 +1,17 @@
 import { useTheme } from '@react-navigation/native';
 import React from 'react';
 import { StyleSheet, Text, TextStyle } from 'react-native';
-import { Theme } from '../../theme/default';
+import { Theme } from '../../../theme/default';
 
-interface AppTextBody4Props {
+interface AppTextBody3Props {
   children: React.ReactNode;
   style?: TextStyle;
 }
 
-export default function AppTextBody4({
+export default function AppTextBody3({
   children,
   style,
-}: AppTextBody4Props): JSX.Element {
+}: AppTextBody3Props): JSX.Element {
   const theme = useTheme() as Theme;
   const styles = makeStyle(theme);
 
@@ -24,6 +24,6 @@ const makeStyle = (theme: Theme) =>
       color: theme.colors.text,
       fontFamily: theme.fonts.regular.fontFamily,
       fontWeight: theme.fonts.regular.fontWeight,
-      fontSize: 8,
+      fontSize: 13,
     },
   });

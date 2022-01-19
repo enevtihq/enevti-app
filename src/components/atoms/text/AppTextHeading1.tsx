@@ -1,17 +1,17 @@
 import { useTheme } from '@react-navigation/native';
 import React from 'react';
 import { StyleSheet, Text, TextStyle } from 'react-native';
-import { Theme } from '../../theme/default';
+import { Theme } from '../../../theme/default';
 
-interface AppTextBody3Props {
+interface AppTextHeading1Props {
   children: React.ReactNode;
   style?: TextStyle;
 }
 
-export default function AppTextBody3({
+export default function AppTextHeading1({
   children,
   style,
-}: AppTextBody3Props): JSX.Element {
+}: AppTextHeading1Props): JSX.Element {
   const theme = useTheme() as Theme;
   const styles = makeStyle(theme);
 
@@ -22,8 +22,8 @@ const makeStyle = (theme: Theme) =>
   StyleSheet.create({
     heading1: {
       color: theme.colors.text,
-      fontFamily: theme.fonts.regular.fontFamily,
-      fontWeight: theme.fonts.regular.fontWeight,
-      fontSize: 13,
+      fontFamily: theme.fonts.medium.fontFamily,
+      fontWeight: theme.fonts.medium.fontWeight,
+      fontSize: 21,
     },
   });

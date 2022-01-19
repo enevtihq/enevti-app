@@ -4,7 +4,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import MaskedView from '@react-native-masked-view/masked-view';
 import { useTheme } from 'react-native-paper/src/core/theming';
 
-import AppIconComponent from '../atoms/AppIconComponent';
+import AppIconComponent from '../atoms/icon/AppIconComponent';
 import { Theme } from '../../theme/default';
 
 interface AppIconGradientProps {

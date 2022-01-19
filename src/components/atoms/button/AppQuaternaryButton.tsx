@@ -5,9 +5,9 @@ import { IconSource } from 'react-native-paper/lib/typescript/components/Icon';
 import { useTheme } from 'react-native-paper/src/core/theming';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
-import { Theme } from '../../theme/default';
+import { Theme } from '../../../theme/default';
 
-interface AppTertiaryButtonProps {
+interface AppQuaternaryButtonProps {
   children: React.ReactNode;
   onPress: () => void;
   disabled?: boolean;
@@ -15,26 +15,25 @@ interface AppTertiaryButtonProps {
   style?: StyleProp<ViewStyle>;
 }
 
-export default function AppTertiaryButton({
+export default function AppQuaternaryButton({
   children,
   onPress,
   disabled = false,
   icon,
   style,
-}: AppTertiaryButtonProps): JSX.Element {
+}: AppQuaternaryButtonProps): JSX.Element {
   const theme = useTheme() as Theme;
   const styles = makeStyles(theme);
 
   return (
     <Button
       disabled={disabled}
-      mode="outlined"
-      color={theme.dark ? 'white' : 'black'}
+      mode="text"
       icon={icon}
       onPress={onPress}
       uppercase={false}
       contentStyle={styles.content}
-      style={[styles.tertiaryButton, style]}>
+      style={[styles.quaternaryButton, style]}>
       {children}
     </Button>
   );
@@ -42,7 +41,7 @@ export default function AppTertiaryButton({
 
 const makeStyles = (theme: Theme) =>
   StyleSheet.create({
-    tertiaryButton: {
+    quaternaryButton: {
       borderRadius: theme.roundness,
       height: hp('7.5%'),
     },

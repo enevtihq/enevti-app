@@ -8,7 +8,7 @@ import AppHeaderWizard from '../components/molecules/AppHeaderWizard';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigation';
-import { iconMap } from '../components/atoms/AppIconComponent';
+import { iconMap } from '../components/atoms/icon/AppIconComponent';
 import AppIconGradient from '../components/molecules/AppIconGradient';
 
 type Props = StackScreenProps<RootStackParamList, 'SetupLocalPassword'>;

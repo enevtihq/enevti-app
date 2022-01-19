@@ -3,9 +3,9 @@ import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import { IconButton } from 'react-native-paper';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
-import AppTextHeading1 from '../../components/atoms/AppTextHeading1';
-import AppTextBody3 from '../../components/atoms/AppTextBody3';
-import { iconMap } from '../atoms/AppIconComponent';
+import AppTextHeading1 from '../../components/atoms/text/AppTextHeading1';
+import AppTextBody3 from '../atoms/text/AppTextBody3';
+import { iconMap } from '../atoms/icon/AppIconComponent';
 
 interface AppHeaderWizardProps {
   image: JSX.Element;

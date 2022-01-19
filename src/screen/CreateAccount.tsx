@@ -6,18 +6,18 @@ import { useTranslation } from 'react-i18next';
 import { Theme } from '../theme/default';
 import AppBrandBanner from '../components/molecules/AppBrandBanner';
 import AppHeaderWizard from '../components/molecules/AppHeaderWizard';
-import AppTextBody4 from '../components/atoms/AppTextBody4';
+import AppTextBody4 from '../components/atoms/text/AppTextBody4';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import AppPrimaryButton from '../components/atoms/AppPrimaryButton';
-import AppSecondaryButton from '../components/atoms/AppSecondaryButton';
-import AppTextBody3 from '../components/atoms/AppTextBody3';
-import AppTertiaryButton from '../components/atoms/AppTertiaryButton';
+import AppPrimaryButton from '../components/atoms/button/AppPrimaryButton';
+import AppSecondaryButton from '../components/atoms/button/AppSecondaryButton';
+import AppTextBody3 from '../components/atoms/text/AppTextBody3';
+import AppTertiaryButton from '../components/atoms/button/AppTertiaryButton';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigation';
-import { iconMap } from '../components/atoms/AppIconComponent';
+import { iconMap } from '../components/atoms/icon/AppIconComponent';
 
 type Props = StackScreenProps<RootStackParamList, 'CreateAccount'>;
 
