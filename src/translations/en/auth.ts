@@ -11,4 +11,6 @@ export default {
   newLocalPassword: 'New Local Password',
   confirmLocalPassword: 'Confirm Local Password',
   createAcc: 'Create Account',
+  checkboxPassword:
+    'I understand that {{brand}} cannot recover this password for me.',
 };

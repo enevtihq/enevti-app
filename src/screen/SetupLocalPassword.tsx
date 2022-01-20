@@ -26,6 +26,8 @@ import AppIconGradient from '../components/molecules/AppIconGradient';
 import AppFormSecureTextInput from '../components/organism/AppFormSecureTextInput';
 import AppPrimaryButton from '../components/atoms/button/AppPrimaryButton';
 import AppView from '../components/atoms/view/AppView';
+import AppCheckbox from '../components/atoms/form/AppCheckbox';
+import { BRAND_NAME } from '../components/atoms/brand/AppBrandConstant';
 
 type Props = StackScreenProps<RootStackParamList, 'SetupLocalPassword'>;
 YupPassword(Yup);
@@ -35,6 +37,7 @@ const validationSchema = Yup.object().shape({
   confirmPassword: Yup.string()
     .oneOf([Yup.ref('password'), null])
     .required(),
+  checkboxPassword: Yup.bool().oneOf([true]),
 });
 
 export default function SetupLocalPassword({ navigation }: Props) {
@@ -71,7 +74,7 @@ export default function SetupLocalPassword({ navigation }: Props) {
           initialValues={{
             password: '',
             confirmPassword: '',
-            checkPassword: false,
+            checkboxPassword: false,
           }}
           onSubmit={values => console.log(values)}
           validationSchema={validationSchema}>
@@ -79,6 +82,7 @@ export default function SetupLocalPassword({ navigation }: Props) {
             handleChange,
             handleSubmit,
             setFieldTouched,
+            setFieldValue,
             values,
             errors,
             isValid,
@@ -134,6 +138,15 @@ export default function SetupLocalPassword({ navigation }: Props) {
                   style={styles.createAccount}>
                   {t('auth:createAcc')}
                 </AppPrimaryButton>
+
+                <AppCheckbox
+                  status={values.checkboxPassword ? 'checked' : 'unchecked'}
+                  style={styles.checkbox}
+                  onPress={() =>
+                    setFieldValue('checkboxPassword', !values.checkboxPassword)
+                  }>
+                  {t('auth:checkboxPassword', { brand: BRAND_NAME })}
+                </AppCheckbox>
               </View>
             </>
           )}
@@ -152,6 +165,11 @@ const makeStyle = (theme: Theme) =>
     container: {
       flex: 1,
       backgroundColor: theme.colors.background,
+    },
+    checkbox: {
+      marginBottom: hp('4%'),
+      marginLeft: wp('3%'),
+      marginRight: wp('3%'),
     },
     createAccount: {
       marginBottom: hp('2%'),
