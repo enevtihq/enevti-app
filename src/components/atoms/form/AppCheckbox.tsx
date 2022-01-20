@@ -1,6 +1,6 @@
 import { StyleSheet, View, ViewStyle } from 'react-native';
 import React from 'react';
-import { Checkbox, useTheme } from 'react-native-paper';
+import { Checkbox, TouchableRipple, useTheme } from 'react-native-paper';
 import AppTextBody3 from '../text/AppTextBody3';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
@@ -25,18 +25,23 @@ export default function AppCheckbox({
   const styles = makeStyle();
 
   return (
-    <View style={[styles.appCheckboxView, style]}>
-      <View style={styles.checkbox}>
-        <Checkbox
-          status={status}
-          disabled={disabled}
-          onPress={onPress}
-          uncheckedColor={uncheckedColor}
-          color={theme.colors.primary}
-          theme={theme}
-        />
-      </View>
-      <AppTextBody3 style={styles.text}>{children}</AppTextBody3>
+    <View style={[style]}>
+      <TouchableRipple rippleColor="rgba(0, 0, 0, .32)" onPress={onPress}>
+        <View style={styles.appCheckboxView}>
+          <View style={styles.checkbox}>
+            <Checkbox
+              status={status}
+              disabled={disabled}
+              uncheckedColor={uncheckedColor}
+              color={theme.colors.primary}
+              theme={theme}
+            />
+          </View>
+          <View style={styles.textContainer}>
+            <AppTextBody3 style={styles.text}>{children}</AppTextBody3>
+          </View>
+        </View>
+      </TouchableRipple>
     </View>
   );
 }
@@ -45,11 +50,17 @@ const makeStyle = () =>
   StyleSheet.create({
     appCheckboxView: {
       flexDirection: 'row',
+      marginTop: wp('2%'),
+      marginBottom: wp('2%'),
     },
     checkbox: {
+      marginLeft: wp('2%'),
       marginRight: wp('2%'),
     },
     text: {
       alignSelf: 'center',
+    },
+    textContainer: {
+      marginRight: wp('2%'),
     },
   });

@@ -167,7 +167,7 @@ const makeStyle = (theme: Theme) =>
       backgroundColor: theme.colors.background,
     },
     checkbox: {
-      marginBottom: hp('4%'),
+      marginBottom: hp('2%'),
       marginLeft: wp('3%'),
       marginRight: wp('3%'),
     },
