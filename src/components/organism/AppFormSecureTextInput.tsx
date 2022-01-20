@@ -1,13 +1,16 @@
 import React from 'react';
 import { ReturnKeyTypeOptions, TextStyle } from 'react-native';
 import { TextInput, useTheme } from 'react-native-paper';
-import AppFormTextInput from '../atoms/form/AppFormTextInput';
+import AppFormTextInputWithError from '../molecules/AppFormTextInputWithError';
 import { iconMap } from '../atoms/icon/AppIconComponent';
 
 interface AppFormSecureTextInputProps {
   label: string;
   value: string;
+  touchHandler?: () => void;
   onChangeText: (text: string) => void;
+  errorText?: string;
+  showError?: boolean;
   onSubmitEditing?: () => void;
   style?: TextStyle;
   returnKeyType?: ReturnKeyTypeOptions;
@@ -17,6 +20,9 @@ function AppFormSecureTextInput(
   {
     label,
     value,
+    showError,
+    touchHandler,
+    errorText,
     onChangeText,
     onSubmitEditing,
     style,
@@ -28,12 +34,16 @@ function AppFormSecureTextInput(
   const [secure, setSecure] = React.useState(true);
 
   return (
-    <AppFormTextInput
+    <AppFormTextInputWithError
       ref={ref}
       theme={theme}
       label={label}
+      errorText={showError ? errorText : ''}
       secureTextEntry={secure}
-      onBlur={() => setSecure(true)}
+      onBlur={() => {
+        setSecure(true);
+        touchHandler && touchHandler();
+      }}
       value={value}
       onChangeText={onChangeText}
       onSubmitEditing={onSubmitEditing}

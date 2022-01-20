@@ -1,6 +1,7 @@
 import { useTheme } from '@react-navigation/native';
 import React from 'react';
 import { StyleSheet, Text, TextStyle } from 'react-native';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Theme } from '../../../theme/default';
 
 interface AppTextHeading1Props {
@@ -24,6 +25,6 @@ const makeStyle = (theme: Theme) =>
       color: theme.colors.text,
       fontFamily: theme.fonts.medium.fontFamily,
       fontWeight: theme.fonts.medium.fontWeight,
-      fontSize: 21,
+      fontSize: hp('2.75%'),
     },
   });

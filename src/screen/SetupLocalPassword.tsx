@@ -4,7 +4,6 @@ import {
   StyleSheet,
   StatusBar,
   View,
-  Text,
   Keyboard,
 } from 'react-native';
 import { useTheme } from 'react-native-paper';
@@ -17,34 +16,32 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import YupPassword from 'yup-password';
-
-import * as Lisk from '@liskhq/lisk-client';
+// import * as Lisk from '@liskhq/lisk-client';
 
 import { Theme } from '../theme/default';
 import AppHeaderWizard from '../components/molecules/AppHeaderWizard';
 import { RootStackParamList } from '../navigation';
 import { iconMap } from '../components/atoms/icon/AppIconComponent';
 import AppIconGradient from '../components/molecules/AppIconGradient';
-import AppFormSecureTextInput from '../components/molecules/AppFormSecureTextInput';
+import AppFormSecureTextInput from '../components/organism/AppFormSecureTextInput';
 import AppPrimaryButton from '../components/atoms/button/AppPrimaryButton';
 import AppView from '../components/atoms/view/AppView';
 
 type Props = StackScreenProps<RootStackParamList, 'SetupLocalPassword'>;
 YupPassword(Yup);
 
+const validationSchema = Yup.object().shape({
+  password: Yup.string().password().required(),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref('password'), null])
+    .required(),
+});
+
 export default function SetupLocalPassword({ navigation }: Props) {
   const theme = useTheme() as Theme;
   const styles = makeStyle(theme);
   const { t } = useTranslation();
   const confirmPasswordInput = React.useRef<any>();
-
-  const validationSchema = Yup.object().shape({
-    password: Yup.string().password().required().label('Local Password'),
-    confirmPassword: Yup.string()
-      .oneOf([Yup.ref('password'), null])
-      .label('Confirmation Password')
-      .required(),
-  });
 
   return (
     <AppView>
@@ -70,8 +67,6 @@ export default function SetupLocalPassword({ navigation }: Props) {
           style={styles.header}
         />
 
-        <Text>{Lisk.passphrase.Mnemonic.generateMnemonic()}</Text>
-
         <Formik
           initialValues={{
             password: '',
@@ -80,13 +75,31 @@ export default function SetupLocalPassword({ navigation }: Props) {
           }}
           onSubmit={values => console.log(values)}
           validationSchema={validationSchema}>
-          {({ handleChange, handleSubmit, values, errors, isValid, dirty }) => (
+          {({
+            handleChange,
+            handleSubmit,
+            setFieldTouched,
+            values,
+            errors,
+            isValid,
+            dirty,
+            touched,
+          }) => (
             <>
               <View style={styles.passwordView}>
                 <AppFormSecureTextInput
                   label={t('auth:newLocalPassword')}
                   style={styles.passwordInput}
                   value={values.password}
+                  errorText={
+                    errors.password
+                      ? values.password.length > 0
+                        ? t('form:password')
+                        : t('form:required')
+                      : ''
+                  }
+                  showError={values.password !== '' || touched.password}
+                  touchHandler={() => setFieldTouched('password')}
                   onChangeText={handleChange('password')}
                   onSubmitEditing={() => confirmPasswordInput.current.focus()}
                   returnKeyType="go"
@@ -96,10 +109,20 @@ export default function SetupLocalPassword({ navigation }: Props) {
                   label={t('auth:confirmLocalPassword')}
                   style={styles.passwordInput}
                   value={values.confirmPassword}
+                  errorText={
+                    errors.confirmPassword
+                      ? values.confirmPassword.length > 0
+                        ? t('form:passwordMatch')
+                        : t('form:required')
+                      : ''
+                  }
+                  showError={
+                    values.confirmPassword !== '' || touched.confirmPassword
+                  }
+                  touchHandler={() => setFieldTouched('confirmPassword')}
                   onChangeText={handleChange('confirmPassword')}
                   onSubmitEditing={() => Keyboard.dismiss()}
                 />
-                <Text>{errors.confirmPassword}</Text>
               </View>
 
               <View style={styles.actionContainer}>
