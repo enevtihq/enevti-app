@@ -5,7 +5,7 @@ import { useTheme } from 'react-native-paper/src/core/theming';
 import color from 'color';
 import { StyleSheet } from 'react-native';
 
-export default function AppFormTextInput(props: TextInputProps) {
+function AppFormTextInput(props: TextInputProps, ref: any) {
   const theme = useTheme();
   const styles = makeStyles(theme);
 
@@ -13,6 +13,7 @@ export default function AppFormTextInput(props: TextInputProps) {
     <TextInput
       {...props}
       mode={'outlined'}
+      ref={ref}
       outlineColor={styles.appFormTextInput.backgroundColor}
       style={[styles.appFormTextInput, props.style]}
     />
@@ -28,3 +29,7 @@ const makeStyles = (theme: ReturnType<typeof useTheme>) =>
         : color(theme.colors.background).darken(0.04).rgb().toString(),
     },
   });
+
+const forwardedAppFormTextInput = React.forwardRef(AppFormTextInput);
+
+export default forwardedAppFormTextInput;

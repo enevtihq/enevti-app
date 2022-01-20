@@ -9,6 +9,7 @@ export const iconMap = {
   key: 'cellphone-key',
   google: 'google',
   seePassword: 'eye',
+  hidePassword: 'eye-off',
 };
 
 interface AppIconComponentProps {
