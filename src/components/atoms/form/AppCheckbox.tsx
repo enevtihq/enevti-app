@@ -6,7 +6,7 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 interface AppCheckboxProps {
   children: React.ReactNode;
-  status: 'checked' | 'unchecked' | 'indeterminate';
+  value: boolean;
   style?: ViewStyle;
   disabled?: boolean;
   onPress?: () => void;
@@ -15,7 +15,7 @@ interface AppCheckboxProps {
 
 export default function AppCheckbox({
   children,
-  status,
+  value,
   style,
   disabled,
   onPress,
@@ -30,7 +30,7 @@ export default function AppCheckbox({
         <View style={styles.appCheckboxView}>
           <View style={styles.checkbox}>
             <Checkbox.Android
-              status={status}
+              status={value ? 'checked' : 'unchecked'}
               disabled={disabled}
               uncheckedColor={uncheckedColor}
               color={theme.colors.primary}
@@ -61,6 +61,8 @@ const makeStyle = () =>
       alignSelf: 'center',
     },
     textContainer: {
-      marginRight: wp('2%'),
+      paddingRight: wp('2%'),
+      alignSelf: 'center',
+      flex: 1,
     },
   });

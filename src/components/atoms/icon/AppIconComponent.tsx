@@ -10,6 +10,7 @@ export const iconMap = {
   google: 'google',
   seePassword: 'eye',
   hidePassword: 'eye-off',
+  lock: 'lock',
 };
 
 interface AppIconComponentProps {

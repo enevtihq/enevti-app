@@ -159,7 +159,7 @@ export default function SetupLocalPassword({ navigation }: Props) {
                 </AppPrimaryButton>
 
                 <AppCheckbox
-                  status={values.checkboxPassword ? 'checked' : 'unchecked'}
+                  value={values.checkboxPassword}
                   style={styles.checkbox}
                   onPress={() =>
                     setFieldValue('checkboxPassword', !values.checkboxPassword)

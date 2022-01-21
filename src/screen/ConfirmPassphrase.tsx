@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  StatusBar,
-  View,
-  Keyboard,
-} from 'react-native';
+import { SafeAreaView, StyleSheet, StatusBar, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import {
@@ -13,48 +7,28 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import { StackScreenProps } from '@react-navigation/stack';
-import { Formik } from 'formik';
-import * as Yup from 'yup';
-import YupPassword from 'yup-password';
-import * as Lisk from '@liskhq/lisk-client';
 
-import { encryptWithPassword } from '../utils/cryptography';
 import { Theme } from '../theme/default';
 import AppHeaderWizard from '../components/molecules/AppHeaderWizard';
 import { RootStackParamList } from '../navigation';
 import { iconMap } from '../components/atoms/icon/AppIconComponent';
 import AppIconGradient from '../components/molecules/AppIconGradient';
-import AppFormSecureTextInput from '../components/organism/AppFormSecureTextInput';
 import AppPrimaryButton from '../components/atoms/button/AppPrimaryButton';
 import AppView from '../components/atoms/view/AppView';
 import AppCheckbox from '../components/atoms/form/AppCheckbox';
-import { BRAND_NAME } from '../components/atoms/brand/AppBrandConstant';
+import AppPassphraseBox from '../components/organism/AppPassphraseBox';
 
-type Props = StackScreenProps<RootStackParamList, 'SetupLocalPassword'>;
-YupPassword(Yup);
+type Props = StackScreenProps<RootStackParamList, 'ConfirmPassphrase'>;
 
-const validationSchema = Yup.object().shape({
-  password: Yup.string().password().required(),
-  confirmPassword: Yup.string()
-    .oneOf([Yup.ref('password'), null])
-    .required(),
-  checkboxPassword: Yup.bool().oneOf([true]),
-});
-
-export default function ConfirmPassphrase({ navigation }: Props) {
+export default function ConfirmPassphrase({ route, navigation }: Props) {
+  const { passphrase, encryptedPassphrase } = route.params;
   const theme = useTheme() as Theme;
   const styles = makeStyle(theme);
   const { t } = useTranslation();
-  const confirmPasswordInput = React.useRef<any>();
+  const [checked, setChecked] = React.useState<boolean>(false);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
-  const handleFormSubmit = async (values: any) => {
-    const passphrase = Lisk.passphrase.Mnemonic.generateMnemonic();
-    const encryptedPassphrase = await encryptWithPassword(
-      passphrase,
-      values.password,
-    );
-    console.log(encryptedPassphrase);
+  const handleFormSubmit = async () => {
     setIsLoading(false);
   };
 
@@ -67,106 +41,46 @@ export default function ConfirmPassphrase({ navigation }: Props) {
         />
 
         <AppHeaderWizard
-          back
           navigation={navigation}
           image={
             <AppIconGradient
-              name={iconMap.key}
+              name={iconMap.lock}
               size={wp('25%')}
               colors={[theme.colors.primary, theme.colors.secondary]}
               style={styles.headerImage}
             />
           }
-          title={t('auth:localPasswordHeader')}
-          description={t('auth:localPasswordBody')}
+          title={t('auth:confirmPasspraseHeader')}
+          description={t('auth:confirmPassphraseBody')}
           style={styles.header}
         />
 
-        <Formik
-          initialValues={{
-            password: '',
-            confirmPassword: '',
-            checkboxPassword: false,
-          }}
-          onSubmit={async values => {
-            setIsLoading(true);
-            await handleFormSubmit(values);
-          }}
-          validationSchema={validationSchema}>
-          {({
-            handleChange,
-            handleSubmit,
-            setFieldTouched,
-            setFieldValue,
-            values,
-            errors,
-            isValid,
-            dirty,
-            touched,
-          }) => (
-            <>
-              <View style={styles.passwordView}>
-                <AppFormSecureTextInput
-                  label={t('auth:newLocalPassword')}
-                  style={styles.passwordInput}
-                  value={values.password}
-                  errorText={
-                    errors.password
-                      ? values.password.length > 0
-                        ? t('form:password')
-                        : t('form:required')
-                      : ''
-                  }
-                  showError={values.password !== '' || touched.password}
-                  touchHandler={() => setFieldTouched('password')}
-                  onChangeText={handleChange('password')}
-                  onSubmitEditing={() => confirmPasswordInput.current.focus()}
-                  returnKeyType="go"
-                />
-                <AppFormSecureTextInput
-                  ref={confirmPasswordInput}
-                  label={t('auth:confirmLocalPassword')}
-                  style={styles.passwordInput}
-                  value={values.confirmPassword}
-                  errorText={
-                    errors.confirmPassword
-                      ? values.confirmPassword.length > 0
-                        ? t('form:passwordMatch')
-                        : t('form:required')
-                      : ''
-                  }
-                  showError={
-                    values.confirmPassword !== '' || touched.confirmPassword
-                  }
-                  touchHandler={() => setFieldTouched('confirmPassword')}
-                  onChangeText={handleChange('confirmPassword')}
-                  onSubmitEditing={() => Keyboard.dismiss()}
-                />
-              </View>
+        <View style={styles.passphraseView}>
+          <AppPassphraseBox
+            passphrase={passphrase}
+            style={styles.passphraseBox}
+            onPress={() => console.log('anjay')}
+          />
+        </View>
 
-              <View style={styles.actionContainer}>
-                <View style={{ height: hp('3%') }} />
+        <View style={styles.actionContainer}>
+          <View style={{ height: hp('3%') }} />
 
-                <AppPrimaryButton
-                  onPress={handleSubmit}
-                  loading={isLoading}
-                  disabled={!(isValid && dirty)}
-                  style={styles.createAccount}>
-                  {t('auth:createAcc')}
-                </AppPrimaryButton>
+          <AppPrimaryButton
+            onPress={() => handleFormSubmit()}
+            loading={isLoading}
+            disabled={!checked}
+            style={styles.createAccount}>
+            {t('auth:createAcc')}
+          </AppPrimaryButton>
 
-                <AppCheckbox
-                  status={values.checkboxPassword ? 'checked' : 'unchecked'}
-                  style={styles.checkbox}
-                  onPress={() =>
-                    setFieldValue('checkboxPassword', !values.checkboxPassword)
-                  }>
-                  {t('auth:checkboxPassword', { brand: BRAND_NAME })}
-                </AppCheckbox>
-              </View>
-            </>
-          )}
-        </Formik>
+          <AppCheckbox
+            value={checked}
+            style={styles.checkbox}
+            onPress={() => setChecked(!checked)}>
+            {t('auth:confirmPassphraseCheck')}
+          </AppCheckbox>
+        </View>
       </SafeAreaView>
     </AppView>
   );
@@ -199,12 +113,10 @@ const makeStyle = (theme: Theme) =>
     headerImage: {
       alignSelf: 'center',
     },
-    passwordView: {
+    passphraseView: {
       flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
     },
-    passwordInput: {
-      marginBottom: hp('2%'),
-      marginLeft: wp('5%'),
-      marginRight: wp('5%'),
-    },
+    passphraseBox: {},
   });
