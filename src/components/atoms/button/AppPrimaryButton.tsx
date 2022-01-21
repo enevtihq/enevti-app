@@ -3,11 +3,12 @@ import { StyleProp, ViewStyle, StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { ActivityIndicator, Button } from 'react-native-paper';
 import { useTheme } from 'react-native-paper/src/core/theming';
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import color from 'color';
 import { IconSource } from 'react-native-paper/lib/typescript/components/Icon';
 
 import { Theme } from '../../../theme/default';
+import { hp, SafeAreaInsets } from '../../../utils/imageRatio';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface AppPrimaryButtonProps {
   children: React.ReactNode;
@@ -27,7 +28,8 @@ export default function AppPrimaryButton({
   style,
 }: AppPrimaryButtonProps): JSX.Element {
   const theme = useTheme() as Theme;
-  const styles = makeStyles(theme);
+  const insets = useSafeAreaInsets();
+  const styles = makeStyles(theme, insets);
   const primary = disabled
     ? color('black').alpha(0.5).rgb().string()
     : theme.colors.primary;
@@ -61,13 +63,13 @@ export default function AppPrimaryButton({
   );
 }
 
-const makeStyles = (theme: Theme) =>
+const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
   StyleSheet.create({
     primaryButton: {
       borderRadius: theme.roundness,
-      height: hp('7.5%'),
+      height: hp('7.5%', insets),
     },
     content: {
-      height: hp('7.5%'),
+      height: hp('7.5%', insets),
     },
   });

@@ -1,11 +1,12 @@
 import React from 'react';
 import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { hp, SafeAreaInsets } from '../../utils/imageRatio';
 
 import AppTextHeading1 from '../../components/atoms/text/AppTextHeading1';
 import AppTextBody3 from '../atoms/text/AppTextBody3';
 import { iconMap } from '../atoms/icon/AppIconComponent';
 import AppIconButton from '../atoms/icon/AppIconButton';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface AppHeaderWizardProps {
   image: JSX.Element;
@@ -24,7 +25,8 @@ export default function AppHeaderWizard({
   navigation,
   style,
 }: AppHeaderWizardProps) {
-  const styles = makeStyle();
+  const insets = useSafeAreaInsets();
+  const styles = makeStyle(insets);
 
   return (
     <View style={[styles.headerContainer, style]}>
@@ -43,15 +45,18 @@ export default function AppHeaderWizard({
   );
 }
 
-const makeStyle = () =>
+const makeStyle = (insets: SafeAreaInsets) =>
   StyleSheet.create({
     headerContainer: {
       flex: 1,
     },
-    headerSpace: { height: hp('6%'), justifyContent: 'center' },
+    headerSpace: {
+      height: hp('6%', insets),
+      justifyContent: 'center',
+    },
     headerText1: {
-      marginTop: hp('2.5%'),
-      marginBottom: hp('2.5%'),
+      marginTop: hp('2%', insets),
+      marginBottom: hp('2%', insets),
       alignSelf: 'center',
       textAlign: 'center',
     },

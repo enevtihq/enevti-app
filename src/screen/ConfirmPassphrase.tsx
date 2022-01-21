@@ -1,11 +1,11 @@
 import React from 'react';
-import { SafeAreaView, StyleSheet, StatusBar, View } from 'react-native';
+import { StyleSheet, StatusBar, View } from 'react-native';
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from 'react-native-safe-area-context';
 import { useTheme } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
 import { StackScreenProps } from '@react-navigation/stack';
 
 import { Theme } from '../theme/default';
@@ -17,13 +17,15 @@ import AppPrimaryButton from '../components/atoms/button/AppPrimaryButton';
 import AppView from '../components/atoms/view/AppView';
 import AppCheckbox from '../components/atoms/form/AppCheckbox';
 import AppPassphraseBox from '../components/organism/AppPassphraseBox';
+import { hp, wp, SafeAreaInsets } from '../utils/imageRatio';
 
 type Props = StackScreenProps<RootStackParamList, 'ConfirmPassphrase'>;
 
 export default function ConfirmPassphrase({ route, navigation }: Props) {
   const { passphrase, encryptedPassphrase } = route.params;
   const theme = useTheme() as Theme;
-  const styles = makeStyle(theme);
+  const insets = useSafeAreaInsets();
+  const styles = makeStyle(theme, insets);
   const { t } = useTranslation();
   const [checked, setChecked] = React.useState<boolean>(false);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
@@ -45,7 +47,7 @@ export default function ConfirmPassphrase({ route, navigation }: Props) {
           image={
             <AppIconGradient
               name={iconMap.lock}
-              size={wp('25%')}
+              size={wp('25%', insets)}
               colors={[theme.colors.primary, theme.colors.secondary]}
               style={styles.headerImage}
             />
@@ -64,14 +66,14 @@ export default function ConfirmPassphrase({ route, navigation }: Props) {
         </View>
 
         <View style={styles.actionContainer}>
-          <View style={{ height: hp('3%') }} />
+          <View style={{ height: hp('3%', insets) }} />
 
           <AppPrimaryButton
             onPress={() => handleFormSubmit()}
             loading={isLoading}
             disabled={!checked}
             style={styles.createAccount}>
-            {t('auth:createAcc')}
+            {t('auth:continue')}
           </AppPrimaryButton>
 
           <AppCheckbox
@@ -86,7 +88,7 @@ export default function ConfirmPassphrase({ route, navigation }: Props) {
   );
 }
 
-const makeStyle = (theme: Theme) =>
+const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
   StyleSheet.create({
     actionContainer: {
       flex: 0.7,
@@ -97,19 +99,19 @@ const makeStyle = (theme: Theme) =>
       backgroundColor: theme.colors.background,
     },
     checkbox: {
-      marginBottom: hp('2%'),
-      marginLeft: wp('3%'),
-      marginRight: wp('3%'),
+      marginBottom: hp('2%', insets),
+      marginLeft: wp('3%', insets),
+      marginRight: wp('3%', insets),
     },
     createAccount: {
-      marginBottom: hp('2%'),
-      marginLeft: wp('5%'),
-      marginRight: wp('5%'),
+      marginBottom: hp('2%', insets),
+      marginLeft: wp('5%', insets),
+      marginRight: wp('5%', insets),
     },
     header: {
       flex: 1,
-      marginLeft: wp('3%'),
-      marginRight: wp('3%'),
+      marginLeft: wp('3%', insets),
+      marginRight: wp('3%', insets),
     },
     headerImage: {
       alignSelf: 'center',
@@ -118,8 +120,8 @@ const makeStyle = (theme: Theme) =>
       flex: 1,
       alignItems: 'center',
       justifyContent: 'center',
-      paddingLeft: wp('7%'),
-      paddingRight: wp('7%'),
+      paddingLeft: wp('7%', insets),
+      paddingRight: wp('7%', insets),
     },
     passphraseBox: {},
   });

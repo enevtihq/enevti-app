@@ -1,5 +1,9 @@
 import React from 'react';
-import { View, SafeAreaView, StyleSheet, StatusBar } from 'react-native';
+import { View, StyleSheet, StatusBar } from 'react-native';
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from 'react-native-safe-area-context';
 import { useTheme } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 
@@ -7,10 +11,7 @@ import { Theme } from '../theme/default';
 import AppBrandBanner from '../components/molecules/AppBrandBanner';
 import AppHeaderWizard from '../components/molecules/AppHeaderWizard';
 import AppTextBody4 from '../components/atoms/text/AppTextBody4';
-import {
-  heightPercentageToDP as hp,
-  widthPercentageToDP as wp,
-} from 'react-native-responsive-screen';
+import { hp, wp, SafeAreaInsets } from '../utils/imageRatio';
 
 import AppPrimaryButton from '../components/atoms/button/AppPrimaryButton';
 import AppSecondaryButton from '../components/atoms/button/AppSecondaryButton';
@@ -25,7 +26,8 @@ type Props = StackScreenProps<RootStackParamList, 'CreateAccount'>;
 
 export default function CreateAccount({ navigation }: Props) {
   const theme = useTheme() as Theme;
-  const styles = makeStyle(theme);
+  const insets = useSafeAreaInsets();
+  const styles = makeStyle(theme, insets);
   const { t } = useTranslation();
 
   return (
@@ -45,9 +47,9 @@ export default function CreateAccount({ navigation }: Props) {
         />
 
         <View style={styles.actionContainer}>
-          <View style={{ height: hp('3%') }} />
+          <View style={{ height: hp('3%', insets) }} />
           <AppTextBody4 style={styles.term}>{t('auth:term')}</AppTextBody4>
-          <View style={{ height: hp('4%') }} />
+          <View style={{ height: hp('4%', insets) }} />
 
           <AppSecondaryButton
             onPress={() => console.log('pressed')}
@@ -66,7 +68,7 @@ export default function CreateAccount({ navigation }: Props) {
             <AppTextBody3
               style={{
                 color: theme.colors.placeholder,
-                marginBottom: hp('2%'),
+                marginBottom: hp('2%', insets),
               }}>
               {t('auth:or')}
             </AppTextBody3>
@@ -85,7 +87,7 @@ export default function CreateAccount({ navigation }: Props) {
   );
 }
 
-const makeStyle = (theme: Theme) =>
+const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
   StyleSheet.create({
     actionContainer: {
       flex: 1,
@@ -96,9 +98,9 @@ const makeStyle = (theme: Theme) =>
       backgroundColor: theme.colors.background,
     },
     createAccount: {
-      marginBottom: hp('2%'),
-      marginLeft: wp('5%'),
-      marginRight: wp('5%'),
+      marginBottom: hp('2%', insets),
+      marginLeft: wp('5%', insets),
+      marginRight: wp('5%', insets),
     },
     headerImage: {
       alignSelf: 'center',
@@ -106,11 +108,11 @@ const makeStyle = (theme: Theme) =>
     orLine: {
       backgroundColor: theme.colors.placeholder,
       height: 1,
-      width: wp('7%'),
+      width: wp('7%', insets),
       alignSelf: 'center',
-      marginLeft: wp('2%'),
-      marginRight: wp('2%'),
-      marginBottom: hp('2%'),
+      marginLeft: wp('2%', insets),
+      marginRight: wp('2%', insets),
+      marginBottom: hp('2%', insets),
     },
     orView: {
       flexDirection: 'row',

@@ -5,6 +5,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { Provider as StoreProvider } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import AppNavigationContainer from './navigation';
 import { persistor, store } from './store/state';
@@ -18,15 +19,17 @@ const App = () => {
   const colorScheme = useColorScheme()!;
 
   return (
-    <StoreProvider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <PaperProvider
-          theme={getTheme(colorScheme.toString())}
-          settings={{ icon: props => <IconProvider {...props} /> }}>
-          <AppNavigationContainer />
-        </PaperProvider>
-      </PersistGate>
-    </StoreProvider>
+    <SafeAreaProvider>
+      <StoreProvider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <PaperProvider
+            theme={getTheme(colorScheme.toString())}
+            settings={{ icon: props => <IconProvider {...props} /> }}>
+            <AppNavigationContainer />
+          </PaperProvider>
+        </PersistGate>
+      </StoreProvider>
+    </SafeAreaProvider>
   );
 };
 

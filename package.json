@@ -55,7 +55,6 @@
     "react-native-os": "^1.2.6",
     "react-native-paper": "^4.11.1",
     "react-native-randombytes": "^3.6.1",
-    "react-native-responsive-screen": "^1.4.2",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "^3.10.1",
     "react-native-sensitive-info": "^6.0.0-alpha.9",

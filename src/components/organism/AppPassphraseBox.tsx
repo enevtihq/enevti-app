@@ -1,12 +1,13 @@
 import React from 'react';
 import { View, StyleSheet, ViewStyle } from 'react-native';
 import { TouchableRipple, useTheme } from 'react-native-paper';
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { SafeAreaInsets, wp } from '../../utils/imageRatio';
 import color from 'color';
 
 import { Theme } from '../../theme/default';
 import AppTextHeading1 from '../atoms/text/AppTextHeading1';
 import AppTextBody4 from '../atoms/text/AppTextBody4';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface AppPassphraseBoxProps {
   passphrase: string;
@@ -20,7 +21,8 @@ export default function AppPassphraseBox({
   style,
 }: AppPassphraseBoxProps) {
   const theme = useTheme() as Theme;
-  const styles = makeStyle(theme);
+  const insets = useSafeAreaInsets();
+  const styles = makeStyle(theme, insets);
 
   return (
     <View style={styles.container}>
@@ -39,7 +41,7 @@ export default function AppPassphraseBox({
   );
 }
 
-const makeStyle = (theme: Theme) =>
+const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
   StyleSheet.create({
     container: {
       borderRadius: theme.roundness,
@@ -59,15 +61,15 @@ const makeStyle = (theme: Theme) =>
     },
     textBox: {
       flex: 1,
-      marginLeft: wp('10%'),
-      marginRight: wp('10%'),
+      marginLeft: wp('10%', insets),
+      marginRight: wp('10%', insets),
       textAlign: 'center',
       alignItems: 'center',
       justifyContent: 'center',
     },
     subText: {
       textAlign: 'center',
-      marginTop: wp('3%'),
-      marginBottom: wp('3%'),
+      marginTop: wp('3%', insets),
+      marginBottom: wp('3%', insets),
     },
   });

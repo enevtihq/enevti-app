@@ -3,10 +3,11 @@ import { StyleProp, ViewStyle, StyleSheet, View } from 'react-native';
 import { ActivityIndicator, Button } from 'react-native-paper';
 import { IconSource } from 'react-native-paper/lib/typescript/components/Icon';
 import { useTheme } from 'react-native-paper/src/core/theming';
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { hp, SafeAreaInsets } from '../../../utils/imageRatio';
 import color from 'color';
 
 import { Theme } from '../../../theme/default';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface AppTertiaryButtonProps {
   children: React.ReactNode;
@@ -26,7 +27,8 @@ export default function AppTertiaryButton({
   style,
 }: AppTertiaryButtonProps): JSX.Element {
   const theme = useTheme() as Theme;
-  const styles = makeStyles(theme);
+  const insets = useSafeAreaInsets();
+  const styles = makeStyles(theme, insets);
 
   return loading ? (
     <View style={[styles.tertiaryLoading, styles.tertiaryButton, style]}>
@@ -51,11 +53,11 @@ export default function AppTertiaryButton({
   );
 }
 
-const makeStyles = (theme: Theme) =>
+const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
   StyleSheet.create({
     tertiaryButton: {
       borderRadius: theme.roundness,
-      height: hp('7.5%'),
+      height: hp('7.5%', insets),
     },
     tertiaryLoading: {
       borderStyle: 'solid',
@@ -66,6 +68,6 @@ const makeStyles = (theme: Theme) =>
         .string(),
     },
     content: {
-      height: hp('7.5%'),
+      height: hp('7.5%', insets),
     },
   });

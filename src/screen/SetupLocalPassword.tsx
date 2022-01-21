@@ -1,17 +1,11 @@
 import React from 'react';
+import { StyleSheet, StatusBar, View, Keyboard } from 'react-native';
 import {
   SafeAreaView,
-  StyleSheet,
-  StatusBar,
-  View,
-  Keyboard,
-} from 'react-native';
+  useSafeAreaInsets,
+} from 'react-native-safe-area-context';
 import { useTheme } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
 import { StackScreenProps } from '@react-navigation/stack';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -28,6 +22,7 @@ import AppFormSecureTextInput from '../components/organism/AppFormSecureTextInpu
 import AppPrimaryButton from '../components/atoms/button/AppPrimaryButton';
 import AppView from '../components/atoms/view/AppView';
 import AppCheckbox from '../components/atoms/form/AppCheckbox';
+import { hp, wp, SafeAreaInsets } from '../utils/imageRatio';
 import { BRAND_NAME } from '../components/atoms/brand/AppBrandConstant';
 
 type Props = StackScreenProps<RootStackParamList, 'SetupLocalPassword'>;
@@ -43,7 +38,8 @@ const validationSchema = Yup.object().shape({
 
 export default function SetupLocalPassword({ navigation }: Props) {
   const theme = useTheme() as Theme;
-  const styles = makeStyle(theme);
+  const insets = useSafeAreaInsets();
+  const styles = makeStyle(theme, insets);
   const { t } = useTranslation();
   const confirmPasswordInput = React.useRef<any>();
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
@@ -75,7 +71,7 @@ export default function SetupLocalPassword({ navigation }: Props) {
           image={
             <AppIconGradient
               name={iconMap.key}
-              size={wp('25%')}
+              size={wp('25%', insets)}
               colors={[theme.colors.primary, theme.colors.secondary]}
               style={styles.headerImage}
             />
@@ -148,7 +144,7 @@ export default function SetupLocalPassword({ navigation }: Props) {
               </View>
 
               <View style={styles.actionContainer}>
-                <View style={{ height: hp('3%') }} />
+                <View style={{ height: hp('3%', insets) }} />
 
                 <AppPrimaryButton
                   onPress={handleSubmit}
@@ -175,7 +171,7 @@ export default function SetupLocalPassword({ navigation }: Props) {
   );
 }
 
-const makeStyle = (theme: Theme) =>
+const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
   StyleSheet.create({
     actionContainer: {
       flex: 0.8,
@@ -186,18 +182,19 @@ const makeStyle = (theme: Theme) =>
       backgroundColor: theme.colors.background,
     },
     checkbox: {
-      marginBottom: hp('2%'),
-      marginLeft: wp('3%'),
-      marginRight: wp('3%'),
+      marginBottom: hp('2%', insets),
+      marginLeft: wp('3%', insets),
+      marginRight: wp('3%', insets),
     },
     createAccount: {
-      marginBottom: hp('2%'),
-      marginLeft: wp('5%'),
-      marginRight: wp('5%'),
+      marginBottom: hp('2%', insets),
+      marginLeft: wp('5%', insets),
+      marginRight: wp('5%', insets),
     },
     header: {
-      marginLeft: wp('3%'),
-      marginRight: wp('3%'),
+      flex: 1,
+      marginLeft: wp('3%', insets),
+      marginRight: wp('3%', insets),
     },
     headerImage: {
       alignSelf: 'center',
@@ -206,8 +203,8 @@ const makeStyle = (theme: Theme) =>
       flex: 1,
     },
     passwordInput: {
-      marginBottom: hp('2%'),
-      marginLeft: wp('5%'),
-      marginRight: wp('5%'),
+      marginBottom: hp('2%', insets),
+      marginLeft: wp('5%', insets),
+      marginRight: wp('5%', insets),
     },
   });

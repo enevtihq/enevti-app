@@ -17,4 +17,5 @@ export default {
   confirmPassphraseBody:
     'It’s the only way to recover your account if you get locked out of the app or get a new device!',
   confirmPassphraseCheck: 'I have write down these secret recovery phrase',
+  continue: 'Continue',
 };

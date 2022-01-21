@@ -3,9 +3,10 @@ import { StyleProp, ViewStyle, StyleSheet, View } from 'react-native';
 import { ActivityIndicator, Button } from 'react-native-paper';
 import { IconSource } from 'react-native-paper/lib/typescript/components/Icon';
 import { useTheme } from 'react-native-paper/src/core/theming';
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { hp, SafeAreaInsets } from '../../../utils/imageRatio';
 
 import { Theme } from '../../../theme/default';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface AppQuaternaryButtonProps {
   children: React.ReactNode;
@@ -25,7 +26,8 @@ export default function AppQuaternaryButton({
   style,
 }: AppQuaternaryButtonProps): JSX.Element {
   const theme = useTheme() as Theme;
-  const styles = makeStyles(theme);
+  const insets = useSafeAreaInsets();
+  const styles = makeStyles(theme, insets);
 
   return loading ? (
     <View style={[styles.quaternaryButton, style]}>
@@ -49,13 +51,13 @@ export default function AppQuaternaryButton({
   );
 }
 
-const makeStyles = (theme: Theme) =>
+const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
   StyleSheet.create({
     quaternaryButton: {
       borderRadius: theme.roundness,
-      height: hp('7.5%'),
+      height: hp('7.5%', insets),
     },
     content: {
-      height: hp('7.5%'),
+      height: hp('7.5%', insets),
     },
   });
