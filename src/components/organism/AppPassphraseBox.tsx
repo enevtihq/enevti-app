@@ -46,8 +46,8 @@ const makeStyle = (theme: Theme) =>
       overflow: 'hidden',
     },
     box: {
-      width: wp('80%'),
-      height: wp('80%'),
+      width: '100%',
+      height: '100%',
     },
     touchBox: {
       backgroundColor: theme.dark

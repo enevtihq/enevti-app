@@ -89,7 +89,7 @@ export default function ConfirmPassphrase({ route, navigation }: Props) {
 const makeStyle = (theme: Theme) =>
   StyleSheet.create({
     actionContainer: {
-      flex: 0.8,
+      flex: 0.7,
       flexDirection: 'column-reverse',
     },
     container: {
@@ -107,6 +107,7 @@ const makeStyle = (theme: Theme) =>
       marginRight: wp('5%'),
     },
     header: {
+      flex: 1,
       marginLeft: wp('3%'),
       marginRight: wp('3%'),
     },
@@ -117,6 +118,8 @@ const makeStyle = (theme: Theme) =>
       flex: 1,
       alignItems: 'center',
       justifyContent: 'center',
+      paddingLeft: wp('7%'),
+      paddingRight: wp('7%'),
     },
     passphraseBox: {},
   });
