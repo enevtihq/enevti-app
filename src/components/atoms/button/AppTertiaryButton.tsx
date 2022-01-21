@@ -1,15 +1,17 @@
 import React from 'react';
-import { StyleProp, ViewStyle, StyleSheet } from 'react-native';
-import { Button } from 'react-native-paper';
+import { StyleProp, ViewStyle, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Button } from 'react-native-paper';
 import { IconSource } from 'react-native-paper/lib/typescript/components/Icon';
 import { useTheme } from 'react-native-paper/src/core/theming';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import color from 'color';
 
 import { Theme } from '../../../theme/default';
 
 interface AppTertiaryButtonProps {
   children: React.ReactNode;
   onPress: () => void;
+  loading?: boolean;
   disabled?: boolean;
   icon?: IconSource;
   style?: StyleProp<ViewStyle>;
@@ -18,6 +20,7 @@ interface AppTertiaryButtonProps {
 export default function AppTertiaryButton({
   children,
   onPress,
+  loading = false,
   disabled = false,
   icon,
   style,
@@ -25,7 +28,15 @@ export default function AppTertiaryButton({
   const theme = useTheme() as Theme;
   const styles = makeStyles(theme);
 
-  return (
+  return loading ? (
+    <View style={[styles.tertiaryLoading, styles.tertiaryButton, style]}>
+      <ActivityIndicator
+        animating={true}
+        style={styles.content}
+        color={theme.colors.text}
+      />
+    </View>
+  ) : (
     <Button
       disabled={disabled}
       mode="outlined"
@@ -45,6 +56,14 @@ const makeStyles = (theme: Theme) =>
     tertiaryButton: {
       borderRadius: theme.roundness,
       height: hp('7.5%'),
+    },
+    tertiaryLoading: {
+      borderStyle: 'solid',
+      borderWidth: StyleSheet.hairlineWidth,
+      borderColor: color(theme.dark ? 'white' : 'black')
+        .alpha(0.29)
+        .rgb()
+        .string(),
     },
     content: {
       height: hp('7.5%'),

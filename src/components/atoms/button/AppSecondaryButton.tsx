@@ -1,7 +1,7 @@
 import color from 'color';
 import React from 'react';
-import { StyleProp, ViewStyle, StyleSheet } from 'react-native';
-import { Button } from 'react-native-paper';
+import { StyleProp, ViewStyle, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Button } from 'react-native-paper';
 import { IconSource } from 'react-native-paper/lib/typescript/components/Icon';
 import { useTheme } from 'react-native-paper/src/core/theming';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -11,6 +11,7 @@ import { Theme } from '../../../theme/default';
 interface AppSecondaryButtonProps {
   children: React.ReactNode;
   onPress: () => void;
+  loading?: boolean;
   disabled?: boolean;
   icon?: IconSource;
   style?: StyleProp<ViewStyle>;
@@ -19,6 +20,7 @@ interface AppSecondaryButtonProps {
 export default function AppSecondaryButton({
   children,
   onPress,
+  loading = false,
   disabled = false,
   icon,
   style,
@@ -26,7 +28,15 @@ export default function AppSecondaryButton({
   const theme = useTheme() as Theme;
   const styles = makeStyles(theme);
 
-  return (
+  return loading ? (
+    <View style={[styles.secondaryButton, style]}>
+      <ActivityIndicator
+        animating={true}
+        style={styles.content}
+        color={theme.colors.text}
+      />
+    </View>
+  ) : (
     <Button
       disabled={disabled}
       mode="text"
