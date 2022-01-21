@@ -29,7 +29,7 @@ export default function AppCheckbox({
       <TouchableRipple rippleColor="rgba(0, 0, 0, .32)" onPress={onPress}>
         <View style={styles.appCheckboxView}>
           <View style={styles.checkbox}>
-            <Checkbox
+            <Checkbox.Android
               status={status}
               disabled={disabled}
               uncheckedColor={uncheckedColor}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleProp, ViewStyle, StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { Button } from 'react-native-paper';
+import { ActivityIndicator, Button } from 'react-native-paper';
 import { useTheme } from 'react-native-paper/src/core/theming';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import color from 'color';
@@ -12,6 +12,7 @@ import { Theme } from '../../../theme/default';
 interface AppPrimaryButtonProps {
   children: React.ReactNode;
   onPress: () => void;
+  loading?: boolean;
   disabled?: boolean;
   icon?: IconSource;
   style?: StyleProp<ViewStyle>;
@@ -20,6 +21,7 @@ interface AppPrimaryButtonProps {
 export default function AppPrimaryButton({
   children,
   onPress,
+  loading = false,
   disabled = false,
   icon,
   style,
@@ -37,16 +39,24 @@ export default function AppPrimaryButton({
     <LinearGradient
       colors={[primary, secondary]}
       style={[styles.primaryButton, style]}>
-      <Button
-        disabled={disabled}
-        mode="text"
-        onPress={onPress}
-        color="white"
-        icon={icon}
-        uppercase={false}
-        contentStyle={styles.content}>
-        {children}
-      </Button>
+      {loading ? (
+        <ActivityIndicator
+          animating={true}
+          style={styles.content}
+          color="white"
+        />
+      ) : (
+        <Button
+          disabled={disabled}
+          mode="text"
+          onPress={onPress}
+          color="white"
+          icon={icon}
+          uppercase={false}
+          contentStyle={styles.content}>
+          {children}
+        </Button>
+      )}
     </LinearGradient>
   );
 }

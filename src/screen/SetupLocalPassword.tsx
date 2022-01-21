@@ -16,7 +16,8 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import YupPassword from 'yup-password';
-// import * as Lisk from '@liskhq/lisk-client';
+import * as Lisk from '@liskhq/lisk-client';
+import { pbkdf2Async } from '../utils/cryptography';
 
 import { Theme } from '../theme/default';
 import AppHeaderWizard from '../components/molecules/AppHeaderWizard';
@@ -45,6 +46,15 @@ export default function SetupLocalPassword({ navigation }: Props) {
   const styles = makeStyle(theme);
   const { t } = useTranslation();
   const confirmPasswordInput = React.useRef<any>();
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+
+  const handleFormSubmit = async (values: any) => {
+    const passphrase = Lisk.passphrase.Mnemonic.generateMnemonic();
+
+    const derivedKey = await pbkdf2Async(values.password);
+    setIsLoading(false);
+    console.log(derivedKey);
+  };
 
   return (
     <AppView>
@@ -76,7 +86,10 @@ export default function SetupLocalPassword({ navigation }: Props) {
             confirmPassword: '',
             checkboxPassword: false,
           }}
-          onSubmit={values => console.log(values)}
+          onSubmit={async values => {
+            setIsLoading(true);
+            await handleFormSubmit(values);
+          }}
           validationSchema={validationSchema}>
           {({
             handleChange,
@@ -134,6 +147,7 @@ export default function SetupLocalPassword({ navigation }: Props) {
 
                 <AppPrimaryButton
                   onPress={handleSubmit}
+                  loading={isLoading}
                   disabled={!(isValid && dirty)}
                   style={styles.createAccount}>
                   {t('auth:createAcc')}
