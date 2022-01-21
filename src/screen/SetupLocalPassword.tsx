@@ -17,8 +17,11 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import YupPassword from 'yup-password';
 import * as Lisk from '@liskhq/lisk-client';
-import { pbkdf2Async } from '../utils/cryptography';
 
+import {
+  decryptWithPassword,
+  encryptWithPassword,
+} from '../utils/cryptography';
 import { Theme } from '../theme/default';
 import AppHeaderWizard from '../components/molecules/AppHeaderWizard';
 import { RootStackParamList } from '../navigation';
@@ -50,10 +53,11 @@ export default function SetupLocalPassword({ navigation }: Props) {
 
   const handleFormSubmit = async (values: any) => {
     const passphrase = Lisk.passphrase.Mnemonic.generateMnemonic();
-
-    const derivedKey = await pbkdf2Async(values.password);
+    const encryptedPassphrase = await encryptWithPassword(
+      passphrase,
+      values.password,
+    );
     setIsLoading(false);
-    console.log(derivedKey);
   };
 
   return (
