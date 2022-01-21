@@ -41,7 +41,7 @@ const validationSchema = Yup.object().shape({
   checkboxPassword: Yup.bool().oneOf([true]),
 });
 
-export default function SetupLocalPassword({ navigation }: Props) {
+export default function ConfirmPassphrase({ navigation }: Props) {
   const theme = useTheme() as Theme;
   const styles = makeStyle(theme);
   const { t } = useTranslation();
@@ -54,11 +54,8 @@ export default function SetupLocalPassword({ navigation }: Props) {
       passphrase,
       values.password,
     );
+    console.log(encryptedPassphrase);
     setIsLoading(false);
-    navigation.replace('ConfirmPassphrase', {
-      passphrase,
-      encryptedPassphrase,
-    });
   };
 
   return (

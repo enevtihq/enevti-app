@@ -9,10 +9,12 @@ import CreateAccount from '../screen/CreateAccount';
 import { useColorScheme } from 'react-native';
 import { getTheme } from '../theme';
 import SetupLocalPassword from '../screen/SetupLocalPassword';
+import ConfirmPassphrase from '../screen/ConfirmPassphrase';
 
 export type RootStackParamList = {
   CreateAccount: undefined;
   SetupLocalPassword: undefined;
+  ConfirmPassphrase: { passphrase: string; encryptedPassphrase: string };
 };
 
 const Stack = createStackNavigator();
@@ -33,6 +35,14 @@ export default function AppNavigationContainer() {
         <Stack.Screen
           name="SetupLocalPassword"
           component={SetupLocalPassword}
+          options={{
+            headerShown: false,
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          }}
+        />
+        <Stack.Screen
+          name="ConfirmPassphrase"
+          component={ConfirmPassphrase}
           options={{
             headerShown: false,
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
