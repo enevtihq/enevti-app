@@ -87,6 +87,6 @@ const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
       marginBottom: wp('3%', insets),
     },
     snackText: {
-      color: 'white',
+      color: theme.dark ? 'black' : 'white',
     },
   });
