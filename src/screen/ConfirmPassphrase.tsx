@@ -7,6 +7,7 @@ import {
 import { useTheme } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import { StackScreenProps } from '@react-navigation/stack';
+import { useDispatch } from 'react-redux';
 
 import { Theme } from '../theme/default';
 import AppHeaderWizard from '../components/molecules/AppHeaderWizard';
@@ -18,11 +19,13 @@ import AppView from '../components/atoms/view/AppView';
 import AppCheckbox from '../components/atoms/form/AppCheckbox';
 import AppPassphraseBox from '../components/organism/AppPassphraseBox';
 import { hp, wp, SafeAreaInsets } from '../utils/imageRatio';
+import { setEncryptedAuth } from '../store/slices/auth';
 
 type Props = StackScreenProps<RootStackParamList, 'ConfirmPassphrase'>;
 
 export default function ConfirmPassphrase({ route, navigation }: Props) {
   const { passphrase, encryptedPassphrase } = route.params;
+  const dispatch = useDispatch();
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
   const styles = makeStyle(theme, insets);
@@ -31,6 +34,7 @@ export default function ConfirmPassphrase({ route, navigation }: Props) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   const handleFormSubmit = async () => {
+    dispatch(setEncryptedAuth(encryptedPassphrase));
     setIsLoading(false);
   };
 
