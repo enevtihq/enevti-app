@@ -18,10 +18,7 @@ import * as Yup from 'yup';
 import YupPassword from 'yup-password';
 import * as Lisk from '@liskhq/lisk-client';
 
-import {
-  decryptWithPassword,
-  encryptWithPassword,
-} from '../utils/cryptography';
+import { encryptWithPassword } from '../utils/cryptography';
 import { Theme } from '../theme/default';
 import AppHeaderWizard from '../components/molecules/AppHeaderWizard';
 import { RootStackParamList } from '../navigation';
@@ -57,6 +54,7 @@ export default function SetupLocalPassword({ navigation }: Props) {
       passphrase,
       values.password,
     );
+    console.log(encryptedPassphrase);
     setIsLoading(false);
   };
 
