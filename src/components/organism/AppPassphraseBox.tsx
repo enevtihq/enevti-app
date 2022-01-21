@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, ViewStyle } from 'react-native';
-import { TouchableRipple, useTheme } from 'react-native-paper';
+import { Snackbar, TouchableRipple, useTheme } from 'react-native-paper';
 import { SafeAreaInsets, wp } from '../../utils/imageRatio';
 import color from 'color';
 
@@ -8,27 +8,33 @@ import { Theme } from '../../theme/default';
 import AppTextHeading1 from '../atoms/text/AppTextHeading1';
 import AppTextBody4 from '../atoms/text/AppTextBody4';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Clipboard from '@react-native-clipboard/clipboard';
+import AppTextBody3 from '../atoms/text/AppTextBody3';
+import { useTranslation } from 'react-i18next';
 
 interface AppPassphraseBoxProps {
   passphrase: string;
-  onPress?: () => void;
   style?: ViewStyle;
 }
 
 export default function AppPassphraseBox({
   passphrase,
-  onPress,
   style,
 }: AppPassphraseBoxProps) {
+  const { t } = useTranslation();
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
   const styles = makeStyle(theme, insets);
+  const [snackVisible, setSnackVisible] = React.useState<boolean>(false);
 
   return (
     <View style={styles.container}>
       <TouchableRipple
         rippleColor="rgba(0, 0, 0, .32)"
-        onPress={onPress}
+        onPress={() => {
+          Clipboard.setString(passphrase);
+          setSnackVisible(true);
+        }}
         style={[styles.touchBox, style]}>
         <View style={[styles.box]}>
           <View style={styles.textBox}>
@@ -37,6 +43,14 @@ export default function AppPassphraseBox({
           <AppTextBody4 style={styles.subText}>Tap to Copy</AppTextBody4>
         </View>
       </TouchableRipple>
+      <Snackbar
+        visible={snackVisible}
+        onDismiss={() => setSnackVisible(false)}
+        duration={1500}>
+        <AppTextBody3 style={styles.snackText}>
+          {t('form:passphraseCopied')}
+        </AppTextBody3>
+      </Snackbar>
     </View>
   );
 }
@@ -71,5 +85,8 @@ const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
       textAlign: 'center',
       marginTop: wp('3%', insets),
       marginBottom: wp('3%', insets),
+    },
+    snackText: {
+      color: 'white',
     },
   });

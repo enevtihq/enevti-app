@@ -61,7 +61,6 @@ export default function ConfirmPassphrase({ route, navigation }: Props) {
           <AppPassphraseBox
             passphrase={passphrase}
             style={styles.passphraseBox}
-            onPress={() => console.log('anjay')}
           />
         </View>
 

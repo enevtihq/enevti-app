@@ -30,6 +30,8 @@ export default function CreateAccount({ navigation }: Props) {
   const styles = makeStyle(theme, insets);
   const { t } = useTranslation();
 
+  console.log(insets);
+
   return (
     <AppView>
       <SafeAreaView style={styles.container}>
