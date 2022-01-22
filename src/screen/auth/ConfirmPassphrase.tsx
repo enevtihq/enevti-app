@@ -6,18 +6,19 @@ import {
 } from 'react-native-safe-area-context';
 import { useTheme } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
+import { CommonActions } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { useDispatch } from 'react-redux';
 
-import { Theme } from '../theme/default';
-import AppHeaderWizard from '../components/molecules/AppHeaderWizard';
-import { RootStackParamList } from '../navigation';
-import AppPrimaryButton from '../components/atoms/button/AppPrimaryButton';
-import AppView from '../components/atoms/view/AppView';
-import AppCheckbox from '../components/atoms/form/AppCheckbox';
-import AppPassphraseBox from '../components/organism/AppPassphraseBox';
-import { hp, wp, SafeAreaInsets } from '../utils/imageRatio';
-import { setEncryptedAuth } from '../store/slices/auth';
+import { Theme } from '../../theme/default';
+import AppHeaderWizard from '../../components/molecules/AppHeaderWizard';
+import { RootStackParamList } from '../../navigation';
+import AppPrimaryButton from '../../components/atoms/button/AppPrimaryButton';
+import AppView from '../../components/atoms/view/AppView';
+import AppCheckbox from '../../components/atoms/form/AppCheckbox';
+import AppPassphraseBox from '../../components/organism/AppPassphraseBox';
+import { hp, wp, SafeAreaInsets } from '../../utils/imageRatio';
+import { setEncryptedAuth } from '../../store/slices/auth';
 
 type Props = StackScreenProps<RootStackParamList, 'ConfirmPassphrase'>;
 
@@ -29,12 +30,15 @@ export default function ConfirmPassphrase({ route, navigation }: Props) {
   const styles = makeStyle(theme, insets);
   const { t } = useTranslation();
   const [checked, setChecked] = React.useState<boolean>(false);
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   const handleContinue = async () => {
     dispatch(setEncryptedAuth(encryptedPassphrase));
-    setIsLoading(false);
-    navigation.replace('AccountCreated');
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: 'AccountCreated' }],
+      }),
+    );
   };
 
   return (
@@ -66,7 +70,6 @@ export default function ConfirmPassphrase({ route, navigation }: Props) {
 
           <AppPrimaryButton
             onPress={() => handleContinue()}
-            loading={isLoading}
             disabled={!checked}
             style={styles.createAccount}>
             {t('auth:continue')}

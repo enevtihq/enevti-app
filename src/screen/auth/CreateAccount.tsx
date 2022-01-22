@@ -6,21 +6,20 @@ import {
 } from 'react-native-safe-area-context';
 import { useTheme } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
-
-import { Theme } from '../theme/default';
-import AppBrandBanner from '../components/molecules/AppBrandBanner';
-import AppHeaderWizard from '../components/molecules/AppHeaderWizard';
-import AppTextBody4 from '../components/atoms/text/AppTextBody4';
-import { hp, wp, SafeAreaInsets } from '../utils/imageRatio';
-
-import AppPrimaryButton from '../components/atoms/button/AppPrimaryButton';
-import AppSecondaryButton from '../components/atoms/button/AppSecondaryButton';
-import AppTextBody3 from '../components/atoms/text/AppTextBody3';
-import AppTertiaryButton from '../components/atoms/button/AppTertiaryButton';
 import { StackScreenProps } from '@react-navigation/stack';
-import { RootStackParamList } from '../navigation';
-import { iconMap } from '../components/atoms/icon/AppIconComponent';
-import AppView from '../components/atoms/view/AppView';
+
+import { Theme } from '../../theme/default';
+import AppBrandBanner from '../../components/molecules/AppBrandBanner';
+import AppHeaderWizard from '../../components/molecules/AppHeaderWizard';
+import AppTextBody4 from '../../components/atoms/text/AppTextBody4';
+import { hp, wp, SafeAreaInsets } from '../../utils/imageRatio';
+import AppPrimaryButton from '../../components/atoms/button/AppPrimaryButton';
+import AppSecondaryButton from '../../components/atoms/button/AppSecondaryButton';
+import AppTextBody3 from '../../components/atoms/text/AppTextBody3';
+import AppTertiaryButton from '../../components/atoms/button/AppTertiaryButton';
+import { RootStackParamList } from '../../navigation';
+import { iconMap } from '../../components/atoms/icon/AppIconComponent';
+import AppView from '../../components/atoms/view/AppView';
 
 type Props = StackScreenProps<RootStackParamList, 'CreateAccount'>;
 

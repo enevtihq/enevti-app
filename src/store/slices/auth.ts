@@ -5,16 +5,12 @@ const authSlice = createSlice({
   initialState: { encrypted: false, token: '' },
   reducers: {
     setEncryptedAuth: (auth, action: PayloadAction<string>) => {
-      auth = {
-        encrypted: true,
-        token: action.payload,
-      };
+      auth.encrypted = true;
+      auth.token = action.payload;
     },
     setUnencryptedAuth: (auth, action: PayloadAction<string>) => {
-      auth = {
-        encrypted: false,
-        token: action.payload,
-      };
+      auth.encrypted = false;
+      auth.token = action.payload;
     },
   },
 });

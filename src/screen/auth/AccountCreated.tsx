@@ -7,17 +7,18 @@ import {
 import { useTheme } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import { StackScreenProps } from '@react-navigation/stack';
+import { CommonActions } from '@react-navigation/native';
 
-import { Theme } from '../theme/default';
-import AppHeaderWizard from '../components/molecules/AppHeaderWizard';
-import { RootStackParamList } from '../navigation';
-import { iconMap } from '../components/atoms/icon/AppIconComponent';
-import AppPrimaryButton from '../components/atoms/button/AppPrimaryButton';
-import AppView from '../components/atoms/view/AppView';
-import { hp, wp, SafeAreaInsets } from '../utils/imageRatio';
-import AppTextBody3 from '../components/atoms/text/AppTextBody3';
-import AppIconBanner from '../components/molecules/AppIconBanner';
-import { BRAND_NAME } from '../components/atoms/brand/AppBrandConstant';
+import { Theme } from '../../theme/default';
+import AppHeaderWizard from '../../components/molecules/AppHeaderWizard';
+import { RootStackParamList } from '../../navigation';
+import { iconMap } from '../../components/atoms/icon/AppIconComponent';
+import AppPrimaryButton from '../../components/atoms/button/AppPrimaryButton';
+import AppView from '../../components/atoms/view/AppView';
+import { hp, wp, SafeAreaInsets } from '../../utils/imageRatio';
+import AppTextBody3 from '../../components/atoms/text/AppTextBody3';
+import AppIconBanner from '../../components/molecules/AppIconBanner';
+import { BRAND_NAME } from '../../components/atoms/brand/AppBrandConstant';
 
 type Props = StackScreenProps<RootStackParamList, 'AccountCreated'>;
 
@@ -27,7 +28,14 @@ export default function AccountCreated({ navigation }: Props) {
   const styles = makeStyle(theme, insets);
   const { t } = useTranslation();
 
-  const handleFormSubmit = async () => {};
+  const handleFormSubmit = async () => {
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: 'Home' }],
+      }),
+    );
+  };
 
   return (
     <AppView>
