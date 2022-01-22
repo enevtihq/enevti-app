@@ -48,7 +48,7 @@ export default function ConfirmPassphrase({ route, navigation }: Props) {
         <AppHeaderWizard
           navigation={navigation}
           mode={'emoji'}
-          emojiData={'passphrase'}
+          modeData={'passphrase'}
           title={t('auth:confirmPasspraseHeader')}
           description={t('auth:confirmPassphraseBody')}
           style={styles.header}

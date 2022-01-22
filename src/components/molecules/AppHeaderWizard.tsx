@@ -16,8 +16,7 @@ interface AppHeaderWizardProps {
   title: string;
   description: string;
   mode?: 'icon' | 'emoji' | 'image';
-  iconData?: keyof typeof iconMap;
-  emojiData?: keyof typeof emojiMap;
+  modeData?: keyof typeof iconMap;
   image?: JSX.Element;
   back?: boolean;
   navigation?: any;
@@ -29,8 +28,7 @@ export default function AppHeaderWizard({
   title,
   description,
   mode = 'image',
-  iconData,
-  emojiData,
+  modeData,
   back = false,
   navigation,
   style,
@@ -49,15 +47,15 @@ export default function AppHeaderWizard({
           />
         ) : null}
       </View>
-      {mode === 'icon' && iconData ? (
+      {mode === 'icon' && modeData ? (
         <AppIconGradient
-          name={iconMap[iconData]}
+          name={iconMap[modeData]}
           size={wp('25%', insets)}
           colors={[theme.colors.primary, theme.colors.secondary]}
           style={styles.headerImage}
         />
-      ) : mode === 'emoji' && emojiData ? (
-        <AppEmojiComponent name={emojiMap[emojiData]} style={styles.emoji} />
+      ) : mode === 'emoji' && modeData ? (
+        <AppEmojiComponent name={emojiMap[modeData]} style={styles.emoji} />
       ) : mode === 'image' && image ? (
         image
       ) : null}
@@ -92,5 +90,7 @@ const makeStyle = (insets: SafeAreaInsets) =>
     body1: {
       alignSelf: 'center',
       textAlign: 'center',
+      marginRight: wp('5%', insets),
+      marginLeft: wp('5%', insets),
     },
   });

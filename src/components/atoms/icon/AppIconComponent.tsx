@@ -4,13 +4,18 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export const IconProvider = Icon;
 
+const UNDEFINED_ICON = 'help-circle-outline';
+
 export const iconMap = {
   arrowBack: 'arrow-left',
-  key: 'cellphone-key',
   google: 'google',
   seePassword: 'eye',
   hidePassword: 'eye-off',
-  lock: 'lock',
+  password: 'cellphone-key',
+  passphrase: 'lock',
+  accountCreated: UNDEFINED_ICON,
+  accountCircle: 'account-circle',
+  insideDevice: 'cellphone-cog',
 };
 
 interface AppIconComponentProps {

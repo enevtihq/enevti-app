@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, StatusBar, View, Text } from 'react-native';
+import { StyleSheet, StatusBar, View } from 'react-native';
 import {
   SafeAreaView,
   useSafeAreaInsets,
@@ -12,11 +12,12 @@ import { Theme } from '../theme/default';
 import AppHeaderWizard from '../components/molecules/AppHeaderWizard';
 import { RootStackParamList } from '../navigation';
 import { iconMap } from '../components/atoms/icon/AppIconComponent';
-import AppIconGradient from '../components/molecules/AppIconGradient';
 import AppPrimaryButton from '../components/atoms/button/AppPrimaryButton';
 import AppView from '../components/atoms/view/AppView';
-import AppCheckbox from '../components/atoms/form/AppCheckbox';
 import { hp, wp, SafeAreaInsets } from '../utils/imageRatio';
+import AppTextBody3 from '../components/atoms/text/AppTextBody3';
+import AppIconBanner from '../components/molecules/AppIconBanner';
+import { BRAND_NAME } from '../components/atoms/brand/AppBrandConstant';
 
 type Props = StackScreenProps<RootStackParamList, 'AccountCreated'>;
 
@@ -25,12 +26,8 @@ export default function AccountCreated({ navigation }: Props) {
   const insets = useSafeAreaInsets();
   const styles = makeStyle(theme, insets);
   const { t } = useTranslation();
-  const [checked, setChecked] = React.useState<boolean>(false);
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
-  const handleFormSubmit = async () => {
-    setIsLoading(false);
-  };
+  const handleFormSubmit = async () => {};
 
   return (
     <AppView>
@@ -42,21 +39,32 @@ export default function AccountCreated({ navigation }: Props) {
 
         <AppHeaderWizard
           navigation={navigation}
-          image={
-            <AppIconGradient
-              name={iconMap.lock}
-              size={wp('25%', insets)}
-              colors={[theme.colors.primary, theme.colors.secondary]}
-              style={styles.headerImage}
-            />
-          }
-          title={t('auth:confirmPasspraseHeader')}
-          description={t('auth:confirmPassphraseBody')}
+          mode={'emoji'}
+          modeData={'accountCreated'}
+          title={t('auth:accountCreated')}
+          description={t('auth:accountCreatedBrief')}
           style={styles.header}
         />
 
-        <View style={styles.passphraseView}>
-          <Text>anjay</Text>
+        <View style={styles.briefView}>
+          <AppIconBanner name={iconMap.passphrase} style={styles.briefItem}>
+            {t('auth:keepYourPassphraseSafe')}
+            <AppTextBody3 style={styles.boldText}>
+              {t('auth:keepYourPassphraseSafeBold', { brand: BRAND_NAME })}
+            </AppTextBody3>
+          </AppIconBanner>
+          <AppIconBanner name={iconMap.accountCircle} style={styles.briefItem}>
+            {t('auth:findYourPassphrase')}
+            <AppTextBody3 style={styles.boldText}>
+              {t('auth:findYourPassphraseBold')}
+            </AppTextBody3>
+          </AppIconBanner>
+          <AppIconBanner name={iconMap.insideDevice} style={styles.briefItem}>
+            {t('auth:passwordNeverLeaveDevice')}
+            <AppTextBody3 style={styles.boldText}>
+              {t('auth:passwordNeverLeaveDeviceBold')}
+            </AppTextBody3>
+          </AppIconBanner>
         </View>
 
         <View style={styles.actionContainer}>
@@ -64,18 +72,9 @@ export default function AccountCreated({ navigation }: Props) {
 
           <AppPrimaryButton
             onPress={() => handleFormSubmit()}
-            loading={isLoading}
-            disabled={!checked}
             style={styles.createAccount}>
-            {t('auth:continue')}
+            {t('auth:createAccountDoneButton')}
           </AppPrimaryButton>
-
-          <AppCheckbox
-            value={checked}
-            style={styles.checkbox}
-            onPress={() => setChecked(!checked)}>
-            {t('auth:confirmPassphraseCheck')}
-          </AppCheckbox>
         </View>
       </SafeAreaView>
     </AppView>
@@ -88,14 +87,21 @@ const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
       flex: 0.7,
       flexDirection: 'column-reverse',
     },
+    boldText: {
+      fontWeight: 'bold',
+    },
+    briefItem: {
+      marginBottom: hp('2%', insets),
+    },
+    briefView: {
+      flex: 1,
+      alignItems: 'center',
+      paddingLeft: wp('12%', insets),
+      paddingRight: wp('12%', insets),
+    },
     container: {
       flex: 1,
       backgroundColor: theme.colors.background,
-    },
-    checkbox: {
-      marginBottom: hp('2%', insets),
-      marginLeft: wp('3%', insets),
-      marginRight: wp('3%', insets),
     },
     createAccount: {
       marginBottom: hp('2%', insets),
@@ -110,12 +116,4 @@ const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
     headerImage: {
       alignSelf: 'center',
     },
-    passphraseView: {
-      flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center',
-      paddingLeft: wp('7%', insets),
-      paddingRight: wp('7%', insets),
-    },
-    passphraseBox: {},
   });
