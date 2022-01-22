@@ -60,6 +60,8 @@ const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
     container: {
       borderRadius: theme.roundness,
       overflow: 'hidden',
+      width: '100%',
+      height: '100%',
     },
     box: {
       width: '100%',

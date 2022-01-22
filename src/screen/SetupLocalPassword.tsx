@@ -16,8 +16,6 @@ import { encryptWithPassword } from '../utils/cryptography';
 import { Theme } from '../theme/default';
 import AppHeaderWizard from '../components/molecules/AppHeaderWizard';
 import { RootStackParamList } from '../navigation';
-import { iconMap } from '../components/atoms/icon/AppIconComponent';
-import AppIconGradient from '../components/molecules/AppIconGradient';
 import AppFormSecureTextInput from '../components/organism/AppFormSecureTextInput';
 import AppPrimaryButton from '../components/atoms/button/AppPrimaryButton';
 import AppView from '../components/atoms/view/AppView';
@@ -68,14 +66,8 @@ export default function SetupLocalPassword({ navigation }: Props) {
         <AppHeaderWizard
           back
           navigation={navigation}
-          image={
-            <AppIconGradient
-              name={iconMap.key}
-              size={wp('25%', insets)}
-              colors={[theme.colors.primary, theme.colors.secondary]}
-              style={styles.headerImage}
-            />
-          }
+          mode={'emoji'}
+          emojiData={'password'}
           title={t('auth:localPasswordHeader')}
           description={t('auth:localPasswordBody')}
           style={styles.header}
@@ -197,6 +189,7 @@ const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
       marginRight: wp('3%', insets),
     },
     headerImage: {
+      fontSize: wp('20%', insets),
       alignSelf: 'center',
     },
     passwordView: {

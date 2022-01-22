@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, StatusBar, View } from 'react-native';
+import { StyleSheet, StatusBar, View, Text } from 'react-native';
 import {
   SafeAreaView,
   useSafeAreaInsets,
@@ -7,23 +7,20 @@ import {
 import { useTheme } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import { StackScreenProps } from '@react-navigation/stack';
-import { useDispatch } from 'react-redux';
 
 import { Theme } from '../theme/default';
 import AppHeaderWizard from '../components/molecules/AppHeaderWizard';
 import { RootStackParamList } from '../navigation';
+import { iconMap } from '../components/atoms/icon/AppIconComponent';
+import AppIconGradient from '../components/molecules/AppIconGradient';
 import AppPrimaryButton from '../components/atoms/button/AppPrimaryButton';
 import AppView from '../components/atoms/view/AppView';
 import AppCheckbox from '../components/atoms/form/AppCheckbox';
-import AppPassphraseBox from '../components/organism/AppPassphraseBox';
 import { hp, wp, SafeAreaInsets } from '../utils/imageRatio';
-import { setEncryptedAuth } from '../store/slices/auth';
 
-type Props = StackScreenProps<RootStackParamList, 'ConfirmPassphrase'>;
+type Props = StackScreenProps<RootStackParamList, 'AccountCreated'>;
 
-export default function ConfirmPassphrase({ route, navigation }: Props) {
-  const { passphrase, encryptedPassphrase } = route.params;
-  const dispatch = useDispatch();
+export default function AccountCreated({ navigation }: Props) {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
   const styles = makeStyle(theme, insets);
@@ -31,10 +28,8 @@ export default function ConfirmPassphrase({ route, navigation }: Props) {
   const [checked, setChecked] = React.useState<boolean>(false);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
-  const handleContinue = async () => {
-    dispatch(setEncryptedAuth(encryptedPassphrase));
+  const handleFormSubmit = async () => {
     setIsLoading(false);
-    navigation.replace('AccountCreated');
   };
 
   return (
@@ -47,25 +42,28 @@ export default function ConfirmPassphrase({ route, navigation }: Props) {
 
         <AppHeaderWizard
           navigation={navigation}
-          mode={'emoji'}
-          emojiData={'passphrase'}
+          image={
+            <AppIconGradient
+              name={iconMap.lock}
+              size={wp('25%', insets)}
+              colors={[theme.colors.primary, theme.colors.secondary]}
+              style={styles.headerImage}
+            />
+          }
           title={t('auth:confirmPasspraseHeader')}
           description={t('auth:confirmPassphraseBody')}
           style={styles.header}
         />
 
         <View style={styles.passphraseView}>
-          <AppPassphraseBox
-            passphrase={passphrase}
-            style={styles.passphraseBox}
-          />
+          <Text>anjay</Text>
         </View>
 
         <View style={styles.actionContainer}>
           <View style={{ height: hp('3%', insets) }} />
 
           <AppPrimaryButton
-            onPress={() => handleContinue()}
+            onPress={() => handleFormSubmit()}
             loading={isLoading}
             disabled={!checked}
             style={styles.createAccount}>
@@ -110,7 +108,6 @@ const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
       marginRight: wp('3%', insets),
     },
     headerImage: {
-      fontSize: wp('25%', insets),
       alignSelf: 'center',
     },
     passphraseView: {

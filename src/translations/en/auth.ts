@@ -13,7 +13,7 @@ export default {
   createAcc: 'Create Account',
   checkboxPassword:
     'I understand that {{brand}} cannot recover this password for me.',
-  confirmPasspraseHeader: 'Secure your Account',
+  confirmPasspraseHeader: 'Save your Passphrase',
   confirmPassphraseBody:
     'It’s the only way to recover your account if you get locked out of the app or get a new device!',
   confirmPassphraseCheck: 'I have write down these secret recovery phrase',
