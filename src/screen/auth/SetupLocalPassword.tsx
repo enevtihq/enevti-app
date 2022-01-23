@@ -52,6 +52,7 @@ export default function SetupLocalPassword({ navigation }: Props) {
     navigation.replace('ConfirmPassphrase', {
       passphrase,
       encryptedPassphrase,
+      localKey: values.password,
     });
   };
 

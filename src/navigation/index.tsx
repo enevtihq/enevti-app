@@ -18,7 +18,11 @@ import { RootState } from '../store/state';
 export type RootStackParamList = {
   CreateAccount: undefined;
   SetupLocalPassword: undefined;
-  ConfirmPassphrase: { passphrase: string; encryptedPassphrase: string };
+  ConfirmPassphrase: {
+    passphrase: string;
+    encryptedPassphrase: string;
+    localKey: string;
+  };
   AccountCreated: undefined;
   Home: undefined;
 };

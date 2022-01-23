@@ -48,6 +48,7 @@
     "react-native-base64": "^0.2.1",
     "react-native-config": "^1.4.5",
     "react-native-crypto": "^2.2.0",
+    "react-native-device-info": "^8.4.8",
     "react-native-emoji": "^1.8.0",
     "react-native-gesture-handler": "^2.2.0",
     "react-native-level-fs": "^3.0.1",

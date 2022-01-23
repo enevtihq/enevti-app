@@ -9,9 +9,10 @@ const sensitiveStorage = createSensitiveStorage({
   sharedPreferencesName: SHAREDPREFS,
 });
 
-export const asyncStoragePersistConfig = key => {
+export const asyncStoragePersistConfig = (key, blacklist) => {
   return {
     key,
+    blacklist,
     storage: AsyncStorage,
   };
 };
