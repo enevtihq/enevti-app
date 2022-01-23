@@ -109,10 +109,11 @@ export default function SetupLocalPassword({ navigation }: Props) {
                         : t('form:required')
                       : ''
                   }
-                  showError={values.password !== '' || touched.password}
+                  showError={touched.password}
                   touchHandler={() => setFieldTouched('password')}
                   onChangeText={handleChange('password')}
                   onSubmitEditing={() => confirmPasswordInput.current.focus()}
+                  blurOnSubmit={true}
                   returnKeyType="go"
                 />
                 <AppFormSecureTextInput
@@ -127,14 +128,13 @@ export default function SetupLocalPassword({ navigation }: Props) {
                         : t('form:required')
                       : ''
                   }
-                  showError={
-                    values.confirmPassword !== '' || touched.confirmPassword
-                  }
+                  showError={touched.confirmPassword}
                   touchHandler={() => setFieldTouched('confirmPassword')}
                   onChangeText={handleChange('confirmPassword')}
                   onSubmitEditing={
                     isValid && dirty ? handleSubmit : () => Keyboard.dismiss()
                   }
+                  blurOnSubmit={true}
                 />
               </View>
 

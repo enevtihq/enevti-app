@@ -14,6 +14,7 @@ export default {
   importAccountHeader: 'Import Account',
   importAccountBody: 'Use your existing phrase to setup an Account!',
   secretRecoveryPhrase: 'Secret Recovery Phrase',
+  invalidPassphrase: 'Invalid Passphrase!',
   import: 'Import',
   checkboxPassword:
     'I understand that {{brand}} cannot recover this password for me.',

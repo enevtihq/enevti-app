@@ -10,7 +10,6 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import YupPassword from 'yup-password';
-import * as Lisk from '@liskhq/lisk-client';
 
 import { encryptWithPassword } from '../../utils/cryptography';
 import { Theme } from '../../theme/default';
@@ -21,11 +20,17 @@ import AppFormTextInputWithError from '../../components/molecules/AppFormTextInp
 import AppPrimaryButton from '../../components/atoms/button/AppPrimaryButton';
 import AppView from '../../components/atoms/view/AppView';
 import { hp, wp, SafeAreaInsets } from '../../utils/imageRatio';
+import YupBIP39 from '../../utils/yupbip39';
+import { useDispatch } from 'react-redux';
+import { setEncryptedPassphraseAuth } from '../../store/slices/auth';
+import { setLocalKey } from '../../store/slices/session';
 
 type Props = StackScreenProps<RootStackParamList, 'SetupLocalPassword'>;
 YupPassword(Yup);
+YupBIP39(Yup);
 
 const validationSchema = Yup.object().shape({
+  passphrase: Yup.string().bip39().required(),
   password: Yup.string().password().required(),
   confirmPassword: Yup.string()
     .oneOf([Yup.ref('password'), null])
@@ -33,6 +38,7 @@ const validationSchema = Yup.object().shape({
 });
 
 export default function ImportPassphrase({ navigation }: Props) {
+  const dispatch = useDispatch();
   const paperTheme = useTheme();
   const theme = paperTheme as Theme;
   const insets = useSafeAreaInsets();
@@ -43,17 +49,14 @@ export default function ImportPassphrase({ navigation }: Props) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   const handleFormSubmit = async (values: any) => {
-    const passphrase = Lisk.passphrase.Mnemonic.generateMnemonic();
     const encryptedPassphrase = await encryptWithPassword(
-      passphrase,
+      values.passphrase,
       values.password,
     );
+    dispatch(setEncryptedPassphraseAuth(encryptedPassphrase));
+    dispatch(setLocalKey(values.password));
     setIsLoading(false);
-    navigation.replace('ConfirmPassphrase', {
-      passphrase,
-      encryptedPassphrase,
-      localKey: values.password,
-    });
+    navigation.replace('AccountCreated');
   };
 
   return (
@@ -81,6 +84,7 @@ export default function ImportPassphrase({ navigation }: Props) {
             confirmPassword: '',
           }}
           onSubmit={async values => {
+            Keyboard.dismiss();
             setIsLoading(true);
             await handleFormSubmit(values);
           }}
@@ -104,8 +108,15 @@ export default function ImportPassphrase({ navigation }: Props) {
                   autoCapitalize={'none'}
                   style={styles.passwordInput}
                   value={values.passphrase}
-                  errorText={''}
-                  showError={values.password !== '' || touched.password}
+                  onBlur={() => setFieldTouched('passphrase')}
+                  errorText={
+                    errors.passphrase
+                      ? values.passphrase.length > 0
+                        ? t('auth:invalidPassphrase')
+                        : t('form:required')
+                      : ''
+                  }
+                  showError={touched.passphrase}
                   onChangeText={handleChange('passphrase')}
                   onSubmitEditing={() => passwordInput.current.focus()}
                   blurOnSubmit={true}
@@ -123,7 +134,7 @@ export default function ImportPassphrase({ navigation }: Props) {
                         : t('form:required')
                       : ''
                   }
-                  showError={values.password !== '' || touched.password}
+                  showError={touched.password}
                   touchHandler={() => setFieldTouched('password')}
                   onChangeText={handleChange('password')}
                   onSubmitEditing={() => confirmPasswordInput.current.focus()}
@@ -142,9 +153,7 @@ export default function ImportPassphrase({ navigation }: Props) {
                         : t('form:required')
                       : ''
                   }
-                  showError={
-                    values.confirmPassword !== '' || touched.confirmPassword
-                  }
+                  showError={touched.confirmPassword}
                   touchHandler={() => setFieldTouched('confirmPassword')}
                   onChangeText={handleChange('confirmPassword')}
                   onSubmitEditing={
