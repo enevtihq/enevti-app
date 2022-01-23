@@ -12,6 +12,7 @@ import SetupLocalPassword from '../screen/auth/SetupLocalPassword';
 import ConfirmPassphrase from '../screen/auth/ConfirmPassphrase';
 import AccountCreated from '../screen/auth/AccountCreated';
 import ImportPassphrase from '../screen/auth/ImportPassphrase';
+import Login from '../screen/auth/Login';
 
 import { getTheme } from '../theme';
 import Home from '../screen/Home';
@@ -27,6 +28,7 @@ export type RootStackParamList = {
   };
   AccountCreated: undefined;
   ImportPassphrase: undefined;
+  Login: undefined;
   Home: undefined;
 };
 
@@ -35,8 +37,11 @@ const Stack = createStackNavigator();
 export default function AppNavigationContainer() {
   const colorScheme = useColorScheme();
   const auth = useSelector((state: RootState) => state.auth);
-  // const initialRoute = auth.token ? 'Home' : 'CreateAccount';
-  const initialRoute = 'CreateAccount';
+  const initialRoute = auth.encrypted
+    ? 'Login'
+    : auth.token
+    ? 'Home'
+    : 'CreateAccount';
 
   return (
     <NavigationContainer theme={getTheme(colorScheme!.toString())}>
@@ -76,6 +81,14 @@ export default function AppNavigationContainer() {
         <Stack.Screen
           name="ImportPassphrase"
           component={ImportPassphrase}
+          options={{
+            headerShown: false,
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          }}
+        />
+        <Stack.Screen
+          name="Login"
+          component={Login}
           options={{
             headerShown: false,
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,

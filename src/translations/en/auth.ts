@@ -34,4 +34,11 @@ export default {
   passwordNeverLeaveDevice: 'Your local password ',
   passwordNeverLeaveDeviceBold: 'never leave your device!.',
   createAccountDoneButton: 'Okay Got It!',
+  googleLoginHeader: 'Secure your Account',
+  googleLoginBody: 'This password is required everytime you login via Google!',
+  loginHeader: 'Welcome Back!',
+  inputPassword: 'Input your Password',
+  rememberMe: 'Remember Me',
+  loginButton: 'Login',
+  wrongPassword: 'Wrong password!',
 };

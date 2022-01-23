@@ -1,27 +1,25 @@
 import { StyleSheet, View, ViewStyle } from 'react-native';
 import React from 'react';
-import { Checkbox, TouchableRipple, useTheme } from 'react-native-paper';
+import { Switch, TouchableRipple, useTheme } from 'react-native-paper';
 import AppTextBody3 from '../text/AppTextBody3';
 import { SafeAreaInsets, wp } from '../../../utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-interface AppCheckboxProps {
+interface AppSwitchProps {
   children: React.ReactNode;
   value: boolean;
   style?: ViewStyle;
   disabled?: boolean;
   onPress?: () => void;
-  uncheckedColor?: string;
 }
 
-export default function AppCheckbox({
+export default function AppSwitch({
   children,
   value,
   style,
   disabled,
   onPress,
-  uncheckedColor,
-}: AppCheckboxProps) {
+}: AppSwitchProps) {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
   const styles = makeStyle(insets);
@@ -30,17 +28,17 @@ export default function AppCheckbox({
     <View style={[style]}>
       <TouchableRipple rippleColor="rgba(0, 0, 0, .32)" onPress={onPress}>
         <View style={styles.appCheckboxView}>
-          <View style={styles.checkbox}>
-            <Checkbox.Android
-              status={value ? 'checked' : 'unchecked'}
-              disabled={disabled}
-              uncheckedColor={uncheckedColor}
-              color={theme.colors.primary}
-              theme={theme}
-            />
-          </View>
           <View style={styles.textContainer}>
             <AppTextBody3 style={styles.text}>{children}</AppTextBody3>
+          </View>
+          <View style={styles.checkbox}>
+            <Switch
+              value={value}
+              disabled={disabled}
+              color={theme.colors.primary}
+              onValueChange={onPress}
+              theme={theme}
+            />
           </View>
         </View>
       </TouchableRipple>
@@ -64,6 +62,7 @@ const makeStyle = (insets: SafeAreaInsets) =>
     },
     textContainer: {
       paddingRight: wp('2%', insets),
+      paddingLeft: wp('2%', insets),
       alignSelf: 'center',
       flex: 1,
     },

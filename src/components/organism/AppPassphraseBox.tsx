@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, ViewStyle } from 'react-native';
-import { Snackbar, TouchableRipple, useTheme } from 'react-native-paper';
+import { TouchableRipple, useTheme } from 'react-native-paper';
 import { SafeAreaInsets, wp } from '../../utils/imageRatio';
 import color from 'color';
 
@@ -11,6 +11,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Clipboard from '@react-native-clipboard/clipboard';
 import AppTextBody3 from '../atoms/text/AppTextBody3';
 import { useTranslation } from 'react-i18next';
+import AppSnackbar from '../atoms/snackbar/AppSnackbar';
 
 interface AppPassphraseBoxProps {
   passphrase: string;
@@ -43,14 +44,15 @@ export default function AppPassphraseBox({
           <AppTextBody4 style={styles.subText}>Tap to Copy</AppTextBody4>
         </View>
       </TouchableRipple>
-      <Snackbar
+      <AppSnackbar
+        mode={'info'}
         visible={snackVisible}
         onDismiss={() => setSnackVisible(false)}
         duration={1500}>
         <AppTextBody3 style={styles.snackText}>
           {t('form:passphraseCopied')}
         </AppTextBody3>
-      </Snackbar>
+      </AppSnackbar>
     </View>
   );
 }
