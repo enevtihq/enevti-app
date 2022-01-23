@@ -101,6 +101,7 @@ export default function ImportPassphrase({ navigation }: Props) {
                   label={t('auth:secretRecoveryPhrase')}
                   theme={paperTheme}
                   multiline={true}
+                  autoCapitalize={'none'}
                   style={styles.passwordInput}
                   value={values.passphrase}
                   errorText={''}

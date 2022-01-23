@@ -48,6 +48,8 @@ function AppFormSecureTextInput(
         setSecure(true);
         touchHandler && touchHandler();
       }}
+      autoCapitalize={'none'}
+      autoComplete={'password'}
       value={value}
       onChangeText={onChangeText}
       onSubmitEditing={onSubmitEditing}
