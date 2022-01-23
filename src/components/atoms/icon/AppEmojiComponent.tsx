@@ -14,6 +14,7 @@ export const emojiMap = {
   accountCreated: 'grinning_face_with_star_eyes',
   accountCircle: UNDEFINED_EMOJI,
   insideDevice: UNDEFINED_EMOJI,
+  importAccount: 'inbox_tray',
 };
 
 interface AppEmojiComponentProps {

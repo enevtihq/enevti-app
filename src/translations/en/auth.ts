@@ -11,6 +11,10 @@ export default {
   newLocalPassword: 'New Local Password',
   confirmLocalPassword: 'Confirm Local Password',
   createAcc: 'Create Account',
+  importAccountHeader: 'Import Account',
+  importAccountBody: 'Use your existing phrase to setup an Account!',
+  secretRecoveryPhrase: 'Secret Recovery Phrase',
+  import: 'Import',
   checkboxPassword:
     'I understand that {{brand}} cannot recover this password for me.',
   confirmPasspraseHeader: 'Save your Passphrase',
@@ -20,7 +24,7 @@ export default {
   continue: 'Continue',
   accountCreated: 'Hoooooraayyy!',
   accountCreatedBrief:
-    'You’ve successfully create an account! Please keep in mind:',
+    'You’ve successfully setup an account! Please keep in mind:',
   keepYourPassphraseSafe:
     'You have responsibility to keep your secret revovery phrase. ',
   keepYourPassphraseSafeBold: '{{brand}} can’t recover your lost phrase!',

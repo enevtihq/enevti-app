@@ -17,11 +17,10 @@ import { Theme } from '../../theme/default';
 import AppHeaderWizard from '../../components/molecules/AppHeaderWizard';
 import { RootStackParamList } from '../../navigation';
 import AppFormSecureTextInput from '../../components/organism/AppFormSecureTextInput';
+import AppFormTextInputWithError from '../../components/molecules/AppFormTextInputWithError';
 import AppPrimaryButton from '../../components/atoms/button/AppPrimaryButton';
 import AppView from '../../components/atoms/view/AppView';
-import AppCheckbox from '../../components/atoms/form/AppCheckbox';
 import { hp, wp, SafeAreaInsets } from '../../utils/imageRatio';
-import { BRAND_NAME } from '../../components/atoms/brand/AppBrandConstant';
 
 type Props = StackScreenProps<RootStackParamList, 'SetupLocalPassword'>;
 YupPassword(Yup);
@@ -31,14 +30,15 @@ const validationSchema = Yup.object().shape({
   confirmPassword: Yup.string()
     .oneOf([Yup.ref('password'), null])
     .required(),
-  checkboxPassword: Yup.bool().oneOf([true]),
 });
 
-export default function SetupLocalPassword({ navigation }: Props) {
-  const theme = useTheme() as Theme;
+export default function ImportPassphrase({ navigation }: Props) {
+  const paperTheme = useTheme();
+  const theme = paperTheme as Theme;
   const insets = useSafeAreaInsets();
   const styles = makeStyle(theme, insets);
   const { t } = useTranslation();
+  const passwordInput = React.useRef<any>();
   const confirmPasswordInput = React.useRef<any>();
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
@@ -68,17 +68,17 @@ export default function SetupLocalPassword({ navigation }: Props) {
           back
           navigation={navigation}
           mode={'emoji'}
-          modeData={'password'}
-          title={t('auth:localPasswordHeader')}
-          description={t('auth:localPasswordBody')}
+          modeData={'importAccount'}
+          title={t('auth:importAccountHeader')}
+          description={t('auth:importAccountBody')}
           style={styles.header}
         />
 
         <Formik
           initialValues={{
+            passphrase: '',
             password: '',
             confirmPassword: '',
-            checkboxPassword: false,
           }}
           onSubmit={async values => {
             setIsLoading(true);
@@ -89,7 +89,6 @@ export default function SetupLocalPassword({ navigation }: Props) {
             handleChange,
             handleSubmit,
             setFieldTouched,
-            setFieldValue,
             values,
             errors,
             isValid,
@@ -98,7 +97,21 @@ export default function SetupLocalPassword({ navigation }: Props) {
           }) => (
             <>
               <View style={styles.passwordView}>
+                <AppFormTextInputWithError
+                  label={t('auth:secretRecoveryPhrase')}
+                  theme={paperTheme}
+                  multiline={true}
+                  style={styles.passwordInput}
+                  value={values.passphrase}
+                  errorText={''}
+                  showError={values.password !== '' || touched.password}
+                  onChangeText={handleChange('passphrase')}
+                  onSubmitEditing={() => passwordInput.current.focus()}
+                  blurOnSubmit={true}
+                  returnKeyType="go"
+                />
                 <AppFormSecureTextInput
+                  ref={passwordInput}
                   label={t('auth:newLocalPassword')}
                   style={styles.passwordInput}
                   value={values.password}
@@ -113,6 +126,7 @@ export default function SetupLocalPassword({ navigation }: Props) {
                   touchHandler={() => setFieldTouched('password')}
                   onChangeText={handleChange('password')}
                   onSubmitEditing={() => confirmPasswordInput.current.focus()}
+                  blurOnSubmit={true}
                   returnKeyType="go"
                 />
                 <AppFormSecureTextInput
@@ -146,17 +160,8 @@ export default function SetupLocalPassword({ navigation }: Props) {
                   loading={isLoading}
                   disabled={!(isValid && dirty)}
                   style={styles.createAccount}>
-                  {t('auth:createAcc')}
+                  {t('auth:import')}
                 </AppPrimaryButton>
-
-                <AppCheckbox
-                  value={values.checkboxPassword}
-                  style={styles.checkbox}
-                  onPress={() =>
-                    setFieldValue('checkboxPassword', !values.checkboxPassword)
-                  }>
-                  {t('auth:checkboxPassword', { brand: BRAND_NAME })}
-                </AppCheckbox>
               </View>
             </>
           )}
@@ -169,17 +174,11 @@ export default function SetupLocalPassword({ navigation }: Props) {
 const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
   StyleSheet.create({
     actionContainer: {
-      flex: 0.8,
       flexDirection: 'column-reverse',
     },
     container: {
       flex: 1,
       backgroundColor: theme.colors.background,
-    },
-    checkbox: {
-      marginBottom: hp('2%', insets),
-      marginLeft: wp('3%', insets),
-      marginRight: wp('3%', insets),
     },
     createAccount: {
       marginBottom: hp('2%', insets),
@@ -187,16 +186,19 @@ const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
       marginRight: wp('5%', insets),
     },
     header: {
-      flex: 1,
       marginLeft: wp('3%', insets),
       marginRight: wp('3%', insets),
+      marginBottom: hp('5%', insets),
     },
     headerImage: {
       fontSize: wp('20%', insets),
       alignSelf: 'center',
     },
+    passphraseInput: {
+      height: hp('20%', insets),
+    },
     passwordView: {
-      flex: 1,
+      flex: 2,
     },
     passwordInput: {
       marginBottom: hp('2%', insets),

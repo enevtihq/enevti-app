@@ -5,12 +5,14 @@ import {
   CardStyleInterpolators,
 } from '@react-navigation/stack';
 import { useSelector } from 'react-redux';
+import { useColorScheme } from 'react-native';
 
 import CreateAccount from '../screen/auth/CreateAccount';
 import SetupLocalPassword from '../screen/auth/SetupLocalPassword';
 import ConfirmPassphrase from '../screen/auth/ConfirmPassphrase';
 import AccountCreated from '../screen/auth/AccountCreated';
-import { useColorScheme } from 'react-native';
+import ImportPassphrase from '../screen/auth/ImportPassphrase';
+
 import { getTheme } from '../theme';
 import Home from '../screen/Home';
 import { RootState } from '../store/state';
@@ -24,6 +26,7 @@ export type RootStackParamList = {
     localKey: string;
   };
   AccountCreated: undefined;
+  ImportPassphrase: undefined;
   Home: undefined;
 };
 
@@ -32,7 +35,8 @@ const Stack = createStackNavigator();
 export default function AppNavigationContainer() {
   const colorScheme = useColorScheme();
   const auth = useSelector((state: RootState) => state.auth);
-  const initialRoute = auth.token ? 'Home' : 'CreateAccount';
+  // const initialRoute = auth.token ? 'Home' : 'CreateAccount';
+  const initialRoute = 'CreateAccount';
 
   return (
     <NavigationContainer theme={getTheme(colorScheme!.toString())}>
@@ -64,6 +68,14 @@ export default function AppNavigationContainer() {
         <Stack.Screen
           name="AccountCreated"
           component={AccountCreated}
+          options={{
+            headerShown: false,
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          }}
+        />
+        <Stack.Screen
+          name="ImportPassphrase"
+          component={ImportPassphrase}
           options={{
             headerShown: false,
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,

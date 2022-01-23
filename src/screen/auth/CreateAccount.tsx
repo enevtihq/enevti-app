@@ -51,7 +51,7 @@ export default function CreateAccount({ navigation }: Props) {
           <View style={{ height: hp('4%', insets) }} />
 
           <AppSecondaryButton
-            onPress={() => console.log('pressed')}
+            onPress={() => navigation.navigate('ImportPassphrase')}
             style={styles.createAccount}>
             {t('auth:importPassphrase')}
           </AppSecondaryButton>

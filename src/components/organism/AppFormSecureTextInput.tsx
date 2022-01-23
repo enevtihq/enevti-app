@@ -14,6 +14,7 @@ interface AppFormSecureTextInputProps {
   onSubmitEditing?: () => void;
   style?: TextStyle;
   returnKeyType?: ReturnKeyTypeOptions;
+  blurOnSubmit?: boolean;
 }
 
 function AppFormSecureTextInput(
@@ -27,6 +28,7 @@ function AppFormSecureTextInput(
     onSubmitEditing,
     style,
     returnKeyType,
+    blurOnSubmit,
   }: AppFormSecureTextInputProps,
   ref: any,
 ) {
@@ -38,8 +40,10 @@ function AppFormSecureTextInput(
       ref={ref}
       theme={theme}
       label={label}
-      errorText={showError ? errorText : ''}
+      showError={showError}
+      errorText={errorText}
       secureTextEntry={secure}
+      textContentType={'password'}
       onBlur={() => {
         setSecure(true);
         touchHandler && touchHandler();
@@ -49,6 +53,7 @@ function AppFormSecureTextInput(
       onSubmitEditing={onSubmitEditing}
       style={style}
       returnKeyType={returnKeyType}
+      blurOnSubmit={blurOnSubmit}
       right={
         <TextInput.Icon
           name={secure ? iconMap.seePassword : iconMap.hidePassword}

@@ -10,10 +10,11 @@ import AppTextBody3 from '../atoms/text/AppTextBody3';
 interface AppFormTextInputWithErrorProps extends TextInputProps {
   theme: Theme;
   errorText?: string;
+  showError?: boolean;
 }
 
 function AppFormTextInputWithError(
-  { theme, errorText, ...props }: AppFormTextInputWithErrorProps,
+  { theme, errorText, showError, ...props }: AppFormTextInputWithErrorProps,
   ref: any,
 ) {
   const insets = useSafeAreaInsets();
@@ -22,7 +23,7 @@ function AppFormTextInputWithError(
   return (
     <View style={props.style}>
       <AppFormTextInput {...props} style={undefined} ref={ref} theme={theme} />
-      {errorText ? (
+      {showError && errorText ? (
         <AppTextBody3 style={styles.errorText}>{errorText}</AppTextBody3>
       ) : null}
     </View>
