@@ -1,4 +1,5 @@
 import { setGoogleAPIToken } from '../../store/slices/session';
+import { getGoogleAPITokenState } from '../../store/slices/session/google';
 import { store } from '../../store/state';
 import { getGoogleAccessToken, googleInit, googleSignIn } from './signIn';
 
@@ -43,7 +44,7 @@ function createMultipartBody(body: any, isUpdate = false) {
 }
 
 async function configurePostOptions(bodyLength: string, isUpdate = false) {
-  let apiToken = stateStore.getState().session.google.apiToken;
+  let apiToken = getGoogleAPITokenState(stateStore.getState());
   if (!apiToken) {
     googleInit();
     await googleSignIn();
@@ -65,7 +66,7 @@ async function configurePostOptions(bodyLength: string, isUpdate = false) {
 }
 
 async function configureGetOptions() {
-  let apiToken = stateStore.getState().session.google.apiToken;
+  let apiToken = getGoogleAPITokenState(stateStore.getState());
   if (!apiToken) {
     googleInit();
     await googleSignIn();

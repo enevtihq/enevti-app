@@ -1,4 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSelector } from 'reselect';
+import { RootState } from '../state';
 
 const authSlice = createSlice({
   name: 'auth',
@@ -20,3 +22,8 @@ const authSlice = createSlice({
 export const { setEncryptedPassphraseAuth, setUnencryptedPassphraseAuth } =
   authSlice.actions;
 export default authSlice.reducer;
+
+export const getAuthState = createSelector(
+  (state: RootState) => state,
+  (state: RootState) => state.auth,
+);

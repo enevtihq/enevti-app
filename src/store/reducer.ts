@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import authReducer from './slices/auth';
 import userSettingReducer from './slices/userSetting';
 import sessionReducer from './slices/session/';
+import UIReducer from './slices/ui';
 import { persistReducer } from 'redux-persist';
 import {
   asyncStoragePersistConfig,
@@ -9,6 +10,7 @@ import {
 } from './persist/config';
 
 const rootReducer = combineReducers({
+  ui: UIReducer,
   auth: persistReducer(sensitiveStoragePersistConfig('auth'), authReducer),
   session: sessionReducer,
   userSetting: persistReducer(
