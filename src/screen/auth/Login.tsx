@@ -26,7 +26,7 @@ import AppCheckbox from '../../components/atoms/form/AppCheckbox';
 import { hp, wp, SafeAreaInsets } from '../../utils/imageRatio';
 import AppBrandLogo from '../../components/atoms/brand/AppBrandLogo';
 import { RootState } from '../../store/state';
-import { setLocalKey } from '../../store/slices/session';
+import { setLocalSessionKey } from '../../store/slices/session';
 import { setUnencryptedPassphraseAuth } from '../../store/slices/auth';
 import AppSnackbar from '../../components/atoms/snackbar/AppSnackbar';
 
@@ -63,7 +63,7 @@ export default function Login({ navigation }: Props) {
       const deviceEncrypted = await encryptWithDevice(decrypted.data);
       dispatch(setUnencryptedPassphraseAuth(deviceEncrypted));
     } else {
-      dispatch(setLocalKey(values.password));
+      dispatch(setLocalSessionKey(values.password));
     }
 
     setIsLoading(false);

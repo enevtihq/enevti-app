@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Snackbar } from 'react-native-paper';
+import { Portal, Snackbar } from 'react-native-paper';
 import { SnackbarProps } from 'react-native-paper/lib/typescript/components/Snackbar';
 import { Theme } from 'react-native-paper/lib/typescript/types';
 import { useTheme } from 'react-native-paper/src/core/theming';
@@ -21,23 +21,27 @@ export default function AppSnackBar({
 
   if (mode === 'info') {
     return (
-      <Snackbar
-        {...props}
-        style={[props.style, styles.errorSnack]}
-        theme={theme}
-      />
+      <Portal>
+        <Snackbar
+          {...props}
+          style={[props.style, styles.errorSnack]}
+          theme={theme}
+        />
+      </Portal>
     );
   } else if (mode === 'error') {
     return (
-      <Snackbar
-        {...props}
-        style={[
-          props.style,
-          styles.errorSnack,
-          { backgroundColor: theme.colors.error },
-        ]}
-        theme={theme}
-      />
+      <Portal>
+        <Snackbar
+          {...props}
+          style={[
+            props.style,
+            styles.errorSnack,
+            { backgroundColor: theme.colors.error },
+          ]}
+          theme={theme}
+        />
+      </Portal>
     );
   } else {
     return <View />;

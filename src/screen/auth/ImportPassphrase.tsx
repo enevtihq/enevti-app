@@ -23,7 +23,7 @@ import { hp, wp, SafeAreaInsets } from '../../utils/imageRatio';
 import YupBIP39 from '../../utils/yupbip39';
 import { useDispatch } from 'react-redux';
 import { setEncryptedPassphraseAuth } from '../../store/slices/auth';
-import { setLocalKey } from '../../store/slices/session';
+import { setLocalSessionKey } from '../../store/slices/session';
 
 type Props = StackScreenProps<RootStackParamList, 'SetupLocalPassword'>;
 YupPassword(Yup);
@@ -54,7 +54,7 @@ export default function ImportPassphrase({ navigation }: Props) {
       values.password,
     );
     dispatch(setEncryptedPassphraseAuth(encryptedPassphrase));
-    dispatch(setLocalKey(values.password));
+    dispatch(setLocalSessionKey(values.password));
     setIsLoading(false);
     navigation.replace('AccountCreated');
   };

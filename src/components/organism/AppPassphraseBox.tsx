@@ -9,7 +9,6 @@ import AppTextHeading1 from '../atoms/text/AppTextHeading1';
 import AppTextBody4 from '../atoms/text/AppTextBody4';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Clipboard from '@react-native-clipboard/clipboard';
-import AppTextBody3 from '../atoms/text/AppTextBody3';
 import { useTranslation } from 'react-i18next';
 import AppSnackbar from '../atoms/snackbar/AppSnackbar';
 
@@ -49,9 +48,7 @@ export default function AppPassphraseBox({
         visible={snackVisible}
         onDismiss={() => setSnackVisible(false)}
         duration={1500}>
-        <AppTextBody3 style={styles.snackText}>
-          {t('form:passphraseCopied')}
-        </AppTextBody3>
+        {t('form:passphraseCopied')}
       </AppSnackbar>
     </View>
   );

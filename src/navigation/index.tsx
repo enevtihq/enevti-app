@@ -37,11 +37,12 @@ const Stack = createStackNavigator();
 export default function AppNavigationContainer() {
   const colorScheme = useColorScheme();
   const auth = useSelector((state: RootState) => state.auth);
-  const initialRoute = auth.encrypted
-    ? 'Login'
-    : auth.token
-    ? 'Home'
-    : 'CreateAccount';
+  const initialRoute = 'CreateAccount';
+  // const initialRoute = auth.encrypted
+  //   ? 'Login'
+  //   : auth.token
+  //   ? 'Home'
+  //   : 'CreateAccount';
 
   return (
     <NavigationContainer theme={getTheme(colorScheme!.toString())}>

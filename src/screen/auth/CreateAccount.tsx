@@ -16,10 +16,9 @@ import { hp, wp, SafeAreaInsets } from '../../utils/imageRatio';
 import AppPrimaryButton from '../../components/atoms/button/AppPrimaryButton';
 import AppSecondaryButton from '../../components/atoms/button/AppSecondaryButton';
 import AppTextBody3 from '../../components/atoms/text/AppTextBody3';
-import AppTertiaryButton from '../../components/atoms/button/AppTertiaryButton';
 import { RootStackParamList } from '../../navigation';
-import { iconMap } from '../../components/atoms/icon/AppIconComponent';
 import AppView from '../../components/atoms/view/AppView';
+import AppGoogleSignInButton from '../../components/organism/AppGoogleSignInButton';
 
 type Props = StackScreenProps<RootStackParamList, 'CreateAccount'>;
 
@@ -28,6 +27,8 @@ export default function CreateAccount({ navigation }: Props) {
   const insets = useSafeAreaInsets();
   const styles = makeStyle(theme, insets);
   const { t } = useTranslation();
+
+  const onGoogleSuccess = async () => {};
 
   return (
     <AppView>
@@ -74,12 +75,11 @@ export default function CreateAccount({ navigation }: Props) {
             <View style={styles.orLine} />
           </View>
 
-          <AppTertiaryButton
-            onPress={() => console.log('pressed')}
-            icon={iconMap.google}
-            style={styles.createAccount}>
-            {t('auth:socialLogin')}
-          </AppTertiaryButton>
+          <AppGoogleSignInButton
+            onSuccess={async () => {
+              await onGoogleSuccess();
+            }}
+          />
         </View>
       </SafeAreaView>
     </AppView>

@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import authReducer from './slices/auth';
 import userSettingReducer from './slices/userSetting';
-import sessionReducer from './slices/session';
+import sessionReducer from './slices/session/';
 import { persistReducer } from 'redux-persist';
 import {
   asyncStoragePersistConfig,
