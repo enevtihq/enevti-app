@@ -1,7 +1,11 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import snackbarSliceReducer, { setSnackbarGlobalState } from './snackbar';
+import snackbarSliceReducer, {
+  showSnackbar,
+  hideSnackbar,
+  getSnackBarState,
+} from './snackbar';
 
-export { setSnackbarGlobalState };
+export { showSnackbar, hideSnackbar, getSnackBarState };
 
 export default combineReducers({
   snackbar: snackbarSliceReducer,

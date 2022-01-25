@@ -4,6 +4,7 @@ import {
   createStackNavigator,
   CardStyleInterpolators,
 } from '@react-navigation/stack';
+import { useSelector } from 'react-redux';
 import { useColorScheme } from 'react-native';
 
 import CreateAccount from '../screen/auth/CreateAccount';
@@ -15,8 +16,7 @@ import Login from '../screen/auth/Login';
 
 import { getTheme } from '../theme';
 import Home from '../screen/Home';
-import { store } from '../store/state';
-import { getAuthState } from '../store/slices/auth';
+import { RootState } from '../store/state';
 
 export type RootStackParamList = {
   CreateAccount: undefined;
@@ -36,7 +36,7 @@ const Stack = createStackNavigator();
 
 export default function AppNavigationContainer() {
   const colorScheme = useColorScheme();
-  const auth = getAuthState(store.getState());
+  const auth = useSelector((state: RootState) => state.auth);
   const initialRoute = 'CreateAccount';
   // const initialRoute = auth.encrypted
   //   ? 'Login'

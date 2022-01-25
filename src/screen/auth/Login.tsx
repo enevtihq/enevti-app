@@ -10,7 +10,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import YupPassword from 'yup-password';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import {
   decryptWithPassword,
@@ -25,12 +25,9 @@ import AppView from '../../components/atoms/view/AppView';
 import AppCheckbox from '../../components/atoms/form/AppCheckbox';
 import { hp, wp, SafeAreaInsets } from '../../utils/imageRatio';
 import AppBrandLogo from '../../components/atoms/brand/AppBrandLogo';
-import { store } from '../../store/state';
+import { RootState } from '../../store/state';
 import { setLocalSessionKey } from '../../store/slices/session';
-import {
-  getAuthState,
-  setUnencryptedPassphraseAuth,
-} from '../../store/slices/auth';
+import { setUnencryptedPassphraseAuth } from '../../store/slices/auth';
 import AppSnackbar from '../../components/atoms/snackbar/AppSnackbar';
 
 type Props = StackScreenProps<RootStackParamList, 'Login'>;
@@ -41,7 +38,7 @@ const validationSchema = Yup.object().shape({
 });
 
 export default function Login({ navigation }: Props) {
-  const authState = getAuthState(store.getState());
+  const authState = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();

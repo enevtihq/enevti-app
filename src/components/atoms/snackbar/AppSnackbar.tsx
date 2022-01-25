@@ -25,8 +25,9 @@ export default function AppSnackBar({
         <Snackbar
           {...props}
           style={[props.style, styles.errorSnack]}
-          theme={theme}
-        />
+          theme={theme}>
+          {props.children}
+        </Snackbar>
       </Portal>
     );
   } else if (mode === 'error') {
@@ -39,8 +40,9 @@ export default function AppSnackBar({
             styles.errorSnack,
             { backgroundColor: theme.colors.error },
           ]}
-          theme={theme}
-        />
+          theme={theme}>
+          {props.children}
+        </Snackbar>
       </Portal>
     );
   } else {

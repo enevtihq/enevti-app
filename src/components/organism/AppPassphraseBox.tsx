@@ -10,7 +10,8 @@ import AppTextBody4 from '../atoms/text/AppTextBody4';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useTranslation } from 'react-i18next';
-import AppSnackbar from '../atoms/snackbar/AppSnackbar';
+import { useDispatch } from 'react-redux';
+import { showSnackbar } from '../../store/slices/ui/global';
 
 interface AppPassphraseBoxProps {
   passphrase: string;
@@ -22,10 +23,10 @@ export default function AppPassphraseBox({
   style,
 }: AppPassphraseBoxProps) {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
   const styles = makeStyle(theme, insets);
-  const [snackVisible, setSnackVisible] = React.useState<boolean>(false);
 
   return (
     <View style={styles.container}>
@@ -33,7 +34,9 @@ export default function AppPassphraseBox({
         rippleColor="rgba(0, 0, 0, .32)"
         onPress={() => {
           Clipboard.setString(passphrase);
-          setSnackVisible(true);
+          dispatch(
+            showSnackbar({ mode: 'info', text: t('form:passphraseCopied') }),
+          );
         }}
         style={[styles.touchBox, style]}>
         <View style={[styles.box]}>
@@ -43,13 +46,6 @@ export default function AppPassphraseBox({
           <AppTextBody4 style={styles.subText}>Tap to Copy</AppTextBody4>
         </View>
       </TouchableRipple>
-      <AppSnackbar
-        mode={'info'}
-        visible={snackVisible}
-        onDismiss={() => setSnackVisible(false)}
-        duration={1500}>
-        {t('form:passphraseCopied')}
-      </AppSnackbar>
     </View>
   );
 }
@@ -86,8 +82,5 @@ const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
       textAlign: 'center',
       marginTop: wp('3%', insets),
       marginBottom: wp('3%', insets),
-    },
-    snackText: {
-      color: theme.dark ? 'black' : 'white',
     },
   });
