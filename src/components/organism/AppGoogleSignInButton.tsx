@@ -128,7 +128,6 @@ export default function AppGoogleSignInButton({
         return;
       } else {
         dispatch(setUnencryptedPassphraseAuth(data.device));
-        console.log(decrypted.data);
         await onExistingAccount();
       }
     } else {
@@ -159,7 +158,6 @@ export default function AppGoogleSignInButton({
         encrypted: secretData.encrypted,
       });
       dispatch(setUnencryptedPassphraseAuth(newBindedData));
-      console.log(decrypted.data);
       await onExistingAccount();
     }
     setIsDialogButtonLoading(false);

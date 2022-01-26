@@ -62,7 +62,6 @@ export default function SetupGoogleBinderPassword({ navigation }: Props) {
       encrypted: encryptedPassphrase,
     });
     dispatch(setUnencryptedPassphraseAuth(bindedPassphrase));
-    console.log(passphrase);
 
     setIsLoading(false);
 
