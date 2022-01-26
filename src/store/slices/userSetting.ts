@@ -21,7 +21,7 @@ const userSettingSlice = createSlice({
 export const { setTheme, setLanguage } = userSettingSlice.actions;
 export default userSettingSlice.reducer;
 
-export const getLanguageState = createSelector(
+export const selectLanguageState = createSelector(
   (state: RootState) => state,
   (state: RootState) => state.userSetting.language,
 );

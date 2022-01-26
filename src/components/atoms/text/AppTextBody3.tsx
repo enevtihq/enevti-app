@@ -1,4 +1,4 @@
-import { useTheme } from '@react-navigation/native';
+import { useTheme } from 'react-native-paper';
 import React from 'react';
 import { StyleSheet, Text, TextStyle } from 'react-native';
 import { wp, SafeAreaInsets } from '../../../utils/imageRatio';

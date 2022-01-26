@@ -23,7 +23,7 @@ export const { setEncryptedPassphraseAuth, setUnencryptedPassphraseAuth } =
   authSlice.actions;
 export default authSlice.reducer;
 
-export const getAuthState = createSelector(
+export const selectAuthState = createSelector(
   (state: RootState) => state,
   (state: RootState) => state.auth,
 );

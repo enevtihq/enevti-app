@@ -12,7 +12,7 @@ const darkTheme: Theme = {
     secondary: '#7209b7',
     accent: '#3a0ca3',
     background: '#12122a',
-    surface: '#121212',
+    surface: '#00001c',
     error: '#CF6679',
     onSurface: '#FFFFFF',
     text: Colors.white.toString(),

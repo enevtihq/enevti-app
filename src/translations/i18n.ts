@@ -3,7 +3,7 @@ import { initReactI18next } from 'react-i18next';
 import * as RNLocalize from 'react-native-localize';
 
 import en from './en';
-import { getLanguageState, setLanguage } from '../store/slices/userSetting';
+import { selectLanguageState, setLanguage } from '../store/slices/userSetting';
 import { store } from '../store/state';
 
 const stateStore = store;
@@ -19,7 +19,7 @@ const LANGUAGE_DETECTOR: LanguageDetectorModule = {
   type: 'languageDetector',
   init: () => {},
   detect: () => {
-    const userSettingLanguage = getLanguageState(stateStore.getState());
+    const userSettingLanguage = selectLanguageState(stateStore.getState());
     if (
       userSettingLanguage === 'system' ||
       !LANG_CODES.includes(userSettingLanguage)

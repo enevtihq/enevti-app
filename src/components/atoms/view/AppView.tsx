@@ -8,7 +8,10 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { hideSnackbar } from '../../../store/slices/ui/global/snackbar';
+import {
+  hideSnackbar,
+  selectSnackBarState,
+} from '../../../store/slices/ui/global/snackbar';
 import { RootState } from '../../../store/state';
 import AppSnackbar from '../snackbar/AppSnackbar';
 import { SafeAreaInsets, wp } from '../../../utils/imageRatio';
@@ -20,8 +23,8 @@ interface AppViewProps {
 export default function AppView({ children }: AppViewProps) {
   const insets = useSafeAreaInsets();
   const styles = makeStyles(insets);
-  const snackbarState = useSelector(
-    (state: RootState) => state.ui.global.snackbar,
+  const snackbarState = useSelector((state: RootState) =>
+    selectSnackBarState(state),
   );
   const dispatch = useDispatch();
 

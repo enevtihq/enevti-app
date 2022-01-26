@@ -3,7 +3,7 @@ import { IconButton } from 'react-native-paper';
 
 interface AppIconButtonProps {
   icon: string;
-  onPress: () => void;
+  onPress?: () => void;
 }
 
 export default function AppIconButton({ icon, onPress }: AppIconButtonProps) {

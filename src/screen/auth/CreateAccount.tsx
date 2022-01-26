@@ -19,6 +19,7 @@ import AppTextBody3 from '../../components/atoms/text/AppTextBody3';
 import { RootStackParamList } from '../../navigation';
 import AppView from '../../components/atoms/view/AppView';
 import AppGoogleSignInButton from '../../components/organism/AppGoogleSignInButton';
+import { CommonActions } from '@react-navigation/native';
 
 type Props = StackScreenProps<RootStackParamList, 'CreateAccount'>;
 
@@ -27,8 +28,6 @@ export default function CreateAccount({ navigation }: Props) {
   const insets = useSafeAreaInsets();
   const styles = makeStyle(theme, insets);
   const { t } = useTranslation();
-
-  const onGoogleSuccess = async () => {};
 
   return (
     <AppView>
@@ -76,9 +75,17 @@ export default function CreateAccount({ navigation }: Props) {
           </View>
 
           <AppGoogleSignInButton
-            onSuccess={async () => {
-              await onGoogleSuccess();
+            onExistingAccount={() => {
+              navigation.dispatch(
+                CommonActions.reset({
+                  index: 0,
+                  routes: [{ name: 'AccountCreated' }],
+                }),
+              );
             }}
+            onNewAccount={() =>
+              navigation.navigate('SetupGoogleBinderPassword')
+            }
           />
         </View>
       </SafeAreaView>

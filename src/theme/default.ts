@@ -10,7 +10,7 @@ const defaultTheme = {
     secondary: '#7209b7',
     accent: '#3a0ca3',
     background: '#ffffff',
-    surface: Colors.white.toString(),
+    surface: '#ffffff',
     error: '#B00020',
     text: Colors.black.toString(),
     onSurface: '#000000',

@@ -10,11 +10,11 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import YupPassword from 'yup-password';
-import { useDispatch, useSelector } from 'react-redux';
+import * as Lisk from '@liskhq/lisk-client';
 
 import {
-  decryptWithPassword,
   encryptWithDevice,
+  encryptWithPassword,
 } from '../../utils/cryptography';
 import { Theme } from '../../theme/default';
 import AppHeaderWizard from '../../components/molecules/AppHeaderWizard';
@@ -24,51 +24,54 @@ import AppPrimaryButton from '../../components/atoms/button/AppPrimaryButton';
 import AppView from '../../components/atoms/view/AppView';
 import AppCheckbox from '../../components/atoms/form/AppCheckbox';
 import { hp, wp, SafeAreaInsets } from '../../utils/imageRatio';
-import AppBrandLogo from '../../components/atoms/brand/AppBrandLogo';
-import { RootState } from '../../store/state';
-import { setLocalSessionKey } from '../../store/slices/session';
-import {
-  selectAuthState,
-  setUnencryptedPassphraseAuth,
-} from '../../store/slices/auth';
-import { showSnackbar } from '../../store/slices/ui/global';
+import { BRAND_NAME } from '../../components/atoms/brand/AppBrandConstant';
+import { setSecretAppData } from '../../service/google/appData';
+import { useDispatch } from 'react-redux';
+import { setUnencryptedPassphraseAuth } from '../../store/slices/auth';
+import { CommonActions } from '@react-navigation/native';
 
-type Props = StackScreenProps<RootStackParamList, 'Login'>;
+type Props = StackScreenProps<RootStackParamList, 'SetupGoogleBinderPassword'>;
 YupPassword(Yup);
 
 const validationSchema = Yup.object().shape({
   password: Yup.string().password().required(),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref('password'), null])
+    .required(),
+  checkboxPassword: Yup.bool().oneOf([true]),
 });
 
-export default function Login({ navigation }: Props) {
-  const authState = useSelector((state: RootState) => selectAuthState(state));
-  const dispatch = useDispatch();
+export default function SetupGoogleBinderPassword({ navigation }: Props) {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
   const styles = makeStyle(theme, insets);
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const confirmPasswordInput = React.useRef<any>();
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   const handleFormSubmit = async (values: any) => {
-    const decrypted = await decryptWithPassword(
-      authState.token,
+    const passphrase = Lisk.passphrase.Mnemonic.generateMnemonic();
+    const encryptedPassphrase = await encryptWithPassword(
+      passphrase,
       values.password,
     );
-    if (decrypted.status === 'error') {
-      dispatch(showSnackbar({ mode: 'error', text: t('auth:wrongPassword') }));
-      setIsLoading(false);
-      return;
-    }
-
-    if (values.rememberMe) {
-      const deviceEncrypted = await encryptWithDevice(decrypted.data);
-      dispatch(setUnencryptedPassphraseAuth(deviceEncrypted));
-    } else {
-      dispatch(setLocalSessionKey(values.password));
-    }
+    const bindedPassphrase = await encryptWithDevice(passphrase);
+    await setSecretAppData({
+      device: bindedPassphrase,
+      encrypted: encryptedPassphrase,
+    });
+    dispatch(setUnencryptedPassphraseAuth(bindedPassphrase));
+    console.log(passphrase);
 
     setIsLoading(false);
-    navigation.replace('Home');
+
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: 'AccountCreated' }],
+      }),
+    );
   };
 
   return (
@@ -80,21 +83,20 @@ export default function Login({ navigation }: Props) {
         />
 
         <AppHeaderWizard
-          image={
-            <AppBrandLogo
-              mode={'glow'}
-              widthPercentage={0.45}
-              style={styles.headerImage}
-            />
-          }
-          title={t('auth:loginHeader')}
-          description={''}
+          back
+          navigation={navigation}
+          mode={'emoji'}
+          modeData={'binderPassword'}
+          title={t('auth:binderPasswordHeader')}
+          description={t('auth:binderPasswordBody')}
+          style={styles.header}
         />
 
         <Formik
           initialValues={{
             password: '',
-            rememberMe: false,
+            confirmPassword: '',
+            checkboxPassword: false,
           }}
           onSubmit={async values => {
             setIsLoading(true);
@@ -115,7 +117,7 @@ export default function Login({ navigation }: Props) {
             <>
               <View style={styles.passwordView}>
                 <AppFormSecureTextInput
-                  label={t('auth:inputPassword')}
+                  label={t('auth:newLocalPassword')}
                   style={styles.passwordInput}
                   value={values.password}
                   errorText={
@@ -128,19 +130,30 @@ export default function Login({ navigation }: Props) {
                   showError={touched.password}
                   touchHandler={() => setFieldTouched('password')}
                   onChangeText={handleChange('password')}
-                  onSubmitEditing={() => Keyboard.dismiss()}
+                  onSubmitEditing={() => confirmPasswordInput.current.focus()}
                   blurOnSubmit={true}
                   returnKeyType="go"
                 />
-
-                <AppCheckbox
-                  value={values.rememberMe}
-                  style={styles.checkbox}
-                  onPress={() =>
-                    setFieldValue('rememberMe', !values.rememberMe)
-                  }>
-                  {t('auth:rememberMe')}
-                </AppCheckbox>
+                <AppFormSecureTextInput
+                  ref={confirmPasswordInput}
+                  label={t('auth:confirmLocalPassword')}
+                  style={styles.passwordInput}
+                  value={values.confirmPassword}
+                  errorText={
+                    errors.confirmPassword
+                      ? values.confirmPassword.length > 0
+                        ? t('form:passwordMatch')
+                        : t('form:required')
+                      : ''
+                  }
+                  showError={touched.confirmPassword}
+                  touchHandler={() => setFieldTouched('confirmPassword')}
+                  onChangeText={handleChange('confirmPassword')}
+                  onSubmitEditing={
+                    isValid && dirty ? handleSubmit : () => Keyboard.dismiss()
+                  }
+                  blurOnSubmit={true}
+                />
               </View>
 
               <View style={styles.actionContainer}>
@@ -151,8 +164,17 @@ export default function Login({ navigation }: Props) {
                   loading={isLoading}
                   disabled={!(isValid && dirty)}
                   style={styles.createAccount}>
-                  {t('auth:loginButton')}
+                  {t('auth:createAcc')}
                 </AppPrimaryButton>
+
+                <AppCheckbox
+                  value={values.checkboxPassword}
+                  style={styles.checkbox}
+                  onPress={() =>
+                    setFieldValue('checkboxPassword', !values.checkboxPassword)
+                  }>
+                  {t('auth:checkboxPassword', { brand: BRAND_NAME })}
+                </AppCheckbox>
               </View>
             </>
           )}
@@ -165,6 +187,7 @@ export default function Login({ navigation }: Props) {
 const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
   StyleSheet.create({
     actionContainer: {
+      flex: 0.8,
       flexDirection: 'column-reverse',
     },
     container: {
@@ -187,6 +210,7 @@ const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
       marginRight: wp('3%', insets),
     },
     headerImage: {
+      fontSize: wp('20%', insets),
       alignSelf: 'center',
     },
     passwordView: {

@@ -33,7 +33,7 @@ const snackbarSlice = createSlice({
 export const { showSnackbar, hideSnackbar } = snackbarSlice.actions;
 export default snackbarSlice.reducer;
 
-export const getSnackBarState = createSelector(
+export const selectSnackBarState = createSelector(
   (state: RootState) => state,
   (state: RootState) => state.ui.global.snackbar,
 );

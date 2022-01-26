@@ -15,7 +15,7 @@ const googleSessionSlice = createSlice({
 export const { setGoogleAPIToken } = googleSessionSlice.actions;
 export default googleSessionSlice.reducer;
 
-export const getGoogleAPITokenState = createSelector(
+export const selectGoogleAPITokenState = createSelector(
   (state: RootState) => state,
   (state: RootState) => state.session.google.apiToken,
 );

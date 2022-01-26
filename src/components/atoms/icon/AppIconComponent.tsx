@@ -17,6 +17,8 @@ export const iconMap = {
   accountCircle: 'account-circle',
   insideDevice: 'cellphone-cog',
   importAccount: 'account-reactivate',
+  close: 'close',
+  binderPassword: UNDEFINED_ICON,
 };
 
 interface AppIconComponentProps {
