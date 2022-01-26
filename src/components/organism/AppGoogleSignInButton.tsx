@@ -17,8 +17,6 @@ import {
   selectGoogleAPITokenState,
   setGoogleAPIToken,
 } from '../../store/slices/session/google';
-import { isInternetReachable } from '../../utils/network';
-import { statusCodes } from '@react-native-google-signin/google-signin';
 import { showSnackbar } from '../../store/slices/ui/global';
 import AppDialogForm from './AppDialogForm';
 import { Dialog } from 'react-native-paper';
@@ -75,40 +73,12 @@ export default function AppGoogleSignInButton({
     googleInit();
   }, []);
 
-  const selectGoogleErrorText = (code: number) => {
-    return code === -2
-      ? t('network:noInternet')
-      : code === -1
-      ? t('google:unknownError')
-      : code === statusCodes.SIGN_IN_CANCELLED
-      ? t('google:signInCancelled')
-      : code === statusCodes.IN_PROGRESS
-      ? t('google:signInAlreadyInProgress')
-      : code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE
-      ? t('google:signInUnavailableService')
-      : '';
-  };
-
   const handleOnPress = async () => {
-    const isConnected = await isInternetReachable();
-    if (!isConnected) {
-      dispatch(
-        showSnackbar({ mode: 'error', text: selectGoogleErrorText(-2) }),
-      );
-
-      return;
-    }
     setIsLoadingGoogle(true);
 
     if (!apiToken) {
       const signInCode = await googleSignIn();
       if (signInCode !== 0) {
-        dispatch(
-          showSnackbar({
-            mode: 'error',
-            text: selectGoogleErrorText(signInCode),
-          }),
-        );
         setIsLoadingGoogle(false);
         return;
       }
@@ -174,7 +144,7 @@ export default function AppGoogleSignInButton({
     dispatch(
       showSnackbar({
         mode: 'error',
-        text: selectGoogleErrorText(statusCodes.SIGN_IN_CANCELLED),
+        text: t('google:signInCancelled'),
       }),
     );
   };

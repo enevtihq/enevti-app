@@ -46,7 +46,7 @@ export function decryptWithPassword(
       } catch (err: any) {
         res({
           status: 'error',
-          data: err.toString(),
+          data: err.message,
         });
       }
     }, 1),
@@ -87,7 +87,7 @@ export function decryptWithDevice(
       } catch (err: any) {
         res({
           status: 'error',
-          data: err.toString(),
+          data: err.message,
         });
       }
     }, 1),

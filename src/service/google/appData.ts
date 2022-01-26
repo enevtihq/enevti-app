@@ -1,6 +1,7 @@
 import { setGoogleAPIToken } from '../../store/slices/session';
 import { selectGoogleAPITokenState } from '../../store/slices/session/google';
 import { store } from '../../store/state';
+import { isInternetReachable } from '../../utils/network';
 import { getGoogleAccessToken, googleInit, googleSignIn } from './signIn';
 
 const url = 'https://www.googleapis.com/drive/v3';
@@ -108,6 +109,7 @@ async function getSecretId(): Promise<string> {
 }
 
 export async function getSecretAppData(): Promise<SecretAppData> {
+  await isInternetReachable();
   const id = await getSecretId();
   if (!id) {
     return { device: '', encrypted: '' };
@@ -126,6 +128,7 @@ export async function getSecretAppData(): Promise<SecretAppData> {
 }
 
 export async function setSecretAppData(content: SecretAppData): Promise<void> {
+  await isInternetReachable();
   const body = createMultipartBody(content, false);
   const options = await configurePostOptions(body.length.toString(), false);
   return new Promise<void>((res, rej) => {
@@ -142,6 +145,7 @@ export async function setSecretAppData(content: SecretAppData): Promise<void> {
 export async function updateSecretAppData(
   content: SecretAppData,
 ): Promise<void> {
+  await isInternetReachable();
   const id = await getSecretId();
   if (!id) {
     return;

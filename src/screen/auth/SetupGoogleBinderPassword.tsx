@@ -29,6 +29,7 @@ import { setSecretAppData } from '../../service/google/appData';
 import { useDispatch } from 'react-redux';
 import { setUnencryptedPassphraseAuth } from '../../store/slices/auth';
 import { CommonActions } from '@react-navigation/native';
+import { showSnackbar } from '../../store/slices/ui/global';
 
 type Props = StackScreenProps<RootStackParamList, 'SetupGoogleBinderPassword'>;
 YupPassword(Yup);
@@ -51,26 +52,36 @@ export default function SetupGoogleBinderPassword({ navigation }: Props) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   const handleFormSubmit = async (values: any) => {
-    const passphrase = Lisk.passphrase.Mnemonic.generateMnemonic();
-    const encryptedPassphrase = await encryptWithPassword(
-      passphrase,
-      values.password,
-    );
-    const bindedPassphrase = await encryptWithDevice(passphrase);
-    await setSecretAppData({
-      device: bindedPassphrase,
-      encrypted: encryptedPassphrase,
-    });
-    dispatch(setUnencryptedPassphraseAuth(bindedPassphrase));
+    try {
+      const passphrase = Lisk.passphrase.Mnemonic.generateMnemonic();
+      const encryptedPassphrase = await encryptWithPassword(
+        passphrase,
+        values.password,
+      );
+      const bindedPassphrase = await encryptWithDevice(passphrase);
+      await setSecretAppData({
+        device: bindedPassphrase,
+        encrypted: encryptedPassphrase,
+      });
+      dispatch(setUnencryptedPassphraseAuth(bindedPassphrase));
 
-    setIsLoading(false);
+      setIsLoading(false);
 
-    navigation.dispatch(
-      CommonActions.reset({
-        index: 0,
-        routes: [{ name: 'AccountCreated' }],
-      }),
-    );
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: 'AccountCreated' }],
+        }),
+      );
+    } catch (err: any) {
+      dispatch(
+        showSnackbar({
+          mode: 'error',
+          text: err.message,
+        }),
+      );
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -116,7 +127,7 @@ export default function SetupGoogleBinderPassword({ navigation }: Props) {
             <>
               <View style={styles.passwordView}>
                 <AppFormSecureTextInput
-                  label={t('auth:newLocalPassword')}
+                  label={t('auth:newBinderPassword')}
                   style={styles.passwordInput}
                   value={values.password}
                   errorText={
@@ -135,7 +146,7 @@ export default function SetupGoogleBinderPassword({ navigation }: Props) {
                 />
                 <AppFormSecureTextInput
                   ref={confirmPasswordInput}
-                  label={t('auth:confirmLocalPassword')}
+                  label={t('auth:confirmBinderPassword')}
                   style={styles.passwordInput}
                   value={values.confirmPassword}
                   errorText={
