@@ -5,25 +5,20 @@ import {
 import { Platform } from 'react-native';
 import { isInternetReachable, NETWORK_ERROR } from '../../utils/network';
 import i18n from '../../translations/i18n';
-import { store } from '../../store/state';
-import { showSnackbar } from '../../store/slices/ui/global';
 
 const GOOGLE_SCOPES = ['https://www.googleapis.com/auth/drive.appdata'];
-const UNKNOWN_ERROR = -1;
 
 const selectGoogleErrorText = async (code: number) => {
   await i18n.loadNamespaces(['google', 'network']);
   return code === NETWORK_ERROR
     ? i18n.t('network:noInternet')
-    : code === UNKNOWN_ERROR
-    ? i18n.t('google:unknownError')
     : code === statusCodes.SIGN_IN_CANCELLED
     ? i18n.t('google:signInCancelled')
     : code === statusCodes.IN_PROGRESS
     ? i18n.t('google:signInAlreadyInProgress')
     : code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE
     ? i18n.t('google:signInUnavailableService')
-    : '';
+    : i18n.t('google:unknownError');
 };
 
 export const googleInit = () => {
@@ -47,29 +42,11 @@ export const googleSignIn = async () => {
     }
     return 0;
   } catch (error: any) {
-    if (
-      [
-        statusCodes.SIGN_IN_CANCELLED,
-        statusCodes.IN_PROGRESS,
-        statusCodes.PLAY_SERVICES_NOT_AVAILABLE,
-        NETWORK_ERROR,
-      ].includes(error.code)
-    ) {
-      store.dispatch(
-        showSnackbar({
-          mode: 'error',
-          text: await selectGoogleErrorText(error.code),
-        }),
-      );
-    } else {
-      store.dispatch(
-        showSnackbar({
-          mode: 'error',
-          text: await selectGoogleErrorText(-2),
-        }),
-      );
-    }
-    return UNKNOWN_ERROR;
+    throw {
+      name: 'GoogleError',
+      code: error.code,
+      message: await selectGoogleErrorText(error.code),
+    };
   }
 };
 

@@ -36,6 +36,7 @@ import {
   encryptWithDevice,
 } from '../../utils/cryptography';
 import { setUnencryptedPassphraseAuth } from '../../store/slices/auth';
+import { handleError } from '../../utils/errorHandling';
 
 YupPassword(Yup);
 
@@ -76,61 +77,63 @@ export default function AppGoogleSignInButton({
   const handleOnPress = async () => {
     setIsLoadingGoogle(true);
 
-    if (!apiToken) {
-      const signInCode = await googleSignIn();
-      if (signInCode !== 0) {
-        setIsLoadingGoogle(false);
-        return;
+    try {
+      if (!apiToken) {
+        await googleSignIn();
+        const newApiToken = await getGoogleAccessToken();
+        dispatch(setGoogleAPIToken(newApiToken));
       }
 
-      const newApiToken = await getGoogleAccessToken();
-      dispatch(setGoogleAPIToken(newApiToken));
-    }
+      const data = await getSecretAppData();
+      setSecretData(data);
 
-    const data = await getSecretAppData();
-    setSecretData(data);
-
-    if (data.device && data.encrypted) {
-      const decrypted = await decryptWithDevice(data.device);
-      if (decrypted.status === 'error') {
-        setShowInputGoogleDialog(true);
-        setIsLoadingGoogle(false);
-        return;
+      if (data.device && data.encrypted) {
+        const decrypted = await decryptWithDevice(data.device);
+        if (decrypted.status === 'error') {
+          setShowInputGoogleDialog(true);
+          return;
+        } else {
+          dispatch(setUnencryptedPassphraseAuth(data.device));
+          onExistingAccount();
+        }
       } else {
-        dispatch(setUnencryptedPassphraseAuth(data.device));
-        await onExistingAccount();
+        onNewAccount();
       }
-    } else {
-      await onNewAccount();
+    } catch (err: any) {
+      handleError(err);
+    } finally {
+      setIsLoadingGoogle(false);
     }
-
-    setIsLoadingGoogle(false);
   };
 
   const handleDialogFormSubmit = async (values: any) => {
-    const decrypted = await decryptWithPassword(
-      secretData.encrypted,
-      values.password,
-    );
-    if (decrypted.status === 'error') {
-      dispatch(
-        showSnackbar({
-          mode: 'error',
-          text: t('auth:wrongPassword'),
-        }),
+    try {
+      const decrypted = await decryptWithPassword(
+        secretData.encrypted,
+        values.password,
       );
+      if (decrypted.status === 'error') {
+        dispatch(
+          showSnackbar({
+            mode: 'error',
+            text: t('auth:wrongPassword'),
+          }),
+        );
+        return;
+      } else {
+        const newBindedData = await encryptWithDevice(decrypted.data);
+        await updateSecretAppData({
+          device: newBindedData,
+          encrypted: secretData.encrypted,
+        });
+        dispatch(setUnencryptedPassphraseAuth(newBindedData));
+        onExistingAccount();
+      }
+    } catch (err: any) {
+      handleError(err);
+    } finally {
       setIsDialogButtonLoading(false);
-      return;
-    } else {
-      const newBindedData = await encryptWithDevice(decrypted.data);
-      await updateSecretAppData({
-        device: newBindedData,
-        encrypted: secretData.encrypted,
-      });
-      dispatch(setUnencryptedPassphraseAuth(newBindedData));
-      await onExistingAccount();
     }
-    setIsDialogButtonLoading(false);
   };
 
   const handleDialogDismiss = () => {

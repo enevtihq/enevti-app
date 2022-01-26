@@ -29,7 +29,7 @@ import { setSecretAppData } from '../../service/google/appData';
 import { useDispatch } from 'react-redux';
 import { setUnencryptedPassphraseAuth } from '../../store/slices/auth';
 import { CommonActions } from '@react-navigation/native';
-import { showSnackbar } from '../../store/slices/ui/global';
+import { handleError } from '../../utils/errorHandling';
 
 type Props = StackScreenProps<RootStackParamList, 'SetupGoogleBinderPassword'>;
 YupPassword(Yup);
@@ -74,12 +74,7 @@ export default function SetupGoogleBinderPassword({ navigation }: Props) {
         }),
       );
     } catch (err: any) {
-      dispatch(
-        showSnackbar({
-          mode: 'error',
-          text: err.message,
-        }),
-      );
+      handleError(err);
       setIsLoading(false);
     }
   };
