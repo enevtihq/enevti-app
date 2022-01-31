@@ -15,10 +15,10 @@ import ImportPassphrase from '../screen/auth/ImportPassphrase';
 import Login from '../screen/auth/Login';
 
 import { getTheme } from '../theme';
-import Home from '../screen/Home';
 import { RootState } from '../store/state';
 import { selectAuthState } from '../store/slices/auth';
 import SetupGoogleBinderPassword from '../screen/auth/SetupGoogleBinderPassword';
+import Home from './Home';
 
 export type RootStackParamList = {
   CreateAccount: undefined;
@@ -40,12 +40,11 @@ const Stack = createStackNavigator();
 export default function AppNavigationContainer() {
   const colorScheme = useColorScheme();
   const auth = useSelector((state: RootState) => selectAuthState(state));
-  const initialRoute = 'CreateAccount';
-  // const initialRoute = auth.encrypted
-  //   ? 'Login'
-  //   : auth.token
-  //   ? 'Home'
-  //   : 'CreateAccount';
+  const initialRoute = auth.encrypted
+    ? 'Login'
+    : auth.token
+    ? 'Home'
+    : 'CreateAccount';
 
   return (
     <NavigationContainer theme={getTheme(colorScheme!.toString())}>

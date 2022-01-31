@@ -5,4 +5,5 @@ LogBox.ignoreLogs([
   'Require cycle: node_modules/react-native-crypto/index.js',
   'Sending `onAnimatedValueUpdate` with no listeners registered.',
   'Require cycle: node_modules/react-native/Libraries/Network/fetch.js',
+  'RCTBridge required dispatch_sync to load RNGestureHandlerModule. This may lead to deadlocks',
 ]);
