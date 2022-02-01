@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  Keyboard,
-  TouchableWithoutFeedback,
-  View,
-  StyleSheet,
-} from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -15,12 +10,17 @@ import {
 import { RootState } from '../../../store/state';
 import AppSnackbar from '../snackbar/AppSnackbar';
 import { SafeAreaInsets, wp } from '../../../utils/imageRatio';
+import AppKeyboardDismissOnClickView from './AppKeyboardDismissOnClickView';
 
 interface AppViewProps {
   children: React.ReactNode;
+  dismissKeyboard?: boolean;
 }
 
-export default function AppView({ children }: AppViewProps) {
+export default function AppView({
+  children,
+  dismissKeyboard = false,
+}: AppViewProps) {
   const insets = useSafeAreaInsets();
   const styles = makeStyles(insets);
   const snackbarState = useSelector((state: RootState) =>
@@ -30,9 +30,9 @@ export default function AppView({ children }: AppViewProps) {
 
   return (
     <View style={styles.view}>
-      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <AppKeyboardDismissOnClickView activate={dismissKeyboard}>
         {children}
-      </TouchableWithoutFeedback>
+      </AppKeyboardDismissOnClickView>
       <AppSnackbar
         mode={snackbarState.mode}
         visible={snackbarState.show}

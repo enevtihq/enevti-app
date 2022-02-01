@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar, StyleSheet, View } from 'react-native';
+import { ScrollView, StatusBar, StyleSheet, View } from 'react-native';
 import AppView from '../../components/atoms/view/AppView';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AppTextHeading1 from '../../components/atoms/text/AppTextHeading1';
@@ -9,6 +9,14 @@ export default function Feed() {
   const theme = useTheme();
   const styles = makeStyle();
 
+  const loop = () => {
+    let ret = [];
+    for (let i = 0; i < 100; i++) {
+      ret.push(<AppTextHeading1 key={i}>Cooming Soon!</AppTextHeading1>);
+    }
+    return ret;
+  };
+
   return (
     <AppView>
       <SafeAreaView style={styles.container}>
@@ -17,7 +25,7 @@ export default function Feed() {
           backgroundColor={theme.colors.background}
         />
         <View style={styles.textContainer}>
-          <AppTextHeading1>Cooming Soon!</AppTextHeading1>
+          <ScrollView style={{ width: '100%' }}>{loop()}</ScrollView>
         </View>
       </SafeAreaView>
     </AppView>

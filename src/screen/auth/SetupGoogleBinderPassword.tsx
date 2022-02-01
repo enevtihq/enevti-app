@@ -80,7 +80,7 @@ export default function SetupGoogleBinderPassword({ navigation }: Props) {
   };
 
   return (
-    <AppView>
+    <AppView dismissKeyboard={true}>
       <SafeAreaView style={styles.container}>
         <StatusBar
           barStyle={theme.dark === true ? 'light-content' : 'dark-content'}

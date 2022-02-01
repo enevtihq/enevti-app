@@ -1,11 +1,6 @@
 import React from 'react';
 import { Portal, Dialog, useTheme } from 'react-native-paper';
-import {
-  Keyboard,
-  TouchableWithoutFeedback,
-  View,
-  StyleSheet,
-} from 'react-native';
+import { Keyboard, View, StyleSheet } from 'react-native';
 
 import AppIconGradient from '../molecules/AppIconGradient';
 import { iconMap } from '../atoms/icon/AppIconComponent';
@@ -15,6 +10,7 @@ import AppTextHeading1 from '../atoms/text/AppTextHeading1';
 import AppIconButton from '../atoms/icon/AppIconButton';
 import { SafeAreaInsets } from '../../utils/imageRatio';
 import AppTextBody3 from '../atoms/text/AppTextBody3';
+import AppKeyboardDismissOnClickView from '../atoms/view/AppKeyboardDismissOnClickView';
 
 interface AppDialogFormProps {
   children: React.ReactNode;
@@ -55,7 +51,7 @@ export default function AppDialogForm({
   return (
     <Portal>
       <Dialog visible={visible} dismissable={false} style={{ bottom: bottom }}>
-        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        <AppKeyboardDismissOnClickView activate={true}>
           <View>
             <AppIconButton icon={iconMap.close} onPress={onDismiss} />
             <AppIconGradient
@@ -72,7 +68,7 @@ export default function AppDialogForm({
             </Dialog.Content>
             {children}
           </View>
-        </TouchableWithoutFeedback>
+        </AppKeyboardDismissOnClickView>
       </Dialog>
     </Portal>
   );
