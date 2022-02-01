@@ -4,7 +4,7 @@ import Feed from '../screen/home/Feed';
 import Statistics from '../screen/home/Statistics';
 import Discover from '../screen/home/Discover';
 import MyProfile from '../screen/home/MyProfile';
-import { Text } from 'react-native';
+import AppHeader from '../components/atoms/view/AppHeader';
 
 const Tab = createBottomTabNavigator();
 
@@ -15,7 +15,7 @@ export default function Home() {
         name="Feed"
         component={Feed}
         options={{
-          header: () => <Text style={{ position: 'absolute' }}>anjay</Text>,
+          header: () => <AppHeader />,
         }}
       />
       <Tab.Screen name="Statistics" component={Statistics} />
