@@ -1,9 +1,6 @@
 import React from 'react';
-import { StyleSheet, StatusBar, View, Keyboard } from 'react-native';
-import {
-  SafeAreaView,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+import { StyleSheet, View, Keyboard } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -81,110 +78,103 @@ export default function SetupGoogleBinderPassword({ navigation }: Props) {
 
   return (
     <AppView dismissKeyboard={true}>
-      <SafeAreaView style={styles.container}>
-        <StatusBar
-          barStyle={theme.dark === true ? 'light-content' : 'dark-content'}
-          backgroundColor={theme.colors.background}
-        />
+      <AppHeaderWizard
+        back
+        navigation={navigation}
+        mode={'emoji'}
+        modeData={'binderPassword'}
+        title={t('auth:binderPasswordHeader')}
+        description={t('auth:binderPasswordBody')}
+        style={styles.header}
+      />
 
-        <AppHeaderWizard
-          back
-          navigation={navigation}
-          mode={'emoji'}
-          modeData={'binderPassword'}
-          title={t('auth:binderPasswordHeader')}
-          description={t('auth:binderPasswordBody')}
-          style={styles.header}
-        />
+      <Formik
+        initialValues={{
+          password: '',
+          confirmPassword: '',
+          checkboxPassword: false,
+        }}
+        onSubmit={async values => {
+          setIsLoading(true);
+          await handleFormSubmit(values);
+        }}
+        validationSchema={validationSchema}>
+        {({
+          handleChange,
+          handleSubmit,
+          setFieldTouched,
+          setFieldValue,
+          values,
+          errors,
+          isValid,
+          dirty,
+          touched,
+        }) => (
+          <>
+            <View style={styles.passwordView}>
+              <AppFormSecureTextInput
+                label={t('auth:newBinderPassword')}
+                style={styles.passwordInput}
+                value={values.password}
+                errorText={
+                  errors.password
+                    ? values.password.length > 0
+                      ? t('form:password')
+                      : t('form:required')
+                    : ''
+                }
+                showError={touched.password}
+                touchHandler={() => setFieldTouched('password')}
+                onChangeText={handleChange('password')}
+                onSubmitEditing={() => confirmPasswordInput.current.focus()}
+                blurOnSubmit={true}
+                returnKeyType="go"
+              />
+              <AppFormSecureTextInput
+                ref={confirmPasswordInput}
+                label={t('auth:confirmBinderPassword')}
+                style={styles.passwordInput}
+                value={values.confirmPassword}
+                errorText={
+                  errors.confirmPassword
+                    ? values.confirmPassword.length > 0
+                      ? t('form:passwordMatch')
+                      : t('form:required')
+                    : ''
+                }
+                showError={touched.confirmPassword}
+                touchHandler={() => setFieldTouched('confirmPassword')}
+                onChangeText={handleChange('confirmPassword')}
+                onSubmitEditing={
+                  isValid && dirty ? handleSubmit : () => Keyboard.dismiss()
+                }
+                blurOnSubmit={true}
+              />
+            </View>
 
-        <Formik
-          initialValues={{
-            password: '',
-            confirmPassword: '',
-            checkboxPassword: false,
-          }}
-          onSubmit={async values => {
-            setIsLoading(true);
-            await handleFormSubmit(values);
-          }}
-          validationSchema={validationSchema}>
-          {({
-            handleChange,
-            handleSubmit,
-            setFieldTouched,
-            setFieldValue,
-            values,
-            errors,
-            isValid,
-            dirty,
-            touched,
-          }) => (
-            <>
-              <View style={styles.passwordView}>
-                <AppFormSecureTextInput
-                  label={t('auth:newBinderPassword')}
-                  style={styles.passwordInput}
-                  value={values.password}
-                  errorText={
-                    errors.password
-                      ? values.password.length > 0
-                        ? t('form:password')
-                        : t('form:required')
-                      : ''
-                  }
-                  showError={touched.password}
-                  touchHandler={() => setFieldTouched('password')}
-                  onChangeText={handleChange('password')}
-                  onSubmitEditing={() => confirmPasswordInput.current.focus()}
-                  blurOnSubmit={true}
-                  returnKeyType="go"
-                />
-                <AppFormSecureTextInput
-                  ref={confirmPasswordInput}
-                  label={t('auth:confirmBinderPassword')}
-                  style={styles.passwordInput}
-                  value={values.confirmPassword}
-                  errorText={
-                    errors.confirmPassword
-                      ? values.confirmPassword.length > 0
-                        ? t('form:passwordMatch')
-                        : t('form:required')
-                      : ''
-                  }
-                  showError={touched.confirmPassword}
-                  touchHandler={() => setFieldTouched('confirmPassword')}
-                  onChangeText={handleChange('confirmPassword')}
-                  onSubmitEditing={
-                    isValid && dirty ? handleSubmit : () => Keyboard.dismiss()
-                  }
-                  blurOnSubmit={true}
-                />
-              </View>
+            <View style={styles.actionContainer}>
+              <View style={{ height: hp('3%', insets) }} />
 
-              <View style={styles.actionContainer}>
-                <View style={{ height: hp('3%', insets) }} />
+              <AppPrimaryButton
+                onPress={handleSubmit}
+                loading={isLoading}
+                disabled={!(isValid && dirty)}
+                style={styles.createAccount}>
+                {t('auth:createAcc')}
+              </AppPrimaryButton>
 
-                <AppPrimaryButton
-                  onPress={handleSubmit}
-                  loading={isLoading}
-                  disabled={!(isValid && dirty)}
-                  style={styles.createAccount}>
-                  {t('auth:createAcc')}
-                </AppPrimaryButton>
-
-                <AppCheckbox
-                  value={values.checkboxPassword}
-                  style={styles.checkbox}
-                  onPress={() =>
-                    setFieldValue('checkboxPassword', !values.checkboxPassword)
-                  }>
-                  {t('auth:checkboxPassword', { brand: BRAND_NAME })}
-                </AppCheckbox>
-              </View>
-            </>
-          )}
-        </Formik>
-      </SafeAreaView>
+              <AppCheckbox
+                value={values.checkboxPassword}
+                style={styles.checkbox}
+                onPress={() =>
+                  setFieldValue('checkboxPassword', !values.checkboxPassword)
+                }>
+                {t('auth:checkboxPassword', { brand: BRAND_NAME })}
+              </AppCheckbox>
+            </View>
+          </>
+        )}
+      </Formik>
     </AppView>
   );
 }
@@ -194,10 +184,6 @@ const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
     actionContainer: {
       flex: 0.8,
       flexDirection: 'column-reverse',
-    },
-    container: {
-      flex: 1,
-      backgroundColor: theme.colors.background,
     },
     checkbox: {
       marginBottom: hp('2%', insets),

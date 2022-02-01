@@ -1,9 +1,6 @@
 import React from 'react';
-import { StyleSheet, StatusBar, View, Keyboard } from 'react-native';
-import {
-  SafeAreaView,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+import { StyleSheet, View, Keyboard } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -73,91 +70,82 @@ export default function Login({ navigation }: Props) {
 
   return (
     <AppView dismissKeyboard={true}>
-      <SafeAreaView style={styles.container}>
-        <StatusBar
-          barStyle={theme.dark === true ? 'light-content' : 'dark-content'}
-          backgroundColor={theme.colors.background}
-        />
+      <AppHeaderWizard
+        image={
+          <AppBrandLogo
+            mode={'glow'}
+            widthPercentage={0.45}
+            style={styles.headerImage}
+          />
+        }
+        title={t('auth:loginHeader')}
+        description={''}
+      />
 
-        <AppHeaderWizard
-          image={
-            <AppBrandLogo
-              mode={'glow'}
-              widthPercentage={0.45}
-              style={styles.headerImage}
-            />
-          }
-          title={t('auth:loginHeader')}
-          description={''}
-        />
+      <Formik
+        initialValues={{
+          password: '',
+          rememberMe: false,
+        }}
+        onSubmit={async values => {
+          setIsLoading(true);
+          await handleFormSubmit(values);
+        }}
+        validationSchema={validationSchema}>
+        {({
+          handleChange,
+          handleSubmit,
+          setFieldTouched,
+          setFieldValue,
+          values,
+          errors,
+          isValid,
+          dirty,
+          touched,
+        }) => (
+          <>
+            <View style={styles.passwordView}>
+              <AppFormSecureTextInput
+                label={t('auth:inputPassword')}
+                style={styles.passwordInput}
+                value={values.password}
+                errorText={
+                  errors.password
+                    ? values.password.length > 0
+                      ? t('form:password')
+                      : t('form:required')
+                    : ''
+                }
+                showError={touched.password}
+                touchHandler={() => setFieldTouched('password')}
+                onChangeText={handleChange('password')}
+                onSubmitEditing={() => Keyboard.dismiss()}
+                blurOnSubmit={true}
+                returnKeyType="go"
+              />
 
-        <Formik
-          initialValues={{
-            password: '',
-            rememberMe: false,
-          }}
-          onSubmit={async values => {
-            setIsLoading(true);
-            await handleFormSubmit(values);
-          }}
-          validationSchema={validationSchema}>
-          {({
-            handleChange,
-            handleSubmit,
-            setFieldTouched,
-            setFieldValue,
-            values,
-            errors,
-            isValid,
-            dirty,
-            touched,
-          }) => (
-            <>
-              <View style={styles.passwordView}>
-                <AppFormSecureTextInput
-                  label={t('auth:inputPassword')}
-                  style={styles.passwordInput}
-                  value={values.password}
-                  errorText={
-                    errors.password
-                      ? values.password.length > 0
-                        ? t('form:password')
-                        : t('form:required')
-                      : ''
-                  }
-                  showError={touched.password}
-                  touchHandler={() => setFieldTouched('password')}
-                  onChangeText={handleChange('password')}
-                  onSubmitEditing={() => Keyboard.dismiss()}
-                  blurOnSubmit={true}
-                  returnKeyType="go"
-                />
+              <AppCheckbox
+                value={values.rememberMe}
+                style={styles.checkbox}
+                onPress={() => setFieldValue('rememberMe', !values.rememberMe)}>
+                {t('auth:rememberMe')}
+              </AppCheckbox>
+            </View>
 
-                <AppCheckbox
-                  value={values.rememberMe}
-                  style={styles.checkbox}
-                  onPress={() =>
-                    setFieldValue('rememberMe', !values.rememberMe)
-                  }>
-                  {t('auth:rememberMe')}
-                </AppCheckbox>
-              </View>
+            <View style={styles.actionContainer}>
+              <View style={{ height: hp('3%', insets) }} />
 
-              <View style={styles.actionContainer}>
-                <View style={{ height: hp('3%', insets) }} />
-
-                <AppPrimaryButton
-                  onPress={handleSubmit}
-                  loading={isLoading}
-                  disabled={!(isValid && dirty)}
-                  style={styles.createAccount}>
-                  {t('auth:loginButton')}
-                </AppPrimaryButton>
-              </View>
-            </>
-          )}
-        </Formik>
-      </SafeAreaView>
+              <AppPrimaryButton
+                onPress={handleSubmit}
+                loading={isLoading}
+                disabled={!(isValid && dirty)}
+                style={styles.createAccount}>
+                {t('auth:loginButton')}
+              </AppPrimaryButton>
+            </View>
+          </>
+        )}
+      </Formik>
     </AppView>
   );
 }
@@ -166,10 +154,6 @@ const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
   StyleSheet.create({
     actionContainer: {
       flexDirection: 'column-reverse',
-    },
-    container: {
-      flex: 1,
-      backgroundColor: theme.colors.background,
     },
     checkbox: {
       marginBottom: hp('2%', insets),

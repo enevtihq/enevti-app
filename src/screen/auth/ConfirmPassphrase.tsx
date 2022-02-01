@@ -1,9 +1,6 @@
 import React from 'react';
-import { StyleSheet, StatusBar, View } from 'react-native';
-import {
-  SafeAreaView,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+import { StyleSheet, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import { CommonActions } from '@react-navigation/native';
@@ -45,46 +42,39 @@ export default function ConfirmPassphrase({ route, navigation }: Props) {
 
   return (
     <AppView>
-      <SafeAreaView style={styles.container}>
-        <StatusBar
-          barStyle={theme.dark === true ? 'light-content' : 'dark-content'}
-          backgroundColor={theme.colors.background}
+      <AppHeaderWizard
+        navigation={navigation}
+        mode={'emoji'}
+        modeData={'passphrase'}
+        title={t('auth:confirmPasspraseHeader')}
+        description={t('auth:confirmPassphraseBody')}
+        style={styles.header}
+      />
+
+      <View style={styles.passphraseView}>
+        <AppPassphraseBox
+          passphrase={passphrase}
+          style={styles.passphraseBox}
         />
+      </View>
 
-        <AppHeaderWizard
-          navigation={navigation}
-          mode={'emoji'}
-          modeData={'passphrase'}
-          title={t('auth:confirmPasspraseHeader')}
-          description={t('auth:confirmPassphraseBody')}
-          style={styles.header}
-        />
+      <View style={styles.actionContainer}>
+        <View style={{ height: hp('3%', insets) }} />
 
-        <View style={styles.passphraseView}>
-          <AppPassphraseBox
-            passphrase={passphrase}
-            style={styles.passphraseBox}
-          />
-        </View>
+        <AppPrimaryButton
+          onPress={() => handleContinue()}
+          disabled={!checked}
+          style={styles.createAccount}>
+          {t('auth:continue')}
+        </AppPrimaryButton>
 
-        <View style={styles.actionContainer}>
-          <View style={{ height: hp('3%', insets) }} />
-
-          <AppPrimaryButton
-            onPress={() => handleContinue()}
-            disabled={!checked}
-            style={styles.createAccount}>
-            {t('auth:continue')}
-          </AppPrimaryButton>
-
-          <AppCheckbox
-            value={checked}
-            style={styles.checkbox}
-            onPress={() => setChecked(!checked)}>
-            {t('auth:confirmPassphraseCheck')}
-          </AppCheckbox>
-        </View>
-      </SafeAreaView>
+        <AppCheckbox
+          value={checked}
+          style={styles.checkbox}
+          onPress={() => setChecked(!checked)}>
+          {t('auth:confirmPassphraseCheck')}
+        </AppCheckbox>
+      </View>
     </AppView>
   );
 }
@@ -94,10 +84,6 @@ const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
     actionContainer: {
       flex: 0.7,
       flexDirection: 'column-reverse',
-    },
-    container: {
-      flex: 1,
-      backgroundColor: theme.colors.background,
     },
     checkbox: {
       marginBottom: hp('2%', insets),

@@ -1,9 +1,6 @@
 import React from 'react';
-import { StyleSheet, StatusBar, View, Keyboard } from 'react-native';
-import {
-  SafeAreaView,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+import { StyleSheet, View, Keyboard } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -61,122 +58,115 @@ export default function ImportPassphrase({ navigation }: Props) {
 
   return (
     <AppView dismissKeyboard={true}>
-      <SafeAreaView style={styles.container}>
-        <StatusBar
-          barStyle={theme.dark === true ? 'light-content' : 'dark-content'}
-          backgroundColor={theme.colors.background}
-        />
+      <AppHeaderWizard
+        back
+        navigation={navigation}
+        mode={'emoji'}
+        modeData={'importAccount'}
+        title={t('auth:importAccountHeader')}
+        description={t('auth:importAccountBody')}
+        style={styles.header}
+      />
 
-        <AppHeaderWizard
-          back
-          navigation={navigation}
-          mode={'emoji'}
-          modeData={'importAccount'}
-          title={t('auth:importAccountHeader')}
-          description={t('auth:importAccountBody')}
-          style={styles.header}
-        />
+      <Formik
+        initialValues={{
+          passphrase: '',
+          password: '',
+          confirmPassword: '',
+        }}
+        onSubmit={async values => {
+          Keyboard.dismiss();
+          setIsLoading(true);
+          await handleFormSubmit(values);
+        }}
+        validationSchema={validationSchema}>
+        {({
+          handleChange,
+          handleSubmit,
+          setFieldTouched,
+          values,
+          errors,
+          isValid,
+          dirty,
+          touched,
+        }) => (
+          <>
+            <View style={styles.passwordView}>
+              <AppFormTextInputWithError
+                label={t('auth:secretRecoveryPhrase')}
+                theme={paperTheme}
+                multiline={true}
+                autoCapitalize={'none'}
+                style={styles.passwordInput}
+                value={values.passphrase}
+                onBlur={() => setFieldTouched('passphrase')}
+                errorText={
+                  errors.passphrase
+                    ? values.passphrase.length > 0
+                      ? t('auth:invalidPassphrase')
+                      : t('form:required')
+                    : ''
+                }
+                showError={touched.passphrase}
+                onChangeText={handleChange('passphrase')}
+                onSubmitEditing={() => passwordInput.current.focus()}
+                blurOnSubmit={true}
+                returnKeyType="go"
+              />
+              <AppFormSecureTextInput
+                ref={passwordInput}
+                label={t('auth:newLocalPassword')}
+                style={styles.passwordInput}
+                value={values.password}
+                errorText={
+                  errors.password
+                    ? values.password.length > 0
+                      ? t('form:password')
+                      : t('form:required')
+                    : ''
+                }
+                showError={touched.password}
+                touchHandler={() => setFieldTouched('password')}
+                onChangeText={handleChange('password')}
+                onSubmitEditing={() => confirmPasswordInput.current.focus()}
+                blurOnSubmit={true}
+                returnKeyType="go"
+              />
+              <AppFormSecureTextInput
+                ref={confirmPasswordInput}
+                label={t('auth:confirmLocalPassword')}
+                style={styles.passwordInput}
+                value={values.confirmPassword}
+                errorText={
+                  errors.confirmPassword
+                    ? values.confirmPassword.length > 0
+                      ? t('form:passwordMatch')
+                      : t('form:required')
+                    : ''
+                }
+                showError={touched.confirmPassword}
+                touchHandler={() => setFieldTouched('confirmPassword')}
+                onChangeText={handleChange('confirmPassword')}
+                onSubmitEditing={
+                  isValid && dirty ? handleSubmit : () => Keyboard.dismiss()
+                }
+              />
+            </View>
 
-        <Formik
-          initialValues={{
-            passphrase: '',
-            password: '',
-            confirmPassword: '',
-          }}
-          onSubmit={async values => {
-            Keyboard.dismiss();
-            setIsLoading(true);
-            await handleFormSubmit(values);
-          }}
-          validationSchema={validationSchema}>
-          {({
-            handleChange,
-            handleSubmit,
-            setFieldTouched,
-            values,
-            errors,
-            isValid,
-            dirty,
-            touched,
-          }) => (
-            <>
-              <View style={styles.passwordView}>
-                <AppFormTextInputWithError
-                  label={t('auth:secretRecoveryPhrase')}
-                  theme={paperTheme}
-                  multiline={true}
-                  autoCapitalize={'none'}
-                  style={styles.passwordInput}
-                  value={values.passphrase}
-                  onBlur={() => setFieldTouched('passphrase')}
-                  errorText={
-                    errors.passphrase
-                      ? values.passphrase.length > 0
-                        ? t('auth:invalidPassphrase')
-                        : t('form:required')
-                      : ''
-                  }
-                  showError={touched.passphrase}
-                  onChangeText={handleChange('passphrase')}
-                  onSubmitEditing={() => passwordInput.current.focus()}
-                  blurOnSubmit={true}
-                  returnKeyType="go"
-                />
-                <AppFormSecureTextInput
-                  ref={passwordInput}
-                  label={t('auth:newLocalPassword')}
-                  style={styles.passwordInput}
-                  value={values.password}
-                  errorText={
-                    errors.password
-                      ? values.password.length > 0
-                        ? t('form:password')
-                        : t('form:required')
-                      : ''
-                  }
-                  showError={touched.password}
-                  touchHandler={() => setFieldTouched('password')}
-                  onChangeText={handleChange('password')}
-                  onSubmitEditing={() => confirmPasswordInput.current.focus()}
-                  blurOnSubmit={true}
-                  returnKeyType="go"
-                />
-                <AppFormSecureTextInput
-                  ref={confirmPasswordInput}
-                  label={t('auth:confirmLocalPassword')}
-                  style={styles.passwordInput}
-                  value={values.confirmPassword}
-                  errorText={
-                    errors.confirmPassword
-                      ? values.confirmPassword.length > 0
-                        ? t('form:passwordMatch')
-                        : t('form:required')
-                      : ''
-                  }
-                  showError={touched.confirmPassword}
-                  touchHandler={() => setFieldTouched('confirmPassword')}
-                  onChangeText={handleChange('confirmPassword')}
-                  onSubmitEditing={
-                    isValid && dirty ? handleSubmit : () => Keyboard.dismiss()
-                  }
-                />
-              </View>
+            <View style={styles.actionContainer}>
+              <View style={{ height: hp('3%', insets) }} />
 
-              <View style={styles.actionContainer}>
-                <View style={{ height: hp('3%', insets) }} />
-
-                <AppPrimaryButton
-                  onPress={handleSubmit}
-                  loading={isLoading}
-                  disabled={!(isValid && dirty)}
-                  style={styles.createAccount}>
-                  {t('auth:import')}
-                </AppPrimaryButton>
-              </View>
-            </>
-          )}
-        </Formik>
-      </SafeAreaView>
+              <AppPrimaryButton
+                onPress={handleSubmit}
+                loading={isLoading}
+                disabled={!(isValid && dirty)}
+                style={styles.createAccount}>
+                {t('auth:import')}
+              </AppPrimaryButton>
+            </View>
+          </>
+        )}
+      </Formik>
     </AppView>
   );
 }
@@ -185,10 +175,6 @@ const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
   StyleSheet.create({
     actionContainer: {
       flexDirection: 'column-reverse',
-    },
-    container: {
-      flex: 1,
-      backgroundColor: theme.colors.background,
     },
     createAccount: {
       marginBottom: hp('2%', insets),

@@ -11,6 +11,7 @@ import { RootState } from '../../../store/state';
 import AppSnackbar from '../snackbar/AppSnackbar';
 import { SafeAreaInsets, wp } from '../../../utils/imageRatio';
 import AppKeyboardDismissOnClickView from './AppKeyboardDismissOnClickView';
+import AppContainer from './AppContainer';
 
 interface AppViewProps {
   children: React.ReactNode;
@@ -30,9 +31,11 @@ export default function AppView({
 
   return (
     <View style={styles.view}>
-      <AppKeyboardDismissOnClickView activate={dismissKeyboard}>
-        {children}
-      </AppKeyboardDismissOnClickView>
+      <AppContainer>
+        <AppKeyboardDismissOnClickView activate={dismissKeyboard}>
+          {children}
+        </AppKeyboardDismissOnClickView>
+      </AppContainer>
       <AppSnackbar
         mode={snackbarState.mode}
         visible={snackbarState.show}

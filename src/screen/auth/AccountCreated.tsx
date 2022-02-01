@@ -1,9 +1,6 @@
 import React from 'react';
-import { StyleSheet, StatusBar, View } from 'react-native';
-import {
-  SafeAreaView,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+import { StyleSheet, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -39,52 +36,45 @@ export default function AccountCreated({ navigation }: Props) {
 
   return (
     <AppView>
-      <SafeAreaView style={styles.container}>
-        <StatusBar
-          barStyle={theme.dark === true ? 'light-content' : 'dark-content'}
-          backgroundColor={theme.colors.background}
-        />
+      <AppHeaderWizard
+        navigation={navigation}
+        mode={'emoji'}
+        modeData={'accountCreated'}
+        title={t('auth:accountCreated')}
+        description={t('auth:accountCreatedBrief')}
+        style={styles.header}
+      />
 
-        <AppHeaderWizard
-          navigation={navigation}
-          mode={'emoji'}
-          modeData={'accountCreated'}
-          title={t('auth:accountCreated')}
-          description={t('auth:accountCreatedBrief')}
-          style={styles.header}
-        />
+      <View style={styles.briefView}>
+        <AppIconBanner name={iconMap.passphrase} style={styles.briefItem}>
+          {t('auth:keepYourPassphraseSafe')}
+          <AppTextBody3 style={styles.boldText}>
+            {t('auth:keepYourPassphraseSafeBold', { brand: BRAND_NAME })}
+          </AppTextBody3>
+        </AppIconBanner>
+        <AppIconBanner name={iconMap.accountCircle} style={styles.briefItem}>
+          {t('auth:findYourPassphrase')}
+          <AppTextBody3 style={styles.boldText}>
+            {t('auth:findYourPassphraseBold')}
+          </AppTextBody3>
+        </AppIconBanner>
+        <AppIconBanner name={iconMap.insideDevice} style={styles.briefItem}>
+          {t('auth:passwordNeverLeaveDevice')}
+          <AppTextBody3 style={styles.boldText}>
+            {t('auth:passwordNeverLeaveDeviceBold')}
+          </AppTextBody3>
+        </AppIconBanner>
+      </View>
 
-        <View style={styles.briefView}>
-          <AppIconBanner name={iconMap.passphrase} style={styles.briefItem}>
-            {t('auth:keepYourPassphraseSafe')}
-            <AppTextBody3 style={styles.boldText}>
-              {t('auth:keepYourPassphraseSafeBold', { brand: BRAND_NAME })}
-            </AppTextBody3>
-          </AppIconBanner>
-          <AppIconBanner name={iconMap.accountCircle} style={styles.briefItem}>
-            {t('auth:findYourPassphrase')}
-            <AppTextBody3 style={styles.boldText}>
-              {t('auth:findYourPassphraseBold')}
-            </AppTextBody3>
-          </AppIconBanner>
-          <AppIconBanner name={iconMap.insideDevice} style={styles.briefItem}>
-            {t('auth:passwordNeverLeaveDevice')}
-            <AppTextBody3 style={styles.boldText}>
-              {t('auth:passwordNeverLeaveDeviceBold')}
-            </AppTextBody3>
-          </AppIconBanner>
-        </View>
+      <View style={styles.actionContainer}>
+        <View style={{ height: hp('3%', insets) }} />
 
-        <View style={styles.actionContainer}>
-          <View style={{ height: hp('3%', insets) }} />
-
-          <AppPrimaryButton
-            onPress={() => handleFormSubmit()}
-            style={styles.createAccount}>
-            {t('auth:createAccountDoneButton')}
-          </AppPrimaryButton>
-        </View>
-      </SafeAreaView>
+        <AppPrimaryButton
+          onPress={() => handleFormSubmit()}
+          style={styles.createAccount}>
+          {t('auth:createAccountDoneButton')}
+        </AppPrimaryButton>
+      </View>
     </AppView>
   );
 }
@@ -106,10 +96,6 @@ const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
       alignItems: 'center',
       paddingLeft: wp('12%', insets),
       paddingRight: wp('12%', insets),
-    },
-    container: {
-      flex: 1,
-      backgroundColor: theme.colors.background,
     },
     createAccount: {
       marginBottom: hp('2%', insets),

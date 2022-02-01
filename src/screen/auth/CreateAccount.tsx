@@ -1,9 +1,6 @@
 import React from 'react';
-import { View, StyleSheet, StatusBar } from 'react-native';
-import {
-  SafeAreaView,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+import { View, StyleSheet } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -31,64 +28,55 @@ export default function CreateAccount({ navigation }: Props) {
 
   return (
     <AppView>
-      <SafeAreaView style={styles.container}>
-        <StatusBar
-          barStyle={theme.dark === true ? 'light-content' : 'dark-content'}
-          backgroundColor={theme.colors.background}
-        />
+      <AppHeaderWizard
+        image={
+          <AppBrandBanner widthPercentage={0.5} style={styles.headerImage} />
+        }
+        title={t('auth:header1')}
+        description={t('auth:body1')}
+      />
 
-        <AppHeaderWizard
-          image={
-            <AppBrandBanner widthPercentage={0.5} style={styles.headerImage} />
-          }
-          title={t('auth:header1')}
-          description={t('auth:body1')}
-        />
+      <View style={styles.actionContainer}>
+        <View style={{ height: hp('3%', insets) }} />
+        <AppTextBody4 style={styles.term}>{t('auth:term')}</AppTextBody4>
+        <View style={{ height: hp('4%', insets) }} />
 
-        <View style={styles.actionContainer}>
-          <View style={{ height: hp('3%', insets) }} />
-          <AppTextBody4 style={styles.term}>{t('auth:term')}</AppTextBody4>
-          <View style={{ height: hp('4%', insets) }} />
+        <AppSecondaryButton
+          onPress={() => navigation.navigate('ImportPassphrase')}
+          style={styles.createAccount}>
+          {t('auth:importPassphrase')}
+        </AppSecondaryButton>
 
-          <AppSecondaryButton
-            onPress={() => navigation.navigate('ImportPassphrase')}
-            style={styles.createAccount}>
-            {t('auth:importPassphrase')}
-          </AppSecondaryButton>
+        <AppPrimaryButton
+          onPress={() => navigation.navigate('SetupLocalPassword')}
+          style={styles.createAccount}>
+          {t('auth:createAccount')}
+        </AppPrimaryButton>
 
-          <AppPrimaryButton
-            onPress={() => navigation.navigate('SetupLocalPassword')}
-            style={styles.createAccount}>
-            {t('auth:createAccount')}
-          </AppPrimaryButton>
-
-          <View style={styles.orView}>
-            <View style={styles.orLine} />
-            <AppTextBody3
-              style={{
-                color: theme.colors.placeholder,
-                marginBottom: hp('2%', insets),
-              }}>
-              {t('auth:or')}
-            </AppTextBody3>
-            <View style={styles.orLine} />
-          </View>
-
-          <AppGoogleSignInButton
-            onExistingAccount={() => {
-              navigation.dispatch(
-                CommonActions.reset({
-                  index: 0,
-                  routes: [{ name: 'AccountCreated' }],
-                }),
-              );
-            }}
-            onNewAccount={() =>
-              navigation.navigate('SetupGoogleBinderPassword')
-            }
-          />
+        <View style={styles.orView}>
+          <View style={styles.orLine} />
+          <AppTextBody3
+            style={{
+              color: theme.colors.placeholder,
+              marginBottom: hp('2%', insets),
+            }}>
+            {t('auth:or')}
+          </AppTextBody3>
+          <View style={styles.orLine} />
         </View>
-      </SafeAreaView>
+
+        <AppGoogleSignInButton
+          onExistingAccount={() => {
+            navigation.dispatch(
+              CommonActions.reset({
+                index: 0,
+                routes: [{ name: 'AccountCreated' }],
+              }),
+            );
+          }}
+          onNewAccount={() => navigation.navigate('SetupGoogleBinderPassword')}
+        />
+      </View>
     </AppView>
   );
 }
@@ -98,10 +86,6 @@ const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
     actionContainer: {
       flex: 1,
       flexDirection: 'column-reverse',
-    },
-    container: {
-      flex: 1,
-      backgroundColor: theme.colors.background,
     },
     createAccount: {
       marginBottom: hp('2%', insets),
