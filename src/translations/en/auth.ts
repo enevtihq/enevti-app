@@ -41,9 +41,9 @@ export default {
   rememberMe: 'Remember Me',
   loginButton: 'Login',
   wrongPassword: 'Wrong password!',
-  inputBinderPassword: 'Input Binding Password!',
+  inputBinderPassword: 'New Device?',
   inputBinderPasswordBody:
-    "Looks like you're logging in using Google from different binded device.",
+    'Please input your binding password to continue login using Google',
   binderPasswordHeader: 'Setup Binding Password',
   binderPasswordBody:
     'This is required if you use Google to login from different device. This is not your Google password!',

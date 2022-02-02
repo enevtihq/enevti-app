@@ -127,6 +127,7 @@ export default function AppGoogleSignInButton({
           encrypted: secretData.encrypted,
         });
         dispatch(setUnencryptedPassphraseAuth(newBindedData));
+        setShowInputGoogleDialog(false);
         onExistingAccount();
       }
     } catch (err: any) {
