@@ -30,21 +30,19 @@ export default function AppView({
   const dispatch = useDispatch();
 
   return (
-    <View style={styles.view}>
-      <AppContainer>
-        <AppKeyboardDismissOnClickView activate={dismissKeyboard}>
-          {children}
-        </AppKeyboardDismissOnClickView>
-      </AppContainer>
-      <AppSnackbar
-        mode={snackbarState.mode}
-        visible={snackbarState.show}
-        style={styles.snackbar}
-        onDismiss={() => dispatch(hideSnackbar())}
-        duration={1500}>
-        {snackbarState.text}
-      </AppSnackbar>
-    </View>
+    <AppKeyboardDismissOnClickView activate={dismissKeyboard}>
+      <View style={styles.view}>
+        <AppContainer>{children}</AppContainer>
+        <AppSnackbar
+          mode={snackbarState.mode}
+          visible={snackbarState.show}
+          style={styles.snackbar}
+          onDismiss={() => dispatch(hideSnackbar())}
+          duration={1500}>
+          {snackbarState.text}
+        </AppSnackbar>
+      </View>
+    </AppKeyboardDismissOnClickView>
   );
 }
 
