@@ -1,4 +1,4 @@
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Keyboard } from 'react-native';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -173,6 +173,7 @@ export default function AppGoogleSignInButton({
             password: '',
           }}
           onSubmit={async values => {
+            Keyboard.dismiss();
             setIsDialogButtonLoading(true);
             await handleDialogFormSubmit(values);
           }}
@@ -210,7 +211,7 @@ export default function AppGoogleSignInButton({
                   onChangeText={handleChange('password')}
                   onSubmitEditing={isValid && dirty ? handleSubmit : () => {}}
                   blurOnSubmit={true}
-                  returnKeyType="go"
+                  returnKeyType={'done'}
                 />
               </Dialog.Content>
               <Dialog.Actions style={styles.dialogAction}>
