@@ -7,15 +7,15 @@ import { Theme } from '../../../theme/default';
 import { SafeAreaInsets } from '../../../utils/imageRatio';
 import AppBrandBanner from '../../molecules/AppBrandBanner';
 
-export default function AppHeader({ style }: any) {
+export default function AppHeader({ style, height }: any) {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
-  const styles = makeStyle(theme, insets);
+  const styles = makeStyle(theme, height, insets);
 
   return (
     <Animated.View style={style}>
       <Appbar.Header style={styles.header}>
-        <AppBrandBanner widthPercentage={0.4} style={styles.image} />
+        <AppBrandBanner widthPercentage={0.35} style={styles.image} />
         <View style={styles.divider} />
         <Appbar.Action icon="magnify" onPress={() => console.log('anjay')} />
         <Appbar.Action
@@ -27,7 +27,7 @@ export default function AppHeader({ style }: any) {
   );
 }
 
-const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
+const makeStyle = (theme: Theme, height: number, insets: SafeAreaInsets) =>
   StyleSheet.create({
     divider: {
       flex: 1,
@@ -38,7 +38,7 @@ const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
       width: '100%',
       marginTop: insets.top,
       paddingVertical: 36,
-      height: 80,
+      height: height,
     },
     image: {
       marginLeft: 8,

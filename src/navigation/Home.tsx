@@ -15,11 +15,18 @@ import Animated, {
 } from 'react-native-reanimated';
 import { diffClamp } from '../utils/animation';
 import AppTabBar from '../components/atoms/view/AppTabBar';
+import { hp } from '../utils/imageRatio';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const Tab = createBottomTabNavigator();
+const TABBAR_HEIGHT_PERCENTAGE = 8;
+const HEADER_HEIGHT_PERCENTAGE = 9.5;
 
 export default function Home() {
   let activeTab = 0;
+  const insets = useSafeAreaInsets();
+  const headerHeight = hp(HEADER_HEIGHT_PERCENTAGE, insets);
+  const tabBarHeight = hp(TABBAR_HEIGHT_PERCENTAGE, insets);
   const tabScrollY = [
     useSharedValue(0),
     useSharedValue(0),
@@ -31,7 +38,7 @@ export default function Home() {
     return {
       opacity: interpolate(
         tabScrollY[0].value,
-        [0, 100],
+        [0, headerHeight + insets.top],
         [1, 0],
         Extrapolate.CLAMP,
       ),
@@ -39,8 +46,8 @@ export default function Home() {
         {
           translateY: interpolate(
             tabScrollY[0].value,
-            [0, 100],
-            [0, -100],
+            [0, headerHeight + insets.top],
+            [0, -(headerHeight + insets.top)],
             Extrapolate.CLAMP,
           ),
         },
@@ -48,18 +55,27 @@ export default function Home() {
     };
   });
   const feedAnimatedScrollHandler = useAnimatedScrollHandler({
-    onScroll: (event, ctx: { prevY: number }) => {
+    onScroll: (event, ctx: { prevY: number; current: number }) => {
       const diff = event.contentOffset.y - ctx.prevY;
-      tabScrollY[0].value = diffClamp(tabScrollY[0].value + diff, 0, 100);
+      tabScrollY[0].value = diffClamp(
+        ctx.current + diff,
+        0,
+        headerHeight + insets.top,
+      );
     },
     onBeginDrag: (event, ctx) => {
       ctx.prevY = event.contentOffset.y;
     },
-    onEndDrag: event => {
-      if (tabScrollY[0].value < 100 / 2 || event.contentOffset.y < 100) {
+    onEndDrag: (event, ctx) => {
+      if (
+        tabScrollY[0].value < (headerHeight + insets.top) / 2 ||
+        event.contentOffset.y < headerHeight + insets.top
+      ) {
         tabScrollY[0].value = withSpring(0);
+        ctx.current = 0;
       } else {
-        tabScrollY[0].value = withSpring(100);
+        tabScrollY[0].value = withSpring(headerHeight + insets.top);
+        ctx.current = headerHeight + insets.top;
       }
     },
   });
@@ -68,7 +84,7 @@ export default function Home() {
     return {
       opacity: interpolate(
         tabScrollY[activeTab].value,
-        [0, 100],
+        [0, tabBarHeight + insets.bottom],
         [1, 0],
         Extrapolate.CLAMP,
       ),
@@ -76,8 +92,8 @@ export default function Home() {
         {
           translateY: interpolate(
             tabScrollY[activeTab].value,
-            [0, 100],
-            [0, 100],
+            [0, tabBarHeight + insets.bottom],
+            [0, tabBarHeight + insets.bottom],
             Extrapolate.CLAMP,
           ),
         },
@@ -88,7 +104,12 @@ export default function Home() {
   return (
     <Tab.Navigator
       tabBar={props => <AppTabBar {...props} style={tabBarStyle} />}
-      screenOptions={{ tabBarStyle: { position: 'absolute' } }}>
+      screenOptions={{
+        tabBarStyle: {
+          position: 'absolute',
+          height: tabBarHeight + insets.bottom,
+        },
+      }}>
       <Tab.Screen
         name="Feed"
         listeners={{
@@ -97,7 +118,7 @@ export default function Home() {
           },
         }}
         options={{
-          header: () => <AppHeader style={feedStyle} />,
+          header: () => <AppHeader style={feedStyle} height={headerHeight} />,
         }}>
         {props => (
           <Animated.ScrollView
