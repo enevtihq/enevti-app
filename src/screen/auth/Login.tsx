@@ -74,12 +74,12 @@ export default function Login({ navigation }: Props) {
         image={
           <AppBrandLogo
             mode={'glow'}
-            widthPercentage={0.45}
+            widthPercentage={0.4}
             style={styles.headerImage}
           />
         }
         title={t('auth:loginHeader')}
-        description={''}
+        description={t('auth:loginBody')}
       />
 
       <Formik
@@ -121,13 +121,16 @@ export default function Login({ navigation }: Props) {
                 onChangeText={handleChange('password')}
                 onSubmitEditing={() => Keyboard.dismiss()}
                 blurOnSubmit={true}
-                returnKeyType="go"
+                returnKeyType="done"
               />
 
               <AppCheckbox
                 value={values.rememberMe}
                 style={styles.checkbox}
-                onPress={() => setFieldValue('rememberMe', !values.rememberMe)}>
+                onPress={() => {
+                  Keyboard.dismiss();
+                  setFieldValue('rememberMe', !values.rememberMe);
+                }}>
                 {t('auth:rememberMe')}
               </AppCheckbox>
             </View>
@@ -157,8 +160,8 @@ const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
     },
     checkbox: {
       marginBottom: hp('2%', insets),
-      marginLeft: wp('3%', insets),
-      marginRight: wp('3%', insets),
+      marginLeft: wp('5%', insets),
+      marginRight: wp('5%', insets),
     },
     createAccount: {
       marginBottom: hp('2%', insets),
@@ -177,7 +180,7 @@ const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
       flex: 1,
     },
     passwordInput: {
-      marginBottom: hp('2%', insets),
+      marginBottom: hp('1%', insets),
       marginLeft: wp('5%', insets),
       marginRight: wp('5%', insets),
     },
