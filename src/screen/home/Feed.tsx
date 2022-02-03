@@ -20,7 +20,7 @@ export default function Feed({}: Props) {
   };
 
   return (
-    <AppView>
+    <AppView darken={true}>
       <View style={styles.textContainer}>{loop()}</View>
     </AppView>
   );

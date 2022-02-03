@@ -15,11 +15,13 @@ import AppContainer from './AppContainer';
 
 interface AppViewProps {
   children: React.ReactNode;
+  darken?: boolean;
   dismissKeyboard?: boolean;
 }
 
 export default function AppView({
   children,
+  darken = false,
   dismissKeyboard = false,
 }: AppViewProps) {
   const insets = useSafeAreaInsets();
@@ -32,7 +34,7 @@ export default function AppView({
   return (
     <AppKeyboardDismissOnClickView activate={dismissKeyboard}>
       <View style={styles.view}>
-        <AppContainer>{children}</AppContainer>
+        <AppContainer darken={darken}>{children}</AppContainer>
         <AppSnackbar
           mode={snackbarState.mode}
           visible={snackbarState.show}
