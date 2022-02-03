@@ -22,6 +22,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AppHeaderAction from '../components/atoms/view/AppHeaderAction';
 import { iconMap } from '../components/atoms/icon/AppIconComponent';
 import { TouchableRipple, useTheme } from 'react-native-paper';
+import { useTranslation } from 'react-i18next';
 
 const Tab = createBottomTabNavigator();
 const TABBAR_HEIGHT_PERCENTAGE = 8;
@@ -29,6 +30,7 @@ const HEADER_HEIGHT_PERCENTAGE = 9.5;
 
 export default function Home() {
   let activeTab = 0;
+  const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const theme = useTheme();
 
@@ -127,7 +129,7 @@ export default function Home() {
           },
         }}
         options={{
-          tabBarLabel: 'Home',
+          tabBarLabel: t('home:feed'),
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
               name={iconMap.home}
@@ -170,7 +172,7 @@ export default function Home() {
           },
         }}
         options={{
-          tabBarLabel: 'Statistics',
+          tabBarLabel: t('home:statistics'),
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
               name={iconMap.statistics}
@@ -195,7 +197,7 @@ export default function Home() {
           },
         }}
         options={{
-          tabBarLabel: 'Apps',
+          tabBarLabel: t('home:apps'),
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
               name={iconMap.discover}
@@ -220,7 +222,7 @@ export default function Home() {
           },
         }}
         options={{
-          tabBarLabel: 'Profile',
+          tabBarLabel: t('home:profile'),
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
               name={iconMap.accountCircle}
