@@ -14,15 +14,23 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated';
 import { diffClamp } from '../utils/animation';
+import AppTabBar from '../components/atoms/view/AppTabBar';
 
 const Tab = createBottomTabNavigator();
 
 export default function Home() {
-  const feedScrollY = useSharedValue(0);
+  let activeTab = 0;
+  const tabScrollY = [
+    useSharedValue(0),
+    useSharedValue(0),
+    useSharedValue(0),
+    useSharedValue(0),
+  ];
+
   const feedStyle = useAnimatedStyle(() => {
     return {
       opacity: interpolate(
-        feedScrollY.value,
+        tabScrollY[0].value,
         [0, 100],
         [1, 0],
         Extrapolate.CLAMP,
@@ -30,7 +38,7 @@ export default function Home() {
       transform: [
         {
           translateY: interpolate(
-            feedScrollY.value,
+            tabScrollY[0].value,
             [0, 100],
             [0, -100],
             Extrapolate.CLAMP,
@@ -42,24 +50,52 @@ export default function Home() {
   const feedAnimatedScrollHandler = useAnimatedScrollHandler({
     onScroll: (event, ctx: { prevY: number }) => {
       const diff = event.contentOffset.y - ctx.prevY;
-      feedScrollY.value = diffClamp(feedScrollY.value + diff, 0, 100);
+      tabScrollY[0].value = diffClamp(tabScrollY[0].value + diff, 0, 100);
     },
     onBeginDrag: (event, ctx) => {
       ctx.prevY = event.contentOffset.y;
     },
-    onEndDrag: () => {
-      if (feedScrollY.value < 100 / 2) {
-        feedScrollY.value = withSpring(0);
+    onEndDrag: event => {
+      if (tabScrollY[0].value < 100 / 2 || event.contentOffset.y < 100) {
+        tabScrollY[0].value = withSpring(0);
       } else {
-        feedScrollY.value = withSpring(100);
+        tabScrollY[0].value = withSpring(100);
       }
     },
   });
 
+  const tabBarStyle = useAnimatedStyle(() => {
+    return {
+      opacity: interpolate(
+        tabScrollY[activeTab].value,
+        [0, 100],
+        [1, 0],
+        Extrapolate.CLAMP,
+      ),
+      transform: [
+        {
+          translateY: interpolate(
+            tabScrollY[activeTab].value,
+            [0, 100],
+            [0, 100],
+            Extrapolate.CLAMP,
+          ),
+        },
+      ],
+    };
+  });
+
   return (
-    <Tab.Navigator screenOptions={{ tabBarStyle: { position: 'absolute' } }}>
+    <Tab.Navigator
+      tabBar={props => <AppTabBar {...props} style={tabBarStyle} />}
+      screenOptions={{ tabBarStyle: { position: 'absolute' } }}>
       <Tab.Screen
         name="Feed"
+        listeners={{
+          tabPress: () => {
+            activeTab = 0;
+          },
+        }}
         options={{
           header: () => <AppHeader style={feedStyle} />,
         }}>
@@ -71,9 +107,33 @@ export default function Home() {
           </Animated.ScrollView>
         )}
       </Tab.Screen>
-      <Tab.Screen name="Statistics" component={Statistics} />
-      <Tab.Screen name="Discover" component={Discover} />
-      <Tab.Screen name="MyProfile" component={MyProfile} />
+      <Tab.Screen
+        name="Statistics"
+        listeners={{
+          tabPress: () => {
+            activeTab = 1;
+          },
+        }}
+        component={Statistics}
+      />
+      <Tab.Screen
+        name="Discover"
+        listeners={{
+          tabPress: () => {
+            activeTab = 2;
+          },
+        }}
+        component={Discover}
+      />
+      <Tab.Screen
+        name="MyProfile"
+        listeners={{
+          tabPress: () => {
+            activeTab = 3;
+          },
+        }}
+        component={MyProfile}
+      />
     </Tab.Navigator>
   );
 }
