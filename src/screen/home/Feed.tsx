@@ -1,11 +1,14 @@
 import React from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import AppView from '../../components/atoms/view/AppView';
 import AppTextHeading1 from '../../components/atoms/text/AppTextHeading1';
-import { useTheme } from 'react-native-paper';
 
-export default function Feed() {
-  const theme = useTheme();
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '../../navigation';
+
+type Props = StackScreenProps<RootStackParamList, 'Feed'>;
+
+export default function Feed({}: Props) {
   const styles = makeStyle();
 
   const loop = () => {
@@ -18,9 +21,7 @@ export default function Feed() {
 
   return (
     <AppView>
-      <View style={styles.textContainer}>
-        <ScrollView style={{ width: '100%' }}>{loop()}</ScrollView>
-      </View>
+      <View style={styles.textContainer}>{loop()}</View>
     </AppView>
   );
 }
@@ -29,7 +30,5 @@ const makeStyle = () =>
   StyleSheet.create({
     textContainer: {
       flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
     },
   });

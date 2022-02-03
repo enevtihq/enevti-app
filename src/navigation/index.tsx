@@ -33,6 +33,7 @@ export type RootStackParamList = {
   ImportPassphrase: undefined;
   Login: undefined;
   Home: undefined;
+  Feed: undefined;
 };
 
 const Stack = createStackNavigator();
