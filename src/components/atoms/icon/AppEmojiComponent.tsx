@@ -19,6 +19,10 @@ export const emojiMap = {
   binderPassword: 'key',
   magnify: UNDEFINED_EMOJI,
   menu: UNDEFINED_EMOJI,
+  home: UNDEFINED_EMOJI,
+  statistics: UNDEFINED_EMOJI,
+  discover: UNDEFINED_EMOJI,
+  notification: UNDEFINED_EMOJI,
 };
 
 interface AppEmojiComponentProps {

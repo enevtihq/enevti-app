@@ -13,12 +13,15 @@ import Animated, {
   Extrapolate,
   withSpring,
 } from 'react-native-reanimated';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
 import { diffClamp } from '../utils/animation';
 import AppTabBar from '../components/atoms/view/AppTabBar';
 import { hp } from '../utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AppHeaderAction from '../components/atoms/view/AppHeaderAction';
 import { iconMap } from '../components/atoms/icon/AppIconComponent';
+import { TouchableRipple, useTheme } from 'react-native-paper';
 
 const Tab = createBottomTabNavigator();
 const TABBAR_HEIGHT_PERCENTAGE = 8;
@@ -27,6 +30,8 @@ const HEADER_HEIGHT_PERCENTAGE = 9.5;
 export default function Home() {
   let activeTab = 0;
   const insets = useSafeAreaInsets();
+  const theme = useTheme();
+
   const headerHeight = hp(HEADER_HEIGHT_PERCENTAGE, insets);
   const tabBarHeight = hp(TABBAR_HEIGHT_PERCENTAGE, insets);
   const tabScrollY = [
@@ -110,6 +115,8 @@ export default function Home() {
         tabBarStyle: {
           position: 'absolute',
           height: tabBarHeight + insets.bottom,
+          backgroundColor: theme.colors.background,
+          borderTopColor: theme.colors.background,
         },
       }}>
       <Tab.Screen
@@ -120,6 +127,20 @@ export default function Home() {
           },
         }}
         options={{
+          tabBarLabel: 'Home',
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons
+              name={iconMap.home}
+              color={color}
+              size={size}
+            />
+          ),
+          tabBarButton: props => (
+            <TouchableRipple
+              {...props}
+              disabled={props.disabled as boolean | undefined}
+            />
+          ),
           header: () => (
             <AppHeader style={feedStyle} height={headerHeight}>
               <AppHeaderAction
@@ -127,7 +148,7 @@ export default function Home() {
                 onPress={() => console.log('pressed')}
               />
               <AppHeaderAction
-                icon={iconMap.menu}
+                icon={iconMap.notification}
                 onPress={() => console.log('pressed')}
               />
             </AppHeader>
@@ -148,6 +169,22 @@ export default function Home() {
             activeTab = 1;
           },
         }}
+        options={{
+          tabBarLabel: 'Statistics',
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons
+              name={iconMap.statistics}
+              color={color}
+              size={size}
+            />
+          ),
+          tabBarButton: props => (
+            <TouchableRipple
+              {...props}
+              disabled={props.disabled as boolean | undefined}
+            />
+          ),
+        }}
         component={Statistics}
       />
       <Tab.Screen
@@ -157,6 +194,22 @@ export default function Home() {
             activeTab = 2;
           },
         }}
+        options={{
+          tabBarLabel: 'Apps',
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons
+              name={iconMap.discover}
+              color={color}
+              size={size}
+            />
+          ),
+          tabBarButton: props => (
+            <TouchableRipple
+              {...props}
+              disabled={props.disabled as boolean | undefined}
+            />
+          ),
+        }}
         component={Discover}
       />
       <Tab.Screen
@@ -165,6 +218,22 @@ export default function Home() {
           tabPress: () => {
             activeTab = 3;
           },
+        }}
+        options={{
+          tabBarLabel: 'Profile',
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons
+              name={iconMap.accountCircle}
+              color={color}
+              size={size}
+            />
+          ),
+          tabBarButton: props => (
+            <TouchableRipple
+              {...props}
+              disabled={props.disabled as boolean | undefined}
+            />
+          ),
         }}
         component={MyProfile}
       />

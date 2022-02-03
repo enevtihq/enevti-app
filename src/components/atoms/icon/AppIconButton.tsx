@@ -3,9 +3,14 @@ import { IconButton } from 'react-native-paper';
 
 interface AppIconButtonProps {
   icon: string;
-  onPress?: () => void;
+  size?: number;
+  onPress?: (e?: any) => void;
 }
 
-export default function AppIconButton({ icon, onPress }: AppIconButtonProps) {
-  return <IconButton icon={icon} onPress={onPress} />;
+export default function AppIconButton({
+  icon,
+  size,
+  onPress,
+}: AppIconButtonProps) {
+  return <IconButton icon={icon} onPress={onPress} size={size} />;
 }

@@ -21,6 +21,10 @@ export const iconMap = {
   binderPassword: UNDEFINED_ICON,
   magnify: 'magnify',
   menu: 'dots-vertical',
+  home: 'home-variant',
+  statistics: 'chart-bar',
+  discover: 'apps',
+  notification: 'bell-outline',
 };
 
 interface AppIconComponentProps {
