@@ -17,6 +17,8 @@ import { diffClamp } from '../utils/animation';
 import AppTabBar from '../components/atoms/view/AppTabBar';
 import { hp } from '../utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import AppHeaderAction from '../components/atoms/view/AppHeaderAction';
+import { iconMap } from '../components/atoms/icon/AppIconComponent';
 
 const Tab = createBottomTabNavigator();
 const TABBAR_HEIGHT_PERCENTAGE = 8;
@@ -118,7 +120,18 @@ export default function Home() {
           },
         }}
         options={{
-          header: () => <AppHeader style={feedStyle} height={headerHeight} />,
+          header: () => (
+            <AppHeader style={feedStyle} height={headerHeight}>
+              <AppHeaderAction
+                icon={iconMap.magnify}
+                onPress={() => console.log('pressed')}
+              />
+              <AppHeaderAction
+                icon={iconMap.menu}
+                onPress={() => console.log('pressed')}
+              />
+            </AppHeader>
+          ),
         }}>
         {props => (
           <Animated.ScrollView

@@ -7,7 +7,13 @@ import { Theme } from '../../../theme/default';
 import { SafeAreaInsets } from '../../../utils/imageRatio';
 import AppBrandBanner from '../../molecules/AppBrandBanner';
 
-export default function AppHeader({ style, height }: any) {
+export default function AppHeader({
+  style,
+  height,
+  children,
+  title,
+  subtitle,
+}: any) {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
   const styles = makeStyle(theme, height, insets);
@@ -15,13 +21,18 @@ export default function AppHeader({ style, height }: any) {
   return (
     <Animated.View style={style}>
       <Appbar.Header style={styles.header}>
-        <AppBrandBanner widthPercentage={0.35} style={styles.image} />
+        {title ? (
+          <Appbar.Content
+            title={title}
+            subtitle={subtitle}
+            titleStyle={styles.title}
+            subtitleStyle={styles.subtitle}
+          />
+        ) : (
+          <AppBrandBanner widthPercentage={0.35} style={styles.image} />
+        )}
         <View style={styles.divider} />
-        <Appbar.Action icon="magnify" onPress={() => console.log('anjay')} />
-        <Appbar.Action
-          icon="dots-vertical"
-          onPress={() => console.log('anjay')}
-        />
+        {children}
       </Appbar.Header>
     </Animated.View>
   );
@@ -37,10 +48,15 @@ const makeStyle = (theme: Theme, height: number, insets: SafeAreaInsets) =>
       backgroundColor: theme.colors.background,
       width: '100%',
       marginTop: insets.top,
-      paddingVertical: 36,
       height: height,
     },
     image: {
       marginLeft: 8,
+    },
+    title: {
+      color: theme.colors.text,
+    },
+    subtitle: {
+      color: theme.colors.placeholder,
     },
   });

@@ -19,6 +19,8 @@ export const iconMap = {
   importAccount: 'account-reactivate',
   close: 'close',
   binderPassword: UNDEFINED_ICON,
+  magnify: 'magnify',
+  menu: 'dots-vertical',
 };
 
 interface AppIconComponentProps {

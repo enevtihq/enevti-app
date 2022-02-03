@@ -17,6 +17,8 @@ export const emojiMap = {
   importAccount: 'inbox_tray',
   close: UNDEFINED_EMOJI,
   binderPassword: 'key',
+  magnify: UNDEFINED_EMOJI,
+  menu: UNDEFINED_EMOJI,
 };
 
 interface AppEmojiComponentProps {
