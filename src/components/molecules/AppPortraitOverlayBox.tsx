@@ -1,6 +1,6 @@
 import { StyleSheet, View, ViewStyle } from 'react-native';
 import React from 'react';
-import { useTheme } from 'react-native-paper';
+import { TouchableRipple, useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { wp, SafeAreaInsets } from '../../utils/imageRatio';
 import AppTextBody4 from '../atoms/text/AppTextBody4';
@@ -11,12 +11,14 @@ interface AppPortraitOverlayBoxProps {
   url: string;
   title: string;
   style?: ViewStyle;
+  onPress?: () => void;
 }
 
 export default function AppPortraitOverlayBox({
   url,
   title,
   style,
+  onPress,
 }: AppPortraitOverlayBoxProps) {
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
@@ -29,6 +31,9 @@ export default function AppPortraitOverlayBox({
       <AppTextBody4 numberOfLines={1} style={styles.textOverlay}>
         {title}
       </AppTextBody4>
+      <TouchableRipple style={styles.rippleOverlay} onPress={onPress}>
+        <View />
+      </TouchableRipple>
     </View>
   );
 }
@@ -47,6 +52,9 @@ const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
     overlay: {
       ...StyleSheet.absoluteFillObject,
       backgroundColor: 'rgba(0,0,0,0.3)',
+    },
+    rippleOverlay: {
+      ...StyleSheet.absoluteFillObject,
     },
     textOverlay: {
       ...StyleSheet.absoluteFillObject,
