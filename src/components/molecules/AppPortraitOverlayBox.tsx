@@ -1,6 +1,6 @@
 import { StyleSheet, View, ViewStyle } from 'react-native';
 import React from 'react';
-import { useTheme } from 'react-native-paper/src/core/theming';
+import { useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { wp, SafeAreaInsets } from '../../utils/imageRatio';
 import AppTextBody4 from '../atoms/text/AppTextBody4';

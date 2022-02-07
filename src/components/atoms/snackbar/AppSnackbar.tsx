@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { Portal, Snackbar } from 'react-native-paper';
 import { SnackbarProps } from 'react-native-paper/lib/typescript/components/Snackbar';
 import { Theme } from 'react-native-paper/lib/typescript/types';
-import { useTheme } from 'react-native-paper/src/core/theming';
+import { useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { hp, SafeAreaInsets, wp } from '../../../utils/imageRatio';
 

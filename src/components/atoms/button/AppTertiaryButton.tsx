@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleProp, ViewStyle, StyleSheet, View } from 'react-native';
 import { ActivityIndicator, Button } from 'react-native-paper';
 import { IconSource } from 'react-native-paper/lib/typescript/components/Icon';
-import { useTheme } from 'react-native-paper/src/core/theming';
+import { useTheme } from 'react-native-paper';
 import { hp, SafeAreaInsets } from '../../../utils/imageRatio';
 import color from 'color';
 

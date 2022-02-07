@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Theme } from '../../../theme/default';
-import { useTheme } from 'react-native-paper/src/core/theming';
+import { useTheme } from 'react-native-paper';
 import AppStatusBar from './AppStatusBar';
 import color from 'color';
 

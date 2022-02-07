@@ -1,7 +1,7 @@
 import React from 'react';
 import { TextInputProps } from 'react-native-paper/lib/typescript/components/TextInput/TextInput';
 import { TextInput } from 'react-native-paper';
-import { useTheme } from 'react-native-paper/src/core/theming';
+import { useTheme } from 'react-native-paper';
 import color from 'color';
 import { StyleSheet } from 'react-native';
 
