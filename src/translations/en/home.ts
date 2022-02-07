@@ -3,4 +3,5 @@ export default {
   statistics: 'Statistics',
   apps: 'Apps',
   profile: 'Profile',
+  recentMoments: 'Recent Moments',
 };
