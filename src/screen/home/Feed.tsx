@@ -1,27 +1,22 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import AppView from '../../components/atoms/view/AppView';
-import AppTextHeading1 from '../../components/atoms/text/AppTextHeading1';
 
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation';
+import AppTextBody2 from '../../components/atoms/text/AppTextBody2';
 
 type Props = StackScreenProps<RootStackParamList, 'Feed'>;
 
 export default function Feed({}: Props) {
   const styles = makeStyle();
 
-  const loop = () => {
-    let ret = [];
-    for (let i = 0; i < 100; i++) {
-      ret.push(<AppTextHeading1 key={i}>Cooming Soon!</AppTextHeading1>);
-    }
-    return ret;
-  };
-
   return (
     <AppView darken={true}>
-      <View style={styles.textContainer}>{loop()}</View>
+      <View style={{ height: 72 }} />
+      <View style={styles.textContainer}>
+        <AppTextBody2>Wallet</AppTextBody2>
+      </View>
     </AppView>
   );
 }

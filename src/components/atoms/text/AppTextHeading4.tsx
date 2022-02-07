@@ -5,28 +5,28 @@ import { wp, SafeAreaInsets } from '../../../utils/imageRatio';
 import { Theme } from '../../../theme/default';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-interface AppTextBody3Props {
+interface AppTextHeading4Props {
   children: React.ReactNode;
   style?: TextStyle;
 }
 
-export default function AppTextBody3({
+export default function AppTextHeading4({
   children,
   style,
-}: AppTextBody3Props): JSX.Element {
+}: AppTextHeading4Props): JSX.Element {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
   const styles = makeStyle(theme, insets);
 
-  return <Text style={[styles.body3, style]}>{children}</Text>;
+  return <Text style={[styles.heading4, style]}>{children}</Text>;
 }
 
 const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
   StyleSheet.create({
-    body3: {
+    heading4: {
       color: theme.colors.text,
-      fontFamily: theme.fonts.regular.fontFamily,
-      fontWeight: theme.fonts.regular.fontWeight,
-      fontSize: wp('4.0%', insets),
+      fontFamily: theme.fonts.medium.fontFamily,
+      fontWeight: theme.fonts.medium.fontWeight,
+      fontSize: wp('3.5%', insets),
     },
   });

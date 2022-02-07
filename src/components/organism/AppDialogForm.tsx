@@ -9,7 +9,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AppTextHeading1 from '../atoms/text/AppTextHeading1';
 import AppIconButton from '../atoms/icon/AppIconButton';
 import { SafeAreaInsets } from '../../utils/imageRatio';
-import AppTextBody3 from '../atoms/text/AppTextBody3';
+import AppTextBody4 from '../atoms/text/AppTextBody4';
 import AppKeyboardDismissOnClickView from '../atoms/view/AppKeyboardDismissOnClickView';
 
 interface AppDialogFormProps {
@@ -64,7 +64,7 @@ export default function AppDialogForm({
               <AppTextHeading1>{title}</AppTextHeading1>
             </Dialog.Title>
             <Dialog.Content style={styles.content}>
-              <AppTextBody3 style={styles.content}>{description}</AppTextBody3>
+              <AppTextBody4 style={styles.content}>{description}</AppTextBody4>
             </Dialog.Content>
             {children}
           </View>

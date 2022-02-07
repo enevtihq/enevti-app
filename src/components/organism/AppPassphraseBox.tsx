@@ -6,7 +6,7 @@ import color from 'color';
 
 import { Theme } from '../../theme/default';
 import AppTextHeading1 from '../atoms/text/AppTextHeading1';
-import AppTextBody4 from '../atoms/text/AppTextBody4';
+import AppTextBody5 from '../atoms/text/AppTextBody5';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useTranslation } from 'react-i18next';
@@ -43,7 +43,7 @@ export default function AppPassphraseBox({
           <View style={styles.textBox}>
             <AppTextHeading1 style={styles.text}>{passphrase}</AppTextHeading1>
           </View>
-          <AppTextBody4 style={styles.subText}>Tap to Copy</AppTextBody4>
+          <AppTextBody5 style={styles.subText}>Tap to Copy</AppTextBody5>
         </View>
       </TouchableRipple>
     </View>

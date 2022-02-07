@@ -5,7 +5,7 @@ import { Theme } from 'react-native-paper/lib/typescript/types';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { hp, SafeAreaInsets } from '../../utils/imageRatio';
 import AppFormTextInput from '../atoms/form/AppFormTextInput';
-import AppTextBody3 from '../atoms/text/AppTextBody3';
+import AppTextBody4 from '../atoms/text/AppTextBody4';
 
 interface AppFormTextInputWithErrorProps extends TextInputProps {
   theme: Theme;
@@ -24,7 +24,7 @@ function AppFormTextInputWithError(
     <View style={props.style}>
       <AppFormTextInput {...props} style={undefined} ref={ref} theme={theme} />
       {showError && errorText ? (
-        <AppTextBody3 style={styles.errorText}>{errorText}</AppTextBody3>
+        <AppTextBody4 style={styles.errorText}>{errorText}</AppTextBody4>
       ) : null}
     </View>
   );

@@ -1,7 +1,7 @@
 import { StyleSheet, View, ViewStyle } from 'react-native';
 import React from 'react';
 import { useTheme } from 'react-native-paper';
-import AppTextBody3 from '../atoms/text/AppTextBody3';
+import AppTextBody4 from '../atoms/text/AppTextBody4';
 import { SafeAreaInsets, wp, hp } from '../../utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AppIconGradient from './AppIconGradient';
@@ -33,7 +33,7 @@ export default function AppIconBanner({
           />
         </View>
         <View style={styles.textContainer}>
-          <AppTextBody3>{children}</AppTextBody3>
+          <AppTextBody4>{children}</AppTextBody4>
         </View>
       </View>
     </View>

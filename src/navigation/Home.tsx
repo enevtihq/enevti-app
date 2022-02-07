@@ -45,12 +45,6 @@ export default function Home() {
 
   const feedStyle = useAnimatedStyle(() => {
     return {
-      opacity: interpolate(
-        tabScrollY[0].value,
-        [0, headerHeight + insets.top],
-        [1, 0],
-        Extrapolate.CLAMP,
-      ),
       transform: [
         {
           translateY: interpolate(
@@ -91,12 +85,6 @@ export default function Home() {
 
   const tabBarStyle = useAnimatedStyle(() => {
     return {
-      opacity: interpolate(
-        tabScrollY[activeTab].value,
-        [0, tabBarHeight + insets.bottom],
-        [1, 0],
-        Extrapolate.CLAMP,
-      ),
       transform: [
         {
           translateY: interpolate(

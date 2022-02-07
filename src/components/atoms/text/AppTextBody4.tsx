@@ -18,15 +18,15 @@ export default function AppTextBody4({
   const insets = useSafeAreaInsets();
   const styles = makeStyle(theme, insets);
 
-  return <Text style={[styles.heading1, style]}>{children}</Text>;
+  return <Text style={[styles.body4, style]}>{children}</Text>;
 }
 
 const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
   StyleSheet.create({
-    heading1: {
+    body4: {
       color: theme.colors.text,
       fontFamily: theme.fonts.regular.fontFamily,
       fontWeight: theme.fonts.regular.fontWeight,
-      fontSize: wp('2.2%', insets),
+      fontSize: wp('3.5%', insets),
     },
   });

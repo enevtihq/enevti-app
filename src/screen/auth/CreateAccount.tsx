@@ -8,11 +8,11 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { Theme } from '../../theme/default';
 import AppBrandBanner from '../../components/molecules/AppBrandBanner';
 import AppHeaderWizard from '../../components/molecules/AppHeaderWizard';
-import AppTextBody4 from '../../components/atoms/text/AppTextBody4';
+import AppTextBody5 from '../../components/atoms/text/AppTextBody5';
 import { hp, wp, SafeAreaInsets } from '../../utils/imageRatio';
 import AppPrimaryButton from '../../components/atoms/button/AppPrimaryButton';
 import AppSecondaryButton from '../../components/atoms/button/AppSecondaryButton';
-import AppTextBody3 from '../../components/atoms/text/AppTextBody3';
+import AppTextBody4 from '../../components/atoms/text/AppTextBody4';
 import { RootStackParamList } from '../../navigation';
 import AppView from '../../components/atoms/view/AppView';
 import AppGoogleSignInButton from '../../components/organism/AppGoogleSignInButton';
@@ -38,7 +38,7 @@ export default function CreateAccount({ navigation }: Props) {
 
       <View style={styles.actionContainer}>
         <View style={{ height: hp('3%', insets) }} />
-        <AppTextBody4 style={styles.term}>{t('auth:term')}</AppTextBody4>
+        <AppTextBody5 style={styles.term}>{t('auth:term')}</AppTextBody5>
         <View style={{ height: hp('4%', insets) }} />
 
         <AppSecondaryButton
@@ -55,13 +55,13 @@ export default function CreateAccount({ navigation }: Props) {
 
         <View style={styles.orView}>
           <View style={styles.orLine} />
-          <AppTextBody3
+          <AppTextBody4
             style={{
               color: theme.colors.placeholder,
               marginBottom: hp('2%', insets),
             }}>
             {t('auth:or')}
-          </AppTextBody3>
+          </AppTextBody4>
           <View style={styles.orLine} />
         </View>
 

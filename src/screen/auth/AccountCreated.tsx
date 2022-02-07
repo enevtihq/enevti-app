@@ -13,7 +13,7 @@ import { iconMap } from '../../components/atoms/icon/AppIconComponent';
 import AppPrimaryButton from '../../components/atoms/button/AppPrimaryButton';
 import AppView from '../../components/atoms/view/AppView';
 import { hp, wp, SafeAreaInsets } from '../../utils/imageRatio';
-import AppTextBody3 from '../../components/atoms/text/AppTextBody3';
+import AppTextBody4 from '../../components/atoms/text/AppTextBody4';
 import AppIconBanner from '../../components/molecules/AppIconBanner';
 import { BRAND_NAME } from '../../components/atoms/brand/AppBrandConstant';
 
@@ -48,21 +48,21 @@ export default function AccountCreated({ navigation }: Props) {
       <View style={styles.briefView}>
         <AppIconBanner name={iconMap.passphrase} style={styles.briefItem}>
           {t('auth:keepYourPassphraseSafe')}
-          <AppTextBody3 style={styles.boldText}>
+          <AppTextBody4 style={styles.boldText}>
             {t('auth:keepYourPassphraseSafeBold', { brand: BRAND_NAME })}
-          </AppTextBody3>
+          </AppTextBody4>
         </AppIconBanner>
         <AppIconBanner name={iconMap.accountCircle} style={styles.briefItem}>
           {t('auth:findYourPassphrase')}
-          <AppTextBody3 style={styles.boldText}>
+          <AppTextBody4 style={styles.boldText}>
             {t('auth:findYourPassphraseBold')}
-          </AppTextBody3>
+          </AppTextBody4>
         </AppIconBanner>
         <AppIconBanner name={iconMap.insideDevice} style={styles.briefItem}>
           {t('auth:passwordNeverLeaveDevice')}
-          <AppTextBody3 style={styles.boldText}>
+          <AppTextBody4 style={styles.boldText}>
             {t('auth:passwordNeverLeaveDeviceBold')}
-          </AppTextBody3>
+          </AppTextBody4>
         </AppIconBanner>
       </View>
 

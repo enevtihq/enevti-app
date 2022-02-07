@@ -4,7 +4,7 @@ import { useTheme } from 'react-native-paper';
 
 import { hp, wp, SafeAreaInsets } from '../../utils/imageRatio';
 import AppTextHeading1 from '../../components/atoms/text/AppTextHeading1';
-import AppTextBody3 from '../atoms/text/AppTextBody3';
+import AppTextBody4 from '../atoms/text/AppTextBody4';
 import { iconMap } from '../atoms/icon/AppIconComponent';
 import AppIconButton from '../atoms/icon/AppIconButton';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -60,7 +60,7 @@ export default function AppHeaderWizard({
         image
       ) : null}
       <AppTextHeading1 style={styles.headerText1}>{title}</AppTextHeading1>
-      <AppTextBody3 style={styles.body1}>{description}</AppTextBody3>
+      <AppTextBody4 style={styles.body1}>{description}</AppTextBody4>
     </View>
   );
 }

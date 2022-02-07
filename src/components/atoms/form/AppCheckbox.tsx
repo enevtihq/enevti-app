@@ -1,7 +1,7 @@
 import { StyleSheet, View, ViewStyle } from 'react-native';
 import React from 'react';
 import { Checkbox, TouchableRipple, useTheme } from 'react-native-paper';
-import AppTextBody3 from '../text/AppTextBody3';
+import AppTextBody4 from '../text/AppTextBody4';
 import { SafeAreaInsets, wp } from '../../../utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -40,7 +40,7 @@ export default function AppCheckbox({
             />
           </View>
           <View style={styles.textContainer}>
-            <AppTextBody3 style={styles.text}>{children}</AppTextBody3>
+            <AppTextBody4 style={styles.text}>{children}</AppTextBody4>
           </View>
         </View>
       </TouchableRipple>
