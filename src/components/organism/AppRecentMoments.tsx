@@ -60,6 +60,7 @@ export default function AppRecentMoments() {
           />
         )}
         keyExtractor={(_, index) => index.toString()}
+        showsHorizontalScrollIndicator={false}
         removeClippedSubviews={true}
         initialNumToRender={2}
         maxToRenderPerBatch={1}
