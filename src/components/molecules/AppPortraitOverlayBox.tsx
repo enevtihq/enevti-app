@@ -1,15 +1,11 @@
 import { StyleSheet, View, ViewStyle } from 'react-native';
 import React from 'react';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import * as Progress from 'react-native-progress';
-import { createImageProgress } from 'react-native-image-progress';
-import { wp, SafeAreaInsets } from '../../utils/imageRatio';
 import { useTheme } from 'react-native-paper/src/core/theming';
-import FI from 'react-native-fast-image';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { wp, SafeAreaInsets } from '../../utils/imageRatio';
 import AppTextBody4 from '../atoms/text/AppTextBody4';
 import { Theme } from '../../theme/default';
-
-const FastImage = createImageProgress(FI);
+import AppNetworkImage from '../atoms/image/AppNetworkImage';
 
 interface AppPortraitOverlayBoxProps {
   url: string;
@@ -28,18 +24,7 @@ export default function AppPortraitOverlayBox({
 
   return (
     <View style={[styles.container, style]}>
-      <FastImage
-        style={styles.image}
-        source={{
-          uri: url,
-          priority: FI.priority.normal,
-        }}
-        resizeMode={FI.resizeMode.cover}
-        indicator={Progress.Circle}
-        indicatorProps={{
-          color: theme.colors.text,
-        }}
-      />
+      <AppNetworkImage url={url} style={styles.image} />
       <View style={styles.overlay} />
       <AppTextBody4 numberOfLines={1} style={styles.textOverlay}>
         {title}

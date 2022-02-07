@@ -1,0 +1,34 @@
+import { StyleProp } from 'react-native';
+import React from 'react';
+import * as Progress from 'react-native-progress';
+import { createImageProgress } from 'react-native-image-progress';
+import FI, { ImageStyle } from 'react-native-fast-image';
+import { useTheme } from 'react-native-paper';
+
+import { Theme } from '../../../theme/default';
+
+const FastImage = createImageProgress(FI);
+
+interface AppNetworkImageProps {
+  url: string;
+  style?: StyleProp<ImageStyle>;
+}
+
+export default function AppNetworkImage({ url, style }: AppNetworkImageProps) {
+  const theme = useTheme() as Theme;
+
+  return (
+    <FastImage
+      style={style}
+      source={{
+        uri: url,
+        priority: FI.priority.normal,
+      }}
+      resizeMode={FI.resizeMode.cover}
+      indicator={Progress.Circle}
+      indicatorProps={{
+        color: theme.colors.text,
+      }}
+    />
+  );
+}
