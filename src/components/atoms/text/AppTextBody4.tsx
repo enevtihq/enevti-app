@@ -7,18 +7,24 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface AppTextBody4Props {
   children: React.ReactNode;
+  numberOfLines?: number;
   style?: TextStyle;
 }
 
 export default function AppTextBody4({
   children,
+  numberOfLines,
   style,
 }: AppTextBody4Props): JSX.Element {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
   const styles = makeStyle(theme, insets);
 
-  return <Text style={[styles.body4, style]}>{children}</Text>;
+  return (
+    <Text numberOfLines={numberOfLines} style={[styles.body4, style]}>
+      {children}
+    </Text>
+  );
 }
 
 const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>

@@ -7,18 +7,24 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface AppTextHeading1Props {
   children: React.ReactNode;
+  numberOfLines?: number;
   style?: TextStyle;
 }
 
 export default function AppTextHeading1({
   children,
+  numberOfLines,
   style,
 }: AppTextHeading1Props): JSX.Element {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
   const styles = makeStyle(theme, insets);
 
-  return <Text style={[styles.heading1, style]}>{children}</Text>;
+  return (
+    <Text numberOfLines={numberOfLines} style={[styles.heading1, style]}>
+      {children}
+    </Text>
+  );
 }
 
 const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
