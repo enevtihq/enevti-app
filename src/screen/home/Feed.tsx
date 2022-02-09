@@ -16,7 +16,7 @@ export default function Feed({}: Props) {
     <AppView darken={true}>
       <View style={{ height: 72 }} />
       <View style={styles.textContainer}>
-        {/* <AppRecentMoments /> */}
+        <AppRecentMoments />
         <AppFeedItem />
       </View>
     </AppView>

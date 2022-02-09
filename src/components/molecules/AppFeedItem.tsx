@@ -8,27 +8,28 @@ import { Theme } from '../../theme/default';
 import AppNetworkImage from '../atoms/image/AppNetworkImage';
 import AppTextHeading3 from '../atoms/text/AppTextHeading3';
 import AppTextBody5 from '../atoms/text/AppTextBody5';
-import AppTextBody4 from '../atoms/text/AppTextBody4';
-import AppTertiaryButton from '../atoms/button/AppTertiaryButton';
 import AppIconButton from '../atoms/icon/AppIconButton';
 import { iconMap } from '../atoms/icon/AppIconComponent';
 import color from 'color';
-import Avatar from '../atoms/avatar';
+
+const profileURL =
+  'https://res.cloudinary.com/crunchbase-production/image/upload/c_thumb,h_256,w_256,f_auto,g_faces,z_0.7,q_auto:eco,dpr_1/jtwy0wk2w1f4wzjkpvyx';
 
 export default function AppFeedItem() {
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
   const styles = makeStyle(insets, theme);
 
-  const profileURL =
-    'https://res.cloudinary.com/crunchbase-production/image/upload/c_thumb,h_256,w_256,f_auto,g_faces,z_0.7,q_auto:eco,dpr_1/jtwy0wk2w1f4wzjkpvyx';
+  const [canvasWidth, setCanvasWidth] = React.useState<number>(0);
+  const onLayout = React.useCallback(e => {
+    setCanvasWidth(e.nativeEvent.layout.width);
+  }, []);
 
   const FeedHeader = () => (
     <View style={styles.headerContainer}>
       <View style={styles.headerAvatarContainer}>
         <View style={styles.headerAvatar}>
-          {/* <AppNetworkImage style={styles.avatar} url={profileURL} /> */}
-          <Avatar address={'lsk7opy8ksve7npbr32dtqxwpvg5u6aa3vtje5qtd'} />
+          <AppNetworkImage style={styles.avatar} url={profileURL} />
         </View>
       </View>
       <View style={styles.headerAvatarInfoContainer}>
@@ -65,6 +66,7 @@ export default function AppFeedItem() {
       <View style={styles.card}>
         <FeedHeader />
         <View
+          onLayout={onLayout}
           style={{ width: '100%', aspectRatio: 1, backgroundColor: 'red' }}
         />
       </View>
