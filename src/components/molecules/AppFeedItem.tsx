@@ -13,6 +13,7 @@ import AppTertiaryButton from '../atoms/button/AppTertiaryButton';
 import AppIconButton from '../atoms/icon/AppIconButton';
 import { iconMap } from '../atoms/icon/AppIconComponent';
 import color from 'color';
+import Avatar from '../atoms/avatar';
 
 export default function AppFeedItem() {
   const insets = useSafeAreaInsets();
@@ -26,7 +27,8 @@ export default function AppFeedItem() {
     <View style={styles.headerContainer}>
       <View style={styles.headerAvatarContainer}>
         <View style={styles.headerAvatar}>
-          <AppNetworkImage style={styles.avatar} url={profileURL} />
+          {/* <AppNetworkImage style={styles.avatar} url={profileURL} /> */}
+          <Avatar address={'lsk7opy8ksve7npbr32dtqxwpvg5u6aa3vtje5qtd'} />
         </View>
       </View>
       <View style={styles.headerAvatarInfoContainer}>
@@ -39,8 +41,10 @@ export default function AppFeedItem() {
             style={styles.headerPoolButtonTouchable}
             onPress={() => console.log('anjay')}>
             <View>
-              <AppTextHeading3>121M</AppTextHeading3>
-              <AppTextBody5>$ENVT</AppTextBody5>
+              <AppTextHeading3 style={styles.headerPoolText}>
+                121M
+              </AppTextHeading3>
+              <AppTextBody5 style={styles.headerPoolText}>$ENVT</AppTextBody5>
             </View>
           </TouchableRipple>
         </View>
@@ -106,6 +110,9 @@ const makeStyle = (insets: SafeAreaInsets, theme: Theme) =>
       justifyContent: 'center',
       alignItems: 'center',
       marginLeft: wp('2%', insets),
+    },
+    headerPoolText: {
+      textAlign: 'center',
     },
     headerPoolButton: {
       borderWidth: StyleSheet.hairlineWidth,
