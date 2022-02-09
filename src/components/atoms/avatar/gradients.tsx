@@ -2,7 +2,7 @@ import React from 'react';
 import { Defs, Stop, LinearGradient } from 'react-native-svg';
 import gradSpecs from './grandient-config.json';
 
-const addUrl = spec => ({
+const addUrl = (spec: any) => ({
   ...spec,
   url: `url(#${spec.id})`,
 });
@@ -13,7 +13,7 @@ export const gradientSchemes = gradSpecs.map(spec => ({
 }));
 
 // rotation={spec.rotate} origin='100, 100'
-const getCoordinations = slope => {
+const getCoordinations = (slope: number) => {
   // normalize the +/- sign
   const deg = (slope + 360) % 360;
   const rad = Math.atan(deg / 180);
@@ -27,14 +27,14 @@ const getCoordinations = slope => {
   return coords;
 };
 
-export const Gradients = ({ scheme }) => (
+export const Gradients = ({ scheme }: any) => (
   <Defs>
     {[...scheme.primary, ...scheme.secondary].map(spec => (
       <LinearGradient
         id={spec.id}
         key={spec.id}
         {...getCoordinations(spec.rotate)}>
-        {spec.colors.map((color, i) => (
+        {spec.colors.map((color: string, i: number) => (
           <Stop
             stopColor={color}
             offset={`${i * (100 / (spec.colors.length - 1))}%`}

@@ -33,7 +33,7 @@ import crypto from 'crypto';
  * the first option has 4/10 chance and each of other two has 3/10 chance.
  */
 
-const computeTriangle = props => ({
+const computeTriangle = (props: any) => ({
   points: [
     {
       x: props.x,
@@ -52,7 +52,7 @@ const computeTriangle = props => ({
     .join(' '),
 });
 
-const computePentagon = props => ({
+const computePentagon = (props: any) => ({
   points: [
     {
       x: props.x + props.size / 2,
@@ -79,9 +79,12 @@ const computePentagon = props => ({
     .join(' '),
 });
 
-export const getShape = (chunk, size, gradient, sizeScale = 1) => {
-  const shapeNames = ['circle', 'triangle', 'square'];
-
+export const getShape = (
+  chunk: any,
+  size: number,
+  gradient: any,
+  sizeScale = 1,
+) => {
   const sizes = [1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0, 2.1].map(
     x => x * size * sizeScale,
   );
@@ -135,6 +138,8 @@ export const getShape = (chunk, size, gradient, sizeScale = 1) => {
     },
   };
 
+  const shapeNames: (keyof typeof shapes)[] = ['circle', 'triangle', 'square'];
+
   return {
     component:
       shapes[shapeNames[chunk.substr(0, 2) % shapeNames.length]].component,
@@ -147,7 +152,7 @@ export const getShape = (chunk, size, gradient, sizeScale = 1) => {
   };
 };
 
-export const getBackgroundCircle = (size, gradient) => ({
+export const getBackgroundCircle = (size: number, gradient: any) => ({
   component: Circle,
   props: {
     cx: size / 2,
@@ -157,7 +162,7 @@ export const getBackgroundCircle = (size, gradient) => ({
   },
 });
 
-export const pickTwo = (chunk, options) => [
+export const pickTwo = (chunk: any, options: any) => [
   options[chunk.substr(0, 2) % options.length],
   options[
     (chunk.substr(0, 2) - 0 + 1 + (chunk.substr(2, 2) % (options.length - 1))) %
@@ -165,7 +170,7 @@ export const pickTwo = (chunk, options) => [
   ],
 ];
 
-export const getHashChunks = address => {
+export const getHashChunks = (address: string) => {
   const hash = crypto.createHash('sha256');
   const addressHash = new BigNumber(`0x${hash.update(address).digest('hex')}`)
     .toString()
@@ -176,7 +181,10 @@ export const getHashChunks = address => {
 export const randomId = () =>
   `avatar-${[1, 2, 3, 4].map(() => Math.random() * 100).join('')}`;
 
-export const replaceUrlByHashOnScheme = (uniqueSvgUrlHash, gradientScheme) => ({
+export const replaceUrlByHashOnScheme = (
+  uniqueSvgUrlHash: any,
+  gradientScheme: any,
+) => ({
   ...gradientScheme,
   url: gradientScheme.url.replace(/\)/g, `-${uniqueSvgUrlHash})`),
   id: `${gradientScheme.id}-${uniqueSvgUrlHash}`,
