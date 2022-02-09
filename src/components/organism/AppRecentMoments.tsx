@@ -70,7 +70,7 @@ export default function AppRecentMoments() {
       <Divider
         style={{
           marginHorizontal: wp('5%', insets),
-          marginVertical: hp('2%', insets),
+          marginTop: hp('2%', insets),
         }}
       />
     </View>

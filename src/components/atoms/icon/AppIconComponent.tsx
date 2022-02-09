@@ -25,6 +25,7 @@ export const iconMap = {
   statistics: 'chart-bar',
   discover: 'apps',
   notification: 'bell-outline',
+  dots: 'dots-vertical',
 };
 
 interface AppIconComponentProps {

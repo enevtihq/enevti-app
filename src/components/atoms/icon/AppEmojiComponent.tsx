@@ -23,6 +23,7 @@ export const emojiMap = {
   statistics: UNDEFINED_EMOJI,
   discover: UNDEFINED_EMOJI,
   notification: UNDEFINED_EMOJI,
+  dots: UNDEFINED_EMOJI,
 };
 
 interface AppEmojiComponentProps {

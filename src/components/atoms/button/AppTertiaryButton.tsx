@@ -11,7 +11,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface AppTertiaryButtonProps {
   children: React.ReactNode;
-  onPress: () => void;
+  onPress?: () => void;
   loading?: boolean;
   disabled?: boolean;
   icon?: IconSource;

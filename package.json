@@ -52,6 +52,7 @@
     "react-native-config": "^1.4.5",
     "react-native-crypto": "^2.2.0",
     "react-native-device-info": "^8.4.8",
+    "react-native-drop-shadow": "0.0.4",
     "react-native-emoji": "^1.8.0",
     "react-native-fast-image": "^8.5.11",
     "react-native-gesture-handler": "^2.2.0",
