@@ -1,11 +1,11 @@
-import { View } from 'react-native';
+import { View, FlatList } from 'react-native';
 import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AppTextHeading3 from '../atoms/text/AppTextHeading3';
 import { hp, wp } from '../../utils/imageRatio';
 import AppPortraitOverlayBox from '../molecules/AppPortraitOverlayBox';
-import { FlatList } from 'react-native-gesture-handler';
 import { useTranslation } from 'react-i18next';
+import { Divider } from 'react-native-paper';
 
 const dummyData = [
   {
@@ -66,6 +66,12 @@ export default function AppRecentMoments() {
         maxToRenderPerBatch={1}
         updateCellsBatchingPeriod={100}
         windowSize={7}
+      />
+      <Divider
+        style={{
+          marginHorizontal: wp('5%', insets),
+          marginVertical: hp('2%', insets),
+        }}
       />
     </View>
   );
