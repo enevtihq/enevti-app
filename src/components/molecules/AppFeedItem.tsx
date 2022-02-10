@@ -11,6 +11,7 @@ import AppTextBody5 from '../atoms/text/AppTextBody5';
 import AppIconButton from '../atoms/icon/AppIconButton';
 import { iconMap } from '../atoms/icon/AppIconComponent';
 import color from 'color';
+import NFTRenderer from '../atoms/nft';
 
 const profileURL =
   'https://res.cloudinary.com/crunchbase-production/image/upload/c_thumb,h_256,w_256,f_auto,g_faces,z_0.7,q_auto:eco,dpr_1/jtwy0wk2w1f4wzjkpvyx';
@@ -19,11 +20,6 @@ export default function AppFeedItem() {
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
   const styles = makeStyle(insets, theme);
-
-  const [canvasWidth, setCanvasWidth] = React.useState<number>(0);
-  const onLayout = React.useCallback(e => {
-    setCanvasWidth(e.nativeEvent.layout.width);
-  }, []);
 
   const FeedHeader = () => (
     <View style={styles.headerContainer}>
@@ -65,10 +61,7 @@ export default function AppFeedItem() {
     <DropShadow style={styles.shadowProp}>
       <View style={styles.card}>
         <FeedHeader />
-        <View
-          onLayout={onLayout}
-          style={{ width: '100%', aspectRatio: 1, backgroundColor: 'red' }}
-        />
+        <NFTRenderer />
       </View>
     </DropShadow>
   );
