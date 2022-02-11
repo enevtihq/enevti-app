@@ -1,47 +1,20 @@
 export interface TemplateArgs {
-  x?: string;
-  y?: string;
-  width?: string;
-  height?: string;
-  size?: number;
+  x: string;
+  y: string;
+  width: string;
+  height: string;
 }
 
-interface NFTUtilityBackgroundTemplate {
-  type: 'utility-background';
-  args?: TemplateArgs;
-}
-
-interface NFTUtilityIconTemplate {
-  type: 'utility-icon';
-  args?: TemplateArgs;
-}
-
-interface NFTUtilityTextTemplate {
-  type: 'utility-text';
-  args?: TemplateArgs;
-}
-
-interface NFTPartitionIconTemplate {
-  type: 'partition-icon';
-  args?: TemplateArgs;
-}
-
-interface NFTData {
-  type: 'data';
-  args?: TemplateArgs;
-}
-
-interface NFTDataBox {
-  type: 'data-box';
-  args?: TemplateArgs;
-}
-
-export type NFTTemplateItem =
-  | NFTUtilityBackgroundTemplate
-  | NFTUtilityIconTemplate
-  | NFTUtilityTextTemplate
-  | NFTPartitionIconTemplate
-  | NFTData
-  | NFTDataBox;
+export type NFTTemplateItem = {
+  type:
+    | 'utility-background'
+    | 'utility-icon'
+    | 'utility-text'
+    | 'partition-icon'
+    | 'data'
+    | 'data-box'
+    | 'box';
+  args: TemplateArgs;
+};
 
 export type NFTTemplate = NFTTemplateItem[];

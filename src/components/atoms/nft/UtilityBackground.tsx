@@ -1,17 +1,18 @@
 import { View, StyleSheet, Image } from 'react-native';
 import React from 'react';
 import { NFT } from '../../../types/nft';
+import { TemplateArgs } from '../../../types/nft/template';
 
 interface UtilityBackgroundProps {
   nft: NFT;
-  width: number;
+  args: TemplateArgs;
 }
 
 export default function UtilityBackground({
   nft,
-  width,
+  args,
 }: UtilityBackgroundProps) {
-  const styles = makeStyle(width);
+  const styles = makeStyle(args);
   let source: any;
 
   switch (nft.utility) {
@@ -49,11 +50,13 @@ export default function UtilityBackground({
   );
 }
 
-const makeStyle = (width: number) =>
+const makeStyle = (args: TemplateArgs) =>
   StyleSheet.create({
     utilityBackgroundContainer: {
-      width: width,
-      height: width,
+      width: args.width,
+      height: args.height,
+      top: args.y,
+      left: args.x,
       position: 'absolute',
     },
   });

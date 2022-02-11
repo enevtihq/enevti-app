@@ -4,17 +4,22 @@ import { NFT } from '../../../types/nft';
 import UtilityBackground from './UtilityBackground';
 import { NFTTemplateItem } from '../../../types/nft/template';
 import NFTData from './NFTData';
+import Box from './Box';
 
 const nft: NFT = {
   data: 'Qmb3jKA6Vn1azR6aSMnT6geGMkg818uBkfSHNg8ui1a9dy',
   contentType: 'image',
   utility: 'videocall',
   template: [
-    { type: 'utility-background' },
+    {
+      type: 'utility-background',
+      args: { x: '0%', y: '0%', width: '100%', height: '100%' },
+    },
     {
       type: 'data-box',
-      args: { x: '15%', y: '15%', width: '70%', height: '70%' },
+      args: { x: '12.5%', y: '12.5%', width: '75%', height: '75%' },
     },
+    { type: 'box', args: { x: '42%', y: '0%', width: '16%', height: '15%' } },
   ],
 };
 
@@ -27,7 +32,11 @@ const handleRenderNFTTemplate = (
   switch (templateItem.type) {
     case 'utility-background':
       return (
-        <UtilityBackground key={index} nft={nftObject} width={canvasWidth} />
+        <UtilityBackground
+          key={index}
+          nft={nftObject}
+          args={templateItem.args}
+        />
       );
     case 'data':
       return <NFTData key={index} nft={nftObject} args={templateItem.args} />;
@@ -35,6 +44,8 @@ const handleRenderNFTTemplate = (
       return (
         <NFTData box key={index} nft={nftObject} args={templateItem.args} />
       );
+    case 'box':
+      return <Box key={index} args={templateItem.args} />;
     default:
       return <View key={index} />;
   }

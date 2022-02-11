@@ -6,7 +6,7 @@ import { TemplateArgs } from '../../../../types/nft/template';
 
 interface NFTDataProps {
   nft: NFT;
-  args?: TemplateArgs;
+  args: TemplateArgs;
   box?: boolean;
 }
 
@@ -29,14 +29,14 @@ export default function NFTData({ nft, args, box = false }: NFTDataProps) {
   );
 }
 
-const makeStyle = (box: boolean, args?: TemplateArgs) =>
+const makeStyle = (box: boolean, args: TemplateArgs) =>
   StyleSheet.create({
     nftDataContainer: {
       position: 'absolute',
-      width: args ? args.width : '100%',
-      height: args ? args.height : '100%',
-      top: args ? args.y : '0%',
-      left: args ? args.x : '0%',
+      width: args.width,
+      height: args.height,
+      top: args.y,
+      left: args.x,
     },
     nftDataBox: {
       width: '100%',
