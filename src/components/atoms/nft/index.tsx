@@ -10,6 +10,7 @@ import RarityRank from './RarityRank';
 import RarityPercent from './RarityPercent';
 import Name from './Name';
 import Serial from './Serial';
+import PartitionIcon from './PartitionIcon';
 
 const nft: NFT = {
   serial: 'eyecollection-001',
@@ -149,6 +150,10 @@ const handleRenderNFTTemplate = (
       return <Name key={index} nft={nftObject} args={templateItem.args} />;
     case 'serial':
       return <Serial key={index} nft={nftObject} args={templateItem.args} />;
+    case 'partition-icon':
+      return (
+        <PartitionIcon key={index} nft={nftObject} args={templateItem.args} />
+      );
     default:
       return <View key={index} />;
   }

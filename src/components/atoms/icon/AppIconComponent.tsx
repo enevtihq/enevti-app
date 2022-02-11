@@ -26,6 +26,7 @@ export const iconMap = {
   discover: 'apps',
   notification: 'bell-outline',
   dots: 'dots-vertical',
+  nftPartition: 'puzzle-outline',
 };
 
 interface AppIconComponentProps {
