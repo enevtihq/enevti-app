@@ -7,6 +7,7 @@ import { TemplateArgs } from '../../../../types/nft/template';
 interface NFTDataProps {
   nft: NFT;
   args?: TemplateArgs;
+  box?: boolean;
 }
 
 const handleRenderNFTData = (nftObject: NFT) => {
@@ -18,8 +19,8 @@ const handleRenderNFTData = (nftObject: NFT) => {
   }
 };
 
-export default function NFTData({ nft, args }: NFTDataProps) {
-  const styles = makeStyle(args);
+export default function NFTData({ nft, args, box = false }: NFTDataProps) {
+  const styles = makeStyle(box, args);
 
   return (
     <View style={styles.nftDataContainer}>
@@ -28,7 +29,7 @@ export default function NFTData({ nft, args }: NFTDataProps) {
   );
 }
 
-const makeStyle = (args?: TemplateArgs) =>
+const makeStyle = (box: boolean, args?: TemplateArgs) =>
   StyleSheet.create({
     nftDataContainer: {
       position: 'absolute',
@@ -41,7 +42,7 @@ const makeStyle = (args?: TemplateArgs) =>
       width: '100%',
       height: '100%',
       backgroundColor: 'white',
-      padding: '1%',
+      padding: box ? '1%' : '0%',
       alignItems: 'center',
       justifyContent: 'center',
     },

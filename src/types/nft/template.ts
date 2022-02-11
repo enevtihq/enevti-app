@@ -31,11 +31,17 @@ interface NFTData {
   args?: TemplateArgs;
 }
 
+interface NFTDataBox {
+  type: 'data-box';
+  args?: TemplateArgs;
+}
+
 export type NFTTemplateItem =
   | NFTUtilityBackgroundTemplate
   | NFTUtilityIconTemplate
   | NFTUtilityTextTemplate
   | NFTPartitionIconTemplate
-  | NFTData;
+  | NFTData
+  | NFTDataBox;
 
 export type NFTTemplate = NFTTemplateItem[];

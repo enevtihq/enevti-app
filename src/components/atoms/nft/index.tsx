@@ -11,7 +11,10 @@ const nft: NFT = {
   utility: 'videocall',
   template: [
     { type: 'utility-background' },
-    { type: 'data', args: { x: '15%', y: '15%', width: '70%', height: '70%' } },
+    {
+      type: 'data-box',
+      args: { x: '15%', y: '15%', width: '70%', height: '70%' },
+    },
   ],
 };
 
@@ -28,6 +31,10 @@ const handleRenderNFTTemplate = (
       );
     case 'data':
       return <NFTData key={index} nft={nftObject} args={templateItem.args} />;
+    case 'data-box':
+      return (
+        <NFTData box key={index} nft={nftObject} args={templateItem.args} />
+      );
     default:
       return <View key={index} />;
   }
