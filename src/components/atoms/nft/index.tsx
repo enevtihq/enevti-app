@@ -6,6 +6,8 @@ import { NFTTemplateItem } from '../../../types/nft/template';
 import NFTData from './NFTData';
 import Box from './Box';
 import RarityIcon from './RarityIcon';
+import RarityRank from './RarityRank';
+import RarityPercent from './RarityPercent';
 
 const nft: NFT = {
   data: 'Qmb3jKA6Vn1azR6aSMnT6geGMkg818uBkfSHNg8ui1a9dy',
@@ -35,7 +37,15 @@ const nft: NFT = {
     { type: 'box', args: { x: '42%', y: '0%', width: '16%', height: '15%' } },
     {
       type: 'rarity-icon',
-      args: { x: '42%', y: '0%', width: '16%', height: '10%' },
+      args: { x: '42%', y: '0%', width: '16%', height: '8.5%' },
+    },
+    {
+      type: 'rarity-rank',
+      args: { x: '42%', y: '7.5%', width: '16%', height: '4%' },
+    },
+    {
+      type: 'rarity-percent',
+      args: { x: '42%', y: '11.5%', width: '16%', height: '2%' },
     },
   ],
 };
@@ -66,6 +76,14 @@ const handleRenderNFTTemplate = (
     case 'rarity-icon':
       return (
         <RarityIcon key={index} nft={nftObject} args={templateItem.args} />
+      );
+    case 'rarity-rank':
+      return (
+        <RarityRank key={index} nft={nftObject} args={templateItem.args} />
+      );
+    case 'rarity-percent':
+      return (
+        <RarityPercent key={index} nft={nftObject} args={templateItem.args} />
       );
     default:
       return <View key={index} />;
