@@ -12,7 +12,7 @@ export default function RarityIcon({ nft, args }: RarityIconProps) {
   const styles = makeStyle(args);
 
   return (
-    <View style={styles.utilityBackgroundContainer}>
+    <View style={styles.rarityIconContainer}>
       <Image
         source={require('../../../assets/images/enevti-icon-gs.png')}
         resizeMode={'contain'}
@@ -29,7 +29,7 @@ export default function RarityIcon({ nft, args }: RarityIconProps) {
 
 const makeStyle = (args: TemplateArgs) =>
   StyleSheet.create({
-    utilityBackgroundContainer: {
+    rarityIconContainer: {
       width: args.width,
       height: args.height,
       top: args.y,

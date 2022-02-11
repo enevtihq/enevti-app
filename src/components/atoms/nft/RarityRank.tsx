@@ -29,7 +29,7 @@ export default function RarityRank({ nft, args }: RarityRankProps) {
   );
 
   return (
-    <View onLayout={onLayout} style={styles.utilityBackgroundContainer}>
+    <View onLayout={onLayout} style={styles.rarityRankContainer}>
       <Text
         numberOfLines={1}
         adjustsFontSizeToFit
@@ -42,7 +42,7 @@ export default function RarityRank({ nft, args }: RarityRankProps) {
 
 const makeStyle = (args: TemplateArgs, theme: Theme) =>
   StyleSheet.create({
-    utilityBackgroundContainer: {
+    rarityRankContainer: {
       width: args.width,
       height: args.height,
       top: args.y,

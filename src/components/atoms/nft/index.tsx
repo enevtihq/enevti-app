@@ -8,8 +8,11 @@ import Box from './Box';
 import RarityIcon from './RarityIcon';
 import RarityRank from './RarityRank';
 import RarityPercent from './RarityPercent';
+import Name from './Name';
 
 const nft: NFT = {
+  serial: 'eyecollection-001',
+  name: 'EyeCollection',
   data: 'Qmb3jKA6Vn1azR6aSMnT6geGMkg818uBkfSHNg8ui1a9dy',
   contentType: 'image',
   utility: 'videocall',
@@ -46,6 +49,10 @@ const nft: NFT = {
     {
       type: 'rarity-percent',
       args: { x: '42%', y: '11.5%', width: '16%', height: '2%' },
+    },
+    {
+      type: 'name',
+      args: { x: '12.5%', y: '87.5%', width: '75%', height: '12.5%' },
     },
   ],
 };
@@ -85,6 +92,8 @@ const handleRenderNFTTemplate = (
       return (
         <RarityPercent key={index} nft={nftObject} args={templateItem.args} />
       );
+    case 'name':
+      return <Name key={index} nft={nftObject} args={templateItem.args} />;
     default:
       return <View key={index} />;
   }

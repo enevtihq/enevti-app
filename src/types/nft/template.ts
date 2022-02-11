@@ -16,7 +16,9 @@ export type NFTTemplateItem = {
     | 'box'
     | 'rarity-icon'
     | 'rarity-rank'
-    | 'rarity-percent';
+    | 'rarity-percent'
+    | 'name'
+    | 'serial';
   args: TemplateArgs;
 };
 
