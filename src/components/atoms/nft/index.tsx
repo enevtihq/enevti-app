@@ -5,11 +5,24 @@ import UtilityBackground from './UtilityBackground';
 import { NFTTemplateItem } from '../../../types/nft/template';
 import NFTData from './NFTData';
 import Box from './Box';
+import RarityIcon from './RarityIcon';
 
 const nft: NFT = {
   data: 'Qmb3jKA6Vn1azR6aSMnT6geGMkg818uBkfSHNg8ui1a9dy',
   contentType: 'image',
   utility: 'videocall',
+  rarity: {
+    stat: {
+      rank: 12,
+      percent: 4,
+    },
+    trait: [
+      {
+        key: 'utilityx',
+        value: 'videocall',
+      },
+    ],
+  },
   template: [
     {
       type: 'utility-background',
@@ -20,6 +33,10 @@ const nft: NFT = {
       args: { x: '12.5%', y: '12.5%', width: '75%', height: '75%' },
     },
     { type: 'box', args: { x: '42%', y: '0%', width: '16%', height: '15%' } },
+    {
+      type: 'rarity-icon',
+      args: { x: '42%', y: '0%', width: '16%', height: '10%' },
+    },
   ],
 };
 
@@ -46,6 +63,10 @@ const handleRenderNFTTemplate = (
       );
     case 'box':
       return <Box key={index} args={templateItem.args} />;
+    case 'rarity-icon':
+      return (
+        <RarityIcon key={index} nft={nftObject} args={templateItem.args} />
+      );
     default:
       return <View key={index} />;
   }

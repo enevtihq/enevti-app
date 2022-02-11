@@ -13,7 +13,10 @@ export type NFTTemplateItem = {
     | 'partition-icon'
     | 'data'
     | 'data-box'
-    | 'box';
+    | 'box'
+    | 'rarity-icon'
+    | 'rarity-rank'
+    | 'rarity-percent';
   args: TemplateArgs;
 };
 
