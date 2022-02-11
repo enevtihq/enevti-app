@@ -11,13 +11,14 @@ import RarityPercent from './RarityPercent';
 import Name from './Name';
 import Serial from './Serial';
 import PartitionIcon from './PartitionIcon';
+import PartitionLabel from './PartitionLabel';
 
 const nft: NFT = {
   serial: 'eyecollection-001',
   name: 'EyeCollection',
   data: 'Qmb3jKA6Vn1azR6aSMnT6geGMkg818uBkfSHNg8ui1a9dy',
   contentType: 'image',
-  NFTType: 'one-kind',
+  NFTType: 'packed',
   utility: 'videocall',
   rarity: {
     stat: {
@@ -30,6 +31,15 @@ const nft: NFT = {
         value: 'videocall',
       },
     ],
+  },
+  redeem: {
+    parts: [
+      'wfvfasdfwfwrgegwrhjtjut',
+      'wfvfasdfwfwrgegwrhjtjut',
+      'wfvfasdfwfwrgegwrhjtjut',
+      'wfvfasdfwfwrgegwrhjtjut',
+    ],
+    upgradeMaterial: 4,
   },
   template: [
     {
@@ -108,6 +118,16 @@ const nft: NFT = {
         rotate: '0deg',
       },
     },
+    {
+      type: 'partition-label',
+      args: {
+        x: '1%',
+        y: '51%',
+        width: '11%',
+        height: '6.5%',
+        rotate: '-90deg',
+      },
+    },
   ],
 };
 
@@ -153,6 +173,10 @@ const handleRenderNFTTemplate = (
     case 'partition-icon':
       return (
         <PartitionIcon key={index} nft={nftObject} args={templateItem.args} />
+      );
+    case 'partition-label':
+      return (
+        <PartitionLabel key={index} nft={nftObject} args={templateItem.args} />
       );
     default:
       return <View key={index} />;

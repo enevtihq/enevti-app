@@ -24,7 +24,9 @@ export const emojiMap = {
   discover: UNDEFINED_EMOJI,
   notification: UNDEFINED_EMOJI,
   dots: UNDEFINED_EMOJI,
-  nftPartition: UNDEFINED_EMOJI,
+  nftPartitioned: UNDEFINED_EMOJI,
+  nftOneKind: UNDEFINED_EMOJI,
+  nftUpgradable: UNDEFINED_EMOJI,
 };
 
 interface AppEmojiComponentProps {
