@@ -27,6 +27,12 @@ export const emojiMap = {
   nftPartitioned: UNDEFINED_EMOJI,
   nftOneKind: UNDEFINED_EMOJI,
   nftUpgradable: UNDEFINED_EMOJI,
+  utilityVideoCall: UNDEFINED_EMOJI,
+  utilityChat: UNDEFINED_EMOJI,
+  utilityContent: UNDEFINED_EMOJI,
+  utilityGift: UNDEFINED_EMOJI,
+  utilityQR: UNDEFINED_EMOJI,
+  utilityStream: UNDEFINED_EMOJI,
 };
 
 interface AppEmojiComponentProps {

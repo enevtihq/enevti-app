@@ -28,7 +28,13 @@ export const iconMap = {
   dots: 'dots-vertical',
   nftPartitioned: 'puzzle-outline',
   nftOneKind: 'star',
-  nftUpgradable: UNDEFINED_ICON,
+  nftUpgradable: 'chevron-triple-up',
+  utilityVideoCall: 'video-account',
+  utilityChat: 'forum',
+  utilityContent: 'briefcase-download',
+  utilityGift: 'wallet-giftcard',
+  utilityQR: 'qrcode',
+  utilityStream: 'ticket',
 };
 
 interface AppIconComponentProps {

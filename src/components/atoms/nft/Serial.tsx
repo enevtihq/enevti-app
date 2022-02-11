@@ -21,7 +21,7 @@ export default function Serial({ nft, args }: SerialProps) {
       setFontSize(
         Math.sqrt(
           (e.nativeEvent.layout.width * e.nativeEvent.layout.height) /
-            text.length,
+            (text.length + 10),
         ),
       );
     },
@@ -56,7 +56,7 @@ const makeStyle = (args: TemplateArgs, theme: Theme) =>
     text: {
       fontFamily: theme.fonts.medium.fontFamily,
       textAlign: 'center',
-      letterSpacing: Platform.OS === 'ios' ? -1 : 0,
+      letterSpacing: Platform.OS === 'ios' ? -1 : -0.5,
       color: 'white',
     },
   });

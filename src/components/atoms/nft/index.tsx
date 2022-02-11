@@ -12,14 +12,16 @@ import Name from './Name';
 import Serial from './Serial';
 import PartitionIcon from './PartitionIcon';
 import PartitionLabel from './PartitionLabel';
+import UtilityIcon from './UtilityIcon';
+import UtilityLabel from './UtilityLabel';
 
 const nft: NFT = {
   serial: 'eyecollection-001',
   name: 'EyeCollection',
   data: 'Qmb3jKA6Vn1azR6aSMnT6geGMkg818uBkfSHNg8ui1a9dy',
   contentType: 'image',
-  NFTType: 'packed',
-  utility: 'videocall',
+  NFTType: 'one-kind',
+  utility: 'chat',
   rarity: {
     stat: {
       rank: 12,
@@ -102,7 +104,7 @@ const nft: NFT = {
       type: 'box',
       args: {
         x: '3%',
-        y: '62%',
+        y: '67%',
         width: '6.5%',
         height: '6.5%',
         rotate: '0deg',
@@ -112,7 +114,7 @@ const nft: NFT = {
       type: 'partition-icon',
       args: {
         x: '3%',
-        y: '62%',
+        y: '67%',
         width: '6.5%',
         height: '6.5%',
         rotate: '0deg',
@@ -121,10 +123,40 @@ const nft: NFT = {
     {
       type: 'partition-label',
       args: {
-        x: '1%',
-        y: '51%',
-        width: '11%',
+        x: '-1%',
+        y: '55%',
+        width: '14%',
         height: '6.5%',
+        rotate: '-90deg',
+      },
+    },
+    {
+      type: 'box',
+      args: {
+        x: '3%',
+        y: '42%',
+        width: '6.5%',
+        height: '6.5%',
+        rotate: '0deg',
+      },
+    },
+    {
+      type: 'utility-icon',
+      args: {
+        x: '3%',
+        y: '42%',
+        width: '6.5%',
+        height: '6.5%',
+        rotate: '0deg',
+      },
+    },
+    {
+      type: 'utility-label',
+      args: {
+        x: '-6.5%',
+        y: '25%',
+        width: '25%',
+        height: '4%',
         rotate: '-90deg',
       },
     },
@@ -177,6 +209,14 @@ const handleRenderNFTTemplate = (
     case 'partition-label':
       return (
         <PartitionLabel key={index} nft={nftObject} args={templateItem.args} />
+      );
+    case 'utility-icon':
+      return (
+        <UtilityIcon key={index} nft={nftObject} args={templateItem.args} />
+      );
+    case 'utility-label':
+      return (
+        <UtilityLabel key={index} nft={nftObject} args={templateItem.args} />
       );
     default:
       return <View key={index} />;
