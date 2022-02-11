@@ -9,6 +9,7 @@ import RarityIcon from './RarityIcon';
 import RarityRank from './RarityRank';
 import RarityPercent from './RarityPercent';
 import Name from './Name';
+import Serial from './Serial';
 
 const nft: NFT = {
   serial: 'eyecollection-001',
@@ -23,7 +24,7 @@ const nft: NFT = {
     },
     trait: [
       {
-        key: 'utilityx',
+        key: 'utility',
         value: 'videocall',
       },
     ],
@@ -31,28 +32,59 @@ const nft: NFT = {
   template: [
     {
       type: 'utility-background',
-      args: { x: '0%', y: '0%', width: '100%', height: '100%' },
+      args: { x: '0%', y: '0%', width: '100%', height: '100%', rotate: '0deg' },
     },
     {
       type: 'data-box',
-      args: { x: '12.5%', y: '12.5%', width: '75%', height: '75%' },
+      args: {
+        x: '12.5%',
+        y: '12.5%',
+        width: '75%',
+        height: '75%',
+        rotate: '0deg',
+      },
     },
-    { type: 'box', args: { x: '42%', y: '0%', width: '16%', height: '15%' } },
+    {
+      type: 'box',
+      args: { x: '42%', y: '0%', width: '16%', height: '15%', rotate: '0deg' },
+    },
     {
       type: 'rarity-icon',
-      args: { x: '42%', y: '0%', width: '16%', height: '8.5%' },
+      args: { x: '42%', y: '0%', width: '16%', height: '8.5%', rotate: '0deg' },
     },
     {
       type: 'rarity-rank',
-      args: { x: '42%', y: '7.5%', width: '16%', height: '4%' },
+      args: { x: '42%', y: '7.5%', width: '16%', height: '4%', rotate: '0deg' },
     },
     {
       type: 'rarity-percent',
-      args: { x: '42%', y: '11.5%', width: '16%', height: '2%' },
+      args: {
+        x: '42%',
+        y: '11.5%',
+        width: '16%',
+        height: '2%',
+        rotate: '0deg',
+      },
     },
     {
       type: 'name',
-      args: { x: '12.5%', y: '87.5%', width: '75%', height: '12.5%' },
+      args: {
+        x: '12.5%',
+        y: '87.5%',
+        width: '75%',
+        height: '12.5%',
+        rotate: '0deg',
+      },
+    },
+    {
+      type: 'serial',
+      args: {
+        x: '75%',
+        y: '43.75%',
+        width: '37.5%',
+        height: '12.5%',
+        rotate: '-90deg',
+      },
     },
   ],
 };
@@ -94,6 +126,8 @@ const handleRenderNFTTemplate = (
       );
     case 'name':
       return <Name key={index} nft={nftObject} args={templateItem.args} />;
+    case 'serial':
+      return <Serial key={index} nft={nftObject} args={templateItem.args} />;
     default:
       return <View key={index} />;
   }

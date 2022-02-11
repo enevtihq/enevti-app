@@ -3,6 +3,7 @@ export interface TemplateArgs {
   y: string;
   width: string;
   height: string;
+  rotate: string;
 }
 
 export type NFTTemplateItem = {
