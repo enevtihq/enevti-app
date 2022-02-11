@@ -1,7 +1,7 @@
 import { View, StyleSheet, Text, Platform } from 'react-native';
 import React from 'react';
 import { NFT } from '../../../types/nft';
-import { TemplateArgs } from '../../../types/nft/template';
+import { TemplateArgs } from '../../../types/nft/NFTTemplate';
 import { useTheme } from 'react-native-paper';
 import { Theme } from 'react-native-paper/lib/typescript/types';
 import color from 'color';
@@ -14,7 +14,10 @@ interface RarityPercentProps {
 export default function RarityPercent({ nft, args }: RarityPercentProps) {
   const theme = useTheme();
   const styles = makeStyle(args, theme);
-  const text = `${(nft.rarity.stat.percent / 100).toString()}%`;
+  const text =
+    nft.NFTType === 'one-kind'
+      ? '☆☆☆'
+      : `${(nft.rarity.stat.percent / 100).toString()}%`;
 
   const [fontSize, setFontSize] = React.useState<number>(0);
   const onLayout = React.useCallback(

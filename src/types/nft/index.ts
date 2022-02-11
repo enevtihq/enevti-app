@@ -1,6 +1,7 @@
 import { NFTRarity } from './NFTRarity';
-import { NFTTemplate } from './template';
-import { NFTUtility } from './utility';
+import { NFTType } from './NFTType';
+import { NFTTemplate } from './NFTTemplate';
+import { NFTUtility } from './NFTUtility';
 
 export type NFT = {
   serial: string;
@@ -8,6 +9,7 @@ export type NFT = {
   contentType: 'image';
   data: string;
   template: NFTTemplate;
+  NFTType: NFTType;
   utility: NFTUtility;
   rarity: NFTRarity;
 };

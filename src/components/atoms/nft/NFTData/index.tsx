@@ -2,7 +2,7 @@ import { StyleSheet, View } from 'react-native';
 import React from 'react';
 import { NFT } from '../../../../types/nft';
 import NFTImageData from './NFTImageData';
-import { TemplateArgs } from '../../../../types/nft/template';
+import { TemplateArgs } from '../../../../types/nft/NFTTemplate';
 
 interface NFTDataProps {
   nft: NFT;

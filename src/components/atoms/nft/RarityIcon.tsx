@@ -1,7 +1,7 @@
 import { View, StyleSheet, Image } from 'react-native';
 import React from 'react';
 import { NFT } from '../../../types/nft';
-import { TemplateArgs } from '../../../types/nft/template';
+import { TemplateArgs } from '../../../types/nft/NFTTemplate';
 
 interface RarityIconProps {
   nft: NFT;
@@ -9,7 +9,7 @@ interface RarityIconProps {
 }
 
 export default function RarityIcon({ nft, args }: RarityIconProps) {
-  const styles = makeStyle(args);
+  const styles = makeStyle(args, nft);
 
   return (
     <View style={styles.rarityIconContainer}>
@@ -21,13 +21,13 @@ export default function RarityIcon({ nft, args }: RarityIconProps) {
       <Image
         source={require('../../../assets/images/enevti-icon.png')}
         resizeMode={'contain'}
-        style={[styles.image, { opacity: 1 - nft.rarity.stat.percent / 100 }]}
+        style={[styles.image]}
       />
     </View>
   );
 }
 
-const makeStyle = (args: TemplateArgs) =>
+const makeStyle = (args: TemplateArgs, nft: NFT) =>
   StyleSheet.create({
     rarityIconContainer: {
       width: args.width,
@@ -40,5 +40,7 @@ const makeStyle = (args: TemplateArgs) =>
       width: '100%',
       height: '100%',
       position: 'absolute',
+      opacity:
+        nft.NFTType === 'one-kind' ? 1 : 1 - nft.rarity.stat.percent / 100,
     },
   });

@@ -1,7 +1,7 @@
 import { View, StyleSheet, Text, Platform } from 'react-native';
 import React from 'react';
 import { NFT } from '../../../types/nft';
-import { TemplateArgs } from '../../../types/nft/template';
+import { TemplateArgs } from '../../../types/nft/NFTTemplate';
 import { useTheme } from 'react-native-paper';
 import { Theme } from 'react-native-paper/lib/typescript/types';
 
@@ -13,7 +13,8 @@ interface RarityRankProps {
 export default function RarityRank({ nft, args }: RarityRankProps) {
   const theme = useTheme();
   const styles = makeStyle(args, theme);
-  const text = `Rank#${nft.rarity.stat.rank}`;
+  const text =
+    nft.NFTType === 'one-kind' ? 'OneKind' : `Rank#${nft.rarity.stat.rank}`;
 
   const [fontSize, setFontSize] = React.useState<number>(0);
   const onLayout = React.useCallback(

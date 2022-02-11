@@ -10,8 +10,9 @@ export type NFTTemplateItem = {
   type:
     | 'utility-background'
     | 'utility-icon'
-    | 'utility-text'
+    | 'utility-label'
     | 'partition-icon'
+    | 'partition-label'
     | 'data'
     | 'data-box'
     | 'box'

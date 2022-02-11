@@ -3,15 +3,12 @@ import React from 'react';
 import { NFT } from '../../../types/nft';
 import { TemplateArgs } from '../../../types/nft/NFTTemplate';
 
-interface UtilityBackgroundProps {
+interface PartitionIconProps {
   nft: NFT;
   args: TemplateArgs;
 }
 
-export default function UtilityBackground({
-  nft,
-  args,
-}: UtilityBackgroundProps) {
+export default function PartitionIcon({ nft, args }: PartitionIconProps) {
   const styles = makeStyle(args);
   let source: any;
 

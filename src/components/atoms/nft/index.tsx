@@ -2,7 +2,7 @@ import { StyleSheet, View } from 'react-native';
 import React from 'react';
 import { NFT } from '../../../types/nft';
 import UtilityBackground from './UtilityBackground';
-import { NFTTemplateItem } from '../../../types/nft/template';
+import { NFTTemplateItem } from '../../../types/nft/NFTTemplate';
 import NFTData from './NFTData';
 import Box from './Box';
 import RarityIcon from './RarityIcon';
@@ -16,6 +16,7 @@ const nft: NFT = {
   name: 'EyeCollection',
   data: 'Qmb3jKA6Vn1azR6aSMnT6geGMkg818uBkfSHNg8ui1a9dy',
   contentType: 'image',
+  NFTType: 'one-kind',
   utility: 'videocall',
   rarity: {
     stat: {
@@ -84,6 +85,26 @@ const nft: NFT = {
         width: '37.5%',
         height: '12.5%',
         rotate: '-90deg',
+      },
+    },
+    {
+      type: 'box',
+      args: {
+        x: '3%',
+        y: '62%',
+        width: '6.5%',
+        height: '6.5%',
+        rotate: '0deg',
+      },
+    },
+    {
+      type: 'partition-icon',
+      args: {
+        x: '3%',
+        y: '62%',
+        width: '6.5%',
+        height: '6.5%',
+        rotate: '0deg',
       },
     },
   ],
