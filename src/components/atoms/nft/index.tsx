@@ -3,10 +3,16 @@ import React from 'react';
 import { NFT } from '../../../types/nft';
 import UtilityBackground from './UtilityBackground';
 import { NFTTemplateItem } from '../../../types/nft/template';
+import NFTData from './NFTData';
 
 const nft: NFT = {
+  data: 'Qmb3jKA6Vn1azR6aSMnT6geGMkg818uBkfSHNg8ui1a9dy',
+  contentType: 'image',
   utility: 'videocall',
-  template: [{ type: 'utility-background' }],
+  template: [
+    { type: 'utility-background' },
+    { type: 'data', args: { x: '15%', y: '15%', width: '70%', height: '70%' } },
+  ],
 };
 
 const handleRenderNFTTemplate = (
@@ -20,6 +26,8 @@ const handleRenderNFTTemplate = (
       return (
         <UtilityBackground key={index} nft={nftObject} width={canvasWidth} />
       );
+    case 'data':
+      return <NFTData key={index} nft={nftObject} args={templateItem.args} />;
     default:
       return <View key={index} />;
   }

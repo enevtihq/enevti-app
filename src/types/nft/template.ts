@@ -1,10 +1,8 @@
-interface TemplateArgs {
-  x?: number;
-  y?: number;
-  translateX?: number;
-  translateY?: number;
-  width?: number;
-  height?: number;
+export interface TemplateArgs {
+  x?: string;
+  y?: string;
+  width?: string;
+  height?: string;
   size?: number;
 }
 
@@ -28,10 +26,16 @@ interface NFTPartitionIconTemplate {
   args?: TemplateArgs;
 }
 
+interface NFTData {
+  type: 'data';
+  args?: TemplateArgs;
+}
+
 export type NFTTemplateItem =
   | NFTUtilityBackgroundTemplate
   | NFTUtilityIconTemplate
   | NFTUtilityTextTemplate
-  | NFTPartitionIconTemplate;
+  | NFTPartitionIconTemplate
+  | NFTData;
 
 export type NFTTemplate = NFTTemplateItem[];

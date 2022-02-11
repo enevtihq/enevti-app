@@ -9,7 +9,7 @@ import { Divider } from 'react-native-paper';
 
 const dummyData = [
   {
-    url: 'https://effigis.com/wp-content/uploads/2015/02/DigitalGlobe_QuickBird_60cm_8bit_RGB_DRA_Boulder_2005JUL04_8bits_sub_r_1.jpg',
+    url: 'https://effigis.com/wp-content/uploads/2015/02/Iunctus_SPOT5_5m_8bit_RGB_DRA_torngat_mountains_national_park_8bits_1.jpg',
     title: '@aldhosutra',
   },
   {

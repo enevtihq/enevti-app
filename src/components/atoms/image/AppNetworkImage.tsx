@@ -12,9 +12,14 @@ const FastImage = createImageProgress(FI);
 interface AppNetworkImageProps {
   url: string;
   style?: StyleProp<ImageStyle>;
+  loaderSize?: number;
 }
 
-export default function AppNetworkImage({ url, style }: AppNetworkImageProps) {
+export default function AppNetworkImage({
+  url,
+  style,
+  loaderSize = 30,
+}: AppNetworkImageProps) {
   const theme = useTheme() as Theme;
 
   return (
@@ -28,6 +33,7 @@ export default function AppNetworkImage({ url, style }: AppNetworkImageProps) {
       indicator={Progress.Circle}
       indicatorProps={{
         color: theme.colors.text,
+        size: loaderSize,
       }}
     />
   );
