@@ -21,5 +21,6 @@ const makeStyle = (args: TemplateArgs) =>
       left: args.x,
       position: 'absolute',
       backgroundColor: 'white',
+      transform: [{ rotate: args.rotate }],
     },
   });

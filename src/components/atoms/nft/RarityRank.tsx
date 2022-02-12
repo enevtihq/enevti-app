@@ -52,6 +52,7 @@ const makeStyle = (args: TemplateArgs, theme: Theme) =>
       justifyContent: 'center',
       alignItems: 'center',
       textAlign: 'center',
+      transform: [{ rotate: args.rotate }],
     },
     text: {
       fontFamily: theme.fonts.medium.fontFamily,

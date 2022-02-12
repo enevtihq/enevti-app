@@ -61,5 +61,6 @@ const makeStyle = (args: TemplateArgs) =>
       position: 'absolute',
       justifyContent: 'center',
       alignItems: 'center',
+      transform: [{ rotate: args.rotate }],
     },
   });

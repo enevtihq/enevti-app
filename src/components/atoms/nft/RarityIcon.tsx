@@ -1,7 +1,8 @@
-import { View, StyleSheet, Image } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import React from 'react';
 import { NFT } from '../../../types/nft';
 import { TemplateArgs } from '../../../types/nft/NFTTemplate';
+import FastImage from 'react-native-fast-image';
 
 interface RarityIconProps {
   nft: NFT;
@@ -13,14 +14,14 @@ export default function RarityIcon({ nft, args }: RarityIconProps) {
 
   return (
     <View style={styles.rarityIconContainer}>
-      <Image
+      <FastImage
         source={require('../../../assets/images/enevti-icon-gs.png')}
-        resizeMode={'contain'}
+        resizeMode={FastImage.resizeMode.contain}
         style={styles.image}
       />
-      <Image
+      <FastImage
         source={require('../../../assets/images/enevti-icon.png')}
-        resizeMode={'contain'}
+        resizeMode={FastImage.resizeMode.contain}
         style={[styles.image]}
       />
     </View>

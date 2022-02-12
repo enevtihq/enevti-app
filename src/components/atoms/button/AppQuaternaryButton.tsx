@@ -1,63 +1,88 @@
 import React from 'react';
 import { StyleProp, ViewStyle, StyleSheet, View } from 'react-native';
-import { ActivityIndicator, Button } from 'react-native-paper';
-import { IconSource } from 'react-native-paper/lib/typescript/components/Icon';
+import { ActivityIndicator, TouchableRipple } from 'react-native-paper';
 import { useTheme } from 'react-native-paper';
 import { hp, SafeAreaInsets } from '../../../utils/imageRatio';
 
 import { Theme } from '../../../theme/default';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import color from 'color';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 interface AppQuaternaryButtonProps {
   children: React.ReactNode;
+  box?: boolean;
   onPress?: () => void;
   loading?: boolean;
   disabled?: boolean;
-  icon?: IconSource;
+  icon?: string;
+  iconSize?: number;
   style?: StyleProp<ViewStyle>;
+  contentStyle?: StyleProp<ViewStyle>;
 }
 
 export default function AppQuaternaryButton({
   children,
+  box = false,
   onPress,
   loading = false,
   disabled = false,
   icon,
+  iconSize,
   style,
+  contentStyle,
 }: AppQuaternaryButtonProps): JSX.Element {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
-  const styles = makeStyles(theme, insets);
+  const styles = makeStyles(theme, insets, box);
+
+  const opacity = disabled ? 0.2 : 1;
 
   return loading ? (
     <View style={[styles.quaternaryButton, style]}>
       <ActivityIndicator
         animating={true}
-        style={styles.content}
+        style={contentStyle}
         color={theme.colors.text}
       />
     </View>
   ) : (
-    <Button
-      disabled={disabled}
-      mode="text"
-      icon={icon}
-      onPress={onPress}
-      uppercase={false}
-      contentStyle={styles.content}
-      style={[styles.quaternaryButton, style]}>
-      {children}
-    </Button>
+    <View style={[styles.buttonContainer, style, { opacity: opacity }]}>
+      <TouchableRipple
+        style={[styles.quaternaryButton, style]}
+        onPress={disabled ? undefined : onPress}>
+        <View style={styles.contentContainer}>
+          {icon && (
+            <MaterialCommunityIcons
+              name={icon}
+              size={iconSize}
+              style={contentStyle}
+            />
+          )}
+          <View style={contentStyle}>{children}</View>
+        </View>
+      </TouchableRipple>
+    </View>
   );
 }
 
-const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
+const makeStyles = (theme: Theme, insets: SafeAreaInsets, box: boolean) =>
   StyleSheet.create({
     quaternaryButton: {
+      alignItems: 'center',
+    },
+    buttonContainer: {
+      borderWidth: box ? StyleSheet.hairlineWidth : 0,
+      borderColor: color(theme.colors.text).alpha(0.2).rgb().toString(),
       borderRadius: theme.roundness,
       height: hp('7.5%', insets),
+      alignItems: 'center',
+      justifyContent: 'center',
+      overflow: 'hidden',
     },
-    content: {
-      height: hp('7.5%', insets),
+    contentContainer: {
+      flex: 1,
+      flexDirection: 'row',
+      alignItems: 'center',
     },
   });

@@ -37,6 +37,7 @@ const makeStyle = (box: boolean, args: TemplateArgs) =>
       height: args.height,
       top: args.y,
       left: args.x,
+      transform: [{ rotate: args.rotate }],
     },
     nftDataBox: {
       width: '100%',

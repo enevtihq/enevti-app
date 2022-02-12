@@ -1,5 +1,6 @@
-import { View, StyleSheet, Image } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import React from 'react';
+import FastImage from 'react-native-fast-image';
 import { NFT } from '../../../types/nft';
 import { TemplateArgs } from '../../../types/nft/NFTTemplate';
 
@@ -41,9 +42,9 @@ export default function UtilityBackground({
 
   return (
     <View style={styles.utilityBackgroundContainer}>
-      <Image
+      <FastImage
         source={source}
-        resizeMode={'cover'}
+        resizeMode={FastImage.resizeMode.cover}
         style={styles.utilityBackgroundContainer}
       />
     </View>
@@ -58,5 +59,6 @@ const makeStyle = (args: TemplateArgs) =>
       top: args.y,
       left: args.x,
       position: 'absolute',
+      transform: [{ rotate: args.rotate }],
     },
   });
