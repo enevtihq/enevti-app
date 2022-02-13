@@ -9,7 +9,10 @@ export type NFT = {
   name: string;
   contentType: 'image';
   data: string;
-  template: NFTTemplate;
+  template: {
+    main: NFTTemplate;
+    thumbnail: NFTTemplate;
+  };
   NFTType: NFTType;
   utility: NFTUtility;
   redeem: NFTRedeem;
