@@ -15,12 +15,12 @@ export default function RarityIcon({ nft, args }: RarityIconProps) {
   return (
     <View style={styles.rarityIconContainer}>
       <FastImage
-        source={require('../../../assets/images/enevti-icon-gs.png')}
+        source={require('../../../../assets/images/enevti-icon-gs.png')}
         resizeMode={FastImage.resizeMode.contain}
         style={styles.image}
       />
       <FastImage
-        source={require('../../../assets/images/enevti-icon.png')}
+        source={require('../../../../assets/images/enevti-icon.png')}
         resizeMode={FastImage.resizeMode.contain}
         style={[styles.image]}
       />

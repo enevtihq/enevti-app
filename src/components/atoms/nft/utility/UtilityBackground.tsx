@@ -18,22 +18,22 @@ export default function UtilityBackground({
 
   switch (nft.utility) {
     case 'videocall':
-      source = require('../../../assets/nft-template/background/videocall.jpg');
+      source = require('../../../../assets/nft-template/background/videocall.jpg');
       break;
     case 'chat':
-      source = require('../../../assets/nft-template/background/chat.jpg');
+      source = require('../../../../assets/nft-template/background/chat.jpg');
       break;
     case 'content':
-      source = require('../../../assets/nft-template/background/content.jpg');
+      source = require('../../../../assets/nft-template/background/content.jpg');
       break;
     case 'gift':
-      source = require('../../../assets/nft-template/background/gift.jpg');
+      source = require('../../../../assets/nft-template/background/gift.jpg');
       break;
     case 'qr':
-      source = require('../../../assets/nft-template/background/qr.jpg');
+      source = require('../../../../assets/nft-template/background/qr.jpg');
       break;
     case 'stream':
-      source = require('../../../assets/nft-template/background/stream.jpg');
+      source = require('../../../../assets/nft-template/background/stream.jpg');
       break;
     default:
       source = undefined;
