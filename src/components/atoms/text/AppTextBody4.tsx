@@ -21,7 +21,10 @@ export default function AppTextBody4({
   const styles = makeStyle(theme, insets);
 
   return (
-    <Text numberOfLines={numberOfLines} style={[styles.body4, style]}>
+    <Text
+      numberOfLines={numberOfLines}
+      ellipsizeMode="tail"
+      style={[styles.body4, style]}>
       {children}
     </Text>
   );

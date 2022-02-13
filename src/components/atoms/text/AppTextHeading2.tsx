@@ -21,7 +21,10 @@ export default function AppTextHeading2({
   const styles = makeStyle(theme, insets);
 
   return (
-    <Text numberOfLines={numberOfLines} style={[styles.heading2, style]}>
+    <Text
+      numberOfLines={numberOfLines}
+      ellipsizeMode="tail"
+      style={[styles.heading2, style]}>
       {children}
     </Text>
   );

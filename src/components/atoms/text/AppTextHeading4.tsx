@@ -21,7 +21,10 @@ export default function AppTextHeading4({
   const styles = makeStyle(theme, insets);
 
   return (
-    <Text numberOfLines={numberOfLines} style={[styles.heading4, style]}>
+    <Text
+      numberOfLines={numberOfLines}
+      ellipsizeMode="tail"
+      style={[styles.heading4, style]}>
       {children}
     </Text>
   );
