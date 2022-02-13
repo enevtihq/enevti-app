@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleProp, ViewStyle, StyleSheet, View } from 'react-native';
 import { ActivityIndicator, TouchableRipple } from 'react-native-paper';
 import { useTheme } from 'react-native-paper';
-import { hp, SafeAreaInsets } from '../../../utils/imageRatio';
+import { hp, SafeAreaInsets, wp } from '../../../utils/imageRatio';
 
 import { Theme } from '../../../theme/default';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -17,6 +17,7 @@ interface AppQuaternaryButtonProps {
   disabled?: boolean;
   icon?: string;
   iconSize?: number;
+  iconColor?: string;
   style?: StyleProp<ViewStyle>;
   contentStyle?: StyleProp<ViewStyle>;
 }
@@ -29,6 +30,7 @@ export default function AppQuaternaryButton({
   disabled = false,
   icon,
   iconSize,
+  iconColor,
   style,
   contentStyle,
 }: AppQuaternaryButtonProps): JSX.Element {
@@ -56,7 +58,8 @@ export default function AppQuaternaryButton({
             <MaterialCommunityIcons
               name={icon}
               size={iconSize}
-              style={contentStyle}
+              color={iconColor ? iconColor : theme.colors.text}
+              style={[styles.icon, contentStyle]}
             />
           )}
           <View style={contentStyle}>{children}</View>
@@ -70,6 +73,7 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets, box: boolean) =>
   StyleSheet.create({
     quaternaryButton: {
       alignItems: 'center',
+      paddingHorizontal: wp('2%', insets),
     },
     buttonContainer: {
       borderWidth: box ? StyleSheet.hairlineWidth : 0,
@@ -84,5 +88,8 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets, box: boolean) =>
       flex: 1,
       flexDirection: 'row',
       alignItems: 'center',
+    },
+    icon: {
+      paddingRight: wp('1%', insets),
     },
   });

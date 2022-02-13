@@ -1,8 +1,8 @@
 import { View, StyleSheet, Text } from 'react-native';
 import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { TouchableRipple, useTheme } from 'react-native-paper';
-import { SafeAreaInsets, wp } from '../../utils/imageRatio';
+import { useTheme } from 'react-native-paper';
+import { hp, SafeAreaInsets, wp } from '../../utils/imageRatio';
 import { Theme } from '../../theme/default';
 import AppNetworkImage from '../atoms/image/AppNetworkImage';
 import AppTextHeading3 from '../atoms/text/AppTextHeading3';
@@ -13,7 +13,6 @@ import AppIconButton from '../atoms/icon/AppIconButton';
 import { iconMap } from '../atoms/icon/AppIconComponent';
 import color from 'color';
 import NFTRenderer from '../atoms/nft';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AppQuaternaryButton from '../atoms/button/AppQuaternaryButton';
 
 const profileURL =
@@ -36,7 +35,10 @@ export default function AppFeedItem() {
         <AppTextBody5 numberOfLines={1}>Promoted By Community</AppTextBody5>
       </View>
       <View style={styles.headerPoolContainer}>
-        <AppQuaternaryButton box style={{ height: '100%', width: '100%' }}>
+        <AppQuaternaryButton
+          box
+          style={{ height: '100%', width: '100%' }}
+          onPress={() => console.log('stake')}>
           <View style={{ width: '100%' }}>
             <AppTextHeading3 style={styles.headerPoolText}>
               121M
@@ -60,70 +62,43 @@ export default function AppFeedItem() {
     <View style={styles.actionContainer}>
       <View>
         <View style={styles.actionButton}>
-          <TouchableRipple
-            style={styles.headerPoolButtonTouchable}
-            onPress={() => console.log('anjay')}>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center',
-                padding: 8,
-              }}>
-              <MaterialCommunityIcons name={'heart'} size={20} />
-              <View style={{ marginLeft: 5 }}>
-                <AppTextHeading3 style={styles.headerPoolText}>
-                  491
-                </AppTextHeading3>
-              </View>
-            </View>
-          </TouchableRipple>
+          <AppQuaternaryButton
+            icon={iconMap.likeInactive}
+            iconSize={wp('6%', insets)}
+            style={{ height: '100%' }}
+            onPress={() => console.log('liked')}>
+            <AppTextBody4 style={styles.headerPoolText}>491</AppTextBody4>
+          </AppQuaternaryButton>
         </View>
       </View>
       <View style={{ marginLeft: 8 }}>
         <View style={styles.actionButton}>
-          <TouchableRipple
-            style={styles.headerPoolButtonTouchable}
-            onPress={() => console.log('anjay')}>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center',
-                padding: 8,
-              }}>
-              <MaterialCommunityIcons name={'comment'} size={20} />
-              <View style={{ marginLeft: 5 }}>
-                <AppTextHeading3 style={styles.headerPoolText}>
-                  12
-                </AppTextHeading3>
-              </View>
-            </View>
-          </TouchableRipple>
+          <AppQuaternaryButton
+            icon={iconMap.comment}
+            iconSize={wp('6%', insets)}
+            style={{ height: '100%' }}
+            onPress={() => console.log('liked')}>
+            <AppTextBody4 style={styles.headerPoolText}>12</AppTextBody4>
+          </AppQuaternaryButton>
         </View>
       </View>
       <View style={{ flex: 1 }} />
       <View>
         <View style={styles.headerPoolButton}>
-          <TouchableRipple
-            style={styles.headerPoolButtonTouchable}
-            onPress={() => console.log('anjay')}>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center',
-                paddingHorizontal: 16,
-                paddingVertical: 8,
-              }}>
-              <MaterialCommunityIcons name={'basket'} size={20} />
-              <View style={{ marginLeft: 5 }}>
-                <AppTextHeading3 style={styles.headerPoolText}>
-                  1291 ENVT
-                </AppTextHeading3>
-              </View>
-            </View>
-          </TouchableRipple>
+          <AppQuaternaryButton
+            box
+            icon={iconMap.buy}
+            iconSize={wp('6%', insets)}
+            style={{ height: '100%' }}
+            contentStyle={{
+              paddingVertical: hp('0.5%', insets),
+              paddingHorizontal: wp('1%', insets),
+            }}
+            onPress={() => console.log('liked')}>
+            <AppTextHeading4 style={styles.headerPoolText}>
+              1291 <AppTextBody5>$ENVT</AppTextBody5>
+            </AppTextHeading4>
+          </AppQuaternaryButton>
         </View>
       </View>
     </View>
@@ -199,6 +174,7 @@ const makeStyle = (insets: SafeAreaInsets, theme: Theme) =>
       justifyContent: 'center',
       alignItems: 'center',
       marginLeft: wp('2%', insets),
+      paddingVertical: '1%',
     },
     headerPoolText: {
       textAlign: 'center',
