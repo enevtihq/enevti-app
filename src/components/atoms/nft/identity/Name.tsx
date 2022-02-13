@@ -1,19 +1,19 @@
 import { View, StyleSheet, Text, Platform } from 'react-native';
 import React from 'react';
-import { NFT } from '../../../types/nft';
-import { TemplateArgs } from '../../../types/nft/NFTTemplate';
+import { NFT } from '../../../../types/nft';
+import { TemplateArgs } from '../../../../types/nft/NFTTemplate';
 import { useTheme } from 'react-native-paper';
 import { Theme } from 'react-native-paper/lib/typescript/types';
 
-interface SerialProps {
+interface NameProps {
   nft: NFT;
   args: TemplateArgs;
 }
 
-export default function Serial({ nft, args }: SerialProps) {
+export default function Name({ nft, args }: NameProps) {
   const theme = useTheme();
   const styles = makeStyle(args, theme);
-  const text = `Serial No. #${nft.serial}`;
+  const text = nft.name;
 
   const [fontSize, setFontSize] = React.useState<number>(0);
   const onLayout = React.useCallback(
@@ -21,7 +21,7 @@ export default function Serial({ nft, args }: SerialProps) {
       setFontSize(
         Math.sqrt(
           (e.nativeEvent.layout.width * e.nativeEvent.layout.height) /
-            (text.length + 10),
+            text.length,
         ),
       );
     },
@@ -29,7 +29,7 @@ export default function Serial({ nft, args }: SerialProps) {
   );
 
   return (
-    <View onLayout={onLayout} style={styles.serialContainer}>
+    <View onLayout={onLayout} style={styles.nameContainer}>
       <Text
         numberOfLines={1}
         adjustsFontSizeToFit
@@ -42,7 +42,7 @@ export default function Serial({ nft, args }: SerialProps) {
 
 const makeStyle = (args: TemplateArgs, theme: Theme) =>
   StyleSheet.create({
-    serialContainer: {
+    nameContainer: {
       width: args.width,
       height: args.height,
       top: args.y,
@@ -55,8 +55,9 @@ const makeStyle = (args: TemplateArgs, theme: Theme) =>
     },
     text: {
       fontFamily: theme.fonts.medium.fontFamily,
+      fontWeight: Platform.OS === 'ios' ? '700' : '700',
       textAlign: 'center',
-      letterSpacing: Platform.OS === 'ios' ? -1 : -0.5,
+      letterSpacing: Platform.OS === 'ios' ? -1 : 0,
       color: 'white',
     },
   });

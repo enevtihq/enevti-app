@@ -12,7 +12,7 @@ import AppTextBody4 from '../atoms/text/AppTextBody4';
 import AppIconButton from '../atoms/icon/AppIconButton';
 import { iconMap } from '../atoms/icon/AppIconComponent';
 import color from 'color';
-import NFTRenderer from '../atoms/nft';
+import NFTRenderer from './AppNFTRenderer';
 import AppQuaternaryButton from '../atoms/button/AppQuaternaryButton';
 
 const profileURL =

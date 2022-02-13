@@ -1,42 +1,23 @@
 import { View, StyleSheet, Text, Platform } from 'react-native';
 import React from 'react';
-import { NFT } from '../../../types/nft';
-import { TemplateArgs } from '../../../types/nft/NFTTemplate';
+import { NFT } from '../../../../types/nft';
+import { TemplateArgs } from '../../../../types/nft/NFTTemplate';
 import { useTheme } from 'react-native-paper';
 import { Theme } from 'react-native-paper/lib/typescript/types';
+import color from 'color';
 
-interface UtilityLabelProps {
+interface RarityPercentProps {
   nft: NFT;
   args: TemplateArgs;
 }
 
-export default function UtilityLabel({ nft, args }: UtilityLabelProps) {
+export default function RarityPercent({ nft, args }: RarityPercentProps) {
   const theme = useTheme();
   const styles = makeStyle(args, theme);
-  let text: string = 'help-circle-outline';
-
-  switch (nft.utility) {
-    case 'videocall':
-      text = 'Video Call';
-      break;
-    case 'chat':
-      text = 'Direct Chat';
-      break;
-    case 'content':
-      text = 'Exclusive Content';
-      break;
-    case 'gift':
-      text = 'Physical Gift';
-      break;
-    case 'qr':
-      text = 'QR Code';
-      break;
-    case 'stream':
-      text = 'Live Stream';
-      break;
-    default:
-      break;
-  }
+  const text =
+    nft.NFTType === 'one-kind'
+      ? '☆☆☆'
+      : `${(nft.rarity.stat.percent / 100).toString()}%`;
 
   const [fontSize, setFontSize] = React.useState<number>(0);
   const onLayout = React.useCallback(
@@ -52,7 +33,7 @@ export default function UtilityLabel({ nft, args }: UtilityLabelProps) {
   );
 
   return (
-    <View onLayout={onLayout} style={styles.rarityRankContainer}>
+    <View onLayout={onLayout} style={styles.rarityPercentContainer}>
       <Text
         numberOfLines={1}
         adjustsFontSizeToFit
@@ -65,18 +46,21 @@ export default function UtilityLabel({ nft, args }: UtilityLabelProps) {
 
 const makeStyle = (args: TemplateArgs, theme: Theme) =>
   StyleSheet.create({
-    rarityRankContainer: {
+    rarityPercentContainer: {
       width: args.width,
       height: args.height,
       top: args.y,
       left: args.x,
-      justifyContent: 'center',
       position: 'absolute',
+      justifyContent: 'center',
+      alignItems: 'center',
+      textAlign: 'center',
       transform: [{ rotate: args.rotate }],
     },
     text: {
       fontFamily: theme.fonts.medium.fontFamily,
       fontWeight: Platform.OS === 'ios' ? '500' : '700',
-      color: 'white',
+      textAlign: 'center',
+      color: color('black').alpha(0.5).rgb().toString(),
     },
   });

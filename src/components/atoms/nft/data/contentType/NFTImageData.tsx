@@ -1,8 +1,8 @@
 import { StyleSheet, View } from 'react-native';
 import React from 'react';
-import { NFT } from '../../../../types/nft';
-import AppNetworkImage from '../../image/AppNetworkImage';
-import { IPFStoURL } from '../../../../service/ipfs';
+import { NFT } from '../../../../../types/nft';
+import AppNetworkImage from '../../../image/AppNetworkImage';
+import { IPFStoURL } from '../../../../../service/ipfs';
 
 interface NFTImageDataProps {
   nft: NFT;

@@ -1,8 +1,8 @@
 import { View, StyleSheet } from 'react-native';
 import React from 'react';
 import FastImage from 'react-native-fast-image';
-import { NFT } from '../../../types/nft';
-import { TemplateArgs } from '../../../types/nft/NFTTemplate';
+import { NFT } from '../../../../types/nft';
+import { TemplateArgs } from '../../../../types/nft/NFTTemplate';
 
 interface UtilityBackgroundProps {
   nft: NFT;

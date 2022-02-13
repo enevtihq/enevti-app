@@ -2,16 +2,16 @@ import { View, StyleSheet } from 'react-native';
 import React from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { NFT } from '../../../types/nft';
-import { TemplateArgs } from '../../../types/nft/NFTTemplate';
-import { iconMap } from '../icon/AppIconComponent';
+import { NFT } from '../../../../types/nft';
+import { TemplateArgs } from '../../../../types/nft/NFTTemplate';
+import { iconMap } from '../../icon/AppIconComponent';
 
-interface PartitionIconProps {
+interface UtilityIconProps {
   nft: NFT;
   args: TemplateArgs;
 }
 
-export default function PartitionIcon({ nft, args }: PartitionIconProps) {
+export default function UtilityIcon({ nft, args }: UtilityIconProps) {
   const styles = makeStyle(args);
 
   const [iconSize, setIconSize] = React.useState<number>(0);
@@ -21,12 +21,27 @@ export default function PartitionIcon({ nft, args }: PartitionIconProps) {
 
   let icon: string = 'help-circle-outline';
 
-  if (nft.NFTType === 'one-kind') {
-    icon = iconMap.nftOneKind;
-  } else if (nft.NFTType === 'packed' && nft.redeem.parts.length > 0) {
-    icon = iconMap.nftPartitioned;
-  } else if (nft.NFTType === 'upgradable') {
-    icon = iconMap.nftUpgradable;
+  switch (nft.utility) {
+    case 'videocall':
+      icon = iconMap.utilityVideoCall;
+      break;
+    case 'chat':
+      icon = iconMap.utilityChat;
+      break;
+    case 'content':
+      icon = iconMap.utilityContent;
+      break;
+    case 'gift':
+      icon = iconMap.utilityGift;
+      break;
+    case 'qr':
+      icon = iconMap.utilityQR;
+      break;
+    case 'stream':
+      icon = iconMap.utilityStream;
+      break;
+    default:
+      break;
   }
 
   return (

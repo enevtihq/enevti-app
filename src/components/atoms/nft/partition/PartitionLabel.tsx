@@ -1,7 +1,7 @@
 import { View, StyleSheet, Text, Platform } from 'react-native';
 import React from 'react';
-import { NFT } from '../../../types/nft';
-import { TemplateArgs } from '../../../types/nft/NFTTemplate';
+import { NFT } from '../../../../types/nft';
+import { TemplateArgs } from '../../../../types/nft/NFTTemplate';
 import { useTheme } from 'react-native-paper';
 import { Theme } from 'react-native-paper/lib/typescript/types';
 

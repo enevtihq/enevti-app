@@ -1,19 +1,19 @@
 import { StyleSheet, View } from 'react-native';
 import React from 'react';
-import { NFT } from '../../../types/nft';
-import UtilityBackground from './UtilityBackground';
-import { NFTTemplateItem } from '../../../types/nft/NFTTemplate';
-import NFTData from './NFTData';
-import Box from './Box';
-import RarityIcon from './RarityIcon';
-import RarityRank from './RarityRank';
-import RarityPercent from './RarityPercent';
-import Name from './Name';
-import Serial from './Serial';
-import PartitionIcon from './PartitionIcon';
-import PartitionLabel from './PartitionLabel';
-import UtilityIcon from './UtilityIcon';
-import UtilityLabel from './UtilityLabel';
+import { NFT } from '../../types/nft';
+import UtilityBackground from '../atoms/nft/utility/UtilityBackground';
+import { NFTTemplateItem } from '../../types/nft/NFTTemplate';
+import NFTData from '../atoms/nft/data/NFTData';
+import Box from '../atoms/nft/misc/Box';
+import RarityIcon from '../atoms/nft/rarity/RarityIcon';
+import RarityRank from '../atoms/nft/rarity/RarityRank';
+import RarityPercent from '../atoms/nft/rarity/RarityPercent';
+import Name from '../atoms/nft/identity/Name';
+import Serial from '../atoms/nft/identity/Serial';
+import PartitionIcon from '../atoms/nft/partition/PartitionIcon';
+import PartitionLabel from '../atoms/nft/partition/PartitionLabel';
+import UtilityIcon from '../atoms/nft/utility/UtilityIcon';
+import UtilityLabel from '../atoms/nft/utility/UtilityLabel';
 
 const nft: NFT = {
   serial: 'eyecollection-001',
@@ -223,7 +223,7 @@ const handleRenderNFTTemplate = (
   }
 };
 
-export default function NFTRenderer() {
+export default function AppNFTRenderer() {
   const styles = makeStyle();
 
   const [canvasWidth, setCanvasWidth] = React.useState<number>(0);
