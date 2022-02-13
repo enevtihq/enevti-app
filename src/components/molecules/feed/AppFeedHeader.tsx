@@ -8,6 +8,7 @@ import AppIconButton from '../../atoms/icon/AppIconButton';
 import { iconMap } from '../../atoms/icon/AppIconComponent';
 import { SafeAreaInsets, wp } from '../../../utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { getCoinName } from '../../atoms/brand/AppBrandConstant';
 
 const profileURL =
   'https://res.cloudinary.com/crunchbase-production/image/upload/c_thumb,h_256,w_256,f_auto,g_faces,z_0.7,q_auto:eco,dpr_1/jtwy0wk2w1f4wzjkpvyx';
@@ -38,7 +39,9 @@ export default function AppFeedHeader() {
             <AppTextHeading3 style={styles.headerPoolText}>
               121M
             </AppTextHeading3>
-            <AppTextBody5 style={styles.headerPoolText}>$ENVT</AppTextBody5>
+            <AppTextBody5 style={styles.headerPoolText}>
+              {getCoinName()}
+            </AppTextBody5>
           </View>
         </AppQuaternaryButton>
       </View>

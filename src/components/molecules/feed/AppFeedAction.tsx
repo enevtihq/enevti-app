@@ -9,6 +9,7 @@ import AppTextBody5 from '../../atoms/text/AppTextBody5';
 import { Theme } from '../../../theme/default';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from 'react-native-paper';
+import { getCoinName } from '../../atoms/brand/AppBrandConstant';
 
 export default function AppFeedAction() {
   const insets = useSafeAreaInsets();
@@ -52,7 +53,7 @@ export default function AppFeedAction() {
           }}
           onPress={() => console.log('liked')}>
           <AppTextHeading4 style={styles.actionButtonText}>
-            1291 <AppTextBody5>$ENVT</AppTextBody5>
+            1291 <AppTextBody5>{getCoinName()}</AppTextBody5>
           </AppTextHeading4>
         </AppQuaternaryButton>
       </View>
