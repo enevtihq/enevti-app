@@ -46,7 +46,7 @@ export default function AppFeedHeader() {
       <View style={styles.headerMoreButtonContainer}>
         <AppIconButton
           icon={iconMap.dots}
-          size={20}
+          size={wp('5%', insets)}
           style={styles.headerMoreButton}
           onPress={() => console.log('more')}
         />
@@ -78,11 +78,11 @@ const makeStyle = (insets: SafeAreaInsets) =>
       marginLeft: wp('2%', insets),
     },
     headerPoolContainer: {
-      flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
       marginLeft: wp('2%', insets),
       paddingVertical: '1%',
+      width: wp('30%', insets),
     },
     headerPoolText: {
       textAlign: 'center',

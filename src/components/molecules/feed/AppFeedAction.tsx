@@ -69,7 +69,7 @@ const makeStyle = (insets: SafeAreaInsets, theme: Theme) =>
       textAlign: 'center',
     },
     commentButton: {
-      marginLeft: 8,
+      marginLeft: wp('2%', insets),
     },
     divider: {
       flex: 1,
