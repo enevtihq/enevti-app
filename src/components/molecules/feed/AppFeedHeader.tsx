@@ -9,11 +9,13 @@ import { iconMap } from '../../atoms/icon/AppIconComponent';
 import { SafeAreaInsets, wp } from '../../../utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getCoinName } from '../../atoms/brand/AppBrandConstant';
+import { useTranslation } from 'react-i18next';
 
 const profileURL =
   'https://res.cloudinary.com/crunchbase-production/image/upload/c_thumb,h_256,w_256,f_auto,g_faces,z_0.7,q_auto:eco,dpr_1/jtwy0wk2w1f4wzjkpvyx';
 
 export default function AppFeedHeader() {
+  const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const styles = makeStyle(insets);
 
@@ -27,7 +29,9 @@ export default function AppFeedHeader() {
 
       <View style={styles.headerAvatarInfoContainer}>
         <AppTextHeading3 numberOfLines={1}>aldhosutra</AppTextHeading3>
-        <AppTextBody5 numberOfLines={1}>Promoted By Community</AppTextBody5>
+        <AppTextBody5 numberOfLines={1}>
+          {t('home:promotedByCommunity')}
+        </AppTextBody5>
       </View>
 
       <View style={styles.headerPoolContainer}>

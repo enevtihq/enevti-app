@@ -6,8 +6,10 @@ import { useTheme } from 'react-native-paper';
 import { Theme } from '../../../theme/default';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SafeAreaInsets, wp } from '../../../utils/imageRatio';
+import { useTranslation } from 'react-i18next';
 
 export default function AppFeedFooter() {
+  const { t } = useTranslation();
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
   const styles = makeStyle(insets, theme);
@@ -23,11 +25,17 @@ export default function AppFeedFooter() {
         </AppTextBody4>
       </Text>
       <Text>
-        <AppTextHeading4 style={styles.tag}>Collection</AppTextHeading4>
+        <AppTextHeading4 style={styles.tag}>
+          {t('home:collection')}
+        </AppTextHeading4>
         <AppTextBody4 style={styles.tag}> | </AppTextBody4>
-        <AppTextBody4 style={styles.tag}>21 of 321 minted</AppTextBody4>
+        <AppTextBody4 style={styles.tag}>
+          {t('home:mintingProgress', { minted: '21', total: '321' })}
+        </AppTextBody4>
         <AppTextBody4 style={styles.tag}> | </AppTextBody4>
-        <AppTextBody4 style={styles.tag}>12 days left</AppTextBody4>
+        <AppTextBody4 style={styles.tag}>
+          {t('home:daysLeft', { day: '12' })}
+        </AppTextBody4>
       </Text>
     </View>
   );
