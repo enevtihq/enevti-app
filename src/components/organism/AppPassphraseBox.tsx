@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, ViewStyle } from 'react-native';
+import { View, StyleSheet, ViewStyle, StyleProp } from 'react-native';
 import { TouchableRipple, useTheme } from 'react-native-paper';
 import { SafeAreaInsets, wp } from '../../utils/imageRatio';
 import color from 'color';
@@ -15,7 +15,7 @@ import { showSnackbar } from '../../store/slices/ui/global';
 
 interface AppPassphraseBoxProps {
   passphrase: string;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
 }
 
 export default function AppPassphraseBox({

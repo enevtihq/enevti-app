@@ -1,6 +1,6 @@
 import { useTheme } from 'react-native-paper';
 import React from 'react';
-import { StyleSheet, Text, TextStyle } from 'react-native';
+import { StyleProp, StyleSheet, Text, TextStyle } from 'react-native';
 import { wp, SafeAreaInsets } from '../../../utils/imageRatio';
 import { Theme } from '../../../theme/default';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -8,7 +8,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 interface AppTextHeading5Props {
   children: React.ReactNode;
   numberOfLines?: number;
-  style?: TextStyle;
+  style?: StyleProp<TextStyle>;
 }
 
 export default function AppTextHeading5({

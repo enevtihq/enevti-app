@@ -1,4 +1,4 @@
-import { StyleSheet, View, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import React from 'react';
 import { TouchableRipple, useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -10,7 +10,7 @@ import AppNetworkImage from '../atoms/image/AppNetworkImage';
 interface AppPortraitOverlayBoxProps {
   url: string;
   title: string;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
   onPress?: () => void;
 }
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ReturnKeyTypeOptions, TextStyle } from 'react-native';
+import { ReturnKeyTypeOptions, StyleProp, TextStyle } from 'react-native';
 import { TextInput, useTheme } from 'react-native-paper';
 import AppFormTextInputWithError from '../molecules/AppFormTextInputWithError';
 import { iconMap } from '../atoms/icon/AppIconComponent';
@@ -12,7 +12,7 @@ interface AppFormSecureTextInputProps {
   errorText?: string;
   showError?: boolean;
   onSubmitEditing?: () => void;
-  style?: TextStyle;
+  style?: StyleProp<TextStyle>;
   returnKeyType?: ReturnKeyTypeOptions;
   blurOnSubmit?: boolean;
 }

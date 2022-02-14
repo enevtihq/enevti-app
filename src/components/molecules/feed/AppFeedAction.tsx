@@ -15,17 +15,37 @@ export default function AppFeedAction() {
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
   const styles = makeStyle(insets, theme);
+  const [like, setLike] = React.useState<1 | 0>(0);
+
+  const onLikeActivate = () => {
+    setLike(1);
+  };
+
+  const onLikeDeactivate = () => {
+    setLike(0);
+  };
+
+  const onComment = () => {};
+
+  const onBuy = () => {};
 
   return (
     <View style={styles.actionContainer}>
       <View>
         <View style={styles.actionButton}>
           <AppQuaternaryButton
-            icon={iconMap.likeInactive}
+            icon={like ? iconMap.likeActive : iconMap.likeInactive}
             iconSize={wp('6%', insets)}
+            iconColor={like ? theme.colors.primary : undefined}
             style={styles.button}
-            onPress={() => console.log('liked')}>
-            <AppTextBody4 style={styles.actionButtonText}>491</AppTextBody4>
+            onPress={() => (like ? onLikeDeactivate() : onLikeActivate())}>
+            <AppTextBody4
+              style={[
+                styles.actionButtonText,
+                { color: like ? theme.colors.primary : undefined },
+              ]}>
+              {491 + like}
+            </AppTextBody4>
           </AppQuaternaryButton>
         </View>
       </View>
@@ -35,7 +55,7 @@ export default function AppFeedAction() {
             icon={iconMap.comment}
             iconSize={wp('6%', insets)}
             style={styles.button}
-            onPress={() => console.log('liked')}>
+            onPress={() => onComment()}>
             <AppTextBody4 style={styles.actionButtonText}>12</AppTextBody4>
           </AppQuaternaryButton>
         </View>
@@ -51,9 +71,9 @@ export default function AppFeedAction() {
             paddingVertical: hp('0.5%', insets),
             paddingHorizontal: wp('1%', insets),
           }}
-          onPress={() => console.log('liked')}>
+          onPress={() => onBuy()}>
           <AppTextHeading4 style={styles.actionButtonText}>
-            1291 <AppTextBody5>{getCoinName()}</AppTextBody5>
+            000000000000000 <AppTextBody5>{getCoinName()}</AppTextBody5>
           </AppTextHeading4>
         </AppQuaternaryButton>
       </View>

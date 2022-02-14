@@ -1,4 +1,4 @@
-import { StyleSheet, View, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import React from 'react';
 import { Checkbox, TouchableRipple, useTheme } from 'react-native-paper';
 import AppTextBody4 from '../text/AppTextBody4';
@@ -8,7 +8,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 interface AppCheckboxProps {
   children: React.ReactNode;
   value: boolean;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
   disabled?: boolean;
   onPress?: () => void;
   uncheckedColor?: string;

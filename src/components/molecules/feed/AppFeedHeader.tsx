@@ -19,6 +19,8 @@ export default function AppFeedHeader() {
   const insets = useSafeAreaInsets();
   const styles = makeStyle(insets);
 
+  const onStake = () => {};
+
   return (
     <View style={styles.headerContainer}>
       <View style={styles.headerAvatarContainer}>
@@ -38,7 +40,7 @@ export default function AppFeedHeader() {
         <AppQuaternaryButton
           box
           style={styles.stakeButton}
-          onPress={() => console.log('stake')}>
+          onPress={() => onStake()}>
           <View style={styles.stakeButtonContainer}>
             <AppTextHeading3 style={styles.headerPoolText}>
               121M

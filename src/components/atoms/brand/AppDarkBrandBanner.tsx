@@ -1,10 +1,10 @@
 import React from 'react';
-import { Image, ImageStyle } from 'react-native';
+import { Image, ImageStyle, StyleProp } from 'react-native';
 import { resizeImageRatio } from '../../../utils/imageRatio';
 
 interface AppDarkBrandBannerProps {
   widthPercentage: number;
-  style?: ImageStyle;
+  style?: StyleProp<ImageStyle>;
 }
 
 export default function AppDarkBrandBanner({

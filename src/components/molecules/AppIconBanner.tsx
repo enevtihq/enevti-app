@@ -1,4 +1,4 @@
-import { StyleSheet, View, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import React from 'react';
 import { useTheme } from 'react-native-paper';
 import AppTextBody4 from '../atoms/text/AppTextBody4';
@@ -10,7 +10,7 @@ import { Theme } from '../../theme/default';
 interface AppIconBannerProps {
   children: React.ReactNode;
   name: string;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
 }
 
 export default function AppIconBanner({

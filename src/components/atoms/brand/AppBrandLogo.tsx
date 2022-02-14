@@ -1,11 +1,11 @@
 import React from 'react';
-import { Image, ImageStyle, View } from 'react-native';
+import { Image, ImageStyle, StyleProp, View } from 'react-native';
 import { resizeImageRatio } from '../../../utils/imageRatio';
 
 interface AppBrandLogoProps {
   widthPercentage: number;
   mode?: 'default' | 'glow';
-  style?: ImageStyle;
+  style?: StyleProp<ImageStyle>;
 }
 
 export default function AppBrandLogo({

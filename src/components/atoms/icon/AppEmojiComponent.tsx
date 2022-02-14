@@ -1,4 +1,4 @@
-import { ViewStyle } from 'react-native';
+import { StyleProp, ViewStyle } from 'react-native';
 import React from 'react';
 import Emoji from 'react-native-emoji';
 
@@ -41,7 +41,7 @@ export const emojiMap = {
 
 interface AppEmojiComponentProps {
   name: string;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
 }
 
 export default function AppEmojiComponent({
