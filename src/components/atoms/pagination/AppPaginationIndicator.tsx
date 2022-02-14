@@ -1,5 +1,6 @@
 import React from 'react';
 import Dots from 'react-native-dots-pagination';
+import { useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { wp } from '../../../utils/imageRatio';
 
@@ -13,6 +14,7 @@ export default function AppPaginationIndicator({
   active,
 }: AppPaginationIndicatorProps) {
   const insets = useSafeAreaInsets();
+  const theme = useTheme();
   const passiveSize = '2%';
   const activeSize = '2%';
 
@@ -24,6 +26,7 @@ export default function AppPaginationIndicator({
       passiveDotHeight={wp(passiveSize, insets)}
       activeDotWidth={wp(activeSize, insets)}
       activeDotHeight={wp(activeSize, insets)}
+      activeColor={theme.colors.primary}
       paddingVertical={0}
       alignDotsOnXAxis={0.1}
     />

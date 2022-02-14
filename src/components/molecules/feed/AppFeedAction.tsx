@@ -73,7 +73,7 @@ export default function AppFeedAction() {
           }}
           onPress={() => onBuy()}>
           <AppTextHeading4 style={styles.actionButtonText}>
-            000000000000000 <AppTextBody5>{getCoinName()}</AppTextBody5>
+            1291 <AppTextBody5>{getCoinName()}</AppTextBody5>
           </AppTextHeading4>
         </AppQuaternaryButton>
       </View>
