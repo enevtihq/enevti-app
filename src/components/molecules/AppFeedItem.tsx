@@ -5,20 +5,25 @@ import { useTheme } from 'react-native-paper';
 import { SafeAreaInsets, wp } from '../../utils/imageRatio';
 import { Theme } from '../../theme/default';
 import color from 'color';
-import NFTRenderer from './AppNFTRenderer';
 import AppFeedHeader from './feed/AppFeedHeader';
 import AppFeedAction from './feed/AppFeedAction';
 import AppFeedFooter from './feed/AppFeedFooter';
+import AppNFTListRenderer from './nft/AppNFTListRenderer';
 
 export default function AppFeedItem() {
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
   const styles = makeStyle(insets, theme);
 
+  const [canvasWidth, setCanvasWidth] = React.useState<number>(0);
+  const onLayout = React.useCallback(e => {
+    setCanvasWidth(e.nativeEvent.layout.width);
+  }, []);
+
   return (
-    <View style={styles.card}>
+    <View onLayout={onLayout} style={styles.card}>
       <AppFeedHeader />
-      <NFTRenderer />
+      <AppNFTListRenderer width={canvasWidth} itemWidth={canvasWidth} />
       <AppFeedAction />
       <AppFeedFooter />
     </View>

@@ -1,19 +1,19 @@
 import { Dimensions, StyleSheet, View } from 'react-native';
 import React from 'react';
-import { NFT } from '../../types/nft';
-import UtilityBackground from '../atoms/nft/utility/UtilityBackground';
-import { NFTTemplateItem } from '../../types/nft/NFTTemplate';
-import NFTData from '../atoms/nft/data/NFTData';
-import Box from '../atoms/nft/misc/Box';
-import RarityIcon from '../atoms/nft/rarity/RarityIcon';
-import RarityRank from '../atoms/nft/rarity/RarityRank';
-import RarityPercent from '../atoms/nft/rarity/RarityPercent';
-import Name from '../atoms/nft/identity/Name';
-import Serial from '../atoms/nft/identity/Serial';
-import PartitionIcon from '../atoms/nft/partition/PartitionIcon';
-import PartitionLabel from '../atoms/nft/partition/PartitionLabel';
-import UtilityIcon from '../atoms/nft/utility/UtilityIcon';
-import UtilityLabel from '../atoms/nft/utility/UtilityLabel';
+import { NFT } from '../../../types/nft';
+import UtilityBackground from '../../atoms/nft/utility/UtilityBackground';
+import { NFTTemplateItem } from '../../../types/nft/NFTTemplate';
+import NFTData from '../../atoms/nft/data/NFTData';
+import Box from '../../atoms/nft/misc/Box';
+import RarityIcon from '../../atoms/nft/rarity/RarityIcon';
+import RarityRank from '../../atoms/nft/rarity/RarityRank';
+import RarityPercent from '../../atoms/nft/rarity/RarityPercent';
+import Name from '../../atoms/nft/identity/Name';
+import Serial from '../../atoms/nft/identity/Serial';
+import PartitionIcon from '../../atoms/nft/partition/PartitionIcon';
+import PartitionLabel from '../../atoms/nft/partition/PartitionLabel';
+import UtilityIcon from '../../atoms/nft/utility/UtilityIcon';
+import UtilityLabel from '../../atoms/nft/utility/UtilityLabel';
 
 const nft: NFT = {
   serial: 'eyecollection-001',
