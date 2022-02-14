@@ -8,9 +8,14 @@ import color from 'color';
 import AppFeedHeader from './feed/AppFeedHeader';
 import AppFeedAction from './feed/AppFeedAction';
 import AppFeedFooter from './feed/AppFeedFooter';
-import AppNFTListRenderer from './nft/AppNFTListRenderer';
+import { HomeFeedItemResponse } from '../../types/service/homeFeedItem';
+import AppFeedBody from './feed/AppFeedBody';
 
-export default function AppFeedItem() {
+interface AppFeedItemProps {
+  feed: HomeFeedItemResponse;
+}
+
+export default function AppFeedItem({ feed }: AppFeedItemProps) {
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
   const styles = makeStyle(insets, theme);
@@ -22,10 +27,10 @@ export default function AppFeedItem() {
 
   return (
     <View onLayout={onLayout} style={styles.card}>
-      <AppFeedHeader />
-      <AppNFTListRenderer width={canvasWidth} itemWidth={canvasWidth} />
-      <AppFeedAction />
-      <AppFeedFooter />
+      <AppFeedHeader feed={feed} />
+      <AppFeedBody canvasWidth={canvasWidth} feed={feed} />
+      <AppFeedAction feed={feed} />
+      <AppFeedFooter feed={feed} />
     </View>
   );
 }

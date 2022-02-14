@@ -10,8 +10,13 @@ import { Theme } from '../../../theme/default';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from 'react-native-paper';
 import { getCoinName } from '../../atoms/brand/AppBrandConstant';
+import { HomeFeedItemResponse } from '../../../types/service/homeFeedItem';
 
-export default function AppFeedAction() {
+interface AppFeedActionProps {
+  feed: HomeFeedItemResponse;
+}
+
+export default function AppFeedAction({ feed }: AppFeedActionProps) {
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
   const styles = makeStyle(insets, theme);
@@ -36,15 +41,15 @@ export default function AppFeedAction() {
           <AppQuaternaryButton
             icon={like ? iconMap.likeActive : iconMap.likeInactive}
             iconSize={wp('6%', insets)}
-            iconColor={like ? theme.colors.primary : undefined}
+            iconColor={like ? theme.colors.primary : theme.colors.text}
             style={styles.button}
             onPress={() => (like ? onLikeDeactivate() : onLikeActivate())}>
             <AppTextBody4
               style={[
                 styles.actionButtonText,
-                { color: like ? theme.colors.primary : undefined },
+                { color: like ? theme.colors.primary : theme.colors.text },
               ]}>
-              {491 + like}
+              {feed.like + like}
             </AppTextBody4>
           </AppQuaternaryButton>
         </View>
@@ -56,7 +61,9 @@ export default function AppFeedAction() {
             iconSize={wp('6%', insets)}
             style={styles.button}
             onPress={() => onComment()}>
-            <AppTextBody4 style={styles.actionButtonText}>12</AppTextBody4>
+            <AppTextBody4 style={styles.actionButtonText}>
+              {feed.comment}
+            </AppTextBody4>
           </AppQuaternaryButton>
         </View>
       </View>
@@ -73,7 +80,7 @@ export default function AppFeedAction() {
           }}
           onPress={() => onBuy()}>
           <AppTextHeading4 style={styles.actionButtonText}>
-            1291 <AppTextBody5>{getCoinName()}</AppTextBody5>
+            {feed.price} <AppTextBody5>{getCoinName()}</AppTextBody5>
           </AppTextHeading4>
         </AppQuaternaryButton>
       </View>

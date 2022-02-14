@@ -10,11 +10,14 @@ import { SafeAreaInsets, wp } from '../../../utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getCoinName } from '../../atoms/brand/AppBrandConstant';
 import { useTranslation } from 'react-i18next';
+import { HomeFeedItemResponse } from '../../../types/service/homeFeedItem';
+import Avatar from '../../atoms/avatar';
 
-const profileURL =
-  'https://res.cloudinary.com/crunchbase-production/image/upload/c_thumb,h_256,w_256,f_auto,g_faces,z_0.7,q_auto:eco,dpr_1/jtwy0wk2w1f4wzjkpvyx';
+interface AppFeedHeaderProps {
+  feed: HomeFeedItemResponse;
+}
 
-export default function AppFeedHeader() {
+export default function AppFeedHeader({ feed }: AppFeedHeaderProps) {
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const styles = makeStyle(insets);
@@ -25,15 +28,25 @@ export default function AppFeedHeader() {
     <View style={styles.headerContainer}>
       <View style={styles.headerAvatarContainer}>
         <View style={styles.headerAvatar}>
-          <AppNetworkImage style={styles.avatar} url={profileURL} />
+          {feed.photo ? (
+            <AppNetworkImage style={styles.avatar} url={feed.photo} />
+          ) : (
+            <Avatar address={feed.owner} />
+          )}
         </View>
       </View>
 
       <View style={styles.headerAvatarInfoContainer}>
-        <AppTextHeading3 numberOfLines={1}>aldhosutra</AppTextHeading3>
-        <AppTextBody5 numberOfLines={1}>
-          {t('home:promotedByCommunity')}
-        </AppTextBody5>
+        <AppTextHeading3 numberOfLines={1}>
+          {feed.username ? feed.username : feed.owner}
+        </AppTextHeading3>
+        {feed.promoted ? (
+          <AppTextBody5 numberOfLines={1}>
+            {t('home:promotedByCommunity')}
+          </AppTextBody5>
+        ) : (
+          <View />
+        )}
       </View>
 
       <View style={styles.headerPoolContainer}>
@@ -43,7 +56,7 @@ export default function AppFeedHeader() {
           onPress={() => onStake()}>
           <View style={styles.stakeButtonContainer}>
             <AppTextHeading3 style={styles.headerPoolText}>
-              121M
+              {feed.stake}
             </AppTextHeading3>
             <AppTextBody5 style={styles.headerPoolText}>
               {getCoinName()}

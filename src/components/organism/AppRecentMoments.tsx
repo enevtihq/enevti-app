@@ -6,39 +6,22 @@ import { hp, wp } from '../../utils/imageRatio';
 import AppPortraitOverlayBox from '../molecules/AppPortraitOverlayBox';
 import { useTranslation } from 'react-i18next';
 import { Divider } from 'react-native-paper';
+import { HomeMomentsResponse } from '../../types/service/homeFeedItem';
+import { IPFStoURL } from '../../service/ipfs';
 
-const dummyData = [
-  {
-    url: 'https://effigis.com/wp-content/uploads/2015/02/Iunctus_SPOT5_5m_8bit_RGB_DRA_torngat_mountains_national_park_8bits_1.jpg',
-    title: '@aldhosutra',
-  },
-  {
-    url: 'https://unsplash.it/400/400?image=1',
-    title: '@aldhosutra',
-  },
-  {
-    url: 'https://unsplash.it/400/400?image=1',
-    title: '@aldhosutra',
-  },
-  {
-    url: 'https://unsplash.it/400/400?image=1',
-    title: '@aldhosutra',
-  },
-  {
-    url: 'https://unsplash.it/400/400?image=1',
-    title: '@aldhosutra',
-  },
-  {
-    url: 'https://unsplash.it/400/400?image=1',
-    title: '@aldhosutra',
-  },
-];
+interface AppRecentMomentsProps {
+  moments?: HomeMomentsResponse;
+}
 
-export default function AppRecentMoments() {
+export default function AppRecentMoments({ moments }: AppRecentMomentsProps) {
   const insets = useSafeAreaInsets();
   const { t } = useTranslation();
 
-  return (
+  const onMomentsPress = (id: string) => {
+    console.log(id);
+  };
+
+  return moments ? (
     <View>
       <View
         style={{
@@ -49,17 +32,18 @@ export default function AppRecentMoments() {
       </View>
       <FlatList
         horizontal
-        data={dummyData}
+        data={moments}
         ListHeaderComponent={() => <View style={{ width: wp('5%', insets) }} />}
         ListFooterComponent={() => <View style={{ width: wp('3%', insets) }} />}
         renderItem={({ item }) => (
           <AppPortraitOverlayBox
-            url={item.url}
-            title={item.title}
+            url={IPFStoURL(item.photo)}
+            title={item.username}
             style={{ marginRight: wp('2%', insets) }}
+            onPress={() => onMomentsPress(item.id)}
           />
         )}
-        keyExtractor={(_, index) => index.toString()}
+        keyExtractor={item => item.id}
         showsHorizontalScrollIndicator={false}
         removeClippedSubviews={true}
         initialNumToRender={2}
@@ -74,5 +58,7 @@ export default function AppRecentMoments() {
         }}
       />
     </View>
+  ) : (
+    <View />
   );
 }

@@ -5,7 +5,7 @@ import Statistics from '../screen/home/Statistics';
 import Discover from '../screen/home/Discover';
 import MyProfile from '../screen/home/MyProfile';
 import AppHeader from '../components/atoms/view/AppHeader';
-import Animated, {
+import {
   useAnimatedScrollHandler,
   useSharedValue,
   useAnimatedStyle,
@@ -145,11 +145,11 @@ export default function Home() {
           ),
         }}>
         {props => (
-          <Animated.ScrollView
-            scrollEventThrottle={16}
-            onScroll={feedAnimatedScrollHandler}>
-            <Feed navigation={props.navigation} route={props.route as any} />
-          </Animated.ScrollView>
+          <Feed
+            navigation={props.navigation}
+            route={props.route as any}
+            onScroll={feedAnimatedScrollHandler}
+          />
         )}
       </Tab.Screen>
       <Tab.Screen

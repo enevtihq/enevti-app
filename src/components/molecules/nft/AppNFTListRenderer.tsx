@@ -4,15 +4,16 @@ import AppNFTRenderer from './AppNFTRenderer';
 import AppPaginationIndicator from '../../atoms/pagination/AppPaginationIndicator';
 import { hp } from '../../../utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-
-const nfts = [0, 0, 0];
+import { NFTBase } from '../../../types/nft';
 
 interface AppNFTListRedererProps {
+  nft: NFTBase[];
   width: number;
   itemWidth: number;
 }
 
 export default function AppNFTListRenderer({
+  nft,
   width,
   itemWidth,
 }: AppNFTListRedererProps) {
@@ -31,13 +32,13 @@ export default function AppNFTListRenderer({
   return (
     <View>
       <FlatList
-        data={nfts}
-        renderItem={() => (
+        data={nft}
+        renderItem={({ item }) => (
           <View style={{ width: width }}>
-            <AppNFTRenderer />
+            <AppNFTRenderer nft={item} />
           </View>
         )}
-        keyExtractor={(_, index) => index.toString()}
+        keyExtractor={item => item.id}
         horizontal
         snapToAlignment={'start'}
         snapToInterval={itemWidth}
@@ -52,7 +53,7 @@ export default function AppNFTListRenderer({
           height: hp('1%', insets),
           marginTop: hp('0.5%', insets),
         }}>
-        <AppPaginationIndicator length={nfts.length} active={currentPage} />
+        <AppPaginationIndicator length={nft.length} active={currentPage} />
       </View>
     </View>
   );

@@ -2,9 +2,10 @@ import { NFTRarity } from './NFTRarity';
 import { NFTType } from './NFTType';
 import { NFTTemplate } from './NFTTemplate';
 import { NFTUtility } from './NFTUtility';
-import { NFTRedeem } from './NFTRedeem';
+import { NFTRedeemBase } from './NFTRedeem';
 
-export type NFT = {
+export type NFTBase = {
+  id: string;
   serial: string;
   name: string;
   contentType: 'image';
@@ -15,6 +16,6 @@ export type NFT = {
   };
   NFTType: NFTType;
   utility: NFTUtility;
-  redeem: NFTRedeem;
+  redeem: NFTRedeemBase;
   rarity: NFTRarity;
 };

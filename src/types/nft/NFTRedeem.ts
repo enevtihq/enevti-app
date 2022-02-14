@@ -1,4 +1,4 @@
-export type NFTRedeem = {
+export type NFTRedeemBase = {
   parts: string[];
   upgradeMaterial: number;
 };

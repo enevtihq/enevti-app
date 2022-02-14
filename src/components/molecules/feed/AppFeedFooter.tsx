@@ -7,8 +7,13 @@ import { Theme } from '../../../theme/default';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SafeAreaInsets, wp } from '../../../utils/imageRatio';
 import { useTranslation } from 'react-i18next';
+import { HomeFeedItemResponse } from '../../../types/service/homeFeedItem';
 
-export default function AppFeedFooter() {
+interface AppFeedFooterProps {
+  feed: HomeFeedItemResponse;
+}
+
+export default function AppFeedFooter({ feed }: AppFeedFooterProps) {
   const { t } = useTranslation();
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
@@ -17,12 +22,9 @@ export default function AppFeedFooter() {
   return (
     <View style={styles.footerContainer}>
       <Text numberOfLines={2} style={styles.description}>
-        <AppTextHeading4>EyeCollection</AppTextHeading4>
+        <AppTextHeading4>{feed.name}</AppTextHeading4>
         <AppTextHeading4> | </AppTextHeading4>
-        <AppTextBody4>
-          to celebrate our 2021 newest cat, we release new NFT collection with
-          tons of utility that you can experience with your own eyes
-        </AppTextBody4>
+        <AppTextBody4>{feed.description}</AppTextBody4>
       </Text>
       <Text>
         <AppTextHeading4 style={styles.tag}>
