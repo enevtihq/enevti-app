@@ -32,7 +32,7 @@ export default React.memo(
 
     const renderItem = ({ item }: any) => (
       <View style={{ width: width }}>
-        <AppNFTRenderer nft={item} />
+        <AppNFTRenderer nft={item} width={width} />
       </View>
     );
 

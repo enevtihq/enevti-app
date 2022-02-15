@@ -1,4 +1,4 @@
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Dimensions } from 'react-native';
 import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from 'react-native-paper';
@@ -21,17 +21,12 @@ export default React.memo(
     const theme = useTheme() as Theme;
     const styles = makeStyle(insets, theme);
 
-    const [canvasWidth, setCanvasWidth] = React.useState<number>(0);
-    const onLayout = React.useCallback(e => {
-      setCanvasWidth(e.nativeEvent.layout.width);
-    }, []);
+    const canvasWidth = Dimensions.get('window').width * 0.9;
 
     return (
-      <View onLayout={onLayout} style={styles.card}>
+      <View style={styles.card}>
         <AppFeedHeader feed={feed} />
-        <View style={styles.cardBody}>
-          <AppFeedBody canvasWidth={canvasWidth} feed={feed} />
-        </View>
+        <AppFeedBody canvasWidth={canvasWidth} feed={feed} />
         <AppFeedAction feed={feed} />
         <AppFeedFooter feed={feed} />
       </View>
@@ -55,9 +50,5 @@ const makeStyle = (insets: SafeAreaInsets, theme: Theme) =>
       borderRadius: theme.roundness,
       borderWidth: StyleSheet.hairlineWidth,
       borderColor: color(theme.colors.text).alpha(0.05).rgb().toString(),
-    },
-    cardBody: {
-      width: '100%',
-      aspectRatio: 1,
     },
   });

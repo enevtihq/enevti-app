@@ -11,7 +11,6 @@ function getHomeFeedItemList(): HomeFeedItemResponse {
   if (randomCount === 0) {
     randomCount = 1;
   }
-  randomCount = 1;
 
   const randomNFT: NFTBase[] = [];
   for (let i = 0; i < randomCount; i++) {

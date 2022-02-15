@@ -8,29 +8,21 @@ import { Theme } from 'react-native-paper/lib/typescript/types';
 interface SerialProps {
   nft: NFTBase;
   args: TemplateArgs;
+  width: number;
 }
 
 export default React.memo(
-  function Serial({ nft, args }: SerialProps) {
+  function Serial({ nft, args, width }: SerialProps) {
     const theme = useTheme();
     const styles = makeStyle(args, theme);
     const text = `Serial No. #${nft.serial}`;
 
-    const [fontSize, setFontSize] = React.useState<number>(0);
-    const onLayout = React.useCallback(
-      e => {
-        setFontSize(
-          Math.sqrt(
-            (e.nativeEvent.layout.width * e.nativeEvent.layout.height) /
-              (text.length + 10),
-          ),
-        );
-      },
-      [text.length],
-    );
+    const w = (parseFloat(args.width) * width) / 100.0;
+    const h = (parseFloat(args.height) * width) / 100.0;
+    const fontSize = Math.sqrt((w * h) / (text.length + 10));
 
     return (
-      <View onLayout={onLayout} style={styles.serialContainer}>
+      <View style={styles.serialContainer}>
         <Text
           numberOfLines={1}
           adjustsFontSizeToFit

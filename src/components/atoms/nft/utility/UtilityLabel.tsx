@@ -8,10 +8,11 @@ import { Theme } from 'react-native-paper/lib/typescript/types';
 interface UtilityLabelProps {
   nft: NFTBase;
   args: TemplateArgs;
+  width: number;
 }
 
 export default React.memo(
-  function UtilityLabel({ nft, args }: UtilityLabelProps) {
+  function UtilityLabel({ nft, args, width }: UtilityLabelProps) {
     const theme = useTheme();
     const styles = makeStyle(args, theme);
     let text: string = 'help-circle-outline';
@@ -39,21 +40,12 @@ export default React.memo(
         break;
     }
 
-    const [fontSize, setFontSize] = React.useState<number>(0);
-    const onLayout = React.useCallback(
-      e => {
-        setFontSize(
-          Math.sqrt(
-            (e.nativeEvent.layout.width * e.nativeEvent.layout.height) /
-              text.length,
-          ),
-        );
-      },
-      [text.length],
-    );
+    const w = (parseFloat(args.width) * width) / 100.0;
+    const h = (parseFloat(args.height) * width) / 100.0;
+    const fontSize = Math.sqrt((w * h) / text.length);
 
     return (
-      <View onLayout={onLayout} style={styles.rarityRankContainer}>
+      <View style={styles.rarityRankContainer}>
         <Text
           numberOfLines={1}
           adjustsFontSizeToFit

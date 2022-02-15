@@ -17,6 +17,7 @@ import UtilityLabel from '../../atoms/nft/utility/UtilityLabel';
 
 interface AppNFTRendererProps {
   nft: NFTBase;
+  width: number;
 }
 
 const THUMBNAIL_TRESHOLD = 0.33;
@@ -25,6 +26,7 @@ const handleRenderNFTTemplate = (
   templateItem: NFTTemplateItem,
   nftObject: NFTBase,
   index: number,
+  canvasWidth: number,
 ) => {
   const key = nftObject.id + templateItem.type + '-' + index.toString();
 
@@ -42,28 +44,76 @@ const handleRenderNFTTemplate = (
     case 'rarity-icon':
       return <RarityIcon key={key} nft={nftObject} args={templateItem.args} />;
     case 'rarity-rank':
-      return <RarityRank key={key} nft={nftObject} args={templateItem.args} />;
+      return (
+        <RarityRank
+          key={key}
+          nft={nftObject}
+          args={templateItem.args}
+          width={canvasWidth}
+        />
+      );
     case 'rarity-percent':
       return (
-        <RarityPercent key={key} nft={nftObject} args={templateItem.args} />
+        <RarityPercent
+          key={key}
+          nft={nftObject}
+          args={templateItem.args}
+          width={canvasWidth}
+        />
       );
     case 'name':
-      return <Name key={key} nft={nftObject} args={templateItem.args} />;
+      return (
+        <Name
+          key={key}
+          nft={nftObject}
+          args={templateItem.args}
+          width={canvasWidth}
+        />
+      );
     case 'serial':
-      return <Serial key={key} nft={nftObject} args={templateItem.args} />;
+      return (
+        <Serial
+          key={key}
+          nft={nftObject}
+          args={templateItem.args}
+          width={canvasWidth}
+        />
+      );
     case 'partition-icon':
       return (
-        <PartitionIcon key={key} nft={nftObject} args={templateItem.args} />
+        <PartitionIcon
+          key={key}
+          nft={nftObject}
+          args={templateItem.args}
+          width={canvasWidth}
+        />
       );
     case 'partition-label':
       return (
-        <PartitionLabel key={key} nft={nftObject} args={templateItem.args} />
+        <PartitionLabel
+          key={key}
+          nft={nftObject}
+          args={templateItem.args}
+          width={canvasWidth}
+        />
       );
     case 'utility-icon':
-      return <UtilityIcon key={key} nft={nftObject} args={templateItem.args} />;
+      return (
+        <UtilityIcon
+          key={key}
+          nft={nftObject}
+          args={templateItem.args}
+          width={canvasWidth}
+        />
+      );
     case 'utility-label':
       return (
-        <UtilityLabel key={key} nft={nftObject} args={templateItem.args} />
+        <UtilityLabel
+          key={key}
+          nft={nftObject}
+          args={templateItem.args}
+          width={canvasWidth}
+        />
       );
     default:
       return <View key={key} />;
@@ -71,30 +121,19 @@ const handleRenderNFTTemplate = (
 };
 
 export default React.memo(
-  function AppNFTRenderer({ nft }: AppNFTRendererProps) {
+  function AppNFTRenderer({ nft, width }: AppNFTRendererProps) {
     const styles = makeStyle();
 
-    const [canvasWidth, setCanvasWidth] = React.useState<number>(0);
-    const onLayout = React.useCallback(e => {
-      setCanvasWidth(e.nativeEvent.layout.width);
-    }, []);
-
     return (
-      <View onLayout={onLayout} style={styles.nftContainer}>
-        {canvasWidth ? (
-          canvasWidth < Dimensions.get('window').width * THUMBNAIL_TRESHOLD &&
-          nft.template.thumbnail.length > 0 ? (
-            nft.template.thumbnail.map((templateItem, index) =>
-              handleRenderNFTTemplate(templateItem, nft, index),
+      <View style={styles.nftContainer}>
+        {width < Dimensions.get('window').width * THUMBNAIL_TRESHOLD &&
+        nft.template.thumbnail.length > 0
+          ? nft.template.thumbnail.map((templateItem, index) =>
+              handleRenderNFTTemplate(templateItem, nft, index, width),
             )
-          ) : (
-            nft.template.main.map((templateItem, index) =>
-              handleRenderNFTTemplate(templateItem, nft, index),
-            )
-          )
-        ) : (
-          <View />
-        )}
+          : nft.template.main.map((templateItem, index) =>
+              handleRenderNFTTemplate(templateItem, nft, index, width),
+            )}
       </View>
     );
   },

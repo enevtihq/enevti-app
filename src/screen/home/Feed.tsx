@@ -73,10 +73,10 @@ export default function Feed({ onScroll }: FeedProps) {
           keyExtractor={item => item.id}
           showsHorizontalScrollIndicator={false}
           removeClippedSubviews={true}
-          initialNumToRender={1}
-          maxToRenderPerBatch={10}
+          initialNumToRender={5}
+          maxToRenderPerBatch={5}
           updateCellsBatchingPeriod={100}
-          windowSize={10}
+          windowSize={5}
         />
       </View>
     </AppView>

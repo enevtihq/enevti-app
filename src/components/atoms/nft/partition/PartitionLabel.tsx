@@ -8,10 +8,11 @@ import { Theme } from 'react-native-paper/lib/typescript/types';
 interface PartitionLabelProps {
   nft: NFTBase;
   args: TemplateArgs;
+  width: number;
 }
 
 export default React.memo(
-  function PartitionLabel({ nft, args }: PartitionLabelProps) {
+  function PartitionLabel({ nft, args, width }: PartitionLabelProps) {
     const theme = useTheme();
     const styles = makeStyle(args, theme);
     let text: string = '';
@@ -24,21 +25,12 @@ export default React.memo(
       text = `Combine ${nft.redeem.upgradeMaterial.toString()}`;
     }
 
-    const [fontSize, setFontSize] = React.useState<number>(0);
-    const onLayout = React.useCallback(
-      e => {
-        setFontSize(
-          Math.sqrt(
-            (e.nativeEvent.layout.width * e.nativeEvent.layout.height) /
-              (text.length + 10),
-          ),
-        );
-      },
-      [text.length],
-    );
+    const w = (parseFloat(args.width) * width) / 100.0;
+    const h = (parseFloat(args.height) * width) / 100.0;
+    const fontSize = Math.sqrt((w * h) / (text.length + 10));
 
     return (
-      <View onLayout={onLayout} style={styles.rarityRankContainer}>
+      <View style={styles.rarityRankContainer}>
         <Text
           numberOfLines={1}
           adjustsFontSizeToFit

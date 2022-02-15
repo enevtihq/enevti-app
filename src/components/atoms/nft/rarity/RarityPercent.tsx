@@ -9,9 +9,14 @@ import color from 'color';
 interface RarityPercentProps {
   nft: NFTBase;
   args: TemplateArgs;
+  width: number;
 }
 
-export default function RarityPercent({ nft, args }: RarityPercentProps) {
+export default function RarityPercent({
+  nft,
+  args,
+  width,
+}: RarityPercentProps) {
   const theme = useTheme();
   const styles = makeStyle(args, theme);
   const text =
@@ -19,21 +24,12 @@ export default function RarityPercent({ nft, args }: RarityPercentProps) {
       ? '☆☆☆'
       : `${(nft.rarity.stat.percent / 100).toString()}%`;
 
-  const [fontSize, setFontSize] = React.useState<number>(0);
-  const onLayout = React.useCallback(
-    e => {
-      setFontSize(
-        Math.sqrt(
-          (e.nativeEvent.layout.width * e.nativeEvent.layout.height) /
-            text.length,
-        ),
-      );
-    },
-    [text.length],
-  );
+  const w = (parseFloat(args.width) * width) / 100.0;
+  const h = (parseFloat(args.height) * width) / 100.0;
+  const fontSize = Math.sqrt((w * h) / text.length);
 
   return (
-    <View onLayout={onLayout} style={styles.rarityPercentContainer}>
+    <View style={styles.rarityPercentContainer}>
       <Text
         numberOfLines={1}
         adjustsFontSizeToFit

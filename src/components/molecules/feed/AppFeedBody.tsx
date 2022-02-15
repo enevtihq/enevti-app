@@ -16,6 +16,6 @@ export default function AppFeedBody({ canvasWidth, feed }: AppFeedBodyProps) {
       itemWidth={canvasWidth}
     />
   ) : (
-    <AppNFTRenderer nft={feed.nft[0]} />
+    <AppNFTRenderer nft={feed.nft[0]} width={canvasWidth} />
   );
 }

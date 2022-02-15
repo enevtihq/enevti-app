@@ -9,16 +9,15 @@ import { iconMap } from '../../icon/AppIconComponent';
 interface UtilityIconProps {
   nft: NFTBase;
   args: TemplateArgs;
+  width: number;
 }
 
 export default React.memo(
-  function UtilityIcon({ nft, args }: UtilityIconProps) {
+  function UtilityIcon({ nft, args, width }: UtilityIconProps) {
     const styles = makeStyle(args);
 
-    const [iconSize, setIconSize] = React.useState<number>(0);
-    const onLayout = React.useCallback(e => {
-      setIconSize(e.nativeEvent.layout.width * 0.75);
-    }, []);
+    const w = (parseFloat(args.width) * width) / 100.0;
+    const iconSize = w * 0.75;
 
     let icon: string = 'help-circle-outline';
 
@@ -46,7 +45,7 @@ export default React.memo(
     }
 
     return (
-      <View onLayout={onLayout} style={styles.utilityBackgroundContainer}>
+      <View style={styles.utilityBackgroundContainer}>
         <MaterialCommunityIcons name={icon} color={'black'} size={iconSize} />
       </View>
     );

@@ -1,36 +1,28 @@
 import { View, StyleSheet, Text, Platform } from 'react-native';
 import React from 'react';
-import { NFT } from '../../../../types/nft';
+import { NFTBase } from '../../../../types/nft';
 import { TemplateArgs } from '../../../../types/nft/NFTTemplate';
 import { useTheme } from 'react-native-paper';
 import { Theme } from 'react-native-paper/lib/typescript/types';
 
 interface RarityRankProps {
-  nft: NFT;
+  nft: NFTBase;
   args: TemplateArgs;
+  width: number;
 }
 
-export default function RarityRank({ nft, args }: RarityRankProps) {
+export default function RarityRank({ nft, args, width }: RarityRankProps) {
   const theme = useTheme();
   const styles = makeStyle(args, theme);
   const text =
     nft.NFTType === 'one-kind' ? 'OneKind' : `Rank#${nft.rarity.stat.rank}`;
 
-  const [fontSize, setFontSize] = React.useState<number>(0);
-  const onLayout = React.useCallback(
-    e => {
-      setFontSize(
-        Math.sqrt(
-          (e.nativeEvent.layout.width * e.nativeEvent.layout.height) /
-            text.length,
-        ),
-      );
-    },
-    [text.length],
-  );
+  const w = (parseFloat(args.width) * width) / 100.0;
+  const h = (parseFloat(args.height) * width) / 100.0;
+  const fontSize = Math.sqrt((w * h) / text.length);
 
   return (
-    <View onLayout={onLayout} style={styles.rarityRankContainer}>
+    <View style={styles.rarityRankContainer}>
       <Text
         numberOfLines={1}
         adjustsFontSizeToFit
