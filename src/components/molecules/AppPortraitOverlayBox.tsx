@@ -14,29 +14,34 @@ interface AppPortraitOverlayBoxProps {
   onPress?: () => void;
 }
 
-export default function AppPortraitOverlayBox({
-  url,
-  title,
-  style,
-  onPress,
-}: AppPortraitOverlayBoxProps) {
-  const insets = useSafeAreaInsets();
-  const theme = useTheme() as Theme;
-  const styles = makeStyle(theme, insets);
+export default React.memo(
+  function AppPortraitOverlayBox({
+    url,
+    title,
+    style,
+    onPress,
+  }: AppPortraitOverlayBoxProps) {
+    const insets = useSafeAreaInsets();
+    const theme = useTheme() as Theme;
+    const styles = makeStyle(theme, insets);
 
-  return (
-    <View style={[styles.container, style]}>
-      <AppNetworkImage url={url} style={styles.image} />
-      <View style={styles.overlay} />
-      <AppTextBody4 numberOfLines={1} style={styles.textOverlay}>
-        {title}
-      </AppTextBody4>
-      <TouchableRipple style={styles.rippleOverlay} onPress={onPress}>
-        <View />
-      </TouchableRipple>
-    </View>
-  );
-}
+    return (
+      <View style={[styles.container, style]}>
+        <AppNetworkImage url={url} style={styles.image} />
+        <View style={styles.overlay} />
+        <AppTextBody4 numberOfLines={1} style={styles.textOverlay}>
+          {title}
+        </AppTextBody4>
+        <TouchableRipple style={styles.rippleOverlay} onPress={onPress}>
+          <View />
+        </TouchableRipple>
+      </View>
+    );
+  },
+  () => {
+    return true;
+  },
+);
 
 const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
   StyleSheet.create({

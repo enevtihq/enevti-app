@@ -16,77 +16,82 @@ interface AppFeedActionProps {
   feed: HomeFeedItemResponse;
 }
 
-export default function AppFeedAction({ feed }: AppFeedActionProps) {
-  const insets = useSafeAreaInsets();
-  const theme = useTheme() as Theme;
-  const styles = makeStyle(insets, theme);
-  const [like, setLike] = React.useState<1 | 0>(0);
+export default React.memo(
+  function AppFeedAction({ feed }: AppFeedActionProps) {
+    const insets = useSafeAreaInsets();
+    const theme = useTheme() as Theme;
+    const styles = makeStyle(insets, theme);
+    const [like, setLike] = React.useState<1 | 0>(0);
 
-  const onLikeActivate = () => {
-    setLike(1);
-  };
+    const onLikeActivate = () => {
+      setLike(1);
+    };
 
-  const onLikeDeactivate = () => {
-    setLike(0);
-  };
+    const onLikeDeactivate = () => {
+      setLike(0);
+    };
 
-  const onComment = () => {};
+    const onComment = () => {};
 
-  const onBuy = () => {};
+    const onBuy = () => {};
 
-  return (
-    <View style={styles.actionContainer}>
-      <View>
-        <View style={styles.actionButton}>
+    return (
+      <View style={styles.actionContainer}>
+        <View>
+          <View style={styles.actionButton}>
+            <AppQuaternaryButton
+              icon={like ? iconMap.likeActive : iconMap.likeInactive}
+              iconSize={wp('6%', insets)}
+              iconColor={like ? theme.colors.primary : theme.colors.text}
+              style={styles.button}
+              onPress={() => (like ? onLikeDeactivate() : onLikeActivate())}>
+              <AppTextBody4
+                style={[
+                  styles.actionButtonText,
+                  { color: like ? theme.colors.primary : theme.colors.text },
+                ]}>
+                {feed.like + like}
+              </AppTextBody4>
+            </AppQuaternaryButton>
+          </View>
+        </View>
+        <View style={styles.commentButton}>
+          <View style={styles.actionButton}>
+            <AppQuaternaryButton
+              icon={iconMap.comment}
+              iconSize={wp('6%', insets)}
+              style={styles.button}
+              onPress={() => onComment()}>
+              <AppTextBody4 style={styles.actionButtonText}>
+                {feed.comment}
+              </AppTextBody4>
+            </AppQuaternaryButton>
+          </View>
+        </View>
+        <View style={styles.divider} />
+        <View>
           <AppQuaternaryButton
-            icon={like ? iconMap.likeActive : iconMap.likeInactive}
+            box
+            icon={iconMap.buy}
             iconSize={wp('6%', insets)}
-            iconColor={like ? theme.colors.primary : theme.colors.text}
             style={styles.button}
-            onPress={() => (like ? onLikeDeactivate() : onLikeActivate())}>
-            <AppTextBody4
-              style={[
-                styles.actionButtonText,
-                { color: like ? theme.colors.primary : theme.colors.text },
-              ]}>
-              {feed.like + like}
-            </AppTextBody4>
+            contentStyle={{
+              paddingVertical: hp('0.5%', insets),
+              paddingHorizontal: wp('1%', insets),
+            }}
+            onPress={() => onBuy()}>
+            <AppTextHeading4 style={styles.actionButtonText}>
+              {feed.price} <AppTextBody5>{getCoinName()}</AppTextBody5>
+            </AppTextHeading4>
           </AppQuaternaryButton>
         </View>
       </View>
-      <View style={styles.commentButton}>
-        <View style={styles.actionButton}>
-          <AppQuaternaryButton
-            icon={iconMap.comment}
-            iconSize={wp('6%', insets)}
-            style={styles.button}
-            onPress={() => onComment()}>
-            <AppTextBody4 style={styles.actionButtonText}>
-              {feed.comment}
-            </AppTextBody4>
-          </AppQuaternaryButton>
-        </View>
-      </View>
-      <View style={styles.divider} />
-      <View>
-        <AppQuaternaryButton
-          box
-          icon={iconMap.buy}
-          iconSize={wp('6%', insets)}
-          style={styles.button}
-          contentStyle={{
-            paddingVertical: hp('0.5%', insets),
-            paddingHorizontal: wp('1%', insets),
-          }}
-          onPress={() => onBuy()}>
-          <AppTextHeading4 style={styles.actionButtonText}>
-            {feed.price} <AppTextBody5>{getCoinName()}</AppTextBody5>
-          </AppTextHeading4>
-        </AppQuaternaryButton>
-      </View>
-    </View>
-  );
-}
+    );
+  },
+  () => {
+    return true;
+  },
+);
 
 const makeStyle = (insets: SafeAreaInsets, theme: Theme) =>
   StyleSheet.create({

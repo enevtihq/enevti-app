@@ -9,26 +9,35 @@ interface AppPaginationIndicatorProps {
   active: number;
 }
 
-export default function AppPaginationIndicator({
-  length,
-  active,
-}: AppPaginationIndicatorProps) {
-  const insets = useSafeAreaInsets();
-  const theme = useTheme();
-  const passiveSize = '2%';
-  const activeSize = '2%';
+export default React.memo(
+  function AppPaginationIndicator({
+    length,
+    active,
+  }: AppPaginationIndicatorProps) {
+    const insets = useSafeAreaInsets();
+    const theme = useTheme();
+    const passiveSize = '2%';
+    const activeSize = '2%';
 
-  return (
-    <Dots
-      length={length}
-      active={active}
-      passiveDotWidth={wp(passiveSize, insets)}
-      passiveDotHeight={wp(passiveSize, insets)}
-      activeDotWidth={wp(activeSize, insets)}
-      activeDotHeight={wp(activeSize, insets)}
-      activeColor={theme.colors.primary}
-      paddingVertical={0}
-      alignDotsOnXAxis={0.1}
-    />
-  );
-}
+    return (
+      <Dots
+        length={length}
+        active={active}
+        passiveDotWidth={wp(passiveSize, insets)}
+        passiveDotHeight={wp(passiveSize, insets)}
+        activeDotWidth={wp(activeSize, insets)}
+        activeDotHeight={wp(activeSize, insets)}
+        activeColor={theme.colors.primary}
+        paddingVertical={0}
+        alignDotsOnXAxis={0.1}
+      />
+    );
+  },
+  (props, nextProps) => {
+    if (props.active === nextProps.active) {
+      return true;
+    } else {
+      return false;
+    }
+  },
+);

@@ -1,44 +1,56 @@
 import { View, StyleSheet, Text, Platform } from 'react-native';
 import React from 'react';
-import { NFT } from '../../../../types/nft';
+import { NFTBase } from '../../../../types/nft';
 import { TemplateArgs } from '../../../../types/nft/NFTTemplate';
 import { useTheme } from 'react-native-paper';
 import { Theme } from 'react-native-paper/lib/typescript/types';
 
 interface SerialProps {
-  nft: NFT;
+  nft: NFTBase;
   args: TemplateArgs;
 }
 
-export default function Serial({ nft, args }: SerialProps) {
-  const theme = useTheme();
-  const styles = makeStyle(args, theme);
-  const text = `Serial No. #${nft.serial}`;
+export default React.memo(
+  function Serial({ nft, args }: SerialProps) {
+    const theme = useTheme();
+    const styles = makeStyle(args, theme);
+    const text = `Serial No. #${nft.serial}`;
 
-  const [fontSize, setFontSize] = React.useState<number>(0);
-  const onLayout = React.useCallback(
-    e => {
-      setFontSize(
-        Math.sqrt(
-          (e.nativeEvent.layout.width * e.nativeEvent.layout.height) /
-            (text.length + 10),
-        ),
-      );
-    },
-    [text.length],
-  );
+    const [fontSize, setFontSize] = React.useState<number>(0);
+    const onLayout = React.useCallback(
+      e => {
+        setFontSize(
+          Math.sqrt(
+            (e.nativeEvent.layout.width * e.nativeEvent.layout.height) /
+              (text.length + 10),
+          ),
+        );
+      },
+      [text.length],
+    );
 
-  return (
-    <View onLayout={onLayout} style={styles.serialContainer}>
-      <Text
-        numberOfLines={1}
-        adjustsFontSizeToFit
-        style={[styles.text, { fontSize: fontSize }]}>
-        {text}
-      </Text>
-    </View>
-  );
-}
+    return (
+      <View onLayout={onLayout} style={styles.serialContainer}>
+        <Text
+          numberOfLines={1}
+          adjustsFontSizeToFit
+          style={[styles.text, { fontSize: fontSize }]}>
+          {text}
+        </Text>
+      </View>
+    );
+  },
+  (props, nextProps) => {
+    if (
+      props.nft.serial === nextProps.nft.serial &&
+      props.args === nextProps.args
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  },
+);
 
 const makeStyle = (args: TemplateArgs, theme: Theme) =>
   StyleSheet.create({

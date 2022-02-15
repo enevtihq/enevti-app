@@ -13,35 +13,40 @@ interface AppFeedFooterProps {
   feed: HomeFeedItemResponse;
 }
 
-export default function AppFeedFooter({ feed }: AppFeedFooterProps) {
-  const { t } = useTranslation();
-  const theme = useTheme() as Theme;
-  const insets = useSafeAreaInsets();
-  const styles = makeStyle(insets, theme);
+export default React.memo(
+  function AppFeedFooter({ feed }: AppFeedFooterProps) {
+    const { t } = useTranslation();
+    const theme = useTheme() as Theme;
+    const insets = useSafeAreaInsets();
+    const styles = makeStyle(insets, theme);
 
-  return (
-    <View style={styles.footerContainer}>
-      <Text numberOfLines={2} style={styles.description}>
-        <AppTextHeading4>{feed.name}</AppTextHeading4>
-        <AppTextHeading4> | </AppTextHeading4>
-        <AppTextBody4>{feed.description}</AppTextBody4>
-      </Text>
-      <Text>
-        <AppTextHeading4 style={styles.tag}>
-          {t('home:collection')}
-        </AppTextHeading4>
-        <AppTextBody4 style={styles.tag}> | </AppTextBody4>
-        <AppTextBody4 style={styles.tag}>
-          {t('home:mintingProgress', { minted: '21', total: '321' })}
-        </AppTextBody4>
-        <AppTextBody4 style={styles.tag}> | </AppTextBody4>
-        <AppTextBody4 style={styles.tag}>
-          {t('home:daysLeft', { day: '12' })}
-        </AppTextBody4>
-      </Text>
-    </View>
-  );
-}
+    return (
+      <View style={styles.footerContainer}>
+        <Text numberOfLines={2} style={styles.description}>
+          <AppTextHeading4>{feed.name}</AppTextHeading4>
+          <AppTextHeading4> | </AppTextHeading4>
+          <AppTextBody4>{feed.description}</AppTextBody4>
+        </Text>
+        <Text>
+          <AppTextHeading4 style={styles.tag}>
+            {t('home:collection')}
+          </AppTextHeading4>
+          <AppTextBody4 style={styles.tag}> | </AppTextBody4>
+          <AppTextBody4 style={styles.tag}>
+            {t('home:mintingProgress', { minted: '21', total: '321' })}
+          </AppTextBody4>
+          <AppTextBody4 style={styles.tag}> | </AppTextBody4>
+          <AppTextBody4 style={styles.tag}>
+            {t('home:daysLeft', { day: '12' })}
+          </AppTextBody4>
+        </Text>
+      </View>
+    );
+  },
+  () => {
+    return true;
+  },
+);
 
 const makeStyle = (insets: SafeAreaInsets, theme: Theme) =>
   StyleSheet.create({

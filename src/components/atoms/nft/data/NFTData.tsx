@@ -1,16 +1,16 @@
 import { StyleSheet, View } from 'react-native';
 import React from 'react';
-import { NFT } from '../../../../types/nft';
+import { NFTBase } from '../../../../types/nft';
 import NFTImageData from './contentType/NFTImageData';
 import { TemplateArgs } from '../../../../types/nft/NFTTemplate';
 
 interface NFTDataProps {
-  nft: NFT;
+  nft: NFTBase;
   args: TemplateArgs;
   box?: boolean;
 }
 
-const handleRenderNFTData = (nftObject: NFT) => {
+const handleRenderNFTData = (nftObject: NFTBase) => {
   switch (nftObject.contentType) {
     case 'image':
       return <NFTImageData nft={nftObject} />;

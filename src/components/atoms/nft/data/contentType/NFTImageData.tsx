@@ -1,25 +1,34 @@
 import { StyleSheet, View } from 'react-native';
 import React from 'react';
-import { NFT } from '../../../../../types/nft';
+import { NFTBase } from '../../../../../types/nft';
 import AppNetworkImage from '../../../image/AppNetworkImage';
 import { IPFStoURL } from '../../../../../service/ipfs';
 
 interface NFTImageDataProps {
-  nft: NFT;
+  nft: NFTBase;
 }
 
-export default function NFTImageData({ nft }: NFTImageDataProps) {
-  const styles = makeStyle();
+export default React.memo(
+  function NFTImageData({ nft }: NFTImageDataProps) {
+    const styles = makeStyle();
 
-  return (
-    <View style={styles.imageContainer}>
-      <AppNetworkImage
-        url={IPFStoURL(nft.data)}
-        style={styles.imageContainer}
-      />
-    </View>
-  );
-}
+    return (
+      <View style={styles.imageContainer}>
+        <AppNetworkImage
+          url={IPFStoURL(nft.data)}
+          style={styles.imageContainer}
+        />
+      </View>
+    );
+  },
+  (props, nextProps) => {
+    if (props.nft.data === nextProps.nft.data) {
+      return true;
+    } else {
+      return false;
+    }
+  },
+);
 
 const makeStyle = () =>
   StyleSheet.create({

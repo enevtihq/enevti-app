@@ -15,33 +15,49 @@ interface AppFeedItemProps {
   feed: HomeFeedItemResponse;
 }
 
-export default function AppFeedItem({ feed }: AppFeedItemProps) {
-  const insets = useSafeAreaInsets();
-  const theme = useTheme() as Theme;
-  const styles = makeStyle(insets, theme);
+export default React.memo(
+  function AppFeedItem({ feed }: AppFeedItemProps) {
+    const insets = useSafeAreaInsets();
+    const theme = useTheme() as Theme;
+    const styles = makeStyle(insets, theme);
 
-  const [canvasWidth, setCanvasWidth] = React.useState<number>(0);
-  const onLayout = React.useCallback(e => {
-    setCanvasWidth(e.nativeEvent.layout.width);
-  }, []);
+    const [canvasWidth, setCanvasWidth] = React.useState<number>(0);
+    const onLayout = React.useCallback(e => {
+      setCanvasWidth(e.nativeEvent.layout.width);
+    }, []);
 
-  return (
-    <View onLayout={onLayout} style={styles.card}>
-      <AppFeedHeader feed={feed} />
-      <AppFeedBody canvasWidth={canvasWidth} feed={feed} />
-      <AppFeedAction feed={feed} />
-      <AppFeedFooter feed={feed} />
-    </View>
-  );
-}
+    return (
+      <View onLayout={onLayout} style={styles.card}>
+        <AppFeedHeader feed={feed} />
+        <View style={styles.cardBody}>
+          <AppFeedBody canvasWidth={canvasWidth} feed={feed} />
+        </View>
+        <AppFeedAction feed={feed} />
+        <AppFeedFooter feed={feed} />
+      </View>
+    );
+  },
+  (props, nextProps) => {
+    if (props.feed === nextProps.feed) {
+      return true;
+    } else {
+      return false;
+    }
+  },
+);
 
 const makeStyle = (insets: SafeAreaInsets, theme: Theme) =>
   StyleSheet.create({
     card: {
-      margin: wp('5%', insets),
+      marginHorizontal: wp('5%', insets),
+      marginBottom: wp('5%', insets),
       backgroundColor: theme.colors.background,
       borderRadius: theme.roundness,
       borderWidth: StyleSheet.hairlineWidth,
       borderColor: color(theme.colors.text).alpha(0.05).rgb().toString(),
+    },
+    cardBody: {
+      width: '100%',
+      aspectRatio: 1,
     },
   });

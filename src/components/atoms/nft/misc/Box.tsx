@@ -6,11 +6,20 @@ interface BoxProps {
   args: TemplateArgs;
 }
 
-export default function Box({ args }: BoxProps) {
-  const styles = makeStyle(args);
+export default React.memo(
+  function Box({ args }: BoxProps) {
+    const styles = makeStyle(args);
 
-  return <View style={styles.boxContainer} />;
-}
+    return <View style={styles.boxContainer} />;
+  },
+  (props, nextProps) => {
+    if (props.args === nextProps.args) {
+      return true;
+    } else {
+      return false;
+    }
+  },
+);
 
 const makeStyle = (args: TemplateArgs) =>
   StyleSheet.create({

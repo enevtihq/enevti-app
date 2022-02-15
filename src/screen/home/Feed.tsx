@@ -59,6 +59,8 @@ export default function Feed({ onScroll }: FeedProps) {
 
   const ListHeaderComponent = () => <AppRecentMoments moments={momentsItem} />;
 
+  const renderItem = ({ item }: any) => <AppFeedItem feed={item} />;
+
   return (
     <AppView darken={true}>
       <View style={styles.textContainer}>
@@ -67,14 +69,14 @@ export default function Feed({ onScroll }: FeedProps) {
           scrollEventThrottle={16}
           data={feedItem}
           ListHeaderComponent={ListHeaderComponent}
-          renderItem={({ item }) => <AppFeedItem feed={item} />}
+          renderItem={renderItem}
           keyExtractor={item => item.id}
           showsHorizontalScrollIndicator={false}
           removeClippedSubviews={true}
-          initialNumToRender={2}
-          maxToRenderPerBatch={1}
+          initialNumToRender={1}
+          maxToRenderPerBatch={10}
           updateCellsBatchingPeriod={100}
-          windowSize={7}
+          windowSize={10}
         />
       </View>
     </AppView>
