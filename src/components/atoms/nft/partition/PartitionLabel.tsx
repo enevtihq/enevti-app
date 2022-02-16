@@ -1,4 +1,4 @@
-import { View, StyleSheet, Text, Platform } from 'react-native';
+import { StyleSheet, Text, Platform } from 'react-native';
 import React from 'react';
 import { NFTBase } from '../../../../types/nft';
 import { TemplateArgs } from '../../../../types/nft/NFTTemplate';
@@ -30,14 +30,12 @@ export default React.memo(
     const fontSize = Math.sqrt((w * h) / (text.length + 10));
 
     return (
-      <View style={styles.rarityRankContainer}>
-        <Text
-          numberOfLines={1}
-          adjustsFontSizeToFit
-          style={[styles.text, { fontSize: fontSize }]}>
-          {text}
-        </Text>
-      </View>
+      <Text
+        numberOfLines={1}
+        adjustsFontSizeToFit
+        style={[styles.partitionLabel, { fontSize: fontSize }]}>
+        {text}
+      </Text>
     );
   },
   (props, nextProps) => {
@@ -54,21 +52,18 @@ export default React.memo(
 
 const makeStyle = (args: TemplateArgs, theme: Theme) =>
   StyleSheet.create({
-    rarityRankContainer: {
+    partitionLabel: {
       width: args.width,
       height: args.height,
       top: args.y,
       left: args.x,
       position: 'absolute',
       justifyContent: 'center',
-      alignItems: 'center',
+      paddingTop: `${parseFloat(args.height) * 2}%`,
       textAlign: 'center',
       transform: [{ rotate: args.rotate }],
-    },
-    text: {
       fontFamily: theme.fonts.medium.fontFamily,
       fontWeight: Platform.OS === 'ios' ? '500' : '700',
-      textAlign: 'center',
       color: 'white',
     },
   });

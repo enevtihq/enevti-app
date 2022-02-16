@@ -1,4 +1,4 @@
-import { View, StyleSheet, Text, Platform } from 'react-native';
+import { StyleSheet, Text, Platform } from 'react-native';
 import React from 'react';
 import { NFTBase } from '../../../../types/nft';
 import { TemplateArgs } from '../../../../types/nft/NFTTemplate';
@@ -19,17 +19,15 @@ export default React.memo(
 
     const w = (parseFloat(args.width) * width) / 100.0;
     const h = (parseFloat(args.height) * width) / 100.0;
-    const fontSize = Math.sqrt((w * h) / (text.length + 10));
+    const fontSize = Math.sqrt(((w * h) / (text.length + 10)) * 0.5);
 
     return (
-      <View style={styles.serialContainer}>
-        <Text
-          numberOfLines={1}
-          adjustsFontSizeToFit
-          style={[styles.text, { fontSize: fontSize }]}>
-          {text}
-        </Text>
-      </View>
+      <Text
+        numberOfLines={1}
+        adjustsFontSizeToFit
+        style={[styles.serialContainer, { fontSize: fontSize }]}>
+        {text}
+      </Text>
     );
   },
   (props, nextProps) => {
@@ -53,13 +51,10 @@ const makeStyle = (args: TemplateArgs, theme: Theme) =>
       left: args.x,
       position: 'absolute',
       justifyContent: 'center',
-      alignItems: 'center',
+      paddingTop: `${parseFloat(args.height) * 0.75}%`,
       textAlign: 'center',
       transform: [{ rotate: args.rotate }],
-    },
-    text: {
       fontFamily: theme.fonts.medium.fontFamily,
-      textAlign: 'center',
       letterSpacing: Platform.OS === 'ios' ? -1 : -0.5,
       color: 'white',
     },

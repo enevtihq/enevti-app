@@ -1,4 +1,4 @@
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import React from 'react';
 import FastImage from 'react-native-fast-image';
 import { NFTBase } from '../../../../types/nft';
@@ -39,13 +39,11 @@ export default React.memo(
     }
 
     return (
-      <View style={styles.utilityBackgroundContainer}>
-        <FastImage
-          source={source}
-          resizeMode={FastImage.resizeMode.cover}
-          style={styles.utilityBackgroundContainer}
-        />
-      </View>
+      <FastImage
+        source={source}
+        resizeMode={FastImage.resizeMode.cover}
+        style={styles.utilityBackgroundContainer}
+      />
     );
   },
   (props, nextProps) => {

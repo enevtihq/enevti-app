@@ -22,107 +22,120 @@ interface AppNFTRendererProps {
 
 const THUMBNAIL_TRESHOLD = 0.33;
 
-const handleRenderNFTTemplate = (
-  templateItem: NFTTemplateItem,
-  nftObject: NFTBase,
-  index: number,
-  canvasWidth: number,
-) => {
-  const key = nftObject.id + templateItem.type + '-' + index.toString();
-
-  switch (templateItem.type) {
-    case 'utility-background':
-      return (
-        <UtilityBackground key={key} nft={nftObject} args={templateItem.args} />
-      );
-    case 'data':
-      return <NFTData key={key} nft={nftObject} args={templateItem.args} />;
-    case 'data-box':
-      return <NFTData box key={key} nft={nftObject} args={templateItem.args} />;
-    case 'box':
-      return <Box key={key} args={templateItem.args} />;
-    case 'rarity-icon':
-      return <RarityIcon key={key} nft={nftObject} args={templateItem.args} />;
-    case 'rarity-rank':
-      return (
-        <RarityRank
-          key={key}
-          nft={nftObject}
-          args={templateItem.args}
-          width={canvasWidth}
-        />
-      );
-    case 'rarity-percent':
-      return (
-        <RarityPercent
-          key={key}
-          nft={nftObject}
-          args={templateItem.args}
-          width={canvasWidth}
-        />
-      );
-    case 'name':
-      return (
-        <Name
-          key={key}
-          nft={nftObject}
-          args={templateItem.args}
-          width={canvasWidth}
-        />
-      );
-    case 'serial':
-      return (
-        <Serial
-          key={key}
-          nft={nftObject}
-          args={templateItem.args}
-          width={canvasWidth}
-        />
-      );
-    case 'partition-icon':
-      return (
-        <PartitionIcon
-          key={key}
-          nft={nftObject}
-          args={templateItem.args}
-          width={canvasWidth}
-        />
-      );
-    case 'partition-label':
-      return (
-        <PartitionLabel
-          key={key}
-          nft={nftObject}
-          args={templateItem.args}
-          width={canvasWidth}
-        />
-      );
-    case 'utility-icon':
-      return (
-        <UtilityIcon
-          key={key}
-          nft={nftObject}
-          args={templateItem.args}
-          width={canvasWidth}
-        />
-      );
-    case 'utility-label':
-      return (
-        <UtilityLabel
-          key={key}
-          nft={nftObject}
-          args={templateItem.args}
-          width={canvasWidth}
-        />
-      );
-    default:
-      return <View key={key} />;
-  }
-};
-
 export default React.memo(
   function AppNFTRenderer({ nft, width }: AppNFTRendererProps) {
     const styles = makeStyle();
+
+    const handleRenderNFTTemplate = React.useCallback(
+      (
+        templateItem: NFTTemplateItem,
+        nftObject: NFTBase,
+        index: number,
+        canvasWidth: number,
+      ) => {
+        const key = nftObject.id + templateItem.type + '-' + index.toString();
+
+        switch (templateItem.type) {
+          case 'utility-background':
+            return (
+              <UtilityBackground
+                key={key}
+                nft={nftObject}
+                args={templateItem.args}
+              />
+            );
+          case 'data':
+            return (
+              <NFTData key={key} nft={nftObject} args={templateItem.args} />
+            );
+          case 'data-box':
+            return (
+              <NFTData box key={key} nft={nftObject} args={templateItem.args} />
+            );
+          case 'box':
+            return <Box key={key} args={templateItem.args} />;
+          case 'rarity-icon':
+            return (
+              <RarityIcon key={key} nft={nftObject} args={templateItem.args} />
+            );
+          case 'rarity-rank':
+            return (
+              <RarityRank
+                key={key}
+                nft={nftObject}
+                args={templateItem.args}
+                width={canvasWidth}
+              />
+            );
+          case 'rarity-percent':
+            return (
+              <RarityPercent
+                key={key}
+                nft={nftObject}
+                args={templateItem.args}
+                width={canvasWidth}
+              />
+            );
+          case 'name':
+            return (
+              <Name
+                key={key}
+                nft={nftObject}
+                args={templateItem.args}
+                width={canvasWidth}
+              />
+            );
+          case 'serial':
+            return (
+              <Serial
+                key={key}
+                nft={nftObject}
+                args={templateItem.args}
+                width={canvasWidth}
+              />
+            );
+          case 'partition-icon':
+            return (
+              <PartitionIcon
+                key={key}
+                nft={nftObject}
+                args={templateItem.args}
+                width={canvasWidth}
+              />
+            );
+          case 'partition-label':
+            return (
+              <PartitionLabel
+                key={key}
+                nft={nftObject}
+                args={templateItem.args}
+                width={canvasWidth}
+              />
+            );
+          case 'utility-icon':
+            return (
+              <UtilityIcon
+                key={key}
+                nft={nftObject}
+                args={templateItem.args}
+                width={canvasWidth}
+              />
+            );
+          case 'utility-label':
+            return (
+              <UtilityLabel
+                key={key}
+                nft={nftObject}
+                args={templateItem.args}
+                width={canvasWidth}
+              />
+            );
+          default:
+            return <View key={key} />;
+        }
+      },
+      [],
+    );
 
     return (
       <View style={styles.nftContainer}>

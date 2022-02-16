@@ -1,4 +1,4 @@
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import React from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -45,9 +45,12 @@ export default React.memo(
     }
 
     return (
-      <View style={styles.utilityBackgroundContainer}>
-        <MaterialCommunityIcons name={icon} color={'black'} size={iconSize} />
-      </View>
+      <MaterialCommunityIcons
+        name={icon}
+        color={'black'}
+        size={iconSize}
+        style={styles.utilityBackgroundContainer}
+      />
     );
   },
   (props, nextProps) => {
@@ -70,8 +73,6 @@ const makeStyle = (args: TemplateArgs) =>
       top: args.y,
       left: args.x,
       position: 'absolute',
-      justifyContent: 'center',
-      alignItems: 'center',
       transform: [{ rotate: args.rotate }],
     },
   });

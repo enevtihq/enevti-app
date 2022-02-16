@@ -1,4 +1,4 @@
-import { View, StyleSheet, Text, Platform } from 'react-native';
+import { StyleSheet, Text, Platform } from 'react-native';
 import React from 'react';
 import { NFTBase } from '../../../../types/nft';
 import { TemplateArgs } from '../../../../types/nft/NFTTemplate';
@@ -42,17 +42,15 @@ export default React.memo(
 
     const w = (parseFloat(args.width) * width) / 100.0;
     const h = (parseFloat(args.height) * width) / 100.0;
-    const fontSize = Math.sqrt((w * h) / text.length);
+    const fontSize = Math.sqrt((w * h) / (text.length + 20));
 
     return (
-      <View style={styles.rarityRankContainer}>
-        <Text
-          numberOfLines={1}
-          adjustsFontSizeToFit
-          style={[styles.text, { fontSize: fontSize }]}>
-          {text}
-        </Text>
-      </View>
+      <Text
+        numberOfLines={1}
+        adjustsFontSizeToFit
+        style={[styles.rarityRankContainer, { fontSize: fontSize }]}>
+        {text}
+      </Text>
     );
   },
   (props, nextProps) => {
@@ -75,10 +73,9 @@ const makeStyle = (args: TemplateArgs, theme: Theme) =>
       top: args.y,
       left: args.x,
       justifyContent: 'center',
+      paddingTop: `${parseFloat(args.height)}%`,
       position: 'absolute',
       transform: [{ rotate: args.rotate }],
-    },
-    text: {
       fontFamily: theme.fonts.medium.fontFamily,
       fontWeight: Platform.OS === 'ios' ? '500' : '700',
       color: 'white',

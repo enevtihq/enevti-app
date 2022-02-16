@@ -17,7 +17,7 @@ export const getDummyNFTData = (): NFTBase => {
     name: 'EyeCollection',
     data: 'Qmb3jKA6Vn1azR6aSMnT6geGMkg818uBkfSHNg8ui1a9dy',
     contentType: 'image',
-    NFTType: 'one-kind',
+    NFTType: 'packed',
     utility: utilityOption[Math.floor(Math.random() * utilityOption.length)],
     rarity: {
       stat: {
@@ -135,8 +135,8 @@ export const getDummyNFTData = (): NFTBase => {
         {
           type: 'partition-icon',
           args: {
-            x: '3%',
-            y: '67%',
+            x: '4%',
+            y: '67.5%',
             width: '6.5%',
             height: '6.5%',
             rotate: '0deg',
@@ -155,8 +155,8 @@ export const getDummyNFTData = (): NFTBase => {
         {
           type: 'box',
           args: {
-            x: '3%',
-            y: '42%',
+            x: '4%',
+            y: '42.5%',
             width: '6.5%',
             height: '6.5%',
             rotate: '0deg',
@@ -165,8 +165,8 @@ export const getDummyNFTData = (): NFTBase => {
         {
           type: 'utility-icon',
           args: {
-            x: '3%',
-            y: '42%',
+            x: '4.75%',
+            y: '43%',
             width: '6.5%',
             height: '6.5%',
             rotate: '0deg',
@@ -175,10 +175,10 @@ export const getDummyNFTData = (): NFTBase => {
         {
           type: 'utility-label',
           args: {
-            x: '-6.5%',
+            x: '-5.5%',
             y: '25%',
             width: '25%',
-            height: '4%',
+            height: '6.5%',
             rotate: '-90deg',
           },
         },

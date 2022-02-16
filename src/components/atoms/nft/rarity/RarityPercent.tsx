@@ -1,4 +1,4 @@
-import { View, StyleSheet, Text, Platform } from 'react-native';
+import { StyleSheet, Text, Platform } from 'react-native';
 import React from 'react';
 import { NFTBase } from '../../../../types/nft';
 import { TemplateArgs } from '../../../../types/nft/NFTTemplate';
@@ -26,17 +26,14 @@ export default function RarityPercent({
 
   const w = (parseFloat(args.width) * width) / 100.0;
   const h = (parseFloat(args.height) * width) / 100.0;
-  const fontSize = Math.sqrt((w * h) / text.length);
+  const fontSize = Math.sqrt((w * h) / text.length) / 1.5;
 
   return (
-    <View style={styles.rarityPercentContainer}>
-      <Text
-        numberOfLines={1}
-        adjustsFontSizeToFit
-        style={[styles.text, { fontSize: fontSize }]}>
-        {text}
-      </Text>
-    </View>
+    <Text
+      numberOfLines={1}
+      style={[styles.rarityPercentContainer, { fontSize: fontSize }]}>
+      {text}
+    </Text>
   );
 }
 
@@ -52,11 +49,8 @@ const makeStyle = (args: TemplateArgs, theme: Theme) =>
       alignItems: 'center',
       textAlign: 'center',
       transform: [{ rotate: args.rotate }],
-    },
-    text: {
       fontFamily: theme.fonts.medium.fontFamily,
       fontWeight: Platform.OS === 'ios' ? '500' : '700',
-      textAlign: 'center',
       color: color('black').alpha(0.5).rgb().toString(),
     },
   });

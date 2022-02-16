@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import React from 'react';
 import { NFTBase } from '../../../../../types/nft';
 import AppNetworkImage from '../../../image/AppNetworkImage';
@@ -13,12 +13,10 @@ export default React.memo(
     const styles = makeStyle();
 
     return (
-      <View style={styles.imageContainer}>
-        <AppNetworkImage
-          url={IPFStoURL(nft.data)}
-          style={styles.imageContainer}
-        />
-      </View>
+      <AppNetworkImage
+        url={IPFStoURL(nft.data)}
+        style={styles.imageContainer}
+      />
     );
   },
   (props, nextProps) => {

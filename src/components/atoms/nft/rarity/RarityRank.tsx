@@ -1,4 +1,4 @@
-import { View, StyleSheet, Text, Platform } from 'react-native';
+import { StyleSheet, Text, Platform } from 'react-native';
 import React from 'react';
 import { NFTBase } from '../../../../types/nft';
 import { TemplateArgs } from '../../../../types/nft/NFTTemplate';
@@ -22,14 +22,12 @@ export default function RarityRank({ nft, args, width }: RarityRankProps) {
   const fontSize = Math.sqrt((w * h) / text.length);
 
   return (
-    <View style={styles.rarityRankContainer}>
-      <Text
-        numberOfLines={1}
-        adjustsFontSizeToFit
-        style={[styles.text, { fontSize: fontSize }]}>
-        {text}
-      </Text>
-    </View>
+    <Text
+      numberOfLines={1}
+      adjustsFontSizeToFit
+      style={[styles.rarityRankContainer, { fontSize: fontSize }]}>
+      {text}
+    </Text>
   );
 }
 
@@ -45,11 +43,8 @@ const makeStyle = (args: TemplateArgs, theme: Theme) =>
       alignItems: 'center',
       textAlign: 'center',
       transform: [{ rotate: args.rotate }],
-    },
-    text: {
       fontFamily: theme.fonts.medium.fontFamily,
       fontWeight: Platform.OS === 'ios' ? '500' : '700',
-      textAlign: 'center',
       color: 'black',
     },
   });

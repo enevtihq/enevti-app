@@ -1,4 +1,4 @@
-import { View, StyleSheet, Text, Platform } from 'react-native';
+import { StyleSheet, Text, Platform } from 'react-native';
 import React from 'react';
 import { NFTBase } from '../../../../types/nft';
 import { TemplateArgs } from '../../../../types/nft/NFTTemplate';
@@ -22,14 +22,12 @@ export default React.memo(
     const fontSize = Math.sqrt((w * h) / text.length);
 
     return (
-      <View style={styles.nameContainer}>
-        <Text
-          numberOfLines={1}
-          adjustsFontSizeToFit
-          style={[styles.text, { fontSize: fontSize }]}>
-          {text}
-        </Text>
-      </View>
+      <Text
+        numberOfLines={1}
+        adjustsFontSizeToFit
+        style={[styles.nameContainer, { fontSize: fontSize }]}>
+        {text}
+      </Text>
     );
   },
   (props, nextProps) => {
@@ -56,11 +54,8 @@ const makeStyle = (args: TemplateArgs, theme: Theme) =>
       alignItems: 'center',
       textAlign: 'center',
       transform: [{ rotate: args.rotate }],
-    },
-    text: {
       fontFamily: theme.fonts.medium.fontFamily,
       fontWeight: Platform.OS === 'ios' ? '700' : '700',
-      textAlign: 'center',
       letterSpacing: Platform.OS === 'ios' ? -1 : 0,
       color: 'white',
     },
