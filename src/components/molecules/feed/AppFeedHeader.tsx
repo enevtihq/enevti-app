@@ -54,7 +54,7 @@ export default function AppFeedHeader({ feed }: AppFeedHeaderProps) {
         style={styles.headerPoolContainer}
         onPress={() => onStake()}>
         <AppTextHeading3 style={styles.headerPoolText}>
-          {parseAmount(feed.stake, true)}
+          {parseAmount(feed.stake, true, 2)}
         </AppTextHeading3>
         <AppTextBody5 style={styles.headerPoolText}>
           {getCoinName()}
