@@ -10,7 +10,7 @@ import { Theme } from '../../../theme/default';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from 'react-native-paper';
 import { getCoinName } from '../../atoms/brand/AppBrandConstant';
-import { HomeFeedItemResponse } from '../../../types/service/homeFeedItem';
+import { HomeFeedItemResponse } from '../../../types/service/enevti/feed';
 import { parseAmount } from '../../../utils/format/amount';
 
 interface AppFeedActionProps {

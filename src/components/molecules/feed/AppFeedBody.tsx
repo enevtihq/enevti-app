@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { HomeFeedItemResponse } from '../../../types/service/homeFeedItem';
+import { HomeFeedItemResponse } from '../../../types/service/enevti/feed';
 import { hp } from '../../../utils/imageRatio';
 import AppNFTListRenderer from '../nft/AppNFTListRenderer';
 import AppNFTRenderer from '../nft/AppNFTRenderer';

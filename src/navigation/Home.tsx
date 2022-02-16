@@ -23,6 +23,8 @@ import AppHeaderAction from '../components/atoms/view/AppHeaderAction';
 import { iconMap } from '../components/atoms/icon/AppIconComponent';
 import { TouchableRipple, useTheme } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
+import { getMyBasePersona } from '../service/enevti/persona';
+import { PersonaBase } from '../types/service/enevti/persona';
 
 const Tab = createBottomTabNavigator();
 const TABBAR_HEIGHT_PERCENTAGE = 8;
@@ -57,6 +59,7 @@ export default function Home() {
       ],
     };
   });
+
   const feedAnimatedScrollHandler = useAnimatedScrollHandler({
     onScroll: (event, ctx: { prevY: number; current: number }) => {
       const diff = event.contentOffset.y - ctx.prevY;
@@ -97,6 +100,17 @@ export default function Home() {
       ],
     };
   });
+
+  const [myPersona, setMyPersona] = React.useState<PersonaBase>();
+
+  const getPersona = async () => {
+    const persona = await getMyBasePersona();
+    setMyPersona(persona);
+  };
+
+  React.useEffect(() => {
+    getPersona();
+  }, []);
 
   return (
     <Tab.Navigator
@@ -224,6 +238,23 @@ export default function Home() {
               {...props}
               disabled={props.disabled as boolean | undefined}
             />
+          ),
+          header: () => (
+            <AppHeader
+              style={feedStyle}
+              height={headerHeight}
+              title={
+                myPersona
+                  ? myPersona.username
+                    ? myPersona.username
+                    : myPersona.address
+                  : t('home:profile')
+              }>
+              <AppHeaderAction
+                icon={iconMap.setting}
+                onPress={() => console.log('pressed')}
+              />
+            </AppHeader>
           ),
         }}
         component={MyProfile}

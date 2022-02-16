@@ -6,7 +6,7 @@ import { hp, wp } from '../../utils/imageRatio';
 import AppPortraitOverlayBox from '../molecules/AppPortraitOverlayBox';
 import { useTranslation } from 'react-i18next';
 import { Divider } from 'react-native-paper';
-import { HomeMomentsResponse } from '../../types/service/homeFeedItem';
+import { HomeMomentsResponse } from '../../types/service/enevti/feed';
 import { IPFStoURL } from '../../service/ipfs';
 
 interface AppRecentMomentsProps {

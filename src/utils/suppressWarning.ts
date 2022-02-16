@@ -6,4 +6,5 @@ LogBox.ignoreLogs([
   'Sending `onAnimatedValueUpdate` with no listeners registered.',
   'Require cycle: node_modules/react-native/Libraries/Network/fetch.js',
   'RCTBridge required dispatch_sync to load RNGestureHandlerModule. This may lead to deadlocks',
+  "EventEmitter.removeListener('change', ...): Method has been deprecated. Please instead use `remove()` on the subscription returned by `EventEmitter.addListener`.",
 ]);

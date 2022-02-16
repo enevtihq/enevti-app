@@ -10,7 +10,7 @@ import { hp, SafeAreaInsets, wp } from '../../../utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getCoinName } from '../../atoms/brand/AppBrandConstant';
 import { useTranslation } from 'react-i18next';
-import { HomeFeedItemResponse } from '../../../types/service/homeFeedItem';
+import { HomeFeedItemResponse } from '../../../types/service/enevti/feed';
 import Avatar from '../../atoms/avatar';
 import { IPFStoURL } from '../../../service/ipfs';
 import { parseAmount } from '../../../utils/format/amount';

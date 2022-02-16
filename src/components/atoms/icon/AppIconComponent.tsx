@@ -39,6 +39,7 @@ export const iconMap = {
   utilityGift: 'wallet-giftcard',
   utilityQR: 'qrcode',
   utilityStream: 'ticket',
+  setting: 'cog-outline',
 };
 
 interface AppIconComponentProps {

@@ -19,8 +19,8 @@ import {
   HomeFeedResponse,
   HomeFeedItemResponse,
   HomeMomentsResponse,
-} from '../../types/service/homeFeedItem';
-import { getHomeFeedList, getHomeMomentsList } from '../../service/enevti/home';
+} from '../../types/service/enevti/feed';
+import { getFeedList, getMomentsList } from '../../service/enevti/feed';
 import Animated from 'react-native-reanimated';
 import { handleError } from '../../utils/errorHandling';
 import { hp, wp } from '../../utils/imageRatio';
@@ -55,8 +55,8 @@ export default function Feed({ onScroll, headerHeight }: FeedProps) {
 
   const onFeedScreenLoaded = async () => {
     try {
-      const feed = await getHomeFeedList();
-      const moments = await getHomeMomentsList();
+      const feed = await getFeedList();
+      const moments = await getMomentsList();
       if (feed) {
         setFeedItem(feed);
       }

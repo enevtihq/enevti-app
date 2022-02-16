@@ -37,6 +37,7 @@ export const emojiMap = {
   utilityGift: UNDEFINED_EMOJI,
   utilityQR: UNDEFINED_EMOJI,
   utilityStream: UNDEFINED_EMOJI,
+  setting: UNDEFINED_EMOJI,
 };
 
 interface AppEmojiComponentProps {

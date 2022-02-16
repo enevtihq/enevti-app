@@ -8,7 +8,7 @@ import color from 'color';
 import AppFeedHeader from './feed/AppFeedHeader';
 import AppFeedAction from './feed/AppFeedAction';
 import AppFeedFooter from './feed/AppFeedFooter';
-import { HomeFeedItemResponse } from '../../types/service/homeFeedItem';
+import { HomeFeedItemResponse } from '../../types/service/enevti/feed';
 import AppFeedBody from './feed/AppFeedBody';
 
 interface AppFeedItemProps {

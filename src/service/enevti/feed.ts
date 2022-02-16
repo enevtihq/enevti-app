@@ -3,10 +3,10 @@ import {
   HomeFeedItemResponse,
   HomeFeedResponse,
   HomeMomentsResponse,
-} from '../../types/service/homeFeedItem';
+} from '../../types/service/enevti/feed';
 import { getDummyNFTData, sleep } from './dummy';
 
-function getHomeFeedItemList(): HomeFeedItemResponse {
+function getFeedItemList(): HomeFeedItemResponse {
   let randomCount = Math.random() * 10;
   if (randomCount === 0) {
     randomCount = 1;
@@ -36,7 +36,7 @@ function getHomeFeedItemList(): HomeFeedItemResponse {
   };
 }
 
-export async function getHomeFeedList(): Promise<HomeFeedResponse | undefined> {
+export async function getFeedList(): Promise<HomeFeedResponse | undefined> {
   await sleep(1000);
 
   let randomCount = Math.random() * 10;
@@ -47,13 +47,13 @@ export async function getHomeFeedList(): Promise<HomeFeedResponse | undefined> {
 
   const randomFeed: HomeFeedResponse = [];
   for (let i = 0; i < randomCount; i++) {
-    randomFeed.push(getHomeFeedItemList());
+    randomFeed.push(getFeedItemList());
   }
 
   return randomFeed;
 }
 
-export async function getHomeMomentsList(): Promise<
+export async function getMomentsList(): Promise<
   HomeMomentsResponse | undefined
 > {
   await sleep(1000);

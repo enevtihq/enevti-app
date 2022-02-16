@@ -1,4 +1,4 @@
-import { NFTBase } from '../nft';
+import { NFTBase } from '../../nft';
 
 export interface HomeFeedItemResponse {
   type: string;
