@@ -21,10 +21,8 @@ export default React.memo(
     const insets = useSafeAreaInsets();
     const [currentPage, setCurrentPage] = React.useState<number>(0);
 
-    const onScrollEnd = (e: any) => {
-      let pageNum = Math.floor(
-        e.nativeEvent.contentOffset.x / e.nativeEvent.layoutMeasurement.width,
-      );
+    const onScroll = (e: any) => {
+      let pageNum = Math.round(e.nativeEvent.contentOffset.x / itemWidth);
       if (pageNum !== currentPage) {
         setCurrentPage(pageNum);
       }
@@ -59,9 +57,9 @@ export default React.memo(
           horizontal
           snapToAlignment={'start'}
           snapToInterval={itemWidth}
-          decelerationRate={'fast'}
+          decelerationRate={0.99}
           showsHorizontalScrollIndicator={false}
-          onMomentumScrollEnd={onScrollEnd}
+          onScroll={onScroll}
           disableIntervalMomentum
           pagingEnabled
           removeClippedSubviews={true}

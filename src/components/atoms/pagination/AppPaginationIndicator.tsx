@@ -16,8 +16,8 @@ export default React.memo(
   }: AppPaginationIndicatorProps) {
     const insets = useSafeAreaInsets();
     const theme = useTheme();
-    const passiveSize = '2%';
-    const activeSize = '2%';
+    const passiveSize = '1.2%';
+    const activeSize = '1.5%';
 
     return (
       <Dots
