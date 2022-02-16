@@ -8,4 +8,7 @@ export default {
   collection: 'Collection',
   mintingProgress: '{{minted}} of {{total}} minted',
   daysLeft: '{{day}} days left',
+  follow: 'Follow',
+  report: 'Report',
+  promote: 'Promote',
 };

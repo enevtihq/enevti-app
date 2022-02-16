@@ -31,6 +31,7 @@ function getHomeFeedItemList(): HomeFeedItemResponse {
     username: '',
     photo: '',
     stake: '542123',
+    delegate: false,
     nft: randomNFT,
   };
 }

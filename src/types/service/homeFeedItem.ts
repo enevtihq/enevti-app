@@ -13,6 +13,7 @@ export interface HomeFeedItemResponse {
   username: string;
   photo: string;
   stake: string;
+  delegate: boolean;
   nft: NFTBase[];
 }
 
