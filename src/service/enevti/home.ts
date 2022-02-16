@@ -30,7 +30,7 @@ function getHomeFeedItemList(): HomeFeedItemResponse {
     owner: 'lsk7opy8ksve7npbr32dtqxwpvg5u6aa3vtje5qtd',
     username: '',
     photo: '',
-    stake: '54212378',
+    stake: '542123',
     nft: randomNFT,
   };
 }

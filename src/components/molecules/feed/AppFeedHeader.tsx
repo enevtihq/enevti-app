@@ -13,6 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { HomeFeedItemResponse } from '../../../types/service/homeFeedItem';
 import Avatar from '../../atoms/avatar';
 import { IPFStoURL } from '../../../service/ipfs';
+import { parseAmount } from '../../../utils/format/amount';
 
 interface AppFeedHeaderProps {
   feed: HomeFeedItemResponse;
@@ -53,7 +54,7 @@ export default function AppFeedHeader({ feed }: AppFeedHeaderProps) {
         style={styles.headerPoolContainer}
         onPress={() => onStake()}>
         <AppTextHeading3 style={styles.headerPoolText}>
-          {feed.stake}
+          {parseAmount(feed.stake, true)}
         </AppTextHeading3>
         <AppTextBody5 style={styles.headerPoolText}>
           {getCoinName()}
@@ -91,7 +92,7 @@ const makeStyle = (insets: SafeAreaInsets) =>
     headerAvatarInfoContainer: {
       flex: 1,
       justifyContent: 'center',
-      marginLeft: wp('2%', insets),
+      marginHorizontal: wp('2%', insets),
     },
     headerPoolContainer: {
       justifyContent: 'center',

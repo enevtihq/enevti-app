@@ -26,7 +26,7 @@ export default function RarityPercent({
 
   const w = (parseFloat(args.width) * width) / 100.0;
   const h = (parseFloat(args.height) * width) / 100.0;
-  const fontSize = Math.sqrt((w * h) / text.length) / 1.5;
+  const fontSize = Math.sqrt((w * h) / text.length) / 2;
 
   return (
     <Text
