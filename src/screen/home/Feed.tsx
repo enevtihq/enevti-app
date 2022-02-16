@@ -21,6 +21,8 @@ import {
 import { getHomeFeedList, getHomeMomentsList } from '../../service/enevti/home';
 import Animated from 'react-native-reanimated';
 import { handleError } from '../../utils/errorHandling';
+import { hp, wp } from '../../utils/imageRatio';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const AnimatedFlatList =
   Animated.createAnimatedComponent<FlatListProps<HomeFeedItemResponse>>(
@@ -35,6 +37,9 @@ interface FeedProps extends Props {
 
 export default function Feed({ onScroll }: FeedProps) {
   const styles = makeStyle();
+  const insets = useSafeAreaInsets();
+  const feedHeight = hp('24%', insets) + wp('95%', insets);
+
   const [feedItem, setFeedItem] = React.useState<HomeFeedResponse>();
   const [momentsItem, setMomentsItem] = React.useState<HomeMomentsResponse>();
 
@@ -57,9 +62,26 @@ export default function Feed({ onScroll }: FeedProps) {
     loadHome();
   }, []);
 
-  const ListHeaderComponent = () => <AppRecentMoments moments={momentsItem} />;
+  const ListHeaderComponent = React.useCallback(
+    () => <AppRecentMoments moments={momentsItem} />,
+    [momentsItem],
+  );
 
-  const renderItem = ({ item }: any) => <AppFeedItem feed={item} />;
+  const renderItem = React.useCallback(
+    ({ item }: any) => <AppFeedItem feed={item} />,
+    [],
+  );
+
+  const keyExtractor = React.useCallback(item => item.id, []);
+
+  const getItemLayout = React.useCallback(
+    (_, index) => ({
+      length: feedHeight,
+      offset: feedHeight * index,
+      index,
+    }),
+    [feedHeight],
+  );
 
   return (
     <AppView darken={true}>
@@ -70,13 +92,14 @@ export default function Feed({ onScroll }: FeedProps) {
           data={feedItem}
           ListHeaderComponent={ListHeaderComponent}
           renderItem={renderItem}
-          keyExtractor={item => item.id}
+          keyExtractor={keyExtractor}
           showsHorizontalScrollIndicator={false}
           removeClippedSubviews={true}
           initialNumToRender={5}
           maxToRenderPerBatch={5}
           updateCellsBatchingPeriod={100}
           windowSize={5}
+          getItemLayout={getItemLayout}
         />
       </View>
     </AppView>

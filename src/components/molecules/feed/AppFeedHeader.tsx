@@ -6,7 +6,7 @@ import AppTextBody5 from '../../atoms/text/AppTextBody5';
 import AppQuaternaryButton from '../../atoms/button/AppQuaternaryButton';
 import AppIconButton from '../../atoms/icon/AppIconButton';
 import { iconMap } from '../../atoms/icon/AppIconComponent';
-import { SafeAreaInsets, wp } from '../../../utils/imageRatio';
+import { hp, SafeAreaInsets, wp } from '../../../utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getCoinName } from '../../atoms/brand/AppBrandConstant';
 import { useTranslation } from 'react-i18next';
@@ -79,6 +79,7 @@ const makeStyle = (insets: SafeAreaInsets) =>
       flexDirection: 'row',
       paddingVertical: wp('2%', insets),
       paddingHorizontal: wp('3%', insets),
+      height: hp('7%', insets),
     },
     headerAvatarContainer: {
       justifyContent: 'center',

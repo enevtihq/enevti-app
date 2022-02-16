@@ -5,7 +5,7 @@ import AppTextBody4 from '../../atoms/text/AppTextBody4';
 import { useTheme } from 'react-native-paper';
 import { Theme } from '../../../theme/default';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { SafeAreaInsets, wp } from '../../../utils/imageRatio';
+import { hp, SafeAreaInsets, wp } from '../../../utils/imageRatio';
 import { useTranslation } from 'react-i18next';
 import { HomeFeedItemResponse } from '../../../types/service/homeFeedItem';
 
@@ -53,6 +53,7 @@ const makeStyle = (insets: SafeAreaInsets, theme: Theme) =>
     footerContainer: {
       paddingHorizontal: wp('3%', insets),
       paddingBottom: wp('3%', insets),
+      height: hp('10%', insets),
     },
     tag: {
       color: theme.colors.primary,

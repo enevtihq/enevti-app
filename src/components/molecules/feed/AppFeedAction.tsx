@@ -102,5 +102,6 @@ const makeStyle = (insets: SafeAreaInsets) =>
       flexDirection: 'row',
       paddingVertical: wp('2%', insets),
       paddingHorizontal: wp('3%', insets),
+      height: hp('6%', insets),
     },
   });

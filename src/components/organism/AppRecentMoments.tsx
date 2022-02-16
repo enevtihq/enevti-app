@@ -22,13 +22,37 @@ export default React.memo(
       console.log(id);
     };
 
-    const renderItem = ({ item }: any) => (
-      <AppPortraitOverlayBox
-        url={IPFStoURL(item.photo)}
-        title={item.username}
-        style={{ marginRight: wp('2%', insets) }}
-        onPress={() => onMomentsPress(item.id)}
-      />
+    const renderItem = React.useCallback(
+      ({ item }: any) => (
+        <AppPortraitOverlayBox
+          url={IPFStoURL(item.photo)}
+          title={item.username}
+          style={{ marginRight: wp('2%', insets) }}
+          onPress={() => onMomentsPress(item.id)}
+        />
+      ),
+      [insets],
+    );
+
+    const listHeaderComponent = React.useCallback(
+      () => <View style={{ width: wp('5%', insets) }} />,
+      [insets],
+    );
+
+    const listFooterComponent = React.useCallback(
+      () => <View style={{ width: wp('3%', insets) }} />,
+      [insets],
+    );
+
+    const keyExtractor = React.useCallback(item => item.id, []);
+
+    const getItemLayout = React.useCallback(
+      (_, index) => ({
+        length: wp('27%', insets),
+        offset: wp('27%', insets) * index,
+        index,
+      }),
+      [insets],
     );
 
     return moments ? (
@@ -43,20 +67,17 @@ export default React.memo(
         <FlatList
           horizontal
           data={moments}
-          ListHeaderComponent={() => (
-            <View style={{ width: wp('5%', insets) }} />
-          )}
-          ListFooterComponent={() => (
-            <View style={{ width: wp('3%', insets) }} />
-          )}
+          ListHeaderComponent={listHeaderComponent}
+          ListFooterComponent={listFooterComponent}
           renderItem={renderItem}
-          keyExtractor={item => item.id}
+          keyExtractor={keyExtractor}
           showsHorizontalScrollIndicator={false}
           removeClippedSubviews={true}
           initialNumToRender={4}
           maxToRenderPerBatch={1}
           updateCellsBatchingPeriod={500}
           windowSize={7}
+          getItemLayout={getItemLayout}
         />
         <Divider
           style={{

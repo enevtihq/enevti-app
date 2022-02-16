@@ -30,10 +30,24 @@ export default React.memo(
       }
     };
 
-    const renderItem = ({ item }: any) => (
-      <View style={{ width: width }}>
-        <AppNFTRenderer nft={item} width={width} />
-      </View>
+    const renderItem = React.useCallback(
+      ({ item }: any) => (
+        <View style={{ width: width }}>
+          <AppNFTRenderer nft={item} width={width} />
+        </View>
+      ),
+      [width],
+    );
+
+    const keyExtractor = React.useCallback(item => item.id, []);
+
+    const getItemLayout = React.useCallback(
+      (_, index) => ({
+        length: itemWidth,
+        offset: itemWidth * index,
+        index,
+      }),
+      [itemWidth],
     );
 
     return (
@@ -41,7 +55,7 @@ export default React.memo(
         <FlatList
           data={nft}
           renderItem={renderItem}
-          keyExtractor={item => item.id}
+          keyExtractor={keyExtractor}
           horizontal
           snapToAlignment={'start'}
           snapToInterval={itemWidth}
@@ -55,11 +69,7 @@ export default React.memo(
           maxToRenderPerBatch={5}
           updateCellsBatchingPeriod={100}
           windowSize={5}
-          getItemLayout={(_, index) => ({
-            length: itemWidth,
-            offset: itemWidth * index,
-            index,
-          })}
+          getItemLayout={getItemLayout}
         />
         <View
           style={{

@@ -1,4 +1,10 @@
-import { Dimensions, StyleSheet, View } from 'react-native';
+import {
+  Dimensions,
+  StyleProp,
+  StyleSheet,
+  View,
+  ViewStyle,
+} from 'react-native';
 import React from 'react';
 import { NFTBase } from '../../../types/nft';
 import UtilityBackground from '../../atoms/nft/utility/UtilityBackground';
@@ -18,12 +24,13 @@ import UtilityLabel from '../../atoms/nft/utility/UtilityLabel';
 interface AppNFTRendererProps {
   nft: NFTBase;
   width: number;
+  style?: StyleProp<ViewStyle>;
 }
 
 const THUMBNAIL_TRESHOLD = 0.33;
 
 export default React.memo(
-  function AppNFTRenderer({ nft, width }: AppNFTRendererProps) {
+  function AppNFTRenderer({ nft, width, style }: AppNFTRendererProps) {
     const styles = makeStyle();
 
     const handleRenderNFTTemplate = React.useCallback(
@@ -138,7 +145,7 @@ export default React.memo(
     );
 
     return (
-      <View style={styles.nftContainer}>
+      <View style={[styles.nftContainer, style]}>
         {width < Dimensions.get('window').width * THUMBNAIL_TRESHOLD &&
         nft.template.thumbnail.length > 0
           ? nft.template.thumbnail.map((templateItem, index) =>
