@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Edge, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
@@ -17,12 +17,14 @@ interface AppViewProps {
   children: React.ReactNode;
   darken?: boolean;
   dismissKeyboard?: boolean;
+  edges?: Edge[];
 }
 
 export default function AppView({
   children,
   darken = false,
   dismissKeyboard = false,
+  edges,
 }: AppViewProps) {
   const insets = useSafeAreaInsets();
   const styles = makeStyles(insets);
@@ -34,7 +36,9 @@ export default function AppView({
   return (
     <AppKeyboardDismissOnClickView activate={dismissKeyboard}>
       <View style={styles.view}>
-        <AppContainer darken={darken}>{children}</AppContainer>
+        <AppContainer darken={darken} edges={edges}>
+          {children}
+        </AppContainer>
         <AppSnackbar
           mode={snackbarState.mode}
           visible={snackbarState.show}

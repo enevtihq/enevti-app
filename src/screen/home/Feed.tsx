@@ -4,6 +4,8 @@ import {
   FlatListProps,
   NativeScrollEvent,
   NativeSyntheticEvent,
+  Platform,
+  RefreshControl,
   StyleSheet,
   View,
 } from 'react-native';
@@ -33,17 +35,25 @@ type Props = StackScreenProps<RootStackParamList, 'Feed'>;
 
 interface FeedProps extends Props {
   onScroll: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
+  headerHeight: number;
 }
 
-export default function Feed({ onScroll }: FeedProps) {
-  const styles = makeStyle();
+export default function Feed({ onScroll, headerHeight }: FeedProps) {
+  const styles = makeStyle(headerHeight);
   const insets = useSafeAreaInsets();
   const feedHeight = hp('24%', insets) + wp('95%', insets);
 
   const [feedItem, setFeedItem] = React.useState<HomeFeedResponse>();
   const [momentsItem, setMomentsItem] = React.useState<HomeMomentsResponse>();
+  const [refreshing, setRefreshing] = React.useState<boolean>(false);
 
-  const loadHome = async () => {
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    await onFeedScreenLoaded();
+    setRefreshing(false);
+  };
+
+  const onFeedScreenLoaded = async () => {
     try {
       const feed = await getHomeFeedList();
       const moments = await getHomeMomentsList();
@@ -59,7 +69,7 @@ export default function Feed({ onScroll }: FeedProps) {
   };
 
   React.useEffect(() => {
-    loadHome();
+    onFeedScreenLoaded();
   }, []);
 
   const ListHeaderComponent = React.useCallback(
@@ -84,7 +94,9 @@ export default function Feed({ onScroll }: FeedProps) {
   );
 
   return (
-    <AppView darken={true}>
+    <AppView
+      darken={true}
+      edges={Platform.OS === 'ios' ? ['bottom', 'left', 'right'] : undefined}>
       <View style={styles.textContainer}>
         <AnimatedFlatList
           onScroll={onScroll}
@@ -93,28 +105,34 @@ export default function Feed({ onScroll }: FeedProps) {
           ListHeaderComponent={ListHeaderComponent}
           renderItem={renderItem}
           keyExtractor={keyExtractor}
-          showsHorizontalScrollIndicator={false}
           removeClippedSubviews={true}
-          initialNumToRender={5}
+          initialNumToRender={2}
           maxToRenderPerBatch={5}
           updateCellsBatchingPeriod={100}
           windowSize={5}
           getItemLayout={getItemLayout}
+          contentContainerStyle={styles.listContentContainer}
+          contentInset={{ top: headerHeight }}
+          contentOffset={{ y: Platform.OS === 'ios' ? -headerHeight : 0, x: 0 }}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={handleRefresh}
+              progressViewOffset={headerHeight}
+            />
+          }
         />
       </View>
     </AppView>
   );
 }
 
-const makeStyle = () =>
+const makeStyle = (headerHeight: number) =>
   StyleSheet.create({
     textContainer: {
       flex: 1,
     },
-    shadowProp: {
-      shadowColor: '#000000',
-      shadowOffset: { width: 0, height: 5 },
-      shadowOpacity: 0.1,
-      shadowRadius: 5,
+    listContentContainer: {
+      paddingTop: Platform.OS === 'android' ? headerHeight : 0,
     },
   });

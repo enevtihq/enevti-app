@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import React from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { Edge, SafeAreaView } from 'react-native-safe-area-context';
 import { Theme } from '../../../theme/default';
 import { useTheme } from 'react-native-paper';
 import AppStatusBar from './AppStatusBar';
@@ -9,17 +9,19 @@ import color from 'color';
 interface AppContainerProps {
   children: React.ReactNode;
   darken?: boolean;
+  edges?: Edge[];
 }
 
 export default function AppContainer({
   children,
   darken = false,
+  edges,
 }: AppContainerProps) {
   const theme = useTheme() as Theme;
   const styles = makeStyles(theme, darken);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={edges}>
       <AppStatusBar />
       {children}
     </SafeAreaView>

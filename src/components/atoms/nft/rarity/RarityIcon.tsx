@@ -13,9 +13,11 @@ export default React.memo(
   function RarityIcon({ nft, args }: RarityIconProps) {
     const styles = makeStyle(args);
     const source =
-      nft.rarity.stat.percent < 50
-        ? require('../../../../assets/images/enevti-icon.png')
-        : require('../../../../assets/images/enevti-icon-gs.png');
+      nft.NFTType !== 'one-kind'
+        ? nft.rarity.stat.percent < 50
+          ? require('../../../../assets/images/enevti-icon.png')
+          : require('../../../../assets/images/enevti-icon-gs.png')
+        : require('../../../../assets/images/enevti-icon.png');
 
     return (
       <FastImage

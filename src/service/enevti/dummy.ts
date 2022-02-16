@@ -155,7 +155,7 @@ export const getDummyNFTData = (): NFTBase => {
         {
           type: 'box',
           args: {
-            x: '4%',
+            x: '3%',
             y: '42.5%',
             width: '6.5%',
             height: '6.5%',
@@ -165,7 +165,7 @@ export const getDummyNFTData = (): NFTBase => {
         {
           type: 'utility-icon',
           args: {
-            x: '4.75%',
+            x: '3.75%',
             y: '43%',
             width: '6.5%',
             height: '6.5%',
@@ -175,7 +175,7 @@ export const getDummyNFTData = (): NFTBase => {
         {
           type: 'utility-label',
           args: {
-            x: '-5.5%',
+            x: '-6.5%',
             y: '25%',
             width: '25%',
             height: '6.5%',
@@ -208,3 +208,7 @@ export const getDummyNFTData = (): NFTBase => {
     },
   };
 };
+
+export async function sleep(time: number) {
+  setTimeout(() => null, time);
+}

@@ -149,6 +149,7 @@ export default function Home() {
             navigation={props.navigation}
             route={props.route as any}
             onScroll={feedAnimatedScrollHandler}
+            headerHeight={headerHeight}
           />
         )}
       </Tab.Screen>

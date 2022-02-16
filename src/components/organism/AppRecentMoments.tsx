@@ -60,7 +60,7 @@ export default React.memo(
         <View
           style={{
             paddingHorizontal: wp('5%', insets),
-            marginBottom: hp('2%', insets),
+            marginVertical: hp('2%', insets),
           }}>
           <AppTextHeading3>{t('home:recentMoments')}</AppTextHeading3>
         </View>

@@ -4,7 +4,7 @@ import {
   HomeFeedResponse,
   HomeMomentsResponse,
 } from '../../types/service/homeFeedItem';
-import { getDummyNFTData } from './dummy';
+import { getDummyNFTData, sleep } from './dummy';
 
 function getHomeFeedItemList(): HomeFeedItemResponse {
   let randomCount = Math.random() * 10;
@@ -36,6 +36,8 @@ function getHomeFeedItemList(): HomeFeedItemResponse {
 }
 
 export async function getHomeFeedList(): Promise<HomeFeedResponse | undefined> {
+  await sleep(1000);
+
   let randomCount = Math.random() * 10;
   if (randomCount === 0) {
     randomCount = 1;
@@ -53,6 +55,8 @@ export async function getHomeFeedList(): Promise<HomeFeedResponse | undefined> {
 export async function getHomeMomentsList(): Promise<
   HomeMomentsResponse | undefined
 > {
+  await sleep(1000);
+
   let randomCount = Math.random() * 10;
   if (randomCount === 1) {
     randomCount = 0;
