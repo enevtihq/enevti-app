@@ -20,7 +20,7 @@ export default React.memo(
   function AppFeedAction({ feed }: AppFeedActionProps) {
     const insets = useSafeAreaInsets();
     const theme = useTheme() as Theme;
-    const styles = makeStyle(insets, theme);
+    const styles = makeStyle(insets);
     const [like, setLike] = React.useState<1 | 0>(0);
 
     const onLikeActivate = () => {
@@ -37,54 +37,47 @@ export default React.memo(
 
     return (
       <View style={styles.actionContainer}>
-        <View>
-          <View style={styles.actionButton}>
-            <AppQuaternaryButton
-              icon={like ? iconMap.likeActive : iconMap.likeInactive}
-              iconSize={wp('6%', insets)}
-              iconColor={like ? theme.colors.primary : theme.colors.text}
-              style={styles.button}
-              onPress={() => (like ? onLikeDeactivate() : onLikeActivate())}>
-              <AppTextBody4
-                style={[
-                  styles.actionButtonText,
-                  { color: like ? theme.colors.primary : theme.colors.text },
-                ]}>
-                {feed.like + like}
-              </AppTextBody4>
-            </AppQuaternaryButton>
-          </View>
-        </View>
-        <View style={styles.commentButton}>
-          <View style={styles.actionButton}>
-            <AppQuaternaryButton
-              icon={iconMap.comment}
-              iconSize={wp('6%', insets)}
-              style={styles.button}
-              onPress={() => onComment()}>
-              <AppTextBody4 style={styles.actionButtonText}>
-                {feed.comment}
-              </AppTextBody4>
-            </AppQuaternaryButton>
-          </View>
-        </View>
+        <AppQuaternaryButton
+          icon={like ? iconMap.likeActive : iconMap.likeInactive}
+          iconSize={wp('6%', insets)}
+          iconColor={like ? theme.colors.primary : theme.colors.text}
+          style={styles.button}
+          onPress={() => (like ? onLikeDeactivate() : onLikeActivate())}>
+          <AppTextBody4
+            style={[
+              styles.actionButtonText,
+              { color: like ? theme.colors.primary : theme.colors.text },
+            ]}>
+            {feed.like + like}
+          </AppTextBody4>
+        </AppQuaternaryButton>
+
+        <AppQuaternaryButton
+          icon={iconMap.comment}
+          iconSize={wp('6%', insets)}
+          style={styles.button}
+          onPress={() => onComment()}>
+          <AppTextBody4 style={styles.actionButtonText}>
+            {feed.comment}
+          </AppTextBody4>
+        </AppQuaternaryButton>
+
         <View style={styles.divider} />
-        <View>
-          <AppQuaternaryButton
-            box
-            icon={iconMap.buy}
-            iconSize={wp('6%', insets)}
-            style={styles.button}
-            contentStyle={{
-              paddingVertical: hp('0.5%', insets),
-              paddingHorizontal: wp('1%', insets),
-            }}
-            onPress={() => onBuy()}>
-            <AppTextHeading4 style={styles.actionButtonText}>
-              {feed.price} <AppTextBody5>{getCoinName()}</AppTextBody5>
-            </AppTextHeading4>
-          </AppQuaternaryButton>
-        </View>
+
+        <AppQuaternaryButton
+          box
+          icon={iconMap.buy}
+          iconSize={wp('6%', insets)}
+          style={styles.button}
+          contentStyle={{
+            paddingVertical: hp('0.5%', insets),
+            paddingHorizontal: wp('1%', insets),
+          }}
+          onPress={() => onBuy()}>
+          <AppTextHeading4 style={styles.actionButtonText}>
+            {feed.price} <AppTextBody5>{getCoinName()}</AppTextBody5>
+          </AppTextHeading4>
+        </AppQuaternaryButton>
       </View>
     );
   },
@@ -93,16 +86,13 @@ export default React.memo(
   },
 );
 
-const makeStyle = (insets: SafeAreaInsets, theme: Theme) =>
+const makeStyle = (insets: SafeAreaInsets) =>
   StyleSheet.create({
     button: {
       height: '100%',
     },
     actionButtonText: {
       textAlign: 'center',
-    },
-    commentButton: {
-      marginLeft: wp('2%', insets),
     },
     divider: {
       flex: 1,
@@ -112,11 +102,5 @@ const makeStyle = (insets: SafeAreaInsets, theme: Theme) =>
       flexDirection: 'row',
       paddingVertical: wp('2%', insets),
       paddingHorizontal: wp('3%', insets),
-    },
-    actionButton: {
-      borderRadius: theme.roundness,
-      width: '100%',
-      alignItems: 'center',
-      overflow: 'hidden',
     },
   });

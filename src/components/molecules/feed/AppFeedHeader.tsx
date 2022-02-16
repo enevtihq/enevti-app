@@ -12,6 +12,7 @@ import { getCoinName } from '../../atoms/brand/AppBrandConstant';
 import { useTranslation } from 'react-i18next';
 import { HomeFeedItemResponse } from '../../../types/service/homeFeedItem';
 import Avatar from '../../atoms/avatar';
+import { IPFStoURL } from '../../../service/ipfs';
 
 interface AppFeedHeaderProps {
   feed: HomeFeedItemResponse;
@@ -27,13 +28,11 @@ export default function AppFeedHeader({ feed }: AppFeedHeaderProps) {
   return (
     <View style={styles.headerContainer}>
       <View style={styles.headerAvatarContainer}>
-        <View style={styles.headerAvatar}>
-          {feed.photo ? (
-            <AppNetworkImage style={styles.avatar} url={feed.photo} />
-          ) : (
-            <Avatar address={feed.owner} />
-          )}
-        </View>
+        {feed.photo ? (
+          <AppNetworkImage style={styles.avatar} url={IPFStoURL(feed.photo)} />
+        ) : (
+          <Avatar address={feed.owner} />
+        )}
       </View>
 
       <View style={styles.headerAvatarInfoContainer}>
@@ -49,21 +48,17 @@ export default function AppFeedHeader({ feed }: AppFeedHeaderProps) {
         )}
       </View>
 
-      <View style={styles.headerPoolContainer}>
-        <AppQuaternaryButton
-          box
-          style={styles.stakeButton}
-          onPress={() => onStake()}>
-          <View style={styles.stakeButtonContainer}>
-            <AppTextHeading3 style={styles.headerPoolText}>
-              {feed.stake}
-            </AppTextHeading3>
-            <AppTextBody5 style={styles.headerPoolText}>
-              {getCoinName()}
-            </AppTextBody5>
-          </View>
-        </AppQuaternaryButton>
-      </View>
+      <AppQuaternaryButton
+        box
+        style={styles.headerPoolContainer}
+        onPress={() => onStake()}>
+        <AppTextHeading3 style={styles.headerPoolText}>
+          {feed.stake}
+        </AppTextHeading3>
+        <AppTextBody5 style={styles.headerPoolText}>
+          {getCoinName()}
+        </AppTextBody5>
+      </AppQuaternaryButton>
 
       <View style={styles.headerMoreButtonContainer}>
         <AppIconButton
@@ -87,8 +82,6 @@ const makeStyle = (insets: SafeAreaInsets) =>
     },
     headerAvatarContainer: {
       justifyContent: 'center',
-    },
-    headerAvatar: {
       width: wp('10%', insets),
       aspectRatio: 1,
       borderRadius: wp('5%', insets),
@@ -102,9 +95,8 @@ const makeStyle = (insets: SafeAreaInsets) =>
     headerPoolContainer: {
       justifyContent: 'center',
       alignItems: 'center',
-      marginLeft: wp('2%', insets),
-      paddingVertical: '1%',
       width: wp('30%', insets),
+      height: '100%',
     },
     headerPoolText: {
       textAlign: 'center',
@@ -119,10 +111,6 @@ const makeStyle = (insets: SafeAreaInsets) =>
     avatar: {
       width: '100%',
       aspectRatio: 1,
-    },
-    stakeButton: {
-      height: '100%',
-      width: '100%',
     },
     stakeButtonContainer: {
       width: '100%',
