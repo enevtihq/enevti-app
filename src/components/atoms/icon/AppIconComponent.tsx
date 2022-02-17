@@ -40,6 +40,7 @@ export const iconMap = {
   utilityQR: 'qrcode',
   utilityStream: 'ticket',
   setting: 'cog-outline',
+  edit: 'pencil-outline',
 };
 
 interface AppIconComponentProps {

@@ -1,6 +1,5 @@
 import { StyleSheet, View } from 'react-native';
 import React from 'react';
-import AppNetworkImage from '../../atoms/image/AppNetworkImage';
 import AppTextHeading3 from '../../atoms/text/AppTextHeading3';
 import AppTextBody5 from '../../atoms/text/AppTextBody5';
 import AppQuaternaryButton from '../../atoms/button/AppQuaternaryButton';
@@ -11,11 +10,10 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getCoinName } from '../../atoms/brand/AppBrandConstant';
 import { useTranslation } from 'react-i18next';
 import { HomeFeedItemResponse } from '../../../types/service/enevti/feed';
-import Avatar from '../../atoms/avatar';
-import { IPFStoURL } from '../../../service/ipfs';
 import { parseAmount } from '../../../utils/format/amount';
 import { Divider, Menu, useTheme } from 'react-native-paper';
 import { Theme } from '../../../theme/default';
+import AppAvatarRenderer from '../avatar/AppAvatarRenderer';
 
 interface AppFeedHeaderProps {
   feed: HomeFeedItemResponse;
@@ -53,13 +51,11 @@ export default function AppFeedHeader({ feed }: AppFeedHeaderProps) {
 
   return (
     <View style={styles.headerContainer}>
-      <View style={styles.headerAvatarContainer}>
-        {feed.photo ? (
-          <AppNetworkImage style={styles.avatar} url={IPFStoURL(feed.photo)} />
-        ) : (
-          <Avatar address={feed.owner} />
-        )}
-      </View>
+      <AppAvatarRenderer
+        photo={feed.photo}
+        address={feed.owner}
+        size={wp('10%', insets)}
+      />
 
       <View style={styles.headerAvatarInfoContainer}>
         <AppTextHeading3 numberOfLines={1}>
@@ -129,13 +125,6 @@ const makeStyle = (insets: SafeAreaInsets, theme: Theme) =>
       paddingVertical: wp('2%', insets),
       paddingHorizontal: wp('3%', insets),
       height: hp('7%', insets),
-    },
-    headerAvatarContainer: {
-      justifyContent: 'center',
-      width: wp('10%', insets),
-      aspectRatio: 1,
-      borderRadius: wp('5%', insets),
-      overflow: 'hidden',
     },
     headerAvatarInfoContainer: {
       flex: 1,

@@ -25,6 +25,7 @@ import { TouchableRipple, useTheme } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import { getMyBasePersona } from '../service/enevti/persona';
 import { PersonaBase } from '../types/service/enevti/persona';
+import AppAvatarRenderer from '../components/molecules/avatar/AppAvatarRenderer';
 
 const Tab = createBottomTabNavigator();
 const TABBAR_HEIGHT_PERCENTAGE = 8;
@@ -227,10 +228,11 @@ export default function Home() {
         options={{
           tabBarLabel: t('home:profile'),
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons
-              name={iconMap.accountCircle}
+            <AppAvatarRenderer
               color={color}
-              size={size}
+              size={size * 1.1}
+              photo={myPersona?.photo}
+              address={myPersona?.address}
             />
           ),
           tabBarButton: props => (
@@ -243,13 +245,11 @@ export default function Home() {
             <AppHeader
               style={feedStyle}
               height={headerHeight}
-              title={
-                myPersona
-                  ? myPersona.username
-                    ? myPersona.username
-                    : myPersona.address
-                  : t('home:profile')
-              }>
+              title={t('home:profile')}>
+              <AppHeaderAction
+                icon={iconMap.edit}
+                onPress={() => console.log('pressed')}
+              />
               <AppHeaderAction
                 icon={iconMap.setting}
                 onPress={() => console.log('pressed')}

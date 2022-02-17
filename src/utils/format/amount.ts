@@ -12,24 +12,48 @@ export function parseAmount(
   const num = new BigNumber(basicTokenUnit(amount));
 
   if (kmb) {
-    if (num.isLessThan(1000)) {
-      return decimal ? num.decimalPlaces(decimal).toString() : num.toString();
-    } else if (num.isGreaterThan(999) && num.isLessThan(1000000)) {
-      return decimal
-        ? num.div(1000).decimalPlaces(decimal).toString() + 'K'
-        : num.toString() + 'K';
-    } else if (num.isGreaterThan(999999) && num.isLessThan(1000000000)) {
-      return decimal
-        ? num.div(1000000).decimalPlaces(decimal).toString() + 'M'
-        : num.toString() + 'M';
-    } else if (num.isGreaterThan(999999999)) {
-      return decimal
-        ? num.div(1000000000).decimalPlaces(decimal).toString() + 'B'
-        : num.toString() + 'B';
-    } else {
-      return 'unknown';
-    }
+    return bigNumberKMB(num, decimal);
   } else {
     return decimal ? num.decimalPlaces(decimal).toString() : num.toString();
+  }
+}
+
+export function bigNumberKMB(num: BigNumber, decimal?: number): string {
+  if (num.isLessThan(1000)) {
+    return decimal ? num.decimalPlaces(decimal).toString() : num.toString();
+  } else if (num.isGreaterThan(999) && num.isLessThan(1000000)) {
+    return decimal
+      ? num.div(1000).decimalPlaces(decimal).toString() + 'K'
+      : num.toString() + 'K';
+  } else if (num.isGreaterThan(999999) && num.isLessThan(1000000000)) {
+    return decimal
+      ? num.div(1000000).decimalPlaces(decimal).toString() + 'M'
+      : num.toString() + 'M';
+  } else if (num.isGreaterThan(999999999)) {
+    return decimal
+      ? num.div(1000000000).decimalPlaces(decimal).toString() + 'B'
+      : num.toString() + 'B';
+  } else {
+    return 'unknown';
+  }
+}
+
+export function numberKMB(num: number, decimal?: number): string {
+  if (num < 1000) {
+    return decimal ? num.toFixed(decimal).toString() : num.toString();
+  } else if (num > 999 && num < 1000000) {
+    return decimal
+      ? (num / 1000).toFixed(decimal).toString() + 'K'
+      : num.toString() + 'K';
+  } else if (num > 999999 && num < 1000000000) {
+    return decimal
+      ? (num / 1000000).toFixed(decimal).toString() + 'M'
+      : num.toString() + 'M';
+  } else if (num > 999999999) {
+    return decimal
+      ? (num / 1000000000).toFixed(decimal).toString() + 'B'
+      : num.toString() + 'B';
+  } else {
+    return 'unknown';
   }
 }
