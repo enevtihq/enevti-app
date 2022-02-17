@@ -64,6 +64,9 @@ export default function Home() {
   const feedAnimatedScrollHandler = useAnimatedScrollHandler({
     onScroll: (event, ctx: { prevY: number; current: number }) => {
       const diff = event.contentOffset.y - ctx.prevY;
+      if (ctx.current === undefined) {
+        ctx.current = 0;
+      }
       tabScrollY[0].value = diffClamp(
         ctx.current + diff,
         0,
@@ -113,6 +116,25 @@ export default function Home() {
     getPersona();
   }, []);
 
+  const FeedComponent = React.useCallback(
+    props => (
+      <Feed
+        navigation={props.navigation}
+        route={props.route as any}
+        onScroll={feedAnimatedScrollHandler}
+        headerHeight={headerHeight}
+      />
+    ),
+    [headerHeight, feedAnimatedScrollHandler],
+  );
+
+  const MyProfileComponent = React.useCallback(
+    props => (
+      <MyProfile navigation={props.navigation} route={props.route as any} />
+    ),
+    [],
+  );
+
   return (
     <Tab.Navigator
       tabBar={props => <AppTabBar {...props} style={tabBarStyle} />}
@@ -159,14 +181,7 @@ export default function Home() {
             </AppHeader>
           ),
         }}>
-        {props => (
-          <Feed
-            navigation={props.navigation}
-            route={props.route as any}
-            onScroll={feedAnimatedScrollHandler}
-            headerHeight={headerHeight}
-          />
-        )}
+        {props => FeedComponent(props)}
       </Tab.Screen>
       <Tab.Screen
         name="Statistics"
@@ -256,9 +271,9 @@ export default function Home() {
               />
             </AppHeader>
           ),
-        }}
-        component={MyProfile}
-      />
+        }}>
+        {props => MyProfileComponent(props)}
+      </Tab.Screen>
     </Tab.Navigator>
   );
 }

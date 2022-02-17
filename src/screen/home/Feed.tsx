@@ -112,8 +112,8 @@ export default function Feed({ onScroll, headerHeight }: FeedProps) {
           windowSize={5}
           getItemLayout={getItemLayout}
           contentContainerStyle={styles.listContentContainer}
-          contentInset={{ top: headerHeight }}
-          contentOffset={{ y: Platform.OS === 'ios' ? -headerHeight : 0, x: 0 }}
+          // contentInset={{ top: headerHeight }}
+          // contentOffset={{ y: Platform.OS === 'ios' ? -headerHeight : 0, x: 0 }}
           refreshControl={
             <RefreshControl
               refreshing={refreshing}
@@ -133,6 +133,6 @@ const makeStyle = (headerHeight: number) =>
       flex: 1,
     },
     listContentContainer: {
-      paddingTop: Platform.OS === 'android' ? headerHeight : 0,
+      paddingTop: headerHeight,
     },
   });
