@@ -34,6 +34,7 @@ export type RootStackParamList = {
   Login: undefined;
   Home: undefined;
   Feed: undefined;
+  MyProfile: undefined;
 };
 
 const Stack = createStackNavigator();

@@ -22,9 +22,10 @@ import {
 } from '../../types/service/enevti/feed';
 import { getFeedList, getMomentsList } from '../../service/enevti/feed';
 import Animated from 'react-native-reanimated';
-import { handleError } from '../../utils/errorHandling';
+import { handleError } from '../../utils/error/handle';
 import { hp, wp } from '../../utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { getMyBasePersona } from '../../service/enevti/persona';
 
 const AnimatedFlatList =
   Animated.createAnimatedComponent<FlatListProps<HomeFeedItemResponse>>(
@@ -48,9 +49,15 @@ export default function Feed({ onScroll, headerHeight }: FeedProps) {
   const [refreshing, setRefreshing] = React.useState<boolean>(false);
 
   const handleRefresh = async () => {
-    setRefreshing(true);
-    await onFeedScreenLoaded();
-    setRefreshing(false);
+    try {
+      setRefreshing(true);
+      await onFeedScreenLoaded();
+      await getMyBasePersona(true);
+    } catch (err: any) {
+      handleError(err);
+    } finally {
+      setRefreshing(false);
+    }
   };
 
   const onFeedScreenLoaded = async () => {
@@ -69,7 +76,12 @@ export default function Feed({ onScroll, headerHeight }: FeedProps) {
   };
 
   React.useEffect(() => {
-    onFeedScreenLoaded();
+    try {
+      onFeedScreenLoaded();
+      getMyBasePersona();
+    } catch (err: any) {
+      handleError(err);
+    }
   }, []);
 
   const ListHeaderComponent = React.useCallback(
@@ -112,8 +124,6 @@ export default function Feed({ onScroll, headerHeight }: FeedProps) {
           windowSize={5}
           getItemLayout={getItemLayout}
           contentContainerStyle={styles.listContentContainer}
-          // contentInset={{ top: headerHeight }}
-          // contentOffset={{ y: Platform.OS === 'ios' ? -headerHeight : 0, x: 0 }}
           refreshControl={
             <RefreshControl
               refreshing={refreshing}

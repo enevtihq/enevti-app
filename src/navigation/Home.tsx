@@ -130,9 +130,13 @@ export default function Home() {
 
   const MyProfileComponent = React.useCallback(
     props => (
-      <MyProfile navigation={props.navigation} route={props.route as any} />
+      <MyProfile
+        navigation={props.navigation}
+        route={props.route as any}
+        headerHeight={headerHeight}
+      />
     ),
-    [],
+    [headerHeight],
   );
 
   return (

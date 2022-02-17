@@ -1,22 +1,20 @@
-import {
-  GoogleSignin,
-  statusCodes,
-} from '@react-native-google-signin/google-signin';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { Platform } from 'react-native';
-import { isInternetReachable, NETWORK_ERROR } from '../../utils/network';
+import { isInternetReachable } from '../../utils/network';
 import i18n from '../../translations/i18n';
+import { ERRORCODE } from '../../utils/error/code';
 
 const GOOGLE_SCOPES = ['https://www.googleapis.com/auth/drive.appdata'];
 
 const selectGoogleErrorText = async (code: number) => {
   await i18n.loadNamespaces(['google', 'network']);
-  return code === NETWORK_ERROR
+  return code === ERRORCODE.NETWORK_ERROR
     ? i18n.t('network:noInternet')
-    : code === statusCodes.SIGN_IN_CANCELLED
+    : code === ERRORCODE.GOOGLE_SIGNIN_CANCELLED
     ? i18n.t('google:signInCancelled')
-    : code === statusCodes.IN_PROGRESS
+    : code === ERRORCODE.GOOGLE_SIGNIN_INPROGRESS
     ? i18n.t('google:signInAlreadyInProgress')
-    : code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE
+    : code === ERRORCODE.GOOGLE_SIGNIN_NOTAVAILABLE
     ? i18n.t('google:signInUnavailableService')
     : i18n.t('google:unknownError');
 };

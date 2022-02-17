@@ -4,7 +4,7 @@ import { Appbar, useTheme } from 'react-native-paper';
 import Animated from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Theme } from '../../../theme/default';
-import { SafeAreaInsets } from '../../../utils/imageRatio';
+import { SafeAreaInsets, wp } from '../../../utils/imageRatio';
 import AppBrandBanner from '../../molecules/AppBrandBanner';
 
 export default function AppHeader({
@@ -55,8 +55,14 @@ const makeStyle = (theme: Theme, height: number, insets: SafeAreaInsets) =>
     },
     title: {
       color: theme.colors.text,
+      fontFamily: theme.fonts.medium.fontFamily,
+      fontWeight: theme.fonts.medium.fontWeight,
+      fontSize: wp('5.2%', insets),
     },
     subtitle: {
       color: theme.colors.placeholder,
+      fontFamily: theme.fonts.light.fontFamily,
+      fontWeight: theme.fonts.light.fontWeight,
+      fontSize: wp('4.0%', insets),
     },
   });

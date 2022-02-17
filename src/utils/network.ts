@@ -1,7 +1,6 @@
 import NetInfo from '@react-native-community/netinfo';
 import i18n from '../translations/i18n';
-
-export const NETWORK_ERROR = -2;
+import { ERRORCODE } from './error/code';
 
 export async function isInternetReachable(): Promise<boolean> {
   await i18n.loadNamespaces('network');
@@ -9,7 +8,7 @@ export async function isInternetReachable(): Promise<boolean> {
   if (!status) {
     throw {
       name: 'NetworkError',
-      code: NETWORK_ERROR,
+      code: ERRORCODE.NETWORK_ERROR,
       message: i18n.t('network:noInternet'),
     };
   }

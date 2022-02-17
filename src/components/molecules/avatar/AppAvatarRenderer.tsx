@@ -38,7 +38,8 @@ export default function AppAvatarRenderer({
         <MaterialCommunityIcons
           name={iconMap.accountCircle}
           color={color ? color : theme.colors.text}
-          size={size}
+          size={size * 0.9}
+          // style={styles.image}
         />
       )}
     </View>

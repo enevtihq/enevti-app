@@ -36,7 +36,7 @@ import {
   encryptWithDevice,
 } from '../../utils/cryptography';
 import { setUnencryptedPassphraseAuth } from '../../store/slices/auth';
-import { handleError } from '../../utils/errorHandling';
+import { handleError } from '../../utils/error/handle';
 
 YupPassword(Yup);
 

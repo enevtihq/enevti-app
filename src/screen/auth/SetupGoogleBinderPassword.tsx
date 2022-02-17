@@ -26,7 +26,7 @@ import { setSecretAppData } from '../../service/google/appData';
 import { useDispatch } from 'react-redux';
 import { setUnencryptedPassphraseAuth } from '../../store/slices/auth';
 import { CommonActions } from '@react-navigation/native';
-import { handleError } from '../../utils/errorHandling';
+import { handleError } from '../../utils/error/handle';
 
 type Props = StackScreenProps<RootStackParamList, 'SetupGoogleBinderPassword'>;
 YupPassword(Yup);
