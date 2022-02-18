@@ -10,7 +10,7 @@ import color from 'color';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 interface AppQuaternaryButtonProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   box?: boolean;
   onPress?: () => void;
   loading?: boolean;

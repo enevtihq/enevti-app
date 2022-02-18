@@ -11,9 +11,11 @@ import { getCoinName } from '../../atoms/brand/AppBrandConstant';
 import { useTranslation } from 'react-i18next';
 import { HomeFeedItemResponse } from '../../../types/service/enevti/feed';
 import { parseAmount } from '../../../utils/format/amount';
-import { Divider, Menu, useTheme } from 'react-native-paper';
+import { Divider, useTheme } from 'react-native-paper';
 import { Theme } from '../../../theme/default';
 import AppAvatarRenderer from '../avatar/AppAvatarRenderer';
+import AppMenuContainer from '../../atoms/menu/AppMenuContainer';
+import AppMenuItem from '../../atoms/menu/AppMenuItem';
 
 interface AppFeedHeaderProps {
   feed: HomeFeedItemResponse;
@@ -23,7 +25,7 @@ export default function AppFeedHeader({ feed }: AppFeedHeaderProps) {
   const { t } = useTranslation();
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
-  const styles = makeStyle(insets, theme);
+  const styles = makeStyle(insets);
 
   const [menuVisible, setMenuVisible] = React.useState<boolean>(false);
 
@@ -83,7 +85,7 @@ export default function AppFeedHeader({ feed }: AppFeedHeaderProps) {
       </AppQuaternaryButton>
 
       <View style={styles.headerMoreButtonContainer}>
-        <Menu
+        <AppMenuContainer
           visible={menuVisible}
           onDismiss={onCloseMenu}
           anchor={
@@ -94,30 +96,25 @@ export default function AppFeedHeader({ feed }: AppFeedHeaderProps) {
               onPress={onOpenMenu}
             />
           }>
-          <Menu.Item
-            onPress={onFollow}
-            titleStyle={styles.menuTitle}
-            title={t('home:follow')}
-          />
-          <Menu.Item
+          <AppMenuItem onPress={onFollow} title={t('home:follow')} />
+          <AppMenuItem
             onPress={onReport}
-            titleStyle={[styles.menuTitle, { color: theme.colors.error }]}
+            titleStyle={{ color: theme.colors.error }}
             title={t('home:report')}
           />
           <Divider />
-          <Menu.Item
+          <AppMenuItem
             onPress={onPromote}
             disabled={!feed.delegate}
-            titleStyle={styles.menuTitle}
             title={t('home:promote')}
           />
-        </Menu>
+        </AppMenuContainer>
       </View>
     </View>
   );
 }
 
-const makeStyle = (insets: SafeAreaInsets, theme: Theme) =>
+const makeStyle = (insets: SafeAreaInsets) =>
   StyleSheet.create({
     headerContainer: {
       flex: 1,
@@ -153,10 +150,5 @@ const makeStyle = (insets: SafeAreaInsets, theme: Theme) =>
     },
     stakeButtonContainer: {
       width: '100%',
-    },
-    menuTitle: {
-      fontFamily: theme.fonts.regular.fontFamily,
-      fontWeight: theme.fonts.regular.fontWeight,
-      fontSize: wp('4.0%', insets),
     },
   });

@@ -39,6 +39,10 @@ export const emojiMap = {
   utilityStream: UNDEFINED_EMOJI,
   setting: UNDEFINED_EMOJI,
   edit: UNDEFINED_EMOJI,
+  copy: UNDEFINED_EMOJI,
+  pool: UNDEFINED_EMOJI,
+  twitter: UNDEFINED_EMOJI,
+  wallet: UNDEFINED_EMOJI,
 };
 
 interface AppEmojiComponentProps {

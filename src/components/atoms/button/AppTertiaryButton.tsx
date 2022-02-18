@@ -46,7 +46,7 @@ export default function AppTertiaryButton({
       icon={icon}
       onPress={onPress}
       uppercase={false}
-      contentStyle={styles.content}
+      contentStyle={[styles.content, style]}
       style={[styles.tertiaryButton, style]}>
       {children}
     </Button>

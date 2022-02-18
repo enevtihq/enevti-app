@@ -39,7 +39,6 @@ export default function AppAvatarRenderer({
           name={iconMap.accountCircle}
           color={color ? color : theme.colors.text}
           size={size * 0.9}
-          // style={styles.image}
         />
       )}
     </View>

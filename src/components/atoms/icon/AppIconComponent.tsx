@@ -41,6 +41,10 @@ export const iconMap = {
   utilityStream: 'ticket',
   setting: 'cog-outline',
   edit: 'pencil-outline',
+  copy: 'content-copy',
+  pool: 'chart-pie',
+  twitter: 'twitter',
+  wallet: 'wallet',
 };
 
 interface AppIconComponentProps {

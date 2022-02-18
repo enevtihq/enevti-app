@@ -46,7 +46,7 @@ export default function AppSecondaryButton({
       icon={icon}
       onPress={onPress}
       uppercase={false}
-      contentStyle={styles.content}
+      contentStyle={[styles.content, style]}
       style={[styles.secondaryButton, style]}>
       {children}
     </Button>
