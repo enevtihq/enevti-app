@@ -4,6 +4,7 @@ import {
   decryptWithDevice,
   decryptWithPassword,
 } from '../../utils/cryptography';
+import * as Lisk from '@liskhq/lisk-client';
 import { ERRORCODE } from '../../utils/error/code';
 import { sleep } from '../../service/enevti/dummy';
 import { lastFetchTreshold } from '../../utils/lastFetch/constant';
@@ -50,12 +51,9 @@ export async function getMyBasePersona(force = false): Promise<PersonaBase> {
       };
     }
 
-    // const address = Lisk.cryptography.getBase32AddressFromPassphrase(authToken);
-    // console.log(address);
+    const address = Lisk.cryptography.getBase32AddressFromPassphrase(authToken);
 
-    myPersona = await fetchMyPersona(
-      'lsk7opy8ksve7npbr32dtqxwpvg5u6aa3vtje5qtd',
-    );
+    myPersona = await fetchMyPersona(address);
 
     store.dispatch(setLastFetchPersona(now));
     store.dispatch(setPersona(myPersona));
