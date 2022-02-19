@@ -27,6 +27,11 @@ import AppQuaternaryButton from '../../components/atoms/button/AppQuaternaryButt
 import AppTextHeading3 from '../../components/atoms/text/AppTextHeading3';
 import AppMenuContainer from '../../components/atoms/menu/AppMenuContainer';
 import AppMenuItem from '../../components/atoms/menu/AppMenuItem';
+import { FlatGrid } from 'react-native-super-grid';
+import { ProfileResponse } from '../../types/service/enevti/profile';
+import { getProfileCompleteData } from '../../service/enevti/profile';
+import { handleError } from '../../utils/error/handle';
+import AppNFTRenderer from '../../components/molecules/nft/AppNFTRenderer';
 
 type Props = StackScreenProps<RootStackParamList, 'MyProfile'>;
 
@@ -42,6 +47,27 @@ export default function MyProfile({ headerHeight }: MyProfileProps) {
   const myPersona = useSelector((state: RootState) => selectPersona(state));
 
   const [menuVisible, setMenuVisible] = React.useState<boolean>(false);
+  const [profileData, setProfileData] = React.useState<ProfileResponse>();
+
+  const onFeedScreenLoaded = async () => {
+    try {
+      const profile = await getProfileCompleteData(myPersona.address);
+      if (profile) {
+        setProfileData(profile);
+      }
+    } catch (err: any) {
+      handleError(err);
+    }
+  };
+
+  React.useEffect(() => {
+    try {
+      onFeedScreenLoaded();
+    } catch (err: any) {
+      handleError(err);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <AppView edges={['left', 'right', 'bottom']}>
@@ -180,7 +206,7 @@ export default function MyProfile({ headerHeight }: MyProfileProps) {
           <View
             style={{
               height: hp('3%', insets),
-              marginTop: hp('3%', insets),
+              marginVertical: hp('3%', insets),
               flexDirection: 'row',
               justifyContent: 'center',
               alignItems: 'center',
@@ -227,6 +253,14 @@ export default function MyProfile({ headerHeight }: MyProfileProps) {
             </AppQuaternaryButton>
           </View>
         </View>
+        <FlatGrid
+          spacing={wp('0.5%', insets)}
+          itemDimension={wp('30%', insets)}
+          data={profileData ? profileData.owned : []}
+          renderItem={({ item }) => (
+            <AppNFTRenderer nft={item} width={wp('30%', insets)} />
+          )}
+        />
       </View>
     </AppView>
   );
