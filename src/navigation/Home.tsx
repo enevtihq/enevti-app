@@ -97,6 +97,26 @@ export default function Home() {
     },
   });
 
+  const myProfileStyle = useAnimatedStyle(() => {
+    return {
+      transform: [
+        {
+          translateY: interpolate(
+            tabScrollY[3].value,
+            [0, headerHeight + insets.top],
+            [0, -(headerHeight + insets.top)],
+            Extrapolate.CLAMP,
+          ),
+        },
+      ],
+    };
+  });
+
+  const myProfileScrollWorklet = (val: number) => {
+    'worklet';
+    tabScrollY[3].value = val;
+  };
+
   const tabBarStyle = useAnimatedStyle(() => {
     return {
       transform: [
@@ -132,22 +152,13 @@ export default function Home() {
     [headerHeight, feedAnimatedScrollHandler],
   );
 
-  const testFunction = (val: number) => {
-    'worklet';
-    console.log('anjayyyy');
-    tabScrollY[0].value = val;
-    console.log(tabScrollY[0].value);
-  };
-
-  const MyProfileComponent = React.useCallback(
-    props => (
-      <MyProfile
-        navigation={props.navigation}
-        route={props.route as any}
-        headerHeight={headerHeight}
-      />
-    ),
-    [headerHeight],
+  const MyProfileComponent = (props: any) => (
+    <MyProfile
+      navigation={props.navigation}
+      route={props.route as any}
+      headerHeight={headerHeight}
+      scrollWorklet={myProfileScrollWorklet}
+    />
   );
 
   return (
@@ -273,7 +284,7 @@ export default function Home() {
           ),
           header: () => (
             <AppHeader
-              style={feedStyle}
+              style={myProfileStyle}
               height={headerHeight}
               title={t('home:profile')}>
               <AppHeaderAction
