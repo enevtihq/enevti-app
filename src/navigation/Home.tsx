@@ -53,6 +53,9 @@ export default function Home() {
     useSharedValue(0),
   ];
 
+  const myProfilePrevYSharedValue = useSharedValue(0);
+  const myProfileInterpolatedYSharedValue = useSharedValue(0);
+
   const feedStyle = useAnimatedStyle(() => {
     return {
       transform: [
@@ -112,9 +115,33 @@ export default function Home() {
     };
   });
 
-  const myProfileScrollWorklet = (val: number) => {
+  const myProfileOnScrollWorklet = (val: number) => {
     'worklet';
-    tabScrollY[3].value = val;
+    const diff = val - myProfilePrevYSharedValue.value;
+    tabScrollY[3].value = diffClamp(
+      myProfileInterpolatedYSharedValue.value + diff,
+      0,
+      headerHeight + insets.top,
+    );
+  };
+
+  const myProfileOnBeginDragWorklet = (val: number) => {
+    'worklet';
+    myProfilePrevYSharedValue.value = val;
+  };
+
+  const myProfileOnEndDragWorklet = (val: number) => {
+    'worklet';
+    if (
+      tabScrollY[3].value < (headerHeight + insets.top) / 2 ||
+      val < headerHeight + insets.top
+    ) {
+      tabScrollY[3].value = withSpring(0);
+      myProfileInterpolatedYSharedValue.value = 0;
+    } else {
+      tabScrollY[3].value = withSpring(headerHeight + insets.top);
+      myProfileInterpolatedYSharedValue.value = headerHeight + insets.top;
+    }
   };
 
   const tabBarStyle = useAnimatedStyle(() => {
@@ -157,7 +184,9 @@ export default function Home() {
       navigation={props.navigation}
       route={props.route as any}
       headerHeight={headerHeight}
-      scrollWorklet={myProfileScrollWorklet}
+      onScrollWorklet={myProfileOnScrollWorklet}
+      onBeginDragWorklet={myProfileOnBeginDragWorklet}
+      onEndDragWorklet={myProfileOnEndDragWorklet}
     />
   );
 

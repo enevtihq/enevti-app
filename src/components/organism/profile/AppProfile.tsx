@@ -21,7 +21,9 @@ const AnimatedFlatGrid =
 
 interface AppProfileProps {
   persona: PersonaBase;
-  scrollWorklet?: (val: number) => void;
+  onScrollWorklet?: (val: number) => void;
+  onBeginDragWorklet?: (val: number) => void;
+  onEndDragWorklet?: (val: number) => void;
   profile?: ProfileResponse;
   headerHeight?: number;
 }
@@ -29,22 +31,32 @@ interface AppProfileProps {
 export default function AppProfile({
   persona,
   profile,
-  scrollWorklet,
+  onScrollWorklet,
+  onBeginDragWorklet,
+  onEndDragWorklet,
   headerHeight = 0,
 }: AppProfileProps) {
   const insets = useSafeAreaInsets();
   const styles = makeStyle(headerHeight);
 
-  const scrollY = useSharedValue(0);
+  const rawScrollY = useSharedValue(0);
 
-  const scrollHandler = useAnimatedScrollHandler(event => {
-    scrollY.value = event.contentOffset.y;
-    scrollWorklet && scrollWorklet(event.contentOffset.y);
+  const scrollHandler = useAnimatedScrollHandler({
+    onScroll: event => {
+      rawScrollY.value = event.contentOffset.y;
+      onScrollWorklet && onScrollWorklet(event.contentOffset.y);
+    },
+    onBeginDrag: event => {
+      onBeginDragWorklet && onBeginDragWorklet(event.contentOffset.y);
+    },
+    onEndDrag: event => {
+      onEndDragWorklet && onEndDragWorklet(event.contentOffset.y);
+    },
   });
 
   const scrollStyle = useAnimatedStyle(() => {
     return {
-      transform: [{ translateY: -scrollY.value }],
+      transform: [{ translateY: -rawScrollY.value }],
     };
   });
 

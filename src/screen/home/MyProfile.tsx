@@ -21,12 +21,16 @@ type Props = StackScreenProps<RootStackParamList, 'MyProfile'>;
 interface MyProfileProps extends Props {
   onScroll?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
   headerHeight?: number;
-  scrollWorklet: (val: number) => void;
+  onScrollWorklet: (val: number) => void;
+  onBeginDragWorklet: (val: number) => void;
+  onEndDragWorklet: (val: number) => void;
 }
 
 export default function MyProfile({
   headerHeight = 0,
-  scrollWorklet,
+  onScrollWorklet,
+  onBeginDragWorklet,
+  onEndDragWorklet,
 }: MyProfileProps) {
   const styles = makeStyle();
   const myPersona = useSelector((state: RootState) => selectPersona(state));
@@ -59,7 +63,9 @@ export default function MyProfile({
           headerHeight={headerHeight}
           persona={myPersona}
           profile={profileData}
-          scrollWorklet={scrollWorklet}
+          onScrollWorklet={onScrollWorklet}
+          onBeginDragWorklet={onBeginDragWorklet}
+          onEndDragWorklet={onEndDragWorklet}
         />
       </View>
     </AppView>
