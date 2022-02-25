@@ -17,14 +17,20 @@ import { iconMap } from '../../atoms/icon/AppIconComponent';
 import AppMenuContainer from '../../atoms/menu/AppMenuContainer';
 import AppQuaternaryButton from '../../atoms/button/AppQuaternaryButton';
 import AppMenuItem from '../../atoms/menu/AppMenuItem';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../../navigation';
 
 interface AppProfileHeaderProps {
+  navigation: StackNavigationProp<RootStackParamList>;
   persona: PersonaBase;
 }
 
 export const APP_PROFILE_HEIGHT_PERCENTAGE = 42;
 
-export default function AppProfileHeader({ persona }: AppProfileHeaderProps) {
+export default function AppProfileHeader({
+  navigation,
+  persona,
+}: AppProfileHeaderProps) {
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
   const styles = makeStyle(theme, insets);
@@ -85,7 +91,9 @@ export default function AppProfileHeader({ persona }: AppProfileHeaderProps) {
         <AppTertiaryButton
           style={styles.profileActionButton}
           icon={iconMap.pool}
-          onPress={() => {}}>
+          onPress={() =>
+            navigation.navigate('StakePool', { address: persona.address })
+          }>
           Stake & Insight{'  '}
           <AppTextBody5
             style={{

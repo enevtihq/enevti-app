@@ -15,11 +15,14 @@ import AppProfileHeader, {
 import { hp, wp } from '../../../utils/imageRatio';
 import AppNFTRenderer from '../../molecules/nft/AppNFTRenderer';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../../navigation';
 
 const AnimatedFlatGrid =
   Animated.createAnimatedComponent<FlatGridProps<NFTBase>>(FlatGrid);
 
 interface AppProfileProps {
+  navigation: StackNavigationProp<RootStackParamList>;
   persona: PersonaBase;
   onScrollWorklet?: (val: number) => void;
   onBeginDragWorklet?: (val: number) => void;
@@ -29,6 +32,7 @@ interface AppProfileProps {
 }
 
 export default function AppProfile({
+  navigation,
   persona,
   profile,
   onScrollWorklet,
@@ -63,7 +67,7 @@ export default function AppProfile({
   return (
     <View>
       <Animated.View style={[styles.profileHeader, scrollStyle]}>
-        <AppProfileHeader persona={persona} />
+        <AppProfileHeader persona={persona} navigation={navigation} />
       </Animated.View>
       <AnimatedFlatGrid
         onScroll={scrollHandler}

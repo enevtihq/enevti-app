@@ -21,6 +21,7 @@ interface MyProfileProps extends Props {
 }
 
 export default function MyProfile({
+  navigation,
   onScrollWorklet,
   onBeginDragWorklet,
   onEndDragWorklet,
@@ -54,6 +55,7 @@ export default function MyProfile({
     <AppView edges={['left', 'right', 'bottom']}>
       <View style={styles.textContainer}>
         <AppProfile
+          navigation={navigation}
           headerHeight={headerHeight}
           persona={myPersona}
           profile={profileData}

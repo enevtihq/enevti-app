@@ -19,6 +19,7 @@ import { RootState } from '../store/state';
 import { selectAuthState } from '../store/slices/auth';
 import SetupGoogleBinderPassword from '../screen/auth/SetupGoogleBinderPassword';
 import Home from './Home';
+import StakePool from '../screen/stake/StakePool';
 
 export type RootStackParamList = {
   CreateAccount: undefined;
@@ -35,6 +36,9 @@ export type RootStackParamList = {
   Home: undefined;
   Feed: undefined;
   MyProfile: undefined;
+  StakePool: {
+    address: string;
+  };
 };
 
 const Stack = createStackNavigator();
@@ -110,6 +114,14 @@ export default function AppNavigationContainer() {
         <Stack.Screen
           name="Home"
           component={Home}
+          options={{
+            headerShown: false,
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          }}
+        />
+        <Stack.Screen
+          name="StakePool"
+          component={StakePool}
           options={{
             headerShown: false,
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
