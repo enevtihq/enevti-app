@@ -26,17 +26,24 @@ import { useTranslation } from 'react-i18next';
 import { getMyBasePersona } from '../service/enevti/persona';
 import { PersonaBase } from '../types/service/enevti/persona';
 import AppAvatarRenderer from '../components/molecules/avatar/AppAvatarRenderer';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store/state';
+import { selectPersona } from '../store/slices/entities/persona';
 
 const Tab = createBottomTabNavigator();
 const TABBAR_HEIGHT_PERCENTAGE = 8;
 const HEADER_HEIGHT_PERCENTAGE = 9.5;
 
 export default function Home() {
-  let activeTab = 0;
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const theme = useTheme();
 
+  const myPersona = useSelector((state: RootState) =>
+    selectPersona(state),
+  ) as PersonaBase;
+
+  const [activeTab, setActiveTab] = React.useState<number>(0);
   const headerHeight = hp(HEADER_HEIGHT_PERCENTAGE, insets);
   const tabBarHeight = hp(TABBAR_HEIGHT_PERCENTAGE, insets);
   const tabScrollY = [
@@ -105,11 +112,8 @@ export default function Home() {
     };
   });
 
-  const [myPersona, setMyPersona] = React.useState<PersonaBase>();
-
   const getPersona = async () => {
-    const persona = await getMyBasePersona();
-    setMyPersona(persona);
+    await getMyBasePersona();
   };
 
   React.useEffect(() => {
@@ -127,6 +131,13 @@ export default function Home() {
     ),
     [headerHeight, feedAnimatedScrollHandler],
   );
+
+  const testFunction = (val: number) => {
+    'worklet';
+    console.log('anjayyyy');
+    tabScrollY[0].value = val;
+    console.log(tabScrollY[0].value);
+  };
 
   const MyProfileComponent = React.useCallback(
     props => (
@@ -154,7 +165,7 @@ export default function Home() {
         name="Feed"
         listeners={{
           tabPress: () => {
-            activeTab = 0;
+            setActiveTab(0);
           },
         }}
         options={{
@@ -191,7 +202,7 @@ export default function Home() {
         name="Statistics"
         listeners={{
           tabPress: () => {
-            activeTab = 1;
+            setActiveTab(1);
           },
         }}
         options={{
@@ -216,7 +227,7 @@ export default function Home() {
         name="Discover"
         listeners={{
           tabPress: () => {
-            activeTab = 2;
+            setActiveTab(2);
           },
         }}
         options={{
@@ -241,7 +252,7 @@ export default function Home() {
         name="MyProfile"
         listeners={{
           tabPress: () => {
-            activeTab = 3;
+            setActiveTab(3);
           },
         }}
         options={{

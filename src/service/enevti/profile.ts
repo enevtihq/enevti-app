@@ -8,11 +8,11 @@ async function getProfileNFT() {
   const onsaleNFT = [];
   const mintedContainer: any[] = [];
 
-  for (let i = 0; i < Math.random() * 10 + 1; i++) {
+  for (let i = 0; i < 50; i++) {
     ownedNFT.push(getDummyNFTData());
   }
 
-  for (let i = 0; i < Math.random() * 10 + 1; i++) {
+  for (let i = 0; i < 50; i++) {
     onsaleNFT.push(getDummyNFTData());
   }
 
