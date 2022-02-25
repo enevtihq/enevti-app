@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  NativeScrollEvent,
-  NativeSyntheticEvent,
-  StyleSheet,
-  View,
-} from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import AppView from '../../components/atoms/view/AppView';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation';
@@ -19,18 +14,17 @@ import AppProfile from '../../components/organism/profile/AppProfile';
 type Props = StackScreenProps<RootStackParamList, 'MyProfile'>;
 
 interface MyProfileProps extends Props {
-  onScroll?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
-  headerHeight?: number;
   onScrollWorklet: (val: number) => void;
   onBeginDragWorklet: (val: number) => void;
   onEndDragWorklet: (val: number) => void;
+  headerHeight?: number;
 }
 
 export default function MyProfile({
-  headerHeight = 0,
   onScrollWorklet,
   onBeginDragWorklet,
   onEndDragWorklet,
+  headerHeight = 0,
 }: MyProfileProps) {
   const styles = makeStyle();
   const myPersona = useSelector((state: RootState) => selectPersona(state));

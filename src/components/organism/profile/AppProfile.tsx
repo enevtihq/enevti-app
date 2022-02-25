@@ -67,6 +67,7 @@ export default function AppProfile({
       </Animated.View>
       <AnimatedFlatGrid
         onScroll={scrollHandler}
+        scrollEventThrottle={16}
         contentContainerStyle={{
           paddingTop: hp(APP_PROFILE_HEIGHT_PERCENTAGE, insets) + headerHeight,
         }}

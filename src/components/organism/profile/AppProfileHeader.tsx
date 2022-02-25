@@ -22,7 +22,7 @@ interface AppProfileHeaderProps {
   persona: PersonaBase;
 }
 
-export const APP_PROFILE_HEIGHT_PERCENTAGE = 41.15;
+export const APP_PROFILE_HEIGHT_PERCENTAGE = 42;
 
 export default function AppProfileHeader({ persona }: AppProfileHeaderProps) {
   const insets = useSafeAreaInsets();
