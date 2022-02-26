@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import { Edge, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -15,16 +15,20 @@ import AppContainer from './AppContainer';
 
 interface AppViewProps {
   children: React.ReactNode;
+  header?: React.ReactNode;
   darken?: boolean;
+  style?: StyleProp<ViewStyle>;
   dismissKeyboard?: boolean;
   edges?: Edge[];
 }
 
 export default function AppView({
   children,
+  header,
+  style,
+  edges,
   darken = false,
   dismissKeyboard = false,
-  edges,
 }: AppViewProps) {
   const insets = useSafeAreaInsets();
   const styles = makeStyles(insets);
@@ -35,8 +39,8 @@ export default function AppView({
 
   return (
     <AppKeyboardDismissOnClickView activate={dismissKeyboard}>
-      <View style={styles.view}>
-        <AppContainer darken={darken} edges={edges}>
+      <View style={[styles.view, style]}>
+        <AppContainer header={header} darken={darken} edges={edges}>
           {children}
         </AppContainer>
         <AppSnackbar

@@ -1,28 +1,50 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import React from 'react';
-import { Edge, SafeAreaView } from 'react-native-safe-area-context';
+import {
+  Edge,
+  SafeAreaView,
+  useSafeAreaInsets,
+} from 'react-native-safe-area-context';
 import { Theme } from '../../../theme/default';
 import { useTheme } from 'react-native-paper';
 import AppStatusBar from './AppStatusBar';
 import color from 'color';
+import { hp } from '../../../utils/imageRatio';
+import { HEADER_HEIGHT_PERCENTAGE } from './AppHeader';
 
 interface AppContainerProps {
   children: React.ReactNode;
+  header?: React.ReactNode;
+  headerHeight?: number;
   darken?: boolean;
   edges?: Edge[];
 }
 
 export default function AppContainer({
   children,
+  header,
+  headerHeight,
   darken = false,
   edges,
 }: AppContainerProps) {
   const theme = useTheme() as Theme;
+  const insets = useSafeAreaInsets();
   const styles = makeStyles(theme, darken);
 
   return (
     <SafeAreaView style={styles.container} edges={edges}>
       <AppStatusBar />
+      {header ? header : null}
+      {header ? (
+        <View
+          style={{
+            height: hp(
+              headerHeight ? headerHeight : HEADER_HEIGHT_PERCENTAGE,
+              insets,
+            ),
+          }}
+        />
+      ) : null}
       {children}
     </SafeAreaView>
   );
