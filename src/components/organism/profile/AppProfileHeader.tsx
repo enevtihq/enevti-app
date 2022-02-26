@@ -60,7 +60,7 @@ export default function AppProfileHeader({
             {persona.address}
           </AppTextBody3>
         ) : (
-          <AppTextBody3>???</AppTextBody3>
+          <AppTextBody3>?????</AppTextBody3>
         )}
       </View>
 

@@ -4,12 +4,12 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '@react-navigation/native';
 import color from 'color';
 import { Theme } from '../../../theme/default';
-import { hp, wp } from '../../../utils/imageRatio';
+import { wp } from '../../../utils/imageRatio';
 import AppAvatarRenderer from '../avatar/AppAvatarRenderer';
 import AppTextHeading3 from '../../atoms/text/AppTextHeading3';
-import AppTextBody5 from '../../atoms/text/AppTextBody5';
 import AppIconButton from '../../atoms/icon/AppIconButton';
 import { iconMap } from '../../atoms/icon/AppIconComponent';
+import AppTextBody4 from '../../atoms/text/AppTextBody4';
 
 export default function AppListItem() {
   const insets = useSafeAreaInsets();
@@ -36,16 +36,12 @@ export default function AppListItem() {
           style={{ marginRight: wp('2%', insets) }}
         />
         <View style={{ justifyContent: 'center', flex: 1 }}>
-          <AppTextHeading3
-            style={{ marginBottom: hp('0.5%', insets) }}
-            numberOfLines={1}>
-            #1 aldhosutra
-          </AppTextHeading3>
-          <AppTextBody5
+          <AppTextHeading3 numberOfLines={1}>#1 aldhosutra</AppTextHeading3>
+          <AppTextBody4
             style={{ color: theme.colors.placeholder }}
             numberOfLines={1}>
             2503 $ENVT (21.34%)
-          </AppTextBody5>
+          </AppTextBody4>
         </View>
         <AppIconButton
           icon={iconMap.delete}

@@ -17,6 +17,7 @@ interface MyProfileProps extends Props {
   onScrollWorklet: (val: number) => void;
   onBeginDragWorklet: (val: number) => void;
   onEndDragWorklet: (val: number) => void;
+  onMomentumEndWorklet: (val: number) => void;
   headerHeight?: number;
 }
 
@@ -25,6 +26,7 @@ export default function MyProfile({
   onScrollWorklet,
   onBeginDragWorklet,
   onEndDragWorklet,
+  onMomentumEndWorklet,
   headerHeight = 0,
 }: MyProfileProps) {
   const styles = makeStyle();
@@ -62,6 +64,7 @@ export default function MyProfile({
           onScrollWorklet={onScrollWorklet}
           onBeginDragWorklet={onBeginDragWorklet}
           onEndDragWorklet={onEndDragWorklet}
+          onMomentumEndWorklet={onMomentumEndWorklet}
         />
       </View>
     </AppView>

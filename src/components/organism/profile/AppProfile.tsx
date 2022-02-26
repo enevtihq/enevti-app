@@ -27,6 +27,7 @@ interface AppProfileProps {
   onScrollWorklet?: (val: number) => void;
   onBeginDragWorklet?: (val: number) => void;
   onEndDragWorklet?: (val: number) => void;
+  onMomentumEndWorklet?: (val: number) => void;
   profile?: ProfileResponse;
   headerHeight?: number;
 }
@@ -38,6 +39,7 @@ export default function AppProfile({
   onScrollWorklet,
   onBeginDragWorklet,
   onEndDragWorklet,
+  onMomentumEndWorklet,
   headerHeight = 0,
 }: AppProfileProps) {
   const insets = useSafeAreaInsets();
@@ -55,6 +57,9 @@ export default function AppProfile({
     },
     onEndDrag: event => {
       onEndDragWorklet && onEndDragWorklet(event.contentOffset.y);
+    },
+    onMomentumEnd: event => {
+      onMomentumEndWorklet && onMomentumEndWorklet(event.contentOffset.y);
     },
   });
 

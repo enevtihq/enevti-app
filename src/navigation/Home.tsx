@@ -99,6 +99,18 @@ export default function Home() {
         ctx.current = headerHeight + insets.top;
       }
     },
+    onMomentumEnd: (event, ctx) => {
+      if (
+        tabScrollY[0].value < (headerHeight + insets.top) / 2 ||
+        event.contentOffset.y < headerHeight + insets.top
+      ) {
+        tabScrollY[0].value = withSpring(0);
+        ctx.current = 0;
+      } else {
+        tabScrollY[0].value = withSpring(headerHeight + insets.top);
+        ctx.current = headerHeight + insets.top;
+      }
+    },
   });
 
   const myProfileStyle = useAnimatedStyle(() => {
@@ -188,6 +200,7 @@ export default function Home() {
       onScrollWorklet={myProfileOnScrollWorklet}
       onBeginDragWorklet={myProfileOnBeginDragWorklet}
       onEndDragWorklet={myProfileOnEndDragWorklet}
+      onMomentumEndWorklet={myProfileOnEndDragWorklet}
     />
   );
 
