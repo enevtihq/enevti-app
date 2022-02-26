@@ -15,7 +15,7 @@ export default function StakePool({ navigation, route }: Props) {
     <AppView
       darken
       edges={['left', 'bottom', 'right']}
-      header={<AppHeader back navigation={navigation} title={'stake'} />}>
+      header={<AppHeader back navigation={navigation} title={'Stake Pool'} />}>
       <AppFloatingActionButton />
       <AppListItem />
       <AppListItem />
