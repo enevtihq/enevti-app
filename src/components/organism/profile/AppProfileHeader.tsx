@@ -92,7 +92,7 @@ export default function AppProfileHeader({
           style={styles.profileActionButton}
           icon={iconMap.pool}
           onPress={() =>
-            navigation.navigate('StakePool', { address: persona.address })
+            navigation.navigate('StakePool', { persona: persona })
           }>
           Stake & Insight{'  '}
           <AppTextBody5

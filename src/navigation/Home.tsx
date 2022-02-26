@@ -4,7 +4,9 @@ import Feed from '../screen/home/Feed';
 import Statistics from '../screen/home/Statistics';
 import Discover from '../screen/home/Discover';
 import MyProfile from '../screen/home/MyProfile';
-import AppHeader from '../components/atoms/view/AppHeader';
+import AppHeader, {
+  HEADER_HEIGHT_PERCENTAGE,
+} from '../components/atoms/view/AppHeader';
 import {
   useAnimatedScrollHandler,
   useSharedValue,
@@ -32,7 +34,6 @@ import { selectPersona } from '../store/slices/entities/persona';
 
 const Tab = createBottomTabNavigator();
 const TABBAR_HEIGHT_PERCENTAGE = 8;
-const HEADER_HEIGHT_PERCENTAGE = 9.5;
 
 export default function Home() {
   const { t } = useTranslation();

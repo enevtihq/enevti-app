@@ -1,26 +1,46 @@
+import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { Appbar, useTheme } from 'react-native-paper';
 import Animated from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { RootStackParamList } from '../../../navigation';
 import { Theme } from '../../../theme/default';
-import { SafeAreaInsets, wp } from '../../../utils/imageRatio';
+import { hp, SafeAreaInsets, wp } from '../../../utils/imageRatio';
 import AppBrandBanner from '../../molecules/AppBrandBanner';
+
+export const HEADER_HEIGHT_PERCENTAGE = 9.5;
+
+interface AppHeaderProps {
+  children?: React.ReactNode;
+  back?: boolean;
+  navigation?: StackNavigationProp<RootStackParamList>;
+  style?: StyleProp<ViewStyle>;
+  height?: number;
+  title?: string;
+  subtitle?: string;
+}
 
 export default function AppHeader({
   style,
   height,
   children,
+  back = false,
+  navigation,
   title,
   subtitle,
-}: any) {
+}: AppHeaderProps) {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
-  const styles = makeStyle(theme, height, insets);
+  const headerHeight = height ? height : hp(HEADER_HEIGHT_PERCENTAGE, insets);
+  const styles = makeStyle(theme, headerHeight, insets);
 
   return (
     <Animated.View style={style}>
       <Appbar.Header style={styles.header}>
+        {back && navigation ? (
+          <Appbar.BackAction onPress={() => navigation.goBack()} />
+        ) : null}
         {title ? (
           <Appbar.Content
             title={title}
@@ -32,7 +52,7 @@ export default function AppHeader({
           <AppBrandBanner widthPercentage={0.35} style={styles.image} />
         )}
         <View style={styles.divider} />
-        {children}
+        {children ? children : <View />}
       </Appbar.Header>
     </Animated.View>
   );

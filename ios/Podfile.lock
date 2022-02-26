@@ -306,6 +306,8 @@ PODS:
     - React-Core
   - react-native-netinfo (7.1.7):
     - React-Core
+  - react-native-pager-view (5.4.11):
+    - React-Core
   - react-native-randombytes (3.6.1):
     - React-Core
   - react-native-safe-area-context (3.3.2):
@@ -491,6 +493,7 @@ DEPENDENCIES:
   - react-native-blob-util (from `../node_modules/react-native-blob-util`)
   - react-native-config (from `../node_modules/react-native-config`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
+  - react-native-pager-view (from `../node_modules/react-native-pager-view`)
   - react-native-randombytes (from `../node_modules/react-native-randombytes`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-sensitive-info (from `../node_modules/react-native-sensitive-info`)
@@ -591,6 +594,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-config"
   react-native-netinfo:
     :path: "../node_modules/@react-native-community/netinfo"
+  react-native-pager-view:
+    :path: "../node_modules/react-native-pager-view"
   react-native-randombytes:
     :path: "../node_modules/react-native-randombytes"
   react-native-safe-area-context:
@@ -693,6 +698,7 @@ SPEC CHECKSUMS:
   react-native-blob-util: 180714990c4563645fa70e9202cd32e27656a6e6
   react-native-config: 6502b1879f97ed5ac570a029961fc35ea606cd14
   react-native-netinfo: 1792d13894f12e8050c6cd7207192c74025e90d1
+  react-native-pager-view: fb87ee16641224bfc41e94e6b276f106ce584b74
   react-native-randombytes: 5fc412efe7b5c55b9002c0004d75fe5fabcaa507
   react-native-safe-area-context: 5cf05f49df9d17261e40e518481f2e334c6cd4b5
   react-native-sensitive-info: d44e909d065f9c0e15734245e5dd6a24b82e3dcd
