@@ -14,7 +14,7 @@ import AppView from '../../components/atoms/view/AppView';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation';
 import AppRecentMoments from '../../components/organism/AppRecentMoments';
-import AppFeedItem from '../../components/molecules/AppFeedItem';
+import AppFeedItem from '../../components/molecules/feed/AppFeedItem';
 import {
   HomeFeedResponse,
   HomeFeedItemResponse,

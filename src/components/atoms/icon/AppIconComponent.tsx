@@ -45,6 +45,7 @@ export const iconMap = {
   pool: 'chart-pie',
   twitter: 'twitter',
   wallet: 'wallet',
+  delete: 'trash-can-outline',
 };
 
 interface AppIconComponentProps {

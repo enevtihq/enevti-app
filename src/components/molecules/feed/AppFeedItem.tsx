@@ -2,14 +2,14 @@ import { View, StyleSheet, Dimensions } from 'react-native';
 import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from 'react-native-paper';
-import { SafeAreaInsets, wp } from '../../utils/imageRatio';
-import { Theme } from '../../theme/default';
+import { SafeAreaInsets, wp } from '../../../utils/imageRatio';
+import { Theme } from '../../../theme/default';
 import color from 'color';
-import AppFeedHeader from './feed/AppFeedHeader';
-import AppFeedAction from './feed/AppFeedAction';
-import AppFeedFooter from './feed/AppFeedFooter';
-import { HomeFeedItemResponse } from '../../types/service/enevti/feed';
-import AppFeedBody from './feed/AppFeedBody';
+import AppFeedHeader from './AppFeedHeader';
+import AppFeedAction from './AppFeedAction';
+import AppFeedFooter from './AppFeedFooter';
+import { HomeFeedItemResponse } from '../../../types/service/enevti/feed';
+import AppFeedBody from './AppFeedBody';
 
 interface AppFeedItemProps {
   feed: HomeFeedItemResponse;
