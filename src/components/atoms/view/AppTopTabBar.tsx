@@ -6,12 +6,16 @@ import {
 } from '@react-navigation/material-top-tabs';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { useTheme } from 'react-native-paper';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { hp, SafeAreaInsets } from '../../../utils/imageRatio';
 
 interface AppTopTabBarProps extends MaterialTopTabBarProps {
   safeBackgroundBarHeight?: number;
   tabStyle?: StyleProp<ViewStyle>;
   onIndexChange?: (index: number) => void;
 }
+
+export const TOP_TABBAR_HEIGHT_PERCENTAGE = 6;
 
 export default function AppTopTabBar({
   safeBackgroundBarHeight,
@@ -24,13 +28,15 @@ export default function AppTopTabBar({
 }: AppTopTabBarProps) {
   const { index } = state;
   const theme = useTheme();
+  const insets = useSafeAreaInsets();
+  const styles = makeStyle(insets);
 
   React.useEffect(() => {
     onIndexChange?.(index);
   }, [onIndexChange, index]);
 
   return (
-    <Animated.View style={tabStyle}>
+    <Animated.View style={[styles.topTabBar, tabStyle]}>
       {safeBackgroundBarHeight ? (
         <View
           style={[
@@ -53,9 +59,13 @@ export default function AppTopTabBar({
   );
 }
 
-const styles = StyleSheet.create({
-  safeBackgroundBar: {
-    position: 'absolute',
-    width: '100%',
-  },
-});
+const makeStyle = (insets: SafeAreaInsets) =>
+  StyleSheet.create({
+    topTabBar: {
+      height: hp(TOP_TABBAR_HEIGHT_PERCENTAGE, insets),
+    },
+    safeBackgroundBar: {
+      position: 'absolute',
+      width: '100%',
+    },
+  });

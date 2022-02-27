@@ -19,7 +19,9 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../navigation';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import AppTopTabBar from '../../atoms/view/AppTopTabBar';
+import AppTopTabBar, {
+  TOP_TABBAR_HEIGHT_PERCENTAGE,
+} from '../../atoms/view/AppTopTabBar';
 import AppTextBody4 from '../../atoms/text/AppTextBody4';
 import { diffClamp } from '../../../utils/animation';
 import { useTheme } from 'react-native-paper';
@@ -132,7 +134,10 @@ export default function AppProfile({
         scrollEventThrottle={16}
         contentContainerStyle={{
           paddingTop:
-            hp(PROFILE_HEADER_HEIGHT_PERCENTAGE, insets) + headerHeight,
+            hp(
+              PROFILE_HEADER_HEIGHT_PERCENTAGE + TOP_TABBAR_HEIGHT_PERCENTAGE,
+              insets,
+            ) + headerHeight,
         }}
         spacing={wp('0.5%', insets)}
         showsVerticalScrollIndicator={false}
@@ -177,13 +182,23 @@ export default function AppProfile({
           <Tab.Screen
             options={{
               tabBarLabel: ({ color }) => (
-                <AppTextBody4 style={{ color: color }}>Owned (1)</AppTextBody4>
+                <AppTextBody4 style={{ color: color }}>Owned (10)</AppTextBody4>
               ),
             }}
             name={'Owned'}
             component={OwnedNFTComponent}
           />
-          <Tab.Screen name={'On Sold'}>{() => OwnedNFTComponent()}</Tab.Screen>
+          <Tab.Screen
+            options={{
+              tabBarLabel: ({ color }) => (
+                <AppTextBody4 style={{ color: color }}>
+                  On Sold (3)
+                </AppTextBody4>
+              ),
+            }}
+            name={'On Sold'}
+            component={OwnedNFTComponent}
+          />
         </Tab.Navigator>
       </View>
     </View>
