@@ -13,7 +13,7 @@ import {
   useAnimatedStyle,
   interpolate,
   Extrapolate,
-  withSpring,
+  withTiming,
 } from 'react-native-reanimated';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -92,10 +92,12 @@ export default function Home() {
         tabScrollY[0].value < (headerHeight + insets.top) / 2 ||
         event.contentOffset.y < headerHeight + insets.top
       ) {
-        tabScrollY[0].value = withSpring(0);
+        tabScrollY[0].value = withTiming(0, { duration: 200 });
         ctx.current = 0;
       } else {
-        tabScrollY[0].value = withSpring(headerHeight + insets.top);
+        tabScrollY[0].value = withTiming(headerHeight + insets.top, {
+          duration: 200,
+        });
         ctx.current = headerHeight + insets.top;
       }
     },
@@ -104,10 +106,12 @@ export default function Home() {
         tabScrollY[0].value < (headerHeight + insets.top) / 2 ||
         event.contentOffset.y < headerHeight + insets.top
       ) {
-        tabScrollY[0].value = withSpring(0);
+        tabScrollY[0].value = withTiming(0, { duration: 200 });
         ctx.current = 0;
       } else {
-        tabScrollY[0].value = withSpring(headerHeight + insets.top);
+        tabScrollY[0].value = withTiming(headerHeight + insets.top, {
+          duration: 200,
+        });
         ctx.current = headerHeight + insets.top;
       }
     },
@@ -149,10 +153,12 @@ export default function Home() {
       tabScrollY[3].value < (headerHeight + insets.top) / 2 ||
       val < headerHeight + insets.top
     ) {
-      tabScrollY[3].value = withSpring(0);
+      tabScrollY[3].value = withTiming(0, { duration: 200 });
       myProfileInterpolatedYSharedValue.value = 0;
     } else {
-      tabScrollY[3].value = withSpring(headerHeight + insets.top);
+      tabScrollY[3].value = withTiming(headerHeight + insets.top, {
+        duration: 200,
+      });
       myProfileInterpolatedYSharedValue.value = headerHeight + insets.top;
     }
   };

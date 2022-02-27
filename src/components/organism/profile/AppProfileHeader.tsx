@@ -25,7 +25,7 @@ interface AppProfileHeaderProps {
   persona: PersonaBase;
 }
 
-export const APP_PROFILE_HEIGHT_PERCENTAGE = 42;
+export const PROFILE_HEADER_HEIGHT_PERCENTAGE = 42;
 
 export default function AppProfileHeader({
   navigation,
@@ -166,7 +166,7 @@ const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
     profileHeaderContainer: {
       alignItems: 'center',
       marginVertical: hp('1%', insets),
-      height: hp(APP_PROFILE_HEIGHT_PERCENTAGE, insets),
+      height: hp(PROFILE_HEADER_HEIGHT_PERCENTAGE, insets),
       width: wp('100%', insets),
     },
     profileStatsContainer: {
