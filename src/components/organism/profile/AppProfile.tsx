@@ -18,15 +18,10 @@ import { hp } from '../../../utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../navigation';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import AppTopTabBar from '../../atoms/view/AppTopTabBar';
-import AppTextBody4 from '../../atoms/text/AppTextBody4';
 import { diffClamp } from '../../../utils/animation';
-import { useTheme } from 'react-native-paper';
 import OwnedNFTComponent from './tabs/OwnedNFTComponent';
 import OnSaleNFTComponent from './tabs/OnSaleNFTComponent';
-
-const Tab = createMaterialTopTabNavigator();
+import AppProfileBody from './AppProfileBody';
 
 interface AppProfileProps {
   navigation: StackNavigationProp<RootStackParamList>;
@@ -50,7 +45,6 @@ export default function AppProfile({
   headerHeight = 0,
 }: AppProfileProps) {
   const insets = useSafeAreaInsets();
-  const theme = useTheme();
   const styles = makeStyle(headerHeight);
 
   const ownedRef = useAnimatedRef<any>();
@@ -201,51 +195,12 @@ export default function AppProfile({
       <Animated.View style={[styles.profileHeader, scrollStyle]}>
         <AppProfileHeader persona={persona} navigation={navigation} />
       </Animated.View>
-      <View style={{ height: hp('100%', insets) }}>
-        <Tab.Navigator
-          tabBar={props => (
-            <AppTopTabBar
-              {...props}
-              safeBackgroundBarHeight={headerHeight * 2}
-              tabStyle={[
-                styles.tabBarContainer,
-                {
-                  top:
-                    hp(PROFILE_HEADER_HEIGHT_PERCENTAGE, insets) + headerHeight,
-                },
-                animatedTabBarStyle,
-              ]}
-            />
-          )}
-          screenOptions={{
-            tabBarStyle: {
-              elevation: 0,
-              shadowOpacity: 0,
-              backgroundColor: theme.colors.background,
-            },
-          }}>
-          <Tab.Screen
-            options={{
-              tabBarLabel: ({ color }) => (
-                <AppTextBody4 style={{ color: color }}>Owned (10)</AppTextBody4>
-              ),
-            }}
-            name={'Owned'}
-            component={OwnedNFTScreen}
-          />
-          <Tab.Screen
-            options={{
-              tabBarLabel: ({ color }) => (
-                <AppTextBody4 style={{ color: color }}>
-                  On Sale (3)
-                </AppTextBody4>
-              ),
-            }}
-            name={'On Sale'}
-            component={OnSaleNFTScreen}
-          />
-        </Tab.Navigator>
-      </View>
+      <AppProfileBody
+        headerHeight={headerHeight}
+        animatedTabBarStyle={animatedTabBarStyle}
+        ownedNFTScreen={OwnedNFTScreen}
+        onSaleNFTScreen={OnSaleNFTScreen}
+      />
     </View>
   );
 }
@@ -256,12 +211,5 @@ const makeStyle = (headerHeight: number) =>
       position: 'absolute',
       zIndex: 1,
       paddingTop: headerHeight,
-    },
-    tabBarContainer: {
-      top: 0,
-      left: 0,
-      right: 0,
-      position: 'absolute',
-      zIndex: 1,
     },
   });
