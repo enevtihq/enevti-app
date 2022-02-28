@@ -9,28 +9,22 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
-import { FlatGrid, FlatGridProps } from 'react-native-super-grid';
-import { NFTBase } from '../../../types/nft';
 import { PersonaBase } from '../../../types/service/enevti/persona';
 import { ProfileResponse } from '../../../types/service/enevti/profile';
 import AppProfileHeader, {
   PROFILE_HEADER_HEIGHT_PERCENTAGE,
 } from './AppProfileHeader';
-import { hp, wp } from '../../../utils/imageRatio';
-import AppNFTRenderer from '../../molecules/nft/AppNFTRenderer';
+import { hp } from '../../../utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../navigation';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import AppTopTabBar, {
-  TOP_TABBAR_HEIGHT_PERCENTAGE,
-} from '../../atoms/view/AppTopTabBar';
+import AppTopTabBar from '../../atoms/view/AppTopTabBar';
 import AppTextBody4 from '../../atoms/text/AppTextBody4';
 import { diffClamp } from '../../../utils/animation';
 import { useTheme } from 'react-native-paper';
-
-const AnimatedFlatGrid =
-  Animated.createAnimatedComponent<FlatGridProps<NFTBase>>(FlatGrid);
+import OwnedNFTComponent from './tabs/OwnedNFTComponent';
+import OnSaleNFTComponent from './tabs/OnSaleNFTComponent';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -61,7 +55,6 @@ export default function AppProfile({
 
   const ownedRef = useAnimatedRef<any>();
   const onSaleRef = useAnimatedRef<any>();
-  // const mintedRef = React.useRef<FlatGrid>(null);
 
   const headerCollapsed = useSharedValue(true);
   const rawScrollY = useSharedValue(0);
@@ -179,54 +172,28 @@ export default function AppProfile({
     };
   });
 
-  const OwnedNFTComponent = React.useCallback(
+  const OwnedNFTScreen = React.useCallback(
     () => (
-      <AnimatedFlatGrid
+      <OwnedNFTComponent
         ref={ownedRef}
         onScroll={ownedScrollHandler}
-        scrollEventThrottle={16}
-        contentContainerStyle={{
-          paddingTop:
-            hp(
-              PROFILE_HEADER_HEIGHT_PERCENTAGE + TOP_TABBAR_HEIGHT_PERCENTAGE,
-              insets,
-            ) + headerHeight,
-        }}
-        spacing={wp('0.5%', insets)}
-        showsVerticalScrollIndicator={false}
-        itemDimension={wp('30%', insets)}
+        headerHeight={headerHeight}
         data={profile ? profile.owned : []}
-        renderItem={({ item }) => (
-          <AppNFTRenderer nft={item} width={wp('30%', insets)} />
-        )}
       />
     ),
-    [ownedRef, insets, profile, ownedScrollHandler, headerHeight],
+    [ownedRef, headerHeight, profile, ownedScrollHandler],
   );
 
-  const OnSaleNFTComponent = React.useCallback(
+  const OnSaleNFTScreen = React.useCallback(
     () => (
-      <AnimatedFlatGrid
+      <OnSaleNFTComponent
         ref={onSaleRef}
         onScroll={onSaleScrollHandler}
-        scrollEventThrottle={16}
-        contentContainerStyle={{
-          paddingTop:
-            hp(
-              PROFILE_HEADER_HEIGHT_PERCENTAGE + TOP_TABBAR_HEIGHT_PERCENTAGE,
-              insets,
-            ) + headerHeight,
-        }}
-        spacing={wp('0.5%', insets)}
-        showsVerticalScrollIndicator={false}
-        itemDimension={wp('30%', insets)}
+        headerHeight={headerHeight}
         data={profile ? profile.owned : []}
-        renderItem={({ item }) => (
-          <AppNFTRenderer nft={item} width={wp('30%', insets)} />
-        )}
       />
     ),
-    [onSaleRef, insets, profile, onSaleScrollHandler, headerHeight],
+    [onSaleRef, headerHeight, profile, onSaleScrollHandler],
   );
 
   return (
@@ -264,7 +231,7 @@ export default function AppProfile({
               ),
             }}
             name={'Owned'}
-            component={OwnedNFTComponent}
+            component={OwnedNFTScreen}
           />
           <Tab.Screen
             options={{
@@ -275,7 +242,7 @@ export default function AppProfile({
               ),
             }}
             name={'On Sale'}
-            component={OnSaleNFTComponent}
+            component={OnSaleNFTScreen}
           />
         </Tab.Navigator>
       </View>
