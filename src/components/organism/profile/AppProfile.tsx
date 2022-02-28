@@ -1,6 +1,9 @@
 import { StyleSheet, View } from 'react-native';
 import React from 'react';
 import Animated, {
+  scrollTo,
+  SharedValue,
+  useAnimatedRef,
   useAnimatedScrollHandler,
   useAnimatedStyle,
   useSharedValue,
@@ -56,64 +59,113 @@ export default function AppProfile({
   const theme = useTheme();
   const styles = makeStyle(headerHeight);
 
+  const ownedRef = useAnimatedRef<any>();
+  const onSaleRef = useAnimatedRef<any>();
+  // const mintedRef = React.useRef<FlatGrid>(null);
+
+  const headerCollapsed = useSharedValue(true);
   const rawScrollY = useSharedValue(0);
   const tabScroll = useSharedValue(0);
+  const ownedPrevScroll = useSharedValue(0);
+  const onSalePrevScroll = useSharedValue(0);
+
   const totalHeaderHeight =
     hp(PROFILE_HEADER_HEIGHT_PERCENTAGE, insets) + headerHeight;
 
-  const scrollHandler = useAnimatedScrollHandler({
-    onScroll: (event, ctx: { prevY: number; current: number }) => {
-      rawScrollY.value = event.contentOffset.y;
-      if (event.contentOffset.y < totalHeaderHeight - headerHeight) {
-        tabScroll.value = event.contentOffset.y;
-        ctx.current = totalHeaderHeight;
-      } else {
-        const diff = event.contentOffset.y - ctx.prevY;
-        if (diff > 0 && event.contentOffset.y < totalHeaderHeight) {
+  const useCustomAnimatedScrollHandler = (
+    sharedPrevValue: SharedValue<number>,
+    scrollRefList: React.RefObject<any>[],
+  ) =>
+    useAnimatedScrollHandler({
+      onScroll: (event, ctx: { current: number }) => {
+        rawScrollY.value = event.contentOffset.y;
+
+        if (event.contentOffset.y < totalHeaderHeight) {
+          if (!headerCollapsed.value) {
+            headerCollapsed.value = true;
+            for (let i = 0; i < scrollRefList.length; i++) {
+              scrollTo(scrollRefList[i], 0, totalHeaderHeight, false);
+            }
+          }
+        } else {
+          if (headerCollapsed.value) {
+            headerCollapsed.value = false;
+            for (let i = 0; i < scrollRefList.length; i++) {
+              scrollTo(scrollRefList[i], 0, totalHeaderHeight, false);
+            }
+          }
+        }
+
+        if (event.contentOffset.y < totalHeaderHeight - headerHeight) {
           tabScroll.value = event.contentOffset.y;
-        } else {
-          tabScroll.value = diffClamp(
-            ctx.current + diff,
-            totalHeaderHeight - headerHeight,
-            totalHeaderHeight,
-          );
-        }
-      }
-      onScrollWorklet && onScrollWorklet(event.contentOffset.y);
-    },
-    onBeginDrag: (event, ctx) => {
-      ctx.prevY = event.contentOffset.y;
-      onBeginDragWorklet && onBeginDragWorklet(event.contentOffset.y);
-    },
-    onEndDrag: (event, ctx) => {
-      if (event.contentOffset.y > totalHeaderHeight) {
-        if (tabScroll.value < totalHeaderHeight - headerHeight / 2) {
-          tabScroll.value = withTiming(totalHeaderHeight - headerHeight, {
-            duration: 200,
-          });
-          ctx.current = totalHeaderHeight - headerHeight;
-        } else {
-          tabScroll.value = withTiming(totalHeaderHeight, { duration: 200 });
           ctx.current = totalHeaderHeight;
-        }
-      }
-      onEndDragWorklet && onEndDragWorklet(event.contentOffset.y);
-    },
-    onMomentumEnd: (event, ctx) => {
-      if (event.contentOffset.y > totalHeaderHeight) {
-        if (tabScroll.value < totalHeaderHeight - headerHeight / 2) {
-          tabScroll.value = withTiming(totalHeaderHeight - headerHeight, {
-            duration: 200,
-          });
-          ctx.current = totalHeaderHeight - headerHeight;
         } else {
-          tabScroll.value = withTiming(totalHeaderHeight, { duration: 200 });
-          ctx.current = totalHeaderHeight;
+          const diff = event.contentOffset.y - sharedPrevValue.value;
+          if (diff > 0 && event.contentOffset.y < totalHeaderHeight) {
+            tabScroll.value = event.contentOffset.y;
+          } else {
+            tabScroll.value = diffClamp(
+              ctx.current + diff,
+              totalHeaderHeight - headerHeight,
+              totalHeaderHeight,
+            );
+          }
         }
-      }
-      onMomentumEndWorklet && onMomentumEndWorklet(event.contentOffset.y);
-    },
-  });
+
+        onScrollWorklet && onScrollWorklet(event.contentOffset.y);
+      },
+      onBeginDrag: event => {
+        sharedPrevValue.value = event.contentOffset.y;
+        onBeginDragWorklet && onBeginDragWorklet(event.contentOffset.y);
+      },
+      onEndDrag: (event, ctx) => {
+        if (event.contentOffset.y > totalHeaderHeight) {
+          if (tabScroll.value < totalHeaderHeight - headerHeight / 2) {
+            tabScroll.value = withTiming(totalHeaderHeight - headerHeight, {
+              duration: 200,
+            });
+            ctx.current = totalHeaderHeight - headerHeight;
+          } else {
+            tabScroll.value = withTiming(totalHeaderHeight, {
+              duration: 200,
+            });
+            ctx.current = totalHeaderHeight;
+          }
+        } else {
+          for (let i = 0; i < scrollRefList.length; i++) {
+            scrollTo(scrollRefList[i], 0, event.contentOffset.y, false);
+          }
+        }
+        onEndDragWorklet && onEndDragWorklet(event.contentOffset.y);
+      },
+      onMomentumEnd: (event, ctx) => {
+        if (event.contentOffset.y > totalHeaderHeight) {
+          if (tabScroll.value < totalHeaderHeight - headerHeight / 2) {
+            tabScroll.value = withTiming(totalHeaderHeight - headerHeight, {
+              duration: 200,
+            });
+            ctx.current = totalHeaderHeight - headerHeight;
+          } else {
+            tabScroll.value = withTiming(totalHeaderHeight, {
+              duration: 200,
+            });
+            ctx.current = totalHeaderHeight;
+          }
+        } else {
+          for (let i = 0; i < scrollRefList.length; i++) {
+            scrollTo(scrollRefList[i], 0, event.contentOffset.y, false);
+          }
+        }
+        onMomentumEndWorklet && onMomentumEndWorklet(event.contentOffset.y);
+      },
+    });
+
+  const ownedScrollHandler = useCustomAnimatedScrollHandler(ownedPrevScroll, [
+    onSaleRef,
+  ]);
+  const onSaleScrollHandler = useCustomAnimatedScrollHandler(onSalePrevScroll, [
+    ownedRef,
+  ]);
 
   const scrollStyle = useAnimatedStyle(() => {
     return {
@@ -130,7 +182,8 @@ export default function AppProfile({
   const OwnedNFTComponent = React.useCallback(
     () => (
       <AnimatedFlatGrid
-        onScroll={scrollHandler}
+        ref={ownedRef}
+        onScroll={ownedScrollHandler}
         scrollEventThrottle={16}
         contentContainerStyle={{
           paddingTop:
@@ -148,7 +201,32 @@ export default function AppProfile({
         )}
       />
     ),
-    [insets, profile, scrollHandler, headerHeight],
+    [ownedRef, insets, profile, ownedScrollHandler, headerHeight],
+  );
+
+  const OnSaleNFTComponent = React.useCallback(
+    () => (
+      <AnimatedFlatGrid
+        ref={onSaleRef}
+        onScroll={onSaleScrollHandler}
+        scrollEventThrottle={16}
+        contentContainerStyle={{
+          paddingTop:
+            hp(
+              PROFILE_HEADER_HEIGHT_PERCENTAGE + TOP_TABBAR_HEIGHT_PERCENTAGE,
+              insets,
+            ) + headerHeight,
+        }}
+        spacing={wp('0.5%', insets)}
+        showsVerticalScrollIndicator={false}
+        itemDimension={wp('30%', insets)}
+        data={profile ? profile.owned : []}
+        renderItem={({ item }) => (
+          <AppNFTRenderer nft={item} width={wp('30%', insets)} />
+        )}
+      />
+    ),
+    [onSaleRef, insets, profile, onSaleScrollHandler, headerHeight],
   );
 
   return (
@@ -161,7 +239,7 @@ export default function AppProfile({
           tabBar={props => (
             <AppTopTabBar
               {...props}
-              safeBackgroundBarHeight={headerHeight}
+              safeBackgroundBarHeight={headerHeight * 2}
               tabStyle={[
                 styles.tabBarContainer,
                 {
@@ -192,12 +270,12 @@ export default function AppProfile({
             options={{
               tabBarLabel: ({ color }) => (
                 <AppTextBody4 style={{ color: color }}>
-                  On Sold (3)
+                  On Sale (3)
                 </AppTextBody4>
               ),
             }}
-            name={'On Sold'}
-            component={OwnedNFTComponent}
+            name={'On Sale'}
+            component={OnSaleNFTComponent}
           />
         </Tab.Navigator>
       </View>
