@@ -2,7 +2,6 @@ import { StyleSheet, View } from 'react-native';
 import React from 'react';
 import Animated, {
   scrollTo,
-  SharedValue,
   useAnimatedRef,
   useAnimatedScrollHandler,
   useAnimatedStyle,
@@ -53,18 +52,15 @@ export default function AppProfile({
   const headerCollapsed = useSharedValue(true);
   const rawScrollY = useSharedValue(0);
   const tabScroll = useSharedValue(0);
-  const ownedPrevScroll = useSharedValue(0);
-  const onSalePrevScroll = useSharedValue(0);
 
   const totalHeaderHeight =
     hp(PROFILE_HEADER_HEIGHT_PERCENTAGE, insets) + headerHeight;
 
   const useCustomAnimatedScrollHandler = (
-    sharedPrevValue: SharedValue<number>,
     scrollRefList: React.RefObject<any>[],
   ) =>
     useAnimatedScrollHandler({
-      onScroll: (event, ctx: { current: number }) => {
+      onScroll: (event, ctx: { prevY: number; current: number }) => {
         rawScrollY.value = event.contentOffset.y;
 
         if (event.contentOffset.y < totalHeaderHeight) {
@@ -87,7 +83,7 @@ export default function AppProfile({
           tabScroll.value = event.contentOffset.y;
           ctx.current = totalHeaderHeight;
         } else {
-          const diff = event.contentOffset.y - sharedPrevValue.value;
+          const diff = event.contentOffset.y - ctx.prevY;
           if (diff > 0 && event.contentOffset.y < totalHeaderHeight) {
             tabScroll.value = event.contentOffset.y;
           } else {
@@ -101,8 +97,8 @@ export default function AppProfile({
 
         onScrollWorklet && onScrollWorklet(event.contentOffset.y);
       },
-      onBeginDrag: event => {
-        sharedPrevValue.value = event.contentOffset.y;
+      onBeginDrag: (event, ctx) => {
+        ctx.prevY = event.contentOffset.y;
         onBeginDragWorklet && onBeginDragWorklet(event.contentOffset.y);
       },
       onEndDrag: (event, ctx) => {
@@ -147,12 +143,8 @@ export default function AppProfile({
       },
     });
 
-  const ownedScrollHandler = useCustomAnimatedScrollHandler(ownedPrevScroll, [
-    onSaleRef,
-  ]);
-  const onSaleScrollHandler = useCustomAnimatedScrollHandler(onSalePrevScroll, [
-    ownedRef,
-  ]);
+  const ownedScrollHandler = useCustomAnimatedScrollHandler([onSaleRef]);
+  const onSaleScrollHandler = useCustomAnimatedScrollHandler([ownedRef]);
 
   const scrollStyle = useAnimatedStyle(() => {
     return {
