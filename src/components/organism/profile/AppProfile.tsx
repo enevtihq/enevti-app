@@ -13,7 +13,7 @@ import { ProfileResponse } from '../../../types/service/enevti/profile';
 import AppProfileHeader, {
   PROFILE_HEADER_HEIGHT_PERCENTAGE,
 } from './AppProfileHeader';
-import { hp } from '../../../utils/imageRatio';
+import { hp, SafeAreaInsets, wp } from '../../../utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../navigation';
@@ -21,6 +21,11 @@ import { diffClamp } from '../../../utils/animation';
 import OwnedNFTComponent from './tabs/OwnedNFTComponent';
 import OnSaleNFTComponent from './tabs/OnSaleNFTComponent';
 import AppProfileBody from './AppProfileBody';
+import { ActivityIndicator, useTheme } from 'react-native-paper';
+
+const noDisplay = 'none';
+const visible = 1;
+const notVisible = 0;
 
 interface AppProfileProps {
   navigation: StackNavigationProp<RootStackParamList>;
@@ -44,7 +49,11 @@ export default function AppProfile({
   headerHeight = 0,
 }: AppProfileProps) {
   const insets = useSafeAreaInsets();
-  const styles = makeStyle(headerHeight);
+  const theme = useTheme();
+  const styles = makeStyle(headerHeight, insets);
+
+  const [ownedMounted, setOwnedMounted] = React.useState<boolean>(false);
+  const [onSaleMounted, setOnSaleMounted] = React.useState<boolean>(false);
 
   const ownedRef = useAnimatedRef<any>();
   const onSaleRef = useAnimatedRef<any>();
@@ -163,11 +172,20 @@ export default function AppProfile({
       <OwnedNFTComponent
         ref={ownedRef}
         onScroll={ownedScrollHandler}
+        scrollEnabled={ownedMounted && onSaleMounted ? true : false}
         headerHeight={headerHeight}
         data={profile ? profile.owned : []}
+        onMounted={() => setOwnedMounted(true)}
       />
     ),
-    [ownedRef, headerHeight, profile, ownedScrollHandler],
+    [
+      ownedRef,
+      headerHeight,
+      profile,
+      ownedScrollHandler,
+      ownedMounted,
+      onSaleMounted,
+    ],
   );
 
   const OnSaleNFTScreen = React.useCallback(
@@ -175,11 +193,20 @@ export default function AppProfile({
       <OnSaleNFTComponent
         ref={onSaleRef}
         onScroll={onSaleScrollHandler}
+        scrollEnabled={ownedMounted && onSaleMounted ? true : false}
         headerHeight={headerHeight}
         data={profile ? profile.owned : []}
+        onMounted={() => setOnSaleMounted(true)}
       />
     ),
-    [onSaleRef, headerHeight, profile, onSaleScrollHandler],
+    [
+      onSaleRef,
+      headerHeight,
+      profile,
+      onSaleScrollHandler,
+      ownedMounted,
+      onSaleMounted,
+    ],
   );
 
   return (
@@ -192,16 +219,34 @@ export default function AppProfile({
         animatedTabBarStyle={animatedTabBarStyle}
         ownedNFTScreen={OwnedNFTScreen}
         onSaleNFTScreen={OnSaleNFTScreen}
+        style={{
+          opacity: ownedMounted && onSaleMounted ? visible : notVisible,
+        }}
       />
+      {ownedMounted && onSaleMounted ? null : (
+        <ActivityIndicator
+          animating={true}
+          style={[
+            styles.mountedIndicator,
+            { display: ownedMounted && onSaleMounted ? noDisplay : undefined },
+          ]}
+          color={theme.colors.primary}
+        />
+      )}
     </View>
   );
 }
 
-const makeStyle = (headerHeight: number) =>
+const makeStyle = (headerHeight: number, insets: SafeAreaInsets) =>
   StyleSheet.create({
     profileHeader: {
       position: 'absolute',
       zIndex: 1,
       paddingTop: headerHeight,
+    },
+    mountedIndicator: {
+      position: 'absolute',
+      top: hp('60%', insets),
+      left: wp('48%', insets),
     },
   });

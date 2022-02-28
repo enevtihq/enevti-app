@@ -15,10 +15,18 @@ interface OwnedNFTComponentProps {
   data?: any;
   onScroll?: any;
   headerHeight?: any;
+  onMounted?: () => void;
+  scrollEnabled?: boolean;
 }
 
 function Component(
-  { data, onScroll, headerHeight }: OwnedNFTComponentProps,
+  {
+    data,
+    onScroll,
+    headerHeight,
+    onMounted,
+    scrollEnabled,
+  }: OwnedNFTComponentProps,
   ref: any,
 ) {
   const insets = useSafeAreaInsets();
@@ -26,13 +34,17 @@ function Component(
   const [displayed, setDisplayed] = React.useState<boolean>(false);
 
   React.useEffect(() => {
-    ref && ref.current && setDisplayed(true);
-  }, [ref]);
+    if (ref && ref.current) {
+      setDisplayed(true);
+      onMounted && onMounted();
+    }
+  }, [ref, onMounted]);
 
   return (
     <AnimatedFlatGrid
       ref={ref}
       onScroll={onScroll}
+      scrollEnabled={scrollEnabled}
       scrollEventThrottle={16}
       contentContainerStyle={[
         {
