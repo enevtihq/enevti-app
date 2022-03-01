@@ -6,7 +6,7 @@ import { RootStackParamList } from '../../navigation';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/state';
 import { selectPersona } from '../../store/slices/entities/persona';
-import { ProfileResponse } from '../../types/service/enevti/profile';
+import { Profile } from '../../types/service/enevti/profile';
 import { getProfileCompleteData } from '../../service/enevti/profile';
 import { handleError } from '../../utils/error/handle';
 import AppProfile from '../../components/organism/profile/AppProfile';
@@ -31,7 +31,7 @@ export default function MyProfile({
 }: MyProfileProps) {
   const styles = makeStyle();
   const myPersona = useSelector((state: RootState) => selectPersona(state));
-  const [profileData, setProfileData] = React.useState<ProfileResponse>();
+  const [profileData, setProfileData] = React.useState<Profile>();
 
   const onFeedScreenLoaded = async () => {
     try {

@@ -1,12 +1,8 @@
 import { NFTBase } from '../../types/nft';
-import {
-  HomeFeedItemResponse,
-  HomeFeedResponse,
-  HomeMomentsResponse,
-} from '../../types/service/enevti/feed';
+import { FeedItem, Feeds, Moments } from '../../types/service/enevti/feed';
 import { getDummyNFTData, sleep } from './dummy';
 
-function getFeedItemList(): HomeFeedItemResponse {
+function getFeedItemList(): FeedItem {
   let randomCount = Math.random() * 10;
   if (randomCount === 0) {
     randomCount = 1;
@@ -36,7 +32,7 @@ function getFeedItemList(): HomeFeedItemResponse {
   };
 }
 
-export async function getFeedList(): Promise<HomeFeedResponse | undefined> {
+export async function getFeedList(): Promise<Feeds | undefined> {
   await sleep(1000);
 
   let randomCount = Math.random() * 10;
@@ -45,7 +41,7 @@ export async function getFeedList(): Promise<HomeFeedResponse | undefined> {
   }
   randomCount = 20;
 
-  const randomFeed: HomeFeedResponse = [];
+  const randomFeed: Feeds = [];
   for (let i = 0; i < randomCount; i++) {
     randomFeed.push(getFeedItemList());
   }
@@ -53,9 +49,7 @@ export async function getFeedList(): Promise<HomeFeedResponse | undefined> {
   return randomFeed;
 }
 
-export async function getMomentsList(): Promise<
-  HomeMomentsResponse | undefined
-> {
+export async function getMomentsList(): Promise<Moments | undefined> {
   await sleep(1000);
 
   let randomCount = Math.random() * 10;
@@ -63,7 +57,7 @@ export async function getMomentsList(): Promise<
     randomCount = 0;
   }
 
-  const randomMoments: HomeMomentsResponse = [];
+  const randomMoments: Moments = [];
   for (let i = 0; i < randomCount; i++) {
     randomMoments.push({
       id: Math.random().toString(),

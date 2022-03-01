@@ -20,7 +20,7 @@ import { hp, wp, SafeAreaInsets } from '../../utils/imageRatio';
 import YupBIP39 from '../../utils/yupbip39';
 import { useDispatch } from 'react-redux';
 import { setEncryptedPassphraseAuth } from '../../store/slices/auth';
-import { setLocalSessionKey } from '../../store/slices/session';
+import { setLocalSessionKey } from '../../store/slices/session/local';
 
 type Props = StackScreenProps<RootStackParamList, 'SetupLocalPassword'>;
 YupPassword(Yup);

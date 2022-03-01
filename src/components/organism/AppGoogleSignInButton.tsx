@@ -17,7 +17,7 @@ import {
   selectGoogleAPITokenState,
   setGoogleAPIToken,
 } from '../../store/slices/session/google';
-import { showSnackbar } from '../../store/slices/ui/global';
+import { showSnackbar } from '../../store/slices/ui/global/snackbar';
 import AppDialogForm from './AppDialogForm';
 import { Dialog } from 'react-native-paper';
 import AppFormSecureTextInput from './AppFormSecureTextInput';

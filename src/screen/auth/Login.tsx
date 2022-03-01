@@ -23,12 +23,12 @@ import AppCheckbox from '../../components/atoms/form/AppCheckbox';
 import { hp, wp, SafeAreaInsets } from '../../utils/imageRatio';
 import AppBrandLogo from '../../components/atoms/brand/AppBrandLogo';
 import { RootState } from '../../store/state';
-import { setLocalSessionKey } from '../../store/slices/session';
+import { setLocalSessionKey } from '../../store/slices/session/local';
 import {
   selectAuthState,
   setUnencryptedPassphraseAuth,
 } from '../../store/slices/auth';
-import { showSnackbar } from '../../store/slices/ui/global';
+import { showSnackbar } from '../../store/slices/ui/global/snackbar';
 
 type Props = StackScreenProps<RootStackParamList, 'Login'>;
 YupPassword(Yup);

@@ -1,5 +1,7 @@
-import { setGoogleAPIToken } from '../../store/slices/session';
-import { selectGoogleAPITokenState } from '../../store/slices/session/google';
+import {
+  setGoogleAPIToken,
+  selectGoogleAPITokenState,
+} from '../../store/slices/session/google';
 import { store } from '../../store/state';
 import { isInternetReachable } from '../../utils/network';
 import { getGoogleAccessToken, googleInit, googleSignIn } from './signIn';

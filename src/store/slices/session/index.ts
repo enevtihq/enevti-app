@@ -1,8 +1,6 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import localSessionReducer, { setLocalSessionKey } from './local';
-import googleSessionReducer, { setGoogleAPIToken } from './google';
-
-export { setLocalSessionKey, setGoogleAPIToken };
+import localSessionReducer from './local';
+import googleSessionReducer from './google';
 
 export default combineReducers({
   local: localSessionReducer,

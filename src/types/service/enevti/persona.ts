@@ -1,4 +1,4 @@
-export type PersonaBase = {
+export type Persona = {
   photo: string;
   address: string;
   username: string;

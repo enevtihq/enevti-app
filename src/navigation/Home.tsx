@@ -26,7 +26,7 @@ import { iconMap } from '../components/atoms/icon/AppIconComponent';
 import { TouchableRipple, useTheme } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import { getMyBasePersona } from '../service/enevti/persona';
-import { PersonaBase } from '../types/service/enevti/persona';
+import { Persona } from '../types/service/enevti/persona';
 import AppAvatarRenderer from '../components/molecules/avatar/AppAvatarRenderer';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/state';
@@ -42,7 +42,15 @@ export default function Home() {
 
   const myPersona = useSelector((state: RootState) =>
     selectPersona(state),
-  ) as PersonaBase;
+  ) as Persona;
+
+  const getPersona = async () => {
+    await getMyBasePersona();
+  };
+
+  React.useEffect(() => {
+    getPersona();
+  }, []);
 
   const [activeTab, setActiveTab] = React.useState<number>(0);
   const headerHeight = hp(HEADER_HEIGHT_PERCENTAGE, insets);
@@ -177,14 +185,6 @@ export default function Home() {
       ],
     };
   });
-
-  const getPersona = async () => {
-    await getMyBasePersona();
-  };
-
-  React.useEffect(() => {
-    getPersona();
-  }, []);
 
   const FeedComponent = React.useCallback(
     props => (

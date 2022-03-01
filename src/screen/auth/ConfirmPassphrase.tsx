@@ -16,7 +16,7 @@ import AppCheckbox from '../../components/atoms/form/AppCheckbox';
 import AppPassphraseBox from '../../components/organism/AppPassphraseBox';
 import { hp, wp, SafeAreaInsets } from '../../utils/imageRatio';
 import { setEncryptedPassphraseAuth } from '../../store/slices/auth';
-import { setLocalSessionKey } from '../../store/slices/session';
+import { setLocalSessionKey } from '../../store/slices/session/local';
 
 type Props = StackScreenProps<RootStackParamList, 'ConfirmPassphrase'>;
 

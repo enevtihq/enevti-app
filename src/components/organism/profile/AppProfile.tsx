@@ -8,8 +8,8 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
-import { PersonaBase } from '../../../types/service/enevti/persona';
-import { ProfileResponse } from '../../../types/service/enevti/profile';
+import { Persona } from '../../../types/service/enevti/persona';
+import { Profile } from '../../../types/service/enevti/profile';
 import AppProfileHeader, {
   PROFILE_HEADER_HEIGHT_PERCENTAGE,
 } from './AppProfileHeader';
@@ -29,12 +29,12 @@ const notVisible = 0;
 
 interface AppProfileProps {
   navigation: StackNavigationProp<RootStackParamList>;
-  persona: PersonaBase;
+  persona: Persona;
   onScrollWorklet?: (val: number) => void;
   onBeginDragWorklet?: (val: number) => void;
   onEndDragWorklet?: (val: number) => void;
   onMomentumEndWorklet?: (val: number) => void;
-  profile?: ProfileResponse;
+  profile?: Profile;
   headerHeight?: number;
 }
 
@@ -195,7 +195,7 @@ export default function AppProfile({
         onScroll={onSaleScrollHandler}
         scrollEnabled={ownedMounted && onSaleMounted ? true : false}
         headerHeight={headerHeight}
-        data={profile ? profile.owned : []}
+        data={profile ? profile.onsale : []}
         onMounted={() => setOnSaleMounted(true)}
       />
     ),

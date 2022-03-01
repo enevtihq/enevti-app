@@ -1,6 +1,6 @@
 import { NFTBase } from '../../nft';
 
-export interface HomeFeedItemResponse {
+export interface FeedItem {
   type: string;
   id: string;
   like: number;
@@ -17,12 +17,12 @@ export interface HomeFeedItemResponse {
   nft: NFTBase[];
 }
 
-export type HomeFeedResponse = HomeFeedItemResponse[];
+export type Feeds = FeedItem[];
 
-export interface HomeMomentsItemResponse {
+export interface MomentItem {
   id: string;
   username: string;
   photo: string;
 }
 
-export type HomeMomentsResponse = HomeMomentsItemResponse[];
+export type Moments = MomentItem[];

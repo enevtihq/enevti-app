@@ -8,11 +8,11 @@ import Color from 'color';
 import AppFeedHeader from './AppFeedHeader';
 import AppFeedAction from './AppFeedAction';
 import AppFeedFooter from './AppFeedFooter';
-import { HomeFeedItemResponse } from '../../../types/service/enevti/feed';
+import { FeedItem } from '../../../types/service/enevti/feed';
 import AppFeedBody from './AppFeedBody';
 
 interface AppFeedItemProps {
-  feed: HomeFeedItemResponse;
+  feed: FeedItem;
 }
 
 export default React.memo(

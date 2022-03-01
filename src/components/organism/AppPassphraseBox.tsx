@@ -11,7 +11,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
-import { showSnackbar } from '../../store/slices/ui/global';
+import { showSnackbar } from '../../store/slices/ui/global/snackbar';
 
 interface AppPassphraseBoxProps {
   passphrase: string;

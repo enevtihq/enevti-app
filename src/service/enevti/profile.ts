@@ -1,7 +1,11 @@
-import { ProfileResponse } from '../../types/service/enevti/profile';
+import { Profile } from '../../types/service/enevti/profile';
 import { getDummyNFTData, sleep } from './dummy';
 
-async function getProfileNFT() {
+export async function getProfileCompleteData(
+  address: string,
+): Promise<Profile | undefined> {
+  console.log(address);
+
   await sleep(5000);
 
   const ownedNFT = [];
@@ -17,16 +21,17 @@ async function getProfileNFT() {
   }
 
   return {
+    nftSold: 1500,
+    treasuryAct: 54,
+    serveRate: 0.98,
+    stake: '132400000000',
+    balance: '15400000000',
+    twitter: {
+      username: '@aldhosutra',
+      follower: 1120,
+    },
     owned: ownedNFT,
     onsale: onsaleNFT,
     minted: mintedContainer,
   };
-}
-
-export async function getProfileCompleteData(
-  address: string,
-): Promise<ProfileResponse | undefined> {
-  console.log(address);
-
-  return await getProfileNFT();
 }

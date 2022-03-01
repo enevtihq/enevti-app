@@ -15,11 +15,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation';
 import AppRecentMoments from '../../components/organism/AppRecentMoments';
 import AppFeedItem from '../../components/molecules/feed/AppFeedItem';
-import {
-  HomeFeedResponse,
-  HomeFeedItemResponse,
-  HomeMomentsResponse,
-} from '../../types/service/enevti/feed';
+import { Feeds, FeedItem, Moments } from '../../types/service/enevti/feed';
 import { getFeedList, getMomentsList } from '../../service/enevti/feed';
 import Animated from 'react-native-reanimated';
 import { handleError } from '../../utils/error/handle';
@@ -28,9 +24,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getMyBasePersona } from '../../service/enevti/persona';
 
 const AnimatedFlatList =
-  Animated.createAnimatedComponent<FlatListProps<HomeFeedItemResponse>>(
-    FlatList,
-  );
+  Animated.createAnimatedComponent<FlatListProps<FeedItem>>(FlatList);
 
 type Props = StackScreenProps<RootStackParamList, 'Feed'>;
 
@@ -44,8 +38,8 @@ export default function Feed({ onScroll, headerHeight }: FeedProps) {
   const insets = useSafeAreaInsets();
   const feedHeight = hp('24%', insets) + wp('95%', insets);
 
-  const [feedItem, setFeedItem] = React.useState<HomeFeedResponse>();
-  const [momentsItem, setMomentsItem] = React.useState<HomeMomentsResponse>();
+  const [feedItem, setFeedItem] = React.useState<Feeds>();
+  const [momentsItem, setMomentsItem] = React.useState<Moments>();
   const [refreshing, setRefreshing] = React.useState<boolean>(false);
 
   const handleRefresh = async () => {

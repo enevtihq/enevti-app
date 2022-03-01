@@ -1,4 +1,4 @@
-import { showSnackbar } from '../../store/slices/ui/global';
+import { showSnackbar } from '../../store/slices/ui/global/snackbar';
 import { store } from '../../store/state';
 
 export function handleError(err: any) {

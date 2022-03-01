@@ -9,7 +9,7 @@ import { hp, SafeAreaInsets, wp } from '../../../utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getCoinName } from '../../atoms/brand/AppBrandConstant';
 import { useTranslation } from 'react-i18next';
-import { HomeFeedItemResponse } from '../../../types/service/enevti/feed';
+import { FeedItem } from '../../../types/service/enevti/feed';
 import { parseAmount } from '../../../utils/format/amount';
 import { Divider, useTheme } from 'react-native-paper';
 import { Theme } from '../../../theme/default';
@@ -18,7 +18,7 @@ import AppMenuContainer from '../../atoms/menu/AppMenuContainer';
 import AppMenuItem from '../../atoms/menu/AppMenuItem';
 
 interface AppFeedHeaderProps {
-  feed: HomeFeedItemResponse;
+  feed: FeedItem;
 }
 
 export default function AppFeedHeader({ feed }: AppFeedHeaderProps) {

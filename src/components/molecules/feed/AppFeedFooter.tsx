@@ -7,10 +7,10 @@ import { Theme } from '../../../theme/default';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { hp, SafeAreaInsets, wp } from '../../../utils/imageRatio';
 import { useTranslation } from 'react-i18next';
-import { HomeFeedItemResponse } from '../../../types/service/enevti/feed';
+import { FeedItem } from '../../../types/service/enevti/feed';
 
 interface AppFeedFooterProps {
-  feed: HomeFeedItemResponse;
+  feed: FeedItem;
 }
 
 export default React.memo(

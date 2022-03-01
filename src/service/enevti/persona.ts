@@ -1,4 +1,4 @@
-import { PersonaBase } from '../../types/service/enevti/persona';
+import { Persona } from '../../types/service/enevti/persona';
 import { store } from '../../store/state';
 import {
   decryptWithDevice,
@@ -13,7 +13,7 @@ import {
   setLastFetchPersona,
 } from '../../store/slices/entities/persona';
 
-async function fetchMyPersona(address: string): Promise<PersonaBase> {
+async function fetchMyPersona(address: string): Promise<Persona> {
   await sleep(5000);
   return {
     photo: '',
@@ -22,10 +22,10 @@ async function fetchMyPersona(address: string): Promise<PersonaBase> {
   };
 }
 
-export async function getMyBasePersona(force = false): Promise<PersonaBase> {
+export async function getMyBasePersona(force = false): Promise<Persona> {
   const now = Date.now();
   const lastFetch = store.getState().entities.persona.lastFetch;
-  let myPersona: PersonaBase = store.getState().entities.persona;
+  let myPersona: Persona = store.getState().entities.persona;
 
   if (force || now - lastFetch > lastFetchTreshold) {
     let authToken = store.getState().auth.token;

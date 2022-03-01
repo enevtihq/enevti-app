@@ -20,7 +20,7 @@ import { selectAuthState } from '../store/slices/auth';
 import SetupGoogleBinderPassword from '../screen/auth/SetupGoogleBinderPassword';
 import Home from './Home';
 import StakePool from '../screen/stake/StakePool';
-import { PersonaBase } from '../types/service/enevti/persona';
+import { Persona } from '../types/service/enevti/persona';
 
 export type RootStackParamList = {
   CreateAccount: undefined;
@@ -38,7 +38,7 @@ export type RootStackParamList = {
   Feed: undefined;
   MyProfile: undefined;
   StakePool: {
-    persona: PersonaBase;
+    persona: Persona;
   };
 };
 

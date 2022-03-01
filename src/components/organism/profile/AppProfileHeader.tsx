@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import AppAvatarRenderer from '../../molecules/avatar/AppAvatarRenderer';
 import { hp, wp, SafeAreaInsets } from '../../../utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { PersonaBase } from '../../../types/service/enevti/persona';
+import { Persona } from '../../../types/service/enevti/persona';
 import AppTextHeading2 from '../../atoms/text/AppTextHeading2';
 import AppTextBody3 from '../../atoms/text/AppTextBody3';
 import AppTextHeading3 from '../../atoms/text/AppTextHeading3';
@@ -25,7 +25,7 @@ import { getCoinName } from '../../atoms/brand/AppBrandConstant';
 
 interface AppProfileHeaderProps {
   navigation: StackNavigationProp<RootStackParamList>;
-  persona: PersonaBase;
+  persona: Persona;
 }
 
 export const PROFILE_HEADER_HEIGHT_PERCENTAGE = 42;
