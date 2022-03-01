@@ -1,6 +1,6 @@
 import { StyleProp, ViewStyle } from 'react-native';
 import React from 'react';
-import { ActivityIndicator } from 'react-native-paper';
+import { ActivityIndicator, useTheme } from 'react-native-paper';
 
 interface AppActivityIndicatorProps {
   animating?: boolean;
@@ -13,7 +13,14 @@ export default function AppActivityIndicator({
   style,
   color,
 }: AppActivityIndicatorProps) {
+  const theme = useTheme();
+  const loaderColor = theme.colors.primary;
+
   return (
-    <ActivityIndicator animating={animating} style={style} color={color} />
+    <ActivityIndicator
+      animating={animating}
+      style={style}
+      color={color ? color : loaderColor}
+    />
   );
 }
