@@ -1,13 +1,21 @@
-import { StyleSheet } from 'react-native';
+import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import React from 'react';
 import { AnimatedFAB, useTheme } from 'react-native-paper';
 
 interface AppFloatingActionButtonProps {
+  label: string;
+  icon: string;
   extended?: boolean;
+  style?: StyleProp<ViewStyle>;
+  onPress?: () => void;
 }
 
 export default function AppFloatingActionButton({
+  label,
+  icon,
   extended = true,
+  style,
+  onPress,
 }: AppFloatingActionButtonProps) {
   const theme = useTheme();
   theme.colors.accent = theme.colors.primary;
@@ -17,11 +25,11 @@ export default function AppFloatingActionButton({
     <AnimatedFAB
       extended={extended}
       theme={theme}
-      style={styles.fab}
+      style={[styles.fab, style]}
       uppercase={false}
-      label={'Add Stake'}
-      icon="plus"
-      onPress={() => console.log('Pressed')}
+      label={label}
+      icon={icon}
+      onPress={onPress}
     />
   );
 }
