@@ -12,7 +12,13 @@ import Animated, {
   useAnimatedScrollHandler,
   useSharedValue,
 } from 'react-native-reanimated';
-import { FlatList, FlatListProps, RefreshControl } from 'react-native';
+import {
+  FlatList,
+  FlatListProps,
+  RefreshControl,
+  Text,
+  View,
+} from 'react-native';
 import AppStakerItem, {
   STAKER_ITEM_HEIGHT_PERCENTAGE,
 } from '../../components/organism/stake/AppStakerItem';
@@ -25,6 +31,11 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../store/state';
 import { selectPersona } from '../../store/slices/entities/persona';
 import { Persona } from '../../types/service/enevti/persona';
+import {
+  BottomSheetBackdrop,
+  BottomSheetModal,
+  BottomSheetModalProvider,
+} from '@gorhom/bottom-sheet';
 
 const AnimatedFlatList =
   Animated.createAnimatedComponent<FlatListProps<StakerItem>>(FlatList);
@@ -36,10 +47,14 @@ export default function StakePool({ navigation, route }: Props) {
   const myPersona = useSelector((state: RootState) =>
     selectPersona(state),
   ) as Persona;
+  const selfStake = persona.address === myPersona.address;
 
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const extendedTreshold = hp('10%', insets);
+
+  const bottomSheetRef = React.useRef<BottomSheetModal>(null);
+  const snapPoints = React.useMemo(() => ['50%'], []);
 
   const [stakePool, setStakePool] = React.useState<StakePoolData>();
   const [refreshing, setRefreshing] = React.useState<boolean>(false);
@@ -109,38 +124,66 @@ export default function StakePool({ navigation, route }: Props) {
     [],
   );
 
+  const renderBackdrop = React.useCallback(
+    props => (
+      <BottomSheetBackdrop
+        {...props}
+        appearsOnIndex={0}
+        disappearsOnIndex={-1}
+        pressBehavior={'none'}
+      />
+    ),
+    [],
+  );
+
   return (
-    <AppView
-      darken
-      edges={['left', 'bottom', 'right']}
-      header={
-        <AppHeader back navigation={navigation} title={t('stake:stakePool')} />
-      }>
-      <AppFloatingActionButton
-        label={
-          persona.address === myPersona.address
-            ? t('stake:selfStake')
-            : t('stake:addStake')
-        }
-        icon={iconMap.add}
-        extended={extended}
-      />
-      <AnimatedFlatList
-        onScroll={onScroll}
-        scrollEventThrottle={16}
-        data={stakePool?.staker}
-        renderItem={renderItem}
-        keyExtractor={keyExtractor}
-        removeClippedSubviews={true}
-        initialNumToRender={2}
-        maxToRenderPerBatch={5}
-        updateCellsBatchingPeriod={100}
-        windowSize={5}
-        getItemLayout={getItemLayout}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
-        }
-      />
-    </AppView>
+    <BottomSheetModalProvider>
+      <AppView
+        darken
+        edges={['left', 'bottom', 'right']}
+        header={
+          <AppHeader
+            back
+            navigation={navigation}
+            title={t('stake:stakePool')}
+          />
+        }>
+        <AppFloatingActionButton
+          label={selfStake ? t('stake:selfStake') : t('stake:addStake')}
+          icon={iconMap.add}
+          extended={extended}
+          onPress={() => bottomSheetRef.current?.present()}
+        />
+        <AnimatedFlatList
+          onScroll={onScroll}
+          scrollEventThrottle={16}
+          data={stakePool?.staker}
+          renderItem={renderItem}
+          keyExtractor={keyExtractor}
+          removeClippedSubviews={true}
+          initialNumToRender={2}
+          maxToRenderPerBatch={5}
+          updateCellsBatchingPeriod={100}
+          windowSize={5}
+          getItemLayout={getItemLayout}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+          }
+        />
+        <BottomSheetModal
+          ref={bottomSheetRef}
+          snapPoints={snapPoints}
+          enablePanDownToClose={true}
+          backdropComponent={renderBackdrop}>
+          <View
+            style={{
+              flex: 1,
+              alignItems: 'center',
+            }}>
+            <Text>Awesome 🎉</Text>
+          </View>
+        </BottomSheetModal>
+      </AppView>
+    </BottomSheetModalProvider>
   );
 }
