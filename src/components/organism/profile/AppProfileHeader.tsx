@@ -1,5 +1,6 @@
 import { View, StyleSheet } from 'react-native';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import AppAvatarRenderer from '../../molecules/avatar/AppAvatarRenderer';
 import { hp, wp, SafeAreaInsets } from '../../../utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -20,6 +21,7 @@ import AppMenuItem from '../../atoms/menu/AppMenuItem';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../navigation';
 import { HEADER_HEIGHT_PERCENTAGE } from '../../atoms/view/AppHeader';
+import { getCoinName } from '../../atoms/brand/AppBrandConstant';
 
 interface AppProfileHeaderProps {
   navigation: StackNavigationProp<RootStackParamList>;
@@ -32,6 +34,7 @@ export default function AppProfileHeader({
   navigation,
   persona,
 }: AppProfileHeaderProps) {
+  const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
   const styles = makeStyle(theme, insets);
@@ -71,21 +74,21 @@ export default function AppProfileHeader({
         <View style={styles.profileStatsItem}>
           <AppTextHeading3>1.5K</AppTextHeading3>
           <AppTextBody4 style={{ color: theme.colors.placeholder }}>
-            NFT Sold
+            {t('profile:nftSold')}
           </AppTextBody4>
         </View>
         <View style={styles.profileStatsDivider} />
         <View style={styles.profileStatsItem}>
           <AppTextHeading3>54</AppTextHeading3>
           <AppTextBody4 style={{ color: theme.colors.placeholder }}>
-            Treasury Act
+            {t('profile:treasuryAct')}
           </AppTextBody4>
         </View>
         <View style={styles.profileStatsDivider} />
         <View style={styles.profileStatsItem}>
           <AppTextHeading3>98%</AppTextHeading3>
           <AppTextBody4 style={{ color: theme.colors.placeholder }}>
-            Serve Rate
+            {t('profile:serveRate')}
           </AppTextBody4>
         </View>
       </View>
@@ -97,12 +100,12 @@ export default function AppProfileHeader({
           onPress={() =>
             navigation.navigate('StakePool', { persona: persona })
           }>
-          Stake & Insight{'  '}
+          {t('profile:stakeAndInsight') + '  '}
           <AppTextBody5
             style={{
               color: Color(theme.colors.text).darken(0.1).rgb().toString(),
             }}>
-            123.78K $ENVT
+            123.78K {getCoinName()}
           </AppTextBody5>
         </AppTertiaryButton>
         <AppMenuContainer
@@ -118,8 +121,8 @@ export default function AppProfileHeader({
               onPress={() => setMenuVisible(true)}
             />
           }>
-          <AppMenuItem onPress={() => {}} title={'Follow'} />
-          <AppMenuItem onPress={() => {}} title={'Copy Address'} />
+          <AppMenuItem onPress={() => {}} title={t('home:follow')} />
+          <AppMenuItem onPress={() => {}} title={t('profile:copyAddress')} />
         </AppMenuContainer>
       </View>
 
@@ -155,7 +158,7 @@ export default function AppProfileHeader({
                 color: theme.colors.placeholder,
                 marginLeft: wp('1%', insets),
               }}>
-              $ENVT
+              {getCoinName()}
             </AppTextBody5>
           </View>
         </AppQuaternaryButton>

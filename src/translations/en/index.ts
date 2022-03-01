@@ -3,6 +3,7 @@ import form from './form';
 import network from './network';
 import google from './google';
 import home from './home';
+import profile from './profile';
 
 export default {
   auth,
@@ -10,4 +11,5 @@ export default {
   network,
   google,
   home,
+  profile,
 };

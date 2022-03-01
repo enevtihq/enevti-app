@@ -8,6 +8,7 @@ import { PROFILE_HEADER_HEIGHT_PERCENTAGE } from './AppProfileHeader';
 import { useTheme } from 'react-native-paper';
 import Color from 'color';
 import AppTextBody4 from '../../atoms/text/AppTextBody4';
+import { useTranslation } from 'react-i18next';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -26,6 +27,7 @@ export default function AppProfileBody({
   onSaleNFTScreen,
   style,
 }: AppProfileBodyProps) {
+  const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const theme = useTheme();
   const styles = makeStyle();
@@ -63,19 +65,23 @@ export default function AppProfileBody({
         <Tab.Screen
           options={{
             tabBarLabel: ({ color }) => (
-              <AppTextBody4 style={{ color: color }}>Owned (10)</AppTextBody4>
+              <AppTextBody4 style={{ color: color }}>
+                {t('profile:owned')} (10)
+              </AppTextBody4>
             ),
           }}
-          name={'Owned'}
+          name={t('profile:owned')}
           component={ownedNFTScreen}
         />
         <Tab.Screen
           options={{
             tabBarLabel: ({ color }) => (
-              <AppTextBody4 style={{ color: color }}>On Sale (3)</AppTextBody4>
+              <AppTextBody4 style={{ color: color }}>
+                {t('profile:onsale')} (3)
+              </AppTextBody4>
             ),
           }}
-          name={'On Sale'}
+          name={t('profile:onsale')}
           component={onSaleNFTScreen}
         />
       </Tab.Navigator>
