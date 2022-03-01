@@ -41,7 +41,7 @@ const profileEntitySlice = createSlice({
 export const { setProfile, setLastFetchProfile } = profileEntitySlice.actions;
 export default profileEntitySlice.reducer;
 
-export const selectPersona = createSelector(
+export const selectProfile = createSelector(
   (state: RootState) => state,
-  (state: RootState) => state.entities.persona,
+  (state: RootState) => state.entities.profile,
 );

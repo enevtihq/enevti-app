@@ -22,7 +22,7 @@ export async function getStakePoolCompleteData(
       },
       {
         persona: {
-          photo: '',
+          photo: 'Qmb3jKA6Vn1azR6aSMnT6geGMkg818uBkfSHNg8ui1a9dy',
           address: 'lsk9w9qc6vs4d3qyqh322n69pebc2fdvsy4xsg5c9',
           username: 'bayuwahyuadi',
         },
@@ -34,7 +34,7 @@ export async function getStakePoolCompleteData(
         persona: {
           photo: '',
           address: 'lsk3kocke8xfya6p83cenoxqzx268kyztmfcag92z',
-          username: 'budidarmawan',
+          username: '',
         },
         rank: 3,
         stake: '5300000000',
