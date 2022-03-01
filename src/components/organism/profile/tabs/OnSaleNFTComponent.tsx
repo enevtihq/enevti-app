@@ -1,4 +1,5 @@
 import React from 'react';
+import { Platform, RefreshControl } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { FlatGrid, FlatGridProps } from 'react-native-super-grid';
 import { NFTBase } from '../../../../types/nft';
@@ -32,6 +33,13 @@ function Component(
   const insets = useSafeAreaInsets();
   const noDisplay = 'none';
   const [displayed, setDisplayed] = React.useState<boolean>(false);
+  const [refreshing, setRefreshing] = React.useState<boolean>(false);
+
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    // async onSaleRefreshFunction Here
+    setRefreshing(false);
+  };
 
   React.useEffect(() => {
     if (ref && ref.current) {
@@ -63,6 +71,21 @@ function Component(
       renderItem={({ item }) => (
         <AppNFTRenderer nft={item} width={wp('30%', insets)} />
       )}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={handleRefresh}
+          progressViewOffset={
+            Platform.OS === 'ios'
+              ? headerHeight * 0.5
+              : hp(
+                  PROFILE_HEADER_HEIGHT_PERCENTAGE +
+                    TOP_TABBAR_HEIGHT_PERCENTAGE,
+                  insets,
+                ) + headerHeight
+          }
+        />
+      }
     />
   );
 }
