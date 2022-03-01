@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleProp, ViewStyle, StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { ActivityIndicator, Button } from 'react-native-paper';
+import { Button } from 'react-native-paper';
 import { useTheme } from 'react-native-paper';
 import Color from 'color';
 import { IconSource } from 'react-native-paper/lib/typescript/components/Icon';
@@ -9,6 +9,7 @@ import { IconSource } from 'react-native-paper/lib/typescript/components/Icon';
 import { Theme } from '../../../theme/default';
 import { hp, SafeAreaInsets } from '../../../utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import AppActivityIndicator from '../loading/AppActivityIndicator';
 
 interface AppPrimaryButtonProps {
   children: React.ReactNode;
@@ -42,7 +43,7 @@ export default function AppPrimaryButton({
       colors={[primary, secondary]}
       style={[styles.primaryButton, style]}>
       {loading ? (
-        <ActivityIndicator
+        <AppActivityIndicator
           animating={true}
           style={styles.content}
           color="white"

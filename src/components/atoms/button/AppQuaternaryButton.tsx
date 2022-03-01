@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleProp, ViewStyle, StyleSheet, View } from 'react-native';
-import { ActivityIndicator, TouchableRipple } from 'react-native-paper';
+import { TouchableRipple } from 'react-native-paper';
 import { useTheme } from 'react-native-paper';
 import { hp, SafeAreaInsets, wp } from '../../../utils/imageRatio';
 
@@ -8,6 +8,7 @@ import { Theme } from '../../../theme/default';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Color from 'color';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import AppActivityIndicator from '../loading/AppActivityIndicator';
 
 interface AppQuaternaryButtonProps {
   children?: React.ReactNode;
@@ -42,7 +43,7 @@ export default function AppQuaternaryButton({
 
   return loading ? (
     <View style={[styles.quaternaryButton, style]}>
-      <ActivityIndicator
+      <AppActivityIndicator
         animating={true}
         style={contentStyle}
         color={theme.colors.text}

@@ -21,7 +21,8 @@ import { diffClamp } from '../../../utils/animation';
 import OwnedNFTComponent from './tabs/OwnedNFTComponent';
 import OnSaleNFTComponent from './tabs/OnSaleNFTComponent';
 import AppProfileBody from './AppProfileBody';
-import { ActivityIndicator, useTheme } from 'react-native-paper';
+import { useTheme } from 'react-native-paper';
+import AppActivityIndicator from '../../atoms/loading/AppActivityIndicator';
 
 const noDisplay = 'none';
 const visible = 1;
@@ -228,7 +229,7 @@ export default function AppProfile({
         }}
       />
       {ownedMounted && onSaleMounted ? null : (
-        <ActivityIndicator
+        <AppActivityIndicator
           animating={true}
           style={[
             styles.mountedIndicator,

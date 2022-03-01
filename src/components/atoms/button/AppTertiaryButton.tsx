@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleProp, ViewStyle, StyleSheet, View } from 'react-native';
-import { ActivityIndicator, Button } from 'react-native-paper';
+import { Button } from 'react-native-paper';
 import { IconSource } from 'react-native-paper/lib/typescript/components/Icon';
 import { useTheme } from 'react-native-paper';
 import { hp, SafeAreaInsets } from '../../../utils/imageRatio';
@@ -8,6 +8,7 @@ import Color from 'color';
 
 import { Theme } from '../../../theme/default';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import AppActivityIndicator from '../loading/AppActivityIndicator';
 
 interface AppTertiaryButtonProps {
   children: React.ReactNode;
@@ -32,7 +33,7 @@ export default function AppTertiaryButton({
 
   return loading ? (
     <View style={[styles.tertiaryLoading, styles.tertiaryButton, style]}>
-      <ActivityIndicator
+      <AppActivityIndicator
         animating={true}
         style={styles.content}
         color={theme.colors.text}
