@@ -4,6 +4,7 @@ import network from './network';
 import google from './google';
 import home from './home';
 import profile from './profile';
+import stake from './stake';
 
 export default {
   auth,
@@ -12,4 +13,5 @@ export default {
   google,
   home,
   profile,
+  stake,
 };

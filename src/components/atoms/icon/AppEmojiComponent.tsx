@@ -44,6 +44,7 @@ export const emojiMap = {
   twitter: UNDEFINED_EMOJI,
   wallet: UNDEFINED_EMOJI,
   delete: UNDEFINED_EMOJI,
+  add: UNDEFINED_EMOJI,
 };
 
 interface AppEmojiComponentProps {

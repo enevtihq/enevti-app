@@ -19,6 +19,8 @@ import AppStakerItem, {
 import { LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE } from '../../components/molecules/list/AppListItem';
 import { hp } from '../../utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { iconMap } from '../../components/atoms/icon/AppIconComponent';
+import { useTranslation } from 'react-i18next';
 
 const AnimatedFlatList =
   Animated.createAnimatedComponent<FlatListProps<StakerItem>>(FlatList);
@@ -27,6 +29,7 @@ type Props = StackScreenProps<RootStackParamList, 'StakePool'>;
 
 export default function StakePool({ navigation, route }: Props) {
   const { persona } = route.params;
+  const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const extendedTreshold = hp('10%', insets);
 
@@ -102,8 +105,14 @@ export default function StakePool({ navigation, route }: Props) {
     <AppView
       darken
       edges={['left', 'bottom', 'right']}
-      header={<AppHeader back navigation={navigation} title={'Stake Pool'} />}>
-      <AppFloatingActionButton extended={extended} />
+      header={
+        <AppHeader back navigation={navigation} title={t('stake:stakePool')} />
+      }>
+      <AppFloatingActionButton
+        label={t('stake:addStake')}
+        icon={iconMap.add}
+        extended={extended}
+      />
       <AnimatedFlatList
         onScroll={onScroll}
         scrollEventThrottle={16}

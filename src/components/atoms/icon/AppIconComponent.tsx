@@ -46,6 +46,7 @@ export const iconMap = {
   twitter: 'twitter',
   wallet: 'wallet',
   delete: 'trash-can-outline',
+  add: 'plus',
 };
 
 interface AppIconComponentProps {
