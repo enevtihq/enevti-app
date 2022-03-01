@@ -7,12 +7,18 @@ import AppFloatingActionButton from '../../components/atoms/view/AppFloatingActi
 import { StakePoolData, StakerItem } from '../../types/service/enevti/stake';
 import { getStakePoolCompleteData } from '../../service/enevti/stake';
 import { handleError } from '../../utils/error/handle';
-import Animated from 'react-native-reanimated';
+import Animated, {
+  runOnJS,
+  useAnimatedScrollHandler,
+  useSharedValue,
+} from 'react-native-reanimated';
 import { FlatList, FlatListProps, RefreshControl } from 'react-native';
 import AppStakerItem, {
   STAKER_ITEM_HEIGHT_PERCENTAGE,
 } from '../../components/organism/stake/AppStakerItem';
 import { LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE } from '../../components/molecules/list/AppListItem';
+import { hp } from '../../utils/imageRatio';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const AnimatedFlatList =
   Animated.createAnimatedComponent<FlatListProps<StakerItem>>(FlatList);
@@ -21,8 +27,33 @@ type Props = StackScreenProps<RootStackParamList, 'StakePool'>;
 
 export default function StakePool({ navigation, route }: Props) {
   const { persona } = route.params;
+  const insets = useSafeAreaInsets();
+  const extendedTreshold = hp('10%', insets);
+
   const [stakePool, setStakePool] = React.useState<StakePoolData>();
   const [refreshing, setRefreshing] = React.useState<boolean>(false);
+  const [extended, setExtended] = React.useState(true);
+  const UIExtended = useSharedValue(true);
+
+  const setJSExtended = (value: boolean) => {
+    setExtended(value);
+  };
+
+  const onScroll = useAnimatedScrollHandler({
+    onScroll: event => {
+      if (event.contentOffset.y > extendedTreshold) {
+        if (UIExtended.value) {
+          runOnJS(setJSExtended)(false);
+          UIExtended.value = false;
+        }
+      } else {
+        if (!UIExtended.value) {
+          runOnJS(setJSExtended)(true);
+          UIExtended.value = true;
+        }
+      }
+    },
+  });
 
   const handleRefresh = async () => {
     setRefreshing(true);
@@ -72,8 +103,9 @@ export default function StakePool({ navigation, route }: Props) {
       darken
       edges={['left', 'bottom', 'right']}
       header={<AppHeader back navigation={navigation} title={'Stake Pool'} />}>
-      <AppFloatingActionButton />
+      <AppFloatingActionButton extended={extended} />
       <AnimatedFlatList
+        onScroll={onScroll}
         scrollEventThrottle={16}
         data={stakePool?.staker}
         renderItem={renderItem}

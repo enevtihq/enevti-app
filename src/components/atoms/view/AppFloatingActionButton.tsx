@@ -1,16 +1,24 @@
 import { StyleSheet } from 'react-native';
 import React from 'react';
-import { FAB, useTheme } from 'react-native-paper';
-import { Theme } from '../../../theme/default';
+import { AnimatedFAB, useTheme } from 'react-native-paper';
 
-export default function AppFloatingActionButton() {
-  const theme = useTheme() as Theme;
-  const styles = makeStyle(theme);
+interface AppFloatingActionButtonProps {
+  extended?: boolean;
+}
+
+export default function AppFloatingActionButton({
+  extended = true,
+}: AppFloatingActionButtonProps) {
+  const theme = useTheme();
+  theme.colors.accent = theme.colors.primary;
+  const styles = makeStyle();
 
   return (
-    <FAB
+    <AnimatedFAB
+      extended={extended}
+      theme={theme}
       style={styles.fab}
-      animated
+      uppercase={false}
       label={'Add Stake'}
       icon="plus"
       onPress={() => console.log('Pressed')}
@@ -18,13 +26,13 @@ export default function AppFloatingActionButton() {
   );
 }
 
-const makeStyle = (theme: Theme) =>
+const makeStyle = () =>
   StyleSheet.create({
     fab: {
       position: 'absolute',
-      margin: 16,
-      right: 0,
       bottom: 0,
-      backgroundColor: theme.colors.primary,
+      right: 0,
+      margin: 16,
+      zIndex: 99,
     },
   });
