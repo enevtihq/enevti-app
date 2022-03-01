@@ -22,10 +22,13 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../navigation';
 import { HEADER_HEIGHT_PERCENTAGE } from '../../atoms/view/AppHeader';
 import { getCoinName } from '../../atoms/brand/AppBrandConstant';
+import { Profile } from '../../../types/service/enevti/profile';
+import { numberKMB, parseAmount } from '../../../utils/format/amount';
 
 interface AppProfileHeaderProps {
   navigation: StackNavigationProp<RootStackParamList>;
   persona: Persona;
+  profile: Profile;
 }
 
 export const PROFILE_HEADER_HEIGHT_PERCENTAGE = 42;
@@ -33,6 +36,7 @@ export const PROFILE_HEADER_HEIGHT_PERCENTAGE = 42;
 export default function AppProfileHeader({
   navigation,
   persona,
+  profile,
 }: AppProfileHeaderProps) {
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
@@ -72,21 +76,21 @@ export default function AppProfileHeader({
 
       <View style={styles.profileStatsContainer}>
         <View style={styles.profileStatsItem}>
-          <AppTextHeading3>1.5K</AppTextHeading3>
+          <AppTextHeading3>{numberKMB(profile.nftSold, 2)}</AppTextHeading3>
           <AppTextBody4 style={{ color: theme.colors.placeholder }}>
             {t('profile:nftSold')}
           </AppTextBody4>
         </View>
         <View style={styles.profileStatsDivider} />
         <View style={styles.profileStatsItem}>
-          <AppTextHeading3>54</AppTextHeading3>
+          <AppTextHeading3>{profile.treasuryAct}</AppTextHeading3>
           <AppTextBody4 style={{ color: theme.colors.placeholder }}>
             {t('profile:treasuryAct')}
           </AppTextBody4>
         </View>
         <View style={styles.profileStatsDivider} />
         <View style={styles.profileStatsItem}>
-          <AppTextHeading3>98%</AppTextHeading3>
+          <AppTextHeading3>{profile.serveRate * 100}%</AppTextHeading3>
           <AppTextBody4 style={{ color: theme.colors.placeholder }}>
             {t('profile:serveRate')}
           </AppTextBody4>
@@ -105,7 +109,7 @@ export default function AppProfileHeader({
             style={{
               color: Color(theme.colors.text).darken(0.1).rgb().toString(),
             }}>
-            123.78K {getCoinName()}
+            {parseAmount(profile.stake, true, 2)} {getCoinName()}
           </AppTextBody5>
         </AppTertiaryButton>
         <AppMenuContainer
@@ -127,19 +131,21 @@ export default function AppProfileHeader({
       </View>
 
       <View style={styles.profileHeaderChipsContainer}>
-        <AppQuaternaryButton
-          icon={iconMap.twitter}
-          iconSize={hp('3%', insets)}
-          iconColor={theme.colors.placeholder}
-          style={{
-            marginHorizontal: wp('1%', insets),
-            height: hp('4%', insets),
-          }}
-          onPress={() => console.log('Pressed')}>
-          <AppTextBody4 style={{ color: theme.colors.placeholder }}>
-            1.12K
-          </AppTextBody4>
-        </AppQuaternaryButton>
+        {profile.twitter.username && profile.twitter.follower ? (
+          <AppQuaternaryButton
+            icon={iconMap.twitter}
+            iconSize={hp('3%', insets)}
+            iconColor={theme.colors.placeholder}
+            style={{
+              marginHorizontal: wp('1%', insets),
+              height: hp('4%', insets),
+            }}
+            onPress={() => console.log('Pressed')}>
+            <AppTextBody4 style={{ color: theme.colors.placeholder }}>
+              {numberKMB(profile.twitter.follower, 2)}
+            </AppTextBody4>
+          </AppQuaternaryButton>
+        ) : null}
         <AppQuaternaryButton
           icon={iconMap.wallet}
           iconSize={hp('3%', insets)}
@@ -151,7 +157,7 @@ export default function AppProfileHeader({
           onPress={() => console.log('Pressed')}>
           <View style={styles.profileHeaderChipsContent}>
             <AppTextBody4 style={{ color: theme.colors.placeholder }}>
-              892
+              {parseAmount(profile.balance, true, 2)}
             </AppTextBody4>
             <AppTextBody5
               style={{

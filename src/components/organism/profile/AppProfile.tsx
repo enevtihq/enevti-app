@@ -30,11 +30,11 @@ const notVisible = 0;
 interface AppProfileProps {
   navigation: StackNavigationProp<RootStackParamList>;
   persona: Persona;
+  profile: Profile;
   onScrollWorklet?: (val: number) => void;
   onBeginDragWorklet?: (val: number) => void;
   onEndDragWorklet?: (val: number) => void;
   onMomentumEndWorklet?: (val: number) => void;
-  profile?: Profile;
   headerHeight?: number;
 }
 
@@ -212,7 +212,11 @@ export default function AppProfile({
   return (
     <View>
       <Animated.View style={[styles.profileHeader, scrollStyle]}>
-        <AppProfileHeader persona={persona} navigation={navigation} />
+        <AppProfileHeader
+          persona={persona}
+          profile={profile}
+          navigation={navigation}
+        />
       </Animated.View>
       <AppProfileBody
         headerHeight={headerHeight}

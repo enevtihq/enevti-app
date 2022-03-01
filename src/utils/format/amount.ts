@@ -24,15 +24,15 @@ export function bigNumberKMB(num: BigNumber, decimal?: number): string {
   } else if (num.isGreaterThan(999) && num.isLessThan(1000000)) {
     return decimal
       ? num.div(1000).decimalPlaces(decimal).toString() + 'K'
-      : num.toString() + 'K';
+      : num.div(1000).toString() + 'K';
   } else if (num.isGreaterThan(999999) && num.isLessThan(1000000000)) {
     return decimal
       ? num.div(1000000).decimalPlaces(decimal).toString() + 'M'
-      : num.toString() + 'M';
+      : num.div(1000000).toString() + 'M';
   } else if (num.isGreaterThan(999999999)) {
     return decimal
       ? num.div(1000000000).decimalPlaces(decimal).toString() + 'B'
-      : num.toString() + 'B';
+      : num.div(1000000000).toString() + 'B';
   } else {
     return 'unknown';
   }
@@ -44,15 +44,15 @@ export function numberKMB(num: number, decimal?: number): string {
   } else if (num > 999 && num < 1000000) {
     return decimal
       ? (num / 1000).toFixed(decimal).toString() + 'K'
-      : num.toString() + 'K';
+      : (num / 1000).toString() + 'K';
   } else if (num > 999999 && num < 1000000000) {
     return decimal
       ? (num / 1000000).toFixed(decimal).toString() + 'M'
-      : num.toString() + 'M';
+      : (num / 1000000).toString() + 'M';
   } else if (num > 999999999) {
     return decimal
       ? (num / 1000000000).toFixed(decimal).toString() + 'B'
-      : num.toString() + 'B';
+      : (num / 1000000000).toString() + 'B';
   } else {
     return 'unknown';
   }
