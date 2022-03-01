@@ -19,7 +19,7 @@ export default function AppListItem() {
     <View
       style={{
         marginHorizontal: wp('5%', insets),
-        marginBottom: wp('3%', insets),
+        marginBottom: wp('2%', insets),
         backgroundColor: theme.colors.background,
         borderRadius: theme.roundness,
         borderWidth: StyleSheet.hairlineWidth,
