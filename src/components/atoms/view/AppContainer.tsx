@@ -8,7 +8,7 @@ import {
 import { Theme } from '../../../theme/default';
 import { useTheme } from 'react-native-paper';
 import AppStatusBar from './AppStatusBar';
-import color from 'color';
+import Color from 'color';
 import { hp } from '../../../utils/imageRatio';
 import { HEADER_HEIGHT_PERCENTAGE } from './AppHeader';
 
@@ -55,7 +55,7 @@ const makeStyles = (theme: Theme, darken: boolean) =>
     container: {
       flex: 1,
       backgroundColor: darken
-        ? color(theme.colors.background)
+        ? Color(theme.colors.background)
             .darken(theme.dark ? 0.1 : 0.02)
             .rgb()
             .toString()

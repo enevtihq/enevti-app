@@ -1,5 +1,5 @@
 import { Colors } from 'react-native-paper';
-import color from 'color';
+import Color from 'color';
 import configureFonts from './fonts';
 
 const defaultTheme = {
@@ -14,9 +14,9 @@ const defaultTheme = {
     error: '#B00020',
     text: Colors.black.toString(),
     onSurface: '#000000',
-    disabled: color(Colors.black.toString()).alpha(0.26).rgb().string(),
-    placeholder: color(Colors.black.toString()).alpha(0.54).rgb().string(),
-    backdrop: color(Colors.black.toString()).alpha(0.5).rgb().string(),
+    disabled: Color(Colors.black.toString()).alpha(0.26).rgb().string(),
+    placeholder: Color(Colors.black.toString()).alpha(0.54).rgb().string(),
+    backdrop: Color(Colors.black.toString()).alpha(0.5).rgb().string(),
     notification: Colors.pinkA400.toString(),
     card: '#ffffff',
     border: '#ffffff',

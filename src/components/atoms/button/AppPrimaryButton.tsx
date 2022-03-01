@@ -3,7 +3,7 @@ import { StyleProp, ViewStyle, StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { ActivityIndicator, Button } from 'react-native-paper';
 import { useTheme } from 'react-native-paper';
-import color from 'color';
+import Color from 'color';
 import { IconSource } from 'react-native-paper/lib/typescript/components/Icon';
 
 import { Theme } from '../../../theme/default';
@@ -31,10 +31,10 @@ export default function AppPrimaryButton({
   const insets = useSafeAreaInsets();
   const styles = makeStyles(theme, insets);
   const primary = disabled
-    ? color('black').alpha(0.5).rgb().string()
+    ? Color('black').alpha(0.5).rgb().string()
     : theme.colors.primary;
   const secondary = disabled
-    ? color('black').alpha(0.5).rgb().string()
+    ? Color('black').alpha(0.5).rgb().string()
     : theme.colors.secondary;
 
   return (

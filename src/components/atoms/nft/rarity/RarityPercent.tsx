@@ -4,7 +4,7 @@ import { NFTBase } from '../../../../types/nft';
 import { TemplateArgs } from '../../../../types/nft/NFTTemplate';
 import { useTheme } from 'react-native-paper';
 import { Theme } from 'react-native-paper/lib/typescript/types';
-import color from 'color';
+import Color from 'color';
 
 interface RarityPercentProps {
   nft: NFTBase;
@@ -51,6 +51,6 @@ const makeStyle = (args: TemplateArgs, theme: Theme) =>
       transform: [{ rotate: args.rotate }],
       fontFamily: theme.fonts.medium.fontFamily,
       fontWeight: Platform.OS === 'ios' ? '500' : '700',
-      color: color('black').alpha(0.5).rgb().toString(),
+      color: Color('black').alpha(0.5).rgb().toString(),
     },
   });

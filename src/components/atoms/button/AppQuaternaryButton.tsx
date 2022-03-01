@@ -6,7 +6,7 @@ import { hp, SafeAreaInsets, wp } from '../../../utils/imageRatio';
 
 import { Theme } from '../../../theme/default';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import color from 'color';
+import Color from 'color';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 interface AppQuaternaryButtonProps {
@@ -77,7 +77,7 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets, box: boolean) =>
     },
     buttonContainer: {
       borderWidth: box ? StyleSheet.hairlineWidth : 0,
-      borderColor: color(theme.colors.text).alpha(0.2).rgb().toString(),
+      borderColor: Color(theme.colors.text).alpha(0.2).rgb().toString(),
       borderRadius: theme.roundness,
       height: hp('7.5%', insets),
       alignItems: 'center',

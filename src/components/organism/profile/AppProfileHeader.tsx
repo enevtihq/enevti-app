@@ -8,7 +8,7 @@ import AppTextHeading2 from '../../atoms/text/AppTextHeading2';
 import AppTextBody3 from '../../atoms/text/AppTextBody3';
 import AppTextHeading3 from '../../atoms/text/AppTextHeading3';
 import AppTextBody4 from '../../atoms/text/AppTextBody4';
-import color from 'color';
+import Color from 'color';
 import { useTheme } from '@react-navigation/native';
 import { Theme } from '../../../theme/default';
 import AppTertiaryButton from '../../atoms/button/AppTertiaryButton';
@@ -100,7 +100,7 @@ export default function AppProfileHeader({
           Stake & Insight{'  '}
           <AppTextBody5
             style={{
-              color: color(theme.colors.text).darken(0.1).rgb().toString(),
+              color: Color(theme.colors.text).darken(0.1).rgb().toString(),
             }}>
             123.78K $ENVT
           </AppTextBody5>
@@ -195,7 +195,7 @@ const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
       height: '50%',
       alignSelf: 'center',
       borderWidth: 0.3,
-      borderColor: color(theme.colors.placeholder).alpha(0.1).rgb().toString(),
+      borderColor: Color(theme.colors.placeholder).alpha(0.1).rgb().toString(),
     },
     profileActionContainer: {
       marginTop: hp('2%', insets),

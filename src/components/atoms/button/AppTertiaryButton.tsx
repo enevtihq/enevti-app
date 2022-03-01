@@ -4,7 +4,7 @@ import { ActivityIndicator, Button } from 'react-native-paper';
 import { IconSource } from 'react-native-paper/lib/typescript/components/Icon';
 import { useTheme } from 'react-native-paper';
 import { hp, SafeAreaInsets } from '../../../utils/imageRatio';
-import color from 'color';
+import Color from 'color';
 
 import { Theme } from '../../../theme/default';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -62,7 +62,7 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
     tertiaryLoading: {
       borderStyle: 'solid',
       borderWidth: StyleSheet.hairlineWidth,
-      borderColor: color(theme.dark ? 'white' : 'black')
+      borderColor: Color(theme.dark ? 'white' : 'black')
         .alpha(0.29)
         .rgb()
         .string(),

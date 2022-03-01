@@ -2,7 +2,7 @@ import { View, StyleSheet } from 'react-native';
 import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '@react-navigation/native';
-import color from 'color';
+import Color from 'color';
 import { Theme } from '../../../theme/default';
 import { wp } from '../../../utils/imageRatio';
 import AppAvatarRenderer from '../avatar/AppAvatarRenderer';
@@ -23,7 +23,7 @@ export default function AppListItem() {
         backgroundColor: theme.colors.background,
         borderRadius: theme.roundness,
         borderWidth: StyleSheet.hairlineWidth,
-        borderColor: color(theme.colors.text).alpha(0.05).rgb().toString(),
+        borderColor: Color(theme.colors.text).alpha(0.05).rgb().toString(),
       }}>
       <View
         style={{

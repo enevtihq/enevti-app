@@ -1,4 +1,4 @@
-import color from 'color';
+import Color from 'color';
 import defaultTheme, { Theme } from './default';
 import { Colors } from 'react-native-paper';
 
@@ -16,9 +16,9 @@ const darkTheme: Theme = {
     error: '#CF6679',
     onSurface: '#FFFFFF',
     text: Colors.white.toString(),
-    disabled: color(Colors.white.toString()).alpha(0.38).rgb().string(),
-    placeholder: color(Colors.white.toString()).alpha(0.54).rgb().string(),
-    backdrop: color(Colors.black.toString()).alpha(0.5).rgb().string(),
+    disabled: Color(Colors.white.toString()).alpha(0.38).rgb().string(),
+    placeholder: Color(Colors.white.toString()).alpha(0.54).rgb().string(),
+    backdrop: Color(Colors.black.toString()).alpha(0.5).rgb().string(),
     notification: Colors.pinkA100.toString(),
     card: '#ffffff',
     border: '#ffffff',

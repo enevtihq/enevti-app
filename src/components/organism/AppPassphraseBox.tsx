@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet, ViewStyle, StyleProp } from 'react-native';
 import { TouchableRipple, useTheme } from 'react-native-paper';
 import { SafeAreaInsets, wp } from '../../utils/imageRatio';
-import color from 'color';
+import Color from 'color';
 
 import { Theme } from '../../theme/default';
 import AppTextHeading1 from '../atoms/text/AppTextHeading1';
@@ -64,8 +64,8 @@ const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
     },
     touchBox: {
       backgroundColor: theme.dark
-        ? color(theme.colors.background).lighten(0.6).rgb().toString()
-        : color(theme.colors.background).darken(0.12).rgb().toString(),
+        ? Color(theme.colors.background).lighten(0.6).rgb().toString()
+        : Color(theme.colors.background).darken(0.12).rgb().toString(),
     },
     text: {
       textAlign: 'center',

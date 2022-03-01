@@ -2,7 +2,7 @@ import React from 'react';
 import { TextInputProps } from 'react-native-paper/lib/typescript/components/TextInput/TextInput';
 import { TextInput } from 'react-native-paper';
 import { useTheme } from 'react-native-paper';
-import color from 'color';
+import Color from 'color';
 import { StyleSheet } from 'react-native';
 
 function AppFormTextInput(props: TextInputProps, ref: any) {
@@ -25,8 +25,8 @@ const makeStyles = (theme: ReturnType<typeof useTheme>) =>
     appFormTextInput: {
       borderRadius: theme.roundness,
       backgroundColor: theme.dark
-        ? color(theme.colors.background).lighten(0.6).rgb().toString()
-        : color(theme.colors.background).darken(0.04).rgb().toString(),
+        ? Color(theme.colors.background).lighten(0.6).rgb().toString()
+        : Color(theme.colors.background).darken(0.04).rgb().toString(),
     },
   });
 

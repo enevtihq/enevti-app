@@ -1,4 +1,4 @@
-import color from 'color';
+import Color from 'color';
 import React from 'react';
 import { StyleProp, ViewStyle, StyleSheet, View } from 'react-native';
 import { ActivityIndicator, Button } from 'react-native-paper';
@@ -59,8 +59,8 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
       borderRadius: theme.roundness,
       height: hp('7.5%', insets),
       backgroundColor: theme.dark
-        ? color(theme.colors.background).lighten(0.6).rgb().toString()
-        : color(theme.colors.background).darken(0.12).rgb().toString(),
+        ? Color(theme.colors.background).lighten(0.6).rgb().toString()
+        : Color(theme.colors.background).darken(0.12).rgb().toString(),
     },
     content: {
       height: hp('7.5%', insets),
