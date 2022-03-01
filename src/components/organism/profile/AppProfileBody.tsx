@@ -6,6 +6,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import AppTopTabBar from '../../atoms/view/AppTopTabBar';
 import { PROFILE_HEADER_HEIGHT_PERCENTAGE } from './AppProfileHeader';
 import { useTheme } from 'react-native-paper';
+import Color from 'color';
 import AppTextBody4 from '../../atoms/text/AppTextBody4';
 
 const Tab = createMaterialTopTabNavigator();
@@ -46,6 +47,12 @@ export default function AppProfileBody({
             ]}
           />
         )}
+        sceneContainerStyle={{
+          backgroundColor: Color(theme.colors.background)
+            .darken(theme.dark ? 0.1 : 0.02)
+            .rgb()
+            .toString(),
+        }}
         screenOptions={{
           tabBarStyle: {
             elevation: 0,

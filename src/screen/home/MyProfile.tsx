@@ -54,7 +54,7 @@ export default function MyProfile({
   }, []);
 
   return (
-    <AppView edges={['left', 'right', 'bottom']}>
+    <AppView darken edges={['left', 'right', 'bottom']}>
       <View style={styles.textContainer}>
         <AppProfile
           navigation={navigation}

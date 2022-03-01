@@ -19,6 +19,7 @@ import AppQuaternaryButton from '../../atoms/button/AppQuaternaryButton';
 import AppMenuItem from '../../atoms/menu/AppMenuItem';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../navigation';
+import { HEADER_HEIGHT_PERCENTAGE } from '../../atoms/view/AppHeader';
 
 interface AppProfileHeaderProps {
   navigation: StackNavigationProp<RootStackParamList>;
@@ -39,6 +40,8 @@ export default function AppProfileHeader({
 
   return (
     <View style={styles.profileHeaderContainer}>
+      <View style={styles.safeBackgroundBar} />
+
       <AppAvatarRenderer
         address={persona.address}
         photo={persona.photo}
@@ -163,11 +166,19 @@ export default function AppProfileHeader({
 
 const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
   StyleSheet.create({
+    safeBackgroundBar: {
+      position: 'absolute',
+      top: -hp(HEADER_HEIGHT_PERCENTAGE, insets),
+      width: wp('100%', insets),
+      height: hp(HEADER_HEIGHT_PERCENTAGE, insets),
+      backgroundColor: theme.colors.background,
+    },
     profileHeaderContainer: {
       alignItems: 'center',
       marginVertical: hp('1%', insets),
       height: hp(PROFILE_HEADER_HEIGHT_PERCENTAGE, insets),
       width: wp('100%', insets),
+      backgroundColor: theme.colors.background,
     },
     profileStatsContainer: {
       flexDirection: 'row',
