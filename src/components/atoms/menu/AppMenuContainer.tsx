@@ -2,6 +2,7 @@ import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useFocusEffect } from '@react-navigation/native';
 import React from 'react';
 import { BackHandler, View } from 'react-native';
+import { useTheme } from 'react-native-paper';
 
 interface AppMenuContainerProps {
   visible: boolean;
@@ -20,6 +21,7 @@ export default function AppMenuContainer({
   snapPoints,
   tapEverywhereToDismiss = false,
 }: AppMenuContainerProps) {
+  const theme = useTheme();
   const bottomSheetRef = React.useRef<BottomSheetModal>(null);
   const defaultSnapPoints = React.useMemo(() => ['50%'], []);
   const isVisible = React.useRef(false);
@@ -79,6 +81,7 @@ export default function AppMenuContainer({
         onChange={onChange}
         snapPoints={snapPoints ?? defaultSnapPoints}
         enablePanDownToClose={true}
+        backgroundStyle={{ backgroundColor: theme.colors.background }}
         backdropComponent={renderBackdrop}>
         {children}
       </BottomSheetModal>
