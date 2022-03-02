@@ -12,6 +12,7 @@ import AppSnackbar from '../snackbar/AppSnackbar';
 import { SafeAreaInsets, wp } from '../../../utils/imageRatio';
 import AppKeyboardDismissOnClickView from './AppKeyboardDismissOnClickView';
 import AppContainer from './AppContainer';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 
 interface AppViewProps {
   children: React.ReactNode;
@@ -19,6 +20,7 @@ interface AppViewProps {
   darken?: boolean;
   style?: StyleProp<ViewStyle>;
   dismissKeyboard?: boolean;
+  withModal?: boolean;
   edges?: Edge[];
 }
 
@@ -27,6 +29,7 @@ export default function AppView({
   header,
   style,
   edges,
+  withModal = false,
   darken = false,
   dismissKeyboard = false,
 }: AppViewProps) {
@@ -40,9 +43,17 @@ export default function AppView({
   return (
     <AppKeyboardDismissOnClickView activate={dismissKeyboard}>
       <View style={[styles.view, style]}>
-        <AppContainer header={header} darken={darken} edges={edges}>
-          {children}
-        </AppContainer>
+        {withModal ? (
+          <BottomSheetModalProvider>
+            <AppContainer header={header} darken={darken} edges={edges}>
+              {children}
+            </AppContainer>
+          </BottomSheetModalProvider>
+        ) : (
+          <AppContainer header={header} darken={darken} edges={edges}>
+            {children}
+          </AppContainer>
+        )}
         <AppSnackbar
           mode={snackbarState.mode}
           visible={snackbarState.show}

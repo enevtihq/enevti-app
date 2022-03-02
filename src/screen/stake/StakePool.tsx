@@ -31,11 +31,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../store/state';
 import { selectPersona } from '../../store/slices/entities/persona';
 import { Persona } from '../../types/service/enevti/persona';
-import {
-  BottomSheetBackdrop,
-  BottomSheetModal,
-  BottomSheetModalProvider,
-} from '@gorhom/bottom-sheet';
+import AppMenuContainer from '../../components/atoms/menu/AppMenuContainer';
 
 const AnimatedFlatList =
   Animated.createAnimatedComponent<FlatListProps<StakerItem>>(FlatList);
@@ -53,9 +49,7 @@ export default function StakePool({ navigation, route }: Props) {
   const insets = useSafeAreaInsets();
   const extendedTreshold = hp('10%', insets);
 
-  const bottomSheetRef = React.useRef<BottomSheetModal>(null);
-  const snapPoints = React.useMemo(() => ['50%'], []);
-
+  const [menuVisible, setMenuVisible] = React.useState<boolean>(false);
   const [stakePool, setStakePool] = React.useState<StakePoolData>();
   const [refreshing, setRefreshing] = React.useState<boolean>(false);
   const [extended, setExtended] = React.useState(true);
@@ -124,66 +118,49 @@ export default function StakePool({ navigation, route }: Props) {
     [],
   );
 
-  const renderBackdrop = React.useCallback(
-    props => (
-      <BottomSheetBackdrop
-        {...props}
-        appearsOnIndex={0}
-        disappearsOnIndex={-1}
-        pressBehavior={'none'}
-      />
-    ),
-    [],
-  );
-
   return (
-    <BottomSheetModalProvider>
-      <AppView
-        darken
-        edges={['left', 'bottom', 'right']}
-        header={
-          <AppHeader
-            back
-            navigation={navigation}
-            title={t('stake:stakePool')}
+    <AppView
+      darken
+      withModal
+      edges={['left', 'bottom', 'right']}
+      header={
+        <AppHeader back navigation={navigation} title={t('stake:stakePool')} />
+      }>
+      <AnimatedFlatList
+        onScroll={onScroll}
+        scrollEventThrottle={16}
+        data={stakePool?.staker}
+        renderItem={renderItem}
+        keyExtractor={keyExtractor}
+        removeClippedSubviews={true}
+        initialNumToRender={2}
+        maxToRenderPerBatch={5}
+        updateCellsBatchingPeriod={100}
+        windowSize={5}
+        getItemLayout={getItemLayout}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+        }
+      />
+      <AppMenuContainer
+        visible={menuVisible}
+        onDismiss={() => setMenuVisible(false)}
+        anchor={
+          <AppFloatingActionButton
+            label={selfStake ? t('stake:selfStake') : t('stake:addStake')}
+            icon={iconMap.add}
+            extended={extended}
+            onPress={() => setMenuVisible(true)}
           />
         }>
-        <AppFloatingActionButton
-          label={selfStake ? t('stake:selfStake') : t('stake:addStake')}
-          icon={iconMap.add}
-          extended={extended}
-          onPress={() => bottomSheetRef.current?.present()}
-        />
-        <AnimatedFlatList
-          onScroll={onScroll}
-          scrollEventThrottle={16}
-          data={stakePool?.staker}
-          renderItem={renderItem}
-          keyExtractor={keyExtractor}
-          removeClippedSubviews={true}
-          initialNumToRender={2}
-          maxToRenderPerBatch={5}
-          updateCellsBatchingPeriod={100}
-          windowSize={5}
-          getItemLayout={getItemLayout}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
-          }
-        />
-        <BottomSheetModal
-          ref={bottomSheetRef}
-          snapPoints={snapPoints}
-          enablePanDownToClose={true}
-          backdropComponent={renderBackdrop}>
-          <View
-            style={{
-              flex: 1,
-              alignItems: 'center',
-            }}>
-            <Text>Awesome 🎉</Text>
-          </View>
-        </BottomSheetModal>
-      </AppView>
-    </BottomSheetModalProvider>
+        <View
+          style={{
+            flex: 1,
+            alignItems: 'center',
+          }}>
+          <Text>Awesome 🎉</Text>
+        </View>
+      </AppMenuContainer>
+    </AppView>
   );
 }

@@ -27,6 +27,7 @@ export default function AppMenuItem({
       onPress={onPress}
       title={title}
       titleStyle={[styles.menuTitle, titleStyle]}
+      style={styles.menuItem}
       disabled={disabled}
     />
   );
@@ -38,5 +39,8 @@ const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
       fontFamily: theme.fonts.regular.fontFamily,
       fontWeight: theme.fonts.regular.fontWeight,
       fontSize: wp('4.0%', insets),
+    },
+    menuItem: {
+      maxWidth: '100%',
     },
   });

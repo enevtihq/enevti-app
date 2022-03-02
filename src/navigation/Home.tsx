@@ -31,6 +31,7 @@ import AppAvatarRenderer from '../components/molecules/avatar/AppAvatarRenderer'
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/state';
 import { selectPersona } from '../store/slices/entities/persona';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 
 const Tab = createBottomTabNavigator();
 const TABBAR_HEIGHT_PERCENTAGE = 8;
@@ -211,144 +212,146 @@ export default function Home() {
   );
 
   return (
-    <Tab.Navigator
-      tabBar={props => <AppTabBar {...props} style={tabBarStyle} />}
-      screenOptions={{
-        tabBarStyle: {
-          position: 'absolute',
-          height: tabBarHeight + insets.bottom,
-          backgroundColor: theme.colors.background,
-          borderTopColor: theme.colors.background,
-        },
-      }}>
-      <Tab.Screen
-        name="Feed"
-        listeners={{
-          tabPress: () => {
-            setActiveTab(0);
+    <BottomSheetModalProvider>
+      <Tab.Navigator
+        tabBar={props => <AppTabBar {...props} style={tabBarStyle} />}
+        screenOptions={{
+          tabBarStyle: {
+            position: 'absolute',
+            height: tabBarHeight + insets.bottom,
+            backgroundColor: theme.colors.background,
+            borderTopColor: theme.colors.background,
           },
-        }}
-        options={{
-          tabBarLabel: t('home:feed'),
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons
-              name={iconMap.home}
-              color={color}
-              size={size}
-            />
-          ),
-          tabBarButton: props => (
-            <TouchableRipple
-              {...props}
-              disabled={props.disabled as boolean | undefined}
-            />
-          ),
-          header: () => (
-            <AppHeader style={feedStyle} height={headerHeight}>
-              <AppHeaderAction
-                icon={iconMap.magnify}
-                onPress={() => console.log('pressed')}
-              />
-              <AppHeaderAction
-                icon={iconMap.notification}
-                onPress={() => console.log('pressed')}
-              />
-            </AppHeader>
-          ),
         }}>
-        {props => FeedComponent(props)}
-      </Tab.Screen>
-      <Tab.Screen
-        name="Statistics"
-        listeners={{
-          tabPress: () => {
-            setActiveTab(1);
-          },
-        }}
-        options={{
-          tabBarLabel: t('home:statistics'),
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons
-              name={iconMap.statistics}
-              color={color}
-              size={size}
-            />
-          ),
-          tabBarButton: props => (
-            <TouchableRipple
-              {...props}
-              disabled={props.disabled as boolean | undefined}
-            />
-          ),
-        }}
-        component={Statistics}
-      />
-      <Tab.Screen
-        name="Discover"
-        listeners={{
-          tabPress: () => {
-            setActiveTab(2);
-          },
-        }}
-        options={{
-          tabBarLabel: t('home:apps'),
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons
-              name={iconMap.discover}
-              color={color}
-              size={size}
-            />
-          ),
-          tabBarButton: props => (
-            <TouchableRipple
-              {...props}
-              disabled={props.disabled as boolean | undefined}
-            />
-          ),
-        }}
-        component={Discover}
-      />
-      <Tab.Screen
-        name="MyProfile"
-        listeners={{
-          tabPress: () => {
-            setActiveTab(3);
-          },
-        }}
-        options={{
-          tabBarLabel: t('home:profile'),
-          tabBarIcon: ({ color, size }) => (
-            <AppAvatarRenderer
-              color={color}
-              size={size * 1.1}
-              photo={myPersona?.photo}
-              address={myPersona?.address}
-            />
-          ),
-          tabBarButton: props => (
-            <TouchableRipple
-              {...props}
-              disabled={props.disabled as boolean | undefined}
-            />
-          ),
-          header: () => (
-            <AppHeader
-              style={myProfileStyle}
-              height={headerHeight}
-              title={t('home:profile')}>
-              <AppHeaderAction
-                icon={iconMap.edit}
-                onPress={() => console.log('pressed')}
+        <Tab.Screen
+          name="Feed"
+          listeners={{
+            tabPress: () => {
+              setActiveTab(0);
+            },
+          }}
+          options={{
+            tabBarLabel: t('home:feed'),
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons
+                name={iconMap.home}
+                color={color}
+                size={size}
               />
-              <AppHeaderAction
-                icon={iconMap.setting}
-                onPress={() => console.log('pressed')}
+            ),
+            tabBarButton: props => (
+              <TouchableRipple
+                {...props}
+                disabled={props.disabled as boolean | undefined}
               />
-            </AppHeader>
-          ),
-        }}>
-        {props => MyProfileComponent(props)}
-      </Tab.Screen>
-    </Tab.Navigator>
+            ),
+            header: () => (
+              <AppHeader style={feedStyle} height={headerHeight}>
+                <AppHeaderAction
+                  icon={iconMap.magnify}
+                  onPress={() => console.log('pressed')}
+                />
+                <AppHeaderAction
+                  icon={iconMap.notification}
+                  onPress={() => console.log('pressed')}
+                />
+              </AppHeader>
+            ),
+          }}>
+          {props => FeedComponent(props)}
+        </Tab.Screen>
+        <Tab.Screen
+          name="Statistics"
+          listeners={{
+            tabPress: () => {
+              setActiveTab(1);
+            },
+          }}
+          options={{
+            tabBarLabel: t('home:statistics'),
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons
+                name={iconMap.statistics}
+                color={color}
+                size={size}
+              />
+            ),
+            tabBarButton: props => (
+              <TouchableRipple
+                {...props}
+                disabled={props.disabled as boolean | undefined}
+              />
+            ),
+          }}
+          component={Statistics}
+        />
+        <Tab.Screen
+          name="Discover"
+          listeners={{
+            tabPress: () => {
+              setActiveTab(2);
+            },
+          }}
+          options={{
+            tabBarLabel: t('home:apps'),
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons
+                name={iconMap.discover}
+                color={color}
+                size={size}
+              />
+            ),
+            tabBarButton: props => (
+              <TouchableRipple
+                {...props}
+                disabled={props.disabled as boolean | undefined}
+              />
+            ),
+          }}
+          component={Discover}
+        />
+        <Tab.Screen
+          name="MyProfile"
+          listeners={{
+            tabPress: () => {
+              setActiveTab(3);
+            },
+          }}
+          options={{
+            tabBarLabel: t('home:profile'),
+            tabBarIcon: ({ color, size }) => (
+              <AppAvatarRenderer
+                color={color}
+                size={size * 1.1}
+                photo={myPersona?.photo}
+                address={myPersona?.address}
+              />
+            ),
+            tabBarButton: props => (
+              <TouchableRipple
+                {...props}
+                disabled={props.disabled as boolean | undefined}
+              />
+            ),
+            header: () => (
+              <AppHeader
+                style={myProfileStyle}
+                height={headerHeight}
+                title={t('home:profile')}>
+                <AppHeaderAction
+                  icon={iconMap.edit}
+                  onPress={() => console.log('pressed')}
+                />
+                <AppHeaderAction
+                  icon={iconMap.setting}
+                  onPress={() => console.log('pressed')}
+                />
+              </AppHeader>
+            ),
+          }}>
+          {props => MyProfileComponent(props)}
+        </Tab.Screen>
+      </Tab.Navigator>
+    </BottomSheetModalProvider>
   );
 }
