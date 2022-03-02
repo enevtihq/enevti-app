@@ -1,6 +1,7 @@
 import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
+import { useFocusEffect } from '@react-navigation/native';
 import React from 'react';
-import { View } from 'react-native';
+import { BackHandler, View } from 'react-native';
 
 interface AppMenuContainerProps {
   visible: boolean;
@@ -19,21 +20,39 @@ export default function AppMenuContainer({
 }: AppMenuContainerProps) {
   const bottomSheetRef = React.useRef<BottomSheetModal>(null);
   const defaultSnapPoints = React.useMemo(() => ['50%'], []);
-  const [isVisible, setIsVisible] = React.useState<boolean>(visible);
+  const isVisible = React.useRef(false);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        if (isVisible.current) {
+          bottomSheetRef.current?.dismiss();
+          return true;
+        } else {
+          return false;
+        }
+      };
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
+      return () =>
+        BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+    }, [isVisible]),
+  );
 
   React.useEffect(() => {
     if (visible) {
       bottomSheetRef.current?.present();
+    } else {
+      bottomSheetRef.current?.dismiss();
     }
   }, [visible]);
 
   const onChange = (index: number) => {
     if (index < 0) {
-      setIsVisible(false);
       onDismiss();
+      isVisible.current = false;
     } else {
-      if (!isVisible) {
-        setIsVisible(true);
+      if (!isVisible.current) {
+        isVisible.current = true;
       }
     }
   };

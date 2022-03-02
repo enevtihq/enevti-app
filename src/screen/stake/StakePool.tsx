@@ -92,6 +92,10 @@ export default function StakePool({ navigation, route }: Props) {
     }
   }, [persona.address]);
 
+  const onOpenStakeMenu = React.useCallback(async () => {
+    setMenuVisible(!menuVisible);
+  }, [menuVisible]);
+
   React.useEffect(() => {
     onLoaded();
   }, [onLoaded]);
@@ -150,7 +154,7 @@ export default function StakePool({ navigation, route }: Props) {
             label={selfStake ? t('stake:selfStake') : t('stake:addStake')}
             icon={iconMap.add}
             extended={extended}
-            onPress={() => setMenuVisible(true)}
+            onPress={onOpenStakeMenu}
           />
         }>
         <View
