@@ -38,7 +38,7 @@ export default function AppContainer({
       {header ? (
         <View
           style={{
-            height: hp(
+            marginTop: hp(
               headerHeight ? headerHeight : HEADER_HEIGHT_PERCENTAGE,
               insets,
             ),
