@@ -3,7 +3,9 @@ import React from 'react';
 import { Menu, useTheme } from 'react-native-paper';
 import { Theme } from '../../../theme/default';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { SafeAreaInsets, wp } from '../../../utils/imageRatio';
+import { hp, SafeAreaInsets, wp } from '../../../utils/imageRatio';
+
+export const MENU_ITEM_HEIGHT_PERCENTAGE = 6;
 
 interface AppMenuItemProps {
   onPress: () => void;
@@ -42,5 +44,6 @@ const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
     },
     menuItem: {
       maxWidth: '100%',
+      height: hp(MENU_ITEM_HEIGHT_PERCENTAGE, insets),
     },
   });

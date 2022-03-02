@@ -17,7 +17,9 @@ import AppTextBody5 from '../../atoms/text/AppTextBody5';
 import { iconMap } from '../../atoms/icon/AppIconComponent';
 import AppMenuContainer from '../../atoms/menu/AppMenuContainer';
 import AppQuaternaryButton from '../../atoms/button/AppQuaternaryButton';
-import AppMenuItem from '../../atoms/menu/AppMenuItem';
+import AppMenuItem, {
+  MENU_ITEM_HEIGHT_PERCENTAGE,
+} from '../../atoms/menu/AppMenuItem';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../navigation';
 import { HEADER_HEIGHT_PERCENTAGE } from '../../atoms/view/AppHeader';
@@ -115,8 +117,10 @@ export default function AppProfileHeader({
           </AppTextBody5>
         </AppTertiaryButton>
         <AppMenuContainer
+          tapEverywhereToDismiss
           visible={menuVisible}
           onDismiss={() => setMenuVisible(false)}
+          snapPoints={[`${MENU_ITEM_HEIGHT_PERCENTAGE * 3}%`]}
           anchor={
             <AppQuaternaryButton
               box

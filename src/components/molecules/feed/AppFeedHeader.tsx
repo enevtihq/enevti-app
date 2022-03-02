@@ -15,7 +15,9 @@ import { Divider, useTheme } from 'react-native-paper';
 import { Theme } from '../../../theme/default';
 import AppAvatarRenderer from '../avatar/AppAvatarRenderer';
 import AppMenuContainer from '../../atoms/menu/AppMenuContainer';
-import AppMenuItem from '../../atoms/menu/AppMenuItem';
+import AppMenuItem, {
+  MENU_ITEM_HEIGHT_PERCENTAGE,
+} from '../../atoms/menu/AppMenuItem';
 
 interface AppFeedHeaderProps {
   feed: FeedItem;
@@ -86,8 +88,10 @@ export default function AppFeedHeader({ feed }: AppFeedHeaderProps) {
 
       <View style={styles.headerMoreButtonContainer}>
         <AppMenuContainer
+          tapEverywhereToDismiss
           visible={menuVisible}
           onDismiss={onCloseMenu}
+          snapPoints={[`${MENU_ITEM_HEIGHT_PERCENTAGE * 4}%`]}
           anchor={
             <AppIconButton
               icon={iconMap.dots}

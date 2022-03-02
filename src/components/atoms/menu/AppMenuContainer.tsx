@@ -9,6 +9,7 @@ interface AppMenuContainerProps {
   children: React.ReactNode;
   onDismiss: () => void;
   snapPoints?: string[];
+  tapEverywhereToDismiss?: boolean;
 }
 
 export default function AppMenuContainer({
@@ -17,6 +18,7 @@ export default function AppMenuContainer({
   anchor,
   children,
   snapPoints,
+  tapEverywhereToDismiss = false,
 }: AppMenuContainerProps) {
   const bottomSheetRef = React.useRef<BottomSheetModal>(null);
   const defaultSnapPoints = React.useMemo(() => ['50%'], []);
@@ -63,10 +65,10 @@ export default function AppMenuContainer({
         {...props}
         appearsOnIndex={snapPoints ? snapPoints.length - 1 : 0}
         disappearsOnIndex={-1}
-        pressBehavior={'none'}
+        pressBehavior={tapEverywhereToDismiss ? 'close' : 'none'}
       />
     ),
-    [snapPoints],
+    [snapPoints, tapEverywhereToDismiss],
   );
 
   return (
