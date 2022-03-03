@@ -19,6 +19,7 @@ interface AppHeaderWizardProps {
   modeData?: keyof typeof iconMap;
   image?: JSX.Element;
   back?: boolean;
+  backComponent?: React.ReactNode;
   navigation?: any;
   style?: StyleProp<ViewStyle>;
 }
@@ -30,6 +31,7 @@ export default function AppHeaderWizard({
   mode = 'image',
   modeData,
   back = false,
+  backComponent,
   navigation,
   style,
 }: AppHeaderWizardProps) {
@@ -41,10 +43,14 @@ export default function AppHeaderWizard({
     <View style={[styles.headerContainer, style]}>
       <View style={styles.headerSpace}>
         {back ? (
-          <AppIconButton
-            icon={iconMap.arrowBack}
-            onPress={() => navigation.goBack()}
-          />
+          backComponent ? (
+            backComponent
+          ) : (
+            <AppIconButton
+              icon={iconMap.arrowBack}
+              onPress={() => navigation.goBack()}
+            />
+          )
         ) : null}
       </View>
       {mode === 'icon' && modeData ? (
