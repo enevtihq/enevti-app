@@ -31,7 +31,14 @@ import AppAvatarRenderer from '../components/molecules/avatar/AppAvatarRenderer'
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/state';
 import { selectPersona } from '../store/slices/entities/persona';
+import { selectProfile } from '../store/slices/entities/profile';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import { View } from 'react-native';
+import Color from 'color';
+import AppIconGradient from '../components/molecules/AppIconGradient';
+import { Theme } from '../theme/default';
+import { getProfileCompleteData } from '../service/enevti/profile';
+import isProfileCanCreateNFT from '../utils/profile/isProfileCanCreateNFT';
 
 const Tab = createBottomTabNavigator();
 const TABBAR_HEIGHT_PERCENTAGE = 8;
@@ -39,19 +46,26 @@ const TABBAR_HEIGHT_PERCENTAGE = 8;
 export default function Home() {
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
-  const theme = useTheme();
+  const theme = useTheme() as Theme;
 
   const myPersona = useSelector((state: RootState) =>
     selectPersona(state),
   ) as Persona;
+  const myProfile = useSelector(selectProfile);
+  const canCreateNFT = isProfileCanCreateNFT(myProfile);
 
   const getPersona = async () => {
     await getMyBasePersona();
   };
 
+  const getProfile = React.useCallback(async () => {
+    await getProfileCompleteData(myPersona.address);
+  }, [myPersona.address]);
+
   React.useEffect(() => {
     getPersona();
-  }, []);
+    getProfile();
+  }, [getProfile]);
 
   const [activeTab, setActiveTab] = React.useState<number>(0);
   const headerHeight = hp(HEADER_HEIGHT_PERCENTAGE, insets);
@@ -284,6 +298,44 @@ export default function Home() {
             ),
           }}
           component={Statistics}
+        />
+        <Tab.Screen
+          name="Create NFT"
+          listeners={{
+            tabPress: (event: any) => {
+              event.preventDefault();
+              console.log('create NFT');
+            },
+          }}
+          options={{
+            tabBarLabel: t('home:createNFT'),
+            tabBarLabelStyle: {
+              color: canCreateNFT
+                ? theme.colors.text
+                : Color(theme.colors.text).alpha(0.4).rgb().toString(),
+            },
+            tabBarIcon: ({ size }) =>
+              canCreateNFT ? (
+                <AppIconGradient
+                  name={iconMap.createNFT}
+                  size={size * 1.5}
+                  colors={[theme.colors.primary, theme.colors.secondary]}
+                />
+              ) : (
+                <MaterialCommunityIcons
+                  name={iconMap.createNFT}
+                  color={Color(theme.colors.text).alpha(0.4).rgb().toString()}
+                  size={size * 1.5}
+                />
+              ),
+            tabBarButton: props => (
+              <TouchableRipple
+                {...props}
+                disabled={props.disabled as boolean | undefined}
+              />
+            ),
+          }}
+          component={View}
         />
         <Tab.Screen
           name="Discover"

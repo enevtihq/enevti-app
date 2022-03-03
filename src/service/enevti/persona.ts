@@ -11,6 +11,7 @@ import { lastFetchTreshold } from '../../utils/lastFetch/constant';
 import {
   setPersona,
   setLastFetchPersona,
+  selectPersona,
 } from '../../store/slices/entities/persona';
 
 async function fetchMyPersona(address: string): Promise<Persona> {
@@ -24,10 +25,10 @@ async function fetchMyPersona(address: string): Promise<Persona> {
 
 export async function getMyBasePersona(force = false): Promise<Persona> {
   const now = Date.now();
-  const lastFetch = store.getState().entities.persona.lastFetch;
-  let myPersona: Persona = store.getState().entities.persona;
+  const lastFetch = selectPersona(store.getState()).lastFetch;
+  let myPersona: Persona = selectPersona(store.getState());
 
-  if (force || now - lastFetch > lastFetchTreshold) {
+  if (force || now - lastFetch > lastFetchTreshold.persona) {
     let authToken = store.getState().auth.token;
 
     if (authToken && store.getState().auth.encrypted) {

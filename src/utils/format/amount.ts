@@ -4,6 +4,10 @@ export function basicTokenUnit(amount: string): string {
   return new BigNumber(amount).div(100000000).toString();
 }
 
+export function completeTokenUnit(amount: string | number): string {
+  return new BigNumber(amount).times(100000000).toString();
+}
+
 export function parseAmount(
   amount: string,
   kmb = false,

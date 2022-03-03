@@ -1,9 +1,14 @@
 import { Profile } from '../../types/service/enevti/profile';
+import { store } from '../../store/state';
 import { getDummyNFTData, sleep } from './dummy';
+import {
+  selectProfile,
+  setLastFetchProfile,
+  setProfile,
+} from '../../store/slices/entities/profile';
+import { lastFetchTreshold } from '../../utils/lastFetch/constant';
 
-export async function getProfileCompleteData(
-  address: string,
-): Promise<Profile | undefined> {
+async function fetchMyProfile(address: string): Promise<Profile | undefined> {
   console.log(address);
 
   await sleep(5000);
@@ -34,4 +39,24 @@ export async function getProfileCompleteData(
     onsale: onsaleNFT,
     minted: mintedContainer,
   };
+}
+
+export async function getProfileCompleteData(
+  address: string,
+  force: boolean = false,
+): Promise<Profile | undefined> {
+  const now = Date.now();
+  const lastFetch = selectProfile(store.getState()).lastFetch;
+  let myProfile: Profile = selectProfile(store.getState());
+
+  if (force || now - lastFetch > lastFetchTreshold.profile) {
+    const profileResponse = await fetchMyProfile(address);
+    if (profileResponse) {
+      myProfile = profileResponse;
+      store.dispatch(setLastFetchProfile(now));
+      store.dispatch(setProfile(myProfile));
+    }
+  }
+
+  return myProfile;
 }

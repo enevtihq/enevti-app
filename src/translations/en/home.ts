@@ -1,6 +1,7 @@
 export default {
   feed: 'Home',
   statistics: 'Statistics',
+  createNFT: 'Create NFT',
   apps: 'Apps',
   profile: 'Profile',
   recentMoments: 'Recent Moments',

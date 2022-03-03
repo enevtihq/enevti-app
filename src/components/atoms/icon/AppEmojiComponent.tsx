@@ -45,6 +45,7 @@ export const emojiMap = {
   wallet: UNDEFINED_EMOJI,
   delete: UNDEFINED_EMOJI,
   add: UNDEFINED_EMOJI,
+  createNFT: UNDEFINED_EMOJI,
 };
 
 interface AppEmojiComponentProps {

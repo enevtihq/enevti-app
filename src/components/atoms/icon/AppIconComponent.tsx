@@ -47,6 +47,7 @@ export const iconMap = {
   wallet: 'wallet',
   delete: 'trash-can-outline',
   add: 'plus',
+  createNFT: 'plus-circle',
 };
 
 interface AppIconComponentProps {
