@@ -21,6 +21,7 @@ interface AppViewProps {
   style?: StyleProp<ViewStyle>;
   dismissKeyboard?: boolean;
   withModal?: boolean;
+  withSnackbar?: boolean;
   edges?: Edge[];
 }
 
@@ -30,6 +31,7 @@ export default function AppView({
   style,
   edges,
   withModal = false,
+  withSnackbar = true,
   darken = false,
   dismissKeyboard = false,
 }: AppViewProps) {
@@ -54,14 +56,16 @@ export default function AppView({
             {children}
           </AppContainer>
         )}
-        <AppSnackbar
-          mode={snackbarState.mode}
-          visible={snackbarState.show}
-          style={styles.snackbar}
-          onDismiss={() => dispatch(hideSnackbar())}
-          duration={1500}>
-          {snackbarState.text}
-        </AppSnackbar>
+        {withSnackbar ? (
+          <AppSnackbar
+            mode={snackbarState.mode}
+            visible={snackbarState.show}
+            style={styles.snackbar}
+            onDismiss={() => dispatch(hideSnackbar())}
+            duration={1500}>
+            {snackbarState.text}
+          </AppSnackbar>
+        ) : null}
       </View>
     </AppKeyboardDismissOnClickView>
   );
