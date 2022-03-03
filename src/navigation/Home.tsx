@@ -238,6 +238,11 @@ export default function Home() {
             backgroundColor: theme.colors.background,
             borderTopColor: theme.colors.background,
           },
+          tabBarActiveTintColor: theme.colors.text,
+          tabBarInactiveTintColor: Color(theme.colors.text)
+            .alpha(0.5)
+            .rgb()
+            .toString(),
         }}>
         <Tab.Screen
           name="Feed"
@@ -315,11 +320,6 @@ export default function Home() {
             tabBarBadge:
               canCreateNFT && !onceEligible ? t('home:eligible') : undefined,
             tabBarBadgeStyle: { fontSize: 10 },
-            tabBarLabelStyle: {
-              color: canCreateNFT
-                ? theme.colors.text
-                : Color(theme.colors.text).alpha(0.4).rgb().toString(),
-            },
             tabBarIcon: ({ size }) =>
               canCreateNFT ? (
                 <AppIconGradient
