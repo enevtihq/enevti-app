@@ -9,6 +9,7 @@ interface AppMenuContainerProps {
   anchor: React.ReactNode;
   children: React.ReactNode;
   onDismiss: () => void;
+  enablePanDownToClose?: boolean;
   snapPoints?: string[];
   tapEverywhereToDismiss?: boolean;
 }
@@ -19,6 +20,7 @@ export default function AppMenuContainer({
   anchor,
   children,
   snapPoints,
+  enablePanDownToClose = true,
   tapEverywhereToDismiss = false,
 }: AppMenuContainerProps) {
   const theme = useTheme();
@@ -80,7 +82,7 @@ export default function AppMenuContainer({
         ref={bottomSheetRef}
         onChange={onChange}
         snapPoints={snapPoints ?? defaultSnapPoints}
-        enablePanDownToClose={true}
+        enablePanDownToClose={enablePanDownToClose}
         backgroundStyle={{ backgroundColor: theme.colors.background }}
         backdropComponent={renderBackdrop}>
         {children}
