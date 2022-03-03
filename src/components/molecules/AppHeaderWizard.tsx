@@ -11,16 +11,18 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AppIconGradient from './AppIconGradient';
 import { Theme } from '../../theme/default';
 import AppEmojiComponent, { emojiMap } from '../atoms/icon/AppEmojiComponent';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../navigation';
 
 interface AppHeaderWizardProps {
-  title: string;
-  description: string;
+  title?: string;
+  description?: string;
   mode?: 'icon' | 'emoji' | 'component';
   modeData?: keyof typeof iconMap;
   component?: React.ReactNode;
   back?: boolean;
   backComponent?: React.ReactNode;
-  navigation?: any;
+  navigation?: StackNavigationProp<RootStackParamList>;
   style?: StyleProp<ViewStyle>;
 }
 
@@ -45,12 +47,12 @@ export default function AppHeaderWizard({
         {back ? (
           backComponent ? (
             backComponent
-          ) : (
+          ) : navigation ? (
             <AppIconButton
               icon={iconMap.arrowBack}
               onPress={() => navigation.goBack()}
             />
-          )
+          ) : null
         ) : null}
       </View>
       {mode === 'icon' && modeData ? (
@@ -65,8 +67,12 @@ export default function AppHeaderWizard({
       ) : mode === 'component' && component ? (
         component
       ) : null}
-      <AppTextHeading1 style={styles.headerText1}>{title}</AppTextHeading1>
-      <AppTextBody4 style={styles.body1}>{description}</AppTextBody4>
+      {title ? (
+        <AppTextHeading1 style={styles.headerText1}>{title}</AppTextHeading1>
+      ) : null}
+      {description ? (
+        <AppTextBody4 style={styles.body1}>{description}</AppTextBody4>
+      ) : null}
     </View>
   );
 }
@@ -89,13 +95,13 @@ const makeStyle = (insets: SafeAreaInsets) =>
     },
     headerText1: {
       marginTop: hp('2%', insets),
-      marginBottom: hp('2%', insets),
       alignSelf: 'center',
       textAlign: 'center',
     },
     body1: {
       alignSelf: 'center',
       textAlign: 'center',
+      marginTop: hp('2%', insets),
       marginRight: wp('5%', insets),
       marginLeft: wp('5%', insets),
     },
