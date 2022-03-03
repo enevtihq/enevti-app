@@ -5,6 +5,7 @@ import { useTheme } from '@react-navigation/native';
 import Color from 'color';
 import { Theme } from '../../../theme/default';
 import { SafeAreaInsets, wp } from '../../../utils/imageRatio';
+import { TouchableRipple } from 'react-native-paper';
 
 export const LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE = 2;
 
@@ -13,6 +14,7 @@ interface AppListItemProps {
   style?: StyleProp<ViewStyle>;
   leftContent?: React.ReactNode;
   rightContent?: React.ReactNode;
+  onPress?: () => void;
 }
 
 export default function AppListItem({
@@ -20,6 +22,7 @@ export default function AppListItem({
   style,
   leftContent,
   rightContent,
+  onPress,
 }: AppListItemProps) {
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
@@ -27,11 +30,13 @@ export default function AppListItem({
 
   return (
     <View style={styles.listContainer}>
-      <View style={[styles.itemContainer, style]}>
-        {leftContent}
-        <View style={styles.contentContainer}>{children}</View>
-        {rightContent}
-      </View>
+      <TouchableRipple onPress={onPress}>
+        <View style={[styles.itemContainer, style]}>
+          {leftContent}
+          <View style={styles.contentContainer}>{children}</View>
+          {rightContent}
+        </View>
+      </TouchableRipple>
     </View>
   );
 }
@@ -45,6 +50,7 @@ const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
       borderRadius: theme.roundness,
       borderWidth: StyleSheet.hairlineWidth,
       borderColor: Color(theme.colors.text).alpha(0.05).rgb().toString(),
+      overflow: 'hidden',
     },
     itemContainer: {
       flexDirection: 'row',

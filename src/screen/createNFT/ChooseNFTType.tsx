@@ -15,6 +15,11 @@ import AppIconGradient from '../../components/molecules/AppIconGradient';
 import { iconMap } from '../../components/atoms/icon/AppIconComponent';
 import { Theme } from '../../theme/default';
 import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
+import { showSnackbar } from '../../store/slices/ui/global/snackbar';
+import AppMenuContainer from '../../components/atoms/menu/AppMenuContainer';
+import AppMenuItem from '../../components/atoms/menu/AppMenuItem';
+import { menuItemHeigtPercentage } from '../../utils/layout/menuItemHeigtPercentage';
 
 type Props = StackScreenProps<RootStackParamList, 'ChooseNFTType'>;
 
@@ -24,8 +29,13 @@ export default function ChooseNFTType({ navigation }: Props) {
   const theme = useTheme() as Theme;
   const styles = makeStyle(insets);
 
+  const [oneKindSheetVisible, setOneKindSheetVisible] =
+    React.useState<boolean>(false);
+
+  const dispatch = useDispatch();
+
   return (
-    <AppView>
+    <AppView withModal>
       <AppHeaderWizard
         back
         navigation={navigation}
@@ -44,26 +54,50 @@ export default function ChooseNFTType({ navigation }: Props) {
 
       <View style={{ height: hp('3%', insets) }} />
 
-      <AppListItem
-        style={styles.nftTypeItem}
-        leftContent={
-          <AppIconGradient
-            name={iconMap.nftOneKind}
-            size={40}
-            colors={[theme.colors.primary, theme.colors.secondary]}
-            style={styles.nftTypeIcon}
-          />
+      <AppMenuContainer
+        visible={oneKindSheetVisible}
+        snapPoints={[`${menuItemHeigtPercentage(2)}%`]}
+        tapEverywhereToDismiss={true}
+        onDismiss={() => setOneKindSheetVisible(false)}
+        anchor={
+          <AppListItem
+            style={styles.nftTypeItem}
+            onPress={() => setOneKindSheetVisible(!oneKindSheetVisible)}
+            leftContent={
+              <AppIconGradient
+                name={iconMap.nftOneKind}
+                size={40}
+                colors={[theme.colors.primary, theme.colors.secondary]}
+                style={styles.nftTypeIcon}
+              />
+            }>
+            <AppTextHeading3
+              numberOfLines={1}
+              style={{ width: wp('50%', insets) }}>
+              {t('createNFT:oneKindTitle')}
+            </AppTextHeading3>
+            <AppTextBody4 style={{ color: theme.colors.placeholder }}>
+              {t('createNFT:oneKindDescription')}
+            </AppTextBody4>
+          </AppListItem>
         }>
-        <AppTextHeading3 numberOfLines={1} style={{ width: wp('50%', insets) }}>
-          {t('createNFT:oneKindTitle')}
-        </AppTextHeading3>
-        <AppTextBody4 style={{ color: theme.colors.placeholder }}>
-          {t('createNFT:oneKindDescription')}
-        </AppTextBody4>
-      </AppListItem>
+        <AppMenuItem
+          onPress={() => {}}
+          icon={iconMap.camera}
+          title={t('createNFT:openCamera')}
+        />
+        <AppMenuItem
+          onPress={() => {}}
+          icon={iconMap.gallery}
+          title={t('createNFT:pickFromGallery')}
+        />
+      </AppMenuContainer>
 
       <AppListItem
         style={styles.nftTypeItem}
+        onPress={() =>
+          dispatch(showSnackbar({ mode: 'info', text: 'Coming Soon :)' }))
+        }
         leftContent={
           <AppIconGradient
             name={iconMap.nftPartitioned}

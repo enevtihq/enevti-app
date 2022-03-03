@@ -17,15 +17,14 @@ import AppTextBody5 from '../../atoms/text/AppTextBody5';
 import { iconMap } from '../../atoms/icon/AppIconComponent';
 import AppMenuContainer from '../../atoms/menu/AppMenuContainer';
 import AppQuaternaryButton from '../../atoms/button/AppQuaternaryButton';
-import AppMenuItem, {
-  MENU_ITEM_HEIGHT_PERCENTAGE,
-} from '../../atoms/menu/AppMenuItem';
+import AppMenuItem from '../../atoms/menu/AppMenuItem';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../navigation';
 import { HEADER_HEIGHT_PERCENTAGE } from '../../atoms/view/AppHeader';
 import { getCoinName } from '../../atoms/brand/AppBrandConstant';
 import { Profile } from '../../../types/service/enevti/profile';
 import { numberKMB, parseAmount } from '../../../utils/format/amount';
+import { menuItemHeigtPercentage } from '../../../utils/layout/menuItemHeigtPercentage';
 
 interface AppProfileHeaderProps {
   navigation: StackNavigationProp<RootStackParamList>;
@@ -120,7 +119,7 @@ export default function AppProfileHeader({
           tapEverywhereToDismiss
           visible={menuVisible}
           onDismiss={() => setMenuVisible(false)}
-          snapPoints={[`${MENU_ITEM_HEIGHT_PERCENTAGE * 3}%`]}
+          snapPoints={[`${menuItemHeigtPercentage(2)}%`]}
           anchor={
             <AppQuaternaryButton
               box

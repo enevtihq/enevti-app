@@ -48,6 +48,8 @@ export const iconMap = {
   delete: 'trash-can-outline',
   add: 'plus',
   createNFT: 'plus-circle',
+  camera: 'camera',
+  gallery: 'folder-multiple-image',
 };
 
 interface AppIconComponentProps {

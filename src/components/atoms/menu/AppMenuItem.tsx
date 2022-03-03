@@ -10,6 +10,7 @@ export const MENU_ITEM_HEIGHT_PERCENTAGE = 6;
 interface AppMenuItemProps {
   onPress: () => void;
   title: string;
+  icon?: string;
   disabled?: boolean;
   titleStyle?: StyleProp<TextStyle>;
 }
@@ -17,6 +18,7 @@ interface AppMenuItemProps {
 export default function AppMenuItem({
   onPress,
   title,
+  icon,
   disabled = false,
   titleStyle,
 }: AppMenuItemProps) {
@@ -27,6 +29,7 @@ export default function AppMenuItem({
   return (
     <Menu.Item
       onPress={onPress}
+      icon={icon}
       title={title}
       titleStyle={[styles.menuTitle, titleStyle]}
       style={styles.menuItem}
