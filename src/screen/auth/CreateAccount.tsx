@@ -29,7 +29,7 @@ export default function CreateAccount({ navigation }: Props) {
   return (
     <AppView>
       <AppHeaderWizard
-        image={
+        component={
           <AppBrandBanner widthPercentage={0.5} style={styles.headerImage} />
         }
         title={t('auth:header1')}

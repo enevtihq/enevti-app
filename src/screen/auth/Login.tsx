@@ -71,7 +71,7 @@ export default function Login({ navigation }: Props) {
   return (
     <AppView dismissKeyboard={true}>
       <AppHeaderWizard
-        image={
+        component={
           <AppBrandLogo
             mode={'glow'}
             widthPercentage={0.4}

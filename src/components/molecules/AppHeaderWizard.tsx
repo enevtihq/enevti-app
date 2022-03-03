@@ -15,9 +15,9 @@ import AppEmojiComponent, { emojiMap } from '../atoms/icon/AppEmojiComponent';
 interface AppHeaderWizardProps {
   title: string;
   description: string;
-  mode?: 'icon' | 'emoji' | 'image';
+  mode?: 'icon' | 'emoji' | 'component';
   modeData?: keyof typeof iconMap;
-  image?: JSX.Element;
+  component?: React.ReactNode;
   back?: boolean;
   backComponent?: React.ReactNode;
   navigation?: any;
@@ -25,10 +25,10 @@ interface AppHeaderWizardProps {
 }
 
 export default function AppHeaderWizard({
-  image,
+  component,
   title,
   description,
-  mode = 'image',
+  mode = 'component',
   modeData,
   back = false,
   backComponent,
@@ -62,8 +62,8 @@ export default function AppHeaderWizard({
         />
       ) : mode === 'emoji' && modeData ? (
         <AppEmojiComponent name={emojiMap[modeData]} style={styles.emoji} />
-      ) : mode === 'image' && image ? (
-        image
+      ) : mode === 'component' && component ? (
+        component
       ) : null}
       <AppTextHeading1 style={styles.headerText1}>{title}</AppTextHeading1>
       <AppTextBody4 style={styles.body1}>{description}</AppTextBody4>
