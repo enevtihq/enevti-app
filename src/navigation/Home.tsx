@@ -28,7 +28,7 @@ import { useTranslation } from 'react-i18next';
 import { getMyBasePersona } from '../service/enevti/persona';
 import { Persona } from '../types/service/enevti/persona';
 import AppAvatarRenderer from '../components/molecules/avatar/AppAvatarRenderer';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store/state';
 import { selectPersona } from '../store/slices/entities/persona';
 import { selectProfile } from '../store/slices/entities/profile';
@@ -39,6 +39,10 @@ import AppIconGradient from '../components/molecules/AppIconGradient';
 import { Theme } from '../theme/default';
 import { getProfileCompleteData } from '../service/enevti/profile';
 import isProfileCanCreateNFT from '../utils/profile/isProfileCanCreateNFT';
+import {
+  selectOnceEligible,
+  touchOnceEligible,
+} from '../store/slices/entities/once/eligible';
 
 const Tab = createBottomTabNavigator();
 const TABBAR_HEIGHT_PERCENTAGE = 8;
@@ -47,11 +51,13 @@ export default function Home() {
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
+  const dispatch = useDispatch();
 
   const myPersona = useSelector((state: RootState) =>
     selectPersona(state),
   ) as Persona;
   const myProfile = useSelector(selectProfile);
+  const onceEligible = useSelector(selectOnceEligible);
   const canCreateNFT = isProfileCanCreateNFT(myProfile);
 
   const getPersona = async () => {
@@ -304,11 +310,15 @@ export default function Home() {
           listeners={{
             tabPress: (event: any) => {
               event.preventDefault();
+              dispatch(touchOnceEligible());
               console.log('create NFT');
             },
           }}
           options={{
             tabBarLabel: t('home:createNFT'),
+            tabBarBadge:
+              canCreateNFT && !onceEligible ? t('home:eligible') : undefined,
+            tabBarBadgeStyle: { fontSize: 10 },
             tabBarLabelStyle: {
               color: canCreateNFT
                 ? theme.colors.text

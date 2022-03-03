@@ -2,6 +2,7 @@ export default {
   feed: 'Home',
   statistics: 'Statistics',
   createNFT: 'Create NFT',
+  eligible: 'eligible',
   apps: 'Apps',
   profile: 'Profile',
   recentMoments: 'Recent Moments',
