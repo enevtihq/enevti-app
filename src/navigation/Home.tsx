@@ -370,17 +370,17 @@ export default function Home({ navigation }: Props) {
               event.preventDefault();
               if (canCreateNFT) {
                 !onceEligible && dispatch(touchOnceEligible());
+                navigation.navigate('ChooseNFTType');
               } else {
                 setUndeligibleSheetVisible(!uneligibleSheetVisible);
               }
-              console.log('create NFT');
             },
           }}
           options={{
             tabBarLabel: t('home:createNFT'),
             tabBarBadge:
               canCreateNFT && !onceEligible ? t('home:eligible') : undefined,
-            tabBarBadgeStyle: { fontSize: 10 },
+            tabBarBadgeStyle: { fontSize: hp('1.2%', insets) },
             tabBarIcon: ({ size }) =>
               canCreateNFT ? (
                 <AppIconGradient

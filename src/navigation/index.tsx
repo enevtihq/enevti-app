@@ -20,6 +20,7 @@ import SetupGoogleBinderPassword from '../screen/auth/SetupGoogleBinderPassword'
 import Home from './Home';
 import StakePool from '../screen/stake/StakePool';
 import { Persona } from '../types/service/enevti/persona';
+import ChooseNFTType from '../screen/createNFT/ChooseNFTType';
 
 export type RootStackParamList = {
   CreateAccount: undefined;
@@ -39,6 +40,7 @@ export type RootStackParamList = {
   StakePool: {
     persona: Persona;
   };
+  ChooseNFTType: undefined;
 };
 
 const Stack = createStackNavigator();
@@ -122,6 +124,14 @@ export default function AppNavigationContainer() {
         <Stack.Screen
           name="StakePool"
           component={StakePool}
+          options={{
+            headerShown: false,
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          }}
+        />
+        <Stack.Screen
+          name="ChooseNFTType"
+          component={ChooseNFTType}
           options={{
             headerShown: false,
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,

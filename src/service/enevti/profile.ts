@@ -30,7 +30,7 @@ async function fetchProfile(address: string): Promise<Profile | undefined> {
     nftSold: 1500,
     treasuryAct: 54,
     serveRate: 0.98,
-    stake: '13400000000',
+    stake: '132400000000',
     balance: '15400000000',
     twitter: {
       username: '@aldhosutra',
