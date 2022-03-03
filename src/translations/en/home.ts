@@ -3,6 +3,11 @@ export default {
   statistics: 'Statistics',
   createNFT: 'Create NFT',
   eligible: 'eligible',
+  notEligible: "You can't create NFT, yet!",
+  notEligibleDescription:
+    'Get at least {{minimumStake}} {{coin}} stake to proof yourself as a community-driven NFT creator!',
+  notEligibleOKButton: 'Got It',
+  notEligibleGoToStake: 'Go to my stake pool',
   apps: 'Apps',
   profile: 'Profile',
   recentMoments: 'Recent Moments',

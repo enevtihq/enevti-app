@@ -19,7 +19,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 import { diffClamp } from '../utils/animation';
 import AppTabBar from '../components/atoms/view/AppTabBar';
-import { hp } from '../utils/imageRatio';
+import { hp, SafeAreaInsets, wp } from '../utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AppHeaderAction from '../components/atoms/view/AppHeaderAction';
 import { iconMap } from '../components/atoms/icon/AppIconComponent';
@@ -31,25 +31,39 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectPersona } from '../store/slices/entities/persona';
 import { selectProfile } from '../store/slices/entities/profile';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import { Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import Color from 'color';
 import AppIconGradient from '../components/molecules/AppIconGradient';
 import { Theme } from '../theme/default';
 import { getMyProfile } from '../service/enevti/profile';
-import isProfileCanCreateNFT from '../utils/profile/isProfileCanCreateNFT';
+import isProfileCanCreateNFT, {
+  MINIMUM_BASIC_UNIT_STAKE_ELIGIBILITY,
+} from '../utils/profile/isProfileCanCreateNFT';
 import {
   selectOnceEligible,
   touchOnceEligible,
 } from '../store/slices/entities/once/eligible';
 import AppMenuContainer from '../components/atoms/menu/AppMenuContainer';
+import AppHeaderWizard from '../components/molecules/AppHeaderWizard';
+
+import NotEligibleIMG from '../assets/svg/undraw_stand_out_-1-oag.svg';
+import { getCoinName } from '../components/atoms/brand/AppBrandConstant';
+import AppSecondaryButton from '../components/atoms/button/AppSecondaryButton';
+import AppQuaternaryButton from '../components/atoms/button/AppQuaternaryButton';
+import AppTextBody4 from '../components/atoms/text/AppTextBody4';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '.';
 
 const Tab = createBottomTabNavigator();
 const TABBAR_HEIGHT_PERCENTAGE = 8;
 
-export default function Home() {
+type Props = StackScreenProps<RootStackParamList, 'Home'>;
+
+export default function Home({ navigation }: Props) {
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
+  const styles = makeStyle(insets);
   const dispatch = useDispatch();
 
   const myPersona = useSelector(selectPersona);
@@ -235,13 +249,40 @@ export default function Home() {
       {canCreateNFT ? null : (
         <AppMenuContainer
           visible={uneligibleSheetVisible}
+          snapPoints={['70%']}
           onDismiss={() => setUndeligibleSheetVisible(false)}>
-          <View
-            style={{
-              flex: 1,
-              alignItems: 'center',
-            }}>
-            <Text>Awesome 🎉</Text>
+          <AppHeaderWizard
+            component={
+              <View style={styles.notEligibleImage}>
+                <NotEligibleIMG
+                  width={wp('80%', insets)}
+                  height={hp('20%', insets)}
+                />
+              </View>
+            }
+            style={styles.notEligibleContainer}
+            title={t('home:notEligible')}
+            description={t('home:notEligibleDescription', {
+              minimumStake: MINIMUM_BASIC_UNIT_STAKE_ELIGIBILITY,
+              coin: getCoinName(),
+            })}
+          />
+          <View style={{ padding: wp('10%', insets) }}>
+            <AppSecondaryButton
+              onPress={() => setUndeligibleSheetVisible(false)}>
+              {t('home:notEligibleOKButton')}
+            </AppSecondaryButton>
+            <View style={{ height: hp('1%', insets) }} />
+            <AppQuaternaryButton
+              contentStyle={styles.notEligibleGoToStakeButton}
+              onPress={() => {
+                setUndeligibleSheetVisible(false);
+                navigation.navigate('StakePool', { persona: myPersona });
+              }}>
+              <AppTextBody4 style={{ color: theme.colors.primary }}>
+                {t('home:notEligibleGoToStake')}
+              </AppTextBody4>
+            </AppQuaternaryButton>
           </View>
         </AppMenuContainer>
       )}
@@ -433,3 +474,21 @@ export default function Home() {
     </BottomSheetModalProvider>
   );
 }
+
+const makeStyle = (insets: SafeAreaInsets) =>
+  StyleSheet.create({
+    notEligibleImage: {
+      alignSelf: 'center',
+    },
+    notEligibleContainer: {
+      width: wp('90%', insets),
+      alignSelf: 'center',
+      flex: 0,
+    },
+    notEligibleGoToStakeButton: {
+      width: '100%',
+      height: '100%',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+  });
