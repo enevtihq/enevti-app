@@ -30,7 +30,7 @@ export const iconMap = {
   likeInactive: 'heart-outline',
   comment: 'comment-outline',
   buy: 'basket-outline',
-  nftPartitioned: 'puzzle-outline',
+  nftPartitioned: 'puzzle',
   nftOneKind: 'star',
   nftUpgradable: 'chevron-triple-up',
   utilityVideoCall: 'video-account',

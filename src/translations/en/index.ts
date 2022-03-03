@@ -5,6 +5,7 @@ import google from './google';
 import home from './home';
 import profile from './profile';
 import stake from './stake';
+import createNFT from './createNFT';
 
 export default {
   auth,
@@ -14,4 +15,5 @@ export default {
   home,
   profile,
   stake,
+  createNFT,
 };

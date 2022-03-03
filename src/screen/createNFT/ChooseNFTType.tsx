@@ -14,10 +14,12 @@ import { useTheme } from 'react-native-paper';
 import AppIconGradient from '../../components/molecules/AppIconGradient';
 import { iconMap } from '../../components/atoms/icon/AppIconComponent';
 import { Theme } from '../../theme/default';
+import { useTranslation } from 'react-i18next';
 
 type Props = StackScreenProps<RootStackParamList, 'ChooseNFTType'>;
 
 export default function ChooseNFTType({ navigation }: Props) {
+  const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
   const styles = makeStyle(insets);
@@ -31,14 +33,12 @@ export default function ChooseNFTType({ navigation }: Props) {
           <View style={styles.headerImage}>
             <ChooseNFTTypeIMG
               width={wp('80%', insets)}
-              height={hp('20%', insets)}
+              height={hp('18%', insets)}
             />
           </View>
         }
-        title={'Choose NFT Type'}
-        description={
-          'Every single NFT is unique! Choose how you will turn your creation into NFT!'
-        }
+        title={t('createNFT:chooseNFTTypeTitle')}
+        description={t('createNFT:chooseNFTTypeDescription')}
         style={styles.header}
       />
 
@@ -55,10 +55,10 @@ export default function ChooseNFTType({ navigation }: Props) {
           />
         }>
         <AppTextHeading3 numberOfLines={1} style={{ width: wp('50%', insets) }}>
-          One of a Kind
+          {t('createNFT:oneKindTitle')}
         </AppTextHeading3>
         <AppTextBody4 style={{ color: theme.colors.placeholder }}>
-          Create NFT based on one image
+          {t('createNFT:oneKindDescription')}
         </AppTextBody4>
       </AppListItem>
 
@@ -73,10 +73,10 @@ export default function ChooseNFTType({ navigation }: Props) {
           />
         }>
         <AppTextHeading3 numberOfLines={1} style={{ width: wp('50%', insets) }}>
-          Pack
+          {t('createNFT:packTitle')}
         </AppTextHeading3>
         <AppTextBody4 style={{ color: theme.colors.placeholder }}>
-          Create NFT based on many image with gamification option
+          {t('createNFT:packDescription')}
         </AppTextBody4>
       </AppListItem>
     </AppView>
