@@ -22,7 +22,6 @@ import AppView from '../../components/atoms/view/AppView';
 import AppCheckbox from '../../components/atoms/form/AppCheckbox';
 import { hp, wp, SafeAreaInsets } from '../../utils/imageRatio';
 import AppBrandLogo from '../../components/atoms/brand/AppBrandLogo';
-import { RootState } from '../../store/state';
 import { setLocalSessionKey } from '../../store/slices/session/local';
 import {
   selectAuthState,
@@ -38,7 +37,7 @@ const validationSchema = Yup.object().shape({
 });
 
 export default function Login({ navigation }: Props) {
-  const authState = useSelector((state: RootState) => selectAuthState(state));
+  const authState = useSelector(selectAuthState);
   const dispatch = useDispatch();
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();

@@ -15,7 +15,6 @@ import ImportPassphrase from '../screen/auth/ImportPassphrase';
 import Login from '../screen/auth/Login';
 
 import { getTheme } from '../theme';
-import { RootState } from '../store/state';
 import { selectAuthState } from '../store/slices/auth';
 import SetupGoogleBinderPassword from '../screen/auth/SetupGoogleBinderPassword';
 import Home from './Home';
@@ -46,7 +45,7 @@ const Stack = createStackNavigator();
 
 export default function AppNavigationContainer() {
   const colorScheme = useColorScheme();
-  const auth = useSelector((state: RootState) => selectAuthState(state));
+  const auth = useSelector(selectAuthState);
   const initialRoute = auth.encrypted
     ? 'Login'
     : auth.token

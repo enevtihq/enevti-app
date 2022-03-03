@@ -28,9 +28,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { iconMap } from '../../components/atoms/icon/AppIconComponent';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../store/state';
 import { selectPersona } from '../../store/slices/entities/persona';
-import { Persona } from '../../types/service/enevti/persona';
 import AppMenuContainer from '../../components/atoms/menu/AppMenuContainer';
 
 const AnimatedFlatList =
@@ -40,9 +38,7 @@ type Props = StackScreenProps<RootStackParamList, 'StakePool'>;
 
 export default function StakePool({ navigation, route }: Props) {
   const { persona } = route.params;
-  const myPersona = useSelector((state: RootState) =>
-    selectPersona(state),
-  ) as Persona;
+  const myPersona = useSelector(selectPersona);
   const selfStake = persona.address === myPersona.address;
 
   const { t } = useTranslation();

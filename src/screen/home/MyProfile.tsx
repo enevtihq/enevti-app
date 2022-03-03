@@ -4,7 +4,6 @@ import AppView from '../../components/atoms/view/AppView';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../store/state';
 import { selectPersona } from '../../store/slices/entities/persona';
 import { Profile } from '../../types/service/enevti/profile';
 import { getProfileCompleteData } from '../../service/enevti/profile';
@@ -30,7 +29,7 @@ export default function MyProfile({
   headerHeight = 0,
 }: MyProfileProps) {
   const styles = makeStyle();
-  const myPersona = useSelector((state: RootState) => selectPersona(state));
+  const myPersona = useSelector(selectPersona);
   const [profileData, setProfileData] = React.useState<Profile>();
 
   const onFeedScreenLoaded = async () => {

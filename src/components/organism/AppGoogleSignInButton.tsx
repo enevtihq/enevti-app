@@ -7,7 +7,6 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import YupPassword from 'yup-password';
 
-import { RootState } from '../../store/state';
 import {
   getGoogleAccessToken,
   googleInit,
@@ -57,9 +56,7 @@ export default function AppGoogleSignInButton({
   const dispatch = useDispatch();
   const insets = useSafeAreaInsets();
   const styles = makeStyle(insets);
-  const apiToken = useSelector((state: RootState) =>
-    selectGoogleAPITokenState(state),
-  );
+  const apiToken = useSelector(selectGoogleAPITokenState);
   const [isLoadingGoogle, setIsLoadingGoogle] = React.useState<boolean>(false);
   const [showInputGoogleDialog, setShowInputGoogleDialog] =
     React.useState<boolean>(false);

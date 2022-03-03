@@ -26,10 +26,8 @@ import { iconMap } from '../components/atoms/icon/AppIconComponent';
 import { TouchableRipple, useTheme } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import { getMyBasePersona } from '../service/enevti/persona';
-import { Persona } from '../types/service/enevti/persona';
 import AppAvatarRenderer from '../components/molecules/avatar/AppAvatarRenderer';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../store/state';
 import { selectPersona } from '../store/slices/entities/persona';
 import { selectProfile } from '../store/slices/entities/profile';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
@@ -53,9 +51,7 @@ export default function Home() {
   const theme = useTheme() as Theme;
   const dispatch = useDispatch();
 
-  const myPersona = useSelector((state: RootState) =>
-    selectPersona(state),
-  ) as Persona;
+  const myPersona = useSelector(selectPersona);
   const myProfile = useSelector(selectProfile);
   const onceEligible = useSelector(selectOnceEligible);
   const canCreateNFT = isProfileCanCreateNFT(myProfile);

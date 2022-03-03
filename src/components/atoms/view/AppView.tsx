@@ -7,7 +7,6 @@ import {
   hideSnackbar,
   selectSnackBarState,
 } from '../../../store/slices/ui/global/snackbar';
-import { RootState } from '../../../store/state';
 import AppSnackbar from '../snackbar/AppSnackbar';
 import { SafeAreaInsets, wp } from '../../../utils/imageRatio';
 import AppKeyboardDismissOnClickView from './AppKeyboardDismissOnClickView';
@@ -37,9 +36,7 @@ export default function AppView({
 }: AppViewProps) {
   const insets = useSafeAreaInsets();
   const styles = makeStyles(insets);
-  const snackbarState = useSelector((state: RootState) =>
-    selectSnackBarState(state),
-  );
+  const snackbarState = useSelector(selectSnackBarState);
   const dispatch = useDispatch();
 
   return (
