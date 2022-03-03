@@ -7,8 +7,9 @@ import {
   setProfile,
 } from '../../store/slices/entities/profile';
 import { lastFetchTreshold } from '../../utils/lastFetch/constant';
+import { getMyAddress } from './persona';
 
-async function fetchMyProfile(address: string): Promise<Profile | undefined> {
+async function fetchProfile(address: string): Promise<Profile | undefined> {
   console.log(address);
 
   await sleep(5000);
@@ -29,7 +30,7 @@ async function fetchMyProfile(address: string): Promise<Profile | undefined> {
     nftSold: 1500,
     treasuryAct: 54,
     serveRate: 0.98,
-    stake: '132400000000',
+    stake: '13400000000',
     balance: '15400000000',
     twitter: {
       username: '@aldhosutra',
@@ -41,7 +42,7 @@ async function fetchMyProfile(address: string): Promise<Profile | undefined> {
   };
 }
 
-export async function getProfileCompleteData(
+export async function getProfile(
   address: string,
   force: boolean = false,
 ): Promise<Profile | undefined> {
@@ -50,7 +51,7 @@ export async function getProfileCompleteData(
   let myProfile: Profile = selectProfile(store.getState());
 
   if (force || now - lastFetch > lastFetchTreshold.profile) {
-    const profileResponse = await fetchMyProfile(address);
+    const profileResponse = await fetchProfile(address);
     if (profileResponse) {
       myProfile = profileResponse;
       store.dispatch(setLastFetchProfile(now));
@@ -59,4 +60,9 @@ export async function getProfileCompleteData(
   }
 
   return myProfile;
+}
+
+export async function getMyProfile(force: boolean = false) {
+  const myAddress = await getMyAddress();
+  return await getProfile(myAddress, force);
 }

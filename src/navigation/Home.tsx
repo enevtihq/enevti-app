@@ -31,16 +31,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectPersona } from '../store/slices/entities/persona';
 import { selectProfile } from '../store/slices/entities/profile';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import { View } from 'react-native';
+import { Text, View } from 'react-native';
 import Color from 'color';
 import AppIconGradient from '../components/molecules/AppIconGradient';
 import { Theme } from '../theme/default';
-import { getProfileCompleteData } from '../service/enevti/profile';
+import { getMyProfile } from '../service/enevti/profile';
 import isProfileCanCreateNFT from '../utils/profile/isProfileCanCreateNFT';
 import {
   selectOnceEligible,
   touchOnceEligible,
 } from '../store/slices/entities/once/eligible';
+import AppMenuContainer from '../components/atoms/menu/AppMenuContainer';
 
 const Tab = createBottomTabNavigator();
 const TABBAR_HEIGHT_PERCENTAGE = 8;
@@ -61,14 +62,16 @@ export default function Home() {
   };
 
   const getProfile = React.useCallback(async () => {
-    await getProfileCompleteData(myPersona.address);
-  }, [myPersona.address]);
+    await getMyProfile();
+  }, []);
 
   React.useEffect(() => {
     getPersona();
     getProfile();
   }, [getProfile]);
 
+  const [uneligibleSheetVisible, setUndeligibleSheetVisible] =
+    React.useState<boolean>(false);
   const [activeTab, setActiveTab] = React.useState<number>(0);
   const headerHeight = hp(HEADER_HEIGHT_PERCENTAGE, insets);
   const tabBarHeight = hp(TABBAR_HEIGHT_PERCENTAGE, insets);
@@ -229,6 +232,19 @@ export default function Home() {
 
   return (
     <BottomSheetModalProvider>
+      {canCreateNFT ? null : (
+        <AppMenuContainer
+          visible={uneligibleSheetVisible}
+          onDismiss={() => setUndeligibleSheetVisible(false)}>
+          <View
+            style={{
+              flex: 1,
+              alignItems: 'center',
+            }}>
+            <Text>Awesome 🎉</Text>
+          </View>
+        </AppMenuContainer>
+      )}
       <Tab.Navigator
         tabBar={props => <AppTabBar {...props} style={tabBarStyle} />}
         screenOptions={{
@@ -311,7 +327,11 @@ export default function Home() {
           listeners={{
             tabPress: (event: any) => {
               event.preventDefault();
-              !onceEligible && dispatch(touchOnceEligible());
+              if (canCreateNFT) {
+                !onceEligible && dispatch(touchOnceEligible());
+              } else {
+                setUndeligibleSheetVisible(!uneligibleSheetVisible);
+              }
               console.log('create NFT');
             },
           }}

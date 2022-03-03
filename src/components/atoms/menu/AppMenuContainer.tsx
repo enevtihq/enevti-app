@@ -6,9 +6,9 @@ import { useTheme } from 'react-native-paper';
 
 interface AppMenuContainerProps {
   visible: boolean;
-  anchor: React.ReactNode;
   children: React.ReactNode;
   onDismiss: () => void;
+  anchor?: React.ReactNode;
   enablePanDownToClose?: boolean;
   snapPoints?: string[];
   tapEverywhereToDismiss?: boolean;

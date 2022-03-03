@@ -30,8 +30,8 @@ const notVisible = 0;
 
 interface AppProfileProps {
   navigation: StackNavigationProp<RootStackParamList>;
-  persona?: Persona;
-  profile?: Profile;
+  persona: Persona;
+  profile: Profile;
   onScrollWorklet?: (val: number) => void;
   onBeginDragWorklet?: (val: number) => void;
   onEndDragWorklet?: (val: number) => void;
@@ -172,6 +172,7 @@ export default function AppProfile({
     () => (
       <OwnedNFTComponent
         ref={ownedRef}
+        persona={persona}
         onScroll={ownedScrollHandler}
         scrollEnabled={ownedMounted && onSaleMounted ? true : false}
         headerHeight={headerHeight}
@@ -186,6 +187,7 @@ export default function AppProfile({
       ownedScrollHandler,
       ownedMounted,
       onSaleMounted,
+      persona,
     ],
   );
 
@@ -193,6 +195,7 @@ export default function AppProfile({
     () => (
       <OnSaleNFTComponent
         ref={onSaleRef}
+        persona={persona}
         onScroll={onSaleScrollHandler}
         scrollEnabled={ownedMounted && onSaleMounted ? true : false}
         headerHeight={headerHeight}
@@ -207,6 +210,7 @@ export default function AppProfile({
       onSaleScrollHandler,
       ownedMounted,
       onSaleMounted,
+      persona,
     ],
   );
 

@@ -15,10 +15,14 @@ const personaEntitySlice = createSlice({
     setLastFetchPersona: (persona, action: PayloadAction<number>) => {
       persona.lastFetch = action.payload;
     },
+    setPersonaAddress: (persona, action: PayloadAction<string>) => {
+      persona.address = action.payload;
+    },
   },
 });
 
-export const { setPersona, setLastFetchPersona } = personaEntitySlice.actions;
+export const { setPersona, setLastFetchPersona, setPersonaAddress } =
+  personaEntitySlice.actions;
 export default personaEntitySlice.reducer;
 
 export const selectPersona = createSelector(

@@ -5,8 +5,8 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation';
 import { useSelector } from 'react-redux';
 import { selectPersona } from '../../store/slices/entities/persona';
-import { Profile } from '../../types/service/enevti/profile';
-import { getProfileCompleteData } from '../../service/enevti/profile';
+import { selectProfile } from '../../store/slices/entities/profile';
+import { getMyProfile } from '../../service/enevti/profile';
 import { handleError } from '../../utils/error/handle';
 import AppProfile from '../../components/organism/profile/AppProfile';
 
@@ -30,14 +30,11 @@ export default function MyProfile({
 }: MyProfileProps) {
   const styles = makeStyle();
   const myPersona = useSelector(selectPersona);
-  const [profileData, setProfileData] = React.useState<Profile>();
+  const profileData = useSelector(selectProfile);
 
   const onFeedScreenLoaded = async () => {
     try {
-      const profile = await getProfileCompleteData(myPersona.address);
-      if (profile) {
-        setProfileData(profile);
-      }
+      await getMyProfile();
     } catch (err: any) {
       handleError(err);
     }
@@ -49,7 +46,6 @@ export default function MyProfile({
     } catch (err: any) {
       handleError(err);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

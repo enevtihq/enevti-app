@@ -22,6 +22,7 @@ import { handleError } from '../../utils/error/handle';
 import { hp, wp } from '../../utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getMyBasePersona } from '../../service/enevti/persona';
+import { getMyProfile } from '../../service/enevti/profile';
 
 const AnimatedFlatList =
   Animated.createAnimatedComponent<FlatListProps<FeedItem>>(FlatList);
@@ -47,6 +48,7 @@ export default function Feed({ onScroll, headerHeight }: FeedProps) {
       setRefreshing(true);
       await onFeedScreenLoaded();
       await getMyBasePersona(true);
+      await getMyProfile(true);
     } catch (err: any) {
       handleError(err);
     } finally {

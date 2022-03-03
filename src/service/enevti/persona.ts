@@ -12,9 +12,12 @@ import {
   setPersona,
   setLastFetchPersona,
   selectPersona,
+  setPersonaAddress,
 } from '../../store/slices/entities/persona';
+import { selectAuthState } from '../../store/slices/auth';
+import { selectLocalSession } from '../../store/slices/session/local';
 
-async function fetchMyPersona(address: string): Promise<Persona> {
+async function fetchPersona(address: string): Promise<Persona> {
   await sleep(5000);
   return {
     photo: '',
@@ -23,16 +26,16 @@ async function fetchMyPersona(address: string): Promise<Persona> {
   };
 }
 
-export async function getMyBasePersona(force = false): Promise<Persona> {
-  const now = Date.now();
-  const lastFetch = selectPersona(store.getState()).lastFetch;
-  let myPersona: Persona = selectPersona(store.getState());
+export async function getMyAddress() {
+  const myPersona: Persona = selectPersona(store.getState());
+  if (myPersona.address) {
+    return myPersona.address;
+  } else {
+    const auth = selectAuthState(store.getState());
+    let authToken = auth.token;
 
-  if (force || now - lastFetch > lastFetchTreshold.persona) {
-    let authToken = store.getState().auth.token;
-
-    if (authToken && store.getState().auth.encrypted) {
-      const localKey = store.getState().session.local.key;
+    if (authToken && auth.encrypted) {
+      const localKey = selectLocalSession(store.getState()).key;
       if (localKey) {
         authToken = (await decryptWithPassword(authToken, localKey)).data;
       } else {
@@ -42,7 +45,7 @@ export async function getMyBasePersona(force = false): Promise<Persona> {
           message: 'Wrong Local Key',
         };
       }
-    } else if (authToken && !store.getState().auth.encrypted) {
+    } else if (authToken && !auth.encrypted) {
       authToken = (await decryptWithDevice(authToken)).data;
     } else {
       throw {
@@ -52,13 +55,33 @@ export async function getMyBasePersona(force = false): Promise<Persona> {
       };
     }
 
-    const address = Lisk.cryptography.getBase32AddressFromPassphrase(authToken);
+    const myAddress =
+      Lisk.cryptography.getBase32AddressFromPassphrase(authToken);
+    store.dispatch(setPersonaAddress(myAddress));
 
-    myPersona = await fetchMyPersona(address);
+    return myAddress;
+  }
+}
+
+export async function getBasePersona(
+  address: string,
+  force = false,
+): Promise<Persona> {
+  const now = Date.now();
+  const lastFetch = selectPersona(store.getState()).lastFetch;
+  let myPersona: Persona = selectPersona(store.getState());
+
+  if (force || now - lastFetch > lastFetchTreshold.persona) {
+    myPersona = await fetchPersona(address);
 
     store.dispatch(setLastFetchPersona(now));
     store.dispatch(setPersona(myPersona));
   }
 
   return myPersona;
+}
+
+export async function getMyBasePersona(force = false): Promise<Persona> {
+  const address = await getMyAddress();
+  return await getBasePersona(address, force);
 }

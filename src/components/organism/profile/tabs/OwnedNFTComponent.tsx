@@ -8,11 +8,14 @@ import { TOP_TABBAR_HEIGHT_PERCENTAGE } from '../../../atoms/view/AppTopTabBar';
 import { hp, wp } from '../../../../utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AppNFTRenderer from '../../../molecules/nft/AppNFTRenderer';
+import { Persona } from '../../../../types/service/enevti/persona';
+import { getProfile } from '../../../../service/enevti/profile';
 
 const AnimatedFlatGrid =
   Animated.createAnimatedComponent<FlatGridProps<NFTBase>>(FlatGrid);
 
 interface OwnedNFTComponentProps {
+  persona: Persona;
   data?: any;
   onScroll?: any;
   headerHeight?: any;
@@ -22,6 +25,7 @@ interface OwnedNFTComponentProps {
 
 function Component(
   {
+    persona,
     data,
     onScroll,
     headerHeight,
@@ -37,7 +41,7 @@ function Component(
 
   const handleRefresh = async () => {
     setRefreshing(true);
-    // async ownedRefreshFunction Here
+    await getProfile(persona.address, true);
     setRefreshing(false);
   };
 
