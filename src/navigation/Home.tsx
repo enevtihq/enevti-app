@@ -311,7 +311,7 @@ export default function Home() {
           listeners={{
             tabPress: (event: any) => {
               event.preventDefault();
-              dispatch(touchOnceEligible());
+              !onceEligible && dispatch(touchOnceEligible());
               console.log('create NFT');
             },
           }}
