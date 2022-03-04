@@ -14,7 +14,8 @@ export const getDummyNFTData = (): NFTBase => {
 
   return {
     id: Math.random().toString(),
-    serial: 'eyecollection-001',
+    symbol: 'EYECL',
+    serial: 1,
     name: 'EyeCollection',
     data: 'Qmb3jKA6Vn1azR6aSMnT6geGMkg818uBkfSHNg8ui1a9dy',
     contentType: 'image',

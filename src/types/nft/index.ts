@@ -6,7 +6,8 @@ import { NFTRedeemBase } from './NFTRedeem';
 
 export type NFTBase = {
   id: string;
-  serial: string;
+  symbol: string;
+  serial: number;
   name: string;
   contentType: 'image';
   data: string;
