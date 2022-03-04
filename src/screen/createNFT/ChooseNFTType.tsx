@@ -20,6 +20,9 @@ import { showSnackbar } from '../../store/slices/ui/global/snackbar';
 import AppMenuContainer from '../../components/atoms/menu/AppMenuContainer';
 import AppMenuItem from '../../components/atoms/menu/AppMenuItem';
 import { menuItemHeigtPercentage } from '../../utils/layout/menuItemHeigtPercentage';
+import ImageCropPicker, { ImageOrVideo } from 'react-native-image-crop-picker';
+import { NFT_RESOLUTION } from '../../service/enevti/nft';
+import { handleError } from '../../utils/error/handle';
 
 type Props = StackScreenProps<RootStackParamList, 'ChooseNFTType'>;
 
@@ -34,6 +37,30 @@ export default function ChooseNFTType({ navigation }: Props) {
 
   const dispatch = useDispatch();
 
+  const pickFromGallery = (onComplete: (image: ImageOrVideo) => void) => {
+    ImageCropPicker.openPicker({
+      width: NFT_RESOLUTION,
+      height: NFT_RESOLUTION,
+      cropping: true,
+    })
+      .then(image => {
+        onComplete(image);
+      })
+      .catch(err => handleError(err));
+  };
+
+  const openCamera = (onComplete: (image: ImageOrVideo) => void) => {
+    ImageCropPicker.openCamera({
+      width: NFT_RESOLUTION,
+      height: NFT_RESOLUTION,
+      cropping: true,
+    })
+      .then(image => {
+        onComplete(image);
+      })
+      .catch(err => handleError(err));
+  };
+
   return (
     <AppView withModal>
       <AppHeaderWizard
@@ -43,7 +70,7 @@ export default function ChooseNFTType({ navigation }: Props) {
           <View style={styles.headerImage}>
             <ChooseNFTTypeIMG
               width={wp('80%', insets)}
-              height={hp('18%', insets)}
+              height={hp('14%', insets)}
             />
           </View>
         }
@@ -82,12 +109,12 @@ export default function ChooseNFTType({ navigation }: Props) {
           </AppListItem>
         }>
         <AppMenuItem
-          onPress={() => {}}
+          onPress={() => openCamera(image => console.log(image))}
           icon={iconMap.camera}
           title={t('createNFT:openCamera')}
         />
         <AppMenuItem
-          onPress={() => {}}
+          onPress={() => pickFromGallery(image => console.log(image))}
           icon={iconMap.gallery}
           title={t('createNFT:pickFromGallery')}
         />
