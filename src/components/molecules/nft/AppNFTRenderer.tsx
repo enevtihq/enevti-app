@@ -25,12 +25,13 @@ interface AppNFTRendererProps {
   nft: NFTBase;
   width: number;
   style?: StyleProp<ViewStyle>;
+  dataUri?: string;
 }
 
 const THUMBNAIL_TRESHOLD = 0.33;
 
 export default React.memo(
-  function AppNFTRenderer({ nft, width, style }: AppNFTRendererProps) {
+  function AppNFTRenderer({ nft, width, style, dataUri }: AppNFTRendererProps) {
     const styles = makeStyle();
 
     const handleRenderNFTTemplate = React.useCallback(
@@ -39,6 +40,7 @@ export default React.memo(
         nftObject: NFTBase,
         index: number,
         canvasWidth: number,
+        data,
       ) => {
         const key = nftObject.id + templateItem.type + '-' + index.toString();
 
@@ -53,11 +55,22 @@ export default React.memo(
             );
           case 'data':
             return (
-              <NFTData key={key} nft={nftObject} args={templateItem.args} />
+              <NFTData
+                key={key}
+                nft={nftObject}
+                args={templateItem.args}
+                dataUri={data}
+              />
             );
           case 'data-box':
             return (
-              <NFTData box key={key} nft={nftObject} args={templateItem.args} />
+              <NFTData
+                box
+                key={key}
+                nft={nftObject}
+                args={templateItem.args}
+                dataUri={data}
+              />
             );
           case 'box':
             return <Box key={key} args={templateItem.args} />;
@@ -149,10 +162,10 @@ export default React.memo(
         {width < Dimensions.get('window').width * THUMBNAIL_TRESHOLD &&
         nft.template.thumbnail.length > 0
           ? nft.template.thumbnail.map((templateItem, index) =>
-              handleRenderNFTTemplate(templateItem, nft, index, width),
+              handleRenderNFTTemplate(templateItem, nft, index, width, dataUri),
             )
           : nft.template.main.map((templateItem, index) =>
-              handleRenderNFTTemplate(templateItem, nft, index, width),
+              handleRenderNFTTemplate(templateItem, nft, index, width, dataUri),
             )}
       </View>
     );

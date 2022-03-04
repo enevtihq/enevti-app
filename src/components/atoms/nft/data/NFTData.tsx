@@ -8,22 +8,30 @@ interface NFTDataProps {
   nft: NFTBase;
   args: TemplateArgs;
   box?: boolean;
+  dataUri?: string;
 }
 
-const handleRenderNFTData = (nftObject: NFTBase) => {
+const handleRenderNFTData = (nftObject: NFTBase, dataUri?: string) => {
   switch (nftObject.contentType) {
     case 'image':
-      return <NFTImageData nft={nftObject} />;
+      return <NFTImageData nft={nftObject} dataUri={dataUri} />;
     default:
       return <View />;
   }
 };
 
-export default function NFTData({ nft, args, box = false }: NFTDataProps) {
+export default function NFTData({
+  nft,
+  args,
+  box = false,
+  dataUri,
+}: NFTDataProps) {
   const styles = makeStyle(box, args);
 
   return (
-    <View style={styles.nftDataContainer}>{handleRenderNFTData(nft)}</View>
+    <View style={styles.nftDataContainer}>
+      {handleRenderNFTData(nft, dataUri)}
+    </View>
   );
 }
 
