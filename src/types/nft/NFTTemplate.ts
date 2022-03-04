@@ -20,7 +20,8 @@ export type NFTTemplateItem = {
     | 'rarity-rank'
     | 'rarity-percent'
     | 'name'
-    | 'serial';
+    | 'serial'
+    | string;
   args: TemplateArgs;
 };
 
