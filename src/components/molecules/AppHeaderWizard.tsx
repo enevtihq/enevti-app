@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
+import { View, StyleSheet, StyleProp, ViewStyle, Platform } from 'react-native';
 import { useTheme } from 'react-native-paper';
 
 import { hp, wp, SafeAreaInsets } from '../../utils/imageRatio';
@@ -49,6 +49,7 @@ export default function AppHeaderWizard({
             backComponent
           ) : navigation ? (
             <AppIconButton
+              size={Platform.OS === 'ios' ? 35 : undefined}
               icon={iconMap.arrowBack}
               onPress={() => navigation.goBack()}
             />

@@ -1,6 +1,6 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
-import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import { Platform, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { Appbar, useTheme } from 'react-native-paper';
 import Animated from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -39,7 +39,10 @@ export default function AppHeader({
     <Animated.View style={style}>
       <Appbar.Header style={styles.header}>
         {back && navigation ? (
-          <Appbar.BackAction onPress={() => navigation.goBack()} />
+          <Appbar.BackAction
+            size={Platform.OS === 'ios' ? 20 : undefined}
+            onPress={() => navigation.goBack()}
+          />
         ) : null}
         {title ? (
           <Appbar.Content

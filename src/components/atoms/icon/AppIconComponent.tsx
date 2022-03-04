@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleProp, View, ViewStyle } from 'react-native';
+import { Platform, StyleProp, View, ViewStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export const IconProvider = Icon;
@@ -7,7 +7,7 @@ export const IconProvider = Icon;
 const UNDEFINED_ICON = 'help-circle-outline';
 
 export const iconMap = {
-  arrowBack: 'arrow-left',
+  arrowBack: Platform.OS === 'ios' ? 'chevron-left' : 'arrow-left',
   google: 'google',
   seePassword: 'eye',
   hidePassword: 'eye-off',
