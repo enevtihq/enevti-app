@@ -20,7 +20,7 @@ export default function RarityPercent({
   const theme = useTheme();
   const styles = makeStyle(args, theme);
   const text =
-    nft.NFTType === 'one-kind'
+    nft.NFTType === 'onekind'
       ? '☆☆☆'
       : `${(nft.rarity.stat.percent / 100).toString()}%`;
 

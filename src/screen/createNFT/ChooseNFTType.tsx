@@ -6,7 +6,6 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { hp, SafeAreaInsets, wp } from '../../utils/imageRatio';
-import ChooseNFTTypeIMG from '../../assets/svg/undraw_choose_re_7d5a.svg';
 import AppListItem from '../../components/molecules/list/AppListItem';
 import AppTextHeading3 from '../../components/atoms/text/AppTextHeading3';
 import AppTextBody4 from '../../components/atoms/text/AppTextBody4';
@@ -82,15 +81,8 @@ export default function ChooseNFTType({ navigation }: Props) {
     <AppView withModal>
       <AppHeaderWizard
         back
+        backIcon={iconMap.close}
         navigation={navigation}
-        component={
-          <View style={styles.headerImage}>
-            <ChooseNFTTypeIMG
-              width={wp('80%', insets)}
-              height={hp('14%', insets)}
-            />
-          </View>
-        }
         title={t('createNFT:chooseNFTTypeTitle')}
         description={t('createNFT:chooseNFTTypeDescription')}
         style={styles.header}

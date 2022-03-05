@@ -21,6 +21,7 @@ interface AppHeaderWizardProps {
   modeData?: keyof typeof iconMap;
   component?: React.ReactNode;
   back?: boolean;
+  backIcon?: string;
   backComponent?: React.ReactNode;
   navigation?: StackNavigationProp<RootStackParamList>;
   style?: StyleProp<ViewStyle>;
@@ -33,6 +34,7 @@ export default function AppHeaderWizard({
   mode = 'component',
   modeData,
   back = false,
+  backIcon,
   backComponent,
   navigation,
   style,
@@ -49,8 +51,8 @@ export default function AppHeaderWizard({
             backComponent
           ) : navigation ? (
             <AppIconButton
-              size={Platform.OS === 'ios' ? 35 : undefined}
-              icon={iconMap.arrowBack}
+              size={Platform.OS === 'ios' && !backIcon ? 35 : undefined}
+              icon={backIcon ?? iconMap.arrowBack}
               onPress={() => navigation.goBack()}
             />
           ) : null

@@ -12,6 +12,7 @@ export const LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE = 2;
 interface AppListItemProps {
   children: React.ReactNode;
   style?: StyleProp<ViewStyle>;
+  containerStyle?: StyleProp<ViewStyle>;
   leftContent?: React.ReactNode;
   rightContent?: React.ReactNode;
   onPress?: () => void;
@@ -20,6 +21,7 @@ interface AppListItemProps {
 export default function AppListItem({
   children,
   style,
+  containerStyle,
   leftContent,
   rightContent,
   onPress,
@@ -29,7 +31,7 @@ export default function AppListItem({
   const styles = makeStyle(theme, insets);
 
   return (
-    <View style={styles.listContainer}>
+    <View style={[styles.listContainer, containerStyle]}>
       <TouchableRipple onPress={onPress}>
         <View style={[styles.itemContainer, style]}>
           {leftContent}

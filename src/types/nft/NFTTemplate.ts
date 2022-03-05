@@ -26,3 +26,15 @@ export type NFTTemplateItem = {
 };
 
 export type NFTTemplate = NFTTemplateItem[];
+
+export type NFTTemplateData = {
+  main: NFTTemplate;
+  thumbnail: NFTTemplate;
+};
+
+export type NFTTemplateAsset = {
+  id: string;
+  name: string;
+  description: string;
+  data: NFTTemplateData;
+};

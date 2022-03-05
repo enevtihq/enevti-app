@@ -21,7 +21,7 @@ export default React.memo(
 
     let icon: string = 'help-circle-outline';
 
-    if (nft.NFTType === 'one-kind') {
+    if (nft.NFTType === 'onekind') {
       icon = iconMap.nftOneKind;
     } else if (nft.NFTType === 'packed' && nft.redeem.parts.length > 0) {
       icon = iconMap.nftPartitioned;

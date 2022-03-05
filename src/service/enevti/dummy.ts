@@ -19,7 +19,7 @@ export const getDummyNFTData = (): NFTBase => {
     name: 'EyeCollection',
     data: 'Qmb3jKA6Vn1azR6aSMnT6geGMkg818uBkfSHNg8ui1a9dy',
     contentType: 'image',
-    NFTType: 'one-kind',
+    NFTType: 'onekind',
     utility: utilityOption[Math.floor(Math.random() * utilityOption.length)],
     rarity: {
       stat: {

@@ -12,4 +12,11 @@ export default {
   editImage: 'Edit Image',
   cancelEdit: 'Cancel',
   continue: 'Continue',
+  chooseNFTTemplateTitle: 'Choose Template',
+  chooseNFTTemplateDescription:
+    'Template are a new way to present your NFT, while preserving its original data!',
+  createTemplate: 'Create Your Own!',
+  createTemplateDescription:
+    'Your template can be reused by everyone, COMING SOON!',
+  createTemplateContinue: 'Choose This Template',
 };

@@ -1,6 +1,6 @@
 import { NFTRarity } from './NFTRarity';
 import { NFTType } from './NFTType';
-import { NFTTemplate } from './NFTTemplate';
+import { NFTTemplateData } from './NFTTemplate';
 import { NFTUtility } from './NFTUtility';
 import { NFTRedeemBase } from './NFTRedeem';
 
@@ -11,10 +11,7 @@ export type NFTBase = {
   name: string;
   contentType: 'image';
   data: string;
-  template: {
-    main: NFTTemplate;
-    thumbnail: NFTTemplate;
-  };
+  template: NFTTemplateData;
   NFTType: NFTType;
   utility: NFTUtility;
   redeem: NFTRedeemBase;

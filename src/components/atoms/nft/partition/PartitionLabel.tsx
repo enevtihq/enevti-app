@@ -17,7 +17,7 @@ export default React.memo(
     const styles = makeStyle(args, theme);
     let text: string = '';
 
-    if (nft.NFTType === 'one-kind') {
+    if (nft.NFTType === 'onekind') {
       text = 'One Kind';
     } else if (nft.NFTType === 'packed' && nft.redeem.parts.length > 0) {
       text = `${nft.redeem.parts.length.toString()} Parts`;

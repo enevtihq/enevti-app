@@ -1,10 +1,232 @@
-import { View, Text } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import React from 'react';
+import AppView from '../../components/atoms/view/AppView';
+import AppHeaderWizard from '../../components/molecules/AppHeaderWizard';
+import { iconMap } from '../../components/atoms/icon/AppIconComponent';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '../../navigation';
+import { useTranslation } from 'react-i18next';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTheme } from 'react-native-paper';
+import { Theme } from '../../theme/default';
+import { hp, SafeAreaInsets, wp } from '../../utils/imageRatio';
+import AppPrimaryButton from '../../components/atoms/button/AppPrimaryButton';
+import { getBuiltInNFTTemplate } from '../../service/enevti/template';
+import { NFTTemplateAsset } from '../../types/nft/NFTTemplate';
+import { NFTBase } from '../../types/nft';
+import Carousel from 'react-native-snap-carousel';
+import AppNFTRenderer from '../../components/molecules/nft/AppNFTRenderer';
+import { makeDummyNFT } from '../../utils/dummy/nft';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectCreateNFTTypeQueue } from '../../store/slices/queue/nft/create/type';
+import {
+  selectCreateNFTOneKindQueue,
+  setCreateNFTOneKindChosenTemplate,
+} from '../../store/slices/queue/nft/create/onekind';
+import {
+  selectCreateNFTPackQueue,
+  setCreateNFTPackChosenTemplate,
+} from '../../store/slices/queue/nft/create/pack';
+import { shuffleArray } from '../../utils/primitive/array';
+import DropShadow from 'react-native-drop-shadow';
+import AppListItem from '../../components/molecules/list/AppListItem';
+import AppTextHeading3 from '../../components/atoms/text/AppTextHeading3';
+import AppTextBody4 from '../../components/atoms/text/AppTextBody4';
+import AppIconButton from '../../components/atoms/icon/AppIconButton';
+import { showSnackbar } from '../../store/slices/ui/global/snackbar';
+import AppTextHeading1 from '../../components/atoms/text/AppTextHeading1';
 
-export default function ChooseNFTTemplate() {
+type Props = StackScreenProps<RootStackParamList, 'ChooseNFTTemplate'>;
+
+export default function ChooseNFTTemplate({ navigation }: Props) {
+  const { t } = useTranslation();
+  const insets = useSafeAreaInsets();
+  const theme = useTheme() as Theme;
+  const styles = makeStyle(theme, insets);
+  const dispatch = useDispatch();
+
+  const [dataUri, setDataUri] = React.useState<string>('');
+  const [activeIndex, setActiveIndex] = React.useState<number>(0);
+  const [dummyNFT, setDummyNFT] = React.useState<NFTBase>();
+
+  const type = useSelector(selectCreateNFTTypeQueue);
+  const oneKindQueue = useSelector(selectCreateNFTOneKindQueue);
+  const packQueue = useSelector(selectCreateNFTPackQueue);
+
+  const builtInTemplate = getBuiltInNFTTemplate();
+  const placeholderTemplate: NFTTemplateAsset = {
+    id: 'create',
+    name: t('createNFT:createTemplate'),
+    description: t('createNFT:createTemplateDescription'),
+    data: { main: [], thumbnail: [] },
+  };
+  const template = builtInTemplate.concat(placeholderTemplate);
+
+  const itemWidth = React.useMemo(() => wp('85%', insets), [insets]);
+  const sliderWidth = React.useMemo(() => wp('100%', insets), [insets]);
+
+  const renderItem = React.useCallback(
+    ({ item }: { index?: number; item: NFTTemplateAsset }) =>
+      item.id === 'create' ? (
+        <DropShadow
+          style={[
+            styles.templateItem,
+            { width: itemWidth, height: itemWidth },
+          ]}>
+          <View
+            style={[
+              styles.comingSoonBox,
+              {
+                width: itemWidth,
+                height: itemWidth,
+              },
+            ]}>
+            <AppTextHeading1>Coming Soon</AppTextHeading1>
+          </View>
+        </DropShadow>
+      ) : dummyNFT ? (
+        <DropShadow style={[styles.templateItem, { width: itemWidth }]}>
+          <AppNFTRenderer
+            nft={Object.assign({}, dummyNFT, {
+              template: item.data,
+            })}
+            width={itemWidth}
+            dataUri={dataUri}
+          />
+        </DropShadow>
+      ) : null,
+    [itemWidth, dataUri, styles.templateItem, dummyNFT, styles.comingSoonBox],
+  );
+
+  const onSnapToItem = (index: number) => {
+    setActiveIndex(index);
+  };
+
+  const onContinue = () => {
+    if (type === 'onekind') {
+      dispatch(
+        setCreateNFTOneKindChosenTemplate({
+          id: template[activeIndex].id,
+          data: template[activeIndex].data,
+        }),
+      );
+      // navigate to one kind contract screen
+    } else if (type === 'pack') {
+      dispatch(
+        setCreateNFTPackChosenTemplate({
+          id: template[activeIndex].id,
+          data: template[activeIndex].data,
+        }),
+      );
+      // navigate to pack contract screen
+    }
+  };
+
+  React.useEffect(() => {
+    if (type === 'onekind') {
+      setDataUri(oneKindQueue.dataUri);
+    } else if (type === 'pack') {
+      setDataUri(shuffleArray(packQueue.dataUri).data);
+    }
+    setDummyNFT(makeDummyNFT());
+  }, [oneKindQueue.dataUri, packQueue.dataUri, type]);
+
   return (
-    <View>
-      <Text>ChooseNFTTemplate</Text>
-    </View>
+    <AppView>
+      <AppHeaderWizard
+        back
+        backIcon={iconMap.close}
+        navigation={navigation}
+        title={t('createNFT:chooseNFTTemplateTitle')}
+        description={t('createNFT:chooseNFTTemplateDescription')}
+        style={styles.header}
+      />
+
+      <View style={styles.templateCarousel}>
+        <Carousel
+          data={template}
+          renderItem={renderItem}
+          sliderWidth={sliderWidth}
+          itemWidth={itemWidth}
+          onSnapToItem={onSnapToItem}
+        />
+        <AppListItem
+          containerStyle={{ marginHorizontal: wp('12.5%', insets) }}
+          style={{ paddingHorizontal: wp('5%', insets) }}
+          rightContent={
+            template[activeIndex].id !== 'create' ? (
+              <AppIconButton
+                icon={iconMap.edit}
+                onPress={() =>
+                  dispatch(
+                    showSnackbar({
+                      mode: 'info',
+                      text: 'Soon you will also be able to edit existing template',
+                    }),
+                  )
+                }
+                style={styles.templateEdit}
+              />
+            ) : null
+          }>
+          <AppTextHeading3
+            numberOfLines={1}
+            style={{ width: wp('50%', insets) }}>
+            {template[activeIndex].name}
+          </AppTextHeading3>
+          <AppTextBody4
+            numberOfLines={2}
+            style={{ color: theme.colors.placeholder }}>
+            {template[activeIndex].description}
+          </AppTextBody4>
+        </AppListItem>
+      </View>
+
+      <View style={styles.actionContainer}>
+        <AppPrimaryButton
+          style={styles.continueButton}
+          disabled={template[activeIndex].id === 'create'}
+          onPress={onContinue}>
+          {t('createNFT:createTemplateContinue')}
+        </AppPrimaryButton>
+      </View>
+    </AppView>
   );
 }
+
+const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
+  StyleSheet.create({
+    header: {
+      flex: 0,
+      marginLeft: wp('3%', insets),
+      marginRight: wp('3%', insets),
+    },
+    actionContainer: {
+      flexDirection: 'column-reverse',
+      marginTop: hp('6%', insets),
+    },
+    continueButton: {
+      marginBottom: hp('2%', insets),
+      marginLeft: wp('5%', insets),
+      marginRight: wp('5%', insets),
+    },
+    templateItem: {
+      shadowColor: '#000000',
+      shadowOffset: { width: 0, height: 8 },
+      shadowOpacity: theme.dark ? 1 : 0.3,
+      shadowRadius: theme.dark ? 10 : 7,
+    },
+    templateCarousel: {
+      flex: 1,
+      marginTop: hp('6%', insets),
+    },
+    templateEdit: {
+      alignSelf: 'center',
+      marginRight: -wp('1%', insets),
+    },
+    comingSoonBox: {
+      backgroundColor: theme.colors.background,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+  });
