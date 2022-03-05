@@ -8,7 +8,7 @@ export function getBuiltInNFTTemplate(): NFTTemplateAsset[] {
     {
       id: 'enevtiNFTTemplate',
       name: 'Enevti.com Template',
-      description: 'Represent utility traits of your NFT in a beautiful way!',
+      description: 'Present utility traits of your NFT in a beautiful way!',
       data: enevtiNFTTemplate,
     },
     {

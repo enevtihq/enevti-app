@@ -1,1 +1,1 @@
-export type NFTType = 'onekind' | 'packed' | 'upgradable';
+export type NFTType = 'onekind' | 'pack' | 'upgradable';

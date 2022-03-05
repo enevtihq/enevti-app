@@ -23,7 +23,7 @@ export default React.memo(
 
     if (nft.NFTType === 'onekind') {
       icon = iconMap.nftOneKind;
-    } else if (nft.NFTType === 'packed' && nft.redeem.parts.length > 0) {
+    } else if (nft.NFTType === 'pack' && nft.redeem.parts.length > 0) {
       icon = iconMap.nftPartitioned;
     } else if (nft.NFTType === 'upgradable') {
       icon = iconMap.nftUpgradable;

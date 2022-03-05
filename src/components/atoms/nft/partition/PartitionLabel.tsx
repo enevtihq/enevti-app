@@ -15,11 +15,11 @@ export default React.memo(
   function PartitionLabel({ nft, args, width }: PartitionLabelProps) {
     const theme = useTheme();
     const styles = makeStyle(args, theme);
-    let text: string = '';
+    let text: string = 'Unknown';
 
     if (nft.NFTType === 'onekind') {
       text = 'One Kind';
-    } else if (nft.NFTType === 'packed' && nft.redeem.parts.length > 0) {
+    } else if (nft.NFTType === 'pack' && nft.redeem.parts.length > 0) {
       text = `${nft.redeem.parts.length.toString()} Parts`;
     } else if (nft.NFTType === 'upgradable') {
       text = `Combine ${nft.redeem.upgradeMaterial.toString()}`;

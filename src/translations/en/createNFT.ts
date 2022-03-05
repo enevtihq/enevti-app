@@ -18,5 +18,6 @@ export default {
   createTemplate: 'Create Your Own!',
   createTemplateDescription:
     'Your template can be reused by everyone, COMING SOON!',
-  createTemplateContinue: 'Choose This Template',
+  createTemplateButton: 'Create New Template',
+  chooseNFTTemplateContinue: 'Choose This Template',
 };

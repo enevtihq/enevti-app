@@ -22,7 +22,7 @@ export default function RarityPercent({
   const text =
     nft.NFTType === 'onekind'
       ? '☆☆☆'
-      : `${(nft.rarity.stat.percent / 100).toString()}%`;
+      : `${nft.rarity.stat.percent.toString()}%`;
 
   const w = (parseFloat(args.width) * width) / 100.0;
   const h = (parseFloat(args.height) * width) / 100.0;

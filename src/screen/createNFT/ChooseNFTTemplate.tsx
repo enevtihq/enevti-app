@@ -104,20 +104,10 @@ export default function ChooseNFTTemplate({ navigation }: Props) {
 
   const onContinue = () => {
     if (type === 'onekind') {
-      dispatch(
-        setCreateNFTOneKindChosenTemplate({
-          id: template[activeIndex].id,
-          data: template[activeIndex].data,
-        }),
-      );
+      dispatch(setCreateNFTOneKindChosenTemplate(template[activeIndex]));
       // navigate to one kind contract screen
     } else if (type === 'pack') {
-      dispatch(
-        setCreateNFTPackChosenTemplate({
-          id: template[activeIndex].id,
-          data: template[activeIndex].data,
-        }),
-      );
+      dispatch(setCreateNFTPackChosenTemplate(template[activeIndex]));
       // navigate to pack contract screen
     }
   };
@@ -128,7 +118,7 @@ export default function ChooseNFTTemplate({ navigation }: Props) {
     } else if (type === 'pack') {
       setDataUri(shuffleArray(packQueue.dataUri).data);
     }
-    setDummyNFT(makeDummyNFT());
+    setDummyNFT(makeDummyNFT('pack'));
   }, [oneKindQueue.dataUri, packQueue.dataUri, type]);
 
   return (
@@ -187,7 +177,9 @@ export default function ChooseNFTTemplate({ navigation }: Props) {
           style={styles.continueButton}
           disabled={template[activeIndex].id === 'create'}
           onPress={onContinue}>
-          {t('createNFT:createTemplateContinue')}
+          {template[activeIndex].id === 'create'
+            ? t('createNFT:createTemplateButton')
+            : t('createNFT:chooseNFTTemplateContinue')}
         </AppPrimaryButton>
       </View>
     </AppView>
