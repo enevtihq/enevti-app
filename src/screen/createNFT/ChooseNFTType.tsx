@@ -23,6 +23,9 @@ import { menuItemHeigtPercentage } from '../../utils/layout/menuItemHeigtPercent
 import ImageCropPicker, { ImageOrVideo } from 'react-native-image-crop-picker';
 import { NFT_RESOLUTION } from '../../service/enevti/nft';
 import { handleError } from '../../utils/error/handle';
+import { setCreateNFTQueueType } from '../../store/slices/queue/nft/create/type';
+import { setCreateNFTOneKindURI } from '../../store/slices/queue/nft/create/onekind';
+import darkTheme from '../../theme/dark';
 
 type Props = StackScreenProps<RootStackParamList, 'ChooseNFTType'>;
 
@@ -32,17 +35,28 @@ export default function ChooseNFTType({ navigation }: Props) {
   const theme = useTheme() as Theme;
   const styles = makeStyle(insets);
 
+  const pickerOption = {
+    width: NFT_RESOLUTION,
+    height: NFT_RESOLUTION,
+    cropping: true,
+    cropperToolbarColor: darkTheme.colors.background,
+    cropperStatusBarColor: darkTheme.colors.background,
+    cropperActiveWidgetColor: darkTheme.colors.primary,
+    cropperToolbarWidgetColor: darkTheme.colors.text,
+    hideBottomControls: true,
+    cropperRotateButtonsHidden: true,
+    cropperToolbarTitle: t('createNFT:editImage'),
+    cropperCancelText: t('createNFT:cancelEdit'),
+    cropperChooseText: t('createNFT:continue'),
+  };
+
   const [oneKindSheetVisible, setOneKindSheetVisible] =
     React.useState<boolean>(false);
 
   const dispatch = useDispatch();
 
   const pickFromGallery = (onComplete: (image: ImageOrVideo) => void) => {
-    ImageCropPicker.openPicker({
-      width: NFT_RESOLUTION,
-      height: NFT_RESOLUTION,
-      cropping: true,
-    })
+    ImageCropPicker.openPicker(pickerOption)
       .then(image => {
         onComplete(image);
       })
@@ -50,15 +64,18 @@ export default function ChooseNFTType({ navigation }: Props) {
   };
 
   const openCamera = (onComplete: (image: ImageOrVideo) => void) => {
-    ImageCropPicker.openCamera({
-      width: NFT_RESOLUTION,
-      height: NFT_RESOLUTION,
-      cropping: true,
-    })
+    ImageCropPicker.openCamera(pickerOption)
       .then(image => {
         onComplete(image);
       })
       .catch(err => handleError(err));
+  };
+
+  const onOneKindImagePicked = (image: ImageOrVideo) => {
+    dispatch(setCreateNFTQueueType('onekind'));
+    dispatch(setCreateNFTOneKindURI(image.path));
+    setOneKindSheetVisible(false);
+    navigation.replace('ChooseNFTTemplate', { type: 'onekind' });
   };
 
   return (
@@ -109,12 +126,12 @@ export default function ChooseNFTType({ navigation }: Props) {
           </AppListItem>
         }>
         <AppMenuItem
-          onPress={() => openCamera(image => console.log(image))}
+          onPress={() => openCamera(onOneKindImagePicked)}
           icon={iconMap.camera}
           title={t('createNFT:openCamera')}
         />
         <AppMenuItem
-          onPress={() => pickFromGallery(image => console.log(image))}
+          onPress={() => pickFromGallery(onOneKindImagePicked)}
           icon={iconMap.gallery}
           title={t('createNFT:pickFromGallery')}
         />

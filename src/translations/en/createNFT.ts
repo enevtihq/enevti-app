@@ -9,4 +9,7 @@ export default {
   packDescription: 'Create NFT based on many image with gamification option',
   openCamera: 'Open Camera',
   pickFromGallery: 'Pick from Gallery',
+  editImage: 'Edit Image',
+  cancelEdit: 'Cancel',
+  continue: 'Continue',
 };
