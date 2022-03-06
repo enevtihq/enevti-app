@@ -7,8 +7,9 @@ import { iconMap } from '../atoms/icon/AppIconComponent';
 interface AppFormSecureTextInputProps {
   label: string;
   value: string;
-  touchHandler?: () => void;
   onChangeText: (text: string) => void;
+  dense?: boolean;
+  touchHandler?: () => void;
   errorText?: string;
   showError?: boolean;
   onSubmitEditing?: () => void;
@@ -25,6 +26,7 @@ function AppFormSecureTextInput(
     touchHandler,
     errorText,
     onChangeText,
+    dense,
     onSubmitEditing,
     style,
     returnKeyType,
@@ -40,6 +42,7 @@ function AppFormSecureTextInput(
       ref={ref}
       theme={theme}
       label={label}
+      dense={dense}
       showError={showError}
       errorText={errorText}
       secureTextEntry={secure}

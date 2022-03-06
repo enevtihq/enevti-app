@@ -22,6 +22,7 @@ import StakePool from '../screen/stake/StakePool';
 import { Persona } from '../types/service/enevti/persona';
 import ChooseNFTType from '../screen/createNFT/ChooseNFTType';
 import ChooseNFTTemplate from '../screen/createNFT/ChooseNFTTemplate';
+import CreateOneKindContract from '../screen/createNFT/CreateOneKindContract';
 
 export type RootStackParamList = {
   CreateAccount: undefined;
@@ -45,6 +46,7 @@ export type RootStackParamList = {
   ChooseNFTTemplate: {
     type: 'onekind' | 'pack';
   };
+  CreateOneKindContract: undefined;
 };
 
 const Stack = createStackNavigator();
@@ -144,6 +146,14 @@ export default function AppNavigationContainer() {
         <Stack.Screen
           name="ChooseNFTTemplate"
           component={ChooseNFTTemplate}
+          options={{
+            headerShown: false,
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          }}
+        />
+        <Stack.Screen
+          name="CreateOneKindContract"
+          component={CreateOneKindContract}
           options={{
             headerShown: false,
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,

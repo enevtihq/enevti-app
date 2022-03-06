@@ -20,4 +20,12 @@ export default {
     'Your template can be reused by everyone, COMING SOON!',
   createTemplateButton: 'Create New Template',
   chooseNFTTemplateContinue: 'Choose This Template',
+  setupContract: 'Setup Contract',
+  setupContractDescription:
+    'Finally! Set how your NFT will brings value in decentralized ecosystem!',
+  contractCollectionName: 'Collection Name',
+  contractCollectionDescription: 'Collection Description',
+  contractCollectionSymbol: 'Symbol (ex: CLTN)',
+  contractCollectionUtility: 'Utility',
+  contractCollectionRecurring: 'Recurring',
 };

@@ -35,6 +35,7 @@ import AppTextBody4 from '../../components/atoms/text/AppTextBody4';
 import AppIconButton from '../../components/atoms/icon/AppIconButton';
 import { showSnackbar } from '../../store/slices/ui/global/snackbar';
 import AppTextHeading1 from '../../components/atoms/text/AppTextHeading1';
+import { setCreateNFTQueueRoute } from '../../store/slices/queue/nft/create/route';
 
 type Props = StackScreenProps<RootStackParamList, 'ChooseNFTTemplate'>;
 
@@ -105,9 +106,11 @@ export default function ChooseNFTTemplate({ navigation }: Props) {
   const onContinue = () => {
     if (type === 'onekind') {
       dispatch(setCreateNFTOneKindChosenTemplate(template[activeIndex]));
-      // navigate to one kind contract screen
+      dispatch(setCreateNFTQueueRoute('CreateOneKindContract'));
+      navigation.replace('CreateOneKindContract');
     } else if (type === 'pack') {
       dispatch(setCreateNFTPackChosenTemplate(template[activeIndex]));
+      // dispatch route to pack contract
       // navigate to pack contract screen
     }
   };

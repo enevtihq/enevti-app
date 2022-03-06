@@ -21,6 +21,7 @@ interface AppQuaternaryButtonProps {
   iconColor?: string;
   style?: StyleProp<ViewStyle>;
   contentStyle?: StyleProp<ViewStyle>;
+  contentContainerStyle?: StyleProp<ViewStyle>;
 }
 
 export default function AppQuaternaryButton({
@@ -34,6 +35,7 @@ export default function AppQuaternaryButton({
   iconColor,
   style,
   contentStyle,
+  contentContainerStyle,
 }: AppQuaternaryButtonProps): JSX.Element {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
@@ -54,7 +56,7 @@ export default function AppQuaternaryButton({
       <TouchableRipple
         style={[styles.quaternaryButton, style]}
         onPress={disabled ? undefined : onPress}>
-        <View style={styles.contentContainer}>
+        <View style={[styles.contentContainer, contentContainerStyle]}>
           {icon && (
             <MaterialCommunityIcons
               name={icon}
