@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Keyboard } from 'react-native';
+import { StyleSheet, View, Keyboard, TextInput } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { List, useTheme } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
@@ -12,7 +12,9 @@ import { encryptWithPassword } from '../../utils/cryptography';
 import { Theme } from '../../theme/default';
 import AppHeaderWizard from '../../components/molecules/AppHeaderWizard';
 import { RootStackParamList } from '../../navigation';
-import AppFormTextInputWithError from '../../components/molecules/AppFormTextInputWithError';
+import AppFormTextInputWithError, {
+  AppFormTextInputWithErrorProps,
+} from '../../components/molecules/AppFormTextInputWithError';
 import AppPrimaryButton from '../../components/atoms/button/AppPrimaryButton';
 import AppView from '../../components/atoms/view/AppView';
 import { hp, wp, SafeAreaInsets } from '../../utils/imageRatio';
@@ -67,7 +69,7 @@ export default function CreateOneKindContract({ navigation }: Props) {
   const styles = makeStyle(theme, insets);
 
   const { t } = useTranslation();
-  const passwordInput = React.useRef<any>();
+  const passwordInput = React.useRef<TextInput>();
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [utilitySelectorVisible, setUtilitySelectorVisible] =
     React.useState<boolean>(false);
@@ -109,8 +111,8 @@ export default function CreateOneKindContract({ navigation }: Props) {
       key: keyof OneKindContractForm,
       label: string,
       placeholder: string,
-      options?: Object,
-      nextref?: React.MutableRefObject<any>,
+      options?: AppFormTextInputWithErrorProps,
+      nextref?: React.MutableRefObject<TextInput>,
     ) => (
       <AppFormTextInputWithError
         theme={paperTheme}
@@ -191,7 +193,7 @@ export default function CreateOneKindContract({ navigation }: Props) {
                       }
                       showError={formikProps.touched.description}
                       onChangeText={formikProps.handleChange('description')}
-                      onSubmitEditing={() => passwordInput.current.focus()}
+                      onSubmitEditing={() => passwordInput.current?.focus()}
                       blurOnSubmit={true}
                       returnKeyType="go"
                     />
@@ -213,7 +215,7 @@ export default function CreateOneKindContract({ navigation }: Props) {
                       }
                       showError={formikProps.touched.symbol}
                       onChangeText={formikProps.handleChange('symbol')}
-                      onSubmitEditing={() => passwordInput.current.focus()}
+                      onSubmitEditing={() => passwordInput.current?.focus()}
                       blurOnSubmit={true}
                       returnKeyType="go"
                     />
@@ -242,7 +244,7 @@ export default function CreateOneKindContract({ navigation }: Props) {
                       }
                       showError={formikProps.touched.priceAmount}
                       onChangeText={formikProps.handleChange('priceAmount')}
-                      onSubmitEditing={() => passwordInput.current.focus()}
+                      onSubmitEditing={() => passwordInput.current?.focus()}
                       blurOnSubmit={true}
                       returnKeyType="go"
                     />
@@ -263,7 +265,7 @@ export default function CreateOneKindContract({ navigation }: Props) {
                       }
                       showError={formikProps.touched.quantity}
                       onChangeText={formikProps.handleChange('quantity')}
-                      onSubmitEditing={() => passwordInput.current.focus()}
+                      onSubmitEditing={() => passwordInput.current?.focus()}
                       blurOnSubmit={true}
                       returnKeyType="go"
                     />
@@ -286,7 +288,7 @@ export default function CreateOneKindContract({ navigation }: Props) {
                       }
                       showError={formikProps.touched.mintingExpire}
                       onChangeText={formikProps.handleChange('mintingExpire')}
-                      onSubmitEditing={() => passwordInput.current.focus()}
+                      onSubmitEditing={() => passwordInput.current?.focus()}
                       blurOnSubmit={true}
                       returnKeyType="go"
                     />
@@ -334,7 +336,7 @@ export default function CreateOneKindContract({ navigation }: Props) {
                       }
                       showError={formikProps.touched.royaltyOrigin}
                       onChangeText={formikProps.handleChange('royaltyOrigin')}
-                      onSubmitEditing={() => passwordInput.current.focus()}
+                      onSubmitEditing={() => passwordInput.current?.focus()}
                       blurOnSubmit={true}
                       returnKeyType="go"
                     />
@@ -357,7 +359,7 @@ export default function CreateOneKindContract({ navigation }: Props) {
                       }
                       showError={formikProps.touched.royaltyStaker}
                       onChangeText={formikProps.handleChange('royaltyStaker')}
-                      onSubmitEditing={() => passwordInput.current.focus()}
+                      onSubmitEditing={() => passwordInput.current?.focus()}
                       blurOnSubmit={true}
                       returnKeyType="go"
                     />
@@ -380,7 +382,7 @@ export default function CreateOneKindContract({ navigation }: Props) {
                       }
                       showError={formikProps.touched.royaltyOrigin}
                       onChangeText={formikProps.handleChange('royaltyOrigin')}
-                      onSubmitEditing={() => passwordInput.current.focus()}
+                      onSubmitEditing={() => passwordInput.current?.focus()}
                       blurOnSubmit={true}
                       returnKeyType="go"
                     />
@@ -403,7 +405,7 @@ export default function CreateOneKindContract({ navigation }: Props) {
                       }
                       showError={formikProps.touched.royaltyOrigin}
                       onChangeText={formikProps.handleChange('royaltyOrigin')}
-                      onSubmitEditing={() => passwordInput.current.focus()}
+                      onSubmitEditing={() => passwordInput.current?.focus()}
                       blurOnSubmit={true}
                       returnKeyType="go"
                     />
@@ -426,7 +428,7 @@ export default function CreateOneKindContract({ navigation }: Props) {
                       }
                       showError={formikProps.touched.royaltyOrigin}
                       onChangeText={formikProps.handleChange('royaltyOrigin')}
-                      onSubmitEditing={() => passwordInput.current.focus()}
+                      onSubmitEditing={() => passwordInput.current?.focus()}
                       blurOnSubmit={true}
                       returnKeyType="go"
                     />
@@ -457,7 +459,7 @@ export default function CreateOneKindContract({ navigation }: Props) {
                       }
                       showError={formikProps.touched.royaltyOrigin}
                       onChangeText={formikProps.handleChange('royaltyOrigin')}
-                      onSubmitEditing={() => passwordInput.current.focus()}
+                      onSubmitEditing={() => passwordInput.current?.focus()}
                       blurOnSubmit={true}
                       returnKeyType="go"
                     />
@@ -480,7 +482,7 @@ export default function CreateOneKindContract({ navigation }: Props) {
                       }
                       showError={formikProps.touched.royaltyStaker}
                       onChangeText={formikProps.handleChange('royaltyStaker')}
-                      onSubmitEditing={() => passwordInput.current.focus()}
+                      onSubmitEditing={() => passwordInput.current?.focus()}
                       blurOnSubmit={true}
                       returnKeyType="go"
                     />

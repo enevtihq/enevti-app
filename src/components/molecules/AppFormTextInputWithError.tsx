@@ -7,7 +7,7 @@ import { hp, SafeAreaInsets } from '../../utils/imageRatio';
 import AppFormTextInput from '../atoms/form/AppFormTextInput';
 import AppTextBody4 from '../atoms/text/AppTextBody4';
 
-interface AppFormTextInputWithErrorProps extends TextInputProps {
+export interface AppFormTextInputWithErrorProps extends TextInputProps {
   theme: Theme;
   errorText?: string;
   showError?: boolean;
