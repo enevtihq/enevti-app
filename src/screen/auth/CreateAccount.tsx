@@ -39,13 +39,15 @@ export default function CreateAccount({ navigation }: Props) {
       <View style={styles.actionContainer}>
         <View style={{ height: hp('3%', insets) }} />
         <AppTextBody5 style={styles.term}>{t('auth:term')}</AppTextBody5>
-        <View style={{ height: hp('4%', insets) }} />
+        <View style={{ height: hp('6%', insets) }} />
 
         <AppSecondaryButton
           onPress={() => navigation.navigate('ImportPassphrase')}
           style={styles.createAccount}>
           {t('auth:importPassphrase')}
         </AppSecondaryButton>
+
+        <View style={{ height: hp('2%', insets) }} />
 
         <AppPrimaryButton
           onPress={() => navigation.navigate('SetupLocalPassword')}
@@ -64,6 +66,8 @@ export default function CreateAccount({ navigation }: Props) {
           </AppTextBody4>
           <View style={styles.orLine} />
         </View>
+
+        <View style={{ height: hp('2%', insets) }} />
 
         <AppGoogleSignInButton
           onExistingAccount={() => {
@@ -88,7 +92,6 @@ const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
       flexDirection: 'column-reverse',
     },
     createAccount: {
-      marginBottom: hp('2%', insets),
       marginLeft: wp('5%', insets),
       marginRight: wp('5%', insets),
     },

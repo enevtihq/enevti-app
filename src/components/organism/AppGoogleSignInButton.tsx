@@ -231,7 +231,6 @@ export default function AppGoogleSignInButton({
 const makeStyle = (insets: SafeAreaInsets) =>
   StyleSheet.create({
     googleSignInButton: {
-      marginBottom: hp('2%', insets),
       marginLeft: wp('5%', insets),
       marginRight: wp('5%', insets),
     },

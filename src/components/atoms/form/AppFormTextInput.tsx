@@ -76,4 +76,6 @@ const makeStyles = (theme: ReturnType<typeof useTheme>) =>
 
 const forwardedAppFormTextInput = React.forwardRef(AppFormTextInput);
 
-export default forwardedAppFormTextInput;
+const memoizedAppFormTextInput = React.memo(forwardedAppFormTextInput);
+
+export default memoizedAppFormTextInput;

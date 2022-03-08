@@ -51,4 +51,9 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
 const forwardedAppFormTextInputWithError = React.forwardRef(
   AppFormTextInputWithError,
 );
-export default forwardedAppFormTextInputWithError;
+
+const memoizedAppFormTextInputWithError = React.memo(
+  forwardedAppFormTextInputWithError,
+);
+
+export default memoizedAppFormTextInputWithError;
