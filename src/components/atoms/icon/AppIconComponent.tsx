@@ -50,6 +50,7 @@ export const iconMap = {
   createNFT: 'plus-circle',
   camera: 'camera',
   gallery: 'folder-multiple-image',
+  identity: 'badge-account-horizontal',
 };
 
 interface AppIconComponentProps {

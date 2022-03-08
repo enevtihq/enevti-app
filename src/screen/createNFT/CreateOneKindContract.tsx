@@ -37,7 +37,9 @@ type Props = StackScreenProps<RootStackParamList, 'CreateOneKindContract'>;
 YupPassword(Yup);
 YupBIP39(Yup);
 
-const validationSchema = Yup.object().shape({});
+const validationSchema = Yup.object().shape({
+  name: Yup.string().required(),
+});
 
 const formInitialValues: OneKindContractForm = {
   name: '',
@@ -62,14 +64,18 @@ const formInitialValues: OneKindContractForm = {
 };
 
 export default function CreateOneKindContract({ navigation }: Props) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const paperTheme = useTheme();
   const theme = paperTheme as Theme;
   const insets = useSafeAreaInsets();
   const styles = makeStyle(theme, insets);
 
-  const { t } = useTranslation();
   const passwordInput = React.useRef<TextInput>();
+  const nameInput = React.useRef<TextInput>();
+  const descriptionInput = React.useRef<TextInput>();
+  const symbolInput = React.useRef<TextInput>();
+
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [utilitySelectorVisible, setUtilitySelectorVisible] =
     React.useState<boolean>(false);
@@ -85,36 +91,30 @@ export default function CreateOneKindContract({ navigation }: Props) {
     navigation.replace('AccountCreated');
   };
 
-  const accordionHeader = React.useCallback(
-    (icon: string, text: string) => (
-      <View style={styles.accordionListView}>
-        <AppIconGradient
-          name={icon}
-          colors={[theme.colors.primary, theme.colors.secondary]}
-          size={20}
-          style={styles.accordionIcon}
-        />
-        <AppTextBody3>{text}</AppTextBody3>
-      </View>
-    ),
-    [
-      styles.accordionIcon,
-      styles.accordionListView,
-      theme.colors.primary,
-      theme.colors.secondary,
-    ],
+  const accordionHeader = (icon: string, text: string) => (
+    <View style={styles.accordionListView}>
+      <AppIconGradient
+        name={icon}
+        colors={[theme.colors.primary, theme.colors.secondary]}
+        size={20}
+        style={styles.accordionIcon}
+      />
+      <AppTextBody3>{text}</AppTextBody3>
+    </View>
   );
 
   const commonFormInput = React.useCallback(
     (
       formikProps: FormikProps<OneKindContractForm>,
+      ref: React.MutableRefObject<TextInput | undefined>,
       key: keyof OneKindContractForm,
       label: string,
       placeholder: string,
       options?: Omit<AppFormTextInputWithErrorProps, 'theme'>,
-      nextref?: React.MutableRefObject<TextInput>,
+      nextref?: React.MutableRefObject<TextInput | undefined>,
     ) => (
       <AppFormTextInputWithError
+        ref={ref}
         theme={paperTheme}
         dense={true}
         style={styles.passwordInput}
@@ -124,17 +124,13 @@ export default function CreateOneKindContract({ navigation }: Props) {
         label={label}
         placeholder={placeholder}
         onBlur={() => formikProps.setFieldTouched(key)}
-        errorText={
-          formikProps.errors[key]
-            ? formikProps.values[key].toString().length > 0
-              ? t('auth:invalidPassphrase')
-              : t('form:required')
-            : ''
-        }
+        errorText={formikProps.errors[key] ? t('form:required') : ''}
         error={!!formikProps.errors[key]}
         showError={formikProps.touched[key]}
-        onEndEditing={formikProps.handleChange(key)}
-        onSubmitEditing={() => nextref && nextref.current.focus()}
+        onEndEditing={e =>
+          formikProps.setFieldValue(key, e.nativeEvent.text, true)
+        }
+        onSubmitEditing={() => nextref && nextref.current?.focus()}
         {...options}
       />
     ),
@@ -167,47 +163,37 @@ export default function CreateOneKindContract({ navigation }: Props) {
                 <List.Section>
                   <List.Accordion
                     title={accordionHeader(
-                      iconMap.utilityContent,
-                      'NFT Identity',
+                      iconMap.identity,
+                      t('createNFT:nftIdentity'),
                     )}>
                     {commonFormInput(
                       formikProps,
+                      nameInput,
                       'name',
-                      'Collection Name',
-                      'Name of your collection',
+                      t('createNFT:collectionName'),
+                      t('createNFT:collectionNamePlaceholder'),
+                      { autoCapitalize: 'words', maxLength: 20 },
+                      descriptionInput,
                     )}
                     {commonFormInput(
                       formikProps,
+                      descriptionInput,
                       'description',
-                      'Description',
-                      'Short description about your collection',
+                      t('createNFT:collectionDescription'),
+                      t('createNFT:collectionDescriptionPlaceholder'),
                       {
                         multiline: true,
                         numberOfLines: 5,
                       },
                     )}
-                    <AppFormTextInputWithError
-                      label={'Symbol (ex: CLTN)'}
-                      theme={paperTheme}
-                      dense={true}
-                      multiline={true}
-                      autoCapitalize={'characters'}
-                      style={styles.passwordInput}
-                      value={formikProps.values.symbol}
-                      onBlur={() => formikProps.setFieldTouched('symbol')}
-                      errorText={
-                        formikProps.errors.symbol
-                          ? formikProps.values.symbol.length > 0
-                            ? t('auth:invalidPassphrase')
-                            : t('form:required')
-                          : ''
-                      }
-                      showError={formikProps.touched.symbol}
-                      onChangeText={formikProps.handleChange('symbol')}
-                      onSubmitEditing={() => passwordInput.current?.focus()}
-                      blurOnSubmit={true}
-                      returnKeyType="go"
-                    />
+                    {commonFormInput(
+                      formikProps,
+                      symbolInput,
+                      'symbol',
+                      t('createNFT:collectionSymbol'),
+                      t('createNFT:collectionSymbolPlaceholder'),
+                      { autoCapitalize: 'characters' },
+                    )}
                   </List.Accordion>
 
                   <List.Accordion

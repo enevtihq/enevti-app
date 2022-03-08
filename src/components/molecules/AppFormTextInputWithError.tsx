@@ -19,15 +19,14 @@ function AppFormTextInputWithError(
 ) {
   const insets = useSafeAreaInsets();
   const styles = makeStyles(theme, insets);
+  const height = props.numberOfLines ? props.numberOfLines * 25 : undefined;
+  const paddingBottom = props.maxLength ? 10 : undefined;
 
   return (
     <View style={[props.style]}>
       <AppFormTextInput
         {...props}
-        style={{
-          minHeight: props.numberOfLines ? props.numberOfLines * 25 : undefined,
-          maxHeight: props.numberOfLines ? props.numberOfLines * 25 : undefined,
-        }}
+        style={{ minHeight: height, maxHeight: height, paddingBottom }}
         ref={ref}
         theme={theme}
         numberOfLines={Platform.OS === 'ios' ? undefined : props.numberOfLines}

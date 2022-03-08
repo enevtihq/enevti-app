@@ -23,9 +23,13 @@ export default {
   setupContract: 'Setup Contract',
   setupContractDescription:
     'Finally! Set how your NFT will brings value in decentralized ecosystem!',
-  contractCollectionName: 'Collection Name',
-  contractCollectionDescription: 'Collection Description',
-  contractCollectionSymbol: 'Symbol (ex: CLTN)',
+  nftIdentity: 'NFT Identity',
+  collectionName: 'Collection Name',
+  collectionNamePlaceholder: 'Name of your collection',
+  collectionDescription: 'Description',
+  collectionDescriptionPlaceholder: 'Short description about your collection',
+  collectionSymbol: 'Symbol',
+  collectionSymbolPlaceholder: 'ex: CLTN',
   contractCollectionUtility: 'Utility',
   contractCollectionRecurring: 'Recurring',
 };
