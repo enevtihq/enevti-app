@@ -111,7 +111,7 @@ export default function CreateOneKindContract({ navigation }: Props) {
       key: keyof OneKindContractForm,
       label: string,
       placeholder: string,
-      options?: AppFormTextInputWithErrorProps,
+      options?: Omit<AppFormTextInputWithErrorProps, 'theme'>,
       nextref?: React.MutableRefObject<TextInput>,
     ) => (
       <AppFormTextInputWithError
@@ -119,9 +119,10 @@ export default function CreateOneKindContract({ navigation }: Props) {
         dense={true}
         style={styles.passwordInput}
         returnKeyType={'go'}
+        autoComplete={'off'}
+        autoCorrect={false}
         label={label}
         placeholder={placeholder}
-        value={formikProps.values[key].toString()}
         onBlur={() => formikProps.setFieldTouched(key)}
         errorText={
           formikProps.errors[key]
@@ -130,9 +131,9 @@ export default function CreateOneKindContract({ navigation }: Props) {
               : t('form:required')
             : ''
         }
-        error={formikProps.touched[key]}
+        error={!!formikProps.errors[key]}
         showError={formikProps.touched[key]}
-        onChangeText={formikProps.handleChange(key)}
+        onEndEditing={formikProps.handleChange(key)}
         onSubmitEditing={() => nextref && nextref.current.focus()}
         {...options}
       />
@@ -175,28 +176,16 @@ export default function CreateOneKindContract({ navigation }: Props) {
                       'Collection Name',
                       'Name of your collection',
                     )}
-                    <AppFormTextInputWithError
-                      label={'Description'}
-                      theme={paperTheme}
-                      dense={true}
-                      multiline={true}
-                      autoCapitalize={'none'}
-                      style={styles.passwordInput}
-                      value={formikProps.values.description}
-                      onBlur={() => formikProps.setFieldTouched('description')}
-                      errorText={
-                        formikProps.errors.description
-                          ? formikProps.values.description.length > 0
-                            ? t('auth:invalidPassphrase')
-                            : t('form:required')
-                          : ''
-                      }
-                      showError={formikProps.touched.description}
-                      onChangeText={formikProps.handleChange('description')}
-                      onSubmitEditing={() => passwordInput.current?.focus()}
-                      blurOnSubmit={true}
-                      returnKeyType="go"
-                    />
+                    {commonFormInput(
+                      formikProps,
+                      'description',
+                      'Description',
+                      'Short description about your collection',
+                      {
+                        multiline: true,
+                        numberOfLines: 5,
+                      },
+                    )}
                     <AppFormTextInputWithError
                       label={'Symbol (ex: CLTN)'}
                       theme={paperTheme}

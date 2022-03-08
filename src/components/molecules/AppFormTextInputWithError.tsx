@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Platform } from 'react-native';
 import { TextInputProps } from 'react-native-paper/lib/typescript/components/TextInput/TextInput';
 import { Theme } from 'react-native-paper/lib/typescript/types';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -21,8 +21,17 @@ function AppFormTextInputWithError(
   const styles = makeStyles(theme, insets);
 
   return (
-    <View style={props.style}>
-      <AppFormTextInput {...props} style={undefined} ref={ref} theme={theme} />
+    <View style={[props.style]}>
+      <AppFormTextInput
+        {...props}
+        style={{
+          minHeight: props.numberOfLines ? props.numberOfLines * 25 : undefined,
+          maxHeight: props.numberOfLines ? props.numberOfLines * 25 : undefined,
+        }}
+        ref={ref}
+        theme={theme}
+        numberOfLines={Platform.OS === 'ios' ? undefined : props.numberOfLines}
+      />
       {showError && errorText ? (
         <AppTextBody4 style={styles.errorText}>{errorText}</AppTextBody4>
       ) : null}
