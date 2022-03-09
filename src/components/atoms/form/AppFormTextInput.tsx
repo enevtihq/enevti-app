@@ -18,9 +18,14 @@ function AppFormTextInput(
   const height = props.numberOfLines ? props.numberOfLines * 25 : undefined;
   const paddingBottom =
     props.maxLength && !props.hideMaxLengthIndicator ? 10 : undefined;
+  const initialLength = props.value
+    ? props.value.toString().length
+    : props.defaultValue
+    ? props.defaultValue.toString().length
+    : 0;
 
   const [maxLengthShow, setMaxLengthShow] = React.useState<boolean>(false);
-  const [textLength, setTextLength] = React.useState<number>(0);
+  const [textLength, setTextLength] = React.useState<number>(initialLength);
 
   const onFocus = React.useCallback(
     e => {

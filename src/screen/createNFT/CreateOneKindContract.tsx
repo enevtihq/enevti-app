@@ -123,6 +123,7 @@ export default function CreateOneKindContract({ navigation }: Props) {
         returnKeyType={'go'}
         autoComplete={'off'}
         autoCorrect={false}
+        defaultValue={formikProps.values[key].toString()}
         label={label}
         placeholder={placeholder}
         onBlur={() => formikProps.setFieldTouched(key)}
