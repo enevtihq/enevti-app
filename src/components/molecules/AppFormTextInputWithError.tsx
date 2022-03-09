@@ -3,6 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { TextInputProps } from 'react-native-paper/lib/typescript/components/TextInput/TextInput';
 import { Theme } from 'react-native-paper/lib/typescript/types';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { shallowEqual } from 'react-redux';
 import { hp, SafeAreaInsets } from '../../utils/imageRatio';
 import AppFormTextInput from '../atoms/form/AppFormTextInput';
 import AppTextBody4 from '../atoms/text/AppTextBody4';
@@ -13,6 +14,7 @@ export interface AppFormTextInputWithErrorProps extends TextInputProps {
   showError?: boolean;
   endComponent?: React.ReactNode;
   hideMaxLengthIndicator?: boolean;
+  memoKey?: (keyof AppFormTextInputWithErrorProps)[];
 }
 
 function AppFormTextInputWithError(
@@ -62,6 +64,19 @@ const forwardedAppFormTextInputWithError = React.forwardRef(
 
 const memoizedAppFormTextInputWithError = React.memo(
   forwardedAppFormTextInputWithError,
+  (prevProps, nextProps) => {
+    if (prevProps.memoKey) {
+      let ret = true;
+      prevProps.memoKey.forEach(key => {
+        if (prevProps[key] !== nextProps[key]) {
+          ret = false;
+        }
+      });
+      return ret;
+    } else {
+      return shallowEqual(prevProps, nextProps);
+    }
+  },
 );
 
 export default memoizedAppFormTextInputWithError;

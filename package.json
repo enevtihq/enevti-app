@@ -90,6 +90,7 @@
     "react-native-tcp": "^3.3.2",
     "react-native-udp": "^2.7.0",
     "react-native-vector-icons": "^9.0.0",
+    "react-number-format": "^4.9.1",
     "react-redux": "^7.2.6",
     "readable-stream": "^1.0.33",
     "redux-persist": "^6.0.0",

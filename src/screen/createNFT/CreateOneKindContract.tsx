@@ -33,6 +33,7 @@ import AppTextBody4 from '../../components/atoms/text/AppTextBody4';
 import AppIconGradient from '../../components/molecules/AppIconGradient';
 import { OneKindContractForm } from '../../types/screen/CreateOneKindContract';
 import AppCoinChipsPicker from '../../components/organism/AppCoinChipsPicker';
+import NumberFormat from 'react-number-format';
 
 type Props = StackScreenProps<RootStackParamList, 'CreateOneKindContract'>;
 YupPassword(Yup);
@@ -204,19 +205,32 @@ export default function CreateOneKindContract({ navigation }: Props) {
                       iconMap.mintingBehaviour,
                       'Minting Behaviour',
                     )}>
-                    {commonFormInput(
-                      formikProps,
-                      priceInput,
-                      'priceAmount',
-                      'Price',
-                      'Set price per items',
-                      {
-                        keyboardType: 'number-pad',
-                        hideMaxLengthIndicator: true,
-                        maxLength: 10,
-                        endComponent: <AppCoinChipsPicker />,
-                      },
-                    )}
+                    <NumberFormat
+                      value={formikProps.values.priceAmount}
+                      displayType={'text'}
+                      thousandSeparator={true}
+                      renderText={value =>
+                        commonFormInput(
+                          formikProps,
+                          priceInput,
+                          'priceAmount',
+                          'Price',
+                          'ex: 0.1 or 100',
+                          {
+                            value: value,
+                            defaultValue: undefined,
+                            onEndEditing: undefined,
+                            onChangeText:
+                              formikProps.handleChange('priceAmount'),
+                            keyboardType: 'number-pad',
+                            hideMaxLengthIndicator: true,
+                            maxLength: 13,
+                            endComponent: <AppCoinChipsPicker />,
+                            memoKey: ['value'],
+                          },
+                        )
+                      }
+                    />
                     <AppFormTextInputWithError
                       label={'Quantity'}
                       theme={paperTheme}
