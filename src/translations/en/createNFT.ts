@@ -30,6 +30,13 @@ export default {
   collectionDescriptionPlaceholder: 'Short description about your collection',
   collectionSymbol: 'Symbol',
   collectionSymbolPlaceholder: 'ex: CLTN',
+  nftMintingBehaviour: 'Minting Behaviour',
+  collectionPrice: 'Price',
+  collectionPricePlaceholder: 'ex: 0.1 or 1,000',
+  collectionQuantity: 'Quantity',
+  collectionQuantityPlaceholder: 'How many items in this collection',
+  collectionMintingExpire: 'Minting Period Limit (days)',
+  collectionMintingExpirePlaceholder: '0 means forever',
   contractCollectionUtility: 'Utility',
   contractCollectionRecurring: 'Recurring',
 };

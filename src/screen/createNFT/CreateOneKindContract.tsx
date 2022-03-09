@@ -6,7 +6,6 @@ import { useTranslation } from 'react-i18next';
 import { StackScreenProps } from '@react-navigation/stack';
 import { Formik, FormikProps } from 'formik';
 import * as Yup from 'yup';
-import YupPassword from 'yup-password';
 
 import { encryptWithPassword } from '../../utils/cryptography';
 import { Theme } from '../../theme/default';
@@ -18,7 +17,6 @@ import AppFormTextInputWithError, {
 import AppPrimaryButton from '../../components/atoms/button/AppPrimaryButton';
 import AppView from '../../components/atoms/view/AppView';
 import { hp, wp, SafeAreaInsets } from '../../utils/imageRatio';
-import YupBIP39 from '../../utils/yupbip39';
 import { useDispatch } from 'react-redux';
 import { setEncryptedPassphraseAuth } from '../../store/slices/auth';
 import { setLocalSessionKey } from '../../store/slices/session/local';
@@ -36,11 +34,14 @@ import AppCoinChipsPicker from '../../components/organism/AppCoinChipsPicker';
 import NumberFormat from 'react-number-format';
 
 type Props = StackScreenProps<RootStackParamList, 'CreateOneKindContract'>;
-YupPassword(Yup);
-YupBIP39(Yup);
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required(),
+  description: Yup.string().required(),
+  symbol: Yup.string().required(),
+  priceAmount: Yup.string().required(),
+  quantity: Yup.number().moreThan(0).required(),
+  mintingExpire: Yup.number().required(),
 });
 
 const formInitialValues: OneKindContractForm = {
@@ -61,8 +62,8 @@ const formInitialValues: OneKindContractForm = {
   royaltyStaker: 0,
   priceAmount: '',
   priceCurrency: '',
-  quantity: 1,
-  mintingExpire: 0,
+  quantity: '',
+  mintingExpire: '',
 };
 
 export default function CreateOneKindContract({ navigation }: Props) {
@@ -78,6 +79,8 @@ export default function CreateOneKindContract({ navigation }: Props) {
   const descriptionInput = React.useRef<TextInput>();
   const symbolInput = React.useRef<TextInput>();
   const priceInput = React.useRef<TextInput>();
+  const quantityInput = React.useRef<TextInput>();
+  const mintingPeriodInput = React.useRef<TextInput>();
 
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [utilitySelectorVisible, setUtilitySelectorVisible] =
@@ -176,7 +179,11 @@ export default function CreateOneKindContract({ navigation }: Props) {
                       'name',
                       t('createNFT:collectionName'),
                       t('createNFT:collectionNamePlaceholder'),
-                      { autoCapitalize: 'words', maxLength: 20 },
+                      {
+                        autoCapitalize: 'words',
+                        maxLength: 20,
+                        memoKey: ['errorText', 'error', 'showError'],
+                      },
                       descriptionInput,
                     )}
                     {commonFormInput(
@@ -188,6 +195,8 @@ export default function CreateOneKindContract({ navigation }: Props) {
                       {
                         multiline: true,
                         numberOfLines: 5,
+                        maxLength: 280,
+                        memoKey: ['errorText', 'error', 'showError'],
                       },
                     )}
                     {commonFormInput(
@@ -196,14 +205,18 @@ export default function CreateOneKindContract({ navigation }: Props) {
                       'symbol',
                       t('createNFT:collectionSymbol'),
                       t('createNFT:collectionSymbolPlaceholder'),
-                      { autoCapitalize: 'characters' },
+                      {
+                        autoCapitalize: 'characters',
+                        maxLength: 10,
+                        memoKey: ['errorText', 'error', 'showError'],
+                      },
                     )}
                   </List.Accordion>
 
                   <List.Accordion
                     title={accordionHeader(
                       iconMap.mintingBehaviour,
-                      'Minting Behaviour',
+                      t('createNFT:nftMintingBehaviour'),
                     )}>
                     <NumberFormat
                       value={formikProps.values.priceAmount}
@@ -214,8 +227,8 @@ export default function CreateOneKindContract({ navigation }: Props) {
                           formikProps,
                           priceInput,
                           'priceAmount',
-                          'Price',
-                          'ex: 0.1 or 100',
+                          t('createNFT:collectionPrice'),
+                          t('createNFT:collectionPricePlaceholder'),
                           {
                             value: value,
                             defaultValue: undefined,
@@ -226,55 +239,45 @@ export default function CreateOneKindContract({ navigation }: Props) {
                             hideMaxLengthIndicator: true,
                             maxLength: 13,
                             endComponent: <AppCoinChipsPicker />,
-                            memoKey: ['value'],
+                            memoKey: [
+                              'value',
+                              'errorText',
+                              'error',
+                              'showError',
+                            ],
                           },
+                          quantityInput,
                         )
                       }
                     />
-                    <AppFormTextInputWithError
-                      label={'Quantity'}
-                      theme={paperTheme}
-                      dense={true}
-                      autoCapitalize={'none'}
-                      style={styles.passwordInput}
-                      value={formikProps.values.quantity.toString()}
-                      onBlur={() => formikProps.setFieldTouched('quantity')}
-                      errorText={
-                        formikProps.errors.quantity
-                          ? formikProps.values.quantity > 0
-                            ? t('auth:invalidPassphrase')
+                    {commonFormInput(
+                      formikProps,
+                      quantityInput,
+                      'quantity',
+                      t('createNFT:collectionQuantity'),
+                      t('createNFT:collectionQuantityPlaceholder'),
+                      {
+                        memoKey: ['errorText', 'error', 'showError'],
+                        keyboardType: 'number-pad',
+                        errorText: formikProps.errors.quantity
+                          ? parseFloat(formikProps.values.quantity) <= 0
+                            ? t('form:greaterThanZero')
                             : t('form:required')
-                          : ''
-                      }
-                      showError={formikProps.touched.quantity}
-                      onChangeText={formikProps.handleChange('quantity')}
-                      onSubmitEditing={() => passwordInput.current?.focus()}
-                      blurOnSubmit={true}
-                      returnKeyType="go"
-                    />
-                    <AppFormTextInputWithError
-                      label={'Minting Period Limit'}
-                      theme={paperTheme}
-                      dense={true}
-                      autoCapitalize={'none'}
-                      style={styles.passwordInput}
-                      value={formikProps.values.mintingExpire.toString()}
-                      onBlur={() =>
-                        formikProps.setFieldTouched('mintingExpire')
-                      }
-                      errorText={
-                        formikProps.errors.mintingExpire
-                          ? formikProps.values.mintingExpire > 0
-                            ? t('auth:invalidPassphrase')
-                            : t('form:required')
-                          : ''
-                      }
-                      showError={formikProps.touched.mintingExpire}
-                      onChangeText={formikProps.handleChange('mintingExpire')}
-                      onSubmitEditing={() => passwordInput.current?.focus()}
-                      blurOnSubmit={true}
-                      returnKeyType="go"
-                    />
+                          : '',
+                      },
+                      mintingPeriodInput,
+                    )}
+                    {commonFormInput(
+                      formikProps,
+                      mintingPeriodInput,
+                      'mintingExpire',
+                      t('createNFT:collectionMintingExpire'),
+                      t('createNFT:collectionMintingExpirePlaceholder'),
+                      {
+                        memoKey: ['errorText', 'error', 'showError'],
+                        keyboardType: 'number-pad',
+                      },
+                    )}
                   </List.Accordion>
 
                   <List.Accordion

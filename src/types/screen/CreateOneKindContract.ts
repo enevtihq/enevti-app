@@ -16,6 +16,6 @@ export type OneKindContractForm = {
   royaltyStaker: number;
   priceAmount: string;
   priceCurrency: string;
-  quantity: number;
-  mintingExpire: number;
+  quantity: string;
+  mintingExpire: string;
 };
