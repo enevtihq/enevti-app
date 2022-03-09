@@ -32,6 +32,7 @@ import AppListItem from '../../components/molecules/list/AppListItem';
 import AppTextBody4 from '../../components/atoms/text/AppTextBody4';
 import AppIconGradient from '../../components/molecules/AppIconGradient';
 import { OneKindContractForm } from '../../types/screen/CreateOneKindContract';
+import AppCoinChipsPicker from '../../components/organism/AppCoinChipsPicker';
 
 type Props = StackScreenProps<RootStackParamList, 'CreateOneKindContract'>;
 YupPassword(Yup);
@@ -59,7 +60,7 @@ const formInitialValues: OneKindContractForm = {
   royaltyStaker: 0,
   priceAmount: '',
   priceCurrency: '',
-  quantity: 0,
+  quantity: 1,
   mintingExpire: 0,
 };
 
@@ -75,6 +76,7 @@ export default function CreateOneKindContract({ navigation }: Props) {
   const nameInput = React.useRef<TextInput>();
   const descriptionInput = React.useRef<TextInput>();
   const symbolInput = React.useRef<TextInput>();
+  const priceInput = React.useRef<TextInput>();
 
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [utilitySelectorVisible, setUtilitySelectorVisible] =
@@ -197,32 +199,23 @@ export default function CreateOneKindContract({ navigation }: Props) {
                   </List.Accordion>
 
                   <List.Accordion
-                    title={'Minting Behaviour'}
-                    titleStyle={{
-                      fontSize: wp('4.0%', insets),
-                      marginLeft: wp('1%', insets),
-                    }}>
-                    <AppFormTextInputWithError
-                      label={'Price'}
-                      theme={paperTheme}
-                      dense={true}
-                      autoCapitalize={'none'}
-                      style={styles.passwordInput}
-                      value={formikProps.values.priceAmount}
-                      onBlur={() => formikProps.setFieldTouched('priceAmount')}
-                      errorText={
-                        formikProps.errors.priceAmount
-                          ? formikProps.values.priceAmount.length > 0
-                            ? t('auth:invalidPassphrase')
-                            : t('form:required')
-                          : ''
-                      }
-                      showError={formikProps.touched.priceAmount}
-                      onChangeText={formikProps.handleChange('priceAmount')}
-                      onSubmitEditing={() => passwordInput.current?.focus()}
-                      blurOnSubmit={true}
-                      returnKeyType="go"
-                    />
+                    title={accordionHeader(
+                      iconMap.mintingBehaviour,
+                      'Minting Behaviour',
+                    )}>
+                    {commonFormInput(
+                      formikProps,
+                      priceInput,
+                      'priceAmount',
+                      'Price',
+                      'Set price per items',
+                      {
+                        keyboardType: 'number-pad',
+                        hideMaxLengthIndicator: true,
+                        maxLength: 10,
+                        endComponent: <AppCoinChipsPicker />,
+                      },
+                    )}
                     <AppFormTextInputWithError
                       label={'Quantity'}
                       theme={paperTheme}

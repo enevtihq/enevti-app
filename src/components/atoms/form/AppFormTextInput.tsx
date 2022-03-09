@@ -6,9 +6,18 @@ import Color from 'color';
 import { StyleSheet, View } from 'react-native';
 import AppTextBody5 from '../text/AppTextBody5';
 
-function AppFormTextInput(props: TextInputProps, ref: any) {
+function AppFormTextInput(
+  props: TextInputProps & {
+    endComponent?: React.ReactNode;
+    hideMaxLengthIndicator?: boolean;
+  },
+  ref: any,
+) {
   const theme = useTheme();
   const styles = makeStyles(theme);
+  const height = props.numberOfLines ? props.numberOfLines * 25 : undefined;
+  const paddingBottom =
+    props.maxLength && !props.hideMaxLengthIndicator ? 10 : undefined;
 
   const [maxLengthShow, setMaxLengthShow] = React.useState<boolean>(false);
   const [textLength, setTextLength] = React.useState<number>(0);
@@ -44,12 +53,19 @@ function AppFormTextInput(props: TextInputProps, ref: any) {
         mode={'outlined'}
         ref={ref}
         outlineColor={styles.appFormTextInput.backgroundColor}
-        style={[styles.appFormTextInput, props.style]}
+        style={[
+          styles.appFormTextInput,
+          { minHeight: height, maxHeight: height, paddingBottom },
+          props.style,
+        ]}
         onFocus={onFocus}
         onBlur={onBlur}
         onChangeText={onChangeText}
       />
-      {maxLengthShow && props.maxLength ? (
+      {props.endComponent ? (
+        <View style={styles.endComponent}>{props.endComponent}</View>
+      ) : null}
+      {maxLengthShow && props.maxLength && !props.hideMaxLengthIndicator ? (
         <AppTextBody5 style={styles.maxLength}>
           {textLength} / {props.maxLength}
         </AppTextBody5>
@@ -71,6 +87,13 @@ const makeStyles = (theme: ReturnType<typeof useTheme>) =>
       position: 'absolute',
       bottom: 5,
       right: 15,
+    },
+    endComponent: {
+      position: 'absolute',
+      height: '90%',
+      top: '10%',
+      right: 0,
+      alignItems: 'center',
     },
   });
 

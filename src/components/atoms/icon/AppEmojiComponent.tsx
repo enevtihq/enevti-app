@@ -49,6 +49,7 @@ export const emojiMap = {
   camera: UNDEFINED_EMOJI,
   gallery: UNDEFINED_EMOJI,
   identity: UNDEFINED_EMOJI,
+  mintingBehaviour: UNDEFINED_EMOJI,
 };
 
 interface AppEmojiComponentProps {

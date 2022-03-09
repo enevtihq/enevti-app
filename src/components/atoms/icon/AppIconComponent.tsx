@@ -51,6 +51,7 @@ export const iconMap = {
   camera: 'camera',
   gallery: 'folder-multiple-image',
   identity: 'badge-account-horizontal',
+  mintingBehaviour: 'account-cash',
 };
 
 interface AppIconComponentProps {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Platform } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { TextInputProps } from 'react-native-paper/lib/typescript/components/TextInput/TextInput';
 import { Theme } from 'react-native-paper/lib/typescript/types';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -11,25 +11,33 @@ export interface AppFormTextInputWithErrorProps extends TextInputProps {
   theme: Theme;
   errorText?: string;
   showError?: boolean;
+  endComponent?: React.ReactNode;
+  hideMaxLengthIndicator?: boolean;
 }
 
 function AppFormTextInputWithError(
-  { theme, errorText, showError, ...props }: AppFormTextInputWithErrorProps,
+  {
+    theme,
+    errorText,
+    showError,
+    endComponent,
+    hideMaxLengthIndicator,
+    ...props
+  }: AppFormTextInputWithErrorProps,
   ref: any,
 ) {
   const insets = useSafeAreaInsets();
   const styles = makeStyles(theme, insets);
-  const height = props.numberOfLines ? props.numberOfLines * 25 : undefined;
-  const paddingBottom = props.maxLength ? 10 : undefined;
 
   return (
     <View style={[props.style]}>
       <AppFormTextInput
         {...props}
-        style={{ minHeight: height, maxHeight: height, paddingBottom }}
+        style={undefined}
         ref={ref}
         theme={theme}
-        numberOfLines={Platform.OS === 'ios' ? undefined : props.numberOfLines}
+        endComponent={endComponent}
+        hideMaxLengthIndicator={hideMaxLengthIndicator}
       />
       {showError && errorText ? (
         <AppTextBody4 style={styles.errorText}>{errorText}</AppTextBody4>
