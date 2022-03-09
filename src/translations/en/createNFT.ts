@@ -23,6 +23,8 @@ export default {
   setupContract: 'Setup Contract',
   setupContractDescription:
     'Finally! Set how your NFT will brings value in decentralized ecosystem!',
+  nameUnavailable: 'Name is taken, choose another name!',
+  symbolUnavailable: 'Symbol is taken, choose another symbol',
   nftIdentity: 'NFT Identity',
   collectionName: 'Collection Name',
   collectionNamePlaceholder: 'Name of your collection',

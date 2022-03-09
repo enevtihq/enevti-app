@@ -29,20 +29,20 @@ import AppMenuContainer from '../../components/atoms/menu/AppMenuContainer';
 import AppListItem from '../../components/molecules/list/AppListItem';
 import AppTextBody4 from '../../components/atoms/text/AppTextBody4';
 import AppIconGradient from '../../components/molecules/AppIconGradient';
-import { OneKindContractForm } from '../../types/screen/CreateOneKindContract';
+import {
+  OneKindContractForm,
+  OneKindContractStatusForm,
+} from '../../types/screen/CreateOneKindContract';
 import AppCoinChipsPicker from '../../components/organism/AppCoinChipsPicker';
 import NumberFormat from 'react-number-format';
+import { isNameAvailable, isSymbolAvailable } from '../../service/enevti/nft';
 
 type Props = StackScreenProps<RootStackParamList, 'CreateOneKindContract'>;
 
-const validationSchema = Yup.object().shape({
-  name: Yup.string().required(),
-  description: Yup.string().required(),
-  symbol: Yup.string().required(),
-  priceAmount: Yup.string().required(),
-  quantity: Yup.number().moreThan(0).required(),
-  mintingExpire: Yup.number().required(),
-});
+const formInitialStatus: OneKindContractStatusForm = {
+  nameAvailable: true,
+  symbolAvailable: true,
+};
 
 const formInitialValues: OneKindContractForm = {
   name: '',
@@ -131,8 +131,8 @@ export default function CreateOneKindContract({ navigation }: Props) {
         label={label}
         placeholder={placeholder}
         onBlur={() => formikProps.setFieldTouched(key)}
-        errorText={formikProps.errors[key] ? t('form:required') : ''}
-        error={!!formikProps.errors[key]}
+        errorText={formikProps.errors[key]}
+        error={formikProps.touched[key] && !!formikProps.errors[key]}
         showError={formikProps.touched[key]}
         onEndEditing={e =>
           formikProps.setFieldValue(key, e.nativeEvent.text, true)
@@ -141,7 +141,20 @@ export default function CreateOneKindContract({ navigation }: Props) {
         {...options}
       />
     ),
-    [paperTheme, styles.passwordInput, t],
+    [paperTheme, styles.passwordInput],
+  );
+
+  const validationSchema = React.useMemo(
+    () =>
+      Yup.object().shape({
+        name: Yup.string().required(t('form:required')),
+        description: Yup.string().required(t('form:required')),
+        symbol: Yup.string().required(t('form:required')),
+        priceAmount: Yup.string().required(t('form:required')),
+        quantity: Yup.number().moreThan(0).required(t('form:required')),
+        mintingExpire: Yup.number().required(t('form:required')),
+      }),
+    [t],
   );
 
   return (
@@ -158,6 +171,7 @@ export default function CreateOneKindContract({ navigation }: Props) {
 
         <Formik
           initialValues={formInitialValues}
+          initialStatus={formInitialStatus}
           onSubmit={async values => {
             Keyboard.dismiss();
             setIsLoading(true);
@@ -183,6 +197,22 @@ export default function CreateOneKindContract({ navigation }: Props) {
                         autoCapitalize: 'words',
                         maxLength: 20,
                         memoKey: ['errorText', 'error', 'showError'],
+                        errorText: !formikProps.status.nameAvailable
+                          ? t('createNFT:nameUnavailable')
+                          : formikProps.errors.name,
+                        error:
+                          formikProps.touched.name &&
+                          (!formikProps.status.nameAvailable ||
+                            !!formikProps.errors.name),
+                        onEndEditing: async e => {
+                          const text = e.nativeEvent.text;
+                          const nameAvailable = await isNameAvailable(text);
+                          formikProps.setFieldValue('name', text, true);
+                          formikProps.setStatus({
+                            ...formikProps.status,
+                            nameAvailable,
+                          });
+                        },
                       },
                       descriptionInput,
                     )}
@@ -209,6 +239,22 @@ export default function CreateOneKindContract({ navigation }: Props) {
                         autoCapitalize: 'characters',
                         maxLength: 10,
                         memoKey: ['errorText', 'error', 'showError'],
+                        errorText: !formikProps.status.symbolAvailable
+                          ? t('createNFT:symbolUnavailable')
+                          : formikProps.errors.symbol,
+                        error:
+                          formikProps.touched.symbol &&
+                          (!formikProps.status.symbolAvailable ||
+                            !!formikProps.errors.symbol),
+                        onEndEditing: async e => {
+                          const text = e.nativeEvent.text;
+                          const symbolAvailable = await isSymbolAvailable(text);
+                          formikProps.setFieldValue('symbol', text, true);
+                          formikProps.setStatus({
+                            ...formikProps.status,
+                            symbolAvailable,
+                          });
+                        },
                       },
                     )}
                   </List.Accordion>

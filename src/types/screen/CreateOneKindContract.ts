@@ -19,3 +19,8 @@ export type OneKindContractForm = {
   quantity: string;
   mintingExpire: string;
 };
+
+export type OneKindContractStatusForm = {
+  nameAvailable: boolean;
+  symbolAvailable: boolean;
+};
