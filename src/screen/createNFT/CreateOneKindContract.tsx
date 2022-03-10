@@ -34,6 +34,7 @@ import { isNameAvailable, isSymbolAvailable } from '../../service/enevti/nft';
 import AppUtilityPicker from '../../components/organism/picker/AppUtilityPicker';
 import AppRecurringPicker from '../../components/organism/picker/AppRecurringPicker.tsx';
 import AppDateMonthPicker from '../../components/organism/datePicker/AppDateMonthPicker';
+import AppDayPicker from '../../components/organism/datePicker/AppDayPicker';
 
 type Props = StackScreenProps<RootStackParamList, 'CreateOneKindContract'>;
 
@@ -52,7 +53,7 @@ const formInitialValues: OneKindContractForm = {
   mintingExpire: '',
   utility: '',
   recurring: '',
-  timeDay: 0,
+  timeDay: -1,
   timeDate: 0,
   timeMonth: 0,
   timeYear: 0,
@@ -366,6 +367,12 @@ export default function CreateOneKindContract({ navigation }: Props) {
                         formikProps.values.timeMonth,
                         formikProps.values.timeDate,
                       ]}
+                    />
+                    <AppDayPicker
+                      onSelected={value => {
+                        formikProps.setFieldValue('timeDay', value[0], false);
+                      }}
+                      value={[formikProps.values.timeDay]}
                     />
 
                     <AppFormTextInputWithError

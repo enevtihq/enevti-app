@@ -7,20 +7,19 @@ import { hp, SafeAreaInsets, wp } from '../../../utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AppWheelPicker from '../../molecules/wheelpicker/AppWheelPicker';
 import AppMenuContainer from '../../atoms/menu/AppMenuContainer';
-import { monthToString } from '../../../utils/date/dateToString';
-import getDaysInMonthUTC from '../../../utils/date/getDaysInMonth';
+import { dayToString } from '../../../utils/date/dateToString';
 
-interface AppDateMonthPickerProps {
+interface AppDayPickerProps {
   onSelected?: (value: number[]) => void;
   onCancel?: (value: number[]) => void;
   value?: number[];
 }
 
-export default function AppDateMonthPicker({
+export default function AppDayPicker({
   onSelected,
   onCancel,
   value,
-}: AppDateMonthPickerProps) {
+}: AppDayPickerProps) {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
   const styles = makeStyle(theme, insets);
@@ -28,50 +27,30 @@ export default function AppDateMonthPicker({
   const [menuVisible, setMenuVisible] = React.useState<boolean>(false);
   const [pickerData, setPickerData] = React.useState<any>();
 
-  const monthIndex = React.useMemo(() => Array.from(Array(12).keys()), []);
-  const monthStringIndex = React.useMemo(
-    () => monthIndex.map(month => monthToString(month)),
-    [monthIndex],
+  const dayIndex = React.useMemo(() => Array.from(Array(7).keys()), []);
+  const dayStringIndex = React.useMemo(
+    () => dayIndex.map(day => dayToString(day)),
+    [dayIndex],
   );
 
   const pickerValue = React.useMemo(
-    () => [
-      value ? monthToString(value[0]) : '',
-      value ? value[1].toString() : '',
-    ],
+    () => [value ? dayToString(value[0]) : ''],
     [value],
   );
 
   const valueToString = React.useMemo(
-    () =>
-      value && value[1] !== 0
-        ? `${monthToString(value[0])}, ${value[1].toString()}${
-            value[1] === 1
-              ? 'st'
-              : value[1] === 2
-              ? 'nd'
-              : value[1] === 3
-              ? 'rd'
-              : 'th'
-          }`
-        : undefined,
+    () => (value && value[0] !== -1 ? `${dayToString(value[0])}` : undefined),
     [value],
   );
 
   React.useEffect(() => {
-    let data: any = {};
-    for (const month in monthIndex) {
-      data[monthToString(parseFloat(month))!] = getDaysInMonthUTC(
-        parseFloat(month),
-      );
-    }
-    setPickerData(data);
-  }, [monthIndex]);
+    setPickerData(dayStringIndex);
+  }, [dayStringIndex]);
 
   return (
     <View>
       <AppFormTextInputWithError
-        label={'Redeem Date & Month'}
+        label={'Redeem Day'}
         theme={theme}
         dense={true}
         value={valueToString}
@@ -102,12 +81,11 @@ export default function AppDateMonthPicker({
         onDismiss={() => setMenuVisible(false)}>
         <AppWheelPicker
           onSelected={data => {
-            onSelected &&
-              onSelected([monthStringIndex.indexOf(data[0]), data[1]]);
+            onSelected && onSelected([dayStringIndex.indexOf(data[0])]);
             setMenuVisible(false);
           }}
           onCancel={data => {
-            onCancel && onCancel([monthStringIndex.indexOf(data[0]), data[1]]);
+            onCancel && onCancel([dayStringIndex.indexOf(data[0])]);
             setMenuVisible(false);
           }}
           items={pickerData}
