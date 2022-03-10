@@ -1,60 +1,61 @@
 import { View } from 'react-native';
 import React from 'react';
 import { iconMap } from '../../atoms/icon/AppIconComponent';
-import AppMenuContainer from '../../atoms/menu/AppMenuContainer';
-import AppUtilityPickerItem from './AppUtilityPickerItem';
-import { UtilityItem } from '../../../types/screen/UtilityItem';
+import AppListPickerItem from '../../molecules/listpicker/AppListPickerItem';
+import AppListPickerMenu from '../../molecules/listpicker/AppListPickerMenu';
+import { PickerItem } from '../../../types/screen/PickerItem';
 
 interface AppUtilityPickerProps {
-  onSelected?: (item: UtilityItem) => void;
+  value?: string;
+  onSelected?: (item: PickerItem) => void;
 }
 
 export default function AppUtilityPicker({
+  value,
   onSelected,
 }: AppUtilityPickerProps) {
-  const [selectedUtility, setSelectedUtility] = React.useState<UtilityItem>();
   const [utilitySelectorVisible, setUtilitySelectorVisible] =
     React.useState<boolean>(false);
 
-  const utilityItem: UtilityItem[] = React.useMemo(
+  const utilityItem: PickerItem[] = React.useMemo(
     () => [
       {
-        name: 'content',
+        value: 'content',
         icon: iconMap.utilityContent,
         title: 'Exclusive Content',
         description: 'Description of Exclusive Content',
         disabled: false,
       },
       {
-        name: 'videocall',
+        value: 'videocall',
         icon: iconMap.utilityVideoCall,
         title: 'Video Call',
         description: 'Description of Video Call',
         disabled: true,
       },
       {
-        name: 'chat',
+        value: 'chat',
         icon: iconMap.utilityChat,
         title: 'Exclusive Chat',
         description: 'Description of Exclusive Chat',
         disabled: true,
       },
       {
-        name: 'gift',
+        value: 'gift',
         icon: iconMap.utilityGift,
         title: 'Physical Gift',
         description: 'Description of Physical Gift',
         disabled: true,
       },
       {
-        name: 'qr',
+        value: 'qr',
         icon: iconMap.utilityQR,
         title: 'QR Code',
         description: 'Description of QR Code',
         disabled: true,
       },
       {
-        name: 'stream',
+        value: 'stream',
         icon: iconMap.utilityStream,
         title: 'Live Stream',
         description: 'Description of Live Stream',
@@ -64,9 +65,9 @@ export default function AppUtilityPicker({
     [],
   );
 
-  const utilitySelector: UtilityItem = React.useMemo(
+  const utilitySelector: PickerItem = React.useMemo(
     () => ({
-      name: undefined,
+      value: undefined,
       icon: iconMap.add,
       title: 'Select Utility',
       description: 'Set intrinsic value of your NFT!',
@@ -74,46 +75,46 @@ export default function AppUtilityPicker({
     [],
   );
 
+  const selectedIndex: number | undefined = React.useMemo(() => {
+    if (value) {
+      for (let i = 0; i < utilityItem.length; i++) {
+        if (utilityItem[i].value === value) {
+          return i;
+        }
+      }
+      return undefined;
+    }
+    return undefined;
+  }, [value, utilityItem]);
+
   return (
     <View>
-      {selectedUtility ? (
-        <AppUtilityPickerItem
+      {value && selectedIndex !== undefined ? (
+        <AppListPickerItem
           showDropDown
-          onPress={() => setUtilitySelectorVisible(true)}
-          icon={selectedUtility.icon}
-          title={selectedUtility.title}
-          description={selectedUtility.description}
+          onPress={() => setUtilitySelectorVisible(!utilitySelectorVisible)}
+          icon={utilityItem[selectedIndex].icon}
+          title={utilityItem[selectedIndex].title}
+          description={utilityItem[selectedIndex].description}
         />
       ) : (
-        <AppUtilityPickerItem
+        <AppListPickerItem
           showDropDown
-          onPress={() => setUtilitySelectorVisible(true)}
+          onPress={() => setUtilitySelectorVisible(!utilitySelectorVisible)}
           icon={utilitySelector.icon}
           title={utilitySelector.title}
           description={utilitySelector.description}
         />
       )}
 
-      <AppMenuContainer
-        tapEverywhereToDismiss
-        snapPoints={['60%']}
+      <AppListPickerMenu
+        items={utilityItem}
         visible={utilitySelectorVisible}
-        onDismiss={() => setUtilitySelectorVisible(false)}>
-        {utilityItem.map(item => (
-          <AppUtilityPickerItem
-            key={item.name}
-            onPress={() => {
-              setSelectedUtility(item);
-              onSelected && onSelected(item);
-              setUtilitySelectorVisible(false);
-            }}
-            icon={item.icon}
-            title={item.title}
-            description={item.description}
-            disabled={item.disabled}
-          />
-        ))}
-      </AppMenuContainer>
+        onDismiss={() => setUtilitySelectorVisible(false)}
+        onSelected={item => {
+          onSelected && onSelected(item);
+        }}
+      />
     </View>
   );
 }

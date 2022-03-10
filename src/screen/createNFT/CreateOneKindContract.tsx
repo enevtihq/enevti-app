@@ -322,7 +322,10 @@ export default function CreateOneKindContract({ navigation }: Props) {
 
                   <List.Accordion
                     title={accordionHeader(iconMap.utility, 'Utility')}>
-                    <AppUtilityPicker onSelected={item => console.log(item)} />
+                    <AppUtilityPicker
+                      value={'undefined'}
+                      onSelected={item => console.log(item)}
+                    />
                     <View style={{ height: hp('1%', insets) }} />
                     <AppFormTextInputWithError
                       label={'Recurring'}

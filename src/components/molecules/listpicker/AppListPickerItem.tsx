@@ -10,7 +10,7 @@ import AppTextHeading3 from '../../atoms/text/AppTextHeading3';
 import AppIconGradient from '../../molecules/AppIconGradient';
 import AppListItem from '../../molecules/list/AppListItem';
 
-interface AppUtilityPickerItemProps {
+interface AppListPickerItemProps {
   onPress: () => void;
   icon: string;
   title: string;
@@ -19,14 +19,14 @@ interface AppUtilityPickerItemProps {
   disabled?: boolean;
 }
 
-export default function AppUtilityPickerItem({
+export default function AppListPickerItem({
   onPress,
   icon,
   title,
   description,
   showDropDown = false,
   disabled = false,
-}: AppUtilityPickerItemProps) {
+}: AppListPickerItemProps) {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
   const styles = makeStyle(insets);
