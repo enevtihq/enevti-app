@@ -50,6 +50,8 @@ export const emojiMap = {
   gallery: UNDEFINED_EMOJI,
   identity: UNDEFINED_EMOJI,
   mintingBehaviour: UNDEFINED_EMOJI,
+  utility: UNDEFINED_EMOJI,
+  dropDown: UNDEFINED_EMOJI,
 };
 
 interface AppEmojiComponentProps {

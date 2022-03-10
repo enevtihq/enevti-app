@@ -22,12 +22,7 @@ import { setEncryptedPassphraseAuth } from '../../store/slices/auth';
 import { setLocalSessionKey } from '../../store/slices/session/local';
 import { iconMap } from '../../components/atoms/icon/AppIconComponent';
 import { ScrollView } from 'react-native-gesture-handler';
-import AppQuaternaryButton from '../../components/atoms/button/AppQuaternaryButton';
 import AppTextBody3 from '../../components/atoms/text/AppTextBody3';
-import AppTextHeading3 from '../../components/atoms/text/AppTextHeading3';
-import AppMenuContainer from '../../components/atoms/menu/AppMenuContainer';
-import AppListItem from '../../components/molecules/list/AppListItem';
-import AppTextBody4 from '../../components/atoms/text/AppTextBody4';
 import AppIconGradient from '../../components/molecules/AppIconGradient';
 import {
   OneKindContractForm,
@@ -36,6 +31,7 @@ import {
 import AppCoinChipsPicker from '../../components/organism/AppCoinChipsPicker';
 import NumberFormat from 'react-number-format';
 import { isNameAvailable, isSymbolAvailable } from '../../service/enevti/nft';
+import AppUtilityPicker from '../../components/organism/utility/AppUtilityPicker';
 
 type Props = StackScreenProps<RootStackParamList, 'CreateOneKindContract'>;
 
@@ -83,8 +79,6 @@ export default function CreateOneKindContract({ navigation }: Props) {
   const mintingPeriodInput = React.useRef<TextInput>();
 
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
-  const [utilitySelectorVisible, setUtilitySelectorVisible] =
-    React.useState<boolean>(false);
 
   const handleFormSubmit = async (values: any) => {
     const encryptedPassphrase = await encryptWithPassword(
@@ -327,27 +321,8 @@ export default function CreateOneKindContract({ navigation }: Props) {
                   </List.Accordion>
 
                   <List.Accordion
-                    title={'Utility'}
-                    titleStyle={{
-                      fontSize: wp('4.0%', insets),
-                      marginLeft: wp('1%', insets),
-                    }}>
-                    <AppQuaternaryButton
-                      box
-                      contentContainerStyle={{
-                        alignItems: 'center',
-                      }}
-                      style={{
-                        alignItems: 'flex-start',
-                        width: wp('90%', insets),
-                        height: hp('5.5%', insets),
-                        alignSelf: 'center',
-                      }}
-                      onPress={() => setUtilitySelectorVisible(true)}>
-                      <View>
-                        <AppTextBody3>Select Utility</AppTextBody3>
-                      </View>
-                    </AppQuaternaryButton>
+                    title={accordionHeader(iconMap.utility, 'Utility')}>
+                    <AppUtilityPicker onSelected={item => console.log(item)} />
                     <View style={{ height: hp('1%', insets) }} />
                     <AppFormTextInputWithError
                       label={'Recurring'}
@@ -537,162 +512,6 @@ export default function CreateOneKindContract({ navigation }: Props) {
           )}
         </Formik>
       </ScrollView>
-
-      <AppMenuContainer
-        tapEverywhereToDismiss
-        snapPoints={['60%']}
-        visible={utilitySelectorVisible}
-        onDismiss={() => setUtilitySelectorVisible(false)}>
-        <AppListItem
-          onPress={() => console.log('selected')}
-          leftContent={
-            <AppIconGradient
-              name={iconMap.utilityContent}
-              colors={[theme.colors.primary, theme.colors.secondary]}
-              size={30}
-              style={{
-                marginRight: wp('3%', insets),
-                alignSelf: 'center',
-              }}
-            />
-          }>
-          <AppTextHeading3
-            numberOfLines={1}
-            style={{ width: wp('50%', insets) }}>
-            Exclusive Content
-          </AppTextHeading3>
-          <AppTextBody4
-            style={{ color: theme.colors.placeholder }}
-            numberOfLines={1}>
-            Description of Exclusive Content
-          </AppTextBody4>
-        </AppListItem>
-
-        <AppListItem
-          style={{ opacity: 0.5 }}
-          leftContent={
-            <AppIconGradient
-              name={iconMap.utilityVideoCall}
-              colors={[theme.colors.primary, theme.colors.secondary]}
-              size={30}
-              style={{
-                marginRight: wp('3%', insets),
-                alignSelf: 'center',
-              }}
-            />
-          }>
-          <AppTextHeading3
-            numberOfLines={1}
-            style={{ width: wp('50%', insets) }}>
-            Video Call
-          </AppTextHeading3>
-          <AppTextBody4
-            style={{ color: theme.colors.placeholder }}
-            numberOfLines={1}>
-            Description of Video Call
-          </AppTextBody4>
-        </AppListItem>
-
-        <AppListItem
-          style={{ opacity: 0.5 }}
-          leftContent={
-            <AppIconGradient
-              name={iconMap.utilityChat}
-              colors={[theme.colors.primary, theme.colors.secondary]}
-              size={30}
-              style={{
-                marginRight: wp('3%', insets),
-                alignSelf: 'center',
-              }}
-            />
-          }>
-          <AppTextHeading3
-            numberOfLines={1}
-            style={{ width: wp('50%', insets) }}>
-            Exclusive Chat
-          </AppTextHeading3>
-          <AppTextBody4
-            style={{ color: theme.colors.placeholder }}
-            numberOfLines={1}>
-            Description of Exclusive Chat
-          </AppTextBody4>
-        </AppListItem>
-
-        <AppListItem
-          style={{ opacity: 0.5 }}
-          leftContent={
-            <AppIconGradient
-              name={iconMap.utilityGift}
-              colors={[theme.colors.primary, theme.colors.secondary]}
-              size={30}
-              style={{
-                marginRight: wp('3%', insets),
-                alignSelf: 'center',
-              }}
-            />
-          }>
-          <AppTextHeading3
-            numberOfLines={1}
-            style={{ width: wp('50%', insets) }}>
-            Physical Gift
-          </AppTextHeading3>
-          <AppTextBody4
-            style={{ color: theme.colors.placeholder }}
-            numberOfLines={1}>
-            Description of Physical Gift
-          </AppTextBody4>
-        </AppListItem>
-
-        <AppListItem
-          style={{ opacity: 0.5 }}
-          leftContent={
-            <AppIconGradient
-              name={iconMap.utilityQR}
-              colors={[theme.colors.primary, theme.colors.secondary]}
-              size={30}
-              style={{
-                marginRight: wp('3%', insets),
-                alignSelf: 'center',
-              }}
-            />
-          }>
-          <AppTextHeading3
-            numberOfLines={1}
-            style={{ width: wp('50%', insets) }}>
-            QR Code
-          </AppTextHeading3>
-          <AppTextBody4
-            style={{ color: theme.colors.placeholder }}
-            numberOfLines={1}>
-            Description of QR Code
-          </AppTextBody4>
-        </AppListItem>
-
-        <AppListItem
-          style={{ opacity: 0.5 }}
-          leftContent={
-            <AppIconGradient
-              name={iconMap.utilityStream}
-              colors={[theme.colors.primary, theme.colors.secondary]}
-              size={30}
-              style={{
-                marginRight: wp('3%', insets),
-                alignSelf: 'center',
-              }}
-            />
-          }>
-          <AppTextHeading3
-            numberOfLines={1}
-            style={{ width: wp('50%', insets) }}>
-            Live Stream
-          </AppTextHeading3>
-          <AppTextBody4
-            style={{ color: theme.colors.placeholder }}
-            numberOfLines={1}>
-            Description of Live Stream
-          </AppTextBody4>
-        </AppListItem>
-      </AppMenuContainer>
     </AppView>
   );
 }
@@ -735,5 +554,9 @@ const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
       marginBottom: hp('1%', insets),
       marginLeft: wp('5%', insets),
       marginRight: wp('5%', insets),
+    },
+    listIcon: {
+      marginRight: wp('3%', insets),
+      alignSelf: 'center',
     },
   });

@@ -11,6 +11,7 @@ export const LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE = 2;
 
 interface AppListItemProps {
   children: React.ReactNode;
+  disabled?: boolean;
   style?: StyleProp<ViewStyle>;
   containerStyle?: StyleProp<ViewStyle>;
   leftContent?: React.ReactNode;
@@ -20,6 +21,7 @@ interface AppListItemProps {
 
 export default function AppListItem({
   children,
+  disabled = false,
   style,
   containerStyle,
   leftContent,
@@ -29,10 +31,11 @@ export default function AppListItem({
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
   const styles = makeStyle(theme, insets);
+  const opacity = disabled ? 0.5 : undefined;
 
   return (
-    <View style={[styles.listContainer, containerStyle]}>
-      <TouchableRipple onPress={onPress}>
+    <View style={[styles.listContainer, { opacity }, containerStyle]}>
+      <TouchableRipple onPress={disabled ? undefined : onPress}>
         <View style={[styles.itemContainer, style]}>
           {leftContent}
           <View style={styles.contentContainer}>{children}</View>

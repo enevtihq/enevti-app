@@ -12,6 +12,7 @@ interface AppIconGradientProps {
   size: number;
   colors: string[];
   style?: StyleProp<ViewStyle>;
+  androidRenderingMode?: 'hardware' | 'software';
 }
 
 export default function AppIconGradient({
@@ -19,6 +20,7 @@ export default function AppIconGradient({
   size,
   colors,
   style,
+  androidRenderingMode = 'hardware',
 }: AppIconGradientProps) {
   const theme = useTheme() as Theme;
   const styles = makeStyles(size, theme);
@@ -27,6 +29,7 @@ export default function AppIconGradient({
     <View style={[{ width: size, height: size }, style]}>
       <MaskedView
         style={styles.maskedView}
+        androidRenderingMode={androidRenderingMode}
         maskElement={
           <AppIconComponent
             name={name}

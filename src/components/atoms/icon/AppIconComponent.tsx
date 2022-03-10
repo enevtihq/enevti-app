@@ -52,6 +52,8 @@ export const iconMap = {
   gallery: 'folder-multiple-image',
   identity: 'badge-account-horizontal',
   mintingBehaviour: 'account-cash',
+  utility: 'trophy-variant',
+  dropDown: 'menu-down',
 };
 
 interface AppIconComponentProps {
