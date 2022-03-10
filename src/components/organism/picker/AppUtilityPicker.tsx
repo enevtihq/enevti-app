@@ -31,7 +31,7 @@ export default function AppUtilityPicker({
         icon: iconMap.utilityVideoCall,
         title: 'Video Call',
         description: 'Description of Video Call',
-        disabled: true,
+        disabled: false,
       },
       {
         value: 'chat',

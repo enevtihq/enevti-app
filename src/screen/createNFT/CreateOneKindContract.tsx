@@ -31,7 +31,8 @@ import {
 import AppCoinChipsPicker from '../../components/organism/AppCoinChipsPicker';
 import NumberFormat from 'react-number-format';
 import { isNameAvailable, isSymbolAvailable } from '../../service/enevti/nft';
-import AppUtilityPicker from '../../components/organism/utility/AppUtilityPicker';
+import AppUtilityPicker from '../../components/organism/picker/AppUtilityPicker';
+import AppRecurringPicker from '../../components/organism/picker/AppRecurringPicker.tsx';
 
 type Props = StackScreenProps<RootStackParamList, 'CreateOneKindContract'>;
 
@@ -44,6 +45,10 @@ const formInitialValues: OneKindContractForm = {
   name: '',
   description: '',
   symbol: '',
+  priceAmount: '',
+  priceCurrency: '',
+  quantity: '',
+  mintingExpire: '',
   utility: '',
   recurring: '',
   timeDay: 0,
@@ -56,10 +61,6 @@ const formInitialValues: OneKindContractForm = {
   redeemLimit: 0,
   royaltyOrigin: 0,
   royaltyStaker: 0,
-  priceAmount: '',
-  priceCurrency: '',
-  quantity: '',
-  mintingExpire: '',
 };
 
 export default function CreateOneKindContract({ navigation }: Props) {
@@ -323,10 +324,38 @@ export default function CreateOneKindContract({ navigation }: Props) {
                   <List.Accordion
                     title={accordionHeader(iconMap.utility, 'Utility')}>
                     <AppUtilityPicker
-                      value={'undefined'}
-                      onSelected={item => console.log(item)}
+                      value={formikProps.values.utility}
+                      onSelected={item => {
+                        formikProps.setFieldValue('utility', item.value, false);
+                        if (item.value === 'content') {
+                          formikProps.setFieldValue(
+                            'recurring',
+                            'instant',
+                            false,
+                          );
+                        }
+                      }}
                     />
+
                     <View style={{ height: hp('1%', insets) }} />
+
+                    {formikProps.values.utility &&
+                    formikProps.values.utility !== 'content' ? (
+                      <>
+                        <AppRecurringPicker
+                          value={formikProps.values.recurring}
+                          onSelected={item =>
+                            formikProps.setFieldValue(
+                              'recurring',
+                              item.value,
+                              false,
+                            )
+                          }
+                        />
+                        <View style={{ height: hp('1%', insets) }} />
+                      </>
+                    ) : null}
+
                     <AppFormTextInputWithError
                       label={'Recurring'}
                       theme={paperTheme}
