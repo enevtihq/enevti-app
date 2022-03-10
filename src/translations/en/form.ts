@@ -5,4 +5,6 @@ export default {
   passwordMatch: 'Password mush match!',
   passphraseCopied: 'Passphrase Copied!',
   greaterThanZero: 'Must be greater than zero',
+  cancel: 'Cancel',
+  choose: 'Choose',
 };

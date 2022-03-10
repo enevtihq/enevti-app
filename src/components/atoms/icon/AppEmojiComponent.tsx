@@ -52,6 +52,11 @@ export const emojiMap = {
   mintingBehaviour: UNDEFINED_EMOJI,
   utility: UNDEFINED_EMOJI,
   dropDown: UNDEFINED_EMOJI,
+  everyDay: UNDEFINED_EMOJI,
+  everyWeek: UNDEFINED_EMOJI,
+  everyMonth: UNDEFINED_EMOJI,
+  everyYear: UNDEFINED_EMOJI,
+  once: UNDEFINED_EMOJI,
 };
 
 interface AppEmojiComponentProps {

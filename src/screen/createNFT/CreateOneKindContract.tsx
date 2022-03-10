@@ -33,6 +33,7 @@ import NumberFormat from 'react-number-format';
 import { isNameAvailable, isSymbolAvailable } from '../../service/enevti/nft';
 import AppUtilityPicker from '../../components/organism/picker/AppUtilityPicker';
 import AppRecurringPicker from '../../components/organism/picker/AppRecurringPicker.tsx';
+import AppDateMonthPicker from '../../components/organism/datePicker/AppDateMonthPicker';
 
 type Props = StackScreenProps<RootStackParamList, 'CreateOneKindContract'>;
 
@@ -330,7 +331,7 @@ export default function CreateOneKindContract({ navigation }: Props) {
                         if (item.value === 'content') {
                           formikProps.setFieldValue(
                             'recurring',
-                            'instant',
+                            'anytime',
                             false,
                           );
                         }
@@ -356,52 +357,17 @@ export default function CreateOneKindContract({ navigation }: Props) {
                       </>
                     ) : null}
 
-                    <AppFormTextInputWithError
-                      label={'Recurring'}
-                      theme={paperTheme}
-                      dense={true}
-                      autoCapitalize={'none'}
-                      style={styles.passwordInput}
-                      value={formikProps.values.royaltyOrigin.toString()}
-                      onBlur={() =>
-                        formikProps.setFieldTouched('royaltyOrigin')
-                      }
-                      errorText={
-                        formikProps.errors.royaltyOrigin
-                          ? formikProps.values.royaltyOrigin > 0
-                            ? t('auth:invalidPassphrase')
-                            : t('form:required')
-                          : ''
-                      }
-                      showError={formikProps.touched.royaltyOrigin}
-                      onChangeText={formikProps.handleChange('royaltyOrigin')}
-                      onSubmitEditing={() => passwordInput.current?.focus()}
-                      blurOnSubmit={true}
-                      returnKeyType="go"
+                    <AppDateMonthPicker
+                      onSelected={value => {
+                        formikProps.setFieldValue('timeMonth', value[0], false);
+                        formikProps.setFieldValue('timeDate', value[1], false);
+                      }}
+                      value={[
+                        formikProps.values.timeMonth,
+                        formikProps.values.timeDate,
+                      ]}
                     />
-                    <AppFormTextInputWithError
-                      label={'Redeem Date'}
-                      theme={paperTheme}
-                      dense={true}
-                      autoCapitalize={'none'}
-                      style={styles.passwordInput}
-                      value={formikProps.values.royaltyStaker.toString()}
-                      onBlur={() =>
-                        formikProps.setFieldTouched('royaltyStaker')
-                      }
-                      errorText={
-                        formikProps.errors.royaltyStaker
-                          ? formikProps.values.royaltyStaker > 0
-                            ? t('auth:invalidPassphrase')
-                            : t('form:required')
-                          : ''
-                      }
-                      showError={formikProps.touched.royaltyStaker}
-                      onChangeText={formikProps.handleChange('royaltyStaker')}
-                      onSubmitEditing={() => passwordInput.current?.focus()}
-                      blurOnSubmit={true}
-                      returnKeyType="go"
-                    />
+
                     <AppFormTextInputWithError
                       label={'Redeem Start Time'}
                       theme={paperTheme}

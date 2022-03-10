@@ -54,6 +54,11 @@ export const iconMap = {
   mintingBehaviour: 'account-cash',
   utility: 'trophy-variant',
   dropDown: 'menu-down',
+  everyDay: 'calendar-text',
+  everyWeek: 'calendar-range',
+  everyMonth: 'calendar',
+  everyYear: 'calendar-sync',
+  once: 'calendar-account',
 };
 
 interface AppIconComponentProps {
