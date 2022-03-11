@@ -36,6 +36,7 @@ import AppRecurringPicker from '../../components/organism/picker/AppRecurringPic
 import AppDateMonthPicker from '../../components/organism/datePicker/AppDateMonthPicker';
 import AppDayPicker from '../../components/organism/datePicker/AppDayPicker';
 import AppDatePicker from '../../components/organism/datePicker/AppDatePicker';
+import AppDateMonthYearPicker from '../../components/organism/datePicker/AppDateMonthYearPicker';
 
 type Props = StackScreenProps<RootStackParamList, 'CreateOneKindContract'>;
 
@@ -380,6 +381,18 @@ export default function CreateOneKindContract({ navigation }: Props) {
                         formikProps.setFieldValue('timeDate', value[0], false);
                       }}
                       value={[formikProps.values.timeDate]}
+                    />
+                    <AppDateMonthYearPicker
+                      onSelected={value => {
+                        formikProps.setFieldValue('timeYear', value[0], false);
+                        formikProps.setFieldValue('timeMonth', value[1], false);
+                        formikProps.setFieldValue('timeDate', value[2], false);
+                      }}
+                      value={[
+                        formikProps.values.timeYear,
+                        formikProps.values.timeMonth,
+                        formikProps.values.timeDate,
+                      ]}
                     />
 
                     <AppFormTextInputWithError

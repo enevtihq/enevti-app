@@ -45,7 +45,7 @@ export default function AppDateMonthPicker({
   const valueToString = React.useMemo(
     () =>
       value && value[1] !== 0
-        ? `${monthToString(value[0])}, ${value[1].toString()}${
+        ? `${monthToString(value[0])} ${value[1].toString()}${
             value[1] === 1
               ? 'st'
               : value[1] === 2

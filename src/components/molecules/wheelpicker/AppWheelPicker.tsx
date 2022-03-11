@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next';
 interface AppWheelPickerProps {
   onSelected?: (value: any) => void;
   onCancel?: (value: any) => void;
+  onChange?: (value: any, index: number) => void;
   items?: any;
   value?: any;
 }
@@ -17,6 +18,7 @@ interface AppWheelPickerProps {
 export default function AppWheelPicker({
   onSelected,
   onCancel,
+  onChange,
   items,
   value,
 }: AppWheelPickerProps) {
@@ -44,6 +46,7 @@ export default function AppWheelPicker({
         { color: theme.colors.primary },
       ]}
       pickerCancelBtnTextStyle={styles.pickerText}
+      onValueChange={onChange}
     />
   );
 }

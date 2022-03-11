@@ -1,5 +1,5 @@
-export default function getDaysInMonthUTC(month: number) {
-  var date = new Date(Date.UTC(2021, month, 1));
+export default function getDaysInMonthUTC(month: number, year: number = 2021) {
+  var date = new Date(Date.UTC(year, month, 1));
   var days = [];
   while (date.getUTCMonth() === month) {
     days.push(date.getUTCDate());
