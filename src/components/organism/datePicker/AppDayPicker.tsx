@@ -34,7 +34,7 @@ export default function AppDayPicker({
   );
 
   const pickerValue = React.useMemo(
-    () => [value ? dayToString(value[0]) : ''],
+    () => [value && value[0] !== -1 ? dayToString(value[0]) : ''],
     [value],
   );
 

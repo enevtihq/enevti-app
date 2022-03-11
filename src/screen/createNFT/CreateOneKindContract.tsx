@@ -37,6 +37,7 @@ import AppDateMonthPicker from '../../components/organism/datePicker/AppDateMont
 import AppDayPicker from '../../components/organism/datePicker/AppDayPicker';
 import AppDatePicker from '../../components/organism/datePicker/AppDatePicker';
 import AppDateMonthYearPicker from '../../components/organism/datePicker/AppDateMonthYearPicker';
+import AppHourMinutePicker from '../../components/organism/datePicker/AppHourMinutePicker';
 
 type Props = StackScreenProps<RootStackParamList, 'CreateOneKindContract'>;
 
@@ -56,11 +57,11 @@ const formInitialValues: OneKindContractForm = {
   utility: '',
   recurring: '',
   timeDay: -1,
-  timeDate: 0,
-  timeMonth: 0,
-  timeYear: 0,
-  fromHour: 0,
-  fromMinute: 0,
+  timeDate: -1,
+  timeMonth: -1,
+  timeYear: -1,
+  fromHour: -1,
+  fromMinute: -1,
   until: 0,
   redeemLimit: 0,
   royaltyOrigin: 0,
@@ -337,6 +338,10 @@ export default function CreateOneKindContract({ navigation }: Props) {
                             'anytime',
                             false,
                           );
+                          formikProps.setFieldValue('timeYear', 0, false);
+                          formikProps.setFieldValue('timeMonth', -1, false);
+                          formikProps.setFieldValue('timeDate', 0, false);
+                          formikProps.setFieldValue('timeDay', -1, false);
                         }
                       }}
                     />
@@ -348,13 +353,85 @@ export default function CreateOneKindContract({ navigation }: Props) {
                       <>
                         <AppRecurringPicker
                           value={formikProps.values.recurring}
-                          onSelected={item =>
+                          onSelected={item => {
                             formikProps.setFieldValue(
                               'recurring',
                               item.value,
                               false,
-                            )
-                          }
+                            );
+                            formikProps.setFieldValue(
+                              'timeYear',
+                              formInitialValues.timeYear,
+                              false,
+                            );
+                            formikProps.setFieldValue(
+                              'timeMonth',
+                              formInitialValues.timeMonth,
+                              false,
+                            );
+                            formikProps.setFieldValue(
+                              'timeDate',
+                              formInitialValues.timeDate,
+                              false,
+                            );
+                            formikProps.setFieldValue(
+                              'timeDay',
+                              formInitialValues.timeDay,
+                              false,
+                            );
+                            formikProps.setFieldValue(
+                              'fromHour',
+                              formInitialValues.fromHour,
+                              false,
+                            );
+                            formikProps.setFieldValue(
+                              'fromMinute',
+                              formInitialValues.fromMinute,
+                              false,
+                            );
+                            formikProps.setFieldTouched(
+                              'timeYear',
+                              false,
+                              false,
+                            );
+                            formikProps.setFieldTouched(
+                              'timeMonth',
+                              false,
+                              false,
+                            );
+                            formikProps.setFieldTouched(
+                              'timeDate',
+                              false,
+                              false,
+                            );
+                            formikProps.setFieldTouched(
+                              'timeDay',
+                              false,
+                              false,
+                            );
+                            formikProps.setFieldTouched(
+                              'fromHour',
+                              false,
+                              false,
+                            );
+                            formikProps.setFieldTouched(
+                              'fromMinute',
+                              false,
+                              false,
+                            );
+                            if (item.value === 'every-day') {
+                              formikProps.setFieldTouched(
+                                'timeDay',
+                                true,
+                                false,
+                              );
+                              formikProps.setFieldTouched(
+                                'timeDate',
+                                true,
+                                false,
+                              );
+                            }
+                          }}
                         />
                         <View style={{ height: hp('1%', insets) }} />
                       </>
@@ -364,6 +441,7 @@ export default function CreateOneKindContract({ navigation }: Props) {
                       <AppDayPicker
                         onSelected={value => {
                           formikProps.setFieldValue('timeDay', value[0], false);
+                          formikProps.setFieldTouched('timeDay', true, false);
                         }}
                         value={[formikProps.values.timeDay]}
                       />
@@ -375,6 +453,7 @@ export default function CreateOneKindContract({ navigation }: Props) {
                             value[0],
                             false,
                           );
+                          formikProps.setFieldTouched('timeDate', true, false);
                         }}
                         value={[formikProps.values.timeDate]}
                       />
@@ -391,6 +470,8 @@ export default function CreateOneKindContract({ navigation }: Props) {
                             value[1],
                             false,
                           );
+                          formikProps.setFieldTouched('timeMonth', true, false);
+                          formikProps.setFieldTouched('timeDate', true, false);
                         }}
                         value={[
                           formikProps.values.timeMonth,
@@ -415,6 +496,9 @@ export default function CreateOneKindContract({ navigation }: Props) {
                             value[2],
                             false,
                           );
+                          formikProps.setFieldTouched('timeYear', true, false);
+                          formikProps.setFieldTouched('timeMonth', true, false);
+                          formikProps.setFieldTouched('timeDate', true, false);
                         }}
                         value={[
                           formikProps.values.timeYear,
@@ -424,29 +508,34 @@ export default function CreateOneKindContract({ navigation }: Props) {
                       />
                     ) : null}
 
-                    <AppFormTextInputWithError
-                      label={'Redeem Start Time'}
-                      theme={paperTheme}
-                      dense={true}
-                      autoCapitalize={'none'}
-                      style={styles.passwordInput}
-                      value={formikProps.values.royaltyOrigin.toString()}
-                      onBlur={() =>
-                        formikProps.setFieldTouched('royaltyOrigin')
-                      }
-                      errorText={
-                        formikProps.errors.royaltyOrigin
-                          ? formikProps.values.royaltyOrigin > 0
-                            ? t('auth:invalidPassphrase')
-                            : t('form:required')
-                          : ''
-                      }
-                      showError={formikProps.touched.royaltyOrigin}
-                      onChangeText={formikProps.handleChange('royaltyOrigin')}
-                      onSubmitEditing={() => passwordInput.current?.focus()}
-                      blurOnSubmit={true}
-                      returnKeyType="go"
-                    />
+                    {formikProps.touched.timeDay ||
+                    formikProps.touched.timeDate ? (
+                      <AppHourMinutePicker
+                        onSelected={value => {
+                          formikProps.setFieldValue(
+                            'fromHour',
+                            value[0],
+                            false,
+                          );
+                          formikProps.setFieldValue(
+                            'fromMinute',
+                            value[1],
+                            false,
+                          );
+                          formikProps.setFieldTouched('fromHour', true, false);
+                          formikProps.setFieldTouched(
+                            'fromMinute',
+                            true,
+                            false,
+                          );
+                        }}
+                        value={[
+                          formikProps.values.fromHour,
+                          formikProps.values.fromMinute,
+                        ]}
+                      />
+                    ) : null}
+
                     <AppFormTextInputWithError
                       label={'Redeem End Time'}
                       theme={paperTheme}

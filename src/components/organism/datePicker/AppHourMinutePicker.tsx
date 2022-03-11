@@ -8,59 +8,62 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AppWheelPicker from '../../molecules/wheelpicker/AppWheelPicker';
 import AppMenuContainer from '../../atoms/menu/AppMenuContainer';
 
-interface AppDatePickerProps {
+interface AppHourMinutePickerProps {
   onSelected?: (value: number[]) => void;
   onCancel?: (value: number[]) => void;
   value?: number[];
 }
 
-export default function AppDatePicker({
+export default function AppHourMinutePicker({
   onSelected,
   onCancel,
   value,
-}: AppDatePickerProps) {
+}: AppHourMinutePickerProps) {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
   const styles = makeStyle(theme, insets);
 
   const [menuVisible, setMenuVisible] = React.useState<boolean>(false);
-  const [pickerData, setPickerData] = React.useState<any>();
+  const [pickerData, setPickerData] = React.useState<string[][]>();
 
-  const dateIndex: number[] = React.useMemo(() => {
-    const arr = Array.from(Array(29).keys());
-    arr.shift();
-    return arr;
-  }, []);
+  const hourIndex = React.useMemo(() => Array.from(Array(24).keys()), []);
+  const minuteIndex = React.useMemo(() => Array.from(Array(60).keys()), []);
+
+  const hourStringIndex = React.useMemo(
+    () => hourIndex.map(item => ('0' + item.toString()).slice(-2)),
+    [hourIndex],
+  );
+  const minuteStringIndex = React.useMemo(
+    () => minuteIndex.map(item => ('0' + item.toString()).slice(-2)),
+    [minuteIndex],
+  );
 
   const pickerValue = React.useMemo(
-    () => [value && value[0] !== -1 ? value[0] : ''],
+    () => [
+      value && value[0] !== -1 ? ('0' + value[0].toString()).slice(-2) : '',
+      value && value[1] !== -1 ? ('0' + value[1].toString()).slice(-2) : '',
+    ],
     [value],
   );
 
   const valueToString = React.useMemo(
     () =>
-      value && value[0] !== -1
-        ? `${value[0].toString()}${
-            value[0] === 1
-              ? 'st'
-              : value[0] === 2
-              ? 'nd'
-              : value[0] === 3
-              ? 'rd'
-              : 'th'
-          }`
+      value && value[0] !== -1 && value[1] !== -1
+        ? `${('0' + value[0].toString()).slice(-2)} : ${(
+            '0' + value[1].toString()
+          ).slice(-2)}`
         : undefined,
     [value],
   );
 
   React.useEffect(() => {
-    setPickerData(dateIndex);
-  }, [dateIndex]);
+    setPickerData([hourStringIndex, minuteStringIndex]);
+  }, [hourStringIndex, minuteStringIndex]);
 
   return (
     <View>
       <AppFormTextInputWithError
-        label={'Redeem Date'}
+        label={'Redeem Time'}
         theme={theme}
         dense={true}
         value={valueToString}
@@ -91,11 +94,12 @@ export default function AppDatePicker({
         onDismiss={() => setMenuVisible(false)}>
         <AppWheelPicker
           onSelected={data => {
-            onSelected && onSelected([data[0]]);
+            onSelected &&
+              onSelected([parseFloat(data[0]), parseFloat(data[1])]);
             setMenuVisible(false);
           }}
           onCancel={data => {
-            onCancel && onCancel([data[0]]);
+            onCancel && onCancel([parseFloat(data[0]), parseFloat(data[1])]);
             setMenuVisible(false);
           }}
           items={pickerData}

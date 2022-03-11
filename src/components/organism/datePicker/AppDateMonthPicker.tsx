@@ -36,15 +36,15 @@ export default function AppDateMonthPicker({
 
   const pickerValue = React.useMemo(
     () => [
-      value ? monthToString(value[0]) : '',
-      value ? value[1].toString() : '',
+      value && value[0] !== -1 ? monthToString(value[0]) : '',
+      value && value[1] !== -1 ? value[1].toString() : '',
     ],
     [value],
   );
 
   const valueToString = React.useMemo(
     () =>
-      value && value[1] !== 0
+      value && value[0] !== -1 && value[1] !== -1
         ? `${monthToString(value[0])} ${value[1].toString()}${
             value[1] === 1
               ? 'st'
