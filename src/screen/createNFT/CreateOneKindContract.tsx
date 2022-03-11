@@ -68,6 +68,42 @@ const formInitialValues: OneKindContractForm = {
   royaltyStaker: 0,
 };
 
+const setMultipleFieldValue = (
+  formik: FormikProps<OneKindContractForm>,
+  keys: (keyof OneKindContractForm)[],
+  initial: boolean = false,
+  value?: string | number,
+  shouldValidate: boolean = false,
+) => {
+  for (let i = 0; i < keys.length; i++) {
+    if (initial) {
+      formik.setFieldValue(keys[i], formInitialValues[keys[i]], shouldValidate);
+    } else {
+      formik.setFieldValue(keys[i], value, shouldValidate);
+    }
+  }
+};
+
+const setMultipleFieldTouched = (
+  formik: FormikProps<OneKindContractForm>,
+  keys: (keyof OneKindContractForm)[],
+  value: boolean,
+  shouldValidate: boolean = false,
+) => {
+  for (let i = 0; i < keys.length; i++) {
+    formik.setFieldTouched(keys[i], value, shouldValidate);
+  }
+};
+
+const redeemTimeKey: (keyof OneKindContractForm)[] = [
+  'timeYear',
+  'timeMonth',
+  'timeDay',
+  'timeDate',
+  'fromHour',
+  'fromMinute',
+];
+
 export default function CreateOneKindContract({ navigation }: Props) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -338,10 +374,16 @@ export default function CreateOneKindContract({ navigation }: Props) {
                             'anytime',
                             false,
                           );
-                          formikProps.setFieldValue('timeYear', 0, false);
-                          formikProps.setFieldValue('timeMonth', -1, false);
-                          formikProps.setFieldValue('timeDate', 0, false);
-                          formikProps.setFieldValue('timeDay', -1, false);
+                          setMultipleFieldValue(
+                            formikProps,
+                            redeemTimeKey,
+                            true,
+                          );
+                          setMultipleFieldTouched(
+                            formikProps,
+                            redeemTimeKey,
+                            false,
+                          );
                         }
                       }}
                     />
@@ -359,76 +401,21 @@ export default function CreateOneKindContract({ navigation }: Props) {
                               item.value,
                               false,
                             );
-                            formikProps.setFieldValue(
-                              'timeYear',
-                              formInitialValues.timeYear,
-                              false,
+                            setMultipleFieldValue(
+                              formikProps,
+                              redeemTimeKey,
+                              true,
                             );
-                            formikProps.setFieldValue(
-                              'timeMonth',
-                              formInitialValues.timeMonth,
-                              false,
-                            );
-                            formikProps.setFieldValue(
-                              'timeDate',
-                              formInitialValues.timeDate,
-                              false,
-                            );
-                            formikProps.setFieldValue(
-                              'timeDay',
-                              formInitialValues.timeDay,
-                              false,
-                            );
-                            formikProps.setFieldValue(
-                              'fromHour',
-                              formInitialValues.fromHour,
-                              false,
-                            );
-                            formikProps.setFieldValue(
-                              'fromMinute',
-                              formInitialValues.fromMinute,
-                              false,
-                            );
-                            formikProps.setFieldTouched(
-                              'timeYear',
-                              false,
-                              false,
-                            );
-                            formikProps.setFieldTouched(
-                              'timeMonth',
-                              false,
-                              false,
-                            );
-                            formikProps.setFieldTouched(
-                              'timeDate',
-                              false,
-                              false,
-                            );
-                            formikProps.setFieldTouched(
-                              'timeDay',
-                              false,
-                              false,
-                            );
-                            formikProps.setFieldTouched(
-                              'fromHour',
-                              false,
-                              false,
-                            );
-                            formikProps.setFieldTouched(
-                              'fromMinute',
-                              false,
+                            setMultipleFieldTouched(
+                              formikProps,
+                              redeemTimeKey,
                               false,
                             );
                             if (item.value === 'every-day') {
-                              formikProps.setFieldTouched(
-                                'timeDay',
+                              setMultipleFieldTouched(
+                                formikProps,
+                                ['timeDay', 'timeDate'],
                                 true,
-                                false,
-                              );
-                              formikProps.setFieldTouched(
-                                'timeDate',
-                                true,
-                                false,
                               );
                             }
                           }}
@@ -470,8 +457,11 @@ export default function CreateOneKindContract({ navigation }: Props) {
                             value[1],
                             false,
                           );
-                          formikProps.setFieldTouched('timeMonth', true, false);
-                          formikProps.setFieldTouched('timeDate', true, false);
+                          setMultipleFieldTouched(
+                            formikProps,
+                            ['timeMonth', 'timeDate'],
+                            true,
+                          );
                         }}
                         value={[
                           formikProps.values.timeMonth,
@@ -496,9 +486,11 @@ export default function CreateOneKindContract({ navigation }: Props) {
                             value[2],
                             false,
                           );
-                          formikProps.setFieldTouched('timeYear', true, false);
-                          formikProps.setFieldTouched('timeMonth', true, false);
-                          formikProps.setFieldTouched('timeDate', true, false);
+                          setMultipleFieldTouched(
+                            formikProps,
+                            ['timeYear', 'timeMonth', 'timeDate'],
+                            true,
+                          );
                         }}
                         value={[
                           formikProps.values.timeYear,
@@ -522,11 +514,10 @@ export default function CreateOneKindContract({ navigation }: Props) {
                             value[1],
                             false,
                           );
-                          formikProps.setFieldTouched('fromHour', true, false);
-                          formikProps.setFieldTouched(
-                            'fromMinute',
+                          setMultipleFieldTouched(
+                            formikProps,
+                            ['fromHour', 'fromMinute'],
                             true,
-                            false,
                           );
                         }}
                         value={[

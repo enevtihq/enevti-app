@@ -11,12 +11,14 @@ import { monthToString } from '../../../utils/date/dateToString';
 import getDaysInMonthUTC from '../../../utils/date/getDaysInMonth';
 
 interface AppDateMonthPickerProps {
+  label: string;
   onSelected?: (value: number[]) => void;
   onCancel?: (value: number[]) => void;
   value?: number[];
 }
 
 export default function AppDateMonthPicker({
+  label,
   onSelected,
   onCancel,
   value,
@@ -71,7 +73,7 @@ export default function AppDateMonthPicker({
   return (
     <View>
       <AppFormTextInputWithError
-        label={'Redeem Date & Month'}
+        label={label}
         theme={theme}
         dense={true}
         value={valueToString}

@@ -9,12 +9,14 @@ import AppWheelPicker from '../../molecules/wheelpicker/AppWheelPicker';
 import AppMenuContainer from '../../atoms/menu/AppMenuContainer';
 
 interface AppDatePickerProps {
+  label: string;
   onSelected?: (value: number[]) => void;
   onCancel?: (value: number[]) => void;
   value?: number[];
 }
 
 export default function AppDatePicker({
+  label,
   onSelected,
   onCancel,
   value,
@@ -60,7 +62,7 @@ export default function AppDatePicker({
   return (
     <View>
       <AppFormTextInputWithError
-        label={'Redeem Date'}
+        label={label}
         theme={theme}
         dense={true}
         value={valueToString}

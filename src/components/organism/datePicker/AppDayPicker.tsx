@@ -10,12 +10,14 @@ import AppMenuContainer from '../../atoms/menu/AppMenuContainer';
 import { dayToString } from '../../../utils/date/dateToString';
 
 interface AppDayPickerProps {
+  label: string;
   onSelected?: (value: number[]) => void;
   onCancel?: (value: number[]) => void;
   value?: number[];
 }
 
 export default function AppDayPicker({
+  label,
   onSelected,
   onCancel,
   value,
@@ -50,7 +52,7 @@ export default function AppDayPicker({
   return (
     <View>
       <AppFormTextInputWithError
-        label={'Redeem Day'}
+        label={label}
         theme={theme}
         dense={true}
         value={valueToString}

@@ -9,12 +9,14 @@ import AppWheelPicker from '../../molecules/wheelpicker/AppWheelPicker';
 import AppMenuContainer from '../../atoms/menu/AppMenuContainer';
 
 interface AppHourMinutePickerProps {
+  label: string;
   onSelected?: (value: number[]) => void;
   onCancel?: (value: number[]) => void;
   value?: number[];
 }
 
 export default function AppHourMinutePicker({
+  label,
   onSelected,
   onCancel,
   value,
@@ -63,7 +65,7 @@ export default function AppHourMinutePicker({
   return (
     <View>
       <AppFormTextInputWithError
-        label={'Redeem Time'}
+        label={label}
         theme={theme}
         dense={true}
         value={valueToString}
