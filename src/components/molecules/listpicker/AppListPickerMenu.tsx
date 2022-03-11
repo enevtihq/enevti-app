@@ -16,7 +16,7 @@ export default function AppListPickerMenu({
   onDismiss,
   onSelected,
 }: AppListPickerMenuProps) {
-  const snapPoints = items.length * 8.75 + 7.25;
+  const snapPoints = items.length * 8.75 + 3.5;
 
   return (
     <AppMenuContainer

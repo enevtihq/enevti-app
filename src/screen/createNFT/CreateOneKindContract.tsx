@@ -112,6 +112,10 @@ export default function CreateOneKindContract({ navigation }: Props) {
   const theme = paperTheme as Theme;
   const insets = useSafeAreaInsets();
   const styles = makeStyle(theme, insets);
+  const timezoneOffset = React.useMemo(
+    () => new Date().getTimezoneOffset(),
+    [],
+  );
 
   const passwordInput = React.useRef<TextInput>();
   const nameInput = React.useRef<TextInput>();
@@ -508,7 +512,12 @@ export default function CreateOneKindContract({ navigation }: Props) {
                     {formikProps.touched.timeDay ||
                     formikProps.touched.timeDate ? (
                       <AppHourMinutePicker
-                        label={t('createNFT:redeemStartTime')}
+                        label={
+                          t('createNFT:redeemStartTime') +
+                          ` (UTC${timezoneOffset > 0 ? '-' : '+'}${
+                            (timezoneOffset * -1) / 60
+                          })`
+                        }
                         onSelected={value => {
                           formikProps.setFieldValue(
                             'fromHour',
@@ -536,7 +545,12 @@ export default function CreateOneKindContract({ navigation }: Props) {
                     {formikProps.touched.fromHour &&
                     formikProps.touched.fromMinute ? (
                       <AppHourMinutePicker
-                        label={t('createNFT:redeemEndTime')}
+                        label={
+                          t('createNFT:redeemEndTime') +
+                          ` (UTC${timezoneOffset > 0 ? '-' : '+'}${
+                            (timezoneOffset * -1) / 60
+                          })`
+                        }
                         onSelected={value => {
                           formikProps.setFieldValue(
                             'untilHour',
