@@ -45,4 +45,11 @@ export default {
   redeemYearMonthAndaDate: 'Redeem Year, Month & Date',
   redeemStartTime: 'Redeem Start Time',
   redeemEndTime: 'Redeem End Time',
+  redeemLimit: 'Redeem Limit',
+  redeemLimitForever: 'No Limit',
+  redeemLimitForeverDescription: 'This NFT can be redeemed forever',
+  redeemLimitFixed: 'Fixed Count',
+  redeemLimitFixedDescription: 'Redeem is limited until count reached',
+  redeemLimitCount: 'Redeem Limit Count',
+  redeemLimitCountPlaceholder: 'Specify Max Redeem Count',
 };

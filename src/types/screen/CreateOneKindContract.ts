@@ -12,6 +12,7 @@ export type OneKindContractForm = {
   fromMinute: number;
   untilHour: number;
   untilMinute: number;
+  redeemLimitOption: string;
   redeemLimit: number;
   royaltyOrigin: number;
   royaltyStaker: number;

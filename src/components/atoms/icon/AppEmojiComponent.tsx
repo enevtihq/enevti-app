@@ -57,6 +57,8 @@ export const emojiMap = {
   everyMonth: UNDEFINED_EMOJI,
   everyYear: UNDEFINED_EMOJI,
   once: UNDEFINED_EMOJI,
+  unlimited: UNDEFINED_EMOJI,
+  count: UNDEFINED_EMOJI,
 };
 
 interface AppEmojiComponentProps {

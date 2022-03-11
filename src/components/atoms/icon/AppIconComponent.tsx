@@ -59,6 +59,8 @@ export const iconMap = {
   everyMonth: 'calendar',
   everyYear: 'calendar-sync',
   once: 'calendar-account',
+  unlimited: 'all-inclusive',
+  count: 'history',
 };
 
 interface AppIconComponentProps {

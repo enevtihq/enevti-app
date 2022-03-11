@@ -38,6 +38,7 @@ import AppDayPicker from '../../components/organism/datePicker/AppDayPicker';
 import AppDatePicker from '../../components/organism/datePicker/AppDatePicker';
 import AppDateMonthYearPicker from '../../components/organism/datePicker/AppDateMonthYearPicker';
 import AppHourMinutePicker from '../../components/organism/datePicker/AppHourMinutePicker';
+import AppRedeemLimitPicker from '../../components/organism/picker/AppRedeemLimitPicker';
 
 type Props = StackScreenProps<RootStackParamList, 'CreateOneKindContract'>;
 
@@ -64,7 +65,8 @@ const formInitialValues: OneKindContractForm = {
   fromMinute: -1,
   untilHour: -1,
   untilMinute: -1,
-  redeemLimit: 0,
+  redeemLimitOption: '',
+  redeemLimit: 1,
   royaltyOrigin: 0,
   royaltyStaker: 0,
 };
@@ -124,6 +126,7 @@ export default function CreateOneKindContract({ navigation }: Props) {
   const priceInput = React.useRef<TextInput>();
   const quantityInput = React.useRef<TextInput>();
   const mintingPeriodInput = React.useRef<TextInput>();
+  const redeemLimitInput = React.useRef<TextInput>();
 
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
@@ -416,6 +419,16 @@ export default function CreateOneKindContract({ navigation }: Props) {
                               redeemTimeKey,
                               false,
                             );
+                            setMultipleFieldValue(
+                              formikProps,
+                              ['redeemLimitOption'],
+                              true,
+                            );
+                            setMultipleFieldTouched(
+                              formikProps,
+                              ['untilHour', 'untilMinute'],
+                              false,
+                            );
                             if (item.value === 'every-day') {
                               setMultipleFieldTouched(
                                 formikProps,
@@ -575,29 +588,37 @@ export default function CreateOneKindContract({ navigation }: Props) {
                       />
                     ) : null}
 
-                    <AppFormTextInputWithError
-                      label={'Redeem Limit'}
-                      theme={paperTheme}
-                      dense={true}
-                      autoCapitalize={'none'}
-                      style={styles.passwordInput}
-                      value={formikProps.values.royaltyOrigin.toString()}
-                      onBlur={() =>
-                        formikProps.setFieldTouched('royaltyOrigin')
-                      }
-                      errorText={
-                        formikProps.errors.royaltyOrigin
-                          ? formikProps.values.royaltyOrigin > 0
-                            ? t('auth:invalidPassphrase')
-                            : t('form:required')
-                          : ''
-                      }
-                      showError={formikProps.touched.royaltyOrigin}
-                      onChangeText={formikProps.handleChange('royaltyOrigin')}
-                      onSubmitEditing={() => passwordInput.current?.focus()}
-                      blurOnSubmit={true}
-                      returnKeyType="go"
-                    />
+                    {formikProps.touched.untilHour &&
+                    formikProps.touched.untilMinute ? (
+                      <AppRedeemLimitPicker
+                        label={t('createNFT:redeemLimit')}
+                        value={formikProps.values.redeemLimitOption}
+                        onSelected={item => {
+                          formikProps.setFieldValue(
+                            'redeemLimitOption',
+                            item.value,
+                            false,
+                          );
+                          if (item.value === 'no-limit') {
+                            formikProps.setFieldValue('redeemLimit', 0, false);
+                          }
+                        }}
+                      />
+                    ) : null}
+
+                    {formikProps.values.redeemLimitOption === 'fixed'
+                      ? commonFormInput(
+                          formikProps,
+                          redeemLimitInput,
+                          'redeemLimit',
+                          t('createNFT:redeemLimitCount'),
+                          t('createNFT:redeemLimitCountPlaceholder'),
+                          {
+                            memoKey: ['errorText', 'error', 'showError'],
+                            keyboardType: 'number-pad',
+                          },
+                        )
+                      : null}
                   </List.Accordion>
 
                   <List.Accordion
