@@ -10,7 +10,8 @@ export type OneKindContractForm = {
   timeYear: number;
   fromHour: number;
   fromMinute: number;
-  until: number;
+  untilHour: number;
+  untilMinute: number;
   redeemLimit: number;
   royaltyOrigin: number;
   royaltyStaker: number;

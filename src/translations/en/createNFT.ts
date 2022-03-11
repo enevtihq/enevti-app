@@ -39,6 +39,10 @@ export default {
   collectionQuantityPlaceholder: 'How many items in this collection',
   collectionMintingExpire: 'Minting Period Limit (days)',
   collectionMintingExpirePlaceholder: '0 means forever',
-  contractCollectionUtility: 'Utility',
-  contractCollectionRecurring: 'Recurring',
+  redeemDay: 'Redeem Day',
+  redeemDate: 'Redeem Date',
+  redeemMonthAndDate: 'Redeem Month & Date',
+  redeemYearMonthAndaDate: 'Redeem Year, Month & Date',
+  redeemStartTime: 'Redeem Start Time',
+  redeemEndTime: 'Redeem End Time',
 };

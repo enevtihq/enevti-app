@@ -62,7 +62,8 @@ const formInitialValues: OneKindContractForm = {
   timeYear: -1,
   fromHour: -1,
   fromMinute: -1,
-  until: 0,
+  untilHour: -1,
+  untilMinute: -1,
   redeemLimit: 0,
   royaltyOrigin: 0,
   royaltyStaker: 0,
@@ -426,6 +427,7 @@ export default function CreateOneKindContract({ navigation }: Props) {
 
                     {formikProps.values.recurring === 'every-week' ? (
                       <AppDayPicker
+                        label={t('createNFT:redeemDay')}
                         onSelected={value => {
                           formikProps.setFieldValue('timeDay', value[0], false);
                           formikProps.setFieldTouched('timeDay', true, false);
@@ -434,6 +436,7 @@ export default function CreateOneKindContract({ navigation }: Props) {
                       />
                     ) : formikProps.values.recurring === 'every-month' ? (
                       <AppDatePicker
+                        label={t('createNFT:redeemDate')}
                         onSelected={value => {
                           formikProps.setFieldValue(
                             'timeDate',
@@ -446,6 +449,7 @@ export default function CreateOneKindContract({ navigation }: Props) {
                       />
                     ) : formikProps.values.recurring === 'every-year' ? (
                       <AppDateMonthPicker
+                        label={t('createNFT:redeemMonthAndDate')}
                         onSelected={value => {
                           formikProps.setFieldValue(
                             'timeMonth',
@@ -470,6 +474,7 @@ export default function CreateOneKindContract({ navigation }: Props) {
                       />
                     ) : formikProps.values.recurring === 'once' ? (
                       <AppDateMonthYearPicker
+                        label={t('createNFT:redeemYearMonthAndaDate')}
                         onSelected={value => {
                           formikProps.setFieldValue(
                             'timeYear',
@@ -503,6 +508,7 @@ export default function CreateOneKindContract({ navigation }: Props) {
                     {formikProps.touched.timeDay ||
                     formikProps.touched.timeDate ? (
                       <AppHourMinutePicker
+                        label={t('createNFT:redeemStartTime')}
                         onSelected={value => {
                           formikProps.setFieldValue(
                             'fromHour',
@@ -527,29 +533,34 @@ export default function CreateOneKindContract({ navigation }: Props) {
                       />
                     ) : null}
 
-                    <AppFormTextInputWithError
-                      label={'Redeem End Time'}
-                      theme={paperTheme}
-                      dense={true}
-                      autoCapitalize={'none'}
-                      style={styles.passwordInput}
-                      value={formikProps.values.royaltyOrigin.toString()}
-                      onBlur={() =>
-                        formikProps.setFieldTouched('royaltyOrigin')
-                      }
-                      errorText={
-                        formikProps.errors.royaltyOrigin
-                          ? formikProps.values.royaltyOrigin > 0
-                            ? t('auth:invalidPassphrase')
-                            : t('form:required')
-                          : ''
-                      }
-                      showError={formikProps.touched.royaltyOrigin}
-                      onChangeText={formikProps.handleChange('royaltyOrigin')}
-                      onSubmitEditing={() => passwordInput.current?.focus()}
-                      blurOnSubmit={true}
-                      returnKeyType="go"
-                    />
+                    {formikProps.touched.fromHour &&
+                    formikProps.touched.fromMinute ? (
+                      <AppHourMinutePicker
+                        label={t('createNFT:redeemEndTime')}
+                        onSelected={value => {
+                          formikProps.setFieldValue(
+                            'untilHour',
+                            value[0],
+                            false,
+                          );
+                          formikProps.setFieldValue(
+                            'untilMinute',
+                            value[1],
+                            false,
+                          );
+                          setMultipleFieldTouched(
+                            formikProps,
+                            ['untilHour', 'untilMinute'],
+                            true,
+                          );
+                        }}
+                        value={[
+                          formikProps.values.untilHour,
+                          formikProps.values.untilMinute,
+                        ]}
+                      />
+                    ) : null}
+
                     <AppFormTextInputWithError
                       label={'Redeem Limit'}
                       theme={paperTheme}
