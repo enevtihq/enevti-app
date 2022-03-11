@@ -360,40 +360,69 @@ export default function CreateOneKindContract({ navigation }: Props) {
                       </>
                     ) : null}
 
-                    <AppDateMonthPicker
-                      onSelected={value => {
-                        formikProps.setFieldValue('timeMonth', value[0], false);
-                        formikProps.setFieldValue('timeDate', value[1], false);
-                      }}
-                      value={[
-                        formikProps.values.timeMonth,
-                        formikProps.values.timeDate,
-                      ]}
-                    />
-                    <AppDayPicker
-                      onSelected={value => {
-                        formikProps.setFieldValue('timeDay', value[0], false);
-                      }}
-                      value={[formikProps.values.timeDay]}
-                    />
-                    <AppDatePicker
-                      onSelected={value => {
-                        formikProps.setFieldValue('timeDate', value[0], false);
-                      }}
-                      value={[formikProps.values.timeDate]}
-                    />
-                    <AppDateMonthYearPicker
-                      onSelected={value => {
-                        formikProps.setFieldValue('timeYear', value[0], false);
-                        formikProps.setFieldValue('timeMonth', value[1], false);
-                        formikProps.setFieldValue('timeDate', value[2], false);
-                      }}
-                      value={[
-                        formikProps.values.timeYear,
-                        formikProps.values.timeMonth,
-                        formikProps.values.timeDate,
-                      ]}
-                    />
+                    {formikProps.values.recurring === 'every-week' ? (
+                      <AppDayPicker
+                        onSelected={value => {
+                          formikProps.setFieldValue('timeDay', value[0], false);
+                        }}
+                        value={[formikProps.values.timeDay]}
+                      />
+                    ) : formikProps.values.recurring === 'every-month' ? (
+                      <AppDatePicker
+                        onSelected={value => {
+                          formikProps.setFieldValue(
+                            'timeDate',
+                            value[0],
+                            false,
+                          );
+                        }}
+                        value={[formikProps.values.timeDate]}
+                      />
+                    ) : formikProps.values.recurring === 'every-year' ? (
+                      <AppDateMonthPicker
+                        onSelected={value => {
+                          formikProps.setFieldValue(
+                            'timeMonth',
+                            value[0],
+                            false,
+                          );
+                          formikProps.setFieldValue(
+                            'timeDate',
+                            value[1],
+                            false,
+                          );
+                        }}
+                        value={[
+                          formikProps.values.timeMonth,
+                          formikProps.values.timeDate,
+                        ]}
+                      />
+                    ) : formikProps.values.recurring === 'once' ? (
+                      <AppDateMonthYearPicker
+                        onSelected={value => {
+                          formikProps.setFieldValue(
+                            'timeYear',
+                            value[0],
+                            false,
+                          );
+                          formikProps.setFieldValue(
+                            'timeMonth',
+                            value[1],
+                            false,
+                          );
+                          formikProps.setFieldValue(
+                            'timeDate',
+                            value[2],
+                            false,
+                          );
+                        }}
+                        value={[
+                          formikProps.values.timeYear,
+                          formikProps.values.timeMonth,
+                          formikProps.values.timeDate,
+                        ]}
+                      />
+                    ) : null}
 
                     <AppFormTextInputWithError
                       label={'Redeem Start Time'}
