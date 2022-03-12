@@ -62,6 +62,7 @@ export const iconMap = {
   unlimited: 'all-inclusive',
   count: 'history',
   royalty: 'sack-percent',
+  arrowRight: 'chevron-right',
 };
 
 interface AppIconComponentProps {

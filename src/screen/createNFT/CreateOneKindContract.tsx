@@ -39,6 +39,7 @@ import AppDatePicker from '../../components/organism/datePicker/AppDatePicker';
 import AppDateMonthYearPicker from '../../components/organism/datePicker/AppDateMonthYearPicker';
 import AppHourMinutePicker from '../../components/organism/datePicker/AppHourMinutePicker';
 import AppRedeemLimitPicker from '../../components/organism/picker/AppRedeemLimitPicker';
+import AppContentPicker from '../../components/organism/picker/AppContentPicker';
 
 type Props = StackScreenProps<RootStackParamList, 'CreateOneKindContract'>;
 
@@ -56,6 +57,10 @@ const formInitialValues: OneKindContractForm = {
   quantity: '',
   mintingExpire: '',
   utility: '',
+  contentName: '',
+  contentSize: 0,
+  contentType: '',
+  contentUri: '',
   recurring: '',
   timeDay: -1,
   timeDate: -1,
@@ -105,6 +110,13 @@ const redeemTimeKey: (keyof OneKindContractForm)[] = [
   'timeDate',
   'fromHour',
   'fromMinute',
+];
+
+const contentKey: (keyof OneKindContractForm)[] = [
+  'contentName',
+  'contentSize',
+  'contentType',
+  'contentUri',
 ];
 
 export default function CreateOneKindContract({ navigation }: Props) {
@@ -397,6 +409,54 @@ export default function CreateOneKindContract({ navigation }: Props) {
                     />
 
                     <View style={{ height: hp('1%', insets) }} />
+
+                    {formikProps.values.utility &&
+                    formikProps.values.utility === 'content' ? (
+                      <AppContentPicker
+                        value={{
+                          fileCopyUri: null,
+                          name: formikProps.values.contentName,
+                          size: formikProps.values.contentSize,
+                          type: formikProps.values.contentType,
+                          uri: formikProps.values.contentUri,
+                        }}
+                        onDelete={() => {
+                          setMultipleFieldValue(formikProps, contentKey, true);
+                          setMultipleFieldTouched(
+                            formikProps,
+                            contentKey,
+                            false,
+                          );
+                        }}
+                        onSelected={item => {
+                          formikProps.setFieldValue(
+                            'contentName',
+                            item.name,
+                            false,
+                          );
+                          formikProps.setFieldValue(
+                            'contentSize',
+                            item.size,
+                            false,
+                          );
+                          formikProps.setFieldValue(
+                            'contentType',
+                            item.type,
+                            false,
+                          );
+                          formikProps.setFieldValue(
+                            'contentUri',
+                            item.uri,
+                            false,
+                          );
+                          setMultipleFieldTouched(
+                            formikProps,
+                            contentKey,
+                            true,
+                          );
+                        }}
+                      />
+                    ) : null}
 
                     {formikProps.values.utility &&
                     formikProps.values.utility !== 'content' ? (

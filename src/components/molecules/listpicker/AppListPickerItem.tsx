@@ -11,11 +11,13 @@ import AppIconGradient from '../../molecules/AppIconGradient';
 import AppListItem from '../../molecules/list/AppListItem';
 
 interface AppListPickerItemProps {
-  onPress: () => void;
   icon: string;
   title: string;
   description: string;
+  onPress?: () => void;
   showDropDown?: boolean;
+  dropDownIcon?: string;
+  right?: React.ReactNode;
   disabled?: boolean;
 }
 
@@ -25,6 +27,8 @@ export default function AppListPickerItem({
   title,
   description,
   showDropDown = false,
+  dropDownIcon,
+  right,
   disabled = false,
 }: AppListPickerItemProps) {
   const theme = useTheme() as Theme;
@@ -45,9 +49,11 @@ export default function AppListPickerItem({
         />
       }
       rightContent={
-        showDropDown ? (
+        right ? (
+          right
+        ) : showDropDown ? (
           <AppIconComponent
-            name={iconMap.dropDown}
+            name={dropDownIcon ? dropDownIcon : iconMap.dropDown}
             color={theme.colors.placeholder}
             size={30}
             style={styles.listDropDown}

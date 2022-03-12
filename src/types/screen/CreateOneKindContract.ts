@@ -3,6 +3,10 @@ export type OneKindContractForm = {
   description: string;
   symbol: string;
   utility: string;
+  contentName: string;
+  contentSize: number;
+  contentType: string;
+  contentUri: string;
   recurring: string;
   timeDay: number;
   timeDate: number;
