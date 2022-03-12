@@ -18,8 +18,6 @@ import AppPrimaryButton from '../../components/atoms/button/AppPrimaryButton';
 import AppView from '../../components/atoms/view/AppView';
 import { hp, wp, SafeAreaInsets } from '../../utils/imageRatio';
 import { useDispatch } from 'react-redux';
-import { setEncryptedPassphraseAuth } from '../../store/slices/auth';
-import { setLocalSessionKey } from '../../store/slices/session/local';
 import { iconMap } from '../../components/atoms/icon/AppIconComponent';
 import { ScrollView } from 'react-native-gesture-handler';
 import AppTextBody3 from '../../components/atoms/text/AppTextBody3';
@@ -131,7 +129,6 @@ export default function CreateOneKindContract({ navigation }: Props) {
     [],
   );
 
-  const passwordInput = React.useRef<TextInput>();
   const nameInput = React.useRef<TextInput>();
   const descriptionInput = React.useRef<TextInput>();
   const symbolInput = React.useRef<TextInput>();
@@ -139,18 +136,13 @@ export default function CreateOneKindContract({ navigation }: Props) {
   const quantityInput = React.useRef<TextInput>();
   const mintingPeriodInput = React.useRef<TextInput>();
   const redeemLimitInput = React.useRef<TextInput>();
+  const creatorRoyaltyInput = React.useRef<TextInput>();
+  const stakerRoyaltyInput = React.useRef<TextInput>();
 
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   const handleFormSubmit = async (values: any) => {
-    const encryptedPassphrase = await encryptWithPassword(
-      values.passphrase,
-      values.password,
-    );
-    dispatch(setEncryptedPassphraseAuth(encryptedPassphrase));
-    dispatch(setLocalSessionKey(values.password));
-    setIsLoading(false);
-    navigation.replace('AccountCreated');
+    console.log(values);
   };
 
   const accordionHeader = (icon: string, text: string) => (
@@ -179,7 +171,7 @@ export default function CreateOneKindContract({ navigation }: Props) {
         ref={ref}
         theme={paperTheme}
         dense={true}
-        style={styles.passwordInput}
+        style={styles.formInput}
         returnKeyType={'go'}
         autoComplete={'off'}
         autoCorrect={false}
@@ -197,7 +189,7 @@ export default function CreateOneKindContract({ navigation }: Props) {
         {...options}
       />
     ),
-    [paperTheme, styles.passwordInput],
+    [paperTheme, styles.formInput],
   );
 
   const validationSchema = React.useMemo(
@@ -402,6 +394,13 @@ export default function CreateOneKindContract({ navigation }: Props) {
                           setMultipleFieldTouched(
                             formikProps,
                             redeemTimeKey.concat(['untilHour', 'untilMinute']),
+                            false,
+                          );
+                        } else {
+                          setMultipleFieldValue(formikProps, contentKey, true);
+                          setMultipleFieldTouched(
+                            formikProps,
+                            contentKey,
                             false,
                           );
                         }
@@ -675,57 +674,33 @@ export default function CreateOneKindContract({ navigation }: Props) {
                   </List.Accordion>
 
                   <List.Accordion
-                    title={'Royalty'}
-                    titleStyle={{
-                      fontSize: wp('4.0%', insets),
-                      marginLeft: wp('1%', insets),
-                    }}>
-                    <AppFormTextInputWithError
-                      label={'Creator Royalty (%)'}
-                      theme={paperTheme}
-                      dense={true}
-                      autoCapitalize={'none'}
-                      style={styles.passwordInput}
-                      value={formikProps.values.royaltyOrigin.toString()}
-                      onBlur={() =>
-                        formikProps.setFieldTouched('royaltyOrigin')
-                      }
-                      errorText={
-                        formikProps.errors.royaltyOrigin
-                          ? formikProps.values.royaltyOrigin > 0
-                            ? t('auth:invalidPassphrase')
-                            : t('form:required')
-                          : ''
-                      }
-                      showError={formikProps.touched.royaltyOrigin}
-                      onChangeText={formikProps.handleChange('royaltyOrigin')}
-                      onSubmitEditing={() => passwordInput.current?.focus()}
-                      blurOnSubmit={true}
-                      returnKeyType="go"
-                    />
-                    <AppFormTextInputWithError
-                      label={'Staker Royalty (%)'}
-                      theme={paperTheme}
-                      dense={true}
-                      autoCapitalize={'none'}
-                      style={styles.passwordInput}
-                      value={formikProps.values.royaltyStaker.toString()}
-                      onBlur={() =>
-                        formikProps.setFieldTouched('royaltyStaker')
-                      }
-                      errorText={
-                        formikProps.errors.royaltyStaker
-                          ? formikProps.values.royaltyStaker > 0
-                            ? t('auth:invalidPassphrase')
-                            : t('form:required')
-                          : ''
-                      }
-                      showError={formikProps.touched.royaltyStaker}
-                      onChangeText={formikProps.handleChange('royaltyStaker')}
-                      onSubmitEditing={() => passwordInput.current?.focus()}
-                      blurOnSubmit={true}
-                      returnKeyType="go"
-                    />
+                    title={accordionHeader(
+                      iconMap.royalty,
+                      t('createNFT:nftRoyalty'),
+                    )}>
+                    {commonFormInput(
+                      formikProps,
+                      creatorRoyaltyInput,
+                      'royaltyOrigin',
+                      t('createNFT:collectionRoyaltyOrigin'),
+                      t('createNFT:collectionRoyaltyOriginDescription'),
+                      {
+                        memoKey: ['errorText', 'error', 'showError'],
+                        keyboardType: 'number-pad',
+                      },
+                      stakerRoyaltyInput,
+                    )}
+                    {commonFormInput(
+                      formikProps,
+                      stakerRoyaltyInput,
+                      'royaltyStaker',
+                      t('createNFT:collectionRoyaltyStaker'),
+                      t('createNFT:collectionRoyaltyStakerDescription'),
+                      {
+                        memoKey: ['errorText', 'error', 'showError'],
+                        keyboardType: 'number-pad',
+                      },
+                    )}
                   </List.Accordion>
                 </List.Section>
               </View>
@@ -773,23 +748,12 @@ const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
       marginRight: wp('3%', insets),
       marginBottom: hp('3%', insets),
     },
-    headerImage: {
-      fontSize: wp('20%', insets),
-      alignSelf: 'center',
-    },
-    passphraseInput: {
-      height: hp('20%', insets),
-    },
     passwordView: {
       flex: 0,
     },
-    passwordInput: {
+    formInput: {
       marginBottom: hp('1%', insets),
       marginLeft: wp('5%', insets),
       marginRight: wp('5%', insets),
-    },
-    listIcon: {
-      marginRight: wp('3%', insets),
-      alignSelf: 'center',
     },
   });

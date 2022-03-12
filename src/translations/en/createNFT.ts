@@ -76,4 +76,9 @@ export default {
   utilityStreamDescription: 'Exlusive live moment with group of fans',
   selectContent: 'Select File',
   selectContentDescription: 'Set secret content inside your NFT',
+  nftRoyalty: 'Royalty (optional)',
+  collectionRoyaltyOrigin: 'Creator Royalty (%)',
+  collectionRoyaltyOriginDescription: 'Percentage of sales you get',
+  collectionRoyaltyStaker: 'Staker Royalty (%)',
+  collectionRoyaltyStakerDescription: 'Percentage of sales staker get',
 };
