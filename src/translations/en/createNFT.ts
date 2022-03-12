@@ -74,4 +74,6 @@ export default {
   utilityQRDescription: 'Unique QR to verify event attendance',
   utilityStream: 'Live Stream',
   utilityStreamDescription: 'Exlusive live moment with group of fans',
+  selectContent: 'Select File',
+  selectContentDescription: 'Set secret content inside your NFT',
 };

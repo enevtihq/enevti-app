@@ -9,6 +9,9 @@ import { handleError } from '../../../utils/error/handle';
 import AppIconButton from '../../atoms/icon/AppIconButton';
 import { SafeAreaInsets, wp } from '../../../utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import mimeToIcon from '../../../utils/mime/mimeToIcon';
+import { fileSizeKMG } from '../../../utils/format/fileSize';
+import { useTranslation } from 'react-i18next';
 
 interface AppContentPickerProps {
   value?: DocumentPickerResponse;
@@ -21,6 +24,7 @@ export default function AppContentPicker({
   onSelected,
   onDelete,
 }: AppContentPickerProps) {
+  const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const styles = makeStyle(insets);
 
@@ -47,9 +51,9 @@ export default function AppContentPicker({
               style={styles.listDropDown}
             />
           }
-          icon={iconMap.add}
+          icon={mimeToIcon(value.type)}
           title={value.name}
-          description={`${(value.size / 1000).toFixed(2)} KB`}
+          description={fileSizeKMG(value.size, 2)}
         />
       ) : (
         <AppListPickerItem
@@ -57,8 +61,8 @@ export default function AppContentPicker({
           dropDownIcon={iconMap.arrowRight}
           onPress={handleDocumentSelection}
           icon={iconMap.add}
-          title={'Select File'}
-          description={'Set secret content inside your NFT'}
+          title={t('createNFT:selectContent')}
+          description={t('createNFT:selectContentDescription')}
         />
       )}
     </View>

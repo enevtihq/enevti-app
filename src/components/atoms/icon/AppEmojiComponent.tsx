@@ -2,7 +2,7 @@ import { StyleProp, ViewStyle } from 'react-native';
 import React from 'react';
 import Emoji from 'react-native-emoji';
 
-const UNDEFINED_EMOJI = 'question';
+export const UNDEFINED_EMOJI = 'question';
 
 export const emojiMap = {
   arrowBack: UNDEFINED_EMOJI,
@@ -61,6 +61,13 @@ export const emojiMap = {
   count: UNDEFINED_EMOJI,
   royalty: UNDEFINED_EMOJI,
   arrowRight: UNDEFINED_EMOJI,
+  fileImage: UNDEFINED_EMOJI,
+  fileAudio: UNDEFINED_EMOJI,
+  fileVideo: UNDEFINED_EMOJI,
+  fileDocument: UNDEFINED_EMOJI,
+  file: UNDEFINED_EMOJI,
+  fileCode: UNDEFINED_EMOJI,
+  fileArchive: UNDEFINED_EMOJI,
 };
 
 interface AppEmojiComponentProps {

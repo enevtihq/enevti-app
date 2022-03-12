@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export const IconProvider = Icon;
 
-const UNDEFINED_ICON = 'help-circle-outline';
+export const UNDEFINED_ICON = 'help-circle-outline';
 
 export const iconMap = {
   arrowBack: Platform.OS === 'ios' ? 'chevron-left' : 'arrow-left',
@@ -63,6 +63,13 @@ export const iconMap = {
   count: 'history',
   royalty: 'sack-percent',
   arrowRight: 'chevron-right',
+  fileImage: 'file-image',
+  fileAudio: 'file-music',
+  fileVideo: 'file-video',
+  fileDocument: 'file-document',
+  file: 'file',
+  fileCode: 'file-code',
+  fileArchive: 'zip-box',
 };
 
 interface AppIconComponentProps {
