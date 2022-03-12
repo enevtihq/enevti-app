@@ -4,6 +4,7 @@ import { iconMap } from '../../atoms/icon/AppIconComponent';
 import AppListPickerItem from '../../molecules/listpicker/AppListPickerItem';
 import AppListPickerMenu from '../../molecules/listpicker/AppListPickerMenu';
 import { PickerItem } from '../../../types/screen/PickerItem';
+import { useTranslation } from 'react-i18next';
 
 interface AppUtilityPickerProps {
   value?: string;
@@ -14,6 +15,7 @@ export default function AppUtilityPicker({
   value,
   onSelected,
 }: AppUtilityPickerProps) {
+  const { t } = useTranslation();
   const [utilitySelectorVisible, setUtilitySelectorVisible] =
     React.useState<boolean>(false);
 
@@ -22,47 +24,47 @@ export default function AppUtilityPicker({
       {
         value: 'content',
         icon: iconMap.utilityContent,
-        title: 'Exclusive Content',
-        description: 'Description of Exclusive Content',
+        title: t('createNFT:utilityContent'),
+        description: t('createNFT:utilityContentDescription'),
         disabled: false,
       },
       {
         value: 'videocall',
         icon: iconMap.utilityVideoCall,
-        title: 'Video Call',
-        description: 'Description of Video Call',
+        title: t('createNFT:utilityVideoCall'),
+        description: t('createNFT:utilityVideoCallDescription'),
         disabled: false,
       },
       {
         value: 'chat',
         icon: iconMap.utilityChat,
-        title: 'Exclusive Chat',
-        description: 'Description of Exclusive Chat',
+        title: t('createNFT:utilityChat'),
+        description: t('createNFT:utilityChatDescription'),
         disabled: true,
       },
       {
         value: 'gift',
         icon: iconMap.utilityGift,
-        title: 'Physical Gift',
-        description: 'Description of Physical Gift',
+        title: t('createNFT:utilityGift'),
+        description: t('createNFT:utilityGiftDescription'),
         disabled: true,
       },
       {
         value: 'qr',
         icon: iconMap.utilityQR,
-        title: 'QR Code',
-        description: 'Description of QR Code',
+        title: t('createNFT:utilityQR'),
+        description: t('createNFT:utilityQRDescription'),
         disabled: true,
       },
       {
         value: 'stream',
         icon: iconMap.utilityStream,
-        title: 'Live Stream',
-        description: 'Description of Live Stream',
+        title: t('createNFT:utilityStream'),
+        description: t('createNFT:utilityStreamDescription'),
         disabled: true,
       },
     ],
-    [],
+    [t],
   );
 
   const utilitySelector: PickerItem = React.useMemo(

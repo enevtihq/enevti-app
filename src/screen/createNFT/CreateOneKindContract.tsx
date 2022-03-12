@@ -384,12 +384,12 @@ export default function CreateOneKindContract({ navigation }: Props) {
                           );
                           setMultipleFieldValue(
                             formikProps,
-                            redeemTimeKey,
+                            redeemTimeKey.concat(['redeemLimitOption']),
                             true,
                           );
                           setMultipleFieldTouched(
                             formikProps,
-                            redeemTimeKey,
+                            redeemTimeKey.concat(['untilHour', 'untilMinute']),
                             false,
                           );
                         }
@@ -411,22 +411,15 @@ export default function CreateOneKindContract({ navigation }: Props) {
                             );
                             setMultipleFieldValue(
                               formikProps,
-                              redeemTimeKey,
+                              redeemTimeKey.concat(['redeemLimitOption']),
                               true,
                             );
                             setMultipleFieldTouched(
                               formikProps,
-                              redeemTimeKey,
-                              false,
-                            );
-                            setMultipleFieldValue(
-                              formikProps,
-                              ['redeemLimitOption'],
-                              true,
-                            );
-                            setMultipleFieldTouched(
-                              formikProps,
-                              ['untilHour', 'untilMinute'],
+                              redeemTimeKey.concat([
+                                'untilHour',
+                                'untilMinute',
+                              ]),
                               false,
                             );
                             if (item.value === 'every-day') {

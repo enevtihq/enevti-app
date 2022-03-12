@@ -61,6 +61,7 @@ export const iconMap = {
   once: 'calendar-account',
   unlimited: 'all-inclusive',
   count: 'history',
+  royalty: 'sack-percent',
 };
 
 interface AppIconComponentProps {

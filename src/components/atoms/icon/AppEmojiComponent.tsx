@@ -59,6 +59,7 @@ export const emojiMap = {
   once: UNDEFINED_EMOJI,
   unlimited: UNDEFINED_EMOJI,
   count: UNDEFINED_EMOJI,
+  royalty: UNDEFINED_EMOJI,
 };
 
 interface AppEmojiComponentProps {

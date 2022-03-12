@@ -4,6 +4,7 @@ import { iconMap } from '../../atoms/icon/AppIconComponent';
 import AppListPickerItem from '../../molecules/listpicker/AppListPickerItem';
 import AppListPickerMenu from '../../molecules/listpicker/AppListPickerMenu';
 import { PickerItem } from '../../../types/screen/PickerItem';
+import { useTranslation } from 'react-i18next';
 
 interface AppRecurringPickerProps {
   value?: string;
@@ -14,6 +15,7 @@ export default function AppRecurringPicker({
   value,
   onSelected,
 }: AppRecurringPickerProps) {
+  const { t } = useTranslation();
   const [recurringSelectorVisible, setRecurringSelectorVisible] =
     React.useState<boolean>(false);
 
@@ -22,35 +24,35 @@ export default function AppRecurringPicker({
       {
         value: 'every-day',
         icon: iconMap.everyDay,
-        title: 'Every Day',
-        description: 'Fans can redeem this NFT every day',
+        title: t('createNFT:recurringEveryDay'),
+        description: t('createNFT:recurringEveryDayDescription'),
       },
       {
         value: 'every-week',
         icon: iconMap.everyWeek,
-        title: 'Every Week',
-        description: 'Fans can redeem this NFT once a week',
+        title: t('createNFT:recurringEveryWeek'),
+        description: t('createNFT:recurringEveryWeekDescription'),
       },
       {
         value: 'every-month',
         icon: iconMap.everyMonth,
-        title: 'Every Month',
-        description: 'Fans can redeem this NFT once a month',
+        title: t('createNFT:recurringEveryMonth'),
+        description: t('createNFT:recurringEveryMonthDescription'),
       },
       {
         value: 'every-year',
         icon: iconMap.everyYear,
-        title: 'Every Year',
-        description: 'Fans can redeem this NFT once a year',
+        title: t('createNFT:recurringEveryYear'),
+        description: t('createNFT:recurringEveryYearDescription'),
       },
       {
         value: 'once',
         icon: iconMap.once,
-        title: 'Once',
-        description: 'Fans can redeem this NFT once a lifetime',
+        title: t('createNFT:recurringOnce'),
+        description: t('createNFT:recurringOnceDescription'),
       },
     ],
-    [],
+    [t],
   );
 
   const recurringSelector: PickerItem = React.useMemo(
