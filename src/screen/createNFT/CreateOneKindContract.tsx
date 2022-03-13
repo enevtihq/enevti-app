@@ -36,6 +36,7 @@ import AppDateMonthYearPicker from '../../components/organism/datePicker/AppDate
 import AppHourMinutePicker from '../../components/organism/datePicker/AppHourMinutePicker';
 import AppRedeemLimitPicker from '../../components/organism/picker/AppRedeemLimitPicker';
 import AppContentPicker from '../../components/organism/picker/AppContentPicker';
+import AppMintingPeriodPicker from '../../components/organism/picker/AppMintingPeriodPicker';
 
 type Props = StackScreenProps<RootStackParamList, 'CreateOneKindContract'>;
 
@@ -51,7 +52,8 @@ const formInitialValues: OneKindContractForm = {
   priceAmount: '',
   priceCurrency: '',
   quantity: '',
-  mintingExpire: '',
+  mintingExpireOption: '',
+  mintingExpire: 1,
   utility: '',
   contentName: '',
   contentSize: 0,
@@ -370,19 +372,34 @@ export default function CreateOneKindContract({ navigation }: Props) {
                             : t('form:required')
                           : '',
                       },
-                      mintingPeriodInput,
                     )}
-                    {commonFormInput(
-                      formikProps,
-                      mintingPeriodInput,
-                      'mintingExpire',
-                      t('createNFT:collectionMintingExpire'),
-                      t('createNFT:collectionMintingExpirePlaceholder'),
-                      {
-                        memoKey: ['errorText', 'error', 'showError'],
-                        keyboardType: 'number-pad',
-                      },
-                    )}
+                    <AppMintingPeriodPicker
+                      label={t('createNFT:mintingPeriodLimit')}
+                      value={formikProps.values.mintingExpireOption}
+                      onSelected={item => {
+                        formikProps.setFieldValue(
+                          'mintingExpireOption',
+                          item.value,
+                          false,
+                        );
+                        if (item.value === 'no-limit') {
+                          formikProps.setFieldValue('mintingExpire', 0, false);
+                        }
+                      }}
+                    />
+                    {formikProps.values.mintingExpireOption === 'fixed'
+                      ? commonFormInput(
+                          formikProps,
+                          mintingPeriodInput,
+                          'mintingExpire',
+                          t('createNFT:collectionMintingExpire'),
+                          t('createNFT:collectionMintingExpirePlaceholder'),
+                          {
+                            memoKey: ['errorText', 'error', 'showError'],
+                            keyboardType: 'number-pad',
+                          },
+                        )
+                      : null}
                   </List.Accordion>
 
                   <List.Accordion

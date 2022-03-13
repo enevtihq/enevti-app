@@ -23,7 +23,8 @@ export type OneKindContractForm = {
   priceAmount: string;
   priceCurrency: string;
   quantity: string;
-  mintingExpire: string;
+  mintingExpireOption: string;
+  mintingExpire: number;
 };
 
 export type OneKindContractStatusForm = {
