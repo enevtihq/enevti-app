@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Keyboard, TextInput } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { List, useTheme } from 'react-native-paper';
+import { useTheme } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import { StackScreenProps } from '@react-navigation/stack';
 import { Formik, FormikProps } from 'formik';
@@ -37,6 +37,7 @@ import AppHourMinutePicker from '../../components/organism/datePicker/AppHourMin
 import AppRedeemLimitPicker from '../../components/organism/picker/AppRedeemLimitPicker';
 import AppContentPicker from '../../components/organism/picker/AppContentPicker';
 import AppMintingPeriodPicker from '../../components/organism/picker/AppMintingPeriodPicker';
+import AppAccordion from '../../components/atoms/accordion/AppAccordion';
 
 type Props = StackScreenProps<RootStackParamList, 'CreateOneKindContract'>;
 
@@ -150,6 +151,11 @@ export default function CreateOneKindContract({ navigation }: Props) {
 
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [activePrice, setActivePrice] = React.useState<boolean>(false);
+  const [identityExpanded, setIdentityExpanded] =
+    React.useState<boolean>(false);
+  const [mintingExpanded, setMintingExpanded] = React.useState<boolean>(false);
+  const [utilityExpanded, setUtilityExpanded] = React.useState<boolean>(false);
+  const [royaltyExpanded, setRoyaltyExpanded] = React.useState<boolean>(false);
 
   const handleFormSubmit = async (values: any) => {
     console.log(values);
@@ -238,479 +244,444 @@ export default function CreateOneKindContract({ navigation }: Props) {
           validationSchema={validationSchema}>
           {formikProps => (
             <>
-              <View style={styles.passwordView}>
-                <List.Section>
-                  <List.Accordion
-                    title={accordionHeader(
-                      iconMap.identity,
-                      t('createNFT:nftIdentity'),
-                    )}>
-                    {commonFormInput(
-                      formikProps,
-                      nameInput,
-                      'name',
-                      t('createNFT:collectionName'),
-                      t('createNFT:collectionNamePlaceholder'),
-                      {
-                        autoCapitalize: 'words',
-                        maxLength: 20,
-                        memoKey: ['errorText', 'error', 'showError'],
-                        errorText: !formikProps.status.nameAvailable
-                          ? t('createNFT:nameUnavailable')
-                          : formikProps.errors.name,
-                        error:
-                          formikProps.touched.name &&
-                          (!formikProps.status.nameAvailable ||
-                            !!formikProps.errors.name),
-                        onEndEditing: async e => {
-                          const text = e.nativeEvent.text;
-                          const nameAvailable = await isNameAvailable(text);
-                          formikProps.setFieldValue('name', text, true);
-                          formikProps.setStatus({
-                            ...formikProps.status,
-                            nameAvailable,
-                          });
-                        },
+              <View style={styles.formView}>
+                <AppAccordion
+                  expanded={identityExpanded}
+                  onPress={() => setIdentityExpanded(!identityExpanded)}
+                  title={accordionHeader(
+                    iconMap.identity,
+                    t('createNFT:nftIdentity'),
+                  )}>
+                  {commonFormInput(
+                    formikProps,
+                    nameInput,
+                    'name',
+                    t('createNFT:collectionName'),
+                    t('createNFT:collectionNamePlaceholder'),
+                    {
+                      autoCapitalize: 'words',
+                      maxLength: 20,
+                      memoKey: ['errorText', 'error', 'showError'],
+                      errorText: !formikProps.status.nameAvailable
+                        ? t('createNFT:nameUnavailable')
+                        : formikProps.errors.name,
+                      error:
+                        formikProps.touched.name &&
+                        (!formikProps.status.nameAvailable ||
+                          !!formikProps.errors.name),
+                      onEndEditing: async e => {
+                        const text = e.nativeEvent.text;
+                        const nameAvailable = await isNameAvailable(text);
+                        formikProps.setFieldValue('name', text, true);
+                        formikProps.setStatus({
+                          ...formikProps.status,
+                          nameAvailable,
+                        });
                       },
-                      descriptionInput,
-                    )}
-                    {commonFormInput(
-                      formikProps,
-                      descriptionInput,
-                      'description',
-                      t('createNFT:collectionDescription'),
-                      t('createNFT:collectionDescriptionPlaceholder'),
-                      {
-                        multiline: true,
-                        numberOfLines: 5,
-                        maxLength: 280,
-                        memoKey: ['errorText', 'error', 'showError'],
+                    },
+                    descriptionInput,
+                  )}
+                  {commonFormInput(
+                    formikProps,
+                    descriptionInput,
+                    'description',
+                    t('createNFT:collectionDescription'),
+                    t('createNFT:collectionDescriptionPlaceholder'),
+                    {
+                      multiline: true,
+                      numberOfLines: 5,
+                      maxLength: 280,
+                      memoKey: ['errorText', 'error', 'showError'],
+                    },
+                  )}
+                  {commonFormInput(
+                    formikProps,
+                    symbolInput,
+                    'symbol',
+                    t('createNFT:collectionSymbol'),
+                    t('createNFT:collectionSymbolPlaceholder'),
+                    {
+                      autoCapitalize: 'characters',
+                      maxLength: 10,
+                      memoKey: ['errorText', 'error', 'showError'],
+                      errorText: !formikProps.status.symbolAvailable
+                        ? t('createNFT:symbolUnavailable')
+                        : formikProps.errors.symbol,
+                      error:
+                        formikProps.touched.symbol &&
+                        (!formikProps.status.symbolAvailable ||
+                          !!formikProps.errors.symbol),
+                      onEndEditing: async e => {
+                        const text = e.nativeEvent.text;
+                        const symbolAvailable = await isSymbolAvailable(text);
+                        formikProps.setFieldValue('symbol', text, true);
+                        formikProps.setStatus({
+                          ...formikProps.status,
+                          symbolAvailable,
+                        });
                       },
-                    )}
-                    {commonFormInput(
-                      formikProps,
-                      symbolInput,
-                      'symbol',
-                      t('createNFT:collectionSymbol'),
-                      t('createNFT:collectionSymbolPlaceholder'),
-                      {
-                        autoCapitalize: 'characters',
-                        maxLength: 10,
-                        memoKey: ['errorText', 'error', 'showError'],
-                        errorText: !formikProps.status.symbolAvailable
-                          ? t('createNFT:symbolUnavailable')
-                          : formikProps.errors.symbol,
-                        error:
-                          formikProps.touched.symbol &&
-                          (!formikProps.status.symbolAvailable ||
-                            !!formikProps.errors.symbol),
-                        onEndEditing: async e => {
-                          const text = e.nativeEvent.text;
-                          const symbolAvailable = await isSymbolAvailable(text);
-                          formikProps.setFieldValue('symbol', text, true);
-                          formikProps.setStatus({
-                            ...formikProps.status,
-                            symbolAvailable,
-                          });
-                        },
-                      },
-                    )}
-                  </List.Accordion>
+                    },
+                  )}
+                </AppAccordion>
 
-                  <List.Accordion
-                    title={accordionHeader(
-                      iconMap.mintingBehaviour,
-                      t('createNFT:nftMintingBehaviour'),
-                    )}>
-                    {commonFormInput(
-                      formikProps,
-                      priceInput,
-                      'priceAmount',
-                      t('createNFT:collectionPrice'),
-                      t('createNFT:collectionPricePlaceholder'),
-                      {
-                        onFocus: () => setActivePrice(true),
-                        onBlur: () => {
-                          !formikProps.touched.priceAmount &&
-                            formikProps.setFieldTouched('priceAmount');
-                          setActivePrice(false);
+                <AppAccordion
+                  expanded={mintingExpanded}
+                  onPress={() => setMintingExpanded(!mintingExpanded)}
+                  title={accordionHeader(
+                    iconMap.mintingBehaviour,
+                    t('createNFT:nftMintingBehaviour'),
+                  )}>
+                  {commonFormInput(
+                    formikProps,
+                    priceInput,
+                    'priceAmount',
+                    t('createNFT:collectionPrice'),
+                    t('createNFT:collectionPricePlaceholder'),
+                    {
+                      onFocus: () => setActivePrice(true),
+                      onBlur: () => {
+                        !formikProps.touched.priceAmount &&
+                          formikProps.setFieldTouched('priceAmount');
+                        setActivePrice(false);
+                      },
+                      keyboardType: 'number-pad',
+                      hideMaxLengthIndicator: true,
+                      maxLength: 13,
+                      rowEndComponent: (
+                        <AppCoinChipsPicker
+                          active={activePrice}
+                          error={
+                            formikProps.touched.priceAmount &&
+                            !!formikProps.errors.priceAmount
+                          }
+                        />
+                      ),
+                      memoKey: [
+                        'value',
+                        'errorText',
+                        'error',
+                        'showError',
+                        'rowEndComponent',
+                      ],
+                    },
+                    quantityInput,
+                  )}
+                  {commonFormInput(
+                    formikProps,
+                    quantityInput,
+                    'quantity',
+                    t('createNFT:collectionQuantity'),
+                    t('createNFT:collectionQuantityPlaceholder'),
+                    {
+                      memoKey: ['errorText', 'error', 'showError'],
+                      keyboardType: 'number-pad',
+                      errorText: formikProps.errors.quantity
+                        ? parseFloat(formikProps.values.quantity) <= 0
+                          ? t('form:greaterThanZero')
+                          : t('form:required')
+                        : '',
+                    },
+                  )}
+                  <AppMintingPeriodPicker
+                    label={t('createNFT:mintingPeriodLimit')}
+                    value={formikProps.values.mintingExpireOption}
+                    onSelected={item => {
+                      formikProps.setFieldValue(
+                        'mintingExpireOption',
+                        item.value,
+                        false,
+                      );
+                      if (item.value === 'no-limit') {
+                        formikProps.setFieldValue('mintingExpire', 0, false);
+                      }
+                    }}
+                  />
+                  {formikProps.values.mintingExpireOption === 'fixed'
+                    ? commonFormInput(
+                        formikProps,
+                        mintingPeriodInput,
+                        'mintingExpire',
+                        t('createNFT:collectionMintingExpire'),
+                        t('createNFT:collectionMintingExpirePlaceholder'),
+                        {
+                          memoKey: ['errorText', 'error', 'showError'],
+                          keyboardType: 'number-pad',
                         },
-                        keyboardType: 'number-pad',
-                        hideMaxLengthIndicator: true,
-                        maxLength: 13,
-                        rowEndComponent: (
-                          <AppCoinChipsPicker
-                            active={activePrice}
-                            error={
-                              formikProps.touched.priceAmount &&
-                              !!formikProps.errors.priceAmount
-                            }
-                          />
-                        ),
-                        memoKey: [
-                          'value',
-                          'errorText',
-                          'error',
-                          'showError',
-                          'rowEndComponent',
-                        ],
-                      },
-                      quantityInput,
-                    )}
-                    {commonFormInput(
-                      formikProps,
-                      quantityInput,
-                      'quantity',
-                      t('createNFT:collectionQuantity'),
-                      t('createNFT:collectionQuantityPlaceholder'),
-                      {
-                        memoKey: ['errorText', 'error', 'showError'],
-                        keyboardType: 'number-pad',
-                        errorText: formikProps.errors.quantity
-                          ? parseFloat(formikProps.values.quantity) <= 0
-                            ? t('form:greaterThanZero')
-                            : t('form:required')
-                          : '',
-                      },
-                    )}
-                    <AppMintingPeriodPicker
-                      label={t('createNFT:mintingPeriodLimit')}
-                      value={formikProps.values.mintingExpireOption}
+                      )
+                    : null}
+                </AppAccordion>
+
+                <AppAccordion
+                  expanded={utilityExpanded}
+                  onPress={() => setUtilityExpanded(!utilityExpanded)}
+                  title={accordionHeader(
+                    iconMap.utility,
+                    t('createNFT:nftUtility'),
+                  )}>
+                  <AppUtilityPicker
+                    value={formikProps.values.utility}
+                    onSelected={item => {
+                      formikProps.setFieldValue('utility', item.value, false);
+                      if (item.value === 'content') {
+                        formikProps.setFieldValue(
+                          'recurring',
+                          'anytime',
+                          false,
+                        );
+                        resetRedeemTimeKeyFields(formikProps);
+                      } else {
+                        setMultipleFieldValue(formikProps, contentKey, true);
+                        setMultipleFieldTouched(formikProps, contentKey, false);
+                      }
+                    }}
+                  />
+
+                  <View style={{ height: hp('1%', insets) }} />
+
+                  {formikProps.values.utility &&
+                  formikProps.values.utility === 'content' ? (
+                    <AppContentPicker
+                      value={{
+                        fileCopyUri: null,
+                        name: formikProps.values.contentName,
+                        size: formikProps.values.contentSize,
+                        type: formikProps.values.contentType,
+                        uri: formikProps.values.contentUri,
+                      }}
+                      onDelete={() => {
+                        setMultipleFieldValue(formikProps, contentKey, true);
+                        setMultipleFieldTouched(formikProps, contentKey, false);
+                      }}
                       onSelected={item => {
                         formikProps.setFieldValue(
-                          'mintingExpireOption',
+                          'contentName',
+                          item.name,
+                          false,
+                        );
+                        formikProps.setFieldValue(
+                          'contentSize',
+                          item.size,
+                          false,
+                        );
+                        formikProps.setFieldValue(
+                          'contentType',
+                          item.type,
+                          false,
+                        );
+                        formikProps.setFieldValue(
+                          'contentUri',
+                          item.uri,
+                          false,
+                        );
+                        setMultipleFieldTouched(formikProps, contentKey, true);
+                      }}
+                    />
+                  ) : null}
+
+                  {formikProps.values.utility &&
+                  formikProps.values.utility !== 'content' ? (
+                    <>
+                      <AppRecurringPicker
+                        value={formikProps.values.recurring}
+                        onSelected={item => {
+                          formikProps.setFieldValue(
+                            'recurring',
+                            item.value,
+                            false,
+                          );
+                          resetRedeemTimeKeyFields(formikProps);
+                          if (item.value === 'every-day') {
+                            setMultipleFieldTouched(
+                              formikProps,
+                              ['timeDay', 'timeDate'],
+                              true,
+                            );
+                          }
+                        }}
+                      />
+                      <View style={{ height: hp('1%', insets) }} />
+                    </>
+                  ) : null}
+
+                  {formikProps.values.recurring === 'every-week' ? (
+                    <AppDayPicker
+                      label={t('createNFT:redeemDay')}
+                      onSelected={value => {
+                        formikProps.setFieldValue('timeDay', value[0], false);
+                        formikProps.setFieldTouched('timeDay', true, false);
+                      }}
+                      value={[formikProps.values.timeDay]}
+                    />
+                  ) : formikProps.values.recurring === 'every-month' ? (
+                    <AppDatePicker
+                      label={t('createNFT:redeemDate')}
+                      onSelected={value => {
+                        formikProps.setFieldValue('timeDate', value[0], false);
+                        formikProps.setFieldTouched('timeDate', true, false);
+                      }}
+                      value={[formikProps.values.timeDate]}
+                    />
+                  ) : formikProps.values.recurring === 'every-year' ? (
+                    <AppDateMonthPicker
+                      label={t('createNFT:redeemMonthAndDate')}
+                      onSelected={value => {
+                        formikProps.setFieldValue('timeMonth', value[0], false);
+                        formikProps.setFieldValue('timeDate', value[1], false);
+                        setMultipleFieldTouched(
+                          formikProps,
+                          ['timeMonth', 'timeDate'],
+                          true,
+                        );
+                      }}
+                      value={[
+                        formikProps.values.timeMonth,
+                        formikProps.values.timeDate,
+                      ]}
+                    />
+                  ) : formikProps.values.recurring === 'once' ? (
+                    <AppDateMonthYearPicker
+                      label={t('createNFT:redeemYearMonthAndaDate')}
+                      onSelected={value => {
+                        formikProps.setFieldValue('timeYear', value[0], false);
+                        formikProps.setFieldValue('timeMonth', value[1], false);
+                        formikProps.setFieldValue('timeDate', value[2], false);
+                        setMultipleFieldTouched(
+                          formikProps,
+                          ['timeYear', 'timeMonth', 'timeDate'],
+                          true,
+                        );
+                      }}
+                      value={[
+                        formikProps.values.timeYear,
+                        formikProps.values.timeMonth,
+                        formikProps.values.timeDate,
+                      ]}
+                    />
+                  ) : null}
+
+                  {formikProps.touched.timeDay ||
+                  formikProps.touched.timeDate ? (
+                    <AppHourMinutePicker
+                      label={
+                        t('createNFT:redeemStartTime') +
+                        ` (UTC${timezoneOffset > 0 ? '-' : '+'}${
+                          (timezoneOffset * -1) / 60
+                        })`
+                      }
+                      onSelected={value => {
+                        formikProps.setFieldValue('fromHour', value[0], false);
+                        formikProps.setFieldValue(
+                          'fromMinute',
+                          value[1],
+                          false,
+                        );
+                        setMultipleFieldTouched(
+                          formikProps,
+                          ['fromHour', 'fromMinute'],
+                          true,
+                        );
+                      }}
+                      value={[
+                        formikProps.values.fromHour,
+                        formikProps.values.fromMinute,
+                      ]}
+                    />
+                  ) : null}
+
+                  {formikProps.touched.fromHour &&
+                  formikProps.touched.fromMinute ? (
+                    <AppHourMinutePicker
+                      label={
+                        t('createNFT:redeemEndTime') +
+                        ` (UTC${timezoneOffset > 0 ? '-' : '+'}${
+                          (timezoneOffset * -1) / 60
+                        })`
+                      }
+                      onSelected={value => {
+                        formikProps.setFieldValue('untilHour', value[0], false);
+                        formikProps.setFieldValue(
+                          'untilMinute',
+                          value[1],
+                          false,
+                        );
+                        setMultipleFieldTouched(
+                          formikProps,
+                          ['untilHour', 'untilMinute'],
+                          true,
+                        );
+                      }}
+                      value={[
+                        formikProps.values.untilHour,
+                        formikProps.values.untilMinute,
+                      ]}
+                    />
+                  ) : null}
+
+                  {formikProps.touched.untilHour &&
+                  formikProps.touched.untilMinute &&
+                  formikProps.values.recurring !== 'once' ? (
+                    <AppRedeemLimitPicker
+                      label={t('createNFT:redeemLimit')}
+                      value={formikProps.values.redeemLimitOption}
+                      onSelected={item => {
+                        formikProps.setFieldValue(
+                          'redeemLimitOption',
                           item.value,
                           false,
                         );
                         if (item.value === 'no-limit') {
-                          formikProps.setFieldValue('mintingExpire', 0, false);
+                          formikProps.setFieldValue('redeemLimit', 0, false);
                         }
                       }}
                     />
-                    {formikProps.values.mintingExpireOption === 'fixed'
-                      ? commonFormInput(
-                          formikProps,
-                          mintingPeriodInput,
-                          'mintingExpire',
-                          t('createNFT:collectionMintingExpire'),
-                          t('createNFT:collectionMintingExpirePlaceholder'),
-                          {
-                            memoKey: ['errorText', 'error', 'showError'],
-                            keyboardType: 'number-pad',
-                          },
-                        )
-                      : null}
-                  </List.Accordion>
+                  ) : null}
 
-                  <List.Accordion
-                    title={accordionHeader(iconMap.utility, 'Utility')}>
-                    <AppUtilityPicker
-                      value={formikProps.values.utility}
-                      onSelected={item => {
-                        formikProps.setFieldValue('utility', item.value, false);
-                        if (item.value === 'content') {
-                          formikProps.setFieldValue(
-                            'recurring',
-                            'anytime',
-                            false,
-                          );
-                          resetRedeemTimeKeyFields(formikProps);
-                        } else {
-                          setMultipleFieldValue(formikProps, contentKey, true);
-                          setMultipleFieldTouched(
-                            formikProps,
-                            contentKey,
-                            false,
-                          );
-                        }
-                      }}
-                    />
+                  {formikProps.values.redeemLimitOption === 'fixed'
+                    ? commonFormInput(
+                        formikProps,
+                        redeemLimitInput,
+                        'redeemLimit',
+                        t('createNFT:redeemLimitCount'),
+                        t('createNFT:redeemLimitCountPlaceholder'),
+                        {
+                          memoKey: ['errorText', 'error', 'showError'],
+                          keyboardType: 'number-pad',
+                        },
+                      )
+                    : null}
+                </AppAccordion>
 
-                    <View style={{ height: hp('1%', insets) }} />
-
-                    {formikProps.values.utility &&
-                    formikProps.values.utility === 'content' ? (
-                      <AppContentPicker
-                        value={{
-                          fileCopyUri: null,
-                          name: formikProps.values.contentName,
-                          size: formikProps.values.contentSize,
-                          type: formikProps.values.contentType,
-                          uri: formikProps.values.contentUri,
-                        }}
-                        onDelete={() => {
-                          setMultipleFieldValue(formikProps, contentKey, true);
-                          setMultipleFieldTouched(
-                            formikProps,
-                            contentKey,
-                            false,
-                          );
-                        }}
-                        onSelected={item => {
-                          formikProps.setFieldValue(
-                            'contentName',
-                            item.name,
-                            false,
-                          );
-                          formikProps.setFieldValue(
-                            'contentSize',
-                            item.size,
-                            false,
-                          );
-                          formikProps.setFieldValue(
-                            'contentType',
-                            item.type,
-                            false,
-                          );
-                          formikProps.setFieldValue(
-                            'contentUri',
-                            item.uri,
-                            false,
-                          );
-                          setMultipleFieldTouched(
-                            formikProps,
-                            contentKey,
-                            true,
-                          );
-                        }}
-                      />
-                    ) : null}
-
-                    {formikProps.values.utility &&
-                    formikProps.values.utility !== 'content' ? (
-                      <>
-                        <AppRecurringPicker
-                          value={formikProps.values.recurring}
-                          onSelected={item => {
-                            formikProps.setFieldValue(
-                              'recurring',
-                              item.value,
-                              false,
-                            );
-                            resetRedeemTimeKeyFields(formikProps);
-                            if (item.value === 'every-day') {
-                              setMultipleFieldTouched(
-                                formikProps,
-                                ['timeDay', 'timeDate'],
-                                true,
-                              );
-                            }
-                          }}
-                        />
-                        <View style={{ height: hp('1%', insets) }} />
-                      </>
-                    ) : null}
-
-                    {formikProps.values.recurring === 'every-week' ? (
-                      <AppDayPicker
-                        label={t('createNFT:redeemDay')}
-                        onSelected={value => {
-                          formikProps.setFieldValue('timeDay', value[0], false);
-                          formikProps.setFieldTouched('timeDay', true, false);
-                        }}
-                        value={[formikProps.values.timeDay]}
-                      />
-                    ) : formikProps.values.recurring === 'every-month' ? (
-                      <AppDatePicker
-                        label={t('createNFT:redeemDate')}
-                        onSelected={value => {
-                          formikProps.setFieldValue(
-                            'timeDate',
-                            value[0],
-                            false,
-                          );
-                          formikProps.setFieldTouched('timeDate', true, false);
-                        }}
-                        value={[formikProps.values.timeDate]}
-                      />
-                    ) : formikProps.values.recurring === 'every-year' ? (
-                      <AppDateMonthPicker
-                        label={t('createNFT:redeemMonthAndDate')}
-                        onSelected={value => {
-                          formikProps.setFieldValue(
-                            'timeMonth',
-                            value[0],
-                            false,
-                          );
-                          formikProps.setFieldValue(
-                            'timeDate',
-                            value[1],
-                            false,
-                          );
-                          setMultipleFieldTouched(
-                            formikProps,
-                            ['timeMonth', 'timeDate'],
-                            true,
-                          );
-                        }}
-                        value={[
-                          formikProps.values.timeMonth,
-                          formikProps.values.timeDate,
-                        ]}
-                      />
-                    ) : formikProps.values.recurring === 'once' ? (
-                      <AppDateMonthYearPicker
-                        label={t('createNFT:redeemYearMonthAndaDate')}
-                        onSelected={value => {
-                          formikProps.setFieldValue(
-                            'timeYear',
-                            value[0],
-                            false,
-                          );
-                          formikProps.setFieldValue(
-                            'timeMonth',
-                            value[1],
-                            false,
-                          );
-                          formikProps.setFieldValue(
-                            'timeDate',
-                            value[2],
-                            false,
-                          );
-                          setMultipleFieldTouched(
-                            formikProps,
-                            ['timeYear', 'timeMonth', 'timeDate'],
-                            true,
-                          );
-                        }}
-                        value={[
-                          formikProps.values.timeYear,
-                          formikProps.values.timeMonth,
-                          formikProps.values.timeDate,
-                        ]}
-                      />
-                    ) : null}
-
-                    {formikProps.touched.timeDay ||
-                    formikProps.touched.timeDate ? (
-                      <AppHourMinutePicker
-                        label={
-                          t('createNFT:redeemStartTime') +
-                          ` (UTC${timezoneOffset > 0 ? '-' : '+'}${
-                            (timezoneOffset * -1) / 60
-                          })`
-                        }
-                        onSelected={value => {
-                          formikProps.setFieldValue(
-                            'fromHour',
-                            value[0],
-                            false,
-                          );
-                          formikProps.setFieldValue(
-                            'fromMinute',
-                            value[1],
-                            false,
-                          );
-                          setMultipleFieldTouched(
-                            formikProps,
-                            ['fromHour', 'fromMinute'],
-                            true,
-                          );
-                        }}
-                        value={[
-                          formikProps.values.fromHour,
-                          formikProps.values.fromMinute,
-                        ]}
-                      />
-                    ) : null}
-
-                    {formikProps.touched.fromHour &&
-                    formikProps.touched.fromMinute ? (
-                      <AppHourMinutePicker
-                        label={
-                          t('createNFT:redeemEndTime') +
-                          ` (UTC${timezoneOffset > 0 ? '-' : '+'}${
-                            (timezoneOffset * -1) / 60
-                          })`
-                        }
-                        onSelected={value => {
-                          formikProps.setFieldValue(
-                            'untilHour',
-                            value[0],
-                            false,
-                          );
-                          formikProps.setFieldValue(
-                            'untilMinute',
-                            value[1],
-                            false,
-                          );
-                          setMultipleFieldTouched(
-                            formikProps,
-                            ['untilHour', 'untilMinute'],
-                            true,
-                          );
-                        }}
-                        value={[
-                          formikProps.values.untilHour,
-                          formikProps.values.untilMinute,
-                        ]}
-                      />
-                    ) : null}
-
-                    {formikProps.touched.untilHour &&
-                    formikProps.touched.untilMinute &&
-                    formikProps.values.recurring !== 'once' ? (
-                      <AppRedeemLimitPicker
-                        label={t('createNFT:redeemLimit')}
-                        value={formikProps.values.redeemLimitOption}
-                        onSelected={item => {
-                          formikProps.setFieldValue(
-                            'redeemLimitOption',
-                            item.value,
-                            false,
-                          );
-                          if (item.value === 'no-limit') {
-                            formikProps.setFieldValue('redeemLimit', 0, false);
-                          }
-                        }}
-                      />
-                    ) : null}
-
-                    {formikProps.values.redeemLimitOption === 'fixed'
-                      ? commonFormInput(
-                          formikProps,
-                          redeemLimitInput,
-                          'redeemLimit',
-                          t('createNFT:redeemLimitCount'),
-                          t('createNFT:redeemLimitCountPlaceholder'),
-                          {
-                            memoKey: ['errorText', 'error', 'showError'],
-                            keyboardType: 'number-pad',
-                          },
-                        )
-                      : null}
-                  </List.Accordion>
-
-                  <List.Accordion
-                    title={accordionHeader(
-                      iconMap.royalty,
-                      t('createNFT:nftRoyalty'),
-                    )}>
-                    {commonFormInput(
-                      formikProps,
-                      creatorRoyaltyInput,
-                      'royaltyOrigin',
-                      t('createNFT:collectionRoyaltyOrigin'),
-                      t('createNFT:collectionRoyaltyOriginDescription'),
-                      {
-                        memoKey: ['errorText', 'error', 'showError'],
-                        keyboardType: 'number-pad',
-                      },
-                      stakerRoyaltyInput,
-                    )}
-                    {commonFormInput(
-                      formikProps,
-                      stakerRoyaltyInput,
-                      'royaltyStaker',
-                      t('createNFT:collectionRoyaltyStaker'),
-                      t('createNFT:collectionRoyaltyStakerDescription'),
-                      {
-                        memoKey: ['errorText', 'error', 'showError'],
-                        keyboardType: 'number-pad',
-                      },
-                    )}
-                  </List.Accordion>
-                </List.Section>
+                <AppAccordion
+                  expanded={royaltyExpanded}
+                  onPress={() => setRoyaltyExpanded(!royaltyExpanded)}
+                  title={accordionHeader(
+                    iconMap.royalty,
+                    t('createNFT:nftRoyalty'),
+                  )}>
+                  {commonFormInput(
+                    formikProps,
+                    creatorRoyaltyInput,
+                    'royaltyOrigin',
+                    t('createNFT:collectionRoyaltyOrigin'),
+                    t('createNFT:collectionRoyaltyOriginDescription'),
+                    {
+                      memoKey: ['errorText', 'error', 'showError'],
+                      keyboardType: 'number-pad',
+                    },
+                    stakerRoyaltyInput,
+                  )}
+                  {commonFormInput(
+                    formikProps,
+                    stakerRoyaltyInput,
+                    'royaltyStaker',
+                    t('createNFT:collectionRoyaltyStaker'),
+                    t('createNFT:collectionRoyaltyStakerDescription'),
+                    {
+                      memoKey: ['errorText', 'error', 'showError'],
+                      keyboardType: 'number-pad',
+                    },
+                  )}
+                </AppAccordion>
               </View>
 
               <View style={styles.actionContainer}>
@@ -756,7 +727,7 @@ const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
       marginRight: wp('3%', insets),
       marginBottom: hp('3%', insets),
     },
-    passwordView: {
+    formView: {
       flex: 0,
     },
     formInput: {

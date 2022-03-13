@@ -58,6 +58,7 @@ export default {
   redeemLimitFixedDescription: 'Redeem is limited until count reached',
   redeemLimitCount: 'Redeem Limit Count',
   redeemLimitCountPlaceholder: 'Specify Max Redeem Count',
+  nftUtility: 'Utility',
   recurringEveryDay: 'Every Day',
   recurringEveryDayDescription: 'Fans can redeem this NFT every day',
   recurringEveryWeek: 'Every Week',
