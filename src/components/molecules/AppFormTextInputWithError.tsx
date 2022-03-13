@@ -13,6 +13,7 @@ export interface AppFormTextInputWithErrorProps extends TextInputProps {
   errorText?: string;
   showError?: boolean;
   endComponent?: React.ReactNode;
+  rowEndComponent?: React.ReactNode;
   hideMaxLengthIndicator?: boolean;
   memoKey?: (keyof AppFormTextInputWithErrorProps)[];
 }

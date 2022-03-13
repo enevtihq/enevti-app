@@ -99,6 +99,11 @@ const setMultipleFieldTouched = (
   }
 };
 
+const resetRedeemTimeKeyFields = (formik: FormikProps<OneKindContractForm>) => {
+  setMultipleFieldValue(formik, redeemTimeKey, true);
+  setMultipleFieldTouched(formik, redeemTimeKey, false);
+};
+
 const redeemTimeKey: (keyof OneKindContractForm)[] = [
   'timeYear',
   'timeMonth',
@@ -106,6 +111,10 @@ const redeemTimeKey: (keyof OneKindContractForm)[] = [
   'timeDate',
   'fromHour',
   'fromMinute',
+  'untilHour',
+  'untilMinute',
+  'redeemLimitOption',
+  'redeemLimit',
 ];
 
 const contentKey: (keyof OneKindContractForm)[] = [
@@ -327,7 +336,7 @@ export default function CreateOneKindContract({ navigation }: Props) {
                         keyboardType: 'number-pad',
                         hideMaxLengthIndicator: true,
                         maxLength: 13,
-                        endComponent: (
+                        rowEndComponent: (
                           <AppCoinChipsPicker
                             active={activePrice}
                             error={
@@ -341,7 +350,7 @@ export default function CreateOneKindContract({ navigation }: Props) {
                           'errorText',
                           'error',
                           'showError',
-                          'endComponent',
+                          'rowEndComponent',
                         ],
                       },
                       quantityInput,
@@ -388,16 +397,7 @@ export default function CreateOneKindContract({ navigation }: Props) {
                             'anytime',
                             false,
                           );
-                          setMultipleFieldValue(
-                            formikProps,
-                            redeemTimeKey.concat(['redeemLimitOption']),
-                            true,
-                          );
-                          setMultipleFieldTouched(
-                            formikProps,
-                            redeemTimeKey.concat(['untilHour', 'untilMinute']),
-                            false,
-                          );
+                          resetRedeemTimeKeyFields(formikProps);
                         } else {
                           setMultipleFieldValue(formikProps, contentKey, true);
                           setMultipleFieldTouched(
@@ -470,19 +470,7 @@ export default function CreateOneKindContract({ navigation }: Props) {
                               item.value,
                               false,
                             );
-                            setMultipleFieldValue(
-                              formikProps,
-                              redeemTimeKey.concat(['redeemLimitOption']),
-                              true,
-                            );
-                            setMultipleFieldTouched(
-                              formikProps,
-                              redeemTimeKey.concat([
-                                'untilHour',
-                                'untilMinute',
-                              ]),
-                              false,
-                            );
+                            resetRedeemTimeKeyFields(formikProps);
                             if (item.value === 'every-day') {
                               setMultipleFieldTouched(
                                 formikProps,
@@ -643,7 +631,8 @@ export default function CreateOneKindContract({ navigation }: Props) {
                     ) : null}
 
                     {formikProps.touched.untilHour &&
-                    formikProps.touched.untilMinute ? (
+                    formikProps.touched.untilMinute &&
+                    formikProps.values.recurring !== 'once' ? (
                       <AppRedeemLimitPicker
                         label={t('createNFT:redeemLimit')}
                         value={formikProps.values.redeemLimitOption}

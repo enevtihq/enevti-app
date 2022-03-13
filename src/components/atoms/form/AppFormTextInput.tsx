@@ -9,6 +9,7 @@ import AppTextBody5 from '../text/AppTextBody5';
 function AppFormTextInput(
   props: TextInputProps & {
     endComponent?: React.ReactNode;
+    rowEndComponent?: React.ReactNode;
     hideMaxLengthIndicator?: boolean;
   },
   ref: any,
@@ -68,14 +69,17 @@ function AppFormTextInput(
           onBlur={onBlur}
           onChangeText={onChangeText}
         />
+        {props.endComponent ? (
+          <View style={styles.endComponent}>{props.endComponent}</View>
+        ) : null}
         {maxLengthShow && props.maxLength && !props.hideMaxLengthIndicator ? (
           <AppTextBody5 style={styles.maxLength}>
             {textLength} / {props.maxLength}
           </AppTextBody5>
         ) : null}
       </View>
-      {props.endComponent ? (
-        <View style={styles.endComponent}>{props.endComponent}</View>
+      {props.rowEndComponent ? (
+        <View style={styles.rowEndComponent}>{props.rowEndComponent}</View>
       ) : null}
     </View>
   );
@@ -101,10 +105,17 @@ const makeStyles = (theme: ReturnType<typeof useTheme>) =>
       bottom: 5,
       right: 15,
     },
-    endComponent: {
+    rowEndComponent: {
       justifyContent: 'center',
       marginTop: 6,
       marginLeft: -15,
+    },
+    endComponent: {
+      position: 'absolute',
+      height: '90%',
+      top: '10%',
+      right: 0,
+      alignItems: 'center',
     },
   });
 
