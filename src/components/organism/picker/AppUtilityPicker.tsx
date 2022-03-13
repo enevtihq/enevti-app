@@ -1,10 +1,8 @@
-import { View } from 'react-native';
 import React from 'react';
 import { iconMap } from '../../atoms/icon/AppIconComponent';
-import AppListPickerItem from '../../molecules/listpicker/AppListPickerItem';
-import AppListPickerMenu from '../../molecules/listpicker/AppListPickerMenu';
 import { PickerItem } from '../../../types/screen/PickerItem';
 import { useTranslation } from 'react-i18next';
+import AppListPicker from '../../molecules/listpicker/AppListPicker';
 
 interface AppUtilityPickerProps {
   value?: string;
@@ -16,8 +14,6 @@ export default function AppUtilityPicker({
   onSelected,
 }: AppUtilityPickerProps) {
   const { t } = useTranslation();
-  const [utilitySelectorVisible, setUtilitySelectorVisible] =
-    React.useState<boolean>(false);
 
   const utilityItem: PickerItem[] = React.useMemo(
     () => [
@@ -67,56 +63,13 @@ export default function AppUtilityPicker({
     [t],
   );
 
-  const utilitySelector: PickerItem = React.useMemo(
-    () => ({
-      value: undefined,
-      icon: iconMap.add,
-      title: 'Select Utility',
-      description: 'Set intrinsic value of your NFT!',
-    }),
-    [],
-  );
-
-  const selectedIndex: number | undefined = React.useMemo(() => {
-    if (value) {
-      for (let i = 0; i < utilityItem.length; i++) {
-        if (utilityItem[i].value === value) {
-          return i;
-        }
-      }
-      return undefined;
-    }
-    return undefined;
-  }, [value, utilityItem]);
-
   return (
-    <View>
-      {value && selectedIndex !== undefined ? (
-        <AppListPickerItem
-          showDropDown
-          onPress={() => setUtilitySelectorVisible(!utilitySelectorVisible)}
-          icon={utilityItem[selectedIndex].icon}
-          title={utilityItem[selectedIndex].title}
-          description={utilityItem[selectedIndex].description}
-        />
-      ) : (
-        <AppListPickerItem
-          showDropDown
-          onPress={() => setUtilitySelectorVisible(!utilitySelectorVisible)}
-          icon={utilitySelector.icon}
-          title={utilitySelector.title}
-          description={utilitySelector.description}
-        />
-      )}
-
-      <AppListPickerMenu
-        items={utilityItem}
-        visible={utilitySelectorVisible}
-        onDismiss={() => setUtilitySelectorVisible(false)}
-        onSelected={item => {
-          onSelected && onSelected(item);
-        }}
-      />
-    </View>
+    <AppListPicker
+      items={utilityItem}
+      label={t('createNFT:selectUtility')}
+      subLabel={t('createNFT:selectUtilityDescription')}
+      onSelected={onSelected}
+      value={value}
+    />
   );
 }

@@ -81,4 +81,8 @@ export default {
   collectionRoyaltyOriginDescription: 'Percentage of sales you get',
   collectionRoyaltyStaker: 'Staker Royalty (%)',
   collectionRoyaltyStakerDescription: 'Percentage of sales staker get',
+  selectUtility: 'Select Utility',
+  selectUtilityDescription: 'Set intrinsic value of your NFT!',
+  selectRecurring: 'Select Recurring',
+  selectRecurringDescription: 'Set your NFT redeem frequency!',
 };
