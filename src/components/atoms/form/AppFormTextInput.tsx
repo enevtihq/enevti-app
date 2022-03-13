@@ -52,28 +52,30 @@ function AppFormTextInput(
   );
 
   return (
-    <View>
-      <TextInput
-        {...props}
-        mode={'outlined'}
-        ref={ref}
-        outlineColor={styles.appFormTextInput.backgroundColor}
-        style={[
-          styles.appFormTextInput,
-          { minHeight: height, maxHeight: height, paddingBottom },
-          props.style,
-        ]}
-        onFocus={onFocus}
-        onBlur={onBlur}
-        onChangeText={onChangeText}
-      />
+    <View style={styles.container}>
+      <View style={styles.containerItem}>
+        <TextInput
+          {...props}
+          mode={'outlined'}
+          ref={ref}
+          outlineColor={styles.appFormTextInput.backgroundColor}
+          style={[
+            styles.appFormTextInput,
+            { minHeight: height, maxHeight: height, paddingBottom },
+            props.style,
+          ]}
+          onFocus={onFocus}
+          onBlur={onBlur}
+          onChangeText={onChangeText}
+        />
+        {maxLengthShow && props.maxLength && !props.hideMaxLengthIndicator ? (
+          <AppTextBody5 style={styles.maxLength}>
+            {textLength} / {props.maxLength}
+          </AppTextBody5>
+        ) : null}
+      </View>
       {props.endComponent ? (
         <View style={styles.endComponent}>{props.endComponent}</View>
-      ) : null}
-      {maxLengthShow && props.maxLength && !props.hideMaxLengthIndicator ? (
-        <AppTextBody5 style={styles.maxLength}>
-          {textLength} / {props.maxLength}
-        </AppTextBody5>
       ) : null}
     </View>
   );
@@ -81,6 +83,12 @@ function AppFormTextInput(
 
 const makeStyles = (theme: ReturnType<typeof useTheme>) =>
   StyleSheet.create({
+    container: {
+      flexDirection: 'row',
+    },
+    containerItem: {
+      flex: 1,
+    },
     appFormTextInput: {
       borderRadius: theme.roundness,
       backgroundColor: theme.dark
@@ -94,11 +102,9 @@ const makeStyles = (theme: ReturnType<typeof useTheme>) =>
       right: 15,
     },
     endComponent: {
-      position: 'absolute',
-      height: '90%',
-      top: '10%',
-      right: 0,
-      alignItems: 'center',
+      justifyContent: 'center',
+      marginTop: 6,
+      marginLeft: -15,
     },
   });
 

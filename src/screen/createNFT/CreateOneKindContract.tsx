@@ -26,7 +26,6 @@ import {
   OneKindContractStatusForm,
 } from '../../types/screen/CreateOneKindContract';
 import AppCoinChipsPicker from '../../components/organism/AppCoinChipsPicker';
-import NumberFormat from 'react-number-format';
 import { isNameAvailable, isSymbolAvailable } from '../../service/enevti/nft';
 import AppUtilityPicker from '../../components/organism/picker/AppUtilityPicker';
 import AppRecurringPicker from '../../components/organism/picker/AppRecurringPicker.tsx';
@@ -139,6 +138,7 @@ export default function CreateOneKindContract({ navigation }: Props) {
   const stakerRoyaltyInput = React.useRef<TextInput>();
 
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [activePrice, setActivePrice] = React.useState<boolean>(false);
 
   const handleFormSubmit = async (values: any) => {
     console.log(values);
@@ -311,38 +311,41 @@ export default function CreateOneKindContract({ navigation }: Props) {
                       iconMap.mintingBehaviour,
                       t('createNFT:nftMintingBehaviour'),
                     )}>
-                    <NumberFormat
-                      value={formikProps.values.priceAmount}
-                      displayType={'text'}
-                      thousandSeparator={true}
-                      renderText={value =>
-                        commonFormInput(
-                          formikProps,
-                          priceInput,
-                          'priceAmount',
-                          t('createNFT:collectionPrice'),
-                          t('createNFT:collectionPricePlaceholder'),
-                          {
-                            value: value,
-                            defaultValue: undefined,
-                            onEndEditing: undefined,
-                            onChangeText:
-                              formikProps.handleChange('priceAmount'),
-                            keyboardType: 'number-pad',
-                            hideMaxLengthIndicator: true,
-                            maxLength: 13,
-                            endComponent: <AppCoinChipsPicker />,
-                            memoKey: [
-                              'value',
-                              'errorText',
-                              'error',
-                              'showError',
-                            ],
-                          },
-                          quantityInput,
-                        )
-                      }
-                    />
+                    {commonFormInput(
+                      formikProps,
+                      priceInput,
+                      'priceAmount',
+                      t('createNFT:collectionPrice'),
+                      t('createNFT:collectionPricePlaceholder'),
+                      {
+                        onFocus: () => setActivePrice(true),
+                        onBlur: () => {
+                          !formikProps.touched.priceAmount &&
+                            formikProps.setFieldTouched('priceAmount');
+                          setActivePrice(false);
+                        },
+                        keyboardType: 'number-pad',
+                        hideMaxLengthIndicator: true,
+                        maxLength: 13,
+                        endComponent: (
+                          <AppCoinChipsPicker
+                            active={activePrice}
+                            error={
+                              formikProps.touched.priceAmount &&
+                              !!formikProps.errors.priceAmount
+                            }
+                          />
+                        ),
+                        memoKey: [
+                          'value',
+                          'errorText',
+                          'error',
+                          'showError',
+                          'endComponent',
+                        ],
+                      },
+                      quantityInput,
+                    )}
                     {commonFormInput(
                       formikProps,
                       quantityInput,
