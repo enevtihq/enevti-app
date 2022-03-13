@@ -7,7 +7,6 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { Formik, FormikProps } from 'formik';
 import * as Yup from 'yup';
 
-import { encryptWithPassword } from '../../utils/cryptography';
 import { Theme } from '../../theme/default';
 import AppHeaderWizard from '../../components/molecules/AppHeaderWizard';
 import { RootStackParamList } from '../../navigation';

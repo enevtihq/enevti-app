@@ -28,9 +28,7 @@ export default React.memo(
           <AppTextBody4>{feed.description}</AppTextBody4>
         </Text>
         <Text>
-          <AppTextHeading4 style={styles.tag}>
-            {t('home:collection')}
-          </AppTextHeading4>
+          <AppTextHeading4 style={styles.tag}>{t('home:pack')}</AppTextHeading4>
           <AppTextBody4 style={styles.tag}> | </AppTextBody4>
           <AppTextBody4 style={styles.tag}>
             {t('home:mintingProgress', { minted: '21', total: '321' })}

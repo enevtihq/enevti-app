@@ -65,7 +65,7 @@ export default function AppDateMonthYearPicker({
       if (index === 1 || index === 0) {
         const currentMonth = currentDate.getUTCMonth();
         const currentDay = currentDate.getUTCDate();
-        const currentDayInMonth = getDaysInMonthUTC(currentDay).length + 1;
+        const currentDayInMonth = getDaysInMonthUTC(currentMonth).length + 1;
         if (index === 1) {
           if (
             data[0] === currentDate.getUTCFullYear() &&
@@ -109,7 +109,7 @@ export default function AppDateMonthYearPicker({
   React.useEffect(() => {
     const currentMonth = currentDate.getUTCMonth();
     const currentDay = currentDate.getUTCDate();
-    const currentDayInMonth = getDaysInMonthUTC(currentDay).length + 1;
+    const currentDayInMonth = getDaysInMonthUTC(currentMonth).length + 1;
     if (value && value[0] !== -1 && value[1] !== -1 && value[2] !== -1) {
       if (
         value[0] === currentDate.getUTCFullYear() &&
