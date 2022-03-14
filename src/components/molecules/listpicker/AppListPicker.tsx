@@ -4,6 +4,7 @@ import { iconMap } from '../../atoms/icon/AppIconComponent';
 import AppListPickerItem from '../../molecules/listpicker/AppListPickerItem';
 import AppListPickerMenu from '../../molecules/listpicker/AppListPickerMenu';
 import { PickerItem } from '../../../types/screen/PickerItem';
+import { shallowEqual } from 'react-redux';
 
 interface AppListPickerProps {
   items: PickerItem[];
@@ -11,14 +12,17 @@ interface AppListPickerProps {
   subLabel: string;
   value?: string;
   onSelected?: (item: PickerItem) => void;
+  memoKey?: (keyof AppListPickerProps)[];
 }
 
-export default function AppListPicker({
+function Component({
   items,
   label,
   subLabel,
   value,
   onSelected,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  memoKey,
 }: AppListPickerProps) {
   const [menuVisible, setMenuVisible] = React.useState<boolean>(false);
 
@@ -65,3 +69,18 @@ export default function AppListPicker({
     </View>
   );
 }
+
+const AppListPicker = React.memo(Component, (prevProps, nextProps) => {
+  if (prevProps.memoKey) {
+    let ret = true;
+    prevProps.memoKey.forEach(key => {
+      if (prevProps[key] !== nextProps[key]) {
+        ret = false;
+      }
+    });
+    return ret;
+  } else {
+    return shallowEqual(prevProps, nextProps);
+  }
+});
+export default AppListPicker;

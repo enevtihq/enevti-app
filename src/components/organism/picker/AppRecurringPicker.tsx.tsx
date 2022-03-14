@@ -3,16 +3,16 @@ import { iconMap } from '../../atoms/icon/AppIconComponent';
 import { PickerItem } from '../../../types/screen/PickerItem';
 import { useTranslation } from 'react-i18next';
 import AppListPicker from '../../molecules/listpicker/AppListPicker';
+import { shallowEqual } from 'react-redux';
 
 interface AppRecurringPickerProps {
   value?: string;
   onSelected?: (item: PickerItem) => void;
+  memoKey?: (keyof AppRecurringPickerProps)[];
 }
 
-export default function AppRecurringPicker({
-  value,
-  onSelected,
-}: AppRecurringPickerProps) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function Component({ value, onSelected, memoKey }: AppRecurringPickerProps) {
   const { t } = useTranslation();
 
   const recurringItem: PickerItem[] = React.useMemo(
@@ -61,3 +61,18 @@ export default function AppRecurringPicker({
     />
   );
 }
+
+const AppRecurringPicker = React.memo(Component, (prevProps, nextProps) => {
+  if (prevProps.memoKey) {
+    let ret = true;
+    prevProps.memoKey.forEach(key => {
+      if (prevProps[key] !== nextProps[key]) {
+        ret = false;
+      }
+    });
+    return ret;
+  } else {
+    return shallowEqual(prevProps, nextProps);
+  }
+});
+export default AppRecurringPicker;

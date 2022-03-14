@@ -1,48 +1,42 @@
 import { StyleSheet, View } from 'react-native';
 import React from 'react';
 import AppIconComponent, { iconMap } from '../../atoms/icon/AppIconComponent';
-import AppListPickerMenu from '../../molecules/listpicker/AppListPickerMenu';
-import { PickerItem } from '../../../types/screen/PickerItem';
-import AppFormTextInputWithError from '../../molecules/AppFormTextInputWithError';
+import AppFormTextInputWithError from '../AppFormTextInputWithError';
 import { TouchableRipple, useTheme } from 'react-native-paper';
 import { hp, SafeAreaInsets, wp } from '../../../utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Theme } from 'react-native-paper/lib/typescript/types';
 import { shallowEqual } from 'react-redux';
+import AppMenuContainer from '../../atoms/menu/AppMenuContainer';
+import AppWheelPicker from './AppWheelPicker';
 
-interface AppFormPickerProps {
+interface AppFormWheelPickerProps {
   label: string;
-  items: PickerItem[];
+  items: any;
+  pickerValue: string[];
   value?: string;
-  onSelected?: (item: PickerItem) => void;
-  memoKey?: (keyof AppFormPickerProps)[];
+  onSelected?: (value: string[]) => void;
+  onCancel?: (value: string[]) => void;
+  onChange?: (data: any, index: number) => void;
+  memoKey?: (keyof AppFormWheelPickerProps)[];
 }
 
 function Component({
   label,
   items,
+  pickerValue,
   value,
   onSelected,
+  onCancel,
+  onChange,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   memoKey,
-}: AppFormPickerProps) {
+}: AppFormWheelPickerProps) {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
   const styles = makeStyle(theme, insets);
 
   const [menuVisible, setMenuVisible] = React.useState<boolean>(false);
-
-  const selectedIndex: number | undefined = React.useMemo(() => {
-    if (value) {
-      for (let i = 0; i < items.length; i++) {
-        if (items[i].value === value) {
-          return i;
-        }
-      }
-      return undefined;
-    }
-    return undefined;
-  }, [value, items]);
 
   return (
     <View>
@@ -51,11 +45,7 @@ function Component({
         label={label}
         theme={theme}
         dense={true}
-        value={
-          value && selectedIndex !== undefined
-            ? items[selectedIndex].title
-            : undefined
-        }
+        value={value}
         style={styles.formInput}
         editable={false}
         pointerEvents={'none'}
@@ -77,14 +67,24 @@ function Component({
         </TouchableRipple>
       </View>
 
-      <AppListPickerMenu
-        items={items}
+      <AppMenuContainer
+        snapPoints={['45%']}
         visible={menuVisible}
-        onDismiss={() => setMenuVisible(false)}
-        onSelected={item => {
-          onSelected && onSelected(item);
-        }}
-      />
+        onDismiss={() => setMenuVisible(false)}>
+        <AppWheelPicker
+          onSelected={data => {
+            onSelected && onSelected(data);
+            setMenuVisible(false);
+          }}
+          onCancel={data => {
+            onCancel && onCancel(data);
+            setMenuVisible(false);
+          }}
+          onChange={onChange}
+          items={items}
+          value={pickerValue}
+        />
+      </AppMenuContainer>
     </View>
   );
 }
@@ -116,7 +116,7 @@ const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
     },
   });
 
-const AppFormPicker = React.memo(Component, (prevProps, nextProps) => {
+const AppFormWheelPicker = React.memo(Component, (prevProps, nextProps) => {
   if (prevProps.memoKey) {
     let ret = true;
     prevProps.memoKey.forEach(key => {
@@ -129,4 +129,4 @@ const AppFormPicker = React.memo(Component, (prevProps, nextProps) => {
     return shallowEqual(prevProps, nextProps);
   }
 });
-export default AppFormPicker;
+export default AppFormWheelPicker;

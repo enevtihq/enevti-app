@@ -6,11 +6,22 @@ export default function propsEqualityCheck(
   const keys1 = Object.keys(object1);
   const keys2 = Object.keys(object2);
   if (keys1.length !== keys2.length) {
-    console.log('inqual in length', additionalMessage);
+    console.log(
+      `${
+        additionalMessage
+          ? '[' + additionalMessage + '] - (leng) inequal'
+          : '(diff) inequal'
+      }`,
+    );
   }
   for (let key of keys1) {
     if (object1[key] !== object2[key]) {
-      console.log('inequal in key:', key, additionalMessage);
+      console.log(
+        `${
+          additionalMessage ? '[' + additionalMessage + '] - (diff)' : '(diff)'
+        }`,
+        key,
+      );
     }
   }
 }

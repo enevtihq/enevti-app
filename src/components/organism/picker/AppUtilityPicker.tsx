@@ -3,16 +3,16 @@ import { iconMap } from '../../atoms/icon/AppIconComponent';
 import { PickerItem } from '../../../types/screen/PickerItem';
 import { useTranslation } from 'react-i18next';
 import AppListPicker from '../../molecules/listpicker/AppListPicker';
+import { shallowEqual } from 'react-redux';
 
 interface AppUtilityPickerProps {
   value?: string;
   onSelected?: (item: PickerItem) => void;
+  memoKey?: (keyof AppUtilityPickerProps)[];
 }
 
-export default function AppUtilityPicker({
-  value,
-  onSelected,
-}: AppUtilityPickerProps) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function Component({ value, onSelected, memoKey }: AppUtilityPickerProps) {
   const { t } = useTranslation();
 
   const utilityItem: PickerItem[] = React.useMemo(
@@ -73,3 +73,18 @@ export default function AppUtilityPicker({
     />
   );
 }
+
+const AppUtilityPicker = React.memo(Component, (prevProps, nextProps) => {
+  if (prevProps.memoKey) {
+    let ret = true;
+    prevProps.memoKey.forEach(key => {
+      if (prevProps[key] !== nextProps[key]) {
+        ret = false;
+      }
+    });
+    return ret;
+  } else {
+    return shallowEqual(prevProps, nextProps);
+  }
+});
+export default AppUtilityPicker;

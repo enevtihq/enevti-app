@@ -15,10 +15,7 @@ interface AppCoinChipsPickerProps {
   error?: boolean;
 }
 
-export default function AppCoinChipsPicker({
-  active,
-  error,
-}: AppCoinChipsPickerProps) {
+function Component({ active, error }: AppCoinChipsPickerProps) {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
   const styles = makeStyle(insets);
@@ -70,3 +67,6 @@ const makeStyle = (insets: SafeAreaInsets) =>
       paddingTop: 1,
     },
   });
+
+const AppCoinChipsPicker = React.memo(Component);
+export default AppCoinChipsPicker;

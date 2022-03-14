@@ -13,6 +13,7 @@ import { Theme } from '../../theme/default';
 import AppEmojiComponent, { emojiMap } from '../atoms/icon/AppEmojiComponent';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation';
+import { shallowEqual } from 'react-redux';
 
 interface AppHeaderWizardProps {
   title?: string;
@@ -25,9 +26,10 @@ interface AppHeaderWizardProps {
   backComponent?: React.ReactNode;
   navigation?: StackNavigationProp<RootStackParamList>;
   style?: StyleProp<ViewStyle>;
+  memoKey?: (keyof AppHeaderWizardProps)[];
 }
 
-export default function AppHeaderWizard({
+function Component({
   component,
   title,
   description,
@@ -38,6 +40,8 @@ export default function AppHeaderWizard({
   backComponent,
   navigation,
   style,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  memoKey,
 }: AppHeaderWizardProps) {
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
@@ -109,3 +113,18 @@ const makeStyle = (insets: SafeAreaInsets) =>
       marginLeft: wp('5%', insets),
     },
   });
+
+const AppHeaderWizard = React.memo(Component, (prevProps, nextProps) => {
+  if (prevProps.memoKey) {
+    let ret = true;
+    prevProps.memoKey.forEach(key => {
+      if (prevProps[key] !== nextProps[key]) {
+        ret = false;
+      }
+    });
+    return ret;
+  } else {
+    return shallowEqual(prevProps, nextProps);
+  }
+});
+export default AppHeaderWizard;

@@ -13,23 +13,24 @@ function logPropDifferences(
     if (newValue !== lastValue) {
       remounted = false;
       console.log(
-        identifier ? `[${identifier}] -` : '',
-        '(new)',
+        `${identifier ? '[' + identifier + '] - (new)' : '(new)'}`,
         key,
         newValue,
       );
       console.log(
-        identifier ? `[${identifier}] -` : '',
-        '(old)',
+        `${identifier ? '[' + identifier + '] - (old)' : '(old)'}`,
         key,
         lastValue,
       );
     }
   });
   if (remounted) {
-    console.warn(
-      identifier ? `[${identifier}] -` : '',
-      'No Prop Changes Re-Mount',
+    console.log(
+      `${
+        identifier
+          ? '[' + identifier + '] - (warn) no prop change rerender'
+          : '(warn) no prop change rerender'
+      }`,
     );
   }
 }
@@ -40,7 +41,11 @@ export default function useDebugPropChanges(
 ) {
   const lastProps = React.useRef();
   React.useEffect(() => {
-    console.log(identifier ? `[${identifier}] -` : '', 'Mounted');
+    console.log(
+      `${
+        identifier ? '[' + identifier + '] - (info) mounted' : '(info) mounted'
+      }`,
+    );
   }, [identifier]);
   if (lastProps.current) {
     logPropDifferences(newProps, lastProps.current, identifier);

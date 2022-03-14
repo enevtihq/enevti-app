@@ -1,31 +1,23 @@
-import { View, StyleSheet } from 'react-native';
 import React from 'react';
-import AppFormTextInputWithError from '../../molecules/AppFormTextInputWithError';
-import { TouchableRipple, useTheme } from 'react-native-paper';
-import AppIconComponent, { iconMap } from '../../atoms/icon/AppIconComponent';
-import { hp, SafeAreaInsets, wp } from '../../../utils/imageRatio';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import AppWheelPicker from '../../molecules/wheelpicker/AppWheelPicker';
-import AppMenuContainer from '../../atoms/menu/AppMenuContainer';
+import { shallowEqual } from 'react-redux';
+import AppFormWheelPicker from '../../molecules/wheelpicker/AppFormWheelPicker';
 
 interface AppHourMinutePickerProps {
   label: string;
   onSelected?: (value: number[]) => void;
   onCancel?: (value: number[]) => void;
   value?: number[];
+  memoKey?: (keyof AppHourMinutePickerProps)[];
 }
 
-export default function AppHourMinutePicker({
+function Component({
   label,
   onSelected,
   onCancel,
   value,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  memoKey,
 }: AppHourMinutePickerProps) {
-  const theme = useTheme();
-  const insets = useSafeAreaInsets();
-  const styles = makeStyle(theme, insets);
-
-  const [menuVisible, setMenuVisible] = React.useState<boolean>(false);
   const [pickerData, setPickerData] = React.useState<string[][]>();
 
   const hourIndex = React.useMemo(() => Array.from(Array(24).keys()), []);
@@ -63,78 +55,32 @@ export default function AppHourMinutePicker({
   }, [hourStringIndex, minuteStringIndex]);
 
   return (
-    <View>
-      <AppFormTextInputWithError
-        label={label}
-        theme={theme}
-        dense={true}
-        value={valueToString}
-        style={styles.formInput}
-        editable={false}
-        pointerEvents={'none'}
-        endComponent={
-          <AppIconComponent
-            name={iconMap.dropDown}
-            color={theme.colors.placeholder}
-            size={25}
-            style={styles.dropDownIcon}
-          />
-        }
-      />
-
-      <View style={styles.inputRippleContainer}>
-        <TouchableRipple
-          onPress={() => setMenuVisible(!menuVisible)}
-          style={styles.inputRipple}>
-          <View />
-        </TouchableRipple>
-      </View>
-
-      <AppMenuContainer
-        snapPoints={['45%']}
-        visible={menuVisible}
-        onDismiss={() => setMenuVisible(false)}>
-        <AppWheelPicker
-          onSelected={data => {
-            onSelected &&
-              onSelected([parseFloat(data[0]), parseFloat(data[1])]);
-            setMenuVisible(false);
-          }}
-          onCancel={data => {
-            onCancel && onCancel([parseFloat(data[0]), parseFloat(data[1])]);
-            setMenuVisible(false);
-          }}
-          items={pickerData}
-          value={pickerValue}
-        />
-      </AppMenuContainer>
-    </View>
+    <AppFormWheelPicker
+      label={label}
+      items={pickerData}
+      value={valueToString}
+      pickerValue={pickerValue}
+      onSelected={data =>
+        onSelected && onSelected([parseFloat(data[0]), parseFloat(data[1])])
+      }
+      onCancel={data =>
+        onCancel && onCancel([parseFloat(data[0]), parseFloat(data[1])])
+      }
+    />
   );
 }
 
-const makeStyle = (theme: any, insets: SafeAreaInsets) =>
-  StyleSheet.create({
-    formInput: {
-      marginBottom: hp('1%', insets),
-      marginLeft: wp('5%', insets),
-      marginRight: wp('5%', insets),
-    },
-    dropDownIcon: {
-      justifyContent: 'center',
-      height: '100%',
-      width: wp('10%', insets),
-    },
-    inputRippleContainer: {
-      ...StyleSheet.absoluteFillObject,
-      marginBottom: hp('1%', insets),
-      marginLeft: wp('5%', insets),
-      marginRight: wp('5%', insets),
-      marginTop: wp('2%', insets),
-      borderRadius: theme.roundness,
-      overflow: 'hidden',
-    },
-    inputRipple: {
-      width: '100%',
-      height: '100%',
-    },
-  });
+const AppHourMinutePicker = React.memo(Component, (prevProps, nextProps) => {
+  if (prevProps.memoKey) {
+    let ret = true;
+    prevProps.memoKey.forEach(key => {
+      if (prevProps[key] !== nextProps[key]) {
+        ret = false;
+      }
+    });
+    return ret;
+  } else {
+    return shallowEqual(prevProps, nextProps);
+  }
+});
+export default AppHourMinutePicker;
