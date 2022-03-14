@@ -28,7 +28,7 @@ export default function MyProfile({
   onMomentumEndWorklet,
   headerHeight = 0,
 }: MyProfileProps) {
-  const styles = makeStyle();
+  const styles = makeStyles();
   const myPersona = useSelector(selectPersona);
   const profileData = useSelector(selectProfile);
 
@@ -66,7 +66,7 @@ export default function MyProfile({
   );
 }
 
-const makeStyle = () =>
+const makeStyles = () =>
   StyleSheet.create({
     textContainer: {
       flex: 1,

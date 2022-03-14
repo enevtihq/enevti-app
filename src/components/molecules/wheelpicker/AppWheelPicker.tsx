@@ -25,7 +25,7 @@ export default function AppWheelPicker({
   const { t } = useTranslation();
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
-  const styles = makeStyle(theme, insets);
+  const styles = makeStyles(theme, insets);
 
   return (
     <CommonPicker
@@ -51,7 +51,7 @@ export default function AppWheelPicker({
   );
 }
 
-const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
+const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
   StyleSheet.create({
     pickerText: {
       fontFamily: theme.fonts.regular.fontFamily,

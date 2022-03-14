@@ -30,7 +30,7 @@ export default function AppProfileBody({
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const theme = useTheme();
-  const styles = makeStyle();
+  const styles = makeStyles();
 
   return (
     <View style={[{ height: hp('100%', insets) }, style]}>
@@ -89,7 +89,7 @@ export default function AppProfileBody({
   );
 }
 
-const makeStyle = () =>
+const makeStyles = () =>
   StyleSheet.create({
     tabBarContainer: {
       top: 0,

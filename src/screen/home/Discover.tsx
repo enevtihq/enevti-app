@@ -7,7 +7,7 @@ import { useTheme } from 'react-native-paper';
 
 export default function Discover() {
   const theme = useTheme();
-  const styles = makeStyle();
+  const styles = makeStyles();
 
   return (
     <AppView>
@@ -24,7 +24,7 @@ export default function Discover() {
   );
 }
 
-const makeStyle = () =>
+const makeStyles = () =>
   StyleSheet.create({
     container: {
       flex: 1,

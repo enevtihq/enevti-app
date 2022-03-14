@@ -34,7 +34,7 @@ function Component({
 }: AppFormWheelPickerProps) {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
-  const styles = makeStyle(theme, insets);
+  const styles = makeStyles(theme, insets);
 
   const [menuVisible, setMenuVisible] = React.useState<boolean>(false);
 
@@ -89,7 +89,7 @@ function Component({
   );
 }
 
-const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
+const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
   StyleSheet.create({
     formInput: {
       marginBottom: hp('1%', insets),

@@ -20,7 +20,7 @@ export default function AppIconBanner({
 }: AppIconBannerProps) {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
-  const styles = makeStyle(insets);
+  const styles = makeStyles(insets);
 
   return (
     <View style={[style]}>
@@ -40,7 +40,7 @@ export default function AppIconBanner({
   );
 }
 
-const makeStyle = (insets: SafeAreaInsets) =>
+const makeStyles = (insets: SafeAreaInsets) =>
   StyleSheet.create({
     appIconBannerView: {
       flexDirection: 'row',

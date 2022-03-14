@@ -63,7 +63,7 @@ export default function Home({ navigation }: Props) {
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
-  const styles = makeStyle(insets);
+  const styles = makeStyles(insets);
   const dispatch = useDispatch();
 
   const myPersona = useSelector(selectPersona);
@@ -475,7 +475,7 @@ export default function Home({ navigation }: Props) {
   );
 }
 
-const makeStyle = (insets: SafeAreaInsets) =>
+const makeStyles = (insets: SafeAreaInsets) =>
   StyleSheet.create({
     notEligibleImage: {
       alignSelf: 'center',

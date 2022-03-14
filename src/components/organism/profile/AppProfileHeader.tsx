@@ -42,7 +42,7 @@ export default function AppProfileHeader({
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
-  const styles = makeStyle(theme, insets);
+  const styles = makeStyles(theme, insets);
 
   const [menuVisible, setMenuVisible] = React.useState<boolean>(false);
 
@@ -178,7 +178,7 @@ export default function AppProfileHeader({
   );
 }
 
-const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
+const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
   StyleSheet.create({
     safeBackgroundBar: {
       position: 'absolute',

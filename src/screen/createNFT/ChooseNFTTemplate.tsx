@@ -43,7 +43,7 @@ export default function ChooseNFTTemplate({ navigation }: Props) {
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
-  const styles = makeStyle(theme, insets);
+  const styles = makeStyles(theme, insets);
   const dispatch = useDispatch();
 
   const [dataUri, setDataUri] = React.useState<string>('');
@@ -189,7 +189,7 @@ export default function ChooseNFTTemplate({ navigation }: Props) {
   );
 }
 
-const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
+const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
   StyleSheet.create({
     header: {
       flex: 0,

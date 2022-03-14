@@ -24,7 +24,7 @@ export default function AppMenuItem({
 }: AppMenuItemProps) {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
-  const styles = makeStyle(theme, insets);
+  const styles = makeStyles(theme, insets);
 
   return (
     <Menu.Item
@@ -38,7 +38,7 @@ export default function AppMenuItem({
   );
 }
 
-const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
+const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
   StyleSheet.create({
     menuTitle: {
       fontFamily: theme.fonts.regular.fontFamily,

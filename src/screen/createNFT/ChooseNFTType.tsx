@@ -32,7 +32,7 @@ export default function ChooseNFTType({ navigation }: Props) {
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
-  const styles = makeStyle(insets);
+  const styles = makeStyles(insets);
 
   const pickerOption = {
     width: NFT_RESOLUTION,
@@ -153,7 +153,7 @@ export default function ChooseNFTType({ navigation }: Props) {
   );
 }
 
-const makeStyle = (insets: SafeAreaInsets) =>
+const makeStyles = (insets: SafeAreaInsets) =>
   StyleSheet.create({
     header: {
       flex: 0,

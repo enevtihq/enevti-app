@@ -18,7 +18,7 @@ export default function AppTextHeading3({
 }: AppTextHeading3Props): JSX.Element {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
-  const styles = makeStyle(theme, insets);
+  const styles = makeStyles(theme, insets);
 
   return (
     <Text
@@ -30,7 +30,7 @@ export default function AppTextHeading3({
   );
 }
 
-const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
+const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
   StyleSheet.create({
     heading3: {
       color: theme.colors.text,

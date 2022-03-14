@@ -25,7 +25,7 @@ interface AppStakerItemProps {
 export default function AppStakerItem({ staker }: AppStakerItemProps) {
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
-  const styles = makeStyle(insets);
+  const styles = makeStyles(insets);
   const myPersona = useSelector(selectPersona);
 
   const onDelete = () => {
@@ -68,7 +68,7 @@ export default function AppStakerItem({ staker }: AppStakerItemProps) {
   );
 }
 
-const makeStyle = (insets: SafeAreaInsets) =>
+const makeStyles = (insets: SafeAreaInsets) =>
   StyleSheet.create({
     avatar: {
       marginRight: wp('3%', insets),

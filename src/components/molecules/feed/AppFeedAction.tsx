@@ -21,7 +21,7 @@ export default React.memo(
   function AppFeedAction({ feed }: AppFeedActionProps) {
     const insets = useSafeAreaInsets();
     const theme = useTheme() as Theme;
-    const styles = makeStyle(insets);
+    const styles = makeStyles(insets);
     const [like, setLike] = React.useState<1 | 0>(0);
 
     const onLikeActivate = () => {
@@ -88,7 +88,7 @@ export default React.memo(
   },
 );
 
-const makeStyle = (insets: SafeAreaInsets) =>
+const makeStyles = (insets: SafeAreaInsets) =>
   StyleSheet.create({
     button: {
       height: '100%',

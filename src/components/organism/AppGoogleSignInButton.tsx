@@ -55,7 +55,7 @@ export default function AppGoogleSignInButton({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const insets = useSafeAreaInsets();
-  const styles = makeStyle(insets);
+  const styles = makeStyles(insets);
   const apiToken = useSelector(selectGoogleAPITokenState);
   const [isLoadingGoogle, setIsLoadingGoogle] = React.useState<boolean>(false);
   const [showInputGoogleDialog, setShowInputGoogleDialog] =
@@ -228,7 +228,7 @@ export default function AppGoogleSignInButton({
   );
 }
 
-const makeStyle = (insets: SafeAreaInsets) =>
+const makeStyles = (insets: SafeAreaInsets) =>
   StyleSheet.create({
     googleSignInButton: {
       marginLeft: wp('5%', insets),

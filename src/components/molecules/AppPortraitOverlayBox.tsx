@@ -23,7 +23,7 @@ export default React.memo(
   }: AppPortraitOverlayBoxProps) {
     const insets = useSafeAreaInsets();
     const theme = useTheme() as Theme;
-    const styles = makeStyle(theme, insets);
+    const styles = makeStyles(theme, insets);
 
     return (
       <View style={[styles.container, style]}>
@@ -43,7 +43,7 @@ export default React.memo(
   },
 );
 
-const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
+const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
   StyleSheet.create({
     container: {
       width: wp('25%', insets),

@@ -29,7 +29,7 @@ export default function AppTopTabBar({
   const { index } = state;
   const theme = useTheme();
   const insets = useSafeAreaInsets();
-  const styles = makeStyle(insets);
+  const styles = makeStyles(insets);
 
   React.useEffect(() => {
     onIndexChange?.(index);
@@ -59,7 +59,7 @@ export default function AppTopTabBar({
   );
 }
 
-const makeStyle = (insets: SafeAreaInsets) =>
+const makeStyles = (insets: SafeAreaInsets) =>
   StyleSheet.create({
     topTabBar: {
       height: hp(TOP_TABBAR_HEIGHT_PERCENTAGE, insets),

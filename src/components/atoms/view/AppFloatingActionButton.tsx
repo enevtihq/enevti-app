@@ -22,7 +22,7 @@ export default function AppFloatingActionButton({
   const theme = useTheme();
   theme.colors.accent = theme.colors.primary;
   const insets = useSafeAreaInsets();
-  const styles = makeStyle(insets);
+  const styles = makeStyles(insets);
 
   return (
     <AnimatedFAB
@@ -37,7 +37,7 @@ export default function AppFloatingActionButton({
   );
 }
 
-const makeStyle = (insets: SafeAreaInsets) =>
+const makeStyles = (insets: SafeAreaInsets) =>
   StyleSheet.create({
     fab: {
       position: 'absolute',

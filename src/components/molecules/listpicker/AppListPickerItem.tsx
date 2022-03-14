@@ -33,7 +33,7 @@ export default function AppListPickerItem({
 }: AppListPickerItemProps) {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
-  const styles = makeStyle(insets);
+  const styles = makeStyles(insets);
 
   return (
     <AppListItem
@@ -72,7 +72,7 @@ export default function AppListPickerItem({
   );
 }
 
-const makeStyle = (insets: SafeAreaInsets) =>
+const makeStyles = (insets: SafeAreaInsets) =>
   StyleSheet.create({
     listIcon: {
       marginRight: wp('3%', insets),

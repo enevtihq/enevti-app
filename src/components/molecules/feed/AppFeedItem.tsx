@@ -19,7 +19,7 @@ export default React.memo(
   function AppFeedItem({ feed }: AppFeedItemProps) {
     const insets = useSafeAreaInsets();
     const theme = useTheme() as Theme;
-    const styles = makeStyle(insets, theme);
+    const styles = makeStyles(insets, theme);
 
     const canvasWidth = Dimensions.get('window').width * 0.9;
 
@@ -41,7 +41,7 @@ export default React.memo(
   },
 );
 
-const makeStyle = (insets: SafeAreaInsets, theme: Theme) =>
+const makeStyles = (insets: SafeAreaInsets, theme: Theme) =>
   StyleSheet.create({
     card: {
       marginHorizontal: wp('5%', insets),

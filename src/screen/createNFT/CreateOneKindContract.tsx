@@ -134,7 +134,7 @@ export default function CreateOneKindContract({ navigation }: Props) {
   const paperTheme = useTheme();
   const theme = paperTheme as Theme;
   const insets = useSafeAreaInsets();
-  const styles = makeStyle(theme, insets);
+  const styles = makeStyles(theme, insets);
   const timezoneOffset = React.useMemo(
     () => new Date().getTimezoneOffset(),
     [],
@@ -506,6 +506,7 @@ export default function CreateOneKindContract({ navigation }: Props) {
             expanded={identityExpanded}
             onPress={identityHeaderCallback}
             title={identityHeader}>
+            <View style={{ height: hp('1%', insets) }} />
             {commonFormInput(
               formikProps,
               nameInput,
@@ -582,6 +583,7 @@ export default function CreateOneKindContract({ navigation }: Props) {
             expanded={mintingExpanded}
             onPress={mintingHeaderCallback}
             title={mintingHeader}>
+            <View style={{ height: hp('1%', insets) }} />
             {commonFormInput(
               formikProps,
               priceInput,
@@ -639,6 +641,7 @@ export default function CreateOneKindContract({ navigation }: Props) {
             expanded={utilityExpanded}
             onPress={utilityHeaderCallback}
             title={utilityHeader}>
+            <View style={{ height: hp('1%', insets) }} />
             <AppUtilityPicker
               value={formikProps.values.utility}
               onSelected={onSelectedUtilityPicker}
@@ -737,6 +740,7 @@ export default function CreateOneKindContract({ navigation }: Props) {
             expanded={royaltyExpanded}
             onPress={royaltyHeaderCallback}
             title={royaltyHeader}>
+            <View style={{ height: hp('1%', insets) }} />
             {commonFormInput(
               formikProps,
               creatorRoyaltyInput,
@@ -779,7 +783,7 @@ export default function CreateOneKindContract({ navigation }: Props) {
   );
 }
 
-const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
+const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
   StyleSheet.create({
     accordionListView: {
       flexDirection: 'row',

@@ -11,7 +11,7 @@ interface UtilityBackgroundProps {
 
 export default React.memo(
   function UtilityBackground({ nft, args }: UtilityBackgroundProps) {
-    const styles = makeStyle(args);
+    const styles = makeStyles(args);
     let source: any;
 
     switch (nft.utility) {
@@ -58,7 +58,7 @@ export default React.memo(
   },
 );
 
-const makeStyle = (args: TemplateArgs) =>
+const makeStyles = (args: TemplateArgs) =>
   StyleSheet.create({
     utilityBackgroundContainer: {
       width: args.width,

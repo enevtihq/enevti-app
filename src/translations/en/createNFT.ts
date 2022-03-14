@@ -31,7 +31,7 @@ export default {
   collectionDescription: 'Description',
   collectionDescriptionPlaceholder: 'Short description about your collection',
   collectionSymbol: 'Symbol',
-  collectionSymbolPlaceholder: 'ex: CLTN',
+  collectionSymbolPlaceholder: 'Capital letter only, ex: CLTN',
   nftMintingBehaviour: 'Minting Behaviour',
   collectionPrice: 'Price',
   collectionPricePlaceholder: 'ex: 0.1 or 1000',

@@ -14,7 +14,7 @@ interface UtilityIconProps {
 
 export default React.memo(
   function UtilityIcon({ nft, args, width }: UtilityIconProps) {
-    const styles = makeStyle(args);
+    const styles = makeStyles(args);
 
     const w = (parseFloat(args.width) * width) / 100.0;
     const iconSize = w * 0.75;
@@ -65,7 +65,7 @@ export default React.memo(
   },
 );
 
-const makeStyle = (args: TemplateArgs) =>
+const makeStyles = (args: TemplateArgs) =>
   StyleSheet.create({
     utilityBackgroundContainer: {
       width: args.width,

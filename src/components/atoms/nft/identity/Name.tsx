@@ -14,7 +14,7 @@ interface NameProps {
 export default React.memo(
   function Name({ nft, args, width }: NameProps) {
     const theme = useTheme();
-    const styles = makeStyle(args, theme);
+    const styles = makeStyles(args, theme);
     const text = nft.name;
 
     const w = (parseFloat(args.width) * width) / 100.0;
@@ -42,7 +42,7 @@ export default React.memo(
   },
 );
 
-const makeStyle = (args: TemplateArgs, theme: Theme) =>
+const makeStyles = (args: TemplateArgs, theme: Theme) =>
   StyleSheet.create({
     nameContainer: {
       width: args.width,

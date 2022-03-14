@@ -33,7 +33,7 @@ export default function AppHeader({
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
   const headerHeight = height ? height : hp(HEADER_HEIGHT_PERCENTAGE, insets);
-  const styles = makeStyle(theme, headerHeight, insets);
+  const styles = makeStyles(theme, headerHeight, insets);
 
   return (
     <Animated.View style={style}>
@@ -61,7 +61,7 @@ export default function AppHeader({
   );
 }
 
-const makeStyle = (theme: Theme, height: number, insets: SafeAreaInsets) =>
+const makeStyles = (theme: Theme, height: number, insets: SafeAreaInsets) =>
   StyleSheet.create({
     divider: {
       flex: 1,

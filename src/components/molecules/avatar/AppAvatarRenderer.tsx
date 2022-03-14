@@ -26,7 +26,7 @@ export default function AppAvatarRenderer({
   color,
 }: AppAvatarRendererProps) {
   const theme = useTheme();
-  const styles = makeStyle(size, color);
+  const styles = makeStyles(size, color);
 
   return (
     <View style={[styles.container, style]}>
@@ -45,7 +45,7 @@ export default function AppAvatarRenderer({
   );
 }
 
-const makeStyle = (size: number, color?: string) =>
+const makeStyles = (size: number, color?: string) =>
   StyleSheet.create({
     container: {
       justifyContent: 'center',

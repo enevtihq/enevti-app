@@ -1,6 +1,8 @@
 import React from 'react';
 import { List } from 'react-native-paper';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { shallowEqual } from 'react-redux';
+import { wp } from '../../../utils/imageRatio';
 
 interface AppAccordionProps {
   children: React.ReactNode;
@@ -18,8 +20,14 @@ function Component({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   memoKey,
 }: AppAccordionProps) {
+  const insets = useSafeAreaInsets();
+
   return (
-    <List.Accordion title={title} expanded={expanded} onPress={onPress}>
+    <List.Accordion
+      title={title}
+      titleStyle={{ marginLeft: wp('2%', insets) }}
+      expanded={expanded}
+      onPress={onPress}>
       {children}
     </List.Accordion>
   );

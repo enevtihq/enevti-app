@@ -51,7 +51,7 @@ export default function AppProfile({
 }: AppProfileProps) {
   const insets = useSafeAreaInsets();
   const theme = useTheme();
-  const styles = makeStyle(headerHeight, insets);
+  const styles = makeStyles(headerHeight, insets);
 
   const [ownedMounted, setOwnedMounted] = React.useState<boolean>(false);
   const [onSaleMounted, setOnSaleMounted] = React.useState<boolean>(false);
@@ -250,7 +250,7 @@ export default function AppProfile({
   );
 }
 
-const makeStyle = (headerHeight: number, insets: SafeAreaInsets) =>
+const makeStyles = (headerHeight: number, insets: SafeAreaInsets) =>
   StyleSheet.create({
     profileHeader: {
       position: 'absolute',

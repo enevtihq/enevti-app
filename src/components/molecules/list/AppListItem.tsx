@@ -30,7 +30,7 @@ export default function AppListItem({
 }: AppListItemProps) {
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
-  const styles = makeStyle(theme, insets);
+  const styles = makeStyles(theme, insets);
   const opacity = disabled ? 0.5 : undefined;
 
   return (
@@ -46,7 +46,7 @@ export default function AppListItem({
   );
 }
 
-const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
+const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
   StyleSheet.create({
     listContainer: {
       marginHorizontal: wp('5%', insets),

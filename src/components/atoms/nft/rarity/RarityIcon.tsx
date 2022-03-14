@@ -11,7 +11,7 @@ interface RarityIconProps {
 
 export default React.memo(
   function RarityIcon({ nft, args }: RarityIconProps) {
-    const styles = makeStyle(args);
+    const styles = makeStyles(args);
     const source =
       nft.NFTType !== 'onekind'
         ? nft.rarity.stat.percent < 50
@@ -40,7 +40,7 @@ export default React.memo(
   },
 );
 
-const makeStyle = (args: TemplateArgs) =>
+const makeStyles = (args: TemplateArgs) =>
   StyleSheet.create({
     rarityIconContainer: {
       width: args.width,

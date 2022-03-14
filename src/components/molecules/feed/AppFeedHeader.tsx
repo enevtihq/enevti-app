@@ -26,7 +26,7 @@ export default function AppFeedHeader({ feed }: AppFeedHeaderProps) {
   const { t } = useTranslation();
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
-  const styles = makeStyle(insets);
+  const styles = makeStyles(insets);
 
   const [menuVisible, setMenuVisible] = React.useState<boolean>(false);
 
@@ -117,7 +117,7 @@ export default function AppFeedHeader({ feed }: AppFeedHeaderProps) {
   );
 }
 
-const makeStyle = (insets: SafeAreaInsets) =>
+const makeStyles = (insets: SafeAreaInsets) =>
   StyleSheet.create({
     headerContainer: {
       flex: 1,

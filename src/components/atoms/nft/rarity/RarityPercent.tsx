@@ -18,7 +18,7 @@ export default function RarityPercent({
   width,
 }: RarityPercentProps) {
   const theme = useTheme();
-  const styles = makeStyle(args, theme);
+  const styles = makeStyles(args, theme);
   const text =
     nft.NFTType === 'onekind'
       ? '☆☆☆'
@@ -37,7 +37,7 @@ export default function RarityPercent({
   );
 }
 
-const makeStyle = (args: TemplateArgs, theme: Theme) =>
+const makeStyles = (args: TemplateArgs, theme: Theme) =>
   StyleSheet.create({
     rarityPercentContainer: {
       width: args.width,

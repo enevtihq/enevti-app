@@ -11,7 +11,7 @@ interface NFTImageDataProps {
 
 export default React.memo(
   function NFTImageData({ nft, dataUri }: NFTImageDataProps) {
-    const styles = makeStyle();
+    const styles = makeStyles();
 
     return dataUri ? (
       <Image style={styles.imageContainer} source={{ uri: dataUri }} />
@@ -31,7 +31,7 @@ export default React.memo(
   },
 );
 
-const makeStyle = () =>
+const makeStyles = () =>
   StyleSheet.create({
     imageContainer: {
       position: 'absolute',

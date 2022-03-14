@@ -14,7 +14,7 @@ interface PartitionLabelProps {
 export default React.memo(
   function PartitionLabel({ nft, args, width }: PartitionLabelProps) {
     const theme = useTheme();
-    const styles = makeStyle(args, theme);
+    const styles = makeStyles(args, theme);
     let text: string = 'Unknown';
 
     if (nft.NFTType === 'onekind') {
@@ -50,7 +50,7 @@ export default React.memo(
   },
 );
 
-const makeStyle = (args: TemplateArgs, theme: Theme) =>
+const makeStyles = (args: TemplateArgs, theme: Theme) =>
   StyleSheet.create({
     partitionLabel: {
       width: args.width,

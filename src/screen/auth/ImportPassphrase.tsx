@@ -39,7 +39,7 @@ export default function ImportPassphrase({ navigation }: Props) {
   const paperTheme = useTheme();
   const theme = paperTheme as Theme;
   const insets = useSafeAreaInsets();
-  const styles = makeStyle(theme, insets);
+  const styles = makeStyles(theme, insets);
   const { t } = useTranslation();
   const passwordInput = React.useRef<any>();
   const confirmPasswordInput = React.useRef<any>();
@@ -171,7 +171,7 @@ export default function ImportPassphrase({ navigation }: Props) {
   );
 }
 
-const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
+const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
   StyleSheet.create({
     actionContainer: {
       flexDirection: 'column-reverse',

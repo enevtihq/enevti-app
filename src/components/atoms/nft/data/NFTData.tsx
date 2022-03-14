@@ -26,7 +26,7 @@ export default function NFTData({
   box = false,
   dataUri,
 }: NFTDataProps) {
-  const styles = makeStyle(box, args);
+  const styles = makeStyles(box, args);
 
   return (
     <View style={styles.nftDataContainer}>
@@ -35,7 +35,7 @@ export default function NFTData({
   );
 }
 
-const makeStyle = (box: boolean, args: TemplateArgs) =>
+const makeStyles = (box: boolean, args: TemplateArgs) =>
   StyleSheet.create({
     nftDataContainer: {
       position: 'absolute',

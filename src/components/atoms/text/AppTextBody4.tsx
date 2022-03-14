@@ -18,7 +18,7 @@ export default function AppTextBody4({
 }: AppTextBody4Props): JSX.Element {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
-  const styles = makeStyle(theme, insets);
+  const styles = makeStyles(theme, insets);
 
   return (
     <Text
@@ -30,7 +30,7 @@ export default function AppTextBody4({
   );
 }
 
-const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
+const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
   StyleSheet.create({
     body4: {
       color: theme.colors.text,

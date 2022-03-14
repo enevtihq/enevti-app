@@ -30,7 +30,7 @@ function Component({
 }: AppContentPickerProps) {
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
-  const styles = React.useMemo(() => makeStyle(insets), [insets]);
+  const styles = React.useMemo(() => makeStyles(insets), [insets]);
 
   const handleDocumentSelection = React.useCallback(async () => {
     try {
@@ -73,7 +73,7 @@ function Component({
   );
 }
 
-const makeStyle = (insets: SafeAreaInsets) =>
+const makeStyles = (insets: SafeAreaInsets) =>
   StyleSheet.create({
     listDropDown: {
       marginLeft: wp('3%', insets),

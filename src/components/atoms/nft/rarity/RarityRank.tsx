@@ -13,7 +13,7 @@ interface RarityRankProps {
 
 export default function RarityRank({ nft, args, width }: RarityRankProps) {
   const theme = useTheme();
-  const styles = makeStyle(args, theme);
+  const styles = makeStyles(args, theme);
   const text =
     nft.NFTType === 'onekind' ? 'OneKind' : `Rank#${nft.rarity.stat.rank}`;
 
@@ -31,7 +31,7 @@ export default function RarityRank({ nft, args, width }: RarityRankProps) {
   );
 }
 
-const makeStyle = (args: TemplateArgs, theme: Theme) =>
+const makeStyles = (args: TemplateArgs, theme: Theme) =>
   StyleSheet.create({
     rarityRankContainer: {
       width: args.width,

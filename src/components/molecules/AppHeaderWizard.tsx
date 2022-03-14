@@ -45,7 +45,7 @@ function Component({
 }: AppHeaderWizardProps) {
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
-  const styles = makeStyle(insets);
+  const styles = makeStyles(insets);
 
   return (
     <View style={[styles.headerContainer, style]}>
@@ -84,7 +84,7 @@ function Component({
   );
 }
 
-const makeStyle = (insets: SafeAreaInsets) =>
+const makeStyles = (insets: SafeAreaInsets) =>
   StyleSheet.create({
     emoji: {
       alignSelf: 'center',

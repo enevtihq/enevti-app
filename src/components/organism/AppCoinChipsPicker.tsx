@@ -18,7 +18,7 @@ interface AppCoinChipsPickerProps {
 function Component({ active, error }: AppCoinChipsPickerProps) {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
-  const styles = makeStyle(insets);
+  const styles = makeStyles(insets);
 
   const height = hp(active ? '4.9%' : error ? '5.2%' : '4.9%', insets);
   const borderWidth = active ? 2 : error ? 1 : 2;
@@ -44,7 +44,7 @@ function Component({ active, error }: AppCoinChipsPickerProps) {
   );
 }
 
-const makeStyle = (insets: SafeAreaInsets) =>
+const makeStyles = (insets: SafeAreaInsets) =>
   StyleSheet.create({
     container: {
       width: wp('23%', insets),

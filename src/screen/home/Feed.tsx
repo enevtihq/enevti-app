@@ -35,7 +35,7 @@ interface FeedProps extends Props {
 }
 
 export default function Feed({ onScroll, headerHeight }: FeedProps) {
-  const styles = makeStyle(headerHeight);
+  const styles = makeStyles(headerHeight);
   const insets = useSafeAreaInsets();
   const feedHeight = hp('24%', insets) + wp('95%', insets);
 
@@ -133,7 +133,7 @@ export default function Feed({ onScroll, headerHeight }: FeedProps) {
   );
 }
 
-const makeStyle = (headerHeight: number) =>
+const makeStyles = (headerHeight: number) =>
   StyleSheet.create({
     textContainer: {
       flex: 1,

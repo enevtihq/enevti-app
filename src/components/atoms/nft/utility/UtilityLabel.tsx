@@ -14,7 +14,7 @@ interface UtilityLabelProps {
 export default React.memo(
   function UtilityLabel({ nft, args, width }: UtilityLabelProps) {
     const theme = useTheme();
-    const styles = makeStyle(args, theme);
+    const styles = makeStyles(args, theme);
     let text: string = 'help-circle-outline';
 
     switch (nft.utility) {
@@ -65,7 +65,7 @@ export default React.memo(
   },
 );
 
-const makeStyle = (args: TemplateArgs, theme: Theme) =>
+const makeStyles = (args: TemplateArgs, theme: Theme) =>
   StyleSheet.create({
     rarityRankContainer: {
       width: args.width,

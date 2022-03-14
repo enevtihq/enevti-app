@@ -26,7 +26,7 @@ export default function AppPassphraseBox({
   const dispatch = useDispatch();
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
-  const styles = makeStyle(theme, insets);
+  const styles = makeStyles(theme, insets);
 
   return (
     <View style={styles.container}>
@@ -50,7 +50,7 @@ export default function AppPassphraseBox({
   );
 }
 
-const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
+const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
   StyleSheet.create({
     container: {
       borderRadius: theme.roundness,

@@ -31,7 +31,7 @@ export default function AppDialogForm({
 }: AppDialogFormProps) {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
-  const styles = makeStyle(insets);
+  const styles = makeStyles(insets);
   const [bottom, setBottom] = React.useState<number>(0);
 
   React.useEffect(() => {
@@ -74,7 +74,7 @@ export default function AppDialogForm({
   );
 }
 
-const makeStyle = (insets: SafeAreaInsets) =>
+const makeStyles = (insets: SafeAreaInsets) =>
   StyleSheet.create({
     icon: { alignSelf: 'center' },
     title: {

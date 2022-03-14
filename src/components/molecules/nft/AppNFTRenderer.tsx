@@ -32,7 +32,7 @@ const THUMBNAIL_TRESHOLD = 0.33;
 
 export default React.memo(
   function AppNFTRenderer({ nft, width, style, dataUri }: AppNFTRendererProps) {
-    const styles = makeStyle();
+    const styles = makeStyles();
 
     const handleRenderNFTTemplate = React.useCallback(
       (
@@ -175,7 +175,7 @@ export default React.memo(
   },
 );
 
-const makeStyle = () =>
+const makeStyles = () =>
   StyleSheet.create({
     nftContainer: {
       width: '100%',

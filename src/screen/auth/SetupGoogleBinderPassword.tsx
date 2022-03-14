@@ -42,7 +42,7 @@ const validationSchema = Yup.object().shape({
 export default function SetupGoogleBinderPassword({ navigation }: Props) {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
-  const styles = makeStyle(theme, insets);
+  const styles = makeStyles(theme, insets);
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const confirmPasswordInput = React.useRef<any>();
@@ -179,7 +179,7 @@ export default function SetupGoogleBinderPassword({ navigation }: Props) {
   );
 }
 
-const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
+const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
   StyleSheet.create({
     actionContainer: {
       flex: 0.8,

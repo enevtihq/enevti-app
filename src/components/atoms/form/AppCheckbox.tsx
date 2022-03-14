@@ -24,7 +24,7 @@ export default function AppCheckbox({
 }: AppCheckboxProps) {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
-  const styles = makeStyle(insets);
+  const styles = makeStyles(insets);
 
   return (
     <View style={[style]}>
@@ -48,7 +48,7 @@ export default function AppCheckbox({
   );
 }
 
-const makeStyle = (insets: SafeAreaInsets) =>
+const makeStyles = (insets: SafeAreaInsets) =>
   StyleSheet.create({
     appCheckboxView: {
       flexDirection: 'row',
