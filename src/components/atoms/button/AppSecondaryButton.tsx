@@ -29,7 +29,10 @@ export default function AppSecondaryButton({
 }: AppSecondaryButtonProps): JSX.Element {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
-  const styles = makeStyles(theme, insets);
+  const styles = React.useMemo(
+    () => makeStyles(theme, insets),
+    [theme, insets],
+  );
 
   return loading ? (
     <View style={[styles.secondaryButton, style]}>

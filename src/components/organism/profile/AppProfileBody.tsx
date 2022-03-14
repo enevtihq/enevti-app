@@ -30,7 +30,7 @@ export default function AppProfileBody({
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const theme = useTheme();
-  const styles = makeStyles();
+  const styles = React.useMemo(() => makeStyles(), []);
 
   return (
     <View style={[{ height: hp('100%', insets) }, style]}>

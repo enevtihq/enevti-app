@@ -31,7 +31,7 @@ export default function AppDialogForm({
 }: AppDialogFormProps) {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
-  const styles = makeStyles(insets);
+  const styles = React.useMemo(() => makeStyles(insets), [insets]);
   const [bottom, setBottom] = React.useState<number>(0);
 
   React.useEffect(() => {

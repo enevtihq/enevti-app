@@ -134,7 +134,10 @@ export default function CreateOneKindContract({ navigation }: Props) {
   const paperTheme = useTheme();
   const theme = paperTheme as Theme;
   const insets = useSafeAreaInsets();
-  const styles = makeStyles(theme, insets);
+  const styles = React.useMemo(
+    () => makeStyles(theme, insets),
+    [theme, insets],
+  );
   const timezoneOffset = React.useMemo(
     () => new Date().getTimezoneOffset(),
     [],

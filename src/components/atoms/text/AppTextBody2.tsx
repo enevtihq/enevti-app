@@ -18,7 +18,10 @@ export default function AppTextBody2({
 }: AppTextBody2Props): JSX.Element {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
-  const styles = makeStyles(theme, insets);
+  const styles = React.useMemo(
+    () => makeStyles(theme, insets),
+    [theme, insets],
+  );
 
   return (
     <Text

@@ -43,7 +43,10 @@ export default function ChooseNFTTemplate({ navigation }: Props) {
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
-  const styles = makeStyles(theme, insets);
+  const styles = React.useMemo(
+    () => makeStyles(theme, insets),
+    [theme, insets],
+  );
   const dispatch = useDispatch();
 
   const [dataUri, setDataUri] = React.useState<string>('');

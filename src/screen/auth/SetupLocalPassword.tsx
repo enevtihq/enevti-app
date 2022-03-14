@@ -34,7 +34,10 @@ const validationSchema = Yup.object().shape({
 export default function SetupLocalPassword({ navigation }: Props) {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
-  const styles = makeStyles(theme, insets);
+  const styles = React.useMemo(
+    () => makeStyles(theme, insets),
+    [theme, insets],
+  );
   const { t } = useTranslation();
   const confirmPasswordInput = React.useRef<any>();
   const [isLoading, setIsLoading] = React.useState<boolean>(false);

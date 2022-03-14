@@ -45,7 +45,7 @@ function Component({
 }: AppHeaderWizardProps) {
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
-  const styles = makeStyles(insets);
+  const styles = React.useMemo(() => makeStyles(insets), [insets]);
 
   return (
     <View style={[styles.headerContainer, style]}>

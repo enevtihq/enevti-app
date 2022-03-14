@@ -23,7 +23,10 @@ export default React.memo(
   }: AppPortraitOverlayBoxProps) {
     const insets = useSafeAreaInsets();
     const theme = useTheme() as Theme;
-    const styles = makeStyles(theme, insets);
+    const styles = React.useMemo(
+      () => makeStyles(theme, insets),
+      [theme, insets],
+    );
 
     return (
       <View style={[styles.container, style]}>

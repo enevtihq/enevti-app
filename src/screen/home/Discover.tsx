@@ -7,7 +7,7 @@ import { useTheme } from 'react-native-paper';
 
 export default function Discover() {
   const theme = useTheme();
-  const styles = makeStyles();
+  const styles = React.useMemo(() => makeStyles(), []);
 
   return (
     <AppView>

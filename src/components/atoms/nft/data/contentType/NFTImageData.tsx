@@ -11,7 +11,7 @@ interface NFTImageDataProps {
 
 export default React.memo(
   function NFTImageData({ nft, dataUri }: NFTImageDataProps) {
-    const styles = makeStyles();
+    const styles = React.useMemo(() => makeStyles(), []);
 
     return dataUri ? (
       <Image style={styles.imageContainer} source={{ uri: dataUri }} />

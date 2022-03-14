@@ -55,7 +55,7 @@ export default function AppGoogleSignInButton({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const insets = useSafeAreaInsets();
-  const styles = makeStyles(insets);
+  const styles = React.useMemo(() => makeStyles(insets), [insets]);
   const apiToken = useSelector(selectGoogleAPITokenState);
   const [isLoadingGoogle, setIsLoadingGoogle] = React.useState<boolean>(false);
   const [showInputGoogleDialog, setShowInputGoogleDialog] =

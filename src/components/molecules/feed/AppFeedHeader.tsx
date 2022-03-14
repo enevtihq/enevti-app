@@ -26,7 +26,7 @@ export default function AppFeedHeader({ feed }: AppFeedHeaderProps) {
   const { t } = useTranslation();
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
-  const styles = makeStyles(insets);
+  const styles = React.useMemo(() => makeStyles(insets), [insets]);
 
   const [menuVisible, setMenuVisible] = React.useState<boolean>(false);
 

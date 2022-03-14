@@ -32,7 +32,7 @@ export default function ChooseNFTType({ navigation }: Props) {
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
-  const styles = makeStyles(insets);
+  const styles = React.useMemo(() => makeStyles(insets), [insets]);
 
   const pickerOption = {
     width: NFT_RESOLUTION,

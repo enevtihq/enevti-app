@@ -15,7 +15,7 @@ function AppFormTextInput(
   ref: any,
 ) {
   const theme = useTheme();
-  const styles = makeStyles(theme);
+  const styles = React.useMemo(() => makeStyles(theme), [theme]);
   const height = props.numberOfLines ? props.numberOfLines * 25 : undefined;
   const paddingBottom =
     props.maxLength && !props.hideMaxLengthIndicator ? 10 : undefined;

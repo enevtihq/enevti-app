@@ -63,7 +63,7 @@ export default function Home({ navigation }: Props) {
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
-  const styles = makeStyles(insets);
+  const styles = React.useMemo(() => makeStyles(insets), [insets]);
   const dispatch = useDispatch();
 
   const myPersona = useSelector(selectPersona);

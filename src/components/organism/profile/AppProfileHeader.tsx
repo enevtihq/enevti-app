@@ -42,7 +42,10 @@ export default function AppProfileHeader({
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
-  const styles = makeStyles(theme, insets);
+  const styles = React.useMemo(
+    () => makeStyles(theme, insets),
+    [theme, insets],
+  );
 
   const [menuVisible, setMenuVisible] = React.useState<boolean>(false);
 

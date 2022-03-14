@@ -35,7 +35,7 @@ export default function AppView({
   dismissKeyboard = false,
 }: AppViewProps) {
   const insets = useSafeAreaInsets();
-  const styles = makeStyles(insets);
+  const styles = React.useMemo(() => makeStyles(insets), [insets]);
   const snackbarState = useSelector(selectSnackBarState);
   const dispatch = useDispatch();
 

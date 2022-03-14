@@ -39,7 +39,10 @@ export default function ImportPassphrase({ navigation }: Props) {
   const paperTheme = useTheme();
   const theme = paperTheme as Theme;
   const insets = useSafeAreaInsets();
-  const styles = makeStyles(theme, insets);
+  const styles = React.useMemo(
+    () => makeStyles(theme, insets),
+    [theme, insets],
+  );
   const { t } = useTranslation();
   const passwordInput = React.useRef<any>();
   const confirmPasswordInput = React.useRef<any>();

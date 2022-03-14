@@ -22,7 +22,7 @@ export default function AppSwitch({
 }: AppSwitchProps) {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
-  const styles = makeStyles(insets);
+  const styles = React.useMemo(() => makeStyles(insets), [insets]);
 
   return (
     <View style={[style]}>

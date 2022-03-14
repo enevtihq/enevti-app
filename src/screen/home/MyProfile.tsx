@@ -28,7 +28,7 @@ export default function MyProfile({
   onMomentumEndWorklet,
   headerHeight = 0,
 }: MyProfileProps) {
-  const styles = makeStyles();
+  const styles = React.useMemo(() => makeStyles(), []);
   const myPersona = useSelector(selectPersona);
   const profileData = useSelector(selectProfile);
 

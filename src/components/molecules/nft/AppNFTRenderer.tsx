@@ -32,7 +32,7 @@ const THUMBNAIL_TRESHOLD = 0.33;
 
 export default React.memo(
   function AppNFTRenderer({ nft, width, style, dataUri }: AppNFTRendererProps) {
-    const styles = makeStyles();
+    const styles = React.useMemo(() => makeStyles(), []);
 
     const handleRenderNFTTemplate = React.useCallback(
       (

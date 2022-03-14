@@ -30,7 +30,10 @@ function AppFormTextInputWithError(
   ref: any,
 ) {
   const insets = useSafeAreaInsets();
-  const styles = makeStyles(theme, insets);
+  const styles = React.useMemo(
+    () => makeStyles(theme, insets),
+    [theme, insets],
+  );
 
   return (
     <View style={[props.style]}>

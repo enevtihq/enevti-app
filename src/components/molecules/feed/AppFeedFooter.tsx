@@ -18,7 +18,10 @@ export default React.memo(
     const { t } = useTranslation();
     const theme = useTheme() as Theme;
     const insets = useSafeAreaInsets();
-    const styles = makeStyles(insets, theme);
+    const styles = React.useMemo(
+      () => makeStyles(theme, insets),
+      [theme, insets],
+    );
 
     return (
       <View style={styles.footerContainer}>
@@ -46,7 +49,7 @@ export default React.memo(
   },
 );
 
-const makeStyles = (insets: SafeAreaInsets, theme: Theme) =>
+const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
   StyleSheet.create({
     footerContainer: {
       paddingHorizontal: wp('3%', insets),

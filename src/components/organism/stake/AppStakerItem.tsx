@@ -25,7 +25,7 @@ interface AppStakerItemProps {
 export default function AppStakerItem({ staker }: AppStakerItemProps) {
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
-  const styles = makeStyles(insets);
+  const styles = React.useMemo(() => makeStyles(insets), [insets]);
   const myPersona = useSelector(selectPersona);
 
   const onDelete = () => {

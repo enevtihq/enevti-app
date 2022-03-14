@@ -23,7 +23,10 @@ type Props = StackScreenProps<RootStackParamList, 'CreateAccount'>;
 export default function CreateAccount({ navigation }: Props) {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
-  const styles = makeStyles(theme, insets);
+  const styles = React.useMemo(
+    () => makeStyles(theme, insets),
+    [theme, insets],
+  );
   const { t } = useTranslation();
 
   return (

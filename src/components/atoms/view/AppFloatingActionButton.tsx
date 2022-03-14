@@ -22,7 +22,7 @@ export default function AppFloatingActionButton({
   const theme = useTheme();
   theme.colors.accent = theme.colors.primary;
   const insets = useSafeAreaInsets();
-  const styles = makeStyles(insets);
+  const styles = React.useMemo(() => makeStyles(insets), [insets]);
 
   return (
     <AnimatedFAB

@@ -21,7 +21,7 @@ export default React.memo(
   function AppFeedAction({ feed }: AppFeedActionProps) {
     const insets = useSafeAreaInsets();
     const theme = useTheme() as Theme;
-    const styles = makeStyles(insets);
+    const styles = React.useMemo(() => makeStyles(insets), [insets]);
     const [like, setLike] = React.useState<1 | 0>(0);
 
     const onLikeActivate = () => {

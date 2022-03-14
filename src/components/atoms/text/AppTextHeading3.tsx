@@ -18,7 +18,10 @@ export default function AppTextHeading3({
 }: AppTextHeading3Props): JSX.Element {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
-  const styles = makeStyles(theme, insets);
+  const styles = React.useMemo(
+    () => makeStyles(theme, insets),
+    [theme, insets],
+  );
 
   return (
     <Text

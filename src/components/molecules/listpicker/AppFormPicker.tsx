@@ -28,7 +28,10 @@ function Component({
 }: AppFormPickerProps) {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
-  const styles = makeStyles(theme, insets);
+  const styles = React.useMemo(
+    () => makeStyles(theme, insets),
+    [theme, insets],
+  );
 
   const [menuVisible, setMenuVisible] = React.useState<boolean>(false);
 

@@ -17,7 +17,10 @@ export default function AppSnackBar({
 }: AppSnackbarProps) {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
-  const styles = makeStyles(theme, insets);
+  const styles = React.useMemo(
+    () => makeStyles(theme, insets),
+    [theme, insets],
+  );
 
   if (mode === 'info') {
     return (

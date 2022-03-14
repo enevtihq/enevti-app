@@ -41,7 +41,10 @@ export default function Login({ navigation }: Props) {
   const dispatch = useDispatch();
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
-  const styles = makeStyles(theme, insets);
+  const styles = React.useMemo(
+    () => makeStyles(theme, insets),
+    [theme, insets],
+  );
   const { t } = useTranslation();
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 

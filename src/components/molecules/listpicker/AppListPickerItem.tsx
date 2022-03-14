@@ -33,7 +33,7 @@ export default function AppListPickerItem({
 }: AppListPickerItemProps) {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
-  const styles = makeStyles(insets);
+  const styles = React.useMemo(() => makeStyles(insets), [insets]);
 
   return (
     <AppListItem

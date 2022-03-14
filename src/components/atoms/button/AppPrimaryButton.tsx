@@ -30,7 +30,10 @@ export default function AppPrimaryButton({
 }: AppPrimaryButtonProps): JSX.Element {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
-  const styles = makeStyles(theme, insets);
+  const styles = React.useMemo(
+    () => makeStyles(theme, insets),
+    [theme, insets],
+  );
   const primary = disabled
     ? Color('black').alpha(0.5).rgb().string()
     : theme.colors.primary;

@@ -29,7 +29,7 @@ export default function AppTopTabBar({
   const { index } = state;
   const theme = useTheme();
   const insets = useSafeAreaInsets();
-  const styles = makeStyles(insets);
+  const styles = React.useMemo(() => makeStyles(insets), [insets]);
 
   React.useEffect(() => {
     onIndexChange?.(index);
