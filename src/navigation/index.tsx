@@ -44,7 +44,7 @@ export type RootStackParamList = {
   };
   ChooseNFTType: undefined;
   ChooseNFTTemplate: {
-    type: 'onekind' | 'pack';
+    mode: 'normal' | 'change';
   };
   CreateOneKindContract: undefined;
 };

@@ -37,7 +37,7 @@ export default function ChooseNFTType({ navigation }: Props) {
     dispatch(setCreateNFTQueueType('onekind'));
     dispatch(setCreateNFTOneKindURI(image.path));
     setOneKindSheetVisible(false);
-    navigation.replace('ChooseNFTTemplate', { type: 'onekind' });
+    navigation.replace('ChooseNFTTemplate', { mode: 'normal' });
   };
 
   const onOneKindImagePressed = React.useCallback(

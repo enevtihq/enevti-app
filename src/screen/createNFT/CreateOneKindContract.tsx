@@ -437,9 +437,11 @@ export default function CreateOneKindContract({ navigation }: Props) {
         symbol: formikProps.values.symbol,
         serial: 1,
         utility: formikProps.values.utility,
+        template: oneKindContractStore.choosenTemplate.data,
       }),
     );
   }, [
+    oneKindContractStore.choosenTemplate.data,
     formikProps.values.name,
     formikProps.values.symbol,
     formikProps.values.utility,
@@ -557,9 +559,18 @@ export default function CreateOneKindContract({ navigation }: Props) {
     () => setOneKindSheetVisible(false),
     [],
   );
+
   const previewChangeImageOnPress = React.useCallback(
     () => setOneKindSheetVisible(old => !old),
     [],
+  );
+
+  const previewChangeTemplateOnPress = React.useCallback(
+    () =>
+      navigation.navigate('ChooseNFTTemplate', {
+        mode: 'change',
+      }),
+    [navigation],
   );
 
   return (
@@ -879,7 +890,10 @@ export default function CreateOneKindContract({ navigation }: Props) {
                     onSelected={onOneKindImagePicked}
                   />
                   <View style={{ marginHorizontal: wp('1%', insets) }} />
-                  <AppQuaternaryButton box style={styles.previewActionButton}>
+                  <AppQuaternaryButton
+                    box
+                    onPress={previewChangeTemplateOnPress}
+                    style={styles.previewActionButtonItem}>
                     <AppTextBody4>{t('createNFT:changeTemplate')}</AppTextBody4>
                   </AppQuaternaryButton>
                 </View>

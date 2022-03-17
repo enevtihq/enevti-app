@@ -39,7 +39,8 @@ import { setCreateNFTQueueRoute } from '../../store/slices/queue/nft/create/rout
 
 type Props = StackScreenProps<RootStackParamList, 'ChooseNFTTemplate'>;
 
-export default function ChooseNFTTemplate({ navigation }: Props) {
+export default function ChooseNFTTemplate({ navigation, route }: Props) {
+  const { mode } = route.params;
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
@@ -110,7 +111,11 @@ export default function ChooseNFTTemplate({ navigation }: Props) {
     if (type === 'onekind') {
       dispatch(setCreateNFTOneKindChosenTemplate(template[activeIndex]));
       dispatch(setCreateNFTQueueRoute('CreateOneKindContract'));
-      navigation.replace('CreateOneKindContract');
+      if (mode === 'normal') {
+        navigation.replace('CreateOneKindContract');
+      } else if (mode === 'change') {
+        navigation.goBack();
+      }
     } else if (type === 'pack') {
       dispatch(setCreateNFTPackChosenTemplate(template[activeIndex]));
       // dispatch route to pack contract
@@ -131,7 +136,7 @@ export default function ChooseNFTTemplate({ navigation }: Props) {
     <AppView>
       <AppHeaderWizard
         back
-        backIcon={iconMap.close}
+        backIcon={mode === 'change' ? undefined : iconMap.close}
         navigation={navigation}
         title={t('createNFT:chooseNFTTemplateTitle')}
         description={t('createNFT:chooseNFTTemplateDescription')}
