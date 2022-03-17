@@ -2,6 +2,10 @@ export type OneKindContractForm = {
   name: string;
   description: string;
   symbol: string;
+  coverName: string;
+  coverSize: number;
+  coverType: string;
+  coverUri: string;
   utility: string;
   contentName: string;
   contentSize: number;

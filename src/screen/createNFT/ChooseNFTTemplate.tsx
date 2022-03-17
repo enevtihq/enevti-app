@@ -140,6 +140,8 @@ export default function ChooseNFTTemplate({ navigation }: Props) {
 
       <View style={styles.templateCarousel}>
         <Carousel
+          enableMomentum={true}
+          decelerationRate={'fast'}
           data={template}
           renderItem={renderItem}
           sliderWidth={sliderWidth}

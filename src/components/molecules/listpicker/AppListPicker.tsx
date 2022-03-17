@@ -1,10 +1,13 @@
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import React from 'react';
 import { iconMap } from '../../atoms/icon/AppIconComponent';
 import AppListPickerItem from '../../molecules/listpicker/AppListPickerItem';
 import AppListPickerMenu from '../../molecules/listpicker/AppListPickerMenu';
 import { PickerItem } from '../../../types/screen/PickerItem';
 import { shallowEqual } from 'react-redux';
+import { useTheme } from 'react-native-paper';
+import { Theme } from '../../../theme/default';
+import Color from 'color';
 
 interface AppListPickerProps {
   items: PickerItem[];
@@ -24,6 +27,8 @@ function Component({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   memoKey,
 }: AppListPickerProps) {
+  const theme = useTheme() as Theme;
+  const styles = React.useMemo(() => makeStyles(theme), [theme]);
   const [menuVisible, setMenuVisible] = React.useState<boolean>(false);
 
   const selectedIndex: number | undefined = React.useMemo(() => {
@@ -47,6 +52,7 @@ function Component({
           icon={items[selectedIndex].icon}
           title={items[selectedIndex].title}
           description={items[selectedIndex].description}
+          style={styles.pickerItem}
         />
       ) : (
         <AppListPickerItem
@@ -55,6 +61,7 @@ function Component({
           icon={iconMap.add}
           title={label}
           description={subLabel}
+          style={styles.pickerItem}
         />
       )}
 
@@ -69,6 +76,15 @@ function Component({
     </View>
   );
 }
+
+const makeStyles = (theme: Theme) =>
+  StyleSheet.create({
+    pickerItem: {
+      backgroundColor: theme.dark
+        ? Color(theme.colors.background).lighten(0.5).rgb().string()
+        : Color(theme.colors.background).darken(0.04).rgb().string(),
+    },
+  });
 
 const AppListPicker = React.memo(Component, (prevProps, nextProps) => {
   if (prevProps.memoKey) {

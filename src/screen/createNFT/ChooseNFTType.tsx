@@ -20,11 +20,10 @@ import AppMenuContainer from '../../components/atoms/menu/AppMenuContainer';
 import AppMenuItem from '../../components/atoms/menu/AppMenuItem';
 import { menuItemHeigtPercentage } from '../../utils/layout/menuItemHeigtPercentage';
 import ImageCropPicker, { ImageOrVideo } from 'react-native-image-crop-picker';
-import { NFT_RESOLUTION } from '../../service/enevti/nft';
 import { handleError } from '../../utils/error/handle';
 import { setCreateNFTQueueType } from '../../store/slices/queue/nft/create/type';
 import { setCreateNFTOneKindURI } from '../../store/slices/queue/nft/create/onekind';
-import darkTheme from '../../theme/dark';
+import { IMAGE_CROP_PICKER_OPTION } from '../../components/organism/picker/AppContentPicker';
 
 type Props = StackScreenProps<RootStackParamList, 'ChooseNFTType'>;
 
@@ -34,28 +33,13 @@ export default function ChooseNFTType({ navigation }: Props) {
   const theme = useTheme() as Theme;
   const styles = React.useMemo(() => makeStyles(insets), [insets]);
 
-  const pickerOption = {
-    width: NFT_RESOLUTION,
-    height: NFT_RESOLUTION,
-    cropping: true,
-    cropperToolbarColor: darkTheme.colors.background,
-    cropperStatusBarColor: darkTheme.colors.background,
-    cropperActiveWidgetColor: darkTheme.colors.primary,
-    cropperToolbarWidgetColor: darkTheme.colors.text,
-    hideBottomControls: true,
-    cropperRotateButtonsHidden: true,
-    cropperToolbarTitle: t('createNFT:editImage'),
-    cropperCancelText: t('createNFT:cancelEdit'),
-    cropperChooseText: t('createNFT:continue'),
-  };
-
   const [oneKindSheetVisible, setOneKindSheetVisible] =
     React.useState<boolean>(false);
 
   const dispatch = useDispatch();
 
   const pickFromGallery = (onComplete: (image: ImageOrVideo) => void) => {
-    ImageCropPicker.openPicker(pickerOption)
+    ImageCropPicker.openPicker(IMAGE_CROP_PICKER_OPTION)
       .then(image => {
         onComplete(image);
       })
@@ -63,7 +47,7 @@ export default function ChooseNFTType({ navigation }: Props) {
   };
 
   const openCamera = (onComplete: (image: ImageOrVideo) => void) => {
-    ImageCropPicker.openCamera(pickerOption)
+    ImageCropPicker.openCamera(IMAGE_CROP_PICKER_OPTION)
       .then(image => {
         onComplete(image);
       })

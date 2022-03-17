@@ -4,6 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import { StackScreenProps } from '@react-navigation/stack';
+import DocumentPicker from 'react-native-document-picker';
 import { FormikProps, useFormik } from 'formik';
 import * as Yup from 'yup';
 
@@ -51,6 +52,10 @@ const formInitialValues: OneKindContractForm = {
   name: '',
   description: '',
   symbol: '',
+  coverName: '',
+  coverSize: 0,
+  coverType: '',
+  coverUri: '',
   priceAmount: '',
   priceCurrency: '',
   quantity: '',
@@ -128,6 +133,13 @@ const contentKey: (keyof OneKindContractForm)[] = [
   'contentUri',
 ];
 
+const coverKey: (keyof OneKindContractForm)[] = [
+  'coverName',
+  'coverSize',
+  'coverType',
+  'coverUri',
+];
+
 export default function CreateOneKindContract({ navigation }: Props) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -203,6 +215,21 @@ export default function CreateOneKindContract({ navigation }: Props) {
     (key, formik) => () => formik.setFieldTouched(key),
     [],
   );
+
+  const onDeleteCoverPicker = React.useCallback(() => {
+    setMultipleFieldValue(formikProps, coverKey, true);
+    setMultipleFieldTouched(formikProps, coverKey, false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const onSelectedCoverPicker = React.useCallback(item => {
+    formikProps.setFieldValue('coverName', item.name, false);
+    formikProps.setFieldValue('coverSize', item.size, false);
+    formikProps.setFieldValue('coverType', item.type, false);
+    formikProps.setFieldValue('coverUri', item.uri, false);
+    setMultipleFieldTouched(formikProps, coverKey, true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const onFocusPriceInput = React.useCallback(() => setActivePrice(true), []);
 
@@ -374,6 +401,22 @@ export default function CreateOneKindContract({ navigation }: Props) {
       formikProps.values.contentSize,
       formikProps.values.contentType,
       formikProps.values.contentUri,
+    ],
+  );
+
+  const coverPickerValue = React.useMemo(
+    () => ({
+      fileCopyUri: null,
+      name: formikProps.values.coverName,
+      size: formikProps.values.coverSize,
+      type: formikProps.values.coverType,
+      uri: formikProps.values.coverUri,
+    }),
+    [
+      formikProps.values.coverName,
+      formikProps.values.coverSize,
+      formikProps.values.coverType,
+      formikProps.values.coverUri,
     ],
   );
 
@@ -580,6 +623,15 @@ export default function CreateOneKindContract({ navigation }: Props) {
                 },
               },
             )}
+            <View style={{ height: hp('0.5%', insets) }} />
+            <AppContentPicker
+              title={t('createNFT:selectCover')}
+              description={t('createNFT:selectCoverDescription')}
+              type={DocumentPicker.types.images}
+              value={coverPickerValue}
+              onDelete={onDeleteCoverPicker}
+              onSelected={onSelectedCoverPicker}
+            />
           </AppAccordion>
 
           <AppAccordion
@@ -655,6 +707,8 @@ export default function CreateOneKindContract({ navigation }: Props) {
             {formikProps.values.utility &&
             formikProps.values.utility === 'content' ? (
               <AppContentPicker
+                title={t('createNFT:selectContent')}
+                description={t('createNFT:selectContentDescription')}
                 value={contentPickerValue}
                 onDelete={onDeleteContentPicker}
                 onSelected={onSelectedContentPicker}

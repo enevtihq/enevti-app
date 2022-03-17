@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Theme } from '../../../theme/default';
@@ -19,6 +19,7 @@ interface AppListPickerItemProps {
   dropDownIcon?: string;
   right?: React.ReactNode;
   disabled?: boolean;
+  style?: StyleProp<ViewStyle>;
 }
 
 export default function AppListPickerItem({
@@ -30,6 +31,7 @@ export default function AppListPickerItem({
   dropDownIcon,
   right,
   disabled = false,
+  style,
 }: AppListPickerItemProps) {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
@@ -37,6 +39,7 @@ export default function AppListPickerItem({
 
   return (
     <AppListItem
+      containerStyle={style}
       disabled={disabled}
       onPress={onPress}
       leftContent={
@@ -55,7 +58,7 @@ export default function AppListPickerItem({
           <AppIconComponent
             name={dropDownIcon ? dropDownIcon : iconMap.dropDown}
             color={theme.colors.placeholder}
-            size={30}
+            size={25}
             style={styles.listDropDown}
           />
         ) : null

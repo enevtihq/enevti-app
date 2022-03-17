@@ -11,37 +11,82 @@ import { SafeAreaInsets, wp } from '../../../utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import mimeToIcon from '../../../utils/mime/mimeToIcon';
 import { fileSizeKMG } from '../../../utils/format/fileSize';
-import { useTranslation } from 'react-i18next';
 import { shallowEqual } from 'react-redux';
+import { Theme } from '../../../theme/default';
+import Color from 'color';
+import { useTheme } from 'react-native-paper';
+import { NFT_RESOLUTION } from '../../../service/enevti/nft';
+import i18n from '../../../translations/i18n';
+import darkTheme from '../../../theme/dark';
+import ImageCropPicker from 'react-native-image-crop-picker';
+
+export const IMAGE_CROP_PICKER_OPTION = {
+  width: NFT_RESOLUTION,
+  height: NFT_RESOLUTION,
+  cropping: true,
+  cropperToolbarColor: darkTheme.colors.background,
+  cropperStatusBarColor: darkTheme.colors.background,
+  cropperActiveWidgetColor: darkTheme.colors.primary,
+  cropperToolbarWidgetColor: darkTheme.colors.text,
+  hideBottomControls: true,
+  cropperRotateButtonsHidden: true,
+  cropperToolbarTitle: i18n.t('createNFT:editImage'),
+  cropperCancelText: i18n.t('createNFT:cancelEdit'),
+  cropperChooseText: i18n.t('createNFT:continue'),
+};
 
 interface AppContentPickerProps {
+  title: string;
+  description: string;
   value?: DocumentPickerResponse;
   onSelected?: (item: DocumentPickerResponse) => void;
   onDelete?: () => void;
+  type?: string | string[];
   memoKey?: (keyof AppContentPickerProps)[];
 }
 
 function Component({
+  title,
+  description,
   value,
   onSelected,
   onDelete,
+  type = DocumentPicker.types.allFiles,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   memoKey,
 }: AppContentPickerProps) {
-  const { t } = useTranslation();
+  const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
-  const styles = React.useMemo(() => makeStyles(insets), [insets]);
+  const styles = React.useMemo(
+    () => makeStyles(theme, insets),
+    [theme, insets],
+  );
 
   const handleDocumentSelection = React.useCallback(async () => {
     try {
-      const response = await DocumentPicker.pickSingle({
-        presentationStyle: 'fullScreen',
-      });
-      onSelected && onSelected(response);
+      if (type === DocumentPicker.types.images) {
+        const response = await ImageCropPicker.openPicker(
+          IMAGE_CROP_PICKER_OPTION,
+        );
+        onSelected &&
+          onSelected({
+            fileCopyUri: null,
+            name: response.path.substring(response.path.lastIndexOf('/') + 1),
+            size: response.size,
+            type: response.mime,
+            uri: response.path,
+          });
+      } else {
+        const response = await DocumentPicker.pickSingle({
+          presentationStyle: 'fullScreen',
+          type: type,
+        });
+        onSelected && onSelected(response);
+      }
     } catch (err) {
       handleError(err);
     }
-  }, [onSelected]);
+  }, [onSelected, type]);
 
   return (
     <View>
@@ -58,26 +103,33 @@ function Component({
           icon={mimeToIcon(value.type)}
           title={value.name}
           description={fileSizeKMG(value.size, 2)}
+          style={styles.pickerItem}
         />
       ) : (
         <AppListPickerItem
           showDropDown
           dropDownIcon={iconMap.arrowRight}
+          style={styles.pickerItem}
           onPress={handleDocumentSelection}
           icon={iconMap.add}
-          title={t('createNFT:selectContent')}
-          description={t('createNFT:selectContentDescription')}
+          title={title}
+          description={description}
         />
       )}
     </View>
   );
 }
 
-const makeStyles = (insets: SafeAreaInsets) =>
+const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
   StyleSheet.create({
     listDropDown: {
       marginLeft: wp('3%', insets),
       alignSelf: 'center',
+    },
+    pickerItem: {
+      backgroundColor: theme.dark
+        ? Color(theme.colors.background).lighten(0.5).rgb().string()
+        : Color(theme.colors.background).darken(0.04).rgb().string(),
     },
   });
 
