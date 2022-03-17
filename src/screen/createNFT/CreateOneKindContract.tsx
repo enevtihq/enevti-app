@@ -163,7 +163,9 @@ export default function CreateOneKindContract({ navigation }: Props) {
       Yup.object().shape({
         name: Yup.string().required(t('form:required')),
         description: Yup.string().required(t('form:required')),
-        symbol: Yup.string().required(t('form:required')),
+        symbol: Yup.string()
+          .matches(/^[A-Z]+$/, t('form:upercase'))
+          .required(t('form:required')),
         priceAmount: Yup.string().required(t('form:required')),
         quantity: Yup.number().moreThan(0).required(t('form:required')),
         mintingExpire: Yup.number().required(t('form:required')),

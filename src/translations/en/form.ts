@@ -7,4 +7,5 @@ export default {
   greaterThanZero: 'Must be greater than zero',
   cancel: 'Cancel',
   choose: 'Choose',
+  upercase: 'Must be UPPERCASE. No space, symbol or number allowed',
 };
