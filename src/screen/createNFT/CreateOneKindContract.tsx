@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Keyboard, TextInput } from 'react-native';
+import { StyleSheet, View, Keyboard, TextInput, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
@@ -917,19 +917,23 @@ export default function CreateOneKindContract({ navigation }: Props) {
             )}
           </AppAccordion>
         </View>
-
-        <View style={styles.actionContainer}>
-          <View style={{ height: hp('3%', insets) }} />
-
-          <AppPrimaryButton
-            onPress={formikProps.handleSubmit}
-            loading={isLoading}
-            disabled={!(formikProps.isValid && formikProps.dirty)}
-            style={styles.createAccount}>
-            {t('auth:import')}
-          </AppPrimaryButton>
-        </View>
+        <View
+          style={{
+            height: hp(Platform.OS === 'ios' ? '10%' : '12.5%', insets),
+          }}
+        />
       </ScrollView>
+      <View style={styles.actionContainer}>
+        <View style={{ height: hp('2%', insets) }} />
+
+        <AppPrimaryButton
+          onPress={formikProps.handleSubmit}
+          loading={isLoading}
+          disabled={!(formikProps.isValid && formikProps.dirty)}
+          style={styles.actionButton}>
+          {t('auth:import')}
+        </AppPrimaryButton>
+      </View>
     </AppView>
   );
 }
@@ -948,10 +952,13 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
       alignSelf: 'center',
     },
     actionContainer: {
-      flexDirection: 'column-reverse',
+      position: 'absolute',
+      backgroundColor: theme.colors.background,
+      width: '100%',
+      bottom: 0,
     },
-    createAccount: {
-      marginBottom: hp('2%', insets),
+    actionButton: {
+      marginBottom: Platform.OS === 'ios' ? insets.bottom : hp('2%', insets),
       marginLeft: wp('5%', insets),
       marginRight: wp('5%', insets),
     },
