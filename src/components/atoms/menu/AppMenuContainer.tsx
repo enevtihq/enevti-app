@@ -1,8 +1,9 @@
 import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useFocusEffect } from '@react-navigation/native';
 import React from 'react';
-import { BackHandler, View } from 'react-native';
+import { BackHandler, StyleProp, View, ViewStyle } from 'react-native';
 import { useTheme } from 'react-native-paper';
+import { shallowEqual } from 'react-redux';
 
 interface AppMenuContainerProps {
   visible: boolean;
@@ -12,17 +13,23 @@ interface AppMenuContainerProps {
   enablePanDownToClose?: boolean;
   snapPoints?: string[];
   tapEverywhereToDismiss?: boolean;
+  style?: StyleProp<ViewStyle>;
+  memoKey?: (keyof AppMenuContainerProps)[];
 }
 
-export default function AppMenuContainer({
+function Component({
   visible,
   onDismiss,
   anchor,
   children,
   snapPoints,
+  style,
   enablePanDownToClose = true,
   tapEverywhereToDismiss = false,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  memoKey,
 }: AppMenuContainerProps) {
+  console.log('rendered');
   const theme = useTheme();
   const bottomSheetRef = React.useRef<BottomSheetModal>(null);
   const defaultSnapPoints = React.useMemo(() => ['50%'], []);
@@ -76,7 +83,7 @@ export default function AppMenuContainer({
   );
 
   return (
-    <View>
+    <View style={style}>
       {anchor}
       <BottomSheetModal
         ref={bottomSheetRef}
@@ -90,3 +97,18 @@ export default function AppMenuContainer({
     </View>
   );
 }
+
+const AppMenuContainer = React.memo(Component, (prevProps, nextProps) => {
+  if (prevProps.memoKey) {
+    let ret = true;
+    prevProps.memoKey.forEach(key => {
+      if (prevProps[key] !== nextProps[key]) {
+        ret = false;
+      }
+    });
+    return ret;
+  } else {
+    return shallowEqual(prevProps, nextProps);
+  }
+});
+export default AppMenuContainer;

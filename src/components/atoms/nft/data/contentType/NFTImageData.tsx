@@ -3,6 +3,7 @@ import React from 'react';
 import { NFTBase } from '../../../../../types/nft';
 import AppNetworkImage from '../../../image/AppNetworkImage';
 import { IPFStoURL } from '../../../../../service/ipfs';
+import { shallowEqual } from 'react-redux';
 
 interface NFTImageDataProps {
   nft: NFTBase;
@@ -23,11 +24,7 @@ export default React.memo(
     );
   },
   (props, nextProps) => {
-    if (props.nft.data === nextProps.nft.data) {
-      return true;
-    } else {
-      return false;
-    }
+    return shallowEqual(props, nextProps);
   },
 );
 

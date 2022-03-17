@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   createNFTOneKindQueueInitialState,
   selectCreateNFTOneKindQueue,
+  setCreateNFTOneKindURI,
 } from '../../store/slices/queue/nft/create/onekind';
 import * as Yup from 'yup';
 
@@ -47,6 +48,12 @@ import AppNFTRenderer from '../../components/molecules/nft/AppNFTRenderer';
 import AppInfoMessage from '../../components/molecules/AppInfoMessage';
 import AppQuaternaryButton from '../../components/atoms/button/AppQuaternaryButton';
 import AppTextBody4 from '../../components/atoms/text/AppTextBody4';
+import AppMenuContainer from '../../components/atoms/menu/AppMenuContainer';
+import AppMenuItem from '../../components/atoms/menu/AppMenuItem';
+import { menuItemHeigtPercentage } from '../../utils/layout/menuItemHeigtPercentage';
+import ImageCropPicker, { ImageOrVideo } from 'react-native-image-crop-picker';
+import { IMAGE_CROP_PICKER_OPTION } from '../../components/organism/picker/AppContentPicker';
+import { handleError } from '../../utils/error/handle';
 
 type Props = StackScreenProps<RootStackParamList, 'CreateOneKindContract'>;
 
@@ -129,6 +136,10 @@ export default function CreateOneKindContract({ navigation }: Props) {
     [],
   );
   const itemWidth = React.useMemo(() => wp('90%', insets), [insets]);
+  const oneKindSheetSnapPoints = React.useMemo(
+    () => [`${menuItemHeigtPercentage(2)}%`],
+    [],
+  );
 
   const nameInput = React.useRef<TextInput>();
   const descriptionInput = React.useRef<TextInput>();
@@ -145,6 +156,8 @@ export default function CreateOneKindContract({ navigation }: Props) {
       template: oneKindContractStore.choosenTemplate.data,
     }),
   );
+  const [oneKindSheetVisible, setOneKindSheetVisible] =
+    React.useState<boolean>(false);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [activePrice, setActivePrice] = React.useState<boolean>(false);
   const [identityExpanded, setIdentityExpanded] = React.useState<boolean>(true);
@@ -316,6 +329,30 @@ export default function CreateOneKindContract({ navigation }: Props) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const onOneKindImagePicked = React.useCallback(
+    (image: ImageOrVideo) => {
+      dispatch(setCreateNFTOneKindURI(image.path));
+      setOneKindSheetVisible(false);
+    },
+    [dispatch],
+  );
+
+  const pickFromGallery = React.useCallback(() => {
+    ImageCropPicker.openPicker(IMAGE_CROP_PICKER_OPTION)
+      .then(image => {
+        onOneKindImagePicked(image);
+      })
+      .catch(err => handleError(err));
+  }, [onOneKindImagePicked]);
+
+  const openCamera = React.useCallback(() => {
+    ImageCropPicker.openCamera(IMAGE_CROP_PICKER_OPTION)
+      .then(image => {
+        onOneKindImagePicked(image);
+      })
+      .catch(err => handleError(err));
+  }, [onOneKindImagePicked]);
 
   const labelHourMinutePickerStart = React.useMemo(
     () =>
@@ -538,6 +575,15 @@ export default function CreateOneKindContract({ navigation }: Props) {
   const previewHeaderCallback = React.useCallback(
     () => setPreviewExpanded(!previewExpanded),
     [previewExpanded],
+  );
+
+  const previewChangeImageOnDismiss = React.useCallback(
+    () => setOneKindSheetVisible(false),
+    [],
+  );
+  const previewChangeImageOnPress = React.useCallback(
+    () => setOneKindSheetVisible(old => !old),
+    [],
   );
 
   return (
@@ -844,9 +890,34 @@ export default function CreateOneKindContract({ navigation }: Props) {
                   dataUri={oneKindContractStore.dataUri}
                 />
                 <View style={styles.previewAction}>
-                  <AppQuaternaryButton box style={styles.previewActionButton}>
-                    <AppTextBody4>{t('createNFT:changeImage')}</AppTextBody4>
-                  </AppQuaternaryButton>
+                  <AppMenuContainer
+                    memoKey={['visible']}
+                    visible={oneKindSheetVisible}
+                    snapPoints={oneKindSheetSnapPoints}
+                    tapEverywhereToDismiss={true}
+                    onDismiss={previewChangeImageOnDismiss}
+                    style={styles.previewActionButton}
+                    anchor={
+                      <AppQuaternaryButton
+                        box
+                        onPress={previewChangeImageOnPress}
+                        style={styles.previewActionButtonItem}>
+                        <AppTextBody4>
+                          {t('createNFT:changeImage')}
+                        </AppTextBody4>
+                      </AppQuaternaryButton>
+                    }>
+                    <AppMenuItem
+                      onPress={openCamera}
+                      icon={iconMap.camera}
+                      title={t('createNFT:openCamera')}
+                    />
+                    <AppMenuItem
+                      onPress={pickFromGallery}
+                      icon={iconMap.gallery}
+                      title={t('createNFT:pickFromGallery')}
+                    />
+                  </AppMenuContainer>
                   <View style={{ marginHorizontal: wp('1%', insets) }} />
                   <AppQuaternaryButton box style={styles.previewActionButton}>
                     <AppTextBody4>{t('createNFT:changeTemplate')}</AppTextBody4>
@@ -921,5 +992,10 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
     previewActionButton: {
       flex: 1,
       height: hp('5.2%', insets),
+    },
+    previewActionButtonItem: {
+      flex: 1,
+      height: hp('5.2%', insets),
+      width: '100%',
     },
   });

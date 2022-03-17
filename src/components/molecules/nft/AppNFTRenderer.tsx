@@ -171,7 +171,9 @@ export default React.memo(
     );
   },
   (prevProps, nextProps) => {
-    return prevProps.nft === nextProps.nft;
+    return (
+      prevProps.nft === nextProps.nft && prevProps.dataUri === nextProps.dataUri
+    );
   },
 );
 
