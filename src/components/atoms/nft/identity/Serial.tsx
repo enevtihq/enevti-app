@@ -32,6 +32,7 @@ export default React.memo(
   },
   (props, nextProps) => {
     if (
+      props.nft.symbol === nextProps.nft.symbol &&
       props.nft.serial === nextProps.nft.serial &&
       props.args === nextProps.args
     ) {

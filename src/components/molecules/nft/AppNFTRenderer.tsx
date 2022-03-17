@@ -20,7 +20,6 @@ import PartitionIcon from '../../atoms/nft/partition/PartitionIcon';
 import PartitionLabel from '../../atoms/nft/partition/PartitionLabel';
 import UtilityIcon from '../../atoms/nft/utility/UtilityIcon';
 import UtilityLabel from '../../atoms/nft/utility/UtilityLabel';
-import useDebugPropChanges from '../../../utils/debug/useDebugPropChanges';
 
 interface AppNFTRendererProps {
   nft: NFTBase;
@@ -33,7 +32,6 @@ const THUMBNAIL_TRESHOLD = 0.33;
 
 export default React.memo(
   function AppNFTRenderer({ nft, width, style, dataUri }: AppNFTRendererProps) {
-    useDebugPropChanges({ nft, width, style, dataUri }, nft.name);
     const styles = React.useMemo(() => makeStyles(), []);
 
     const handleRenderNFTTemplate = React.useCallback(

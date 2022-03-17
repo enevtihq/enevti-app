@@ -19,7 +19,7 @@ export default React.memo(
 
     const w = (parseFloat(args.width) * width) / 100.0;
     const h = (parseFloat(args.height) * width) / 100.0;
-    const fontSize = Math.sqrt((w * h) / text.length);
+    const fontSize = Math.sqrt((w * h) / Math.max(text.length, 12));
 
     return (
       <Text

@@ -43,7 +43,6 @@ import AppMintingPeriodPicker from '../../components/organism/picker/AppMintingP
 import AppAccordion from '../../components/atoms/accordion/AppAccordion';
 import { NFTBase } from '../../types/nft';
 import { makeDummyNFT } from '../../utils/dummy/nft';
-import AppNFTListRenderer from '../../components/molecules/nft/AppNFTListRenderer';
 import AppNFTRenderer from '../../components/molecules/nft/AppNFTRenderer';
 
 type Props = StackScreenProps<RootStackParamList, 'CreateOneKindContract'>;
@@ -138,7 +137,11 @@ export default function CreateOneKindContract({ navigation }: Props) {
   const creatorRoyaltyInput = React.useRef<TextInput>();
   const stakerRoyaltyInput = React.useRef<TextInput>();
 
-  const [dummyNFT, setDummyNFT] = React.useState<NFTBase>();
+  const [dummyNFT, setDummyNFT] = React.useState<NFTBase>(() =>
+    Object.assign({}, makeDummyNFT('onekind'), {
+      template: oneKindContractStore.choosenTemplate.data,
+    }),
+  );
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [activePrice, setActivePrice] = React.useState<boolean>(false);
   const [identityExpanded, setIdentityExpanded] = React.useState<boolean>(true);
@@ -231,12 +234,6 @@ export default function CreateOneKindContract({ navigation }: Props) {
       setMultipleFieldValue(formikProps, contentKey, true);
       setMultipleFieldTouched(formikProps, contentKey, false);
     }
-    setDummyNFT(
-      Object.assign({}, makeDummyNFT('onekind'), {
-        utility: item.value,
-        template: oneKindContractStore.choosenTemplate.data,
-      }),
-    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -416,6 +413,21 @@ export default function CreateOneKindContract({ navigation }: Props) {
       activePrice,
     ],
   );
+
+  React.useEffect(() => {
+    setDummyNFT(oldDummyNFT =>
+      Object.assign({}, oldDummyNFT, {
+        name: formikProps.values.name,
+        symbol: formikProps.values.symbol,
+        serial: 1,
+        utility: formikProps.values.utility,
+      }),
+    );
+  }, [
+    formikProps.values.name,
+    formikProps.values.symbol,
+    formikProps.values.utility,
+  ]);
 
   const commonFormInput = React.useCallback(
     (
@@ -819,7 +831,9 @@ export default function CreateOneKindContract({ navigation }: Props) {
             onPress={previewHeaderCallback}
             title={previewHeader}>
             <View style={{ height: hp('1%', insets) }} />
-            {dummyNFT ? (
+            {formikProps.values.name &&
+            formikProps.values.symbol &&
+            formikProps.values.utility ? (
               <View style={styles.formInput}>
                 <AppNFTRenderer
                   nft={dummyNFT}
