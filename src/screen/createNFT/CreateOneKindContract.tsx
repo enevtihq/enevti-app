@@ -50,6 +50,7 @@ import AppQuaternaryButton from '../../components/atoms/button/AppQuaternaryButt
 import AppTextBody4 from '../../components/atoms/text/AppTextBody4';
 import { ImageOrVideo } from 'react-native-image-crop-picker';
 import AppCameraGalleryPicker from '../../components/organism/picker/AppCameraGalleryPicker';
+import AppHeader from '../../components/atoms/view/AppHeader';
 
 type Props = StackScreenProps<RootStackParamList, 'CreateOneKindContract'>;
 
@@ -576,12 +577,16 @@ export default function CreateOneKindContract({ navigation }: Props) {
   );
 
   return (
-    <AppView withModal>
-      <ScrollView>
+    <AppView withModal edges={['bottom', 'left', 'right']}>
+      <AppHeader
+        compact
+        back
+        backIcon={iconMap.close}
+        navigation={navigation}
+        title={' '}
+      />
+      <ScrollView style={styles.scrollContainer}>
         <AppHeaderWizard
-          back
-          backIcon={iconMap.close}
-          navigation={navigation}
           title={t('createNFT:setupContract')}
           description={t('createNFT:setupContractDescription')}
           style={styles.header}
@@ -931,6 +936,9 @@ export default function CreateOneKindContract({ navigation }: Props) {
 
 const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
   StyleSheet.create({
+    scrollContainer: {
+      zIndex: -9,
+    },
     accordionListView: {
       flexDirection: 'row',
       marginLeft: wp('1%', insets),

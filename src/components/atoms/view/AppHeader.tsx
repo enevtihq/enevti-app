@@ -8,8 +8,10 @@ import { RootStackParamList } from '../../../navigation';
 import { Theme } from '../../../theme/default';
 import { hp, SafeAreaInsets, wp } from '../../../utils/imageRatio';
 import AppBrandBanner from '../../molecules/AppBrandBanner';
+import AppIconButton from '../icon/AppIconButton';
 
 export const HEADER_HEIGHT_PERCENTAGE = 9.5;
+export const HEADER_HEIGHT_COMPACT_PERCENTAGE = 6;
 
 interface AppHeaderProps {
   children?: React.ReactNode;
@@ -19,6 +21,8 @@ interface AppHeaderProps {
   height?: number;
   title?: string;
   subtitle?: string;
+  compact?: boolean;
+  backIcon?: string;
 }
 
 export default function AppHeader({
@@ -26,23 +30,37 @@ export default function AppHeader({
   height,
   children,
   back = false,
+  backIcon,
   navigation,
   title,
   subtitle,
+  compact = false,
 }: AppHeaderProps) {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
-  const headerHeight = height ? height : hp(HEADER_HEIGHT_PERCENTAGE, insets);
+  const headerHeight = height
+    ? height
+    : compact
+    ? hp(HEADER_HEIGHT_COMPACT_PERCENTAGE, insets)
+    : hp(HEADER_HEIGHT_PERCENTAGE, insets);
   const styles = makeStyles(theme, headerHeight, insets);
 
   return (
     <Animated.View style={style}>
       <Appbar.Header style={styles.header}>
         {back && navigation ? (
-          <Appbar.BackAction
-            size={Platform.OS === 'ios' ? 20 : undefined}
-            onPress={() => navigation.goBack()}
-          />
+          backIcon ? (
+            <AppIconButton
+              icon={backIcon}
+              onPress={() => navigation.goBack()}
+              style={styles.customBackIcon}
+            />
+          ) : (
+            <Appbar.BackAction
+              size={Platform.OS === 'ios' ? 20 : undefined}
+              onPress={() => navigation.goBack()}
+            />
+          )
         ) : null}
         {title ? (
           <Appbar.Content
@@ -87,5 +105,8 @@ const makeStyles = (theme: Theme, height: number, insets: SafeAreaInsets) =>
       fontFamily: theme.fonts.light.fontFamily,
       fontWeight: theme.fonts.light.fontWeight,
       fontSize: wp('4.0%', insets),
+    },
+    customBackIcon: {
+      marginLeft: wp('3.5%', insets),
     },
   });
