@@ -98,4 +98,6 @@ export default {
   previewUnavailable: 'Preview Not Available',
   previewUnavailableMessage:
     'Please setup name, symbol, and utility to enable preview',
+  changeImage: 'Change Image',
+  changeTemplate: 'Change Template',
 };

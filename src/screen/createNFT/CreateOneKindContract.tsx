@@ -45,6 +45,8 @@ import { NFTBase } from '../../types/nft';
 import { makeDummyNFT } from '../../utils/dummy/nft';
 import AppNFTRenderer from '../../components/molecules/nft/AppNFTRenderer';
 import AppInfoMessage from '../../components/molecules/AppInfoMessage';
+import AppQuaternaryButton from '../../components/atoms/button/AppQuaternaryButton';
+import AppTextBody4 from '../../components/atoms/text/AppTextBody4';
 
 type Props = StackScreenProps<RootStackParamList, 'CreateOneKindContract'>;
 
@@ -841,6 +843,15 @@ export default function CreateOneKindContract({ navigation }: Props) {
                   width={itemWidth}
                   dataUri={oneKindContractStore.dataUri}
                 />
+                <View style={styles.previewAction}>
+                  <AppQuaternaryButton box style={styles.previewActionButton}>
+                    <AppTextBody4>{t('createNFT:changeImage')}</AppTextBody4>
+                  </AppQuaternaryButton>
+                  <View style={{ marginHorizontal: wp('1%', insets) }} />
+                  <AppQuaternaryButton box style={styles.previewActionButton}>
+                    <AppTextBody4>{t('createNFT:changeTemplate')}</AppTextBody4>
+                  </AppQuaternaryButton>
+                </View>
               </View>
             ) : (
               <View style={styles.formInput}>
@@ -902,5 +913,13 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
       marginBottom: hp('1%', insets),
       marginLeft: wp('5%', insets),
       marginRight: wp('5%', insets),
+    },
+    previewAction: {
+      flexDirection: 'row',
+      marginTop: hp('1%', insets),
+    },
+    previewActionButton: {
+      flex: 1,
+      height: hp('5.2%', insets),
     },
   });
