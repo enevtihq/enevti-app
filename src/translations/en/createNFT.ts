@@ -95,4 +95,7 @@ export default {
   selectCover: 'Select Optional Cover',
   selectCoverDescription: 'The default is your NFT image',
   nftPreview: 'Preview',
+  previewUnavailable: 'Preview Not Available',
+  previewUnavailableMessage:
+    'Please setup name, symbol, and utility to enable preview',
 };

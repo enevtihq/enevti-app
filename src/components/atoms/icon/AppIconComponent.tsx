@@ -71,6 +71,7 @@ export const iconMap = {
   fileCode: 'file-code',
   fileArchive: 'zip-box',
   preview: 'file-find',
+  imageUnavailable: 'image-off',
 };
 
 interface AppIconComponentProps {

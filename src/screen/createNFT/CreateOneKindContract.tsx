@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Keyboard, TextInput, Text } from 'react-native';
+import { StyleSheet, View, Keyboard, TextInput } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
@@ -44,6 +44,7 @@ import AppAccordion from '../../components/atoms/accordion/AppAccordion';
 import { NFTBase } from '../../types/nft';
 import { makeDummyNFT } from '../../utils/dummy/nft';
 import AppNFTRenderer from '../../components/molecules/nft/AppNFTRenderer';
+import AppInfoMessage from '../../components/molecules/AppInfoMessage';
 
 type Props = StackScreenProps<RootStackParamList, 'CreateOneKindContract'>;
 
@@ -842,7 +843,14 @@ export default function CreateOneKindContract({ navigation }: Props) {
                 />
               </View>
             ) : (
-              <Text>not available</Text>
+              <View style={styles.formInput}>
+                <AppInfoMessage
+                  box
+                  icon={iconMap.imageUnavailable}
+                  title={t('createNFT:previewUnavailable')}
+                  message={t('createNFT:previewUnavailableMessage')}
+                />
+              </View>
             )}
           </AppAccordion>
         </View>
