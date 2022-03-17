@@ -94,4 +94,5 @@ export default {
   selectRecurringDescription: 'Set your NFT redeem frequency!',
   selectCover: 'Select Optional Cover',
   selectCoverDescription: 'The default is your NFT image',
+  nftPreview: 'Preview',
 };

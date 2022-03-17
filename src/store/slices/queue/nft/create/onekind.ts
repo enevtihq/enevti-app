@@ -1,47 +1,56 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
+import { NFTTemplateAsset } from '../../../../../types/nft/NFTTemplate';
 import {
-  CreateNFTOneKind,
-  CreateNFTChoosenTemplate,
-  CreateNFTOneKindState,
-} from '../../../../../types/store/CreateNFTQueue';
+  OneKindContractForm,
+  OneKindContractStatusForm,
+} from '../../../../../types/screen/CreateOneKindContract';
+import { CreateNFTOneKind } from '../../../../../types/store/CreateNFTQueue';
 import { RootState } from '../../../../state';
 
 export const createNFTOneKindQueueInitialState: CreateNFTOneKind = {
   dataUri: '',
-  choosenTemplate: { id: '', data: { main: [], thumbnail: [] } },
+  choosenTemplate: {
+    id: '',
+    name: '',
+    description: '',
+    data: { main: [], thumbnail: [] },
+  },
   state: {
     name: '',
     description: '',
-    data: '',
-    contentType: '',
-    template: '',
-    trait: [],
     symbol: '',
+    coverName: '',
+    coverSize: 0,
+    coverType: '',
+    coverUri: '',
+    priceAmount: '',
+    priceCurrency: '',
+    quantity: '',
+    mintingExpireOption: '',
+    mintingExpire: 1,
     utility: '',
+    contentName: '',
+    contentSize: 0,
+    contentType: '',
+    contentUri: '',
     recurring: '',
-    time: {
-      day: 0,
-      date: 0,
-      month: 0,
-      year: 0,
-    },
-    from: {
-      hour: 0,
-      minute: 0,
-    },
-    until: 0,
-    redeemLimit: 0,
-    royalty: {
-      origin: 0,
-      staker: 0,
-    },
-    price: {
-      amount: '',
-      currency: '',
-    },
-    quantity: 0,
-    mintingExpire: 0,
+    timeDay: -1,
+    timeDate: -1,
+    timeMonth: -1,
+    timeYear: -1,
+    fromHour: -1,
+    fromMinute: -1,
+    untilHour: -1,
+    untilMinute: -1,
+    redeemLimitOption: '',
+    redeemLimit: 1,
+    royaltyOrigin: 0,
+    royaltyStaker: 0,
+  },
+  status: {
+    nameAvailable: true,
+    symbolAvailable: true,
   },
 };
 
@@ -54,15 +63,21 @@ const createNFTOneKindQueueSlice = createSlice({
     },
     setCreateNFTOneKindChosenTemplate: (
       onekind,
-      action: PayloadAction<CreateNFTChoosenTemplate>,
+      action: PayloadAction<NFTTemplateAsset>,
     ) => {
       Object.assign(onekind.choosenTemplate, action.payload);
     },
     setCreateNFTOneKindState: (
       onekind,
-      action: PayloadAction<CreateNFTOneKindState>,
+      action: PayloadAction<OneKindContractForm>,
     ) => {
       Object.assign(onekind.state, action.payload);
+    },
+    setCreateNFTOneKindStatus: (
+      onekind,
+      action: PayloadAction<OneKindContractStatusForm>,
+    ) => {
+      Object.assign(onekind.status, action.payload);
     },
     clearCreateNFTQueue: () => {
       return createNFTOneKindQueueInitialState;
@@ -74,6 +89,7 @@ export const {
   setCreateNFTOneKindURI,
   setCreateNFTOneKindChosenTemplate,
   setCreateNFTOneKindState,
+  setCreateNFTOneKindStatus,
   clearCreateNFTQueue,
 } = createNFTOneKindQueueSlice.actions;
 export default createNFTOneKindQueueSlice.reducer;

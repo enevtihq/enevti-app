@@ -70,6 +70,7 @@ export const iconMap = {
   file: 'file',
   fileCode: 'file-code',
   fileArchive: 'zip-box',
+  preview: 'file-find',
 };
 
 interface AppIconComponentProps {

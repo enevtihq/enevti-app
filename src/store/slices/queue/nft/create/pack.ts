@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
+import { NFTTemplateAsset } from '../../../../../types/nft/NFTTemplate';
 import {
   CreateNFTPack,
-  CreateNFTChoosenTemplate,
   CreateNFTPackItemData,
   CreateNFTPackState,
 } from '../../../../../types/store/CreateNFTQueue';
@@ -10,7 +10,12 @@ import { RootState } from '../../../../state';
 
 export const createNFTPackQueueInitialState: CreateNFTPack = {
   dataUri: [],
-  choosenTemplate: { id: '', data: { main: [], thumbnail: [] } },
+  choosenTemplate: {
+    id: '',
+    name: '',
+    description: '',
+    data: { main: [], thumbnail: [] },
+  },
   state: {
     name: '',
     description: '',
@@ -23,6 +28,7 @@ export const createNFTPackQueueInitialState: CreateNFTPack = {
     mintingExpire: 0,
     item: [],
   },
+  status: {},
 };
 
 const createNFTPackQueueSlice = createSlice({
@@ -37,7 +43,7 @@ const createNFTPackQueueSlice = createSlice({
     },
     setCreateNFTPackChosenTemplate: (
       pack,
-      action: PayloadAction<CreateNFTChoosenTemplate>,
+      action: PayloadAction<NFTTemplateAsset>,
     ) => {
       Object.assign(pack.choosenTemplate, action.payload);
     },

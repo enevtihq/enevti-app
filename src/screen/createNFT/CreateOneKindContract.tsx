@@ -1,11 +1,16 @@
 import React from 'react';
-import { StyleSheet, View, Keyboard, TextInput } from 'react-native';
+import { StyleSheet, View, Keyboard, TextInput, Text } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import { StackScreenProps } from '@react-navigation/stack';
 import DocumentPicker from 'react-native-document-picker';
 import { FormikProps, useFormik } from 'formik';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  createNFTOneKindQueueInitialState,
+  selectCreateNFTOneKindQueue,
+} from '../../store/slices/queue/nft/create/onekind';
 import * as Yup from 'yup';
 
 import { Theme } from '../../theme/default';
@@ -17,16 +22,12 @@ import AppFormTextInputWithError, {
 import AppPrimaryButton from '../../components/atoms/button/AppPrimaryButton';
 import AppView from '../../components/atoms/view/AppView';
 import { hp, wp, SafeAreaInsets } from '../../utils/imageRatio';
-import { useDispatch } from 'react-redux';
 import AppIconComponent, {
   iconMap,
 } from '../../components/atoms/icon/AppIconComponent';
 import { ScrollView } from 'react-native-gesture-handler';
 import AppTextBody3 from '../../components/atoms/text/AppTextBody3';
-import {
-  OneKindContractForm,
-  OneKindContractStatusForm,
-} from '../../types/screen/CreateOneKindContract';
+import { OneKindContractForm } from '../../types/screen/CreateOneKindContract';
 import AppCoinChipsPicker from '../../components/organism/AppCoinChipsPicker';
 import { isNameAvailable, isSymbolAvailable } from '../../service/enevti/nft';
 import AppUtilityPicker from '../../components/organism/picker/AppUtilityPicker';
@@ -40,46 +41,12 @@ import AppRedeemLimitPicker from '../../components/organism/picker/AppRedeemLimi
 import AppContentPicker from '../../components/organism/picker/AppContentPicker';
 import AppMintingPeriodPicker from '../../components/organism/picker/AppMintingPeriodPicker';
 import AppAccordion from '../../components/atoms/accordion/AppAccordion';
+import { NFTBase } from '../../types/nft';
+import { makeDummyNFT } from '../../utils/dummy/nft';
+import AppNFTListRenderer from '../../components/molecules/nft/AppNFTListRenderer';
+import AppNFTRenderer from '../../components/molecules/nft/AppNFTRenderer';
 
 type Props = StackScreenProps<RootStackParamList, 'CreateOneKindContract'>;
-
-const formInitialStatus: OneKindContractStatusForm = {
-  nameAvailable: true,
-  symbolAvailable: true,
-};
-
-const formInitialValues: OneKindContractForm = {
-  name: '',
-  description: '',
-  symbol: '',
-  coverName: '',
-  coverSize: 0,
-  coverType: '',
-  coverUri: '',
-  priceAmount: '',
-  priceCurrency: '',
-  quantity: '',
-  mintingExpireOption: '',
-  mintingExpire: 1,
-  utility: '',
-  contentName: '',
-  contentSize: 0,
-  contentType: '',
-  contentUri: '',
-  recurring: '',
-  timeDay: -1,
-  timeDate: -1,
-  timeMonth: -1,
-  timeYear: -1,
-  fromHour: -1,
-  fromMinute: -1,
-  untilHour: -1,
-  untilMinute: -1,
-  redeemLimitOption: '',
-  redeemLimit: 1,
-  royaltyOrigin: 0,
-  royaltyStaker: 0,
-};
 
 const setMultipleFieldValue = (
   formik: FormikProps<OneKindContractForm>,
@@ -90,7 +57,11 @@ const setMultipleFieldValue = (
 ) => {
   for (let i = 0; i < keys.length; i++) {
     if (initial) {
-      formik.setFieldValue(keys[i], formInitialValues[keys[i]], shouldValidate);
+      formik.setFieldValue(
+        keys[i],
+        createNFTOneKindQueueInitialState.state[keys[i]],
+        shouldValidate,
+      );
     } else {
       formik.setFieldValue(keys[i], value, shouldValidate);
     }
@@ -143,6 +114,7 @@ const coverKey: (keyof OneKindContractForm)[] = [
 export default function CreateOneKindContract({ navigation }: Props) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const oneKindContractStore = useSelector(selectCreateNFTOneKindQueue);
   const paperTheme = useTheme();
   const theme = paperTheme as Theme;
   const insets = useSafeAreaInsets();
@@ -154,6 +126,7 @@ export default function CreateOneKindContract({ navigation }: Props) {
     () => new Date().getTimezoneOffset(),
     [],
   );
+  const itemWidth = React.useMemo(() => wp('90%', insets), [insets]);
 
   const nameInput = React.useRef<TextInput>();
   const descriptionInput = React.useRef<TextInput>();
@@ -165,12 +138,14 @@ export default function CreateOneKindContract({ navigation }: Props) {
   const creatorRoyaltyInput = React.useRef<TextInput>();
   const stakerRoyaltyInput = React.useRef<TextInput>();
 
+  const [dummyNFT, setDummyNFT] = React.useState<NFTBase>();
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [activePrice, setActivePrice] = React.useState<boolean>(false);
   const [identityExpanded, setIdentityExpanded] = React.useState<boolean>(true);
   const [mintingExpanded, setMintingExpanded] = React.useState<boolean>(true);
   const [utilityExpanded, setUtilityExpanded] = React.useState<boolean>(true);
   const [royaltyExpanded, setRoyaltyExpanded] = React.useState<boolean>(true);
+  const [previewExpanded, setPreviewExpanded] = React.useState<boolean>(true);
 
   const validationSchema = React.useMemo(
     () =>
@@ -186,8 +161,8 @@ export default function CreateOneKindContract({ navigation }: Props) {
   );
 
   const formikProps = useFormik({
-    initialValues: formInitialValues,
-    initialStatus: formInitialStatus,
+    initialValues: oneKindContractStore.state,
+    initialStatus: oneKindContractStore.status,
     onSubmit: async values => {
       Keyboard.dismiss();
       setIsLoading(true);
@@ -256,6 +231,12 @@ export default function CreateOneKindContract({ navigation }: Props) {
       setMultipleFieldValue(formikProps, contentKey, true);
       setMultipleFieldTouched(formikProps, contentKey, false);
     }
+    setDummyNFT(
+      Object.assign({}, makeDummyNFT('onekind'), {
+        utility: item.value,
+        template: oneKindContractStore.choosenTemplate.data,
+      }),
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -532,6 +513,16 @@ export default function CreateOneKindContract({ navigation }: Props) {
   const royaltyHeaderCallback = React.useCallback(
     () => setRoyaltyExpanded(!royaltyExpanded),
     [royaltyExpanded],
+  );
+
+  const previewHeader = React.useMemo(
+    () => accordionHeader(iconMap.preview, t('createNFT:nftPreview')),
+    [accordionHeader, t],
+  );
+
+  const previewHeaderCallback = React.useCallback(
+    () => setPreviewExpanded(!previewExpanded),
+    [previewExpanded],
   );
 
   return (
@@ -820,6 +811,24 @@ export default function CreateOneKindContract({ navigation }: Props) {
                 memoKey: ['error', 'showError'],
                 keyboardType: 'number-pad',
               },
+            )}
+          </AppAccordion>
+
+          <AppAccordion
+            expanded={previewExpanded}
+            onPress={previewHeaderCallback}
+            title={previewHeader}>
+            <View style={{ height: hp('1%', insets) }} />
+            {dummyNFT ? (
+              <View style={styles.formInput}>
+                <AppNFTRenderer
+                  nft={dummyNFT}
+                  width={itemWidth}
+                  dataUri={oneKindContractStore.dataUri}
+                />
+              </View>
+            ) : (
+              <Text>not available</Text>
             )}
           </AppAccordion>
         </View>
