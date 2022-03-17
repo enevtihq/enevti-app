@@ -29,7 +29,6 @@ function Component({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   memoKey,
 }: AppMenuContainerProps) {
-  console.log('rendered');
   const theme = useTheme();
   const bottomSheetRef = React.useRef<BottomSheetModal>(null);
   const defaultSnapPoints = React.useMemo(() => ['50%'], []);

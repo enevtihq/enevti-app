@@ -48,12 +48,8 @@ import AppNFTRenderer from '../../components/molecules/nft/AppNFTRenderer';
 import AppInfoMessage from '../../components/molecules/AppInfoMessage';
 import AppQuaternaryButton from '../../components/atoms/button/AppQuaternaryButton';
 import AppTextBody4 from '../../components/atoms/text/AppTextBody4';
-import AppMenuContainer from '../../components/atoms/menu/AppMenuContainer';
-import AppMenuItem from '../../components/atoms/menu/AppMenuItem';
-import { menuItemHeigtPercentage } from '../../utils/layout/menuItemHeigtPercentage';
-import ImageCropPicker, { ImageOrVideo } from 'react-native-image-crop-picker';
-import { IMAGE_CROP_PICKER_OPTION } from '../../components/organism/picker/AppContentPicker';
-import { handleError } from '../../utils/error/handle';
+import { ImageOrVideo } from 'react-native-image-crop-picker';
+import AppCameraGalleryPicker from '../../components/organism/picker/AppCameraGalleryPicker';
 
 type Props = StackScreenProps<RootStackParamList, 'CreateOneKindContract'>;
 
@@ -136,10 +132,6 @@ export default function CreateOneKindContract({ navigation }: Props) {
     [],
   );
   const itemWidth = React.useMemo(() => wp('90%', insets), [insets]);
-  const oneKindSheetSnapPoints = React.useMemo(
-    () => [`${menuItemHeigtPercentage(2)}%`],
-    [],
-  );
 
   const nameInput = React.useRef<TextInput>();
   const descriptionInput = React.useRef<TextInput>();
@@ -337,22 +329,6 @@ export default function CreateOneKindContract({ navigation }: Props) {
     },
     [dispatch],
   );
-
-  const pickFromGallery = React.useCallback(() => {
-    ImageCropPicker.openPicker(IMAGE_CROP_PICKER_OPTION)
-      .then(image => {
-        onOneKindImagePicked(image);
-      })
-      .catch(err => handleError(err));
-  }, [onOneKindImagePicked]);
-
-  const openCamera = React.useCallback(() => {
-    ImageCropPicker.openCamera(IMAGE_CROP_PICKER_OPTION)
-      .then(image => {
-        onOneKindImagePicked(image);
-      })
-      .catch(err => handleError(err));
-  }, [onOneKindImagePicked]);
 
   const labelHourMinutePickerStart = React.useMemo(
     () =>
@@ -890,34 +866,18 @@ export default function CreateOneKindContract({ navigation }: Props) {
                   dataUri={oneKindContractStore.dataUri}
                 />
                 <View style={styles.previewAction}>
-                  <AppMenuContainer
+                  <AppQuaternaryButton
+                    box
+                    onPress={previewChangeImageOnPress}
+                    style={styles.previewActionButtonItem}>
+                    <AppTextBody4>{t('createNFT:changeImage')}</AppTextBody4>
+                  </AppQuaternaryButton>
+                  <AppCameraGalleryPicker
                     memoKey={['visible']}
                     visible={oneKindSheetVisible}
-                    snapPoints={oneKindSheetSnapPoints}
-                    tapEverywhereToDismiss={true}
                     onDismiss={previewChangeImageOnDismiss}
-                    style={styles.previewActionButton}
-                    anchor={
-                      <AppQuaternaryButton
-                        box
-                        onPress={previewChangeImageOnPress}
-                        style={styles.previewActionButtonItem}>
-                        <AppTextBody4>
-                          {t('createNFT:changeImage')}
-                        </AppTextBody4>
-                      </AppQuaternaryButton>
-                    }>
-                    <AppMenuItem
-                      onPress={openCamera}
-                      icon={iconMap.camera}
-                      title={t('createNFT:openCamera')}
-                    />
-                    <AppMenuItem
-                      onPress={pickFromGallery}
-                      icon={iconMap.gallery}
-                      title={t('createNFT:pickFromGallery')}
-                    />
-                  </AppMenuContainer>
+                    onSelected={onOneKindImagePicked}
+                  />
                   <View style={{ marginHorizontal: wp('1%', insets) }} />
                   <AppQuaternaryButton box style={styles.previewActionButton}>
                     <AppTextBody4>{t('createNFT:changeTemplate')}</AppTextBody4>
