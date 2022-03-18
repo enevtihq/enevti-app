@@ -74,6 +74,7 @@ export const iconMap = {
   imageUnavailable: 'image-off',
   question: 'help-circle',
   restore: 'backup-restore',
+  dollar: 'currency-usd',
 };
 
 interface AppIconComponentProps {
