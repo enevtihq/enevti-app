@@ -112,7 +112,7 @@ export default function ChooseNFTTemplate({ navigation, route }: Props) {
       dispatch(setCreateNFTOneKindChosenTemplate(template[activeIndex]));
       dispatch(setCreateNFTQueueRoute('CreateOneKindContract'));
       if (mode === 'normal') {
-        navigation.replace('CreateOneKindContract');
+        navigation.replace('CreateOneKindContract', { normal: true });
       } else if (mode === 'change') {
         navigation.goBack();
       }

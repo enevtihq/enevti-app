@@ -105,4 +105,5 @@ export default {
     'You have unsaved changes. Do you want to recover this form session later?',
   save: 'Save',
   discard: 'Discard',
+  createButton: 'Create NFT',
 };

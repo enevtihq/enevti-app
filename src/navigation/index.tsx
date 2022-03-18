@@ -46,7 +46,9 @@ export type RootStackParamList = {
   ChooseNFTTemplate: {
     mode: 'normal' | 'change';
   };
-  CreateOneKindContract: undefined;
+  CreateOneKindContract: {
+    normal?: boolean;
+  };
 };
 
 const Stack = createStackNavigator();

@@ -69,8 +69,8 @@ const setMultipleFieldValue = (
   formik: FormikProps<OneKindContractForm>,
   keys: (keyof OneKindContractForm)[],
   initial: boolean = false,
-  value?: string | number,
   shouldValidate: boolean = false,
+  value?: string | number,
 ) => {
   for (let i = 0; i < keys.length; i++) {
     if (initial) {
@@ -97,7 +97,7 @@ const setMultipleFieldTouched = (
 };
 
 const resetRedeemTimeKeyFields = (formik: FormikProps<OneKindContractForm>) => {
-  setMultipleFieldValue(formik, redeemTimeKey, true);
+  setMultipleFieldValue(formik, redeemTimeKey, true, true);
   setMultipleFieldTouched(formik, redeemTimeKey, false);
 };
 
@@ -128,7 +128,7 @@ const coverKey: (keyof OneKindContractForm)[] = [
   'coverUri',
 ];
 
-export default function CreateOneKindContract({ navigation }: Props) {
+export default function CreateOneKindContract({ navigation, route }: Props) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const oneKindContractStore = useSelector(selectCreateNFTOneKindQueue);
@@ -184,7 +184,57 @@ export default function CreateOneKindContract({ navigation }: Props) {
           .required(t('form:required')),
         priceAmount: Yup.string().required(t('form:required')),
         quantity: Yup.number().moreThan(0).required(t('form:required')),
-        mintingExpire: Yup.number().required(t('form:required')),
+        mintingExpireOption: Yup.string().required(t('form:required')),
+        mintingExpire: Yup.number()
+          .min(0, t('form:greaterEqualZero'))
+          .required(t('form:required')),
+        utility: Yup.string().required(t('form:required')),
+        contentUri: Yup.string().when('utility', {
+          is: 'content',
+          then: Yup.string().required(),
+        }),
+        recurring: Yup.string().when('utility', {
+          is: (val: string) => val !== 'content',
+          then: Yup.string().required(),
+        }),
+        timeDay: Yup.number().when('recurring', {
+          is: (val: string) => val === 'every-week' || val === 'once',
+          then: Yup.number().min(0, t('form:greaterEqualZero')),
+        }),
+        timeDate: Yup.number().when('recurring', {
+          is: (val: string) => val === 'every-month' || val === 'once',
+          then: Yup.number().min(0, t('form:greaterEqualZero')),
+        }),
+        timeMonth: Yup.number().when('recurring', {
+          is: (val: string) => val === 'every-year' || val === 'once',
+          then: Yup.number().min(0, t('form:greaterEqualZero')),
+        }),
+        timeYear: Yup.number().when('recurring', {
+          is: 'once',
+          then: Yup.number().min(0, t('form:greaterEqualZero')),
+        }),
+        fromHour: Yup.number().when('utility', {
+          is: (val: string) => val !== 'content',
+          then: Yup.number().min(0, t('form:greaterEqualZero')),
+        }),
+        untilHour: Yup.number().when('utility', {
+          is: (val: string) => val !== 'content',
+          then: Yup.number().min(0, t('form:greaterEqualZero')),
+        }),
+        redeemLimitOption: Yup.string().when('recurring', {
+          is: (val: string) => val === 'once' || val === 'anytime',
+          otherwise: Yup.string().required(),
+        }),
+        redeemLimit: Yup.string().when('redeemLimitOption', {
+          is: 'fixed',
+          then: Yup.number().min(0, t('form:greaterEqualZero')),
+        }),
+        royaltyOrigin: Yup.number()
+          .min(0, t('form:greaterEqualZero'))
+          .required(t('form:required')),
+        royaltyStaker: Yup.number()
+          .min(0, t('form:greaterEqualZero'))
+          .required(t('form:required')),
       }),
     [t],
   );
@@ -262,27 +312,27 @@ export default function CreateOneKindContract({ navigation }: Props) {
   }, [formikProps]);
 
   const onSelectedMintingPeriodPicker = React.useCallback(item => {
-    formikProps.setFieldValue('mintingExpireOption', item.value, false);
     if (item.value === 'no-limit') {
-      formikProps.setFieldValue('mintingExpire', 0, false);
+      formikProps.setFieldValue('mintingExpire', 0, true);
     }
+    formikProps.setFieldValue('mintingExpireOption', item.value, true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onSelectedUtilityPicker = React.useCallback(item => {
-    formikProps.setFieldValue('utility', item.value, false);
     if (item.value === 'content') {
-      formikProps.setFieldValue('recurring', 'anytime', false);
+      formikProps.setFieldValue('recurring', 'anytime', true);
       resetRedeemTimeKeyFields(formikProps);
     } else {
-      setMultipleFieldValue(formikProps, contentKey, true);
+      setMultipleFieldValue(formikProps, contentKey, true, true);
       setMultipleFieldTouched(formikProps, contentKey, false);
     }
+    formikProps.setFieldValue('utility', item.value, true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onDeleteContentPicker = React.useCallback(() => {
-    setMultipleFieldValue(formikProps, contentKey, true);
+    setMultipleFieldValue(formikProps, contentKey, true, true);
     setMultipleFieldTouched(formikProps, contentKey, false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -291,43 +341,43 @@ export default function CreateOneKindContract({ navigation }: Props) {
     formikProps.setFieldValue('contentName', item.name, false);
     formikProps.setFieldValue('contentSize', item.size, false);
     formikProps.setFieldValue('contentType', item.type, false);
-    formikProps.setFieldValue('contentUri', item.uri, false);
+    formikProps.setFieldValue('contentUri', item.uri, true);
     setMultipleFieldTouched(formikProps, contentKey, true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onSelectedRecurringPicker = React.useCallback(item => {
-    formikProps.setFieldValue('recurring', item.value, false);
-    resetRedeemTimeKeyFields(formikProps);
     if (item.value === 'every-day') {
       setMultipleFieldTouched(formikProps, ['timeDay', 'timeDate'], true);
     }
+    resetRedeemTimeKeyFields(formikProps);
+    formikProps.setFieldValue('recurring', item.value, true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onSelectedDayPicker = React.useCallback(value => {
-    formikProps.setFieldValue('timeDay', value[0], false);
+    formikProps.setFieldValue('timeDay', value[0], true);
     formikProps.setFieldTouched('timeDay', true, false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onSelectedDatePicker = React.useCallback(value => {
-    formikProps.setFieldValue('timeDate', value[0], false);
+    formikProps.setFieldValue('timeDate', value[0], true);
     formikProps.setFieldTouched('timeDate', true, false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onSelectedDateMonthPicker = React.useCallback(value => {
-    formikProps.setFieldValue('timeMonth', value[0], false);
-    formikProps.setFieldValue('timeDate', value[1], false);
+    formikProps.setFieldValue('timeMonth', value[0], true);
+    formikProps.setFieldValue('timeDate', value[1], true);
     setMultipleFieldTouched(formikProps, ['timeMonth', 'timeDate'], true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onSelectedDateMonthYearPicker = React.useCallback(value => {
-    formikProps.setFieldValue('timeYear', value[0], false);
-    formikProps.setFieldValue('timeMonth', value[1], false);
-    formikProps.setFieldValue('timeDate', value[2], false);
+    formikProps.setFieldValue('timeYear', value[0], true);
+    formikProps.setFieldValue('timeMonth', value[1], true);
+    formikProps.setFieldValue('timeDate', value[2], true);
     setMultipleFieldTouched(
       formikProps,
       ['timeYear', 'timeMonth', 'timeDate'],
@@ -337,24 +387,24 @@ export default function CreateOneKindContract({ navigation }: Props) {
   }, []);
 
   const onSelectedHourMinutePickerStart = React.useCallback(value => {
-    formikProps.setFieldValue('fromHour', value[0], false);
-    formikProps.setFieldValue('fromMinute', value[1], false);
+    formikProps.setFieldValue('fromHour', value[0], true);
+    formikProps.setFieldValue('fromMinute', value[1], true);
     setMultipleFieldTouched(formikProps, ['fromHour', 'fromMinute'], true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onSelectedHourMinutePickerEnd = React.useCallback(value => {
-    formikProps.setFieldValue('untilHour', value[0], false);
-    formikProps.setFieldValue('untilMinute', value[1], false);
+    formikProps.setFieldValue('untilHour', value[0], true);
+    formikProps.setFieldValue('untilMinute', value[1], true);
     setMultipleFieldTouched(formikProps, ['untilHour', 'untilMinute'], true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onSelectedRedeemLimitPicker = React.useCallback(item => {
-    formikProps.setFieldValue('redeemLimitOption', item.value, false);
     if (item.value === 'no-limit') {
-      formikProps.setFieldValue('redeemLimit', 0, false);
+      formikProps.setFieldValue('redeemLimit', 0, true);
     }
+    formikProps.setFieldValue('redeemLimitOption', item.value, true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -980,9 +1030,14 @@ export default function CreateOneKindContract({ navigation }: Props) {
         <AppPrimaryButton
           onPress={formikProps.handleSubmit}
           loading={isLoading}
-          disabled={!(formikProps.isValid && formikProps.dirty)}
+          disabled={
+            !(
+              formikProps.isValid &&
+              (route.params && route.params.normal ? formikProps.dirty : true)
+            )
+          }
           style={styles.actionButton}>
-          {t('auth:import')}
+          {t('createNFT:createButton')}
         </AppPrimaryButton>
       </View>
       <AppMenuContainer

@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
+import { COIN_NAME } from '../../../../../components/atoms/brand/AppBrandConstant';
 import { NFTTemplateAsset } from '../../../../../types/nft/NFTTemplate';
 import {
   OneKindContractForm,
@@ -25,7 +26,7 @@ export const createNFTOneKindQueueInitialState: CreateNFTOneKind = {
     coverType: '',
     coverUri: '',
     priceAmount: '',
-    priceCurrency: '',
+    priceCurrency: COIN_NAME,
     quantity: '',
     mintingExpireOption: '',
     mintingExpire: 1,
