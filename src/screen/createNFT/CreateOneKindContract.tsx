@@ -62,11 +62,13 @@ import AppMenuContainer from '../../components/atoms/menu/AppMenuContainer';
 import AppSecondaryButton from '../../components/atoms/button/AppSecondaryButton';
 import { clearCreateNFTQueueType } from '../../store/slices/queue/nft/create/type';
 import { clearCreateNFTQueueRoute } from '../../store/slices/queue/nft/create/route';
+import createOneKindContractPayment from '../../service/enevti/payment/hook/creator/oneKindContractPayment';
+import usePaymentCallback from '../../service/enevti/payment/hook/usePaymentCallback';
 
 type Props = StackScreenProps<RootStackParamList, 'CreateOneKindContract'>;
 
 const setMultipleFieldValue = (
-  formik: FormikProps<OneKindContractForm>,
+  formik: FormikProps<OneKindContractForm & { initialDirty: string }>,
   keys: (keyof OneKindContractForm)[],
   initial: boolean = false,
   shouldValidate: boolean = false,
@@ -86,7 +88,7 @@ const setMultipleFieldValue = (
 };
 
 const setMultipleFieldTouched = (
-  formik: FormikProps<OneKindContractForm>,
+  formik: FormikProps<OneKindContractForm & { initialDirty: string }>,
   keys: (keyof OneKindContractForm)[],
   value: boolean,
   shouldValidate: boolean = false,
@@ -96,7 +98,9 @@ const setMultipleFieldTouched = (
   }
 };
 
-const resetRedeemTimeKeyFields = (formik: FormikProps<OneKindContractForm>) => {
+const resetRedeemTimeKeyFields = (
+  formik: FormikProps<OneKindContractForm & { initialDirty: string }>,
+) => {
   setMultipleFieldValue(formik, redeemTimeKey, true, true);
   setMultipleFieldTouched(formik, redeemTimeKey, false);
 };
@@ -240,7 +244,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
   );
 
   const formikProps = useFormik({
-    initialValues: oneKindContractStore.state,
+    initialValues: { ...oneKindContractStore.state, initialDirty: '' },
     initialStatus: oneKindContractStore.status,
     onSubmit: async values => {
       Keyboard.dismiss();
@@ -250,8 +254,16 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
     validationSchema: validationSchema,
   });
 
+  const paymentIdleCallback = React.useCallback(() => console.log('idle'), []);
+
+  usePaymentCallback({
+    onIdle: paymentIdleCallback,
+  });
+
   const handleFormSubmit = async (values: any) => {
-    console.log(values);
+    const payload = Object.assign({}, oneKindContractStore, { state: values });
+    await createOneKindContractPayment(JSON.stringify(payload));
+    setIsLoading(false);
   };
 
   const discardFormState = React.useCallback(() => {
@@ -541,15 +553,23 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
           navigation.dispatch(e.data.action);
         } else {
           e.preventDefault();
+          Keyboard.dismiss();
           setCloseMenuVisible(visible => !visible);
         }
       }),
     [navigation, canGoBack],
   );
 
+  React.useEffect(() => {
+    if (route.params === undefined) {
+      formikProps.setFieldValue('initialDirty', 'dirty', true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [route.params]);
+
   const commonFormInput = React.useCallback(
     (
-      formik: FormikProps<OneKindContractForm>,
+      formik: FormikProps<OneKindContractForm & { initialDirty: string }>,
       ref: React.MutableRefObject<TextInput | undefined>,
       key: keyof OneKindContractForm,
       label: string,
@@ -679,7 +699,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
   );
 
   return (
-    <AppView withModal edges={['bottom', 'left', 'right']}>
+    <AppView withModal withPayment edges={['bottom', 'left', 'right']}>
       <AppHeader
         compact
         back
@@ -1030,12 +1050,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
         <AppPrimaryButton
           onPress={formikProps.handleSubmit}
           loading={isLoading}
-          disabled={
-            !(
-              formikProps.isValid &&
-              (route.params && route.params.normal ? formikProps.dirty : true)
-            )
-          }
+          disabled={!(formikProps.isValid && formikProps.dirty)}
           style={styles.actionButton}>
           {t('createNFT:createButton')}
         </AppPrimaryButton>

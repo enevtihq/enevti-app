@@ -18,8 +18,14 @@ export type PaymentHeader = {
   description: string;
 };
 
+export type PaymentStatus = {
+  type: 'idle' | 'initiated' | 'process' | 'success' | 'error';
+  message: string;
+};
+
 export type PaymentState = {
   show: boolean;
+  status: PaymentStatus;
   header: PaymentHeader;
   item: PaymentItem[];
   action: PaymentAction[];

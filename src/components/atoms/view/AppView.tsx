@@ -12,6 +12,7 @@ import { SafeAreaInsets, wp } from '../../../utils/imageRatio';
 import AppKeyboardDismissOnClickView from './AppKeyboardDismissOnClickView';
 import AppContainer from './AppContainer';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import AppPaymentModal from '../../organism/payment/AppPaymentModal';
 
 interface AppViewProps {
   children: React.ReactNode;
@@ -21,6 +22,7 @@ interface AppViewProps {
   dismissKeyboard?: boolean;
   withModal?: boolean;
   withSnackbar?: boolean;
+  withPayment?: boolean;
   edges?: Edge[];
 }
 
@@ -31,13 +33,14 @@ export default function AppView({
   edges,
   withModal = false,
   withSnackbar = true,
+  withPayment = false,
   darken = false,
   dismissKeyboard = false,
 }: AppViewProps) {
+  const dispatch = useDispatch();
   const insets = useSafeAreaInsets();
   const styles = React.useMemo(() => makeStyles(insets), [insets]);
   const snackbarState = useSelector(selectSnackBarState);
-  const dispatch = useDispatch();
 
   return (
     <AppKeyboardDismissOnClickView activate={dismissKeyboard}>
@@ -47,6 +50,7 @@ export default function AppView({
             <AppContainer header={header} darken={darken} edges={edges}>
               {children}
             </AppContainer>
+            {withPayment ? <AppPaymentModal /> : null}
           </BottomSheetModalProvider>
         ) : (
           <AppContainer header={header} darken={darken} edges={edges}>

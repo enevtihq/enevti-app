@@ -6,11 +6,16 @@ import {
   PaymentHeader,
   PaymentItem,
   PaymentState,
+  PaymentStatus,
 } from '../../types/store/Payment';
 import { RootState } from '../state';
 
 const initialState: PaymentState = {
   show: false,
+  status: {
+    type: 'idle',
+    message: '',
+  },
   header: {
     icon: iconMap.dollar,
     name: '',
@@ -29,6 +34,10 @@ const paymentSlice = createSlice({
     },
     hidePayment: payment => {
       payment.show = false;
+    },
+    setPaymentStatus: (payment, action: PayloadAction<PaymentStatus>) => {
+      payment.status.type = action.payload.type;
+      payment.status.message = action.payload.message;
     },
     setPaymentHeader: (payment, action: PayloadAction<PaymentHeader>) => {
       payment.header.icon = action.payload.icon;
@@ -61,6 +70,7 @@ const paymentSlice = createSlice({
 export const {
   showPayment,
   hidePayment,
+  setPaymentStatus,
   setPaymentHeader,
   clearPaymentHeader,
   addPaymentItem,
@@ -74,4 +84,14 @@ export default paymentSlice.reducer;
 export const selectPaymentState = createSelector(
   (state: RootState) => state,
   (state: RootState) => state.payment,
+);
+
+export const selectPaymentShowState = createSelector(
+  (state: RootState) => state,
+  (state: RootState) => state.payment.show,
+);
+
+export const selectPaymentStatus = createSelector(
+  (state: RootState) => state,
+  (state: RootState) => state.payment.status,
 );
