@@ -53,7 +53,7 @@ const createNFTPackQueueSlice = createSlice({
     ) => {
       Object.assign(pack.state, action.payload);
     },
-    clearCreateNFTQueue: () => {
+    clearCreateNFTPackQueue: () => {
       return createNFTPackQueueInitialState;
     },
   },
@@ -63,7 +63,7 @@ export const {
   setCreateNFTPackURI,
   setCreateNFTPackChosenTemplate,
   setCreateNFTPackState,
-  clearCreateNFTQueue,
+  clearCreateNFTPackQueue,
 } = createNFTPackQueueSlice.actions;
 export default createNFTPackQueueSlice.reducer;
 

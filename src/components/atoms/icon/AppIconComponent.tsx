@@ -72,6 +72,8 @@ export const iconMap = {
   fileArchive: 'zip-box',
   preview: 'file-find',
   imageUnavailable: 'image-off',
+  question: 'help-circle',
+  restore: 'backup-restore',
 };
 
 interface AppIconComponentProps {

@@ -1,5 +1,12 @@
 import React from 'react';
-import { View, StyleSheet, StyleProp, ViewStyle, Platform } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  StyleProp,
+  ViewStyle,
+  Platform,
+  TextStyle,
+} from 'react-native';
 import { useTheme } from 'react-native-paper';
 
 import { hp, wp, SafeAreaInsets } from '../../utils/imageRatio';
@@ -26,6 +33,9 @@ interface AppHeaderWizardProps {
   backComponent?: React.ReactNode;
   navigation?: StackNavigationProp<RootStackParamList>;
   style?: StyleProp<ViewStyle>;
+  titleStyle?: StyleProp<TextStyle>;
+  descriptionStyle?: StyleProp<TextStyle>;
+  noHeaderSpace?: boolean;
   memoKey?: (keyof AppHeaderWizardProps)[];
 }
 
@@ -40,6 +50,9 @@ function Component({
   backComponent,
   navigation,
   style,
+  titleStyle,
+  descriptionStyle,
+  noHeaderSpace,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   memoKey,
 }: AppHeaderWizardProps) {
@@ -49,7 +62,7 @@ function Component({
 
   return (
     <View style={[styles.headerContainer, style]}>
-      <View style={styles.headerSpace}>
+      <View style={noHeaderSpace ? undefined : styles.headerSpace}>
         {back ? (
           backComponent ? (
             backComponent
@@ -75,10 +88,14 @@ function Component({
         component
       ) : null}
       {title ? (
-        <AppTextHeading1 style={styles.headerText1}>{title}</AppTextHeading1>
+        <AppTextHeading1 style={[styles.headerText1, titleStyle]}>
+          {title}
+        </AppTextHeading1>
       ) : null}
       {description ? (
-        <AppTextBody4 style={styles.body1}>{description}</AppTextBody4>
+        <AppTextBody4 style={[styles.body1, descriptionStyle]}>
+          {description}
+        </AppTextBody4>
       ) : null}
     </View>
   );

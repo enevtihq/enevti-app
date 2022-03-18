@@ -79,7 +79,7 @@ const createNFTOneKindQueueSlice = createSlice({
     ) => {
       Object.assign(onekind.status, action.payload);
     },
-    clearCreateNFTQueue: () => {
+    clearCreateNFTOneKindQueue: () => {
       return createNFTOneKindQueueInitialState;
     },
   },
@@ -90,7 +90,7 @@ export const {
   setCreateNFTOneKindChosenTemplate,
   setCreateNFTOneKindState,
   setCreateNFTOneKindStatus,
-  clearCreateNFTQueue,
+  clearCreateNFTOneKindQueue,
 } = createNFTOneKindQueueSlice.actions;
 export default createNFTOneKindQueueSlice.reducer;
 

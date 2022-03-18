@@ -70,6 +70,8 @@ export const emojiMap = {
   fileArchive: UNDEFINED_EMOJI,
   preview: UNDEFINED_EMOJI,
   imageUnavailable: UNDEFINED_EMOJI,
+  question: UNDEFINED_EMOJI,
+  restore: UNDEFINED_EMOJI,
 };
 
 interface AppEmojiComponentProps {

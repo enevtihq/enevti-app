@@ -53,6 +53,18 @@ import AppQuaternaryButton from '../components/atoms/button/AppQuaternaryButton'
 import AppTextBody4 from '../components/atoms/text/AppTextBody4';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '.';
+import {
+  clearCreateNFTQueueRoute,
+  selectCreateNFTRouteQueue,
+} from '../store/slices/queue/nft/create/route';
+import AppPrimaryButton from '../components/atoms/button/AppPrimaryButton';
+import {
+  clearCreateNFTQueueType,
+  selectCreateNFTTypeQueue,
+} from '../store/slices/queue/nft/create/type';
+import { clearCreateNFTOneKindQueue } from '../store/slices/queue/nft/create/onekind';
+import { cleanTMPImage } from '../service/enevti/nft';
+import { clearCreateNFTPackQueue } from '../store/slices/queue/nft/create/pack';
 
 const Tab = createBottomTabNavigator();
 const TABBAR_HEIGHT_PERCENTAGE = 8;
@@ -61,14 +73,17 @@ type Props = StackScreenProps<RootStackParamList, 'Home'>;
 
 export default function Home({ navigation }: Props) {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
   const styles = React.useMemo(() => makeStyles(insets), [insets]);
-  const dispatch = useDispatch();
+  const restoreMenuSnapPoints = React.useMemo(() => ['42%'], []);
 
   const myPersona = useSelector(selectPersona);
   const myProfile = useSelector(selectProfile);
   const onceEligible = useSelector(selectOnceEligible);
+  const createQueue = useSelector(selectCreateNFTRouteQueue);
+  const createType = useSelector(selectCreateNFTTypeQueue);
   const canCreateNFT = isProfileCanCreateNFT(myProfile);
 
   const getPersona = async () => {
@@ -84,7 +99,9 @@ export default function Home({ navigation }: Props) {
     getProfile();
   }, [getProfile]);
 
-  const [uneligibleSheetVisible, setUndeligibleSheetVisible] =
+  const [uneligibleSheetVisible, setUneligibleSheetVisible] =
+    React.useState<boolean>(false);
+  const [restoreMenuVisible, setRestoreMenuVisible] =
     React.useState<boolean>(false);
   const [activeTab, setActiveTab] = React.useState<number>(0);
   const headerHeight = hp(HEADER_HEIGHT_PERCENTAGE, insets);
@@ -232,6 +249,31 @@ export default function Home({ navigation }: Props) {
     [headerHeight, feedAnimatedScrollHandler],
   );
 
+  const restoreMenuOnDismiss = React.useCallback(
+    () => setRestoreMenuVisible(false),
+    [],
+  );
+
+  const createNewCallback = React.useCallback(() => {
+    switch (createType) {
+      case 'onekind':
+        dispatch(clearCreateNFTOneKindQueue());
+        break;
+      case 'pack':
+        dispatch(clearCreateNFTPackQueue());
+    }
+    dispatch(clearCreateNFTQueueType());
+    dispatch(clearCreateNFTQueueRoute());
+    cleanTMPImage();
+    setRestoreMenuVisible(false);
+    navigation.navigate('ChooseNFTType');
+  }, [dispatch, navigation, createType]);
+
+  const restoreCallback = React.useCallback(() => {
+    setRestoreMenuVisible(false);
+    createQueue && navigation.navigate(createQueue);
+  }, [createQueue, navigation]);
+
   const MyProfileComponent = (props: any) => (
     <MyProfile
       navigation={props.navigation}
@@ -250,7 +292,7 @@ export default function Home({ navigation }: Props) {
         <AppMenuContainer
           visible={uneligibleSheetVisible}
           snapPoints={['70%']}
-          onDismiss={() => setUndeligibleSheetVisible(false)}>
+          onDismiss={() => setUneligibleSheetVisible(false)}>
           <AppHeaderWizard
             component={
               <View style={styles.notEligibleImage}>
@@ -269,14 +311,14 @@ export default function Home({ navigation }: Props) {
           />
           <View style={{ padding: wp('10%', insets) }}>
             <AppSecondaryButton
-              onPress={() => setUndeligibleSheetVisible(false)}>
+              onPress={() => setUneligibleSheetVisible(false)}>
               {t('home:notEligibleOKButton')}
             </AppSecondaryButton>
             <View style={{ height: hp('1%', insets) }} />
             <AppQuaternaryButton
               contentStyle={styles.notEligibleGoToStakeButton}
               onPress={() => {
-                setUndeligibleSheetVisible(false);
+                setUneligibleSheetVisible(false);
                 navigation.navigate('StakePool', { persona: myPersona });
               }}>
               <AppTextBody4 style={{ color: theme.colors.primary }}>
@@ -286,6 +328,38 @@ export default function Home({ navigation }: Props) {
           </View>
         </AppMenuContainer>
       )}
+      {createQueue ? (
+        <AppMenuContainer
+          memoKey={['visible']}
+          tapEverywhereToDismiss
+          enablePanDownToClose
+          snapPoints={restoreMenuSnapPoints}
+          visible={restoreMenuVisible}
+          onDismiss={restoreMenuOnDismiss}>
+          <AppHeaderWizard
+            noHeaderSpace
+            mode={'icon'}
+            modeData={'restore'}
+            style={styles.restoreMenuContainer}
+            title={t('home:restoreDialog')}
+            titleStyle={styles.restoreMenuTitle}
+            description={t('home:restoreDialogDescription')}
+          />
+          <View style={styles.restoreMenuAction}>
+            <View style={styles.restoreMenuItemAction}>
+              <AppSecondaryButton onPress={createNewCallback}>
+                {t('home:startNew')}
+              </AppSecondaryButton>
+            </View>
+            <View style={styles.restoreMenuActionSpace} />
+            <View style={styles.restoreMenuItemAction}>
+              <AppPrimaryButton onPress={restoreCallback}>
+                {t('home:restore')}
+              </AppPrimaryButton>
+            </View>
+          </View>
+        </AppMenuContainer>
+      ) : null}
       <Tab.Navigator
         tabBar={props => <AppTabBar {...props} style={tabBarStyle} />}
         screenOptions={{
@@ -370,9 +444,13 @@ export default function Home({ navigation }: Props) {
               event.preventDefault();
               if (canCreateNFT) {
                 !onceEligible && dispatch(touchOnceEligible());
-                navigation.navigate('ChooseNFTType');
+                if (createQueue) {
+                  setRestoreMenuVisible(!restoreMenuVisible);
+                } else {
+                  navigation.navigate('ChooseNFTType');
+                }
               } else {
-                setUndeligibleSheetVisible(!uneligibleSheetVisible);
+                setUneligibleSheetVisible(!uneligibleSheetVisible);
               }
             },
           }}
@@ -490,5 +568,24 @@ const makeStyles = (insets: SafeAreaInsets) =>
       height: '100%',
       justifyContent: 'center',
       alignItems: 'center',
+    },
+    restoreMenuContainer: {
+      width: wp('90%', insets),
+      alignSelf: 'center',
+      flex: 0,
+    },
+    restoreMenuTitle: {
+      marginTop: hp('1%', insets),
+    },
+    restoreMenuAction: {
+      paddingHorizontal: wp('5%', insets),
+      marginTop: hp('3%', insets),
+      flexDirection: 'row',
+    },
+    restoreMenuItemAction: {
+      flex: 1,
+    },
+    restoreMenuActionSpace: {
+      marginHorizontal: wp('1%', insets),
     },
   });

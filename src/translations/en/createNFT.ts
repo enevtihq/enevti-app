@@ -35,7 +35,7 @@ export default {
   nftMintingBehaviour: 'Minting Behaviour',
   collectionPrice: 'Price',
   collectionPricePlaceholder: 'ex: 0.1 or 1000',
-  collectionQuantity: 'Quantity',
+  collectionQuantity: 'Number of Edition',
   collectionQuantityPlaceholder: 'How many items in this collection',
   collectionMintingExpire: 'Minting Period (days)',
   collectionMintingExpirePlaceholder: 'Specify limit in days',
@@ -100,4 +100,9 @@ export default {
     'Please setup name, symbol, and utility to enable preview',
   changeImage: 'Change Image',
   changeTemplate: 'Change Template',
+  saveSession: 'Save Session?',
+  saveSessionDescription:
+    'You have unsaved changes. Do you want to recover this form session later?',
+  save: 'Save',
+  discard: 'Discard',
 };

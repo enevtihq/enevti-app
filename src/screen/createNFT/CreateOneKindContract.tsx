@@ -8,8 +8,11 @@ import DocumentPicker from 'react-native-document-picker';
 import { FormikProps, useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  clearCreateNFTOneKindQueue,
   createNFTOneKindQueueInitialState,
   selectCreateNFTOneKindQueue,
+  setCreateNFTOneKindState,
+  setCreateNFTOneKindStatus,
   setCreateNFTOneKindURI,
 } from '../../store/slices/queue/nft/create/onekind';
 import * as Yup from 'yup';
@@ -30,7 +33,11 @@ import { ScrollView } from 'react-native-gesture-handler';
 import AppTextBody3 from '../../components/atoms/text/AppTextBody3';
 import { OneKindContractForm } from '../../types/screen/CreateOneKindContract';
 import AppCoinChipsPicker from '../../components/organism/AppCoinChipsPicker';
-import { isNameAvailable, isSymbolAvailable } from '../../service/enevti/nft';
+import {
+  cleanTMPImage,
+  isNameAvailable,
+  isSymbolAvailable,
+} from '../../service/enevti/nft';
 import AppUtilityPicker from '../../components/organism/picker/AppUtilityPicker';
 import AppRecurringPicker from '../../components/organism/picker/AppRecurringPicker.tsx';
 import AppDateMonthPicker from '../../components/organism/datePicker/AppDateMonthPicker';
@@ -51,6 +58,10 @@ import AppTextBody4 from '../../components/atoms/text/AppTextBody4';
 import { ImageOrVideo } from 'react-native-image-crop-picker';
 import AppCameraGalleryPicker from '../../components/organism/picker/AppCameraGalleryPicker';
 import AppHeader from '../../components/atoms/view/AppHeader';
+import AppMenuContainer from '../../components/atoms/menu/AppMenuContainer';
+import AppSecondaryButton from '../../components/atoms/button/AppSecondaryButton';
+import { clearCreateNFTQueueType } from '../../store/slices/queue/nft/create/type';
+import { clearCreateNFTQueueRoute } from '../../store/slices/queue/nft/create/route';
 
 type Props = StackScreenProps<RootStackParamList, 'CreateOneKindContract'>;
 
@@ -133,6 +144,7 @@ export default function CreateOneKindContract({ navigation }: Props) {
     [],
   );
   const itemWidth = React.useMemo(() => wp('90%', insets), [insets]);
+  const closeMenuSnapPoints = React.useMemo(() => ['42%'], []);
 
   const nameInput = React.useRef<TextInput>();
   const descriptionInput = React.useRef<TextInput>();
@@ -144,12 +156,15 @@ export default function CreateOneKindContract({ navigation }: Props) {
   const creatorRoyaltyInput = React.useRef<TextInput>();
   const stakerRoyaltyInput = React.useRef<TextInput>();
 
+  const canGoBack = React.useRef<boolean>(false);
   const [dummyNFT, setDummyNFT] = React.useState<NFTBase>(() =>
     Object.assign({}, makeDummyNFT('onekind'), {
       template: oneKindContractStore.choosenTemplate.data,
     }),
   );
   const [oneKindSheetVisible, setOneKindSheetVisible] =
+    React.useState<boolean>(false);
+  const [closeMenuVisible, setCloseMenuVisible] =
     React.useState<boolean>(false);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [activePrice, setActivePrice] = React.useState<boolean>(false);
@@ -188,6 +203,24 @@ export default function CreateOneKindContract({ navigation }: Props) {
   const handleFormSubmit = async (values: any) => {
     console.log(values);
   };
+
+  const discardFormState = React.useCallback(() => {
+    dispatch(clearCreateNFTOneKindQueue());
+    dispatch(clearCreateNFTQueueType());
+    dispatch(clearCreateNFTQueueRoute());
+    cleanTMPImage();
+    canGoBack.current = true;
+    setCloseMenuVisible(false);
+    navigation.goBack();
+  }, [dispatch, navigation]);
+
+  const saveFormState = React.useCallback(() => {
+    dispatch(setCreateNFTOneKindState(formikProps.values));
+    dispatch(setCreateNFTOneKindStatus(formikProps.status));
+    canGoBack.current = true;
+    setCloseMenuVisible(false);
+    navigation.goBack();
+  }, [dispatch, formikProps.values, formikProps.status, navigation]);
 
   const nextRefCallback = React.useCallback(
     nextref => () => nextref && nextref.current?.focus(),
@@ -450,6 +483,20 @@ export default function CreateOneKindContract({ navigation }: Props) {
     formikProps.values.utility,
   ]);
 
+  React.useEffect(
+    () =>
+      navigation.addListener('beforeRemove', e => {
+        if (canGoBack.current) {
+          setCloseMenuVisible(false);
+          navigation.dispatch(e.data.action);
+        } else {
+          e.preventDefault();
+          setCloseMenuVisible(visible => !visible);
+        }
+      }),
+    [navigation, canGoBack],
+  );
+
   const commonFormInput = React.useCallback(
     (
       formik: FormikProps<OneKindContractForm>,
@@ -574,6 +621,11 @@ export default function CreateOneKindContract({ navigation }: Props) {
         mode: 'change',
       }),
     [navigation],
+  );
+
+  const closeMenuOnDismiss = React.useCallback(
+    () => setCloseMenuVisible(false),
+    [],
   );
 
   return (
@@ -925,7 +977,6 @@ export default function CreateOneKindContract({ navigation }: Props) {
       </ScrollView>
       <View style={styles.actionContainer}>
         <View style={{ height: hp('2%', insets) }} />
-
         <AppPrimaryButton
           onPress={formikProps.handleSubmit}
           loading={isLoading}
@@ -934,6 +985,36 @@ export default function CreateOneKindContract({ navigation }: Props) {
           {t('auth:import')}
         </AppPrimaryButton>
       </View>
+      <AppMenuContainer
+        memoKey={['visible']}
+        tapEverywhereToDismiss
+        enablePanDownToClose
+        snapPoints={closeMenuSnapPoints}
+        visible={closeMenuVisible}
+        onDismiss={closeMenuOnDismiss}>
+        <AppHeaderWizard
+          noHeaderSpace
+          mode={'icon'}
+          modeData={'question'}
+          style={styles.closeMenuContainer}
+          title={t('createNFT:saveSession')}
+          titleStyle={styles.closeMenuTitle}
+          description={t('createNFT:saveSessionDescription')}
+        />
+        <View style={styles.closeMenuAction}>
+          <View style={styles.closeMenuItemAction}>
+            <AppSecondaryButton onPress={discardFormState}>
+              {t('createNFT:discard')}
+            </AppSecondaryButton>
+          </View>
+          <View style={styles.closeMenuActionSpace} />
+          <View style={styles.closeMenuItemAction}>
+            <AppPrimaryButton onPress={saveFormState}>
+              {t('createNFT:save')}
+            </AppPrimaryButton>
+          </View>
+        </View>
+      </AppMenuContainer>
     </AppView>
   );
 }
@@ -988,5 +1069,24 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
       flex: 1,
       height: hp('5.2%', insets),
       width: '100%',
+    },
+    closeMenuContainer: {
+      width: wp('90%', insets),
+      alignSelf: 'center',
+      flex: 0,
+    },
+    closeMenuTitle: {
+      marginTop: hp('1%', insets),
+    },
+    closeMenuAction: {
+      paddingHorizontal: wp('5%', insets),
+      marginTop: hp('3%', insets),
+      flexDirection: 'row',
+    },
+    closeMenuItemAction: {
+      flex: 1,
+    },
+    closeMenuActionSpace: {
+      marginHorizontal: wp('1%', insets),
     },
   });

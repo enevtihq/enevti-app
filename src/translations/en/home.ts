@@ -18,4 +18,9 @@ export default {
   follow: 'Follow',
   report: 'Report',
   promote: 'Promote',
+  startNew: 'Start New',
+  restore: 'Restore',
+  restoreDialog: 'Restore Previous Session?',
+  restoreDialogDescription:
+    'You have a saved create NFT session. Do you want to recover it?',
 };
