@@ -9,4 +9,5 @@ export default {
   cancel: 'Cancel',
   choose: 'Choose',
   upercase: 'Must be UPPERCASE. No space, symbol or number allowed',
+  loading: 'Loading...',
 };

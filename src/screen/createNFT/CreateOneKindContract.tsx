@@ -64,6 +64,11 @@ import { clearCreateNFTQueueType } from '../../store/slices/queue/nft/create/typ
 import { clearCreateNFTQueueRoute } from '../../store/slices/queue/nft/create/route';
 import createOneKindContractPayment from '../../service/enevti/payment/action/oneKindContractPayment';
 import usePaymentCallback from '../../service/enevti/payment/hook/usePaymentCallback';
+import {
+  hideModalLoader,
+  showModalLoader,
+} from '../../store/slices/ui/global/modalLoader';
+import { showSnackbar } from '../../store/slices/ui/global/snackbar';
 
 type Props = StackScreenProps<RootStackParamList, 'CreateOneKindContract'>;
 
@@ -254,12 +259,6 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
     validationSchema: validationSchema,
   });
 
-  const paymentIdleCallback = React.useCallback(() => console.log('idle'), []);
-
-  usePaymentCallback({
-    onIdle: paymentIdleCallback,
-  });
-
   const handleFormSubmit = async (values: any) => {
     const payload = Object.assign({}, oneKindContractStore, { state: values });
     await createOneKindContractPayment(JSON.stringify(payload));
@@ -283,6 +282,28 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
     setCloseMenuVisible(false);
     navigation.goBack();
   }, [dispatch, formikProps.values, formikProps.status, navigation]);
+
+  const paymentProcessCallback = React.useCallback(() => {
+    console.log('process');
+    dispatch(showModalLoader());
+  }, [dispatch]);
+
+  const paymentSuccessCallback = React.useCallback(() => {
+    dispatch(hideModalLoader());
+    dispatch(showSnackbar({ mode: 'info', text: t('payment:success') }));
+    discardFormState();
+  }, [dispatch, discardFormState, t]);
+
+  const paymentErrorCallback = React.useCallback(
+    () => dispatch(hideModalLoader()),
+    [dispatch],
+  );
+
+  usePaymentCallback({
+    onProcess: paymentProcessCallback,
+    onSuccess: paymentSuccessCallback,
+    onError: paymentErrorCallback,
+  });
 
   const nextRefCallback = React.useCallback(
     nextref => () => nextref && nextref.current?.focus(),
@@ -699,7 +720,11 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
   );
 
   return (
-    <AppView withModal withPayment edges={['bottom', 'left', 'right']}>
+    <AppView
+      withModal
+      withPayment
+      withLoader
+      edges={['bottom', 'left', 'right']}>
       <AppHeader
         compact
         back

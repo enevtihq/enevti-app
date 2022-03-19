@@ -34,12 +34,12 @@ export default function usePaymentCallback({
         onProcess && onProcess();
         break;
       case 'success':
+        dispatch(clearPaymentState());
         onSuccess && onSuccess();
-        dispatch(clearPaymentState);
         break;
       case 'error':
+        dispatch(clearPaymentState());
         onError && onError();
-        dispatch(clearPaymentState);
         break;
       default:
         break;

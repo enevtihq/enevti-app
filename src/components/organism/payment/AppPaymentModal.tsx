@@ -133,7 +133,9 @@ export default function AppPaymentModal() {
           marginBottom:
             Platform.OS === 'ios' ? insets.bottom : hp('2%', insets),
         }}>
-        <AppPrimaryButton onPress={() => reducePayment()}>Pay</AppPrimaryButton>
+        <AppPrimaryButton onPress={async () => await reducePayment()}>
+          Pay
+        </AppPrimaryButton>
       </View>
     </AppMenuContainer>
   );
