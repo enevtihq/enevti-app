@@ -62,7 +62,7 @@ import AppMenuContainer from '../../components/atoms/menu/AppMenuContainer';
 import AppSecondaryButton from '../../components/atoms/button/AppSecondaryButton';
 import { clearCreateNFTQueueType } from '../../store/slices/queue/nft/create/type';
 import { clearCreateNFTQueueRoute } from '../../store/slices/queue/nft/create/route';
-import createOneKindContractPayment from '../../service/enevti/payment/hook/creator/oneKindContractPayment';
+import createOneKindContractPayment from '../../service/enevti/payment/action/oneKindContractPayment';
 import usePaymentCallback from '../../service/enevti/payment/hook/usePaymentCallback';
 
 type Props = StackScreenProps<RootStackParamList, 'CreateOneKindContract'>;

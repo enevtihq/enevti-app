@@ -1,12 +1,14 @@
 export type PaymentItem = {
   name: string;
+  title: string;
   description: string;
-  amount: string;
+  amount: bigint;
   currency: string;
 };
 
 export type PaymentAction = {
   type: string;
+  name: string;
   title: string;
   description: string;
   payload: string;

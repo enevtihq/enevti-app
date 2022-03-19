@@ -73,6 +73,7 @@ export const emojiMap = {
   question: UNDEFINED_EMOJI,
   restore: UNDEFINED_EMOJI,
   dollar: UNDEFINED_EMOJI,
+  shield: UNDEFINED_EMOJI,
 };
 
 interface AppEmojiComponentProps {

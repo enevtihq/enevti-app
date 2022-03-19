@@ -1,3 +1,4 @@
+/* global BigInt */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
 import { iconMap } from '../../components/atoms/icon/AppIconComponent';
@@ -94,4 +95,28 @@ export const selectPaymentShowState = createSelector(
 export const selectPaymentStatus = createSelector(
   (state: RootState) => state,
   (state: RootState) => state.payment.status,
+);
+
+export const selectPaymentHeader = createSelector(
+  (state: RootState) => state,
+  (state: RootState) => state.payment.header,
+);
+
+export const selectPaymentItem = createSelector(
+  (state: RootState) => state,
+  (state: RootState) => state.payment.item,
+);
+
+export const selectPaymentAction = createSelector(
+  (state: RootState) => state,
+  (state: RootState) => state.payment.action,
+);
+
+export const selectPaymentTotalAmount = createSelector(
+  (state: RootState) => state,
+  (state: RootState) =>
+    state.payment.item.reduce(
+      (partialSum, a) => partialSum + BigInt(a.amount),
+      BigInt(0),
+    ),
 );

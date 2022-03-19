@@ -75,6 +75,7 @@ export const iconMap = {
   question: 'help-circle',
   restore: 'backup-restore',
   dollar: 'currency-usd',
+  shield: 'shield-check',
 };
 
 interface AppIconComponentProps {
