@@ -29,6 +29,6 @@ const rootReducer = combineReducers({
 });
 
 export default persistReducer(
-  asyncStoragePersistConfig('root', ['session']),
+  asyncStoragePersistConfig('root', ['session', 'ui', 'payment']),
   rootReducer,
 );

@@ -1,15 +1,11 @@
-import { Platform, View } from 'react-native';
+import { Platform, View, StyleSheet } from 'react-native';
 import React from 'react';
-import AppMenuContainer from '../../atoms/menu/AppMenuContainer';
+import { useTranslation } from 'react-i18next';
+import Color from 'color';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  clearPaymentState,
-  selectPaymentHeader,
-  selectPaymentItem,
-  selectPaymentShowState,
-  selectPaymentTotalAmount,
-} from '../../../store/slices/payment';
-import { hp, wp } from '../../../utils/imageRatio';
+
+import AppMenuContainer from '../../atoms/menu/AppMenuContainer';
+import { hp, wp, SafeAreaInsets } from '../../../utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AppTextHeading2 from '../../atoms/text/AppTextHeading2';
 import AppListItem from '../../molecules/list/AppListItem';
@@ -18,29 +14,48 @@ import { Theme } from '../../../theme/default';
 import AppTextHeading3 from '../../atoms/text/AppTextHeading3';
 import AppIconGradient from '../../molecules/AppIconGradient';
 import AppTextBody4 from '../../atoms/text/AppTextBody4';
-import AppTextBody3 from '../../atoms/text/AppTextBody3';
-import { parseAmount } from '../../../utils/format/amount';
-import { getCoinName } from '../../atoms/brand/AppBrandConstant';
-import Color from 'color';
+import { COIN_NAME } from '../../atoms/brand/AppBrandConstant';
 import AppPrimaryButton from '../../atoms/button/AppPrimaryButton';
 import { iconMap } from '../../atoms/icon/AppIconComponent';
 import AppTextBody5 from '../../atoms/text/AppTextBody5';
-import reducePayment from '../../../service/enevti/payment/reducer/pay';
+import { reducePayment } from '../../../store/middleware/thunk/payment';
+import {
+  resetPaymentState,
+  selectPaymentAction,
+  selectPaymentFee,
+  selectPaymentShowState,
+  selectPaymentStatus,
+} from '../../../store/slices/payment';
+import AppPaymentItem from './AppPaymentItem';
 
 export default function AppPaymentModal() {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
+  const styles = React.useMemo(
+    () => makeStyles(theme, insets),
+    [theme, insets],
+  );
+  const paymentSnapPoints = React.useMemo(() => ['70%'], []);
+  const defaultCoin = React.useMemo(() => COIN_NAME, []);
+
+  const paymentStatus = useSelector(selectPaymentStatus);
   const paymentShowState = useSelector(selectPaymentShowState);
-  const paymentHeader = useSelector(selectPaymentHeader);
-  const paymentItem = useSelector(selectPaymentItem);
-  const paymentTotalAmount = useSelector(selectPaymentTotalAmount);
-  const paymentTotalAmountCurrency = getCoinName();
-  const paymentSnapPoints = React.useMemo(() => ['60%'], []);
+  const paymentAction = useSelector(selectPaymentAction);
+  const paymentFee = useSelector(selectPaymentFee);
+  const paymentTotalAmountCurrency = defaultCoin;
+  const paymentTotalAmount =
+    paymentAction.amount + paymentFee.gas + paymentFee.platform;
 
   const paymentDismiss = React.useCallback(() => {
-    dispatch(clearPaymentState());
+    dispatch(resetPaymentState());
   }, [dispatch]);
+
+  const payCallback = React.useCallback(
+    () => dispatch(reducePayment()),
+    [dispatch],
+  );
 
   return (
     <AppMenuContainer
@@ -51,92 +66,134 @@ export default function AppPaymentModal() {
       <AppListItem
         leftContent={
           <AppIconGradient
-            name={paymentHeader.icon}
+            name={paymentAction.icon}
             size={wp('12%', insets)}
             androidRenderingMode={'software'}
             colors={[theme.colors.primary, theme.colors.secondary]}
-            style={{ marginRight: wp('3%', insets), alignSelf: 'center' }}
+            style={styles.headerIcon}
           />
         }>
-        <AppTextHeading3 numberOfLines={1} style={{ width: wp('50%', insets) }}>
-          {paymentHeader.name}
+        <AppTextHeading3 numberOfLines={1} style={styles.headerTitle}>
+          {paymentAction.name}
         </AppTextHeading3>
         <AppTextBody4
           style={{ color: theme.colors.placeholder }}
           numberOfLines={1}>
-          {paymentHeader.description}
+          {paymentAction.description}
         </AppTextBody4>
       </AppListItem>
-      <View style={{ height: hp('2%', insets) }} />
-      <Divider
-        style={{
-          height: 20,
-          backgroundColor: Color(theme.colors.placeholder)
-            .alpha(0.05)
-            .rgb()
-            .toString(),
-        }}
-      />
-      <View style={{ flex: 1, paddingHorizontal: wp('5%', insets) }}>
-        <AppTextHeading2
-          style={{
-            marginBottom: hp('2%', insets),
-            marginTop: hp('2%', insets),
-          }}>
-          Transaction Details
+
+      <View style={styles.dividerView} />
+      <Divider style={styles.divider} />
+
+      <View style={styles.transactionItem}>
+        <AppTextHeading2 style={styles.transactionDetailsHeading}>
+          {t('payment:transactionDetails')}
         </AppTextHeading2>
-        {paymentItem.map(item => (
-          <View
-            key={item.name}
-            style={{
-              flexDirection: 'row',
-              marginBottom: hp('1%', insets),
-            }}>
-            <AppTextBody3 style={{ flex: 1 }}>{item.title}</AppTextBody3>
-            <AppTextBody3>
-              {parseAmount(item.amount.toString())} ${item.currency}
-            </AppTextBody3>
-          </View>
-        ))}
-        <Divider style={{ marginBottom: hp('1%', insets) }} />
-        <View style={{ flexDirection: 'row', marginBottom: hp('1%', insets) }}>
-          <AppTextHeading3 style={{ flex: 1 }}>Total</AppTextHeading3>
-          <AppTextHeading3>
-            {parseAmount(paymentTotalAmount.toString())}{' '}
-            {paymentTotalAmountCurrency}
-          </AppTextHeading3>
-        </View>
+        <AppPaymentItem
+          title={paymentAction.name}
+          description={paymentAction.description}
+          amount={paymentAction.amount}
+          currency={paymentAction.currency}
+        />
+        <AppPaymentItem
+          title={t('payment:platformFee')}
+          description={
+            paymentFee.platform === BigInt(0)
+              ? t('payment:platformFeeDescription')
+              : undefined
+          }
+          amount={paymentFee.platform}
+          currency={defaultCoin}
+        />
+        <AppPaymentItem
+          title={t('payment:gasFee')}
+          description={t('payment:gasFeeDescription')}
+          amount={paymentFee.gas}
+          currency={defaultCoin}
+        />
+        <Divider style={styles.bottomDivider} />
+        <AppPaymentItem
+          bold
+          hideTooltip
+          title={t('payment:total')}
+          amount={paymentTotalAmount}
+          currency={paymentTotalAmountCurrency}
+        />
       </View>
+
       <AppListItem
-        containerStyle={{ marginVertical: hp('2%', insets) }}
+        containerStyle={styles.secureNoteView}
         leftContent={
           <AppIconGradient
             name={iconMap.shield}
             size={wp('5%', insets)}
             androidRenderingMode={'software'}
             colors={[theme.colors.primary, theme.colors.secondary]}
-            style={{ marginRight: wp('3%', insets), alignSelf: 'center' }}
+            style={styles.secureNoteIcon}
           />
         }>
-        <AppTextBody5
-          style={{ color: theme.colors.placeholder }}
-          numberOfLines={2}>
-          Payement are secured using blockchain, by proceeding you are agree to
-          Terms & Conditions
+        <AppTextBody5 style={styles.secureNoteText} numberOfLines={2}>
+          {t('payment:secureNote')}
         </AppTextBody5>
       </AppListItem>
+
       <Divider />
-      <View
-        style={{
-          paddingHorizontal: wp('5%', insets),
-          marginTop: hp('2%', insets),
-          marginBottom:
-            Platform.OS === 'ios' ? insets.bottom : hp('2%', insets),
-        }}>
-        <AppPrimaryButton onPress={async () => await reducePayment()}>
-          Pay
+
+      <View style={styles.payButton}>
+        <AppPrimaryButton
+          loading={paymentStatus.type === 'process'}
+          onPress={payCallback}>
+          {t('payment:pay')}
         </AppPrimaryButton>
       </View>
     </AppMenuContainer>
   );
 }
+
+const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
+  StyleSheet.create({
+    payButton: {
+      paddingHorizontal: wp('5%', insets),
+      marginTop: hp('2%', insets),
+      marginBottom: Platform.OS === 'ios' ? insets.bottom : hp('2%', insets),
+    },
+    headerIcon: {
+      marginRight: wp('3%', insets),
+      alignSelf: 'center',
+    },
+    headerTitle: {
+      width: wp('50%', insets),
+    },
+    dividerView: {
+      height: hp('2%', insets),
+    },
+    divider: {
+      height: 20,
+      backgroundColor: Color(theme.colors.placeholder)
+        .alpha(0.05)
+        .rgb()
+        .toString(),
+    },
+    bottomDivider: {
+      marginBottom: hp('1%', insets),
+    },
+    transactionItem: {
+      flex: 1,
+      paddingHorizontal: wp('5%', insets),
+    },
+    transactionDetailsHeading: {
+      marginBottom: hp('3%', insets),
+      marginTop: hp('2%', insets),
+    },
+    secureNoteView: {
+      marginVertical: hp('2%', insets),
+    },
+    secureNoteIcon: {
+      marginRight: wp('3%', insets),
+      alignSelf: 'center',
+    },
+    secureNoteText: {
+      color: theme.colors.placeholder,
+    },
+  });

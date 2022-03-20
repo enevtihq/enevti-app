@@ -18,7 +18,10 @@ import { useDispatch } from 'react-redux';
 import { showSnackbar } from '../../store/slices/ui/global/snackbar';
 import { ImageOrVideo } from 'react-native-image-crop-picker';
 import { setCreateNFTQueueType } from '../../store/slices/queue/nft/create/type';
-import { setCreateNFTOneKindURI } from '../../store/slices/queue/nft/create/onekind';
+import {
+  setCreateNFTOneKindMime,
+  setCreateNFTOneKindURI,
+} from '../../store/slices/queue/nft/create/onekind';
 import AppCameraGalleryPicker from '../../components/organism/picker/AppCameraGalleryPicker';
 
 type Props = StackScreenProps<RootStackParamList, 'ChooseNFTType'>;
@@ -36,12 +39,18 @@ export default function ChooseNFTType({ navigation }: Props) {
   const onOneKindImagePicked = (image: ImageOrVideo) => {
     dispatch(setCreateNFTQueueType('onekind'));
     dispatch(setCreateNFTOneKindURI(image.path));
+    dispatch(setCreateNFTOneKindMime(image.mime));
     setOneKindSheetVisible(false);
     navigation.replace('ChooseNFTTemplate', { mode: 'normal' });
   };
 
   const onOneKindImagePressed = React.useCallback(
     () => setOneKindSheetVisible(visible => !visible),
+    [],
+  );
+
+  const onOneKindImageDismiss = React.useCallback(
+    () => setOneKindSheetVisible(false),
     [],
   );
 
@@ -79,6 +88,7 @@ export default function ChooseNFTType({ navigation }: Props) {
       <AppCameraGalleryPicker
         visible={oneKindSheetVisible}
         onSelected={onOneKindImagePicked}
+        onDismiss={onOneKindImageDismiss}
       />
 
       <AppListItem

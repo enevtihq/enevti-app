@@ -9,7 +9,7 @@ import {
 import { RootState } from '../../../../state';
 
 export const createNFTPackQueueInitialState: CreateNFTPack = {
-  dataUri: [],
+  data: [],
   choosenTemplate: {
     id: '',
     name: '',
@@ -39,7 +39,7 @@ const createNFTPackQueueSlice = createSlice({
       pack,
       action: PayloadAction<CreateNFTPackItemData[]>,
     ) => {
-      pack.dataUri = action.payload.slice();
+      pack.data = action.payload.slice();
     },
     setCreateNFTPackChosenTemplate: (
       pack,

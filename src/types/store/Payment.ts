@@ -1,23 +1,16 @@
-export type PaymentItem = {
-  name: string;
-  title: string;
-  description: string;
-  amount: bigint;
-  currency: string;
-};
-
 export type PaymentAction = {
-  type: string;
-  name: string;
-  title: string;
-  description: string;
-  payload: string;
-};
-
-export type PaymentHeader = {
+  type: 'createNFTOneKind' | '';
   icon: string;
   name: string;
   description: string;
+  amount: bigint;
+  currency: string;
+  payload: string;
+};
+
+export type PaymentFee = {
+  gas: bigint;
+  platform: bigint;
 };
 
 export type PaymentStatus = {
@@ -27,8 +20,8 @@ export type PaymentStatus = {
 
 export type PaymentState = {
   show: boolean;
+  mode: 'full' | 'compact' | 'silent';
   status: PaymentStatus;
-  header: PaymentHeader;
-  item: PaymentItem[];
-  action: PaymentAction[];
+  action: PaymentAction;
+  fee: PaymentFee;
 };

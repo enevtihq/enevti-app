@@ -1,11 +1,9 @@
-/* global BigInt */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
 import { iconMap } from '../../components/atoms/icon/AppIconComponent';
 import {
   PaymentAction,
-  PaymentHeader,
-  PaymentItem,
+  PaymentFee,
   PaymentState,
   PaymentStatus,
 } from '../../types/store/Payment';
@@ -13,17 +11,24 @@ import { RootState } from '../state';
 
 const initialState: PaymentState = {
   show: false,
+  mode: 'full',
   status: {
     type: 'idle',
     message: '',
   },
-  header: {
+  action: {
+    type: '',
     icon: iconMap.dollar,
     name: '',
     description: '',
+    amount: BigInt(0),
+    currency: '',
+    payload: '',
   },
-  item: [],
-  action: [],
+  fee: {
+    gas: BigInt(0),
+    platform: BigInt(0),
+  },
 };
 
 const paymentSlice = createSlice({
@@ -36,33 +41,47 @@ const paymentSlice = createSlice({
     hidePayment: payment => {
       payment.show = false;
     },
+    setPaymentMode: (payment, action: PayloadAction<PaymentState['mode']>) => {
+      payment.mode = action.payload;
+    },
     setPaymentStatus: (payment, action: PayloadAction<PaymentStatus>) => {
       payment.status.type = action.payload.type;
       payment.status.message = action.payload.message;
     },
-    setPaymentHeader: (payment, action: PayloadAction<PaymentHeader>) => {
-      payment.header.icon = action.payload.icon;
-      payment.header.name = action.payload.name;
-      payment.header.description = action.payload.description;
+    resetPaymentStatus: payment => {
+      payment.status.type = initialState.status.type;
+      payment.status.message = initialState.status.message;
     },
-    clearPaymentHeader: payment => {
-      payment.header.icon = initialState.header.icon;
-      payment.header.name = initialState.header.name;
-      payment.header.description = initialState.header.description;
+    setPaymentAction: (payment, action: PayloadAction<PaymentAction>) => {
+      payment.action.type = action.payload.type;
+      payment.action.icon = action.payload.icon;
+      payment.action.name = action.payload.name;
+      payment.action.description = action.payload.description;
+      payment.action.amount = action.payload.amount;
+      payment.action.currency = action.payload.currency;
+      payment.action.payload = action.payload.payload;
     },
-    addPaymentItem: (payment, action: PayloadAction<PaymentItem>) => {
-      payment.item.push(action.payload);
+    resetPaymentAction: payment => {
+      payment.action.type = initialState.action.type;
+      payment.action.icon = initialState.action.icon;
+      payment.action.name = initialState.action.name;
+      payment.action.description = initialState.action.description;
+      payment.action.amount = initialState.action.amount;
+      payment.action.currency = initialState.action.currency;
+      payment.action.payload = initialState.action.payload;
     },
-    clearPaymentItem: payment => {
-      payment.item = [];
+    setPaymentFee: (payment, action: PayloadAction<PaymentFee>) => {
+      payment.fee.gas = action.payload.gas;
+      payment.fee.platform = action.payload.platform;
     },
-    addPaymentAction: (payment, action: PayloadAction<PaymentAction>) => {
-      payment.action.push(action.payload);
+    resetPaymentFee: payment => {
+      payment.fee.gas = initialState.fee.gas;
+      payment.fee.platform = initialState.fee.platform;
     },
-    clearPaymentAction: payment => {
-      payment.action = [];
+    setPaymentState: (payment, action: PayloadAction<PaymentState>) => {
+      Object.assign(payment, action.payload);
     },
-    clearPaymentState: () => {
+    resetPaymentState: () => {
       return initialState;
     },
   },
@@ -71,14 +90,15 @@ const paymentSlice = createSlice({
 export const {
   showPayment,
   hidePayment,
+  setPaymentMode,
   setPaymentStatus,
-  setPaymentHeader,
-  clearPaymentHeader,
-  addPaymentItem,
-  clearPaymentItem,
-  addPaymentAction,
-  clearPaymentAction,
-  clearPaymentState,
+  resetPaymentStatus,
+  setPaymentAction,
+  resetPaymentAction,
+  setPaymentFee,
+  resetPaymentFee,
+  setPaymentState,
+  resetPaymentState,
 } = paymentSlice.actions;
 export default paymentSlice.reducer;
 
@@ -97,14 +117,9 @@ export const selectPaymentStatus = createSelector(
   (state: RootState) => state.payment.status,
 );
 
-export const selectPaymentHeader = createSelector(
+export const selectPaymentMode = createSelector(
   (state: RootState) => state,
-  (state: RootState) => state.payment.header,
-);
-
-export const selectPaymentItem = createSelector(
-  (state: RootState) => state,
-  (state: RootState) => state.payment.item,
+  (state: RootState) => state.payment.mode,
 );
 
 export const selectPaymentAction = createSelector(
@@ -112,11 +127,7 @@ export const selectPaymentAction = createSelector(
   (state: RootState) => state.payment.action,
 );
 
-export const selectPaymentTotalAmount = createSelector(
+export const selectPaymentFee = createSelector(
   (state: RootState) => state,
-  (state: RootState) =>
-    state.payment.item.reduce(
-      (partialSum, a) => partialSum + BigInt(a.amount),
-      BigInt(0),
-    ),
+  (state: RootState) => state.payment.fee,
 );

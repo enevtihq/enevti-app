@@ -21,14 +21,14 @@ export type OneKindContractForm = {
   untilHour: number;
   untilMinute: number;
   redeemLimitOption: string;
-  redeemLimit: number;
-  royaltyOrigin: number;
-  royaltyStaker: number;
+  redeemLimit: string;
+  royaltyOrigin: string;
+  royaltyStaker: string;
   priceAmount: string;
   priceCurrency: string;
   quantity: string;
   mintingExpireOption: string;
-  mintingExpire: number;
+  mintingExpire: string;
 };
 
 export type OneKindContractStatusForm = {

@@ -3,6 +3,7 @@ import React from 'react';
 import { NFTBase } from '../../../../types/nft';
 import NFTImageData from './contentType/NFTImageData';
 import { TemplateArgs } from '../../../../types/nft/NFTTemplate';
+import mimeMapping from '../../../../utils/mime/mimeMapping';
 
 interface NFTDataProps {
   nft: NFTBase;
@@ -12,7 +13,7 @@ interface NFTDataProps {
 }
 
 const handleRenderNFTData = (nftObject: NFTBase, dataUri?: string) => {
-  switch (nftObject.contentType) {
+  switch (mimeMapping(nftObject.dataMime)) {
     case 'image':
       return <NFTImageData nft={nftObject} dataUri={dataUri} />;
     default:

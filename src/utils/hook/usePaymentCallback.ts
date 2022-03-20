@@ -1,9 +1,9 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  clearPaymentState,
+  resetPaymentState,
   selectPaymentStatus,
-} from '../../../../store/slices/payment';
+} from '../../store/slices/payment';
 
 interface PaymentCallbackHookProps {
   onIdle?: () => void;
@@ -34,11 +34,11 @@ export default function usePaymentCallback({
         onProcess && onProcess();
         break;
       case 'success':
-        dispatch(clearPaymentState());
+        dispatch(resetPaymentState());
         onSuccess && onSuccess();
         break;
       case 'error':
-        dispatch(clearPaymentState());
+        dispatch(resetPaymentState());
         onError && onError();
         break;
       default:

@@ -35,10 +35,11 @@ import { StyleSheet, View } from 'react-native';
 import Color from 'color';
 import AppIconGradient from '../components/molecules/AppIconGradient';
 import { Theme } from '../theme/default';
-import { getMyProfile } from '../service/enevti/profile';
-import isProfileCanCreateNFT, {
+import {
+  getMyProfile,
+  isProfileCanCreateNFT,
   MINIMUM_BASIC_UNIT_STAKE_ELIGIBILITY,
-} from '../utils/profile/isProfileCanCreateNFT';
+} from '../service/enevti/profile';
 import {
   selectOnceEligible,
   touchOnceEligible,

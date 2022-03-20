@@ -10,7 +10,10 @@ import { CreateNFTOneKind } from '../../../../../types/store/CreateNFTQueue';
 import { RootState } from '../../../../state';
 
 export const createNFTOneKindQueueInitialState: CreateNFTOneKind = {
-  dataUri: '',
+  data: {
+    uri: '',
+    mime: '',
+  },
   choosenTemplate: {
     id: '',
     name: '',
@@ -29,7 +32,7 @@ export const createNFTOneKindQueueInitialState: CreateNFTOneKind = {
     priceCurrency: COIN_NAME,
     quantity: '',
     mintingExpireOption: '',
-    mintingExpire: 1,
+    mintingExpire: '',
     utility: '',
     contentName: '',
     contentSize: 0,
@@ -45,9 +48,9 @@ export const createNFTOneKindQueueInitialState: CreateNFTOneKind = {
     untilHour: -1,
     untilMinute: -1,
     redeemLimitOption: '',
-    redeemLimit: 1,
-    royaltyOrigin: 0,
-    royaltyStaker: 0,
+    redeemLimit: '',
+    royaltyOrigin: '',
+    royaltyStaker: '',
   },
   status: {
     nameAvailable: true,
@@ -60,7 +63,10 @@ const createNFTOneKindQueueSlice = createSlice({
   initialState: createNFTOneKindQueueInitialState,
   reducers: {
     setCreateNFTOneKindURI: (onekind, action: PayloadAction<string>) => {
-      onekind.dataUri = action.payload;
+      onekind.data.uri = action.payload;
+    },
+    setCreateNFTOneKindMime: (onekind, action: PayloadAction<string>) => {
+      onekind.data.mime = action.payload;
     },
     setCreateNFTOneKindChosenTemplate: (
       onekind,
@@ -88,6 +94,7 @@ const createNFTOneKindQueueSlice = createSlice({
 
 export const {
   setCreateNFTOneKindURI,
+  setCreateNFTOneKindMime,
   setCreateNFTOneKindChosenTemplate,
   setCreateNFTOneKindState,
   setCreateNFTOneKindStatus,

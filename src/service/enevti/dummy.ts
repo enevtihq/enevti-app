@@ -18,7 +18,7 @@ export const getDummyNFTData = (): NFTBase => {
     serial: '1A',
     name: 'EyeCollection',
     data: 'Qmb3jKA6Vn1azR6aSMnT6geGMkg818uBkfSHNg8ui1a9dy',
-    contentType: 'image',
+    dataMime: 'image/jpeg',
     NFTType: 'onekind',
     utility: utilityOption[Math.floor(Math.random() * utilityOption.length)],
     rarity: {
@@ -47,5 +47,5 @@ export const getDummyNFTData = (): NFTBase => {
 };
 
 export async function sleep(time: number) {
-  setTimeout(() => null, time);
+  await new Promise(r => setTimeout(r, time));
 }

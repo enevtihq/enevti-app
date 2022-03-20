@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { Profile } from '../../types/service/enevti/profile';
 import { store } from '../../store/state';
 import { getDummyNFTData, sleep } from './dummy';
@@ -6,8 +7,11 @@ import {
   setLastFetchProfile,
   setProfile,
 } from '../../store/slices/entities/profile';
-import { lastFetchTreshold } from '../../utils/lastFetch/constant';
+import { lastFetchTreshold } from '../../utils/constant/lastFetch';
 import { getMyAddress } from './persona';
+import { completeTokenUnit } from '../../utils/format/amount';
+
+export const MINIMUM_BASIC_UNIT_STAKE_ELIGIBILITY = 1000;
 
 async function fetchProfile(address: string): Promise<Profile | undefined> {
   console.log(address);
@@ -65,4 +69,10 @@ export async function getProfile(
 export async function getMyProfile(force: boolean = false) {
   const myAddress = await getMyAddress();
   return await getProfile(myAddress, force);
+}
+
+export function isProfileCanCreateNFT(profile: Profile) {
+  return new BigNumber(profile.stake).gt(
+    completeTokenUnit(MINIMUM_BASIC_UNIT_STAKE_ELIGIBILITY),
+  );
 }

@@ -10,4 +10,7 @@ module.exports = {
   globals: {
     JSX: true,
   },
+  env: {
+    es2020: true,
+  },
 };

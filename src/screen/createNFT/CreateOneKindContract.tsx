@@ -62,13 +62,13 @@ import AppMenuContainer from '../../components/atoms/menu/AppMenuContainer';
 import AppSecondaryButton from '../../components/atoms/button/AppSecondaryButton';
 import { clearCreateNFTQueueType } from '../../store/slices/queue/nft/create/type';
 import { clearCreateNFTQueueRoute } from '../../store/slices/queue/nft/create/route';
-import createOneKindContractPayment from '../../service/enevti/payment/action/oneKindContractPayment';
-import usePaymentCallback from '../../service/enevti/payment/hook/usePaymentCallback';
+import usePaymentCallback from '../../utils/hook/usePaymentCallback';
 import {
   hideModalLoader,
   showModalLoader,
 } from '../../store/slices/ui/global/modalLoader';
 import { showSnackbar } from '../../store/slices/ui/global/snackbar';
+import { payCreateNFTOneKind } from '../../store/middleware/thunk/queue/nft/create/payCreateNFTOneKind';
 
 type Props = StackScreenProps<RootStackParamList, 'CreateOneKindContract'>;
 
@@ -192,9 +192,13 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
           .matches(/^[A-Z]+$/, t('form:upercase'))
           .required(t('form:required')),
         priceAmount: Yup.string().required(t('form:required')),
-        quantity: Yup.number().moreThan(0).required(t('form:required')),
+        quantity: Yup.number()
+          .transform(value => (isNaN(value) ? undefined : value))
+          .moreThan(0)
+          .required(t('form:required')),
         mintingExpireOption: Yup.string().required(t('form:required')),
         mintingExpire: Yup.number()
+          .transform(value => (isNaN(value) ? undefined : value))
           .min(0, t('form:greaterEqualZero'))
           .required(t('form:required')),
         utility: Yup.string().required(t('form:required')),
@@ -236,14 +240,16 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
         }),
         redeemLimit: Yup.string().when('redeemLimitOption', {
           is: 'fixed',
-          then: Yup.number().min(0, t('form:greaterEqualZero')),
+          then: Yup.number()
+            .transform(value => (isNaN(value) ? undefined : value))
+            .min(0, t('form:greaterEqualZero')),
         }),
         royaltyOrigin: Yup.number()
-          .min(0, t('form:greaterEqualZero'))
-          .required(t('form:required')),
+          .transform(value => (isNaN(value) ? undefined : value))
+          .min(0, t('form:greaterEqualZero')),
         royaltyStaker: Yup.number()
-          .min(0, t('form:greaterEqualZero'))
-          .required(t('form:required')),
+          .transform(value => (isNaN(value) ? undefined : value))
+          .min(0, t('form:greaterEqualZero')),
       }),
     [t],
   );
@@ -259,9 +265,9 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
     validationSchema: validationSchema,
   });
 
-  const handleFormSubmit = async (values: any) => {
+  const handleFormSubmit = async (values: OneKindContractForm) => {
     const payload = Object.assign({}, oneKindContractStore, { state: values });
-    await createOneKindContractPayment(JSON.stringify(payload));
+    dispatch(payCreateNFTOneKind(payload));
     setIsLoading(false);
   };
 
@@ -765,8 +771,8 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
                     !!formikProps.errors.name),
                 onEndEditing: async e => {
                   const text = e.nativeEvent.text;
-                  const nameAvailable = await isNameAvailable(text);
                   formikProps.setFieldValue('name', text, true);
+                  const nameAvailable = await isNameAvailable(text);
                   formikProps.setStatus({
                     ...formikProps.status,
                     nameAvailable,
@@ -807,8 +813,8 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
                     !!formikProps.errors.symbol),
                 onEndEditing: async e => {
                   const text = e.nativeEvent.text;
-                  const symbolAvailable = await isSymbolAvailable(text);
                   formikProps.setFieldValue('symbol', text, true);
+                  const symbolAvailable = await isSymbolAvailable(text);
                   formikProps.setStatus({
                     ...formikProps.status,
                     symbolAvailable,
@@ -1028,7 +1034,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
                 <AppNFTRenderer
                   nft={dummyNFT}
                   width={itemWidth}
-                  dataUri={oneKindContractStore.dataUri}
+                  dataUri={oneKindContractStore.data.uri}
                 />
                 <View style={styles.previewAction}>
                   <AppQuaternaryButton

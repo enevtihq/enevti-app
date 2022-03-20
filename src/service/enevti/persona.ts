@@ -7,7 +7,7 @@ import {
 import * as Lisk from '@liskhq/lisk-client';
 import { ERRORCODE } from '../../utils/error/code';
 import { sleep } from '../../service/enevti/dummy';
-import { lastFetchTreshold } from '../../utils/lastFetch/constant';
+import { lastFetchTreshold } from '../../utils/constant/lastFetch';
 import {
   setPersona,
   setLastFetchPersona,

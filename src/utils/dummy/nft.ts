@@ -3,11 +3,12 @@ import { NFTBase } from '../../types/nft';
 import { NFTTemplateData } from '../../types/nft/NFTTemplate';
 import { NFTUtility } from '../../types/nft/NFTUtility';
 import { shuffleArray } from '../primitive/array';
+import { makeDummyIPFS } from './ipfs';
 
 export const makeDummyNFT = (
   type: 'onekind' | 'pack' | 'random' | string = 'random',
   template: NFTTemplateData = blankNFTTemplate,
-  data: string = 'Qmb3jKA6Vn1azR6aSMnT6geGMkg818uBkfSHNg8ui1a9dy',
+  data: string = makeDummyIPFS(),
 ): NFTBase => {
   const utilityOption: NFTUtility[] = [
     'videocall',
@@ -31,7 +32,7 @@ export const makeDummyNFT = (
     serial: Math.floor(Math.random() * 100).toString(),
     name: 'Collection Name',
     data: data,
-    contentType: 'image',
+    dataMime: 'image/jpeg',
     NFTType: nftType,
     utility: shuffledUtility,
     rarity: {

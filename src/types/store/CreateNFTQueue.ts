@@ -9,15 +9,21 @@ type CreateNFTTrait = {
   value: string;
 };
 
+type CreateNFTData = {
+  uri: string;
+  mime: string;
+};
+
 export type CreateNFTOneKind = {
-  dataUri: string;
+  data: CreateNFTData;
   choosenTemplate: NFTTemplateAsset;
   state: OneKindContractForm;
   status: OneKindContractStatusForm;
 };
 
 export type CreateNFTPackItemData = {
-  data: string;
+  uri: string;
+  mime: string;
   trait: CreateNFTTrait[];
 };
 
@@ -61,7 +67,7 @@ export type CreateNFTPackState = {
 };
 
 export type CreateNFTPack = {
-  dataUri: CreateNFTPackItemData[];
+  data: CreateNFTPackItemData[];
   choosenTemplate: NFTTemplateAsset;
   state: CreateNFTPackState;
   status: any;

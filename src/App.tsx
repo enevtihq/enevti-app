@@ -12,7 +12,7 @@ import { persistor, store } from './store/state';
 import { getTheme } from './theme';
 import './translations/i18n';
 import { IconProvider } from './components/atoms/icon/AppIconComponent';
-import './utils/suppressWarning';
+import './utils/debug/suppressWarning';
 
 const App = () => {
   useEffect(() => SplashScreen.hide(), []);

@@ -125,12 +125,12 @@ export default function ChooseNFTTemplate({ navigation, route }: Props) {
 
   React.useEffect(() => {
     if (type === 'onekind') {
-      setDataUri(oneKindQueue.dataUri);
+      setDataUri(oneKindQueue.data.uri);
     } else if (type === 'pack') {
-      setDataUri(shuffleArray(packQueue.dataUri).data);
+      setDataUri(shuffleArray(packQueue.data).uri);
     }
     setDummyNFT(makeDummyNFT('pack'));
-  }, [oneKindQueue.dataUri, packQueue.dataUri, type]);
+  }, [oneKindQueue.data.uri, packQueue.data, type]);
 
   return (
     <AppView>
