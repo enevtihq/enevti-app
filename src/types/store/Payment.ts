@@ -1,5 +1,5 @@
 export type PaymentAction = {
-  type: 'createNFTOneKind' | '';
+  type: 'createNFTOneKind' | 'cancel' | '';
   icon: string;
   name: string;
   description: string;
@@ -14,7 +14,7 @@ export type PaymentFee = {
 };
 
 export type PaymentStatus = {
-  type: 'idle' | 'initiated' | 'process' | 'success' | 'error';
+  type: 'idle' | 'initiated' | 'process' | 'success' | 'error' | 'cancel';
   message: string;
 };
 

@@ -106,7 +106,7 @@ const setMultipleFieldTouched = (
 const resetRedeemTimeKeyFields = (
   formik: FormikProps<OneKindContractForm & { initialDirty: string }>,
 ) => {
-  setMultipleFieldValue(formik, redeemTimeKey, true, true);
+  setMultipleFieldValue(formik, redeemTimeKey, true);
   setMultipleFieldTouched(formik, redeemTimeKey, false);
 };
 
@@ -290,7 +290,6 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
   }, [dispatch, formikProps.values, formikProps.status, navigation]);
 
   const paymentProcessCallback = React.useCallback(() => {
-    console.log('process');
     dispatch(showModalLoader());
   }, [dispatch]);
 
@@ -386,10 +385,10 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
   }, []);
 
   const onSelectedRecurringPicker = React.useCallback(item => {
+    resetRedeemTimeKeyFields(formikProps);
     if (item.value === 'every-day') {
       setMultipleFieldTouched(formikProps, ['timeDay', 'timeDate'], true);
     }
-    resetRedeemTimeKeyFields(formikProps);
     formikProps.setFieldValue('recurring', item.value, true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

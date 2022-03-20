@@ -9,7 +9,7 @@ import { hp, wp, SafeAreaInsets } from '../../../utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AppTextHeading2 from '../../atoms/text/AppTextHeading2';
 import AppListItem from '../../molecules/list/AppListItem';
-import { Divider, useTheme } from 'react-native-paper';
+import { Divider, Portal, Snackbar, useTheme } from 'react-native-paper';
 import { Theme } from '../../../theme/default';
 import AppTextHeading3 from '../../atoms/text/AppTextHeading3';
 import AppIconGradient from '../../molecules/AppIconGradient';
@@ -23,10 +23,14 @@ import {
   resetPaymentState,
   selectPaymentAction,
   selectPaymentFee,
+  selectPaymentMode,
   selectPaymentShowState,
   selectPaymentStatus,
+  setPaymentActionType,
+  setPaymentStatus,
 } from '../../../store/slices/payment';
 import AppPaymentItem from './AppPaymentItem';
+import { parseAmount } from '../../../utils/format/amount';
 
 export default function AppPaymentModal() {
   const { t } = useTranslation();
@@ -40,6 +44,7 @@ export default function AppPaymentModal() {
   const paymentSnapPoints = React.useMemo(() => ['70%'], []);
   const defaultCoin = React.useMemo(() => COIN_NAME, []);
 
+  const paymentMode = useSelector(selectPaymentMode);
   const paymentStatus = useSelector(selectPaymentStatus);
   const paymentShowState = useSelector(selectPaymentShowState);
   const paymentAction = useSelector(selectPaymentAction);
@@ -57,7 +62,35 @@ export default function AppPaymentModal() {
     [dispatch],
   );
 
-  return (
+  const onSnackDismiss = React.useCallback(() => {
+    payCallback();
+    paymentDismiss();
+  }, [payCallback, paymentDismiss]);
+
+  const onCancel = React.useCallback(() => {
+    paymentDismiss();
+    dispatch(setPaymentActionType('cancel'));
+    dispatch(
+      setPaymentStatus({
+        type: 'cancel',
+        message: t('payment:paymentCancelled'),
+      }),
+    );
+  }, [paymentDismiss, dispatch, t]);
+
+  const snackAction = React.useMemo(() => {
+    return { label: t('payment:cancel'), onPress: onCancel };
+  }, [onCancel, t]);
+
+  const silentPay = React.useCallback(
+    _ => {
+      payCallback();
+      paymentDismiss();
+    },
+    [payCallback, paymentDismiss],
+  );
+
+  return paymentMode === 'full' ? (
     <AppMenuContainer
       enablePanDownToClose
       snapPoints={paymentSnapPoints}
@@ -148,7 +181,25 @@ export default function AppPaymentModal() {
         </AppPrimaryButton>
       </View>
     </AppMenuContainer>
-  );
+  ) : paymentMode === 'compact' ? (
+    <Portal>
+      <Snackbar
+        duration={3000}
+        visible={paymentShowState}
+        onDismiss={onSnackDismiss}
+        style={styles.snackPay}
+        theme={{ colors: { accent: theme.colors.primary } }}
+        action={snackAction}>
+        {t('payment:snackPay', {
+          action: paymentAction.name,
+          amount: parseAmount(paymentTotalAmount.toString()),
+          currency: paymentTotalAmountCurrency,
+        })}
+      </Snackbar>
+    </Portal>
+  ) : paymentMode === 'silent' ? (
+    <View onLayout={silentPay} />
+  ) : null;
 }
 
 const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
@@ -195,5 +246,10 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
     },
     secureNoteText: {
       color: theme.colors.placeholder,
+    },
+    snackPay: {
+      marginVertical: hp('10%', insets),
+      marginLeft: wp('5%', insets),
+      marginRight: wp('5%', insets),
     },
   });

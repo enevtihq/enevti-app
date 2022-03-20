@@ -11,6 +11,7 @@ interface PaymentCallbackHookProps {
   onProcess?: () => void;
   onSuccess?: () => void;
   onError?: () => void;
+  onCancel?: () => void;
 }
 
 export default function usePaymentCallback({
@@ -19,6 +20,7 @@ export default function usePaymentCallback({
   onProcess,
   onSuccess,
   onError,
+  onCancel,
 }: PaymentCallbackHookProps) {
   const dispatch = useDispatch();
   const paymentStatus = useSelector(selectPaymentStatus);
@@ -41,6 +43,10 @@ export default function usePaymentCallback({
         dispatch(resetPaymentState());
         onError && onError();
         break;
+      case 'cancel':
+        dispatch(resetPaymentState());
+        onCancel && onCancel();
+        break;
       default:
         break;
     }
@@ -52,5 +58,6 @@ export default function usePaymentCallback({
     onProcess,
     onSuccess,
     onError,
+    onCancel,
   ]);
 }

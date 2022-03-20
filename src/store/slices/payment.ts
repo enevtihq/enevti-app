@@ -52,6 +52,12 @@ const paymentSlice = createSlice({
       payment.status.type = initialState.status.type;
       payment.status.message = initialState.status.message;
     },
+    setPaymentActionType: (
+      payment,
+      action: PayloadAction<PaymentAction['type']>,
+    ) => {
+      payment.action.type = action.payload;
+    },
     setPaymentAction: (payment, action: PayloadAction<PaymentAction>) => {
       payment.action.type = action.payload.type;
       payment.action.icon = action.payload.icon;
@@ -93,6 +99,7 @@ export const {
   setPaymentMode,
   setPaymentStatus,
   resetPaymentStatus,
+  setPaymentActionType,
   setPaymentAction,
   resetPaymentAction,
   setPaymentFee,
