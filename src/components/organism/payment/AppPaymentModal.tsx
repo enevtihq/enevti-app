@@ -82,13 +82,16 @@ export default function AppPaymentModal() {
     return { label: t('payment:cancel'), onPress: onCancel };
   }, [onCancel, t]);
 
-  const silentPay = React.useCallback(
-    _ => {
-      payCallback();
-      paymentDismiss();
-    },
-    [payCallback, paymentDismiss],
-  );
+  const silentPay = React.useCallback(() => {
+    payCallback();
+    paymentDismiss();
+  }, [payCallback, paymentDismiss]);
+
+  React.useEffect(() => {
+    if (paymentMode === 'silent') {
+      silentPay();
+    }
+  }, [paymentMode, silentPay]);
 
   return paymentMode === 'full' ? (
     <AppMenuContainer
@@ -197,9 +200,7 @@ export default function AppPaymentModal() {
         })}
       </Snackbar>
     </Portal>
-  ) : paymentMode === 'silent' ? (
-    <View onLayout={silentPay} />
-  ) : null;
+  ) : paymentMode === 'silent' ? null : null;
 }
 
 const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
