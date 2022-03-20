@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Portal } from 'react-native-paper';
+import { Modal, Portal, useTheme } from 'react-native-paper';
 import AppListItem from '../../molecules/list/AppListItem';
 import AppActivityIndicator from './AppActivityIndicator';
 import AppTextBody4 from '../text/AppTextBody4';
@@ -15,6 +15,7 @@ import {
 export default function AppModalLoader() {
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
+  const theme = useTheme();
   const visible = useSelector(selectModalLoaderShow);
   const message = useSelector(selectModalLoaderMessage);
 
@@ -22,7 +23,10 @@ export default function AppModalLoader() {
     <Portal>
       <Modal dismissable={false} visible={visible}>
         <AppListItem
-          style={{ margin: wp('5%', insets) }}
+          style={{
+            margin: wp('5%', insets),
+          }}
+          containerStyle={{ backgroundColor: theme.colors.background }}
           leftContent={
             <AppActivityIndicator style={{ marginRight: wp('5%', insets) }} />
           }>
