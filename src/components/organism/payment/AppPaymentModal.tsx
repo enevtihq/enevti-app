@@ -93,6 +93,8 @@ export default function AppPaymentModal() {
     }
   }, [paymentMode, silentPay]);
 
+  console.log(paymentFee.platform);
+
   return paymentMode === 'full' ? (
     <AppMenuContainer
       enablePanDownToClose
@@ -135,7 +137,7 @@ export default function AppPaymentModal() {
         <AppPaymentItem
           title={t('payment:platformFee')}
           description={
-            paymentFee.platform === BigInt(0)
+            paymentFee.platform.toString() === '0'
               ? t('payment:platformFeeDescription')
               : undefined
           }

@@ -76,6 +76,7 @@ export const iconMap = {
   restore: 'backup-restore',
   dollar: 'currency-usd',
   shield: 'shield-check',
+  info: 'information-outline',
 };
 
 interface AppIconComponentProps {
