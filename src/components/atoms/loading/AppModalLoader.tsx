@@ -6,14 +6,17 @@ import AppTextBody4 from '../text/AppTextBody4';
 import { useTranslation } from 'react-i18next';
 import { wp } from '../../../utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useSelector } from 'react-redux';
+import {
+  selectModalLoaderMessage,
+  selectModalLoaderShow,
+} from '../../../store/slices/ui/global/modalLoader';
 
-interface AppModalLoaderProps {
-  visible: boolean;
-}
-
-export default function AppModalLoader({ visible }: AppModalLoaderProps) {
+export default function AppModalLoader() {
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
+  const visible = useSelector(selectModalLoaderShow);
+  const message = useSelector(selectModalLoaderMessage);
 
   return (
     <Portal>
@@ -23,7 +26,7 @@ export default function AppModalLoader({ visible }: AppModalLoaderProps) {
           leftContent={
             <AppActivityIndicator style={{ marginRight: wp('5%', insets) }} />
           }>
-          <AppTextBody4>{t('form:loading')}</AppTextBody4>
+          <AppTextBody4>{message ? message : t('form:loading')}</AppTextBody4>
         </AppListItem>
       </Modal>
     </Portal>

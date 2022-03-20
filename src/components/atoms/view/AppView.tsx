@@ -14,7 +14,6 @@ import AppContainer from './AppContainer';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import AppPaymentModal from '../../organism/payment/AppPaymentModal';
 import AppModalLoader from '../loading/AppModalLoader';
-import { selectModalLoaderState } from '../../../store/slices/ui/global/modalLoader';
 
 interface AppViewProps {
   children: React.ReactNode;
@@ -45,7 +44,6 @@ export default function AppView({
   const insets = useSafeAreaInsets();
   const styles = React.useMemo(() => makeStyles(insets), [insets]);
   const snackbarState = useSelector(selectSnackBarState);
-  const loaderVisible = useSelector(selectModalLoaderState);
 
   return (
     <AppKeyboardDismissOnClickView activate={dismissKeyboard}>
@@ -62,7 +60,7 @@ export default function AppView({
             {children}
           </AppContainer>
         )}
-        {withLoader ? <AppModalLoader visible={loaderVisible} /> : null}
+        {withLoader ? <AppModalLoader /> : null}
         {withSnackbar ? (
           <AppSnackbar
             mode={snackbarState.mode}
