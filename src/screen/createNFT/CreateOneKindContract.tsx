@@ -951,7 +951,8 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
               />
             ) : null}
 
-            {formikProps.touched.timeDay || formikProps.touched.timeDate ? (
+            {formikProps.values.recurring !== 'anytime' &&
+            (formikProps.touched.timeDay || formikProps.touched.timeDate) ? (
               <AppHourMinutePicker
                 label={labelHourMinutePickerStart}
                 onSelected={onSelectedHourMinutePickerStart}
@@ -959,7 +960,9 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
               />
             ) : null}
 
-            {formikProps.touched.fromHour && formikProps.touched.fromMinute ? (
+            {formikProps.values.recurring !== 'anytime' &&
+            formikProps.touched.fromHour &&
+            formikProps.touched.fromMinute ? (
               <AppHourMinutePicker
                 label={labelHourMinutePickerEnd}
                 onSelected={onSelectedHourMinutePickerEnd}
@@ -969,7 +972,8 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
 
             {formikProps.touched.untilHour &&
             formikProps.touched.untilMinute &&
-            formikProps.values.recurring !== 'once' ? (
+            formikProps.values.recurring !== 'once' &&
+            formikProps.values.recurring !== 'anytime' ? (
               <AppRedeemLimitPicker
                 label={t('createNFT:redeemLimit')}
                 value={formikProps.values.redeemLimitOption}
