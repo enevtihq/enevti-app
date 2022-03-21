@@ -13,11 +13,9 @@ import { getTheme } from './theme';
 import './translations/i18n';
 import { IconProvider } from './components/atoms/icon/AppIconComponent';
 import './utils/debug/suppressWarning';
-import useLockScreen from './utils/hook/useLockScreen';
 
 const App = () => {
   useEffect(() => SplashScreen.hide(), []);
-  useLockScreen();
   const colorScheme = useColorScheme()!;
 
   return (

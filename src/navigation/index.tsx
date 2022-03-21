@@ -1,5 +1,8 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import {
+  NavigationContainer,
+  useNavigationContainerRef,
+} from '@react-navigation/native';
 import {
   createStackNavigator,
   CardStyleInterpolators,
@@ -23,6 +26,9 @@ import { Persona } from '../types/service/enevti/persona';
 import ChooseNFTType from '../screen/createNFT/ChooseNFTType';
 import ChooseNFTTemplate from '../screen/createNFT/ChooseNFTTemplate';
 import CreateOneKindContract from '../screen/createNFT/CreateOneKindContract';
+import useLockScreen from '../utils/hook/useLockScreen';
+import useScreenDisplayed from '../utils/hook/useScreenDisplayed';
+import { selectLockedState } from '../store/slices/ui/screen/locked';
 
 export type RootStackParamList = {
   CreateAccount: undefined;
@@ -55,6 +61,9 @@ const Stack = createStackNavigator();
 
 export default function AppNavigationContainer() {
   const colorScheme = useColorScheme();
+  const navigationRef = useNavigationContainerRef<RootStackParamList>();
+  const locked = useSelector(selectLockedState);
+
   const auth = useSelector(selectAuthState);
   const initialRoute = auth.encrypted
     ? 'Login'
@@ -62,8 +71,23 @@ export default function AppNavigationContainer() {
     ? 'Home'
     : 'CreateAccount';
 
+  useLockScreen();
+  useScreenDisplayed();
+
+  React.useEffect(() => {
+    if (
+      auth.encrypted &&
+      locked &&
+      navigationRef.getCurrentRoute()?.name !== 'Login'
+    ) {
+      navigationRef.navigate('Login');
+    }
+  }, [auth.encrypted, locked, navigationRef]);
+
   return (
-    <NavigationContainer theme={getTheme(colorScheme!.toString())}>
+    <NavigationContainer
+      ref={navigationRef}
+      theme={getTheme(colorScheme!.toString())}>
       <Stack.Navigator initialRouteName={initialRoute}>
         <Stack.Screen
           name="CreateAccount"

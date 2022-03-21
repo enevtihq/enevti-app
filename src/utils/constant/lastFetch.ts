@@ -14,4 +14,5 @@ const defaultTreshold = parseLastFetch(10, 'minute');
 export const lastFetchTreshold = {
   persona: defaultTreshold,
   profile: defaultTreshold,
+  display: parseLastFetch(15, 'minute'),
 };

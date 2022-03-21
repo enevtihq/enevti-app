@@ -1,7 +1,15 @@
 import React from 'react';
 import { NativeModules, NativeEventEmitter } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  lockScreen,
+  selectLockedState,
+} from '../../store/slices/ui/screen/locked';
 
 export default function useLockScreen() {
+  const dispatch = useDispatch();
+  const locked = useSelector(selectLockedState);
+
   React.useEffect(() => {
     const { RNLockDetection } = NativeModules;
     RNLockDetection.registerDeviceLockListener();
@@ -9,12 +17,13 @@ export default function useLockScreen() {
     const lockDetectionSuscription = LockDetectionEmitter.addListener(
       'LockStatusChange',
       ({ status }) => {
-        console.log(status);
-        // TODO: if locked && state is not locked, then fire onLocked
+        if (!locked && status === 'LOCKED') {
+          dispatch(lockScreen());
+        }
       },
     );
     return function cleanup() {
       lockDetectionSuscription.remove();
     };
-  }, []);
+  }, [dispatch, locked]);
 }

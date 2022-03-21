@@ -28,6 +28,10 @@ import {
   setUnencryptedPassphraseAuth,
 } from '../../store/slices/auth';
 import { showSnackbar } from '../../store/slices/ui/global/snackbar';
+import {
+  selectLockedState,
+  unlockScreen,
+} from '../../store/slices/ui/screen/locked';
 
 type Props = StackScreenProps<RootStackParamList, 'Login'>;
 YupPassword(Yup);
@@ -38,6 +42,7 @@ const validationSchema = Yup.object().shape({
 
 export default function Login({ navigation }: Props) {
   const authState = useSelector(selectAuthState);
+  const locked = useSelector(selectLockedState);
   const dispatch = useDispatch();
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
@@ -67,8 +72,26 @@ export default function Login({ navigation }: Props) {
     }
 
     setIsLoading(false);
-    navigation.replace('Home');
+    if (locked) {
+      dispatch(unlockScreen());
+      navigation.goBack();
+    } else {
+      navigation.replace('Home');
+    }
   };
+
+  React.useEffect(
+    () =>
+      navigation.addListener('beforeRemove', e => {
+        if (locked) {
+          e.preventDefault();
+          Keyboard.dismiss();
+        } else {
+          navigation.dispatch(e.data.action);
+        }
+      }),
+    [navigation, locked],
+  );
 
   return (
     <AppView dismissKeyboard={true}>
