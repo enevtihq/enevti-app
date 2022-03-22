@@ -18,7 +18,7 @@ export default function RarityPercent({
   width,
 }: RarityPercentProps) {
   const theme = useTheme();
-  const styles = makeStyles(args, theme);
+  const styles = React.useMemo(() => makeStyles(args, theme), [args, theme]);
   const text =
     nft.NFTType === 'onekind'
       ? '☆☆☆'

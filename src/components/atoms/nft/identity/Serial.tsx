@@ -14,7 +14,7 @@ interface SerialProps {
 export default React.memo(
   function Serial({ nft, args, width }: SerialProps) {
     const theme = useTheme();
-    const styles = makeStyles(args, theme);
+    const styles = React.useMemo(() => makeStyles(args, theme), [args, theme]);
     const text = `$${nft.symbol}#${nft.serial}`;
 
     const w = (parseFloat(args.width) * width) / 100.0;

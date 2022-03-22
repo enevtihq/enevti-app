@@ -14,7 +14,7 @@ interface PartitionIconProps {
 
 export default React.memo(
   function PartitionIcon({ nft, args, width }: PartitionIconProps) {
-    const styles = makeStyles(args);
+    const styles = React.useMemo(() => makeStyles(args), [args]);
 
     const w = (parseFloat(args.width) * width) / 100.0;
     const iconSize = w * 0.75;

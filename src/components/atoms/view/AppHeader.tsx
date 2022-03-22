@@ -43,7 +43,10 @@ export default function AppHeader({
     : compact
     ? hp(HEADER_HEIGHT_COMPACT_PERCENTAGE, insets)
     : hp(HEADER_HEIGHT_PERCENTAGE, insets);
-  const styles = makeStyles(theme, headerHeight, insets);
+  const styles = React.useMemo(
+    () => makeStyles(theme, headerHeight, insets),
+    [theme, headerHeight, insets],
+  );
 
   return (
     <Animated.View style={style}>

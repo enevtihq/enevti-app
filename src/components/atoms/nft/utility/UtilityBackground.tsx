@@ -11,7 +11,7 @@ interface UtilityBackgroundProps {
 
 export default React.memo(
   function UtilityBackground({ nft, args }: UtilityBackgroundProps) {
-    const styles = makeStyles(args);
+    const styles = React.useMemo(() => makeStyles(args), [args]);
     let source: any;
 
     switch (nft.utility) {

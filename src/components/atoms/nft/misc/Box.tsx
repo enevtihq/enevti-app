@@ -8,7 +8,7 @@ interface BoxProps {
 
 export default React.memo(
   function Box({ args }: BoxProps) {
-    const styles = makeStyles(args);
+    const styles = React.useMemo(() => makeStyles(args), [args]);
 
     return <View style={styles.boxContainer} />;
   },

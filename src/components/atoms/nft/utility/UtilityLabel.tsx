@@ -14,7 +14,7 @@ interface UtilityLabelProps {
 export default React.memo(
   function UtilityLabel({ nft, args, width }: UtilityLabelProps) {
     const theme = useTheme();
-    const styles = makeStyles(args, theme);
+    const styles = React.useMemo(() => makeStyles(args, theme), [args, theme]);
     let text: string = 'help-circle-outline';
 
     switch (nft.utility) {

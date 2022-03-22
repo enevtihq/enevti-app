@@ -26,7 +26,7 @@ export default function AppAvatarRenderer({
   color,
 }: AppAvatarRendererProps) {
   const theme = useTheme();
-  const styles = makeStyles(size, color);
+  const styles = React.useMemo(() => makeStyles(size, color), [size, color]);
 
   return (
     <View style={[styles.container, style]}>

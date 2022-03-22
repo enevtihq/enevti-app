@@ -23,7 +23,7 @@ export default function AppIconGradient({
   androidRenderingMode = 'hardware',
 }: AppIconGradientProps) {
   const theme = useTheme() as Theme;
-  const styles = makeStyles(size, theme);
+  const styles = React.useMemo(() => makeStyles(size, theme), [size, theme]);
 
   return (
     <View style={[{ width: size, height: size }, style]}>

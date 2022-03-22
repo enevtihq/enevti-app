@@ -14,7 +14,7 @@ interface NameProps {
 export default React.memo(
   function Name({ nft, args, width }: NameProps) {
     const theme = useTheme();
-    const styles = makeStyles(args, theme);
+    const styles = React.useMemo(() => makeStyles(args, theme), [args, theme]);
     const text = nft.name;
 
     const w = (parseFloat(args.width) * width) / 100.0;

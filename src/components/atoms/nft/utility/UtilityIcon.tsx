@@ -14,7 +14,7 @@ interface UtilityIconProps {
 
 export default React.memo(
   function UtilityIcon({ nft, args, width }: UtilityIconProps) {
-    const styles = makeStyles(args);
+    const styles = React.useMemo(() => makeStyles(args), [args]);
 
     const w = (parseFloat(args.width) * width) / 100.0;
     const iconSize = w * 0.75;

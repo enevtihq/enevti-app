@@ -35,7 +35,7 @@ interface FeedProps extends Props {
 }
 
 export default function Feed({ onScroll, headerHeight }: FeedProps) {
-  const styles = makeStyles(headerHeight);
+  const styles = React.useMemo(() => makeStyles(headerHeight), [headerHeight]);
   const insets = useSafeAreaInsets();
   const feedHeight = hp('24%', insets) + wp('95%', insets);
 

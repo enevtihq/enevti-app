@@ -39,7 +39,10 @@ export default function AppQuaternaryButton({
 }: AppQuaternaryButtonProps): JSX.Element {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
-  const styles = makeStyles(theme, insets, box);
+  const styles = React.useMemo(
+    () => makeStyles(theme, insets, box),
+    [theme, insets, box],
+  );
 
   const opacity = disabled ? 0.2 : 1;
 

@@ -29,7 +29,10 @@ export default function AppContainer({
 }: AppContainerProps) {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
-  const styles = makeStyles(theme, darken);
+  const styles = React.useMemo(
+    () => makeStyles(theme, darken),
+    [theme, darken],
+  );
 
   return (
     <SafeAreaView style={styles.container} edges={edges}>

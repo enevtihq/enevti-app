@@ -14,7 +14,7 @@ interface PartitionLabelProps {
 export default React.memo(
   function PartitionLabel({ nft, args, width }: PartitionLabelProps) {
     const theme = useTheme();
-    const styles = makeStyles(args, theme);
+    const styles = React.useMemo(() => makeStyles(args, theme), [args, theme]);
     let text: string = 'Unknown';
 
     if (nft.NFTType === 'onekind') {

@@ -11,7 +11,7 @@ interface RarityIconProps {
 
 export default React.memo(
   function RarityIcon({ nft, args }: RarityIconProps) {
-    const styles = makeStyles(args);
+    const styles = React.useMemo(() => makeStyles(args), [args]);
     const source =
       nft.NFTType !== 'onekind'
         ? nft.rarity.stat.percent < 50

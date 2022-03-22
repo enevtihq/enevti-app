@@ -51,7 +51,10 @@ export default function AppProfile({
 }: AppProfileProps) {
   const insets = useSafeAreaInsets();
   const theme = useTheme();
-  const styles = makeStyles(headerHeight, insets);
+  const styles = React.useMemo(
+    () => makeStyles(headerHeight, insets),
+    [headerHeight, insets],
+  );
 
   const [ownedMounted, setOwnedMounted] = React.useState<boolean>(false);
   const [onSaleMounted, setOnSaleMounted] = React.useState<boolean>(false);

@@ -27,7 +27,7 @@ export default function NFTData({
   box = false,
   dataUri,
 }: NFTDataProps) {
-  const styles = makeStyles(box, args);
+  const styles = React.useMemo(() => makeStyles(box, args), [box, args]);
 
   return (
     <View style={styles.nftDataContainer}>
