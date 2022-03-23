@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 import React from 'react';
 import Animated, {
   scrollTo,
@@ -58,9 +58,8 @@ export default function AppProfile({
 
   const [ownedMounted, setOwnedMounted] = React.useState<boolean>(false);
   const [onSaleMounted, setOnSaleMounted] = React.useState<boolean>(false);
-  const [scrollDisabled, setScrollDisabled] = React.useState<boolean>(false);
 
-  const ownedRef = useAnimatedRef<any>();
+  const ownedRef = useAnimatedRef<FlatList>();
   const onSaleRef = useAnimatedRef<any>();
 
   const headerCollapsed = useSharedValue(true);
@@ -75,6 +74,7 @@ export default function AppProfile({
   ) =>
     useAnimatedScrollHandler({
       onScroll: (event, ctx: { prevY: number; current: number }) => {
+        console.log(event.contentOffset.y);
         rawScrollY.value = event.contentOffset.y;
 
         if (event.contentOffset.y < totalHeaderHeight) {
@@ -177,13 +177,21 @@ export default function AppProfile({
     [ownedMounted, onSaleMounted],
   );
 
-  const onRefreshStart = React.useCallback(() => setScrollDisabled(true), []);
-
   const onRefreshEnd = React.useCallback(() => {
-    setScrollDisabled(false);
-    rawScrollY.value = 0;
-    tabScroll.value = 0;
-  }, [rawScrollY, tabScroll]);
+    ownedRef.current?.scrollToOffset({ offset: 1 });
+    onSaleRef.current?.scrollToOffset({ offset: 1 });
+    onBeginDragWorklet && onBeginDragWorklet(0);
+    onScrollWorklet && onScrollWorklet(0);
+    onEndDragWorklet && onEndDragWorklet(0);
+    onMomentumEndWorklet && onMomentumEndWorklet(0);
+  }, [
+    ownedRef,
+    onSaleRef,
+    onScrollWorklet,
+    onBeginDragWorklet,
+    onEndDragWorklet,
+    onMomentumEndWorklet,
+  ]);
 
   const ownedData = React.useMemo(
     () => (profile ? profile.owned : []),
@@ -209,7 +217,6 @@ export default function AppProfile({
         headerHeight={headerHeight}
         data={ownedData}
         onMounted={ownedOnMounted}
-        onRefreshStart={onRefreshStart}
         onRefreshEnd={onRefreshEnd}
       />
     ),
@@ -221,7 +228,6 @@ export default function AppProfile({
       scrollEnabled,
       persona,
       ownedOnMounted,
-      onRefreshStart,
       onRefreshEnd,
     ],
   );
@@ -236,7 +242,6 @@ export default function AppProfile({
         headerHeight={headerHeight}
         data={onSaleData}
         onMounted={onSaleOnMounted}
-        onRefreshStart={onRefreshStart}
         onRefreshEnd={onRefreshEnd}
       />
     ),
@@ -248,7 +253,6 @@ export default function AppProfile({
       scrollEnabled,
       persona,
       onSaleOnMounted,
-      onRefreshStart,
       onRefreshEnd,
     ],
   );
@@ -262,7 +266,6 @@ export default function AppProfile({
           navigation={navigation}
         />
       </Animated.View>
-      {scrollDisabled ? <View style={styles.scrollDisabler} /> : null}
       <AppProfileBody
         headerHeight={headerHeight}
         animatedTabBarStyle={animatedTabBarStyle}
@@ -305,12 +308,5 @@ const makeStyles = (headerHeight: number, insets: SafeAreaInsets) =>
     loaderContainer: {
       justifyContent: 'center',
       alignItems: 'center',
-    },
-    scrollDisabler: {
-      position: 'absolute',
-      height: '100%',
-      width: '100%',
-      backgroundColor: 'transparent',
-      zIndex: 1,
     },
   });

@@ -10,6 +10,11 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AppNFTRenderer from '../../../molecules/nft/AppNFTRenderer';
 import { getProfile } from '../../../../service/enevti/profile';
 import { Persona } from '../../../../types/service/enevti/persona';
+import { useDispatch } from 'react-redux';
+import {
+  hideModalLoader,
+  showModalLoader,
+} from '../../../../store/slices/ui/global/modalLoader';
 
 const AnimatedFlatGrid =
   Animated.createAnimatedComponent<FlatGridProps<NFTBase>>(FlatGrid);
@@ -39,16 +44,17 @@ function Component(
   ref: any,
 ) {
   const insets = useSafeAreaInsets();
+  const dispatch = useDispatch();
   const noDisplay = 'none';
   const [displayed, setDisplayed] = React.useState<boolean>(false);
   const [refreshing, setRefreshing] = React.useState<boolean>(false);
 
   const handleRefresh = async () => {
     onRefreshStart && onRefreshStart();
+    dispatch(showModalLoader());
     setRefreshing(true);
     await getProfile(persona.address, true);
-    // setRefreshing(false);
-    onRefreshEnd && onRefreshEnd();
+    dispatch(hideModalLoader());
   };
 
   React.useEffect(() => {
@@ -56,7 +62,12 @@ function Component(
       setDisplayed(true);
       onMounted && onMounted();
     }
-  }, [ref, onMounted]);
+    return function cleanup() {
+      if (refreshing) {
+        onRefreshEnd && onRefreshEnd();
+      }
+    };
+  }, [ref, onMounted, refreshing, onRefreshEnd]);
 
   return (
     <AnimatedFlatGrid
@@ -83,7 +94,7 @@ function Component(
       )}
       refreshControl={
         <RefreshControl
-          refreshing={refreshing}
+          refreshing={false}
           onRefresh={handleRefresh}
           progressViewOffset={
             Platform.OS === 'ios'
