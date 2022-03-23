@@ -48,14 +48,20 @@ async function fetchProfile(address: string): Promise<Profile | undefined> {
 
 export async function getProfile(
   address: string,
+): Promise<Profile | undefined> {
+  return await fetchProfile(address);
+}
+
+export async function getMyProfile(
   force: boolean = false,
 ): Promise<Profile | undefined> {
   const now = Date.now();
+  const myAddress = await getMyAddress();
   const lastFetch = selectMyProfile(store.getState()).lastFetch;
   let myProfile: Profile = selectMyProfile(store.getState());
 
   if (force || now - lastFetch > lastFetchTreshold.profile) {
-    const profileResponse = await fetchProfile(address);
+    const profileResponse = await getProfile(myAddress);
     if (profileResponse) {
       myProfile = profileResponse;
       store.dispatch(setLastFetchMyProfile(now));
@@ -64,11 +70,6 @@ export async function getProfile(
   }
 
   return myProfile;
-}
-
-export async function getMyProfile(force: boolean = false) {
-  const myAddress = await getMyAddress();
-  return await getProfile(myAddress, force);
 }
 
 export function isProfileCanCreateNFT(profile: Profile) {

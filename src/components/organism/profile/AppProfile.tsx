@@ -75,6 +75,38 @@ export default function AppProfile({
   const totalHeaderHeight =
     hp(PROFILE_HEADER_HEIGHT_PERCENTAGE, insets) + headerHeight;
 
+  const onFeedScreenLoaded = React.useCallback(
+    async (force = false) => {
+      try {
+        if (address === myPersona.address) {
+          const profileResponse = await getMyProfile(force);
+          if (profileResponse) {
+            setProfile(profileResponse);
+            setPersona(myPersona);
+          }
+        } else {
+          const personaBase = await getBasePersona(address);
+          const profileResponse = await getProfile(address);
+          if (personaBase && profileResponse) {
+            setProfile(profileResponse);
+            setPersona(personaBase);
+          }
+        }
+      } catch (err: any) {
+        handleError(err);
+      }
+    },
+    [address, myPersona],
+  );
+
+  React.useEffect(() => {
+    try {
+      onFeedScreenLoaded();
+    } catch (err: any) {
+      handleError(err);
+    }
+  }, [onFeedScreenLoaded]);
+
   const useCustomAnimatedScrollHandler = (
     scrollRefList: React.RefObject<any>[],
   ) =>
@@ -182,7 +214,15 @@ export default function AppProfile({
     [ownedMounted, onSaleMounted],
   );
 
-  const onRefreshEnd = React.useCallback(() => {
+  const onRefreshStart = React.useCallback(async () => {
+    try {
+      await onFeedScreenLoaded(true);
+    } catch (err) {
+      handleError(err);
+    }
+  }, [onFeedScreenLoaded]);
+
+  const onRefreshEnd = React.useCallback(async () => {
     ownedRef.current?.scrollToOffset({ offset: 1 });
     onSaleRef.current?.scrollToOffset({ offset: 1 });
     onBeginDragWorklet && onBeginDragWorklet(0);
@@ -216,13 +256,13 @@ export default function AppProfile({
     () => (
       <OwnedNFTComponent
         ref={ownedRef}
-        address={address}
         onScroll={ownedScrollHandler}
         scrollEnabled={scrollEnabled}
         headerHeight={headerHeight}
         data={ownedData}
         onMounted={ownedOnMounted}
         onRefreshEnd={onRefreshEnd}
+        onRefreshStart={onRefreshStart}
       />
     ),
     [
@@ -231,9 +271,9 @@ export default function AppProfile({
       ownedData,
       ownedScrollHandler,
       scrollEnabled,
-      address,
       ownedOnMounted,
       onRefreshEnd,
+      onRefreshStart,
     ],
   );
 
@@ -241,13 +281,13 @@ export default function AppProfile({
     () => (
       <OnSaleNFTComponent
         ref={onSaleRef}
-        address={address}
         onScroll={onSaleScrollHandler}
         scrollEnabled={scrollEnabled}
         headerHeight={headerHeight}
         data={onSaleData}
         onMounted={onSaleOnMounted}
         onRefreshEnd={onRefreshEnd}
+        onRefreshStart={onRefreshStart}
       />
     ),
     [
@@ -256,40 +296,11 @@ export default function AppProfile({
       onSaleData,
       onSaleScrollHandler,
       scrollEnabled,
-      address,
       onSaleOnMounted,
       onRefreshEnd,
+      onRefreshStart,
     ],
   );
-
-  const onFeedScreenLoaded = React.useCallback(async () => {
-    try {
-      if (address === myPersona.address) {
-        const profileResponse = await getMyProfile();
-        if (profileResponse) {
-          setProfile(profileResponse);
-          setPersona(myPersona);
-        }
-      } else {
-        const personaBase = await getBasePersona(address);
-        const profileResponse = await getProfile(address);
-        if (personaBase && profileResponse) {
-          setProfile(profileResponse);
-          setPersona(personaBase);
-        }
-      }
-    } catch (err: any) {
-      handleError(err);
-    }
-  }, [address, myPersona]);
-
-  React.useEffect(() => {
-    try {
-      onFeedScreenLoaded();
-    } catch (err: any) {
-      handleError(err);
-    }
-  }, [onFeedScreenLoaded]);
 
   return persona && profile ? (
     <View>

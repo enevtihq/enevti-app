@@ -63,25 +63,21 @@ export async function getMyAddress() {
   }
 }
 
-export async function getBasePersona(
-  address: string,
-  force = false,
-): Promise<Persona> {
+export async function getBasePersona(address: string): Promise<Persona> {
+  return await fetchPersona(address);
+}
+
+export async function getMyBasePersona(force = false): Promise<Persona> {
   const now = Date.now();
+  const address = await getMyAddress();
   const lastFetch = selectMyPersona(store.getState()).lastFetch;
   let myPersona: Persona = selectMyPersona(store.getState());
 
   if (force || now - lastFetch > lastFetchTreshold.persona) {
-    myPersona = await fetchPersona(address);
-
+    myPersona = await getBasePersona(address);
     store.dispatch(setLastFetchMyPersona(now));
     store.dispatch(setMyPersona(myPersona));
   }
 
   return myPersona;
-}
-
-export async function getMyBasePersona(force = false): Promise<Persona> {
-  const address = await getMyAddress();
-  return await getBasePersona(address, force);
 }

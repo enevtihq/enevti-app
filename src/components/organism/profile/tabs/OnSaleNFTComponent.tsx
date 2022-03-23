@@ -8,7 +8,6 @@ import { TOP_TABBAR_HEIGHT_PERCENTAGE } from '../../../atoms/view/AppTopTabBar';
 import { hp, wp } from '../../../../utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AppNFTRenderer from '../../../molecules/nft/AppNFTRenderer';
-import { getProfile } from '../../../../service/enevti/profile';
 import { useDispatch } from 'react-redux';
 import {
   hideModalLoader,
@@ -19,19 +18,17 @@ const AnimatedFlatGrid =
   Animated.createAnimatedComponent<FlatGridProps<NFTBase>>(FlatGrid);
 
 interface OnSaleNFTComponentProps {
-  address: string;
   data?: any;
   onScroll?: any;
   headerHeight?: any;
   onMounted?: () => void;
-  onRefreshStart?: () => void;
-  onRefreshEnd?: () => void;
+  onRefreshStart?: () => Promise<void>;
+  onRefreshEnd?: () => Promise<void>;
   scrollEnabled?: boolean;
 }
 
 function Component(
   {
-    address,
     data,
     onScroll,
     headerHeight,
@@ -49,11 +46,14 @@ function Component(
   const [refreshing, setRefreshing] = React.useState<boolean>(false);
 
   const handleRefresh = async () => {
-    onRefreshStart && onRefreshStart();
-    dispatch(showModalLoader());
-    setRefreshing(true);
-    await getProfile(address, true);
-    dispatch(hideModalLoader());
+    try {
+      dispatch(showModalLoader());
+      setRefreshing(true);
+      onRefreshStart && (await onRefreshStart());
+      onRefreshEnd && (await onRefreshEnd());
+      setRefreshing(false);
+      dispatch(hideModalLoader());
+    } catch {}
   };
 
   React.useEffect(() => {
@@ -61,11 +61,6 @@ function Component(
       setDisplayed(true);
       onMounted && onMounted();
     }
-    return function cleanup() {
-      if (refreshing) {
-        onRefreshEnd && onRefreshEnd();
-      }
-    };
   }, [ref, onMounted, refreshing, onRefreshEnd]);
 
   return (
