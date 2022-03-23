@@ -3,10 +3,10 @@ import { Profile } from '../../types/service/enevti/profile';
 import { store } from '../../store/state';
 import { getDummyNFTData, sleep } from './dummy';
 import {
-  selectProfile,
-  setLastFetchProfile,
-  setProfile,
-} from '../../store/slices/entities/profile';
+  selectMyProfile,
+  setLastFetchMyProfile,
+  setMyProfile,
+} from '../../store/slices/entities/myProfile';
 import { lastFetchTreshold } from '../../utils/constant/lastFetch';
 import { getMyAddress } from './persona';
 import { completeTokenUnit } from '../../utils/format/amount';
@@ -51,15 +51,15 @@ export async function getProfile(
   force: boolean = false,
 ): Promise<Profile | undefined> {
   const now = Date.now();
-  const lastFetch = selectProfile(store.getState()).lastFetch;
-  let myProfile: Profile = selectProfile(store.getState());
+  const lastFetch = selectMyProfile(store.getState()).lastFetch;
+  let myProfile: Profile = selectMyProfile(store.getState());
 
   if (force || now - lastFetch > lastFetchTreshold.profile) {
     const profileResponse = await fetchProfile(address);
     if (profileResponse) {
       myProfile = profileResponse;
-      store.dispatch(setLastFetchProfile(now));
-      store.dispatch(setProfile(myProfile));
+      store.dispatch(setLastFetchMyProfile(now));
+      store.dispatch(setMyProfile(myProfile));
     }
   }
 

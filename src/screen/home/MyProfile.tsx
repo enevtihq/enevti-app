@@ -4,8 +4,8 @@ import AppView from '../../components/atoms/view/AppView';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation';
 import { useSelector } from 'react-redux';
-import { selectPersona } from '../../store/slices/entities/persona';
-import { selectProfile } from '../../store/slices/entities/profile';
+import { selectMyPersona } from '../../store/slices/entities/myPersona';
+import { selectMyProfile } from '../../store/slices/entities/myProfile';
 import { getMyProfile } from '../../service/enevti/profile';
 import { handleError } from '../../utils/error/handle';
 import AppProfile from '../../components/organism/profile/AppProfile';
@@ -29,8 +29,8 @@ export default function MyProfile({
   headerHeight = 0,
 }: MyProfileProps) {
   const styles = React.useMemo(() => makeStyles(), []);
-  const myPersona = useSelector(selectPersona);
-  const profileData = useSelector(selectProfile);
+  const myPersona = useSelector(selectMyPersona);
+  const profileData = useSelector(selectMyProfile);
 
   const onFeedScreenLoaded = async () => {
     try {

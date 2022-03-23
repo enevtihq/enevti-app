@@ -12,7 +12,7 @@ import AppListItem from '../../molecules/list/AppListItem';
 import { StyleSheet } from 'react-native';
 import { StakerItem } from '../../../types/service/enevti/stake';
 import { useSelector } from 'react-redux';
-import { selectPersona } from '../../../store/slices/entities/persona';
+import { selectMyPersona } from '../../../store/slices/entities/myPersona';
 import { parseAmount } from '../../../utils/format/amount';
 import { getCoinName } from '../../atoms/brand/AppBrandConstant';
 
@@ -26,7 +26,7 @@ export default function AppStakerItem({ staker }: AppStakerItemProps) {
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
   const styles = React.useMemo(() => makeStyles(insets), [insets]);
-  const myPersona = useSelector(selectPersona);
+  const myPersona = useSelector(selectMyPersona);
 
   const onDelete = () => {
     console.log('deleted');

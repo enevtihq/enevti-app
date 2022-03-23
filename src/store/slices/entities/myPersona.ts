@@ -4,28 +4,28 @@ import { Persona } from '../../../types/service/enevti/persona';
 import { RootState } from '../../state';
 
 const personaEntitySlice = createSlice({
-  name: 'persona',
+  name: 'myPersona',
   initialState: { username: '', photo: '', address: '', lastFetch: 0 },
   reducers: {
-    setPersona: (persona, action: PayloadAction<Persona>) => {
+    setMyPersona: (persona, action: PayloadAction<Persona>) => {
       persona.username = action.payload.username;
       persona.photo = action.payload.photo;
       persona.address = action.payload.address;
     },
-    setLastFetchPersona: (persona, action: PayloadAction<number>) => {
+    setLastFetchMyPersona: (persona, action: PayloadAction<number>) => {
       persona.lastFetch = action.payload;
     },
-    setPersonaAddress: (persona, action: PayloadAction<string>) => {
+    setMyPersonaAddress: (persona, action: PayloadAction<string>) => {
       persona.address = action.payload;
     },
   },
 });
 
-export const { setPersona, setLastFetchPersona, setPersonaAddress } =
+export const { setMyPersona, setLastFetchMyPersona, setMyPersonaAddress } =
   personaEntitySlice.actions;
 export default personaEntitySlice.reducer;
 
-export const selectPersona = createSelector(
+export const selectMyPersona = createSelector(
   (state: RootState) => state,
-  (state: RootState) => state.entities.persona,
+  (state: RootState) => state.entities.myPersona,
 );

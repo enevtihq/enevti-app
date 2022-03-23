@@ -17,10 +17,10 @@ const initialState: Profile & { lastFetch: number } = {
 };
 
 const profileEntitySlice = createSlice({
-  name: 'profile',
+  name: 'myProfile',
   initialState,
   reducers: {
-    setProfile: (profile, action: PayloadAction<Profile>) => {
+    setMyProfile: (profile, action: PayloadAction<Profile>) => {
       profile.nftSold = action.payload.nftSold;
       profile.treasuryAct = action.payload.treasuryAct;
       profile.serveRate = action.payload.serveRate;
@@ -32,16 +32,17 @@ const profileEntitySlice = createSlice({
       profile.onsale = action.payload.onsale.slice();
       profile.minted = action.payload.minted.slice();
     },
-    setLastFetchProfile: (profile, action: PayloadAction<number>) => {
+    setLastFetchMyProfile: (profile, action: PayloadAction<number>) => {
       profile.lastFetch = action.payload;
     },
   },
 });
 
-export const { setProfile, setLastFetchProfile } = profileEntitySlice.actions;
+export const { setMyProfile, setLastFetchMyProfile } =
+  profileEntitySlice.actions;
 export default profileEntitySlice.reducer;
 
-export const selectProfile = createSelector(
+export const selectMyProfile = createSelector(
   (state: RootState) => state,
-  (state: RootState) => state.entities.profile,
+  (state: RootState) => state.entities.myProfile,
 );

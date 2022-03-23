@@ -47,7 +47,7 @@ function Component(
     onRefreshStart && onRefreshStart();
     setRefreshing(true);
     await getProfile(persona.address, true);
-    // setRefreshing(false);
+    setRefreshing(false);
     onRefreshEnd && onRefreshEnd();
   };
 
@@ -56,7 +56,12 @@ function Component(
       setDisplayed(true);
       onMounted && onMounted();
     }
-  }, [ref, onMounted]);
+    return function cleanup() {
+      if (refreshing) {
+        onRefreshEnd && onRefreshEnd();
+      }
+    };
+  }, [ref, onMounted, refreshing, onRefreshEnd]);
 
   return (
     <AnimatedFlatGrid

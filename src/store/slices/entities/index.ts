@@ -1,10 +1,10 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import personaEntitySliceReducer from './persona';
-import profileEntitySliceReducer from './profile';
+import personaEntitySliceReducer from './myPersona';
+import profileEntitySliceReducer from './myProfile';
 import onceEntitySliceReducer from './once';
 
 export default combineReducers({
   once: onceEntitySliceReducer,
-  profile: profileEntitySliceReducer,
-  persona: personaEntitySliceReducer,
+  myProfile: profileEntitySliceReducer,
+  myPersona: personaEntitySliceReducer,
 });

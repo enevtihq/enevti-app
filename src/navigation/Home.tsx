@@ -28,8 +28,8 @@ import { useTranslation } from 'react-i18next';
 import { getMyBasePersona } from '../service/enevti/persona';
 import AppAvatarRenderer from '../components/molecules/avatar/AppAvatarRenderer';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectPersona } from '../store/slices/entities/persona';
-import { selectProfile } from '../store/slices/entities/profile';
+import { selectMyPersona } from '../store/slices/entities/myPersona';
+import { selectMyProfile } from '../store/slices/entities/myProfile';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { StyleSheet, View } from 'react-native';
 import Color from 'color';
@@ -80,8 +80,8 @@ export default function Home({ navigation }: Props) {
   const styles = React.useMemo(() => makeStyles(insets), [insets]);
   const restoreMenuSnapPoints = React.useMemo(() => ['42%'], []);
 
-  const myPersona = useSelector(selectPersona);
-  const myProfile = useSelector(selectProfile);
+  const myPersona = useSelector(selectMyPersona);
+  const myProfile = useSelector(selectMyProfile);
   const onceEligible = useSelector(selectOnceEligible);
   const createQueue = useSelector(selectCreateNFTRouteQueue);
   const createType = useSelector(selectCreateNFTTypeQueue);
