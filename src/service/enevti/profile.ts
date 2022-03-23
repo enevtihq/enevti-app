@@ -22,11 +22,11 @@ async function fetchProfile(address: string): Promise<Profile | undefined> {
   const onsaleNFT = [];
   const mintedContainer: any[] = [];
 
-  for (let i = 0; i < 50; i++) {
+  for (let i = 0; i < 7; i++) {
     ownedNFT.push(getDummyNFTData());
   }
 
-  for (let i = 0; i < 50; i++) {
+  for (let i = 0; i < 7; i++) {
     onsaleNFT.push(getDummyNFTData());
   }
 

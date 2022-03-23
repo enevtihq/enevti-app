@@ -1,4 +1,4 @@
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, ScrollView, RefreshControl } from 'react-native';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import AppAvatarRenderer from '../../molecules/avatar/AppAvatarRenderer';
@@ -51,97 +51,120 @@ export default function AppProfileHeader({
 
   return (
     <View style={styles.profileHeaderContainer}>
-      <View style={styles.safeBackgroundBar} />
+      <ScrollView
+        scrollEnabled={false}
+        contentContainerStyle={styles.contentContainer}
+        refreshControl={
+          <RefreshControl
+            refreshing={false}
+            onRefresh={() => console.log('refresh')}
+          />
+        }>
+        <View style={styles.safeBackgroundBar} />
 
-      <AppAvatarRenderer
-        address={persona.address}
-        photo={persona.photo}
-        size={wp('25%', insets)}
-        style={{ marginBottom: hp('2%', insets) }}
-      />
+        <AppAvatarRenderer
+          address={persona.address}
+          photo={persona.photo}
+          size={wp('25%', insets)}
+          style={{ marginBottom: hp('2%', insets) }}
+        />
 
-      <View style={{ height: hp('3.3%', insets) }}>
-        {persona.username ? (
-          <AppTextHeading2 numberOfLines={1}>
-            {persona.username}
-          </AppTextHeading2>
-        ) : persona.address ? (
-          <AppTextBody3
-            style={{
-              width: wp('50%', insets),
-            }}
-            numberOfLines={1}>
-            {persona.address}
-          </AppTextBody3>
-        ) : (
-          <AppTextBody3>?????</AppTextBody3>
-        )}
-      </View>
-
-      <View style={styles.profileStatsContainer}>
-        <View style={styles.profileStatsItem}>
-          <AppTextHeading3>{numberKMB(profile.nftSold, 2)}</AppTextHeading3>
-          <AppTextBody4 style={{ color: theme.colors.placeholder }}>
-            {t('profile:nftSold')}
-          </AppTextBody4>
+        <View style={{ height: hp('3.3%', insets) }}>
+          {persona.username ? (
+            <AppTextHeading2 numberOfLines={1}>
+              {persona.username}
+            </AppTextHeading2>
+          ) : persona.address ? (
+            <AppTextBody3
+              style={{
+                width: wp('50%', insets),
+              }}
+              numberOfLines={1}>
+              {persona.address}
+            </AppTextBody3>
+          ) : (
+            <AppTextBody3>?????</AppTextBody3>
+          )}
         </View>
-        <View style={styles.profileStatsDivider} />
-        <View style={styles.profileStatsItem}>
-          <AppTextHeading3>{profile.treasuryAct}</AppTextHeading3>
-          <AppTextBody4 style={{ color: theme.colors.placeholder }}>
-            {t('profile:treasuryAct')}
-          </AppTextBody4>
-        </View>
-        <View style={styles.profileStatsDivider} />
-        <View style={styles.profileStatsItem}>
-          <AppTextHeading3>
-            {(profile.serveRate * 100).toFixed(2)}%
-          </AppTextHeading3>
-          <AppTextBody4 style={{ color: theme.colors.placeholder }}>
-            {t('profile:serveRate')}
-          </AppTextBody4>
-        </View>
-      </View>
 
-      <View style={styles.profileActionContainer}>
-        <AppTertiaryButton
-          style={styles.profileActionButton}
-          icon={iconMap.pool}
-          onPress={() =>
-            navigation.navigate('StakePool', { persona: persona })
-          }>
-          {t('profile:stakeAndInsight') + '  '}
-          <AppTextBody5
-            style={{
-              color: Color(theme.colors.text).darken(0.1).rgb().toString(),
-            }}>
-            {parseAmount(profile.stake, true, 2)} {getCoinName()}
-          </AppTextBody5>
-        </AppTertiaryButton>
-        <AppMenuContainer
-          tapEverywhereToDismiss
-          visible={menuVisible}
-          onDismiss={() => setMenuVisible(false)}
-          snapPoints={[`${menuItemHeigtPercentage(2)}%`]}
-          anchor={
+        <View style={styles.profileStatsContainer}>
+          <View style={styles.profileStatsItem}>
+            <AppTextHeading3>{numberKMB(profile.nftSold, 2)}</AppTextHeading3>
+            <AppTextBody4 style={{ color: theme.colors.placeholder }}>
+              {t('profile:nftSold')}
+            </AppTextBody4>
+          </View>
+          <View style={styles.profileStatsDivider} />
+          <View style={styles.profileStatsItem}>
+            <AppTextHeading3>{profile.treasuryAct}</AppTextHeading3>
+            <AppTextBody4 style={{ color: theme.colors.placeholder }}>
+              {t('profile:treasuryAct')}
+            </AppTextBody4>
+          </View>
+          <View style={styles.profileStatsDivider} />
+          <View style={styles.profileStatsItem}>
+            <AppTextHeading3>
+              {(profile.serveRate * 100).toFixed(2)}%
+            </AppTextHeading3>
+            <AppTextBody4 style={{ color: theme.colors.placeholder }}>
+              {t('profile:serveRate')}
+            </AppTextBody4>
+          </View>
+        </View>
+
+        <View style={styles.profileActionContainer}>
+          <AppTertiaryButton
+            style={styles.profileActionButton}
+            icon={iconMap.pool}
+            onPress={() =>
+              navigation.navigate('StakePool', { persona: persona })
+            }>
+            {t('profile:stakeAndInsight') + '  '}
+            <AppTextBody5
+              style={{
+                color: Color(theme.colors.text).darken(0.1).rgb().toString(),
+              }}>
+              {parseAmount(profile.stake, true, 2)} {getCoinName()}
+            </AppTextBody5>
+          </AppTertiaryButton>
+          <AppMenuContainer
+            tapEverywhereToDismiss
+            visible={menuVisible}
+            onDismiss={() => setMenuVisible(false)}
+            snapPoints={[`${menuItemHeigtPercentage(2)}%`]}
+            anchor={
+              <AppQuaternaryButton
+                box
+                icon={iconMap.menu}
+                iconSize={hp('2%', insets)}
+                style={styles.profileActionMoreButton}
+                contentStyle={styles.profileActionMoreButtonContent}
+                onPress={() => setMenuVisible(true)}
+              />
+            }>
+            <AppMenuItem onPress={() => {}} title={t('home:follow')} />
+            <AppMenuItem onPress={() => {}} title={t('profile:copyAddress')} />
+          </AppMenuContainer>
+        </View>
+
+        <View style={styles.profileHeaderChipsContainer}>
+          {profile.twitter.username && profile.twitter.follower ? (
             <AppQuaternaryButton
-              box
-              icon={iconMap.menu}
-              iconSize={hp('2%', insets)}
-              style={styles.profileActionMoreButton}
-              contentStyle={styles.profileActionMoreButtonContent}
-              onPress={() => setMenuVisible(true)}
-            />
-          }>
-          <AppMenuItem onPress={() => {}} title={t('home:follow')} />
-          <AppMenuItem onPress={() => {}} title={t('profile:copyAddress')} />
-        </AppMenuContainer>
-      </View>
-
-      <View style={styles.profileHeaderChipsContainer}>
-        {profile.twitter.username && profile.twitter.follower ? (
+              icon={iconMap.twitter}
+              iconSize={hp('3%', insets)}
+              iconColor={theme.colors.placeholder}
+              style={{
+                marginHorizontal: wp('1%', insets),
+                height: hp('4%', insets),
+              }}
+              onPress={() => console.log('Pressed')}>
+              <AppTextBody4 style={{ color: theme.colors.placeholder }}>
+                {numberKMB(profile.twitter.follower, 2)}
+              </AppTextBody4>
+            </AppQuaternaryButton>
+          ) : null}
           <AppQuaternaryButton
-            icon={iconMap.twitter}
+            icon={iconMap.wallet}
             iconSize={hp('3%', insets)}
             iconColor={theme.colors.placeholder}
             style={{
@@ -149,40 +172,30 @@ export default function AppProfileHeader({
               height: hp('4%', insets),
             }}
             onPress={() => console.log('Pressed')}>
-            <AppTextBody4 style={{ color: theme.colors.placeholder }}>
-              {numberKMB(profile.twitter.follower, 2)}
-            </AppTextBody4>
+            <View style={styles.profileHeaderChipsContent}>
+              <AppTextBody4 style={{ color: theme.colors.placeholder }}>
+                {parseAmount(profile.balance, true, 2)}
+              </AppTextBody4>
+              <AppTextBody5
+                style={{
+                  color: theme.colors.placeholder,
+                  marginLeft: wp('1%', insets),
+                }}>
+                {getCoinName()}
+              </AppTextBody5>
+            </View>
           </AppQuaternaryButton>
-        ) : null}
-        <AppQuaternaryButton
-          icon={iconMap.wallet}
-          iconSize={hp('3%', insets)}
-          iconColor={theme.colors.placeholder}
-          style={{
-            marginHorizontal: wp('1%', insets),
-            height: hp('4%', insets),
-          }}
-          onPress={() => console.log('Pressed')}>
-          <View style={styles.profileHeaderChipsContent}>
-            <AppTextBody4 style={{ color: theme.colors.placeholder }}>
-              {parseAmount(profile.balance, true, 2)}
-            </AppTextBody4>
-            <AppTextBody5
-              style={{
-                color: theme.colors.placeholder,
-                marginLeft: wp('1%', insets),
-              }}>
-              {getCoinName()}
-            </AppTextBody5>
-          </View>
-        </AppQuaternaryButton>
-      </View>
+        </View>
+      </ScrollView>
     </View>
   );
 }
 
 const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
   StyleSheet.create({
+    contentContainer: {
+      alignItems: 'center',
+    },
     safeBackgroundBar: {
       position: 'absolute',
       top: -hp(HEADER_HEIGHT_PERCENTAGE, insets),

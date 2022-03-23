@@ -58,6 +58,7 @@ export default function AppProfile({
 
   const [ownedMounted, setOwnedMounted] = React.useState<boolean>(false);
   const [onSaleMounted, setOnSaleMounted] = React.useState<boolean>(false);
+  const [scrollDisabled, setScrollDisabled] = React.useState<boolean>(false);
 
   const ownedRef = useAnimatedRef<any>();
   const onSaleRef = useAnimatedRef<any>();
@@ -171,26 +172,57 @@ export default function AppProfile({
     };
   });
 
+  const scrollEnabled = React.useMemo(
+    () => (ownedMounted && onSaleMounted ? true : false),
+    [ownedMounted, onSaleMounted],
+  );
+
+  const onRefreshStart = React.useCallback(() => setScrollDisabled(true), []);
+
+  const onRefreshEnd = React.useCallback(() => {
+    setScrollDisabled(false);
+    rawScrollY.value = 0;
+    tabScroll.value = 0;
+  }, [rawScrollY, tabScroll]);
+
+  const ownedData = React.useMemo(
+    () => (profile ? profile.owned : []),
+    [profile],
+  );
+
+  const ownedOnMounted = React.useCallback(() => setOwnedMounted(true), []);
+
+  const onSaleData = React.useMemo(
+    () => (profile ? profile.onsale : []),
+    [profile],
+  );
+
+  const onSaleOnMounted = React.useCallback(() => setOnSaleMounted(true), []);
+
   const OwnedNFTScreen = React.useCallback(
     () => (
       <OwnedNFTComponent
         ref={ownedRef}
         persona={persona}
         onScroll={ownedScrollHandler}
-        scrollEnabled={ownedMounted && onSaleMounted ? true : false}
+        scrollEnabled={scrollEnabled}
         headerHeight={headerHeight}
-        data={profile ? profile.owned : []}
-        onMounted={() => setOwnedMounted(true)}
+        data={ownedData}
+        onMounted={ownedOnMounted}
+        onRefreshStart={onRefreshStart}
+        onRefreshEnd={onRefreshEnd}
       />
     ),
     [
       ownedRef,
       headerHeight,
-      profile,
+      ownedData,
       ownedScrollHandler,
-      ownedMounted,
-      onSaleMounted,
+      scrollEnabled,
       persona,
+      ownedOnMounted,
+      onRefreshStart,
+      onRefreshEnd,
     ],
   );
 
@@ -200,20 +232,24 @@ export default function AppProfile({
         ref={onSaleRef}
         persona={persona}
         onScroll={onSaleScrollHandler}
-        scrollEnabled={ownedMounted && onSaleMounted ? true : false}
+        scrollEnabled={scrollEnabled}
         headerHeight={headerHeight}
-        data={profile ? profile.onsale : []}
-        onMounted={() => setOnSaleMounted(true)}
+        data={onSaleData}
+        onMounted={onSaleOnMounted}
+        onRefreshStart={onRefreshStart}
+        onRefreshEnd={onRefreshEnd}
       />
     ),
     [
       onSaleRef,
       headerHeight,
-      profile,
+      onSaleData,
       onSaleScrollHandler,
-      ownedMounted,
-      onSaleMounted,
+      scrollEnabled,
       persona,
+      onSaleOnMounted,
+      onRefreshStart,
+      onRefreshEnd,
     ],
   );
 
@@ -226,6 +262,7 @@ export default function AppProfile({
           navigation={navigation}
         />
       </Animated.View>
+      {scrollDisabled ? <View style={styles.scrollDisabler} /> : null}
       <AppProfileBody
         headerHeight={headerHeight}
         animatedTabBarStyle={animatedTabBarStyle}
@@ -257,7 +294,7 @@ const makeStyles = (headerHeight: number, insets: SafeAreaInsets) =>
   StyleSheet.create({
     profileHeader: {
       position: 'absolute',
-      zIndex: 1,
+      zIndex: 2,
       paddingTop: headerHeight,
     },
     mountedIndicator: {
@@ -268,5 +305,12 @@ const makeStyles = (headerHeight: number, insets: SafeAreaInsets) =>
     loaderContainer: {
       justifyContent: 'center',
       alignItems: 'center',
+    },
+    scrollDisabler: {
+      position: 'absolute',
+      height: '100%',
+      width: '100%',
+      backgroundColor: 'transparent',
+      zIndex: 1,
     },
   });

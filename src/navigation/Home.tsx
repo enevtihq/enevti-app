@@ -192,7 +192,7 @@ export default function Home({ navigation }: Props) {
     };
   });
 
-  const myProfileOnScrollWorklet = (val: number) => {
+  const myProfileOnScrollWorklet = React.useCallback((val: number) => {
     'worklet';
     const diff = val - myProfilePrevYSharedValue.value;
     tabScrollY[3].value = diffClamp(
@@ -200,14 +200,16 @@ export default function Home({ navigation }: Props) {
       0,
       headerHeight + insets.top,
     );
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  const myProfileOnBeginDragWorklet = (val: number) => {
+  const myProfileOnBeginDragWorklet = React.useCallback((val: number) => {
     'worklet';
     myProfilePrevYSharedValue.value = val;
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  const myProfileOnEndDragWorklet = (val: number) => {
+  const myProfileOnEndDragWorklet = React.useCallback((val: number) => {
     'worklet';
     if (
       tabScrollY[3].value < (headerHeight + insets.top) / 2 ||
@@ -221,7 +223,8 @@ export default function Home({ navigation }: Props) {
       });
       myProfileInterpolatedYSharedValue.value = headerHeight + insets.top;
     }
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const tabBarStyle = useAnimatedStyle(() => {
     return {

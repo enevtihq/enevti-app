@@ -20,6 +20,8 @@ interface OnSaleNFTComponentProps {
   onScroll?: any;
   headerHeight?: any;
   onMounted?: () => void;
+  onRefreshStart?: () => void;
+  onRefreshEnd?: () => void;
   scrollEnabled?: boolean;
 }
 
@@ -30,6 +32,8 @@ function Component(
     onScroll,
     headerHeight,
     onMounted,
+    onRefreshStart,
+    onRefreshEnd,
     scrollEnabled,
   }: OnSaleNFTComponentProps,
   ref: any,
@@ -40,9 +44,11 @@ function Component(
   const [refreshing, setRefreshing] = React.useState<boolean>(false);
 
   const handleRefresh = async () => {
+    onRefreshStart && onRefreshStart();
     setRefreshing(true);
     await getProfile(persona.address, true);
-    setRefreshing(false);
+    // setRefreshing(false);
+    onRefreshEnd && onRefreshEnd();
   };
 
   React.useEffect(() => {
@@ -56,7 +62,7 @@ function Component(
     <AnimatedFlatGrid
       ref={ref}
       onScroll={onScroll}
-      scrollEnabled={scrollEnabled}
+      scrollEnabled={refreshing ? false : scrollEnabled}
       scrollEventThrottle={16}
       contentContainerStyle={[
         {
@@ -81,7 +87,7 @@ function Component(
           onRefresh={handleRefresh}
           progressViewOffset={
             Platform.OS === 'ios'
-              ? headerHeight * 0.5
+              ? headerHeight
               : hp(
                   PROFILE_HEADER_HEIGHT_PERCENTAGE +
                     TOP_TABBAR_HEIGHT_PERCENTAGE,
