@@ -1,6 +1,7 @@
 import React from 'react';
 import { NativeModules, NativeEventEmitter } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { selectAuthState } from '../../store/slices/auth';
 import {
   lockScreen,
   selectLockedState,
@@ -9,6 +10,7 @@ import {
 export default function useLockScreen() {
   const dispatch = useDispatch();
   const locked = useSelector(selectLockedState);
+  const auth = useSelector(selectAuthState);
 
   React.useEffect(() => {
     const { RNLockDetection } = NativeModules;
@@ -17,7 +19,7 @@ export default function useLockScreen() {
     const lockDetectionSuscription = LockDetectionEmitter.addListener(
       'LockStatusChange',
       ({ status }) => {
-        if (!locked && status === 'LOCKED') {
+        if (!locked && auth.type && status === 'LOCKED') {
           dispatch(lockScreen());
         }
       },
@@ -25,5 +27,5 @@ export default function useLockScreen() {
     return function cleanup() {
       lockDetectionSuscription.remove();
     };
-  }, [dispatch, locked]);
+  }, [dispatch, locked, auth.type]);
 }

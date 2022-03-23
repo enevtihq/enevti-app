@@ -1,6 +1,7 @@
 import React from 'react';
 import { AppState } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { selectAuthState } from '../../store/slices/auth';
 import {
   selectDisplayState,
   setDisplayMaximized,
@@ -19,12 +20,13 @@ export default function useScreenDisplayed() {
   const dispatch = useDispatch();
   const display = useSelector(selectDisplayState);
   const lastActive = useSelector(selectLastActiveState);
+  const auth = useSelector(selectAuthState);
 
   const handleChange = React.useCallback(
     (nextState: string) => {
       if (!display.maximized && nextState === 'active') {
         dispatch(setDisplayMaximized());
-        if (Date.now() - lastActive > lastFetchTreshold.display) {
+        if (auth.type && Date.now() - lastActive > lastFetchTreshold.display) {
           dispatch(lockScreen());
         }
         dispatch(resetLastScreenActive());
@@ -34,7 +36,7 @@ export default function useScreenDisplayed() {
       }
       dispatch(setDisplayScreenState(nextState));
     },
-    [dispatch, display, lastActive],
+    [dispatch, display, lastActive, auth.type],
   );
 
   React.useEffect(() => {
