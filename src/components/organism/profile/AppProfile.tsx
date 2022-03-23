@@ -23,6 +23,11 @@ import OnSaleNFTComponent from './tabs/OnSaleNFTComponent';
 import AppProfileBody from './AppProfileBody';
 import { useTheme } from 'react-native-paper';
 import AppActivityIndicator from '../../atoms/loading/AppActivityIndicator';
+import { useSelector } from 'react-redux';
+import { selectMyPersona } from '../../../store/slices/entities/myPersona';
+import { handleError } from '../../../utils/error/handle';
+import { getMyProfile, getProfile } from '../../../service/enevti/profile';
+import { getBasePersona } from '../../../service/enevti/persona';
 
 const noDisplay = 'none';
 const visible = 1;
@@ -30,8 +35,7 @@ const notVisible = 0;
 
 interface AppProfileProps {
   navigation: StackNavigationProp<RootStackParamList>;
-  persona: Persona;
-  profile: Profile;
+  address: string;
   onScrollWorklet?: (val: number) => void;
   onBeginDragWorklet?: (val: number) => void;
   onEndDragWorklet?: (val: number) => void;
@@ -41,8 +45,7 @@ interface AppProfileProps {
 
 export default function AppProfile({
   navigation,
-  persona,
-  profile,
+  address,
   onScrollWorklet,
   onBeginDragWorklet,
   onEndDragWorklet,
@@ -51,6 +54,7 @@ export default function AppProfile({
 }: AppProfileProps) {
   const insets = useSafeAreaInsets();
   const theme = useTheme();
+  const myPersona = useSelector(selectMyPersona);
   const styles = React.useMemo(
     () => makeStyles(headerHeight, insets),
     [headerHeight, insets],
@@ -58,6 +62,8 @@ export default function AppProfile({
 
   const [ownedMounted, setOwnedMounted] = React.useState<boolean>(false);
   const [onSaleMounted, setOnSaleMounted] = React.useState<boolean>(false);
+  const [persona, setPersona] = React.useState<Persona>();
+  const [profile, setProfile] = React.useState<Profile>();
 
   const ownedRef = useAnimatedRef<FlatList>();
   const onSaleRef = useAnimatedRef<any>();
@@ -74,7 +80,6 @@ export default function AppProfile({
   ) =>
     useAnimatedScrollHandler({
       onScroll: (event, ctx: { prevY: number; current: number }) => {
-        console.log(event.contentOffset.y);
         rawScrollY.value = event.contentOffset.y;
 
         if (event.contentOffset.y < totalHeaderHeight) {
@@ -211,7 +216,7 @@ export default function AppProfile({
     () => (
       <OwnedNFTComponent
         ref={ownedRef}
-        persona={persona}
+        address={address}
         onScroll={ownedScrollHandler}
         scrollEnabled={scrollEnabled}
         headerHeight={headerHeight}
@@ -226,7 +231,7 @@ export default function AppProfile({
       ownedData,
       ownedScrollHandler,
       scrollEnabled,
-      persona,
+      address,
       ownedOnMounted,
       onRefreshEnd,
     ],
@@ -236,7 +241,7 @@ export default function AppProfile({
     () => (
       <OnSaleNFTComponent
         ref={onSaleRef}
-        persona={persona}
+        address={address}
         onScroll={onSaleScrollHandler}
         scrollEnabled={scrollEnabled}
         headerHeight={headerHeight}
@@ -251,11 +256,40 @@ export default function AppProfile({
       onSaleData,
       onSaleScrollHandler,
       scrollEnabled,
-      persona,
+      address,
       onSaleOnMounted,
       onRefreshEnd,
     ],
   );
+
+  const onFeedScreenLoaded = React.useCallback(async () => {
+    try {
+      if (address === myPersona.address) {
+        const profileResponse = await getMyProfile();
+        if (profileResponse) {
+          setProfile(profileResponse);
+          setPersona(myPersona);
+        }
+      } else {
+        const personaBase = await getBasePersona(address);
+        const profileResponse = await getProfile(address);
+        if (personaBase && profileResponse) {
+          setProfile(profileResponse);
+          setPersona(personaBase);
+        }
+      }
+    } catch (err: any) {
+      handleError(err);
+    }
+  }, [address, myPersona]);
+
+  React.useEffect(() => {
+    try {
+      onFeedScreenLoaded();
+    } catch (err: any) {
+      handleError(err);
+    }
+  }, [onFeedScreenLoaded]);
 
   return persona && profile ? (
     <View>
@@ -308,5 +342,7 @@ const makeStyles = (headerHeight: number, insets: SafeAreaInsets) =>
     loaderContainer: {
       justifyContent: 'center',
       alignItems: 'center',
+      width: '100%',
+      height: '100%',
     },
   });

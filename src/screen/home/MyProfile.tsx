@@ -5,9 +5,6 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation';
 import { useSelector } from 'react-redux';
 import { selectMyPersona } from '../../store/slices/entities/myPersona';
-import { selectMyProfile } from '../../store/slices/entities/myProfile';
-import { getMyProfile } from '../../service/enevti/profile';
-import { handleError } from '../../utils/error/handle';
 import AppProfile from '../../components/organism/profile/AppProfile';
 
 type Props = StackScreenProps<RootStackParamList, 'MyProfile'>;
@@ -30,23 +27,6 @@ export default function MyProfile({
 }: MyProfileProps) {
   const styles = React.useMemo(() => makeStyles(), []);
   const myPersona = useSelector(selectMyPersona);
-  const profileData = useSelector(selectMyProfile);
-
-  const onFeedScreenLoaded = async () => {
-    try {
-      await getMyProfile();
-    } catch (err: any) {
-      handleError(err);
-    }
-  };
-
-  React.useEffect(() => {
-    try {
-      onFeedScreenLoaded();
-    } catch (err: any) {
-      handleError(err);
-    }
-  }, []);
 
   return (
     <AppView darken withLoader edges={['left', 'right', 'bottom']}>
@@ -54,8 +34,7 @@ export default function MyProfile({
         <AppProfile
           navigation={navigation}
           headerHeight={headerHeight}
-          persona={myPersona}
-          profile={profileData}
+          address={myPersona.address}
           onScrollWorklet={onScrollWorklet}
           onBeginDragWorklet={onBeginDragWorklet}
           onEndDragWorklet={onEndDragWorklet}

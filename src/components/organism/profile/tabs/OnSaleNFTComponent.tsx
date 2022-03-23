@@ -9,7 +9,6 @@ import { hp, wp } from '../../../../utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AppNFTRenderer from '../../../molecules/nft/AppNFTRenderer';
 import { getProfile } from '../../../../service/enevti/profile';
-import { Persona } from '../../../../types/service/enevti/persona';
 import { useDispatch } from 'react-redux';
 import {
   hideModalLoader,
@@ -20,7 +19,7 @@ const AnimatedFlatGrid =
   Animated.createAnimatedComponent<FlatGridProps<NFTBase>>(FlatGrid);
 
 interface OnSaleNFTComponentProps {
-  persona: Persona;
+  address: string;
   data?: any;
   onScroll?: any;
   headerHeight?: any;
@@ -32,7 +31,7 @@ interface OnSaleNFTComponentProps {
 
 function Component(
   {
-    persona,
+    address,
     data,
     onScroll,
     headerHeight,
@@ -53,7 +52,7 @@ function Component(
     onRefreshStart && onRefreshStart();
     dispatch(showModalLoader());
     setRefreshing(true);
-    await getProfile(persona.address, true);
+    await getProfile(address, true);
     dispatch(hideModalLoader());
   };
 
