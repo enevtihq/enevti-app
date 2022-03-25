@@ -8,8 +8,6 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
-import { Persona } from '../../../types/service/enevti/persona';
-import { Profile } from '../../../types/service/enevti/profile';
 import AppProfileHeader, {
   PROFILE_HEADER_HEIGHT_PERCENTAGE,
 } from './AppProfileHeader';
@@ -23,11 +21,19 @@ import OnSaleNFTComponent from './tabs/OnSaleNFTComponent';
 import AppProfileBody from './AppProfileBody';
 import { useTheme } from 'react-native-paper';
 import AppActivityIndicator from '../../atoms/loading/AppActivityIndicator';
-import { useSelector } from 'react-redux';
-import { selectMyPersonaCache } from '../../../store/slices/entities/cache/myPersona';
-import { handleError } from '../../../utils/error/handle';
-import { getMyProfile, getProfile } from '../../../service/enevti/profile';
-import { getBasePersona } from '../../../service/enevti/persona';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  loadProfile,
+  unloadProfile,
+} from '../../../store/middleware/thunk/ui/view/profile';
+import {
+  isPersonaUndefined,
+  selectPersonaView,
+} from '../../../store/slices/ui/view/persona';
+import {
+  isProfileUndefined,
+  selectProfileView,
+} from '../../../store/slices/ui/view/profile';
 
 const noDisplay = 'none';
 const visible = 1;
@@ -52,9 +58,13 @@ export default function AppProfile({
   onMomentumEndWorklet,
   headerHeight = 0,
 }: AppProfileProps) {
+  const dispatch = useDispatch();
   const insets = useSafeAreaInsets();
   const theme = useTheme();
-  const myPersona = useSelector(selectMyPersonaCache);
+  const persona = useSelector(selectPersonaView);
+  const profile = useSelector(selectProfileView);
+  const personaUndefined = useSelector(isPersonaUndefined);
+  const profileUndefined = useSelector(isProfileUndefined);
   const styles = React.useMemo(
     () => makeStyles(headerHeight, insets),
     [headerHeight, insets],
@@ -62,8 +72,6 @@ export default function AppProfile({
 
   const [ownedMounted, setOwnedMounted] = React.useState<boolean>(false);
   const [onSaleMounted, setOnSaleMounted] = React.useState<boolean>(false);
-  const [persona, setPersona] = React.useState<Persona>();
-  const [profile, setProfile] = React.useState<Profile>();
 
   const ownedRef = useAnimatedRef<FlatList>();
   const onSaleRef = useAnimatedRef<any>();
@@ -76,36 +84,16 @@ export default function AppProfile({
     hp(PROFILE_HEADER_HEIGHT_PERCENTAGE, insets) + headerHeight;
 
   const onFeedScreenLoaded = React.useCallback(
-    async (force = false) => {
-      try {
-        if (address === myPersona.address) {
-          const profileResponse = await getMyProfile(force);
-          if (profileResponse) {
-            setProfile(profileResponse);
-            setPersona(myPersona);
-          }
-        } else {
-          const personaBase = await getBasePersona(address);
-          const profileResponse = await getProfile(address);
-          if (personaBase && profileResponse) {
-            setProfile(profileResponse);
-            setPersona(personaBase);
-          }
-        }
-      } catch (err: any) {
-        handleError(err);
-      }
-    },
-    [address, myPersona],
+    (force: boolean = false) => dispatch(loadProfile(address, force)),
+    [address, dispatch],
   );
 
   React.useEffect(() => {
-    try {
-      onFeedScreenLoaded();
-    } catch (err: any) {
-      handleError(err);
-    }
-  }, [onFeedScreenLoaded]);
+    onFeedScreenLoaded();
+    return function cleanup() {
+      dispatch(unloadProfile());
+    };
+  }, [onFeedScreenLoaded, dispatch]);
 
   const useCustomAnimatedScrollHandler = (
     scrollRefList: React.RefObject<any>[],
@@ -214,15 +202,8 @@ export default function AppProfile({
     [ownedMounted, onSaleMounted],
   );
 
-  const onRefreshStart = React.useCallback(async () => {
-    try {
-      await onFeedScreenLoaded(true);
-    } catch (err) {
-      handleError(err);
-    }
-  }, [onFeedScreenLoaded]);
-
-  const onRefreshEnd = React.useCallback(async () => {
+  const onRefresh = React.useCallback(() => {
+    onFeedScreenLoaded(true);
     ownedRef.current?.scrollToOffset({ offset: 1 });
     onSaleRef.current?.scrollToOffset({ offset: 1 });
     onBeginDragWorklet && onBeginDragWorklet(0);
@@ -230,6 +211,7 @@ export default function AppProfile({
     onEndDragWorklet && onEndDragWorklet(0);
     onMomentumEndWorklet && onMomentumEndWorklet(0);
   }, [
+    onFeedScreenLoaded,
     ownedRef,
     onSaleRef,
     onScrollWorklet,
@@ -239,15 +221,15 @@ export default function AppProfile({
   ]);
 
   const ownedData = React.useMemo(
-    () => (profile ? profile.owned : []),
-    [profile],
+    () => (!profileUndefined ? profile.owned : []),
+    [profile, profileUndefined],
   );
 
   const ownedOnMounted = React.useCallback(() => setOwnedMounted(true), []);
 
   const onSaleData = React.useMemo(
-    () => (profile ? profile.onsale : []),
-    [profile],
+    () => (!profileUndefined ? profile.onsale : []),
+    [profile, profileUndefined],
   );
 
   const onSaleOnMounted = React.useCallback(() => setOnSaleMounted(true), []);
@@ -261,8 +243,7 @@ export default function AppProfile({
         headerHeight={headerHeight}
         data={ownedData}
         onMounted={ownedOnMounted}
-        onRefreshEnd={onRefreshEnd}
-        onRefreshStart={onRefreshStart}
+        onRefresh={onRefresh}
       />
     ),
     [
@@ -272,8 +253,7 @@ export default function AppProfile({
       ownedScrollHandler,
       scrollEnabled,
       ownedOnMounted,
-      onRefreshEnd,
-      onRefreshStart,
+      onRefresh,
     ],
   );
 
@@ -286,8 +266,7 @@ export default function AppProfile({
         headerHeight={headerHeight}
         data={onSaleData}
         onMounted={onSaleOnMounted}
-        onRefreshEnd={onRefreshEnd}
-        onRefreshStart={onRefreshStart}
+        onRefresh={onRefresh}
       />
     ),
     [
@@ -297,12 +276,11 @@ export default function AppProfile({
       onSaleScrollHandler,
       scrollEnabled,
       onSaleOnMounted,
-      onRefreshEnd,
-      onRefreshStart,
+      onRefresh,
     ],
   );
 
-  return persona && profile ? (
+  return !personaUndefined && !profileUndefined ? (
     <View>
       <Animated.View style={[styles.profileHeader, scrollStyle]}>
         <AppProfileHeader

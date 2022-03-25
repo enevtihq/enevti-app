@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { shallowEqual } from 'react-redux';
 import { createSelector } from 'reselect';
 import { Profile } from '../../../../types/service/enevti/profile';
 import { RootState } from '../../../state';
@@ -31,13 +32,21 @@ const profileViewSlice = createSlice({
       profile.onsale = action.payload.onsale.slice();
       profile.minted = action.payload.minted.slice();
     },
+    resetProfileView: () => {
+      return initialState;
+    },
   },
 });
 
-export const { setProfileView } = profileViewSlice.actions;
+export const { setProfileView, resetProfileView } = profileViewSlice.actions;
 export default profileViewSlice.reducer;
 
 export const selectProfileView = createSelector(
   (state: RootState) => state,
   (state: RootState) => state.ui.view.profile,
+);
+
+export const isProfileUndefined = createSelector(
+  (state: RootState) => state.ui.view.profile,
+  (profile: Profile) => shallowEqual(profile, initialState),
 );

@@ -46,6 +46,10 @@ async function fetchProfile(address: string): Promise<Profile | undefined> {
   };
 }
 
+function parseProfileCache(profile: Profile) {
+  return profile;
+}
+
 export async function getProfile(
   address: string,
 ): Promise<Profile | undefined> {
@@ -65,7 +69,7 @@ export async function getMyProfile(
     if (profileResponse) {
       myProfile = profileResponse;
       store.dispatch(setLastFetchMyProfileCache(now));
-      store.dispatch(setMyProfileCache(myProfile));
+      store.dispatch(setMyProfileCache(parseProfileCache(myProfile)));
     }
   }
 
