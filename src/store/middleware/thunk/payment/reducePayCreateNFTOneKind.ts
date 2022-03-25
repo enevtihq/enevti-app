@@ -6,6 +6,7 @@ import { CreateNFTOneKind } from '../../../../types/store/CreateNFTQueue';
 
 export const reducePayCreateNFTOneKind =
   (): AppThunk => async (dispatch, getState) => {
+    dispatch({ type: 'payment/reducePayCreateNFTOneKind' });
     dispatch(setPaymentStatus({ type: 'process', message: '' }));
     const payload = JSON.parse(
       getState().payment.action.payload,

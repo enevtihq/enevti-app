@@ -15,6 +15,7 @@ import { makeDummyIPFS } from '../../../../../../utils/dummy/ipfs';
 export const payCreateNFTOneKind =
   (payload: CreateNFTOneKind): AppThunk =>
   async dispatch => {
+    dispatch({ type: 'onekind/payCreateNFTOneKind' });
     dispatch(setPaymentStatus({ type: 'initiated', message: '' }));
     const data = makeDummyIPFS();
     const cover = payload.state.coverUri ? makeDummyIPFS() : '';

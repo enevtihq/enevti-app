@@ -4,7 +4,7 @@ import { Persona } from '../../../../types/service/enevti/persona';
 import { RootState } from '../../../state';
 
 const personaEntitySlice = createSlice({
-  name: 'myPersona',
+  name: 'myPersonaCache',
   initialState: { username: '', photo: '', address: '', lastFetch: 0 },
   reducers: {
     setMyPersonaCache: (persona, action: PayloadAction<Persona>) => {
@@ -28,7 +28,7 @@ export const {
 } = personaEntitySlice.actions;
 export default personaEntitySlice.reducer;
 
-export const selectMyPersona = createSelector(
+export const selectMyPersonaCache = createSelector(
   (state: RootState) => state,
   (state: RootState) => state.entities.cache.myPersona,
 );

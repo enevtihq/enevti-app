@@ -3,7 +3,7 @@ import { createSelector } from 'reselect';
 import { Profile } from '../../../../types/service/enevti/profile';
 import { RootState } from '../../../state';
 
-const initialState: Profile & { lastFetch: number } = {
+const initialState: Profile = {
   nftSold: 0,
   treasuryAct: 0,
   serveRate: 0,
@@ -13,14 +13,13 @@ const initialState: Profile & { lastFetch: number } = {
   owned: [],
   onsale: [],
   minted: [],
-  lastFetch: 0,
 };
 
-const profileEntitySlice = createSlice({
-  name: 'myProfileCache',
+const profileViewSlice = createSlice({
+  name: 'profileView',
   initialState,
   reducers: {
-    setMyProfileCache: (profile, action: PayloadAction<Profile>) => {
+    setProfileView: (profile, action: PayloadAction<Profile>) => {
       profile.nftSold = action.payload.nftSold;
       profile.treasuryAct = action.payload.treasuryAct;
       profile.serveRate = action.payload.serveRate;
@@ -32,17 +31,13 @@ const profileEntitySlice = createSlice({
       profile.onsale = action.payload.onsale.slice();
       profile.minted = action.payload.minted.slice();
     },
-    setLastFetchMyProfileCache: (profile, action: PayloadAction<number>) => {
-      profile.lastFetch = action.payload;
-    },
   },
 });
 
-export const { setMyProfileCache, setLastFetchMyProfileCache } =
-  profileEntitySlice.actions;
-export default profileEntitySlice.reducer;
+export const { setProfileView } = profileViewSlice.actions;
+export default profileViewSlice.reducer;
 
-export const selectMyProfileCache = createSelector(
+export const selectProfileView = createSelector(
   (state: RootState) => state,
-  (state: RootState) => state.entities.cache.myProfile,
+  (state: RootState) => state.ui.view.profile,
 );

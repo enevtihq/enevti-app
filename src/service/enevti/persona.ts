@@ -11,7 +11,7 @@ import { lastFetchTreshold } from '../../utils/constant/lastFetch';
 import {
   setMyPersonaCache,
   setLastFetchMyPersonaCache,
-  selectMyPersona,
+  selectMyPersonaCache,
   setMyPersonaAddressCache,
 } from '../../store/slices/entities/cache/myPersona';
 import { selectAuthState } from '../../store/slices/auth';
@@ -27,7 +27,7 @@ async function fetchPersona(address: string): Promise<Persona> {
 }
 
 export async function getMyAddress() {
-  const myPersona: Persona = selectMyPersona(store.getState());
+  const myPersona: Persona = selectMyPersonaCache(store.getState());
   if (myPersona.address) {
     return myPersona.address;
   } else {
@@ -70,8 +70,8 @@ export async function getBasePersona(address: string): Promise<Persona> {
 export async function getMyBasePersona(force = false): Promise<Persona> {
   const now = Date.now();
   const address = await getMyAddress();
-  const lastFetch = selectMyPersona(store.getState()).lastFetch;
-  let myPersona: Persona = selectMyPersona(store.getState());
+  const lastFetch = selectMyPersonaCache(store.getState()).lastFetch;
+  let myPersona: Persona = selectMyPersonaCache(store.getState());
 
   if (force || now - lastFetch > lastFetchTreshold.persona) {
     myPersona = await getBasePersona(address);

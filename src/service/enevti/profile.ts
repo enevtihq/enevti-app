@@ -3,7 +3,7 @@ import { Profile } from '../../types/service/enevti/profile';
 import { store } from '../../store/state';
 import { getDummyNFTData, sleep } from './dummy';
 import {
-  selectMyProfile,
+  selectMyProfileCache,
   setLastFetchMyProfileCache,
   setMyProfileCache,
 } from '../../store/slices/entities/cache/myProfile';
@@ -57,8 +57,8 @@ export async function getMyProfile(
 ): Promise<Profile | undefined> {
   const now = Date.now();
   const myAddress = await getMyAddress();
-  const lastFetch = selectMyProfile(store.getState()).lastFetch;
-  let myProfile: Profile = selectMyProfile(store.getState());
+  const lastFetch = selectMyProfileCache(store.getState()).lastFetch;
+  let myProfile: Profile = selectMyProfileCache(store.getState());
 
   if (force || now - lastFetch > lastFetchTreshold.profile) {
     const profileResponse = await getProfile(myAddress);

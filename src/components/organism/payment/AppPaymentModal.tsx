@@ -68,7 +68,6 @@ export default function AppPaymentModal() {
   }, [payCallback, paymentDismiss]);
 
   const onCancel = React.useCallback(() => {
-    paymentDismiss();
     dispatch(setPaymentActionType('cancel'));
     dispatch(
       setPaymentStatus({
@@ -76,7 +75,7 @@ export default function AppPaymentModal() {
         message: t('payment:paymentCancelled'),
       }),
     );
-  }, [paymentDismiss, dispatch, t]);
+  }, [dispatch, t]);
 
   const snackAction = React.useMemo(() => {
     return { label: t('payment:cancel'), onPress: onCancel };
@@ -92,8 +91,6 @@ export default function AppPaymentModal() {
       silentPay();
     }
   }, [paymentMode, silentPay]);
-
-  console.log(paymentFee.platform);
 
   return paymentMode === 'full' ? (
     <AppMenuContainer

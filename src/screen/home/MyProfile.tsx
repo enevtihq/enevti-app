@@ -4,7 +4,7 @@ import AppView from '../../components/atoms/view/AppView';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation';
 import { useSelector } from 'react-redux';
-import { selectMyPersona } from '../../store/slices/entities/cache/myPersona';
+import { selectMyPersonaCache } from '../../store/slices/entities/cache/myPersona';
 import AppProfile from '../../components/organism/profile/AppProfile';
 
 type Props = StackScreenProps<RootStackParamList, 'MyProfile'>;
@@ -26,7 +26,7 @@ export default function MyProfile({
   headerHeight = 0,
 }: MyProfileProps) {
   const styles = React.useMemo(() => makeStyles(), []);
-  const myPersona = useSelector(selectMyPersona);
+  const myPersona = useSelector(selectMyPersonaCache);
 
   return (
     <AppView darken withLoader edges={['left', 'right', 'bottom']}>

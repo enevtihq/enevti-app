@@ -24,7 +24,7 @@ import AppProfileBody from './AppProfileBody';
 import { useTheme } from 'react-native-paper';
 import AppActivityIndicator from '../../atoms/loading/AppActivityIndicator';
 import { useSelector } from 'react-redux';
-import { selectMyPersona } from '../../../store/slices/entities/cache/myPersona';
+import { selectMyPersonaCache } from '../../../store/slices/entities/cache/myPersona';
 import { handleError } from '../../../utils/error/handle';
 import { getMyProfile, getProfile } from '../../../service/enevti/profile';
 import { getBasePersona } from '../../../service/enevti/persona';
@@ -54,7 +54,7 @@ export default function AppProfile({
 }: AppProfileProps) {
   const insets = useSafeAreaInsets();
   const theme = useTheme();
-  const myPersona = useSelector(selectMyPersona);
+  const myPersona = useSelector(selectMyPersonaCache);
   const styles = React.useMemo(
     () => makeStyles(headerHeight, insets),
     [headerHeight, insets],
