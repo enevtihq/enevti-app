@@ -122,6 +122,8 @@ const makeStyle = (
           PROFILE_HEADER_HEIGHT_PERCENTAGE + TOP_TABBAR_HEIGHT_PERCENTAGE,
           insets,
         ) + headerHeight,
+      minHeight:
+        hp(PROFILE_HEADER_HEIGHT_PERCENTAGE + 100, insets) + headerHeight,
       display: displayed ? undefined : 'none',
     },
   });
