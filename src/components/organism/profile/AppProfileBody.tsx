@@ -1,7 +1,7 @@
 import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import React, { ComponentType } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { hp } from '../../../utils/imageRatio';
+import { hp, SafeAreaInsets } from '../../../utils/imageRatio';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import AppTopTabBar from '../../atoms/view/AppTopTabBar';
 import { PROFILE_HEADER_HEIGHT_PERCENTAGE } from './AppProfileHeader';
@@ -30,10 +30,10 @@ export default function AppProfileBody({
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const theme = useTheme();
-  const styles = React.useMemo(() => makeStyles(), []);
+  const styles = React.useMemo(() => makeStyles(insets), [insets]);
 
   return (
-    <View style={[{ height: hp('100%', insets) }, style]}>
+    <View style={[styles.profileBody, style]}>
       <Tab.Navigator
         tabBar={props => (
           <AppTopTabBar
@@ -89,7 +89,7 @@ export default function AppProfileBody({
   );
 }
 
-const makeStyles = () =>
+const makeStyles = (insets: SafeAreaInsets) =>
   StyleSheet.create({
     tabBarContainer: {
       top: 0,
@@ -97,5 +97,9 @@ const makeStyles = () =>
       right: 0,
       position: 'absolute',
       zIndex: 1,
+    },
+    profileBody: {
+      height: hp('100%', insets),
+      zIndex: -1,
     },
   });

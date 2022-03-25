@@ -10,6 +10,7 @@ export default {
   notEligibleGoToStake: 'Go to my stake pool',
   apps: 'Apps',
   profile: 'Profile',
+  myProfile: 'My Profile',
   recentMoments: 'Recent Moments',
   promotedByCommunity: 'Promoted By Community',
   pack: 'Compilation',

@@ -18,7 +18,7 @@ import { selectAuthState } from '../../store/slices/auth';
 import { selectLocalSession } from '../../store/slices/session/local';
 
 async function fetchPersona(address: string): Promise<Persona> {
-  await sleep(5000);
+  await sleep(1000);
   return {
     photo: '',
     address: address,

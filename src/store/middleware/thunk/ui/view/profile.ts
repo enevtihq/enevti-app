@@ -10,27 +10,28 @@ import {
   showModalLoader,
 } from '../../../../slices/ui/global/modalLoader';
 import {
-  resetPersonaView,
-  setPersonaView,
-} from '../../../../slices/ui/view/persona';
+  setMyPersonaView,
+  setMyProfileView,
+} from '../../../../slices/ui/view/myProfile';
 import {
   resetProfileView,
+  setPersonaView,
   setProfileView,
 } from '../../../../slices/ui/view/profile';
 import { AppThunk } from '../../../../state';
 
 export const loadProfile =
-  (address: string, force = false): AppThunk =>
+  (address: string, reload: boolean): AppThunk =>
   async (dispatch, getState) => {
     dispatch({ type: 'profileView/loadProfile' });
     try {
-      dispatch(showModalLoader());
+      reload && dispatch(showModalLoader());
       const myPersona = selectMyPersonaCache(getState());
       if (address === myPersona.address) {
-        const profileResponse = await getMyProfile(force);
+        const profileResponse = await getMyProfile(reload);
         if (profileResponse) {
-          dispatch(setProfileView(profileResponse));
-          dispatch(setPersonaView(myPersona));
+          dispatch(setMyProfileView(profileResponse));
+          dispatch(setMyPersonaView(myPersona));
         }
       } else {
         const personaBase = await getBasePersona(address);
@@ -43,11 +44,15 @@ export const loadProfile =
     } catch (err: any) {
       handleError(err);
     } finally {
-      dispatch(hideModalLoader());
+      reload && dispatch(hideModalLoader());
     }
   };
 
-export const unloadProfile = (): AppThunk => dispatch => {
-  dispatch(resetPersonaView());
-  dispatch(resetProfileView());
-};
+export const unloadProfile =
+  (address: string): AppThunk =>
+  (dispatch, getState) => {
+    const myPersona = selectMyPersonaCache(getState());
+    if (address !== myPersona.address) {
+      dispatch(resetProfileView());
+    }
+  };

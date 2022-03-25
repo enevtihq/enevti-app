@@ -18,11 +18,11 @@ const initialState: Profile & { persona: Persona } = {
   minted: [],
 };
 
-const profileViewSlice = createSlice({
-  name: 'profileView',
+const myProfileViewSlice = createSlice({
+  name: 'myProfileView',
   initialState,
   reducers: {
-    setProfileView: (profile, action: PayloadAction<Profile>) => {
+    setMyProfileView: (profile, action: PayloadAction<Profile>) => {
       profile.nftSold = action.payload.nftSold;
       profile.treasuryAct = action.payload.treasuryAct;
       profile.serveRate = action.payload.serveRate;
@@ -34,27 +34,27 @@ const profileViewSlice = createSlice({
       profile.onsale = action.payload.onsale.slice();
       profile.minted = action.payload.minted.slice();
     },
-    setPersonaView: (profile, action: PayloadAction<Persona>) => {
+    setMyPersonaView: (profile, action: PayloadAction<Persona>) => {
       profile.persona.username = action.payload.username;
       profile.persona.photo = action.payload.photo;
       profile.persona.address = action.payload.address;
     },
-    resetProfileView: () => {
+    resetMyProfileView: () => {
       return initialState;
     },
   },
 });
 
-export const { setProfileView, setPersonaView, resetProfileView } =
-  profileViewSlice.actions;
-export default profileViewSlice.reducer;
+export const { setMyProfileView, setMyPersonaView, resetMyProfileView } =
+  myProfileViewSlice.actions;
+export default myProfileViewSlice.reducer;
 
-export const selectProfileView = createSelector(
+export const selectMyProfileView = createSelector(
   (state: RootState) => state,
-  (state: RootState) => state.ui.view.profile,
+  (state: RootState) => state.ui.view.myProfile,
 );
 
-export const isProfileUndefined = createSelector(
-  (state: RootState) => state.ui.view.profile,
+export const isMyProfileUndefined = createSelector(
+  (state: RootState) => state.ui.view.myProfile,
   (profile: Profile) => shallowEqual(profile, initialState),
 );

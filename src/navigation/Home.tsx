@@ -323,7 +323,9 @@ export default function Home({ navigation }: Props) {
               contentStyle={styles.notEligibleGoToStakeButton}
               onPress={() => {
                 setUneligibleSheetVisible(false);
-                navigation.navigate('StakePool', { persona: myPersona });
+                navigation.navigate('StakePool', {
+                  address: myPersona.address,
+                });
               }}>
               <AppTextBody4 style={{ color: theme.colors.primary }}>
                 {t('home:notEligibleGoToStake')}
@@ -538,7 +540,7 @@ export default function Home({ navigation }: Props) {
               <AppHeader
                 style={myProfileStyle}
                 height={headerHeight}
-                title={t('home:profile')}>
+                title={t('home:myProfile')}>
                 <AppHeaderAction
                   icon={iconMap.edit}
                   onPress={() => console.log('pressed')}

@@ -22,7 +22,7 @@ import { selectAuthState } from '../store/slices/auth';
 import SetupGoogleBinderPassword from '../screen/auth/SetupGoogleBinderPassword';
 import Home from './Home';
 import StakePool from '../screen/stake/StakePool';
-import { Persona } from '../types/service/enevti/persona';
+import Profile from '../screen/profile/Profile';
 import ChooseNFTType from '../screen/createNFT/ChooseNFTType';
 import ChooseNFTTemplate from '../screen/createNFT/ChooseNFTTemplate';
 import CreateOneKindContract from '../screen/createNFT/CreateOneKindContract';
@@ -45,8 +45,11 @@ export type RootStackParamList = {
   Home: undefined;
   Feed: undefined;
   MyProfile: undefined;
+  Profile: {
+    address: string;
+  };
   StakePool: {
-    persona: Persona;
+    address: string;
   };
   ChooseNFTType: undefined;
   ChooseNFTTemplate: {
@@ -156,6 +159,14 @@ export default function AppNavigationContainer() {
         <Stack.Screen
           name="StakePool"
           component={StakePool}
+          options={{
+            headerShown: false,
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          }}
+        />
+        <Stack.Screen
+          name="Profile"
+          component={Profile}
           options={{
             headerShown: false,
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,

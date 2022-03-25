@@ -21,19 +21,13 @@ import OnSaleNFTComponent from './tabs/OnSaleNFTComponent';
 import AppProfileBody from './AppProfileBody';
 import { useTheme } from 'react-native-paper';
 import AppActivityIndicator from '../../atoms/loading/AppActivityIndicator';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
   loadProfile,
   unloadProfile,
 } from '../../../store/middleware/thunk/ui/view/profile';
-import {
-  isPersonaUndefined,
-  selectPersonaView,
-} from '../../../store/slices/ui/view/persona';
-import {
-  isProfileUndefined,
-  selectProfileView,
-} from '../../../store/slices/ui/view/profile';
+import { Profile } from '../../../types/service/enevti/profile';
+import { Persona } from '../../../types/service/enevti/persona';
 
 const noDisplay = 'none';
 const visible = 1;
@@ -42,6 +36,8 @@ const notVisible = 0;
 interface AppProfileProps {
   navigation: StackNavigationProp<RootStackParamList>;
   address: string;
+  profile: Profile & { persona: Persona };
+  profileUndefined: boolean;
   onScrollWorklet?: (val: number) => void;
   onBeginDragWorklet?: (val: number) => void;
   onEndDragWorklet?: (val: number) => void;
@@ -52,6 +48,8 @@ interface AppProfileProps {
 export default function AppProfile({
   navigation,
   address,
+  profile,
+  profileUndefined,
   onScrollWorklet,
   onBeginDragWorklet,
   onEndDragWorklet,
@@ -61,10 +59,7 @@ export default function AppProfile({
   const dispatch = useDispatch();
   const insets = useSafeAreaInsets();
   const theme = useTheme();
-  const persona = useSelector(selectPersonaView);
-  const profile = useSelector(selectProfileView);
-  const personaUndefined = useSelector(isPersonaUndefined);
-  const profileUndefined = useSelector(isProfileUndefined);
+  const persona = profile.persona;
   const styles = React.useMemo(
     () => makeStyles(headerHeight, insets),
     [headerHeight, insets],
@@ -84,16 +79,14 @@ export default function AppProfile({
     hp(PROFILE_HEADER_HEIGHT_PERCENTAGE, insets) + headerHeight;
 
   const onFeedScreenLoaded = React.useCallback(
-    (force: boolean = false) => dispatch(loadProfile(address, force)),
+    (reload: boolean = false) => dispatch(loadProfile(address, reload)),
     [address, dispatch],
   );
 
   React.useEffect(() => {
+    dispatch(unloadProfile(address));
     onFeedScreenLoaded();
-    return function cleanup() {
-      dispatch(unloadProfile());
-    };
-  }, [onFeedScreenLoaded, dispatch]);
+  }, [onFeedScreenLoaded, dispatch, address]);
 
   const useCustomAnimatedScrollHandler = (
     scrollRefList: React.RefObject<any>[],
@@ -280,7 +273,7 @@ export default function AppProfile({
     ],
   );
 
-  return !personaUndefined && !profileUndefined ? (
+  return !profileUndefined ? (
     <View>
       <Animated.View style={[styles.profileHeader, scrollStyle]}>
         <AppProfileHeader

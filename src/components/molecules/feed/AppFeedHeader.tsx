@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import React from 'react';
 import AppTextHeading3 from '../../atoms/text/AppTextHeading3';
 import AppTextBody5 from '../../atoms/text/AppTextBody5';
@@ -17,6 +17,7 @@ import AppAvatarRenderer from '../avatar/AppAvatarRenderer';
 import AppMenuContainer from '../../atoms/menu/AppMenuContainer';
 import AppMenuItem from '../../atoms/menu/AppMenuItem';
 import { menuItemHeigtPercentage } from '../../../utils/layout/menuItemHeigtPercentage';
+import { useNavigation } from '@react-navigation/native';
 
 interface AppFeedHeaderProps {
   feed: FeedItem;
@@ -24,13 +25,22 @@ interface AppFeedHeaderProps {
 
 export default function AppFeedHeader({ feed }: AppFeedHeaderProps) {
   const { t } = useTranslation();
+  const navigation = useNavigation();
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
   const styles = React.useMemo(() => makeStyles(insets), [insets]);
 
   const [menuVisible, setMenuVisible] = React.useState<boolean>(false);
 
-  const onStake = () => {};
+  const onProfileDetail = React.useCallback(() => {
+    navigation.navigate('Profile', { address: feed.owner });
+  }, [navigation, feed.owner]);
+
+  const onPromoteInfo = () => {};
+
+  const onStake = React.useCallback(() => {
+    navigation.navigate('StakePool', { address: feed.owner });
+  }, [navigation, feed.owner]);
 
   const onCloseMenu = () => {
     setMenuVisible(false);
@@ -61,13 +71,17 @@ export default function AppFeedHeader({ feed }: AppFeedHeaderProps) {
       />
 
       <View style={styles.headerAvatarInfoContainer}>
-        <AppTextHeading3 numberOfLines={1}>
-          {feed.username ? feed.username : feed.owner}
-        </AppTextHeading3>
+        <Pressable onPress={onProfileDetail} style={styles.headerAction}>
+          <AppTextHeading3 numberOfLines={1}>
+            {feed.username ? feed.username : feed.owner}
+          </AppTextHeading3>
+        </Pressable>
         {feed.promoted ? (
-          <AppTextBody5 numberOfLines={1}>
-            {t('home:promotedByCommunity')}
-          </AppTextBody5>
+          <Pressable onPress={onPromoteInfo} style={styles.headerAction}>
+            <AppTextBody5 numberOfLines={1}>
+              {t('home:promotedByCommunity')}
+            </AppTextBody5>
+          </Pressable>
         ) : (
           <View />
         )}
@@ -119,6 +133,9 @@ export default function AppFeedHeader({ feed }: AppFeedHeaderProps) {
 
 const makeStyles = (insets: SafeAreaInsets) =>
   StyleSheet.create({
+    headerAction: {
+      flex: 1,
+    },
     headerContainer: {
       flex: 1,
       flexDirection: 'row',

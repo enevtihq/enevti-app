@@ -37,9 +37,9 @@ const AnimatedFlatList =
 type Props = StackScreenProps<RootStackParamList, 'StakePool'>;
 
 export default function StakePool({ navigation, route }: Props) {
-  const { persona } = route.params;
+  const { address } = route.params;
   const myPersona = useSelector(selectMyPersonaCache);
-  const selfStake = persona.address === myPersona.address;
+  const selfStake = address === myPersona.address;
 
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
@@ -79,14 +79,14 @@ export default function StakePool({ navigation, route }: Props) {
 
   const onLoaded = React.useCallback(async () => {
     try {
-      const pool = await getStakePoolCompleteData(persona.address);
+      const pool = await getStakePoolCompleteData(address);
       if (pool) {
         setStakePool(pool);
       }
     } catch (err: any) {
       handleError(err);
     }
-  }, [persona.address]);
+  }, [address]);
 
   const onOpenStakeMenu = React.useCallback(async () => {
     setMenuVisible(!menuVisible);

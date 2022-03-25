@@ -6,7 +6,7 @@ export async function getStakePoolCompleteData(
 ): Promise<StakePoolData | undefined> {
   console.log(address);
 
-  await sleep(5000);
+  await sleep(1000);
 
   return {
     staker: [

@@ -49,7 +49,7 @@ export default function AppHeader({
   );
 
   return (
-    <Animated.View style={style}>
+    <Animated.View style={[styles.headerContainer, style]}>
       <Appbar.Header style={styles.header}>
         {back && navigation ? (
           backIcon ? (
@@ -86,6 +86,9 @@ const makeStyles = (theme: Theme, height: number, insets: SafeAreaInsets) =>
   StyleSheet.create({
     divider: {
       flex: 1,
+    },
+    headerContainer: {
+      zIndex: 999,
     },
     header: {
       position: 'absolute',

@@ -16,7 +16,7 @@ export const MINIMUM_BASIC_UNIT_STAKE_ELIGIBILITY = 1000;
 async function fetchProfile(address: string): Promise<Profile | undefined> {
   console.log(address);
 
-  await sleep(5000);
+  await sleep(1000);
 
   const ownedNFT = [];
   const onsaleNFT = [];

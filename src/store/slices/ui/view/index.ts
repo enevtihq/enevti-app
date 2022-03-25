@@ -1,8 +1,8 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import personaEntitySliceReducer from './persona';
-import profileEntitySliceReducer from './profile';
+import profileViewReducer from './profile';
+import myProfileViewReducer from './myProfile';
 
 export default combineReducers({
-  profile: profileEntitySliceReducer,
-  persona: personaEntitySliceReducer,
+  profile: profileViewReducer,
+  myProfile: myProfileViewReducer,
 });

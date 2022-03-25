@@ -11,13 +11,13 @@ export function cleanTMPImage() {
 }
 
 export async function isNameAvailable(name: string): Promise<boolean> {
-  await sleep(5000);
+  await sleep(1000);
   console.log(name);
   return true;
 }
 
 export async function isSymbolAvailable(name: string): Promise<boolean> {
-  await sleep(5000);
+  await sleep(1000);
   console.log(name);
   return true;
 }

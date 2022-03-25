@@ -21,6 +21,6 @@ export function getBuiltInNFTTemplate(): NFTTemplateAsset[] {
 }
 
 export async function getMoreNFTTemplate(): Promise<NFTTemplateAsset[]> {
-  await sleep(5000);
+  await sleep(1000);
   return [];
 }
