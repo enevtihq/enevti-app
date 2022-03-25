@@ -4,9 +4,9 @@ import { store } from '../../store/state';
 import { getDummyNFTData, sleep } from './dummy';
 import {
   selectMyProfile,
-  setLastFetchMyProfile,
-  setMyProfile,
-} from '../../store/slices/entities/myProfile';
+  setLastFetchMyProfileCache,
+  setMyProfileCache,
+} from '../../store/slices/entities/cache/myProfile';
 import { lastFetchTreshold } from '../../utils/constant/lastFetch';
 import { getMyAddress } from './persona';
 import { completeTokenUnit } from '../../utils/format/amount';
@@ -64,8 +64,8 @@ export async function getMyProfile(
     const profileResponse = await getProfile(myAddress);
     if (profileResponse) {
       myProfile = profileResponse;
-      store.dispatch(setLastFetchMyProfile(now));
-      store.dispatch(setMyProfile(myProfile));
+      store.dispatch(setLastFetchMyProfileCache(now));
+      store.dispatch(setMyProfileCache(myProfile));
     }
   }
 

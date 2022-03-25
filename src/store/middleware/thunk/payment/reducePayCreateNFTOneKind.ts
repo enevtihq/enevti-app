@@ -18,7 +18,7 @@ export const reducePayCreateNFTOneKind =
       payload.state.utility === 'content'
         ? await uploadURItoIPFS(payload.state.contentUri)
         : '';
-    // construct new transactionPayload
-    // use Lisk Client to submit transaction to Blockchain
+    // TODO: construct new transactionPayload
+    // TODO: use Lisk Client to submit transaction to Blockchain
     dispatch(setPaymentStatus({ type: 'success', message: '' }));
   };

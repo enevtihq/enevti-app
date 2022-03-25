@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
-import { Profile } from '../../../types/service/enevti/profile';
-import { RootState } from '../../state';
+import { Profile } from '../../../../types/service/enevti/profile';
+import { RootState } from '../../../state';
 
 const initialState: Profile & { lastFetch: number } = {
   nftSold: 0,
@@ -20,7 +20,7 @@ const profileEntitySlice = createSlice({
   name: 'myProfile',
   initialState,
   reducers: {
-    setMyProfile: (profile, action: PayloadAction<Profile>) => {
+    setMyProfileCache: (profile, action: PayloadAction<Profile>) => {
       profile.nftSold = action.payload.nftSold;
       profile.treasuryAct = action.payload.treasuryAct;
       profile.serveRate = action.payload.serveRate;
@@ -32,17 +32,17 @@ const profileEntitySlice = createSlice({
       profile.onsale = action.payload.onsale.slice();
       profile.minted = action.payload.minted.slice();
     },
-    setLastFetchMyProfile: (profile, action: PayloadAction<number>) => {
+    setLastFetchMyProfileCache: (profile, action: PayloadAction<number>) => {
       profile.lastFetch = action.payload;
     },
   },
 });
 
-export const { setMyProfile, setLastFetchMyProfile } =
+export const { setMyProfileCache, setLastFetchMyProfileCache } =
   profileEntitySlice.actions;
 export default profileEntitySlice.reducer;
 
 export const selectMyProfile = createSelector(
   (state: RootState) => state,
-  (state: RootState) => state.entities.myProfile,
+  (state: RootState) => state.entities.cache.myProfile,
 );

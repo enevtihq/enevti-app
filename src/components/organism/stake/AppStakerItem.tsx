@@ -12,7 +12,7 @@ import AppListItem from '../../molecules/list/AppListItem';
 import { StyleSheet } from 'react-native';
 import { StakerItem } from '../../../types/service/enevti/stake';
 import { useSelector } from 'react-redux';
-import { selectMyPersona } from '../../../store/slices/entities/myPersona';
+import { selectMyPersona } from '../../../store/slices/entities/cache/myPersona';
 import { parseAmount } from '../../../utils/format/amount';
 import { getCoinName } from '../../atoms/brand/AppBrandConstant';
 

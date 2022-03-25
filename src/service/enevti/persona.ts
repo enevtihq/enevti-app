@@ -9,11 +9,11 @@ import { ERRORCODE } from '../../utils/error/code';
 import { sleep } from '../../service/enevti/dummy';
 import { lastFetchTreshold } from '../../utils/constant/lastFetch';
 import {
-  setMyPersona,
-  setLastFetchMyPersona,
+  setMyPersonaCache,
+  setLastFetchMyPersonaCache,
   selectMyPersona,
-  setMyPersonaAddress,
-} from '../../store/slices/entities/myPersona';
+  setMyPersonaAddressCache,
+} from '../../store/slices/entities/cache/myPersona';
 import { selectAuthState } from '../../store/slices/auth';
 import { selectLocalSession } from '../../store/slices/session/local';
 
@@ -57,7 +57,7 @@ export async function getMyAddress() {
 
     const myAddress =
       Lisk.cryptography.getBase32AddressFromPassphrase(authToken);
-    store.dispatch(setMyPersonaAddress(myAddress));
+    store.dispatch(setMyPersonaAddressCache(myAddress));
 
     return myAddress;
   }
@@ -75,8 +75,8 @@ export async function getMyBasePersona(force = false): Promise<Persona> {
 
   if (force || now - lastFetch > lastFetchTreshold.persona) {
     myPersona = await getBasePersona(address);
-    store.dispatch(setLastFetchMyPersona(now));
-    store.dispatch(setMyPersona(myPersona));
+    store.dispatch(setLastFetchMyPersonaCache(now));
+    store.dispatch(setMyPersonaCache(myPersona));
   }
 
   return myPersona;

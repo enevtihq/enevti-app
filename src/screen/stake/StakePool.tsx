@@ -28,7 +28,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { iconMap } from '../../components/atoms/icon/AppIconComponent';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
-import { selectMyPersona } from '../../store/slices/entities/myPersona';
+import { selectMyPersona } from '../../store/slices/entities/cache/myPersona';
 import AppMenuContainer from '../../components/atoms/menu/AppMenuContainer';
 
 const AnimatedFlatList =

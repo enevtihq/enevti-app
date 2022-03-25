@@ -4,7 +4,7 @@ import AppView from '../../components/atoms/view/AppView';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation';
 import { useSelector } from 'react-redux';
-import { selectMyPersona } from '../../store/slices/entities/myPersona';
+import { selectMyPersona } from '../../store/slices/entities/cache/myPersona';
 import AppProfile from '../../components/organism/profile/AppProfile';
 
 type Props = StackScreenProps<RootStackParamList, 'MyProfile'>;
