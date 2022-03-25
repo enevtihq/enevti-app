@@ -1,3 +1,4 @@
+import { COIN_NAME } from '../../components/atoms/brand/AppBrandConstant';
 import { NFTBase } from '../../types/nft';
 import { FeedItem, Feeds, Moments } from '../../types/service/enevti/feed';
 import { getDummyNFTData, sleep } from './dummy';
@@ -18,7 +19,10 @@ function getFeedItemList(): FeedItem {
     id: Math.random().toString(),
     like: 271,
     comment: 32,
-    price: '9327',
+    price: {
+      amount: '9327',
+      currency: COIN_NAME,
+    },
     name: 'EyeCollection',
     description:
       'to celebrate our 2021 newest cat, we release new NFT collection withtons of utility that you can experience with your own eyes',

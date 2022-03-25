@@ -9,7 +9,6 @@ import AppTextBody5 from '../../atoms/text/AppTextBody5';
 import { Theme } from '../../../theme/default';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from 'react-native-paper';
-import { getCoinName } from '../../atoms/brand/AppBrandConstant';
 import { FeedItem } from '../../../types/service/enevti/feed';
 import { parseAmount } from '../../../utils/format/amount';
 
@@ -76,8 +75,8 @@ export default React.memo(
           }}
           onPress={() => onBuy()}>
           <AppTextHeading4 style={styles.actionButtonText}>
-            {parseAmount(feed.price)}{' '}
-            <AppTextBody5>{getCoinName()}</AppTextBody5>
+            {parseAmount(feed.price.amount)}{' '}
+            <AppTextBody5>${feed.price.currency}</AppTextBody5>
           </AppTextHeading4>
         </AppQuaternaryButton>
       </View>

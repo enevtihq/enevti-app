@@ -3,9 +3,11 @@ import { NFTType } from './NFTType';
 import { NFTTemplateData } from './NFTTemplate';
 import { NFTUtility } from './NFTUtility';
 import { NFTRedeemBase } from './NFTRedeem';
+import { NFTPrice } from './NFTPrice';
 
 export type NFTBase = {
   id: string;
+  like: number;
   name: string;
   symbol: string;
   serial: string;
@@ -16,4 +18,6 @@ export type NFTBase = {
   utility: NFTUtility;
   redeem: NFTRedeemBase;
   rarity: NFTRarity;
+  price: NFTPrice;
+  onSale: boolean;
 };

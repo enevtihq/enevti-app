@@ -1,11 +1,12 @@
 import { NFTBase } from '../../nft';
+import { NFTPrice } from '../../nft/NFTPrice';
 
 export interface FeedItem {
   type: string;
   id: string;
   like: number;
   comment: number;
-  price: string;
+  price: NFTPrice;
   name: string;
   description: string;
   promoted: boolean;

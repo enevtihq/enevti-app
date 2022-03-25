@@ -7,7 +7,7 @@ import { PROFILE_HEADER_HEIGHT_PERCENTAGE } from '../AppProfileHeader';
 import { TOP_TABBAR_HEIGHT_PERCENTAGE } from '../../../atoms/view/AppTopTabBar';
 import { hp, SafeAreaInsets, wp } from '../../../../utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import AppNFTRenderer from '../../../molecules/nft/AppNFTRenderer';
+import AppNFTCard from '../../../molecules/nft/AppNFTCard';
 
 const AnimatedFlatGrid =
   Animated.createAnimatedComponent<FlatGridProps<NFTBase>>(FlatGrid);
@@ -45,8 +45,8 @@ function Component(
     () => (refreshing ? false : scrollEnabled),
     [refreshing, scrollEnabled],
   );
-  const spacing = React.useMemo(() => wp('0.5%', insets), [insets]);
-  const itemDimension = React.useMemo(() => wp('30%', insets), [insets]);
+  const spacing = React.useMemo(() => wp('1%', insets), [insets]);
+  const itemDimension = React.useMemo(() => wp('48%', insets), [insets]);
   const progressViewOffset = React.useMemo(
     () =>
       Platform.OS === 'ios'
@@ -78,7 +78,7 @@ function Component(
   );
 
   const renderItem = React.useCallback(
-    ({ item }) => <AppNFTRenderer nft={item} width={itemDimension} />,
+    ({ item }) => <AppNFTCard nft={item} width={itemDimension} />,
     [itemDimension],
   );
 
