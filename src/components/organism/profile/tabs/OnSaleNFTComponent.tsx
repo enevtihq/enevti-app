@@ -42,25 +42,30 @@ function Component(
   const insets = useSafeAreaInsets();
   const dispatch = useDispatch();
   const noDisplay = 'none';
+  const mounted = React.useRef<boolean>(false);
   const [displayed, setDisplayed] = React.useState<boolean>(false);
   const [refreshing, setRefreshing] = React.useState<boolean>(false);
 
   const handleRefresh = async () => {
-    try {
-      dispatch(showModalLoader());
-      setRefreshing(true);
-      onRefreshStart && (await onRefreshStart());
-      onRefreshEnd && (await onRefreshEnd());
+    dispatch(showModalLoader());
+    setRefreshing(true);
+    onRefreshStart && (await onRefreshStart());
+    onRefreshEnd && (await onRefreshEnd());
+    dispatch(hideModalLoader());
+    if (mounted.current) {
       setRefreshing(false);
-      dispatch(hideModalLoader());
-    } catch {}
+    }
   };
 
   React.useEffect(() => {
     if (ref && ref.current) {
+      mounted.current = true;
       setDisplayed(true);
       onMounted && onMounted();
     }
+    return function cleanup() {
+      mounted.current = false;
+    };
   }, [ref, onMounted, refreshing, onRefreshEnd]);
 
   return (
