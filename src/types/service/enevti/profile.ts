@@ -1,4 +1,5 @@
 import { NFTBase } from '../../nft';
+import { SocialProfile } from '../../social';
 
 export type Profile = {
   nftSold: number;
@@ -6,10 +7,7 @@ export type Profile = {
   serveRate: number;
   stake: string;
   balance: string;
-  twitter: {
-    username: string;
-    follower: number;
-  };
+  social: SocialProfile;
   owned: NFTBase[];
   onsale: NFTBase[];
   minted: any[];

@@ -137,7 +137,7 @@ export default function AppProfileHeader({
       </View>
 
       <View style={styles.profileHeaderChipsContainer}>
-        {profile.twitter.username && profile.twitter.follower ? (
+        {profile.social.twitter.link && profile.social.twitter.stat ? (
           <AppQuaternaryButton
             icon={iconMap.twitter}
             iconSize={hp('3%', insets)}
@@ -148,7 +148,7 @@ export default function AppProfileHeader({
             }}
             onPress={() => console.log('Pressed')}>
             <AppTextBody4 style={{ color: theme.colors.placeholder }}>
-              {numberKMB(profile.twitter.follower, 2)}
+              {numberKMB(profile.social.twitter.stat, 2)}
             </AppTextBody4>
           </AppQuaternaryButton>
         ) : null}

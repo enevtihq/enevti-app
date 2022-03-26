@@ -36,9 +36,11 @@ async function fetchProfile(address: string): Promise<Profile | undefined> {
     serveRate: 0.98,
     stake: '132400000000',
     balance: '15400000000',
-    twitter: {
-      username: '@aldhosutra',
-      follower: 1120,
+    social: {
+      twitter: {
+        link: 'https://twitter.com/aldhosutra',
+        stat: 1120,
+      },
     },
     owned: ownedNFT,
     onsale: onsaleNFT,

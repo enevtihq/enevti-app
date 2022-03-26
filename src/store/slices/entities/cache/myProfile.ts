@@ -9,7 +9,7 @@ const initialState: Profile & { lastFetch: number } = {
   serveRate: 0,
   stake: '',
   balance: '',
-  twitter: { username: '', follower: 0 },
+  social: { twitter: { link: '', stat: 0 } },
   owned: [],
   onsale: [],
   minted: [],
@@ -26,8 +26,8 @@ const profileEntitySlice = createSlice({
       profile.serveRate = action.payload.serveRate;
       profile.stake = action.payload.stake;
       profile.balance = action.payload.balance;
-      profile.twitter.username = action.payload.twitter.username;
-      profile.twitter.follower = action.payload.twitter.follower;
+      profile.social.twitter.link = action.payload.social.twitter.link;
+      profile.social.twitter.stat = action.payload.social.twitter.stat;
       profile.owned = action.payload.owned.slice();
       profile.onsale = action.payload.onsale.slice();
       profile.minted = action.payload.minted.slice();
