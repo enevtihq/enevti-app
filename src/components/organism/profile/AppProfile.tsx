@@ -43,6 +43,7 @@ interface AppProfileProps {
   onEndDragWorklet?: (val: number) => void;
   onMomentumEndWorklet?: (val: number) => void;
   headerHeight?: number;
+  disableHeaderAnimation?: boolean;
 }
 
 export default function AppProfile({
@@ -55,6 +56,7 @@ export default function AppProfile({
   onEndDragWorklet,
   onMomentumEndWorklet,
   headerHeight = 0,
+  disableHeaderAnimation = false,
 }: AppProfileProps) {
   const dispatch = useDispatch();
   const insets = useSafeAreaInsets();
@@ -78,15 +80,15 @@ export default function AppProfile({
   const totalHeaderHeight =
     hp(PROFILE_HEADER_HEIGHT_PERCENTAGE, insets) + headerHeight;
 
-  const onFeedScreenLoaded = React.useCallback(
+  const onProfileScreenLoaded = React.useCallback(
     (reload: boolean = false) => dispatch(loadProfile(address, reload)),
     [address, dispatch],
   );
 
   React.useEffect(() => {
     dispatch(unloadProfile(address));
-    onFeedScreenLoaded();
-  }, [onFeedScreenLoaded, dispatch, address]);
+    onProfileScreenLoaded();
+  }, [onProfileScreenLoaded, dispatch, address]);
 
   const useCustomAnimatedScrollHandler = (
     scrollRefList: React.RefObject<any>[],
@@ -115,30 +117,40 @@ export default function AppProfile({
           tabScroll.value = event.contentOffset.y;
           ctx.current = totalHeaderHeight;
         } else {
-          const diff = event.contentOffset.y - ctx.prevY;
-          if (diff > 0 && event.contentOffset.y < totalHeaderHeight) {
-            tabScroll.value = event.contentOffset.y;
+          if (!disableHeaderAnimation) {
+            const diff = event.contentOffset.y - ctx.prevY;
+            if (diff > 0 && event.contentOffset.y < totalHeaderHeight) {
+              tabScroll.value = event.contentOffset.y;
+            } else {
+              tabScroll.value = diffClamp(
+                ctx.current + diff,
+                totalHeaderHeight - headerHeight,
+                totalHeaderHeight,
+              );
+            }
           } else {
-            tabScroll.value = diffClamp(
-              ctx.current + diff,
-              totalHeaderHeight - headerHeight,
-              totalHeaderHeight,
-            );
+            tabScroll.value = totalHeaderHeight - headerHeight;
           }
         }
 
-        onScrollWorklet && onScrollWorklet(event.contentOffset.y);
+        !disableHeaderAnimation &&
+          onScrollWorklet &&
+          onScrollWorklet(event.contentOffset.y);
       },
       onBeginDrag: (event, ctx) => {
         ctx.prevY = event.contentOffset.y;
-        onBeginDragWorklet && onBeginDragWorklet(event.contentOffset.y);
+        !disableHeaderAnimation &&
+          onBeginDragWorklet &&
+          onBeginDragWorklet(event.contentOffset.y);
       },
       onEndDrag: (event, ctx) => {
         if (event.contentOffset.y > totalHeaderHeight) {
           if (tabScroll.value < totalHeaderHeight - headerHeight / 2) {
-            tabScroll.value = withTiming(totalHeaderHeight - headerHeight, {
-              duration: 200,
-            });
+            if (!disableHeaderAnimation) {
+              tabScroll.value = withTiming(totalHeaderHeight - headerHeight, {
+                duration: 200,
+              });
+            }
             ctx.current = totalHeaderHeight - headerHeight;
           } else {
             tabScroll.value = withTiming(totalHeaderHeight, {
@@ -151,14 +163,18 @@ export default function AppProfile({
             scrollTo(scrollRefList[i], 0, event.contentOffset.y, false);
           }
         }
-        onEndDragWorklet && onEndDragWorklet(event.contentOffset.y);
+        !disableHeaderAnimation &&
+          onEndDragWorklet &&
+          onEndDragWorklet(event.contentOffset.y);
       },
       onMomentumEnd: (event, ctx) => {
         if (event.contentOffset.y > totalHeaderHeight) {
           if (tabScroll.value < totalHeaderHeight - headerHeight / 2) {
-            tabScroll.value = withTiming(totalHeaderHeight - headerHeight, {
-              duration: 200,
-            });
+            if (!disableHeaderAnimation) {
+              tabScroll.value = withTiming(totalHeaderHeight - headerHeight, {
+                duration: 200,
+              });
+            }
             ctx.current = totalHeaderHeight - headerHeight;
           } else {
             tabScroll.value = withTiming(totalHeaderHeight, {
@@ -171,7 +187,9 @@ export default function AppProfile({
             scrollTo(scrollRefList[i], 0, event.contentOffset.y, false);
           }
         }
-        onMomentumEndWorklet && onMomentumEndWorklet(event.contentOffset.y);
+        !disableHeaderAnimation &&
+          onMomentumEndWorklet &&
+          onMomentumEndWorklet(event.contentOffset.y);
       },
     });
 
@@ -196,7 +214,7 @@ export default function AppProfile({
   );
 
   const onRefresh = React.useCallback(() => {
-    onFeedScreenLoaded(true);
+    onProfileScreenLoaded(true);
     ownedRef.current?.scrollToOffset({ offset: 1 });
     onSaleRef.current?.scrollToOffset({ offset: 1 });
     onBeginDragWorklet && onBeginDragWorklet(0);
@@ -204,7 +222,7 @@ export default function AppProfile({
     onEndDragWorklet && onEndDragWorklet(0);
     onMomentumEndWorklet && onMomentumEndWorklet(0);
   }, [
-    onFeedScreenLoaded,
+    onProfileScreenLoaded,
     ownedRef,
     onSaleRef,
     onScrollWorklet,
@@ -237,6 +255,7 @@ export default function AppProfile({
         data={ownedData}
         onMounted={ownedOnMounted}
         onRefresh={onRefresh}
+        disableHeaderAnimation={disableHeaderAnimation}
       />
     ),
     [
@@ -247,6 +266,7 @@ export default function AppProfile({
       scrollEnabled,
       ownedOnMounted,
       onRefresh,
+      disableHeaderAnimation,
     ],
   );
 
@@ -260,6 +280,7 @@ export default function AppProfile({
         data={onSaleData}
         onMounted={onSaleOnMounted}
         onRefresh={onRefresh}
+        disableHeaderAnimation={disableHeaderAnimation}
       />
     ),
     [
@@ -270,6 +291,7 @@ export default function AppProfile({
       scrollEnabled,
       onSaleOnMounted,
       onRefresh,
+      disableHeaderAnimation,
     ],
   );
 

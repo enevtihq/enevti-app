@@ -19,6 +19,7 @@ interface OnSaleNFTComponentProps {
   onMounted?: () => void;
   onRefresh?: () => void;
   scrollEnabled?: boolean;
+  disableHeaderAnimation?: boolean;
 }
 
 function Component(
@@ -29,6 +30,7 @@ function Component(
     onMounted,
     onRefresh,
     scrollEnabled,
+    disableHeaderAnimation = false,
   }: OnSaleNFTComponentProps,
   ref: any,
 ) {
@@ -38,8 +40,8 @@ function Component(
   const [refreshing, setRefreshing] = React.useState<boolean>(false);
 
   const styles = React.useMemo(
-    () => makeStyle(insets, headerHeight, displayed),
-    [insets, headerHeight, displayed],
+    () => makeStyle(insets, headerHeight, displayed, disableHeaderAnimation),
+    [insets, headerHeight, displayed, disableHeaderAnimation],
   );
   const isScrollEnabled = React.useMemo(
     () => (refreshing ? false : scrollEnabled),
@@ -114,6 +116,7 @@ const makeStyle = (
   insets: SafeAreaInsets,
   headerHeight: number,
   displayed: boolean,
+  disableHeaderAnimation: boolean,
 ) =>
   StyleSheet.create({
     contentContainerStyle: {
@@ -123,7 +126,8 @@ const makeStyle = (
           insets,
         ) + headerHeight,
       minHeight:
-        hp(PROFILE_HEADER_HEIGHT_PERCENTAGE + 100, insets) + headerHeight,
+        hp(PROFILE_HEADER_HEIGHT_PERCENTAGE + 100, insets) +
+        (disableHeaderAnimation ? 0 : headerHeight),
       display: displayed ? undefined : 'none',
     },
   });

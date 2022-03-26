@@ -26,7 +26,7 @@ async function fetchProfile(address: string): Promise<Profile | undefined> {
     ownedNFT.push(getDummyNFTData());
   }
 
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < 10; i++) {
     onsaleNFT.push(getDummyNFTData());
   }
 
