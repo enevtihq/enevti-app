@@ -17,15 +17,19 @@ import AppAvatarRenderer from '../avatar/AppAvatarRenderer';
 import AppMenuContainer from '../../atoms/menu/AppMenuContainer';
 import AppMenuItem from '../../atoms/menu/AppMenuItem';
 import { menuItemHeigtPercentage } from '../../../utils/layout/menuItemHeigtPercentage';
-import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../../navigation';
 
 interface AppFeedHeaderProps {
   feed: FeedItem;
+  navigation: StackNavigationProp<RootStackParamList>;
 }
 
-export default function AppFeedHeader({ feed }: AppFeedHeaderProps) {
+export default function AppFeedHeader({
+  feed,
+  navigation,
+}: AppFeedHeaderProps) {
   const { t } = useTranslation();
-  const navigation = useNavigation();
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
   const styles = React.useMemo(() => makeStyles(insets), [insets]);

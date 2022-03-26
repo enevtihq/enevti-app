@@ -10,13 +10,16 @@ import AppFeedAction from './AppFeedAction';
 import AppFeedFooter from './AppFeedFooter';
 import { FeedItem } from '../../../types/service/enevti/feed';
 import AppFeedBody from './AppFeedBody';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../../navigation';
 
 interface AppFeedItemProps {
   feed: FeedItem;
+  navigation: StackNavigationProp<RootStackParamList>;
 }
 
 export default React.memo(
-  function AppFeedItem({ feed }: AppFeedItemProps) {
+  function AppFeedItem({ feed, navigation }: AppFeedItemProps) {
     const insets = useSafeAreaInsets();
     const theme = useTheme() as Theme;
     const styles = React.useMemo(
@@ -28,9 +31,9 @@ export default React.memo(
 
     return (
       <View style={styles.card}>
-        <AppFeedHeader feed={feed} />
+        <AppFeedHeader feed={feed} navigation={navigation} />
         <AppFeedBody canvasWidth={canvasWidth} feed={feed} />
-        <AppFeedAction feed={feed} />
+        <AppFeedAction feed={feed} navigation={navigation} />
         <AppFeedFooter feed={feed} />
       </View>
     );

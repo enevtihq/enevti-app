@@ -11,13 +11,16 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from 'react-native-paper';
 import { FeedItem } from '../../../types/service/enevti/feed';
 import { parseAmount } from '../../../utils/format/amount';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../../navigation';
 
 interface AppFeedActionProps {
   feed: FeedItem;
+  navigation: StackNavigationProp<RootStackParamList>;
 }
 
 export default React.memo(
-  function AppFeedAction({ feed }: AppFeedActionProps) {
+  function AppFeedAction({ feed, navigation }: AppFeedActionProps) {
     const insets = useSafeAreaInsets();
     const theme = useTheme() as Theme;
     const styles = React.useMemo(() => makeStyles(insets), [insets]);
@@ -33,7 +36,9 @@ export default React.memo(
 
     const onComment = () => {};
 
-    const onBuy = () => {};
+    const onBuy = React.useCallback(() => {
+      navigation.navigate('Collection', { id: feed.id });
+    }, [navigation, feed.id]);
 
     return (
       <View style={styles.actionContainer}>

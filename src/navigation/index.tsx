@@ -16,16 +16,17 @@ import ConfirmPassphrase from '../screen/auth/ConfirmPassphrase';
 import AccountCreated from '../screen/auth/AccountCreated';
 import ImportPassphrase from '../screen/auth/ImportPassphrase';
 import Login from '../screen/auth/Login';
-
-import { getTheme } from '../theme';
-import { selectAuthState } from '../store/slices/auth';
-import SetupGoogleBinderPassword from '../screen/auth/SetupGoogleBinderPassword';
 import Home from './Home';
 import StakePool from '../screen/stake/StakePool';
 import Profile from '../screen/profile/Profile';
 import ChooseNFTType from '../screen/createNFT/ChooseNFTType';
 import ChooseNFTTemplate from '../screen/createNFT/ChooseNFTTemplate';
 import CreateOneKindContract from '../screen/createNFT/CreateOneKindContract';
+import Collection from '../screen/collection/Collection';
+
+import { getTheme } from '../theme';
+import { selectAuthState } from '../store/slices/auth';
+import SetupGoogleBinderPassword from '../screen/auth/SetupGoogleBinderPassword';
 import useLockScreen from '../utils/hook/useLockScreen';
 import useScreenDisplayed from '../utils/hook/useScreenDisplayed';
 import { selectLockedState } from '../store/slices/ui/screen/locked';
@@ -57,6 +58,9 @@ export type RootStackParamList = {
   };
   CreateOneKindContract: {
     normal?: boolean;
+  };
+  Collection: {
+    id: string;
   };
 };
 
@@ -191,6 +195,14 @@ export default function AppNavigationContainer() {
         <Stack.Screen
           name="CreateOneKindContract"
           component={CreateOneKindContract}
+          options={{
+            headerShown: false,
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          }}
+        />
+        <Stack.Screen
+          name="Collection"
+          component={Collection}
           options={{
             headerShown: false,
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,

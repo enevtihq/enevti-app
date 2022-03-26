@@ -34,7 +34,11 @@ interface FeedProps extends Props {
   headerHeight: number;
 }
 
-export default function Feed({ onScroll, headerHeight }: FeedProps) {
+export default function Feed({
+  navigation,
+  onScroll,
+  headerHeight,
+}: FeedProps) {
   const styles = React.useMemo(() => makeStyles(headerHeight), [headerHeight]);
   const insets = useSafeAreaInsets();
   const feedHeight = hp('24%', insets) + wp('95%', insets);
@@ -86,8 +90,8 @@ export default function Feed({ onScroll, headerHeight }: FeedProps) {
   );
 
   const renderItem = React.useCallback(
-    ({ item }: any) => <AppFeedItem feed={item} />,
-    [],
+    ({ item }: any) => <AppFeedItem feed={item} navigation={navigation} />,
+    [navigation],
   );
 
   const keyExtractor = React.useCallback(item => item.id, []);
