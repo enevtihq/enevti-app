@@ -12,11 +12,13 @@ import {
 import {
   setMyPersonaView,
   setMyProfileView,
+  setMyProfileViewLoaded,
 } from '../../../../slices/ui/view/myProfile';
 import {
   resetProfileView,
   setPersonaView,
   setProfileView,
+  setProfileViewLoaded,
 } from '../../../../slices/ui/view/profile';
 import { AppThunk } from '../../../../state';
 
@@ -30,6 +32,7 @@ export const loadProfile =
       if (address === myPersona.address) {
         const profileResponse = await getMyProfile(reload);
         if (profileResponse) {
+          dispatch(setMyProfileViewLoaded(true));
           dispatch(setMyProfileView(profileResponse));
           dispatch(setMyPersonaView(myPersona));
         }
@@ -37,6 +40,7 @@ export const loadProfile =
         const personaBase = await getBasePersona(address);
         const profileResponse = await getProfile(address);
         if (personaBase && profileResponse) {
+          dispatch(setProfileViewLoaded(true));
           dispatch(setProfileView(profileResponse));
           dispatch(setPersonaView(personaBase));
         }

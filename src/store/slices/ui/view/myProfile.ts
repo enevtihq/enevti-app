@@ -1,11 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { shallowEqual } from 'react-redux';
 import { createSelector } from 'reselect';
 import { Persona } from '../../../../types/service/enevti/persona';
 import { Profile } from '../../../../types/service/enevti/profile';
 import { RootState } from '../../../state';
 
-const initialState: Profile & { persona: Persona } = {
+type MyProfileViewState = Profile & { loaded: boolean; persona: Persona };
+
+const initialState: MyProfileViewState = {
+  loaded: false,
   persona: { username: '', photo: '', address: '' },
   nftSold: 0,
   treasuryAct: 0,
@@ -34,6 +36,9 @@ const myProfileViewSlice = createSlice({
       profile.onsale = action.payload.onsale.slice();
       profile.minted = action.payload.minted.slice();
     },
+    setMyProfileViewLoaded: (profile, action: PayloadAction<boolean>) => {
+      profile.loaded = action.payload;
+    },
     setMyPersonaView: (profile, action: PayloadAction<Persona>) => {
       profile.persona.username = action.payload.username;
       profile.persona.photo = action.payload.photo;
@@ -45,8 +50,12 @@ const myProfileViewSlice = createSlice({
   },
 });
 
-export const { setMyProfileView, setMyPersonaView, resetMyProfileView } =
-  myProfileViewSlice.actions;
+export const {
+  setMyProfileView,
+  setMyProfileViewLoaded,
+  setMyPersonaView,
+  resetMyProfileView,
+} = myProfileViewSlice.actions;
 export default myProfileViewSlice.reducer;
 
 export const selectMyProfileView = createSelector(
@@ -56,5 +65,5 @@ export const selectMyProfileView = createSelector(
 
 export const isMyProfileUndefined = createSelector(
   (state: RootState) => state.ui.view.myProfile,
-  (profile: Profile) => shallowEqual(profile, initialState),
+  (profile: MyProfileViewState) => !profile.loaded,
 );
