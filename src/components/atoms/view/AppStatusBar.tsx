@@ -8,6 +8,7 @@ export default function AppStatusBar() {
 
   return (
     <StatusBar
+      animated
       barStyle={theme.dark === true ? 'light-content' : 'dark-content'}
       backgroundColor={theme.colors.background}
     />

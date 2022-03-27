@@ -18,4 +18,8 @@ export default {
   october: 'October',
   november: 'November',
   december: 'December',
+  days: 'Days',
+  hours: 'Hours',
+  minutes: 'Minutes',
+  seconds: 'Seconds',
 };
