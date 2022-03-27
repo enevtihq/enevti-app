@@ -297,7 +297,9 @@ export default function AppProfile({
 
   return !profileUndefined ? (
     <View>
-      <Animated.View style={[styles.profileHeader, scrollStyle]}>
+      <Animated.View
+        pointerEvents={'box-none'}
+        style={[styles.profileHeader, scrollStyle]}>
         <AppProfileHeader
           persona={persona}
           profile={profile}

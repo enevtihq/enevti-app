@@ -50,7 +50,7 @@ export default function AppProfileHeader({
   const [menuVisible, setMenuVisible] = React.useState<boolean>(false);
 
   return (
-    <View style={styles.profileHeaderContainer}>
+    <View pointerEvents={'box-none'} style={styles.profileHeaderContainer}>
       <AppAvatarRenderer
         address={persona.address}
         photo={persona.photo}
