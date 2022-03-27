@@ -6,8 +6,14 @@ import AppNetworkImage from '../../components/atoms/image/AppNetworkImage';
 import { IPFStoURL } from '../../service/ipfs';
 import { wp } from '../../utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useDispatch } from 'react-redux';
+import {
+  resetStatusBarBackground,
+  setStatusBarBackground,
+} from '../../store/slices/ui/global/statusbar';
 
 export default function Collection() {
+  const dispatch = useDispatch();
   const insets = useSafeAreaInsets();
   const coverWidth = React.useMemo(() => wp('100%', insets), [insets]);
   const coverHeight = React.useMemo(
@@ -15,10 +21,15 @@ export default function Collection() {
     [coverWidth, insets],
   );
 
-  console.log('insets.top', insets.top);
+  React.useEffect(() => {
+    dispatch(setStatusBarBackground('transparent'));
+    return function cleanup() {
+      dispatch(resetStatusBarBackground());
+    };
+  }, [dispatch]);
 
   return (
-    <AppView edges={['bottom', 'left', 'right']}>
+    <AppView translucentStatusBar edges={['bottom', 'left', 'right']}>
       <AppNetworkImage
         url={IPFStoURL('Qmb3jKA6Vn1azR6aSMnT6geGMkg818uBkfSHNg8ui1a9dy')}
         style={{ width: coverWidth, height: coverHeight }}

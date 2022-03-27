@@ -29,13 +29,15 @@ export default function Profile({ navigation, route }: Props) {
   const profileUndefined = useSelector(isProfileUndefined);
 
   return (
-    <AppView darken withModal withLoader edges={['left', 'right', 'bottom']}>
-      <AppHeader
-        back
-        navigation={navigation}
-        title={t('home:profile')}
-        height={headerHeight}
-      />
+    <AppView
+      darken
+      withModal
+      withLoader
+      edges={['left', 'right', 'bottom']}
+      headerHeight={0}
+      header={
+        <AppHeader back navigation={navigation} title={t('home:profile')} />
+      }>
       <View style={styles.textContainer}>
         <AppProfile
           disableHeaderAnimation

@@ -729,14 +729,17 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
       withModal
       withPayment
       withLoader
-      edges={['bottom', 'left', 'right']}>
-      <AppHeader
-        compact
-        back
-        backIcon={iconMap.close}
-        navigation={navigation}
-        title={' '}
-      />
+      edges={['bottom', 'left', 'right']}
+      headerHeight={0}
+      header={
+        <AppHeader
+          compact
+          back
+          backIcon={iconMap.close}
+          navigation={navigation}
+          title={' '}
+        />
+      }>
       <ScrollView style={styles.scrollContainer}>
         <AppHeaderWizard
           title={t('createNFT:setupContract')}

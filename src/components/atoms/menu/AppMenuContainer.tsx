@@ -1,9 +1,16 @@
 import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useFocusEffect } from '@react-navigation/native';
 import React from 'react';
-import { BackHandler, StyleProp, View, ViewStyle } from 'react-native';
+import {
+  BackHandler,
+  StyleProp,
+  View,
+  ViewStyle,
+  Platform,
+} from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { shallowEqual } from 'react-redux';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface AppMenuContainerProps {
   visible: boolean;
@@ -30,9 +37,19 @@ function Component({
   memoKey,
 }: AppMenuContainerProps) {
   const theme = useTheme();
+  const insets = useSafeAreaInsets();
   const bottomSheetRef = React.useRef<BottomSheetModal>(null);
   const defaultSnapPoints = React.useMemo(() => ['50%'], []);
+  const snapInsets = React.useMemo(
+    () => (Platform.OS === 'android' && insets.top ? 0.95 : 1),
+    [insets.top],
+  );
   const isVisible = React.useRef(false);
+
+  const parseSnapPoints = React.useCallback(
+    (snaps: string[]) => snaps.map(a => `${parseFloat(a) * snapInsets}%`),
+    [snapInsets],
+  );
 
   useFocusEffect(
     React.useCallback(() => {
@@ -87,7 +104,7 @@ function Component({
       <BottomSheetModal
         ref={bottomSheetRef}
         onChange={onChange}
-        snapPoints={snapPoints ?? defaultSnapPoints}
+        snapPoints={parseSnapPoints(snapPoints ?? defaultSnapPoints)}
         enablePanDownToClose={enablePanDownToClose}
         backgroundStyle={{ backgroundColor: theme.colors.background }}
         backdropComponent={renderBackdrop}>

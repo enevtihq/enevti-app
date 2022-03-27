@@ -1,4 +1,4 @@
-import { Dimensions, PixelRatio } from 'react-native';
+import { Dimensions, PixelRatio, Platform } from 'react-native';
 
 export interface SafeAreaInsets {
   top: number;
@@ -26,19 +26,21 @@ export function resizeImageRatio(
 }
 
 export function wp(widthPercent: string | number, insets: SafeAreaInsets) {
+  const insetsSize = Platform.OS === 'android' ? 0 : insets.left + insets.right;
   const elemWidth =
     typeof widthPercent === 'number' ? widthPercent : parseFloat(widthPercent);
   return PixelRatio.roundToNearestPixel(
-    ((screenWidth - (insets.left + insets.right)) * elemWidth) / 100,
+    ((screenWidth - insetsSize) * elemWidth) / 100,
   );
 }
 
 export function hp(heightPercent: string | number, insets: SafeAreaInsets) {
+  const insetsSize = Platform.OS === 'android' ? 0 : insets.top + insets.bottom;
   const elemHeight =
     typeof heightPercent === 'number'
       ? heightPercent
       : parseFloat(heightPercent);
   return PixelRatio.roundToNearestPixel(
-    ((screenHeight - (insets.top + insets.bottom)) * elemHeight) / 100,
+    ((screenHeight - insetsSize) * elemHeight) / 100,
   );
 }

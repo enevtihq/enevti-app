@@ -18,6 +18,8 @@ import AppModalLoader from '../loading/AppModalLoader';
 interface AppViewProps {
   children: React.ReactNode;
   header?: React.ReactNode;
+  headerHeight?: number;
+  translucentStatusBar?: boolean;
   darken?: boolean;
   style?: StyleProp<ViewStyle>;
   dismissKeyboard?: boolean;
@@ -33,12 +35,14 @@ export default function AppView({
   header,
   style,
   edges,
+  headerHeight,
   withModal = false,
   withSnackbar = true,
   withPayment = false,
   withLoader = false,
   darken = false,
   dismissKeyboard = false,
+  translucentStatusBar = false,
 }: AppViewProps) {
   const dispatch = useDispatch();
   const insets = useSafeAreaInsets();
@@ -50,13 +54,23 @@ export default function AppView({
       <View style={[styles.view, style]}>
         {withModal ? (
           <BottomSheetModalProvider>
-            <AppContainer header={header} darken={darken} edges={edges}>
+            <AppContainer
+              translucentStatusBar={translucentStatusBar}
+              header={header}
+              headerHeight={headerHeight}
+              darken={darken}
+              edges={edges}>
               {children}
             </AppContainer>
             {withPayment ? <AppPaymentModal /> : null}
           </BottomSheetModalProvider>
         ) : (
-          <AppContainer header={header} darken={darken} edges={edges}>
+          <AppContainer
+            translucentStatusBar={translucentStatusBar}
+            header={header}
+            headerHeight={headerHeight}
+            darken={darken}
+            edges={edges}>
             {children}
           </AppContainer>
         )}

@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 import React from 'react';
 import AppTextHeading3 from '../../atoms/text/AppTextHeading3';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -88,6 +88,7 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
     },
     popableView: {
       width: wp('50%', insets),
+      top: Platform.OS === 'android' ? -(insets.top / 2) : undefined,
     },
     popableContent: {
       padding: 10,
