@@ -7,7 +7,7 @@ export interface SafeAreaInsets {
   left: number;
 }
 
-const ignoreOnPlatform = ['android'];
+const ignoreOnPlatform: string[] = ['android'];
 let screenWidth = Dimensions.get('window').width;
 let screenHeight = Dimensions.get('window').height;
 

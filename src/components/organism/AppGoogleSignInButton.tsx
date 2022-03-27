@@ -34,8 +34,8 @@ import {
   decryptWithPassword,
   encryptWithDevice,
 } from '../../utils/cryptography';
-import { setUnencryptedPassphraseAuth } from '../../store/slices/auth';
 import { handleError } from '../../utils/error/handle';
+import { initPassphraseWithDevice } from '../../store/middleware/thunk/session/initPassphraseWithDevice';
 
 YupPassword(Yup);
 
@@ -90,7 +90,7 @@ export default function AppGoogleSignInButton({
           setShowInputGoogleDialog(true);
           return;
         } else {
-          dispatch(setUnencryptedPassphraseAuth(data.device));
+          dispatch(initPassphraseWithDevice(data.device));
           onExistingAccount();
         }
       } else {
@@ -123,7 +123,7 @@ export default function AppGoogleSignInButton({
           device: newBindedData,
           encrypted: secretData.encrypted,
         });
-        dispatch(setUnencryptedPassphraseAuth(newBindedData));
+        dispatch(initPassphraseWithDevice(newBindedData));
         setShowInputGoogleDialog(false);
         onExistingAccount();
       }

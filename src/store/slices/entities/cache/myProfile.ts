@@ -35,11 +35,17 @@ const profileEntitySlice = createSlice({
     setLastFetchMyProfileCache: (profile, action: PayloadAction<number>) => {
       profile.lastFetch = action.payload;
     },
+    resetMyProfileCache: () => {
+      return initialState;
+    },
   },
 });
 
-export const { setMyProfileCache, setLastFetchMyProfileCache } =
-  profileEntitySlice.actions;
+export const {
+  setMyProfileCache,
+  setLastFetchMyProfileCache,
+  resetMyProfileCache,
+} = profileEntitySlice.actions;
 export default profileEntitySlice.reducer;
 
 export const selectMyProfileCache = createSelector(

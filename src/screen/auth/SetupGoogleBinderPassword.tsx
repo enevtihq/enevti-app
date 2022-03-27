@@ -24,9 +24,9 @@ import { hp, wp, SafeAreaInsets } from '../../utils/imageRatio';
 import { BRAND_NAME } from '../../components/atoms/brand/AppBrandConstant';
 import { setSecretAppData } from '../../service/google/appData';
 import { useDispatch } from 'react-redux';
-import { setUnencryptedPassphraseAuth } from '../../store/slices/auth';
 import { CommonActions } from '@react-navigation/native';
 import { handleError } from '../../utils/error/handle';
+import { initPassphraseWithDevice } from '../../store/middleware/thunk/session/initPassphraseWithDevice';
 
 type Props = StackScreenProps<RootStackParamList, 'SetupGoogleBinderPassword'>;
 YupPassword(Yup);
@@ -63,7 +63,7 @@ export default function SetupGoogleBinderPassword({ navigation }: Props) {
         device: bindedPassphrase,
         encrypted: encryptedPassphrase,
       });
-      dispatch(setUnencryptedPassphraseAuth(bindedPassphrase));
+      dispatch(initPassphraseWithDevice(bindedPassphrase));
 
       setIsLoading(false);
 

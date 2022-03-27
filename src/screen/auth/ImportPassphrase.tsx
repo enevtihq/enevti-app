@@ -19,8 +19,7 @@ import AppView from '../../components/atoms/view/AppView';
 import { hp, wp, SafeAreaInsets } from '../../utils/imageRatio';
 import YupBIP39 from '../../utils/yupbip39';
 import { useDispatch } from 'react-redux';
-import { setEncryptedPassphraseAuth } from '../../store/slices/auth';
-import { setLocalSessionKey } from '../../store/slices/session/local';
+import { initPassphrase } from '../../store/middleware/thunk/session/initPassphrase';
 
 type Props = StackScreenProps<RootStackParamList, 'SetupLocalPassword'>;
 YupPassword(Yup);
@@ -53,8 +52,7 @@ export default function ImportPassphrase({ navigation }: Props) {
       values.passphrase,
       values.password,
     );
-    dispatch(setEncryptedPassphraseAuth(encryptedPassphrase));
-    dispatch(setLocalSessionKey(values.password));
+    dispatch(initPassphrase(encryptedPassphrase, values.password));
     setIsLoading(false);
     navigation.replace('AccountCreated');
   };

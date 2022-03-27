@@ -15,8 +15,7 @@ import AppView from '../../components/atoms/view/AppView';
 import AppCheckbox from '../../components/atoms/form/AppCheckbox';
 import AppPassphraseBox from '../../components/organism/AppPassphraseBox';
 import { hp, wp, SafeAreaInsets } from '../../utils/imageRatio';
-import { setEncryptedPassphraseAuth } from '../../store/slices/auth';
-import { setLocalSessionKey } from '../../store/slices/session/local';
+import { initPassphrase } from '../../store/middleware/thunk/session/initPassphrase';
 
 type Props = StackScreenProps<RootStackParamList, 'ConfirmPassphrase'>;
 
@@ -33,8 +32,7 @@ export default function ConfirmPassphrase({ route, navigation }: Props) {
   const [checked, setChecked] = React.useState<boolean>(false);
 
   const handleContinue = async () => {
-    dispatch(setEncryptedPassphraseAuth(encryptedPassphrase));
-    dispatch(setLocalSessionKey(localKey));
+    dispatch(initPassphrase(encryptedPassphrase, localKey));
     navigation.dispatch(
       CommonActions.reset({
         index: 0,

@@ -3,9 +3,18 @@ import { createSelector } from 'reselect';
 import { Persona } from '../../../../types/service/enevti/persona';
 import { RootState } from '../../../state';
 
+type PersonaCacheState = Persona & { lastFetch: number };
+
+const initialState: PersonaCacheState = {
+  username: '',
+  photo: '',
+  address: '',
+  lastFetch: 0,
+};
+
 const personaEntitySlice = createSlice({
   name: 'myPersonaCache',
-  initialState: { username: '', photo: '', address: '', lastFetch: 0 },
+  initialState,
   reducers: {
     setMyPersonaCache: (persona, action: PayloadAction<Persona>) => {
       persona.username = action.payload.username;
@@ -18,6 +27,9 @@ const personaEntitySlice = createSlice({
     setMyPersonaAddressCache: (persona, action: PayloadAction<string>) => {
       persona.address = action.payload;
     },
+    resetMyPersonaCache: () => {
+      return initialState;
+    },
   },
 });
 
@@ -25,6 +37,7 @@ export const {
   setMyPersonaCache,
   setLastFetchMyPersonaCache,
   setMyPersonaAddressCache,
+  resetMyPersonaCache,
 } = personaEntitySlice.actions;
 export default personaEntitySlice.reducer;
 
