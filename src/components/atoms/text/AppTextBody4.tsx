@@ -1,44 +1,28 @@
-import { useTheme } from 'react-native-paper';
 import React from 'react';
-import { StyleProp, StyleSheet, Text, TextStyle } from 'react-native';
-import { wp, SafeAreaInsets } from '../../../utils/imageRatio';
-import { Theme } from '../../../theme/default';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { StyleProp, TextStyle } from 'react-native';
+import AppTextBase from './base/AppTextBase';
 
 interface AppTextBody4Props {
   children: React.ReactNode;
   numberOfLines?: number;
   style?: StyleProp<TextStyle>;
+  readMoreLimit?: number;
 }
 
 export default function AppTextBody4({
   children,
   numberOfLines,
   style,
+  readMoreLimit,
 }: AppTextBody4Props): JSX.Element {
-  const theme = useTheme() as Theme;
-  const insets = useSafeAreaInsets();
-  const styles = React.useMemo(
-    () => makeStyles(theme, insets),
-    [theme, insets],
-  );
-
   return (
-    <Text
+    <AppTextBase
+      weight={'normal'}
+      size={3.5}
       numberOfLines={numberOfLines}
-      ellipsizeMode="tail"
-      style={[styles.body4, style]}>
+      readMoreLimit={readMoreLimit}
+      style={style}>
       {children}
-    </Text>
+    </AppTextBase>
   );
 }
-
-const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
-  StyleSheet.create({
-    body4: {
-      color: theme.colors.text,
-      fontFamily: theme.fonts.regular.fontFamily,
-      fontWeight: theme.fonts.regular.fontWeight,
-      fontSize: wp('3.5%', insets),
-    },
-  });

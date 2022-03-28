@@ -1,10 +1,11 @@
 import React from 'react';
 import { StackScreenProps } from '@react-navigation/stack';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import AppView from '../../components/atoms/view/AppView';
 import AppNetworkImage from '../../components/atoms/image/AppNetworkImage';
 import { IPFStoURL } from '../../service/ipfs';
-import { wp } from '../../utils/imageRatio';
+import { hp, wp } from '../../utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
   resetStatusBarBackground,
@@ -24,11 +25,15 @@ import AppActivityIndicator from '../../components/atoms/loading/AppActivityIndi
 import { useTheme } from 'react-native-paper';
 import { Theme } from '../../theme/default';
 import AppCollectionMintingAvailable from '../../components/molecules/collection/AppCollectionMintingAvailable';
+import AppTextHeading2 from '../../components/atoms/text/AppTextHeading2';
+import AppTextBody3 from '../../components/atoms/text/AppTextBody3';
+import AppTextBody4 from '../../components/atoms/text/AppTextBody4';
 
 type Props = StackScreenProps<RootStackParamList, 'Collection'>;
 
 export default function Collection({ route }: Props) {
   const { id } = route.params;
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
@@ -38,7 +43,10 @@ export default function Collection({ route }: Props) {
   const collectionUndefined = useSelector(isCollectionUndefined);
 
   const mintingAvailable = React.useMemo(
-    () => collection.minting.expire > now || collection.minting.available > 0,
+    () =>
+      collection.minting.expire <= now || collection.minting.available === 0
+        ? false
+        : true,
     [collection.minting.expire, collection.minting.available, now],
   );
 
@@ -71,6 +79,24 @@ export default function Collection({ route }: Props) {
       {mintingAvailable ? (
         <AppCollectionMintingAvailable collection={collection} />
       ) : null}
+      <View
+        style={{
+          marginHorizontal: wp('5%', insets),
+          marginVertical: hp('2%', insets),
+        }}>
+        <AppTextHeading2>
+          {collection.name}{' '}
+          <AppTextBody3 style={{ color: theme.colors.placeholder }}>
+            ({collection.symbol})
+          </AppTextBody3>
+        </AppTextHeading2>
+
+        <AppTextBody4
+          style={{ marginVertical: hp('0.5%', insets) }}
+          readMoreLimit={100}>
+          {collection.description}
+        </AppTextBody4>
+      </View>
     </AppView>
   ) : (
     <View style={styles.loaderContainer}>

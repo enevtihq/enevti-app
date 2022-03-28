@@ -10,4 +10,6 @@ export default {
   choose: 'Choose',
   upercase: 'Must be UPPERCASE. No space, symbol or number allowed',
   loading: 'Loading...',
+  seeMore: 'see more',
+  seeLess: 'see less',
 };
