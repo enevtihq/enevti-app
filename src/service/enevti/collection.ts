@@ -18,8 +18,8 @@ async function fetchCollection(id: string): Promise<Collection | undefined> {
     comment: 12,
     social: {
       twitter: {
-        link: '',
-        stat: 0,
+        link: 'https://twitter.com/aldhosutra',
+        stat: 1120,
       },
     },
     packSize: 1,
