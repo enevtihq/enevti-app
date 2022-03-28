@@ -6,4 +6,6 @@ export default {
   statOwners: 'Owners',
   statFloorPrice: 'Floor Price',
   statRedeemed: 'Redeemed',
+  mintedItems: 'Minted Items',
+  activity: 'Activity',
 };

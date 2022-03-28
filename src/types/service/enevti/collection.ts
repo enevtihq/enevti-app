@@ -1,3 +1,4 @@
+import { NFTBase } from '../../nft';
 import { NFTPrice } from '../../nft/NFTPrice';
 import { SocialProfile } from '../../social';
 import { Persona } from './persona';
@@ -27,7 +28,7 @@ export type Collection = {
     expire: number;
     price: NFTPrice;
   };
-  minted: string[];
+  minted: NFTBase[];
   originAddress: Persona;
   activity: {
     transaction: string;

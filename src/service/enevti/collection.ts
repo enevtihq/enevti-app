@@ -1,10 +1,16 @@
 import { COIN_NAME } from '../../components/atoms/brand/AppBrandConstant';
 import { Collection } from '../../types/service/enevti/collection';
-import { sleep } from './dummy';
+import { getDummyNFTData, sleep } from './dummy';
 
 async function fetchCollection(id: string): Promise<Collection | undefined> {
   await sleep(1000);
   console.log('collection id:', id);
+  const mintedNFT = [];
+
+  for (let i = 0; i < 10; i++) {
+    mintedNFT.push(getDummyNFTData());
+  }
+
   return {
     id: Math.random().toString(),
     collectionType: 'onekind',
@@ -45,15 +51,7 @@ async function fetchCollection(id: string): Promise<Collection | undefined> {
         currency: COIN_NAME,
       },
     },
-    minted: [
-      'wefdsfasdfwef',
-      'wefdsfasdfwef',
-      'wefdsfasdfwef',
-      'wefdsfasdfwef',
-      'wefdsfasdfwef',
-      'wefdsfasdfwef',
-      'wefdsfasdfwef',
-    ],
+    minted: mintedNFT,
     originAddress: {
       photo: '',
       address: 'lsk7opy8ksve7npbr32dtqxwpvg5u6aa3vtje5qtd',

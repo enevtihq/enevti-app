@@ -20,7 +20,6 @@ import { numberKMB, parseAmount } from '../../../utils/format/amount';
 import { iconMap } from '../../atoms/icon/AppIconComponent';
 import AppTextHeading3 from '../../atoms/text/AppTextHeading3';
 import AppCurrencyIcon from '../../atoms/icon/AppCurrencyIcon';
-import Animated from 'react-native-reanimated';
 
 interface AppCollectionHeaderProps {
   collection: Collection;
@@ -55,7 +54,7 @@ export default function AppCollectionHeader({
   );
 
   return (
-    <Animated.View
+    <View
       onLayout={onLayout}
       style={{ backgroundColor: theme.colors.background }}>
       <AppNetworkImage
@@ -193,7 +192,7 @@ export default function AppCollectionHeader({
           </View>
         </View>
       </View>
-    </Animated.View>
+    </View>
   );
 }
 
