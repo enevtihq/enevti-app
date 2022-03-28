@@ -1,5 +1,6 @@
 import { NFTPrice } from '../../nft/NFTPrice';
 import { SocialProfile } from '../../social';
+import { Persona } from './persona';
 
 export type Collection = {
   id: string;
@@ -16,6 +17,7 @@ export type Collection = {
   stat: {
     minted: number;
     owner: number;
+    redeemed: number;
     floor: NFTPrice;
     volume: NFTPrice;
   };
@@ -26,14 +28,14 @@ export type Collection = {
     price: NFTPrice;
   };
   minted: string[];
-  originAddress: string;
+  originAddress: Persona;
   activity: {
     transaction: string;
     name: string;
     serial: number;
     date: number;
-    from: string;
-    to: string;
+    from: Persona;
+    to: Persona;
     value: NFTPrice;
   }[];
 };

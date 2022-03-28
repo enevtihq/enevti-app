@@ -1,11 +1,10 @@
 import React from 'react';
 import { StackScreenProps } from '@react-navigation/stack';
 import { useDispatch, useSelector } from 'react-redux';
-import { useTranslation } from 'react-i18next';
 import AppView from '../../components/atoms/view/AppView';
 import AppNetworkImage from '../../components/atoms/image/AppNetworkImage';
 import { IPFStoURL } from '../../service/ipfs';
-import { hp, wp } from '../../utils/imageRatio';
+import { hp, SafeAreaInsets, wp } from '../../utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
   resetStatusBarBackground,
@@ -28,16 +27,26 @@ import AppCollectionMintingAvailable from '../../components/molecules/collection
 import AppTextHeading2 from '../../components/atoms/text/AppTextHeading2';
 import AppTextBody3 from '../../components/atoms/text/AppTextBody3';
 import AppTextBody4 from '../../components/atoms/text/AppTextBody4';
+import AppAvatarRenderer from '../../components/molecules/avatar/AppAvatarRenderer';
+import AppTextHeading3 from '../../components/atoms/text/AppTextHeading3';
+import AppTextHeading4 from '../../components/atoms/text/AppTextHeading4';
+import { numberKMB, parseAmount } from '../../utils/format/amount';
+import Color from 'color';
+import AppCurrencyIcon from '../../components/atoms/icon/AppCurrencyIcon';
+import AppQuaternaryButton from '../../components/atoms/button/AppQuaternaryButton';
+import { iconMap } from '../../components/atoms/icon/AppIconComponent';
 
 type Props = StackScreenProps<RootStackParamList, 'Collection'>;
 
 export default function Collection({ route }: Props) {
   const { id } = route.params;
-  const { t } = useTranslation();
   const dispatch = useDispatch();
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
-  const styles = React.useMemo(() => makeStyles(), []);
+  const styles = React.useMemo(
+    () => makeStyles(theme, insets),
+    [theme, insets],
+  );
   const now = React.useMemo(() => Date.now(), []);
   const collection = useSelector(selectCollectionView);
   const collectionUndefined = useSelector(isCollectionUndefined);
@@ -81,8 +90,8 @@ export default function Collection({ route }: Props) {
       ) : null}
       <View
         style={{
-          marginHorizontal: wp('5%', insets),
-          marginVertical: hp('2%', insets),
+          paddingHorizontal: wp('5%', insets),
+          paddingVertical: hp('2%', insets),
         }}>
         <AppTextHeading2>
           {collection.name}{' '}
@@ -91,11 +100,127 @@ export default function Collection({ route }: Props) {
           </AppTextBody3>
         </AppTextHeading2>
 
-        <AppTextBody4
-          style={{ marginVertical: hp('0.5%', insets) }}
-          readMoreLimit={100}>
-          {collection.description}
-        </AppTextBody4>
+        <View
+          style={{
+            marginBottom: hp('1.5%', insets),
+            marginTop: hp('0.5%', insets),
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}>
+          <AppTextBody4 style={{ color: theme.colors.placeholder }}>
+            Created By:{' '}
+          </AppTextBody4>
+          <AppAvatarRenderer
+            photo={collection.originAddress.photo}
+            address={collection.originAddress.address}
+            size={wp('5%', insets)}
+            style={{ marginHorizontal: wp('2%', insets) }}
+          />
+          <AppTextHeading4
+            numberOfLines={1}
+            style={{
+              width: wp('40%', insets),
+              height: '100%',
+            }}>
+            {collection.originAddress.username
+              ? collection.originAddress.username
+              : collection.originAddress.address}
+          </AppTextHeading4>
+        </View>
+
+        <AppTextBody4 readMoreLimit={95}>{collection.description}</AppTextBody4>
+
+        <View style={styles.collectionChipsContainer}>
+          <AppQuaternaryButton
+            icon={iconMap.likeActive}
+            iconSize={hp('3%', insets)}
+            iconColor={theme.colors.placeholder}
+            style={{
+              height: hp('4%', insets),
+            }}
+            onPress={() => console.log('Pressed')}>
+            <AppTextBody4 style={{ color: theme.colors.placeholder }}>
+              {numberKMB(256, 2)}
+            </AppTextBody4>
+          </AppQuaternaryButton>
+          <AppQuaternaryButton
+            icon={iconMap.commentFill}
+            iconSize={hp('3%', insets)}
+            iconColor={theme.colors.placeholder}
+            style={{
+              height: hp('4%', insets),
+            }}
+            onPress={() => console.log('Pressed')}>
+            <AppTextBody4 style={{ color: theme.colors.placeholder }}>
+              {numberKMB(12, 2)}
+            </AppTextBody4>
+          </AppQuaternaryButton>
+          <AppQuaternaryButton
+            icon={iconMap.twitter}
+            iconSize={hp('3%', insets)}
+            iconColor={theme.colors.placeholder}
+            style={{
+              height: hp('4%', insets),
+            }}
+            onPress={() => console.log('Pressed')}>
+            <AppTextBody4 style={{ color: theme.colors.placeholder }}>
+              {numberKMB(1120, 2)}
+            </AppTextBody4>
+          </AppQuaternaryButton>
+        </View>
+
+        <View style={styles.collectionStatsContainer}>
+          <View style={styles.collectionStatsItem}>
+            <AppTextHeading3 numberOfLines={1}>
+              {numberKMB(collection.stat.minted, 2)}
+            </AppTextHeading3>
+            <AppTextBody4
+              numberOfLines={1}
+              style={{ color: theme.colors.placeholder }}>
+              Items
+            </AppTextBody4>
+          </View>
+          <View style={styles.collectionStatsDivider} />
+          <View style={styles.collectionStatsItem}>
+            <AppTextHeading3 numberOfLines={1}>
+              {collection.stat.owner}
+            </AppTextHeading3>
+            <AppTextBody4
+              numberOfLines={1}
+              style={{ color: theme.colors.placeholder }}>
+              Owners
+            </AppTextBody4>
+          </View>
+          <View style={styles.collectionStatsDivider} />
+          <View style={styles.collectionStatsItem}>
+            <View style={styles.collectionCurrency}>
+              <AppCurrencyIcon
+                currency={collection.stat.floor.currency}
+                size={15}
+                style={styles.collectionCurrencyIcon}
+              />
+              <AppTextHeading3 numberOfLines={1}>
+                {parseAmount(collection.stat.floor.amount, true, 2)}
+              </AppTextHeading3>
+            </View>
+            <AppTextBody4
+              numberOfLines={1}
+              style={{ color: theme.colors.placeholder }}>
+              Floor Price
+            </AppTextBody4>
+          </View>
+          <View style={styles.collectionStatsDivider} />
+          <View style={styles.collectionStatsItem}>
+            <AppTextHeading3 numberOfLines={1}>
+              {collection.stat.redeemed}
+            </AppTextHeading3>
+            <AppTextBody4
+              numberOfLines={1}
+              style={{ color: theme.colors.placeholder }}>
+              Redeemed
+            </AppTextBody4>
+          </View>
+        </View>
       </View>
     </AppView>
   ) : (
@@ -105,12 +230,41 @@ export default function Collection({ route }: Props) {
   );
 }
 
-const makeStyles = () =>
+const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
   StyleSheet.create({
     loaderContainer: {
       justifyContent: 'center',
       alignItems: 'center',
       width: '100%',
       height: '100%',
+    },
+    collectionStatsContainer: {
+      flexDirection: 'row',
+      marginVertical: hp('1%', insets),
+      height: hp('5.2%', insets),
+    },
+    collectionStatsItem: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    collectionCurrency: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    collectionCurrencyIcon: {
+      marginLeft: -5,
+    },
+    collectionStatsDivider: {
+      height: '50%',
+      alignSelf: 'center',
+      borderWidth: 0.3,
+      borderColor: Color(theme.colors.placeholder).alpha(0.1).rgb().toString(),
+    },
+    collectionChipsContainer: {
+      height: hp('3%', insets),
+      marginVertical: hp('2%', insets),
+      flexDirection: 'row',
+      alignItems: 'center',
     },
   });

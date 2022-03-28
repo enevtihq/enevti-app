@@ -29,6 +29,7 @@ export const iconMap = {
   likeActive: 'heart',
   likeInactive: 'heart-outline',
   comment: 'comment-outline',
+  commentFill: 'comment',
   buy: 'basket-outline',
   nftPartitioned: 'puzzle',
   nftOneKind: 'star',

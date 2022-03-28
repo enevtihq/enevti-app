@@ -26,8 +26,9 @@ async function fetchCollection(id: string): Promise<Collection | undefined> {
     stat: {
       minted: 7,
       owner: 1,
+      redeemed: 1,
       floor: {
-        amount: '512134000',
+        amount: '512432134000',
         currency: COIN_NAME,
       },
       volume: {
@@ -53,15 +54,27 @@ async function fetchCollection(id: string): Promise<Collection | undefined> {
       'wefdsfasdfwef',
       'wefdsfasdfwef',
     ],
-    originAddress: 'lsk7opy8ksve7npbr32dtqxwpvg5u6aa3vtje5qtd',
+    originAddress: {
+      photo: '',
+      address: 'lsk7opy8ksve7npbr32dtqxwpvg5u6aa3vtje5qtd',
+      username: '',
+    },
     activity: [
       {
         transaction: 'fgagergdfsdf',
         name: 'sale',
         serial: 12,
         date: 1648256592852,
-        from: 'lsk7opy8ksve7npbr32dtqxwpvg5u6aa3vtje5qtd',
-        to: 'lsk7opy8ksve7npbr32dtqxwpvg5u6aa3vtje5qtd',
+        from: {
+          photo: '',
+          address: 'lsk7opy8ksve7npbr32dtqxwpvg5u6aa3vtje5qtd',
+          username: '',
+        },
+        to: {
+          photo: '',
+          address: 'lsk7opy8ksve7npbr32dtqxwpvg5u6aa3vtje5qtd',
+          username: '',
+        },
         value: {
           amount: '512134000',
           currency: COIN_NAME,

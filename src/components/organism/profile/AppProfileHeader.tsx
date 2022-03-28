@@ -143,7 +143,6 @@ export default function AppProfileHeader({
             iconSize={hp('3%', insets)}
             iconColor={theme.colors.placeholder}
             style={{
-              marginHorizontal: wp('1%', insets),
               height: hp('4%', insets),
             }}
             onPress={() => console.log('Pressed')}>
@@ -157,7 +156,6 @@ export default function AppProfileHeader({
           iconSize={hp('3%', insets)}
           iconColor={theme.colors.placeholder}
           style={{
-            marginHorizontal: wp('1%', insets),
             height: hp('4%', insets),
           }}
           onPress={() => console.log('Pressed')}>

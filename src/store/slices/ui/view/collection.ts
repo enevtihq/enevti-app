@@ -23,6 +23,7 @@ const initialState: CollectionViewState = {
   stat: {
     minted: 0,
     owner: 0,
+    redeemed: 0,
     floor: { amount: '', currency: '' },
     volume: { amount: '', currency: '' },
   },
@@ -33,7 +34,7 @@ const initialState: CollectionViewState = {
     price: { amount: '', currency: '' },
   },
   minted: [],
-  originAddress: '',
+  originAddress: { photo: '', address: '', username: '' },
   activity: [],
 };
 

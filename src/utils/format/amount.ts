@@ -44,7 +44,7 @@ export function bigNumberKMB(num: BigNumber, decimal?: number): string {
 
 export function numberKMB(num: number, decimal?: number): string {
   if (num < 1000) {
-    return decimal ? num.toFixed(decimal).toString() : num.toString();
+    return num.toString();
   } else if (num > 999 && num < 1000000) {
     return decimal
       ? (num / 1000).toFixed(decimal).toString() + 'K'

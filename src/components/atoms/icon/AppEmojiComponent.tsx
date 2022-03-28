@@ -27,6 +27,7 @@ export const emojiMap = {
   likeActive: UNDEFINED_EMOJI,
   likeInactive: UNDEFINED_EMOJI,
   comment: UNDEFINED_EMOJI,
+  commentFill: UNDEFINED_EMOJI,
   buy: UNDEFINED_EMOJI,
   nftPartitioned: UNDEFINED_EMOJI,
   nftOneKind: UNDEFINED_EMOJI,
