@@ -6,6 +6,7 @@ export type Collection = {
   collectionType: string;
   name: string;
   description: string;
+  cover: string;
   symbol: string;
   createdOn: number;
   like: number;

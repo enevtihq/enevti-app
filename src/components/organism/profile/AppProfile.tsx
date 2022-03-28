@@ -86,8 +86,10 @@ export default function AppProfile({
   );
 
   React.useEffect(() => {
-    dispatch(unloadProfile(address));
     onProfileScreenLoaded();
+    return function cleanup() {
+      dispatch(unloadProfile(address));
+    };
   }, [onProfileScreenLoaded, dispatch, address]);
 
   const useCustomAnimatedScrollHandler = (

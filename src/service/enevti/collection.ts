@@ -11,6 +11,7 @@ async function fetchCollection(id: string): Promise<Collection | undefined> {
     name: 'Eye Collection',
     description:
       'A lot of eye collection with mind blowing utility that goes beyond arts and collectible',
+    cover: 'Qmb3jKA6Vn1azR6aSMnT6geGMkg818uBkfSHNg8ui1a9dy',
     createdOn: 1648256392852,
     symbol: 'EYECL',
     like: 123,

@@ -11,6 +11,7 @@ const initialState: CollectionViewState = {
   collectionType: '',
   name: '',
   description: '',
+  cover: '',
   symbol: '',
   createdOn: 0,
   like: 0,
