@@ -4,7 +4,7 @@ import { sleep } from './dummy';
 
 async function fetchCollection(id: string): Promise<Collection | undefined> {
   await sleep(1000);
-  console.log(id);
+  console.log('collection id:', id);
   return {
     id: Math.random().toString(),
     collectionType: 'onekind',
@@ -24,7 +24,7 @@ async function fetchCollection(id: string): Promise<Collection | undefined> {
     },
     packSize: 1,
     stat: {
-      total: 12,
+      minted: 7,
       owner: 1,
       floor: {
         amount: '512134000',
@@ -35,13 +35,15 @@ async function fetchCollection(id: string): Promise<Collection | undefined> {
         currency: COIN_NAME,
       },
     },
-    available: [
-      'wefdsfasdfwef',
-      'wefdsfasdfwef',
-      'wefdsfasdfwef',
-      'wefdsfasdfwef',
-      'wefdsfasdfwef',
-    ],
+    minting: {
+      total: 12,
+      available: 4,
+      expire: 0,
+      price: {
+        amount: '512134000',
+        currency: COIN_NAME,
+      },
+    },
     minted: [
       'wefdsfasdfwef',
       'wefdsfasdfwef',
@@ -51,12 +53,7 @@ async function fetchCollection(id: string): Promise<Collection | undefined> {
       'wefdsfasdfwef',
       'wefdsfasdfwef',
     ],
-    mintingExpire: 1648266392852,
     originAddress: 'lsk7opy8ksve7npbr32dtqxwpvg5u6aa3vtje5qtd',
-    price: {
-      amount: '512134000',
-      currency: COIN_NAME,
-    },
     activity: [
       {
         transaction: 'fgagergdfsdf',

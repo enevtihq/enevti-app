@@ -9,7 +9,7 @@ import {
 import ReactNativeCountdownComponent from 'react-native-countdown-component';
 import { useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { wp, hp, SafeAreaInsets } from '../../../utils/imageRatio';
+import { hp, SafeAreaInsets } from '../../../utils/imageRatio';
 import { Theme } from '../../../theme/default';
 import { useTranslation } from 'react-i18next';
 
@@ -38,7 +38,10 @@ export default function AppCountdown({ until, style }: AppCountdownProps) {
   const { t } = useTranslation();
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
-  const styles = React.useMemo(() => makeStyle(theme, insets), [theme, insets]);
+  const styles = React.useMemo(
+    () => makeStyles(theme, insets),
+    [theme, insets],
+  );
   const timeLabels = React.useMemo(
     () => ({
       d: t('date:days'),
@@ -61,22 +64,19 @@ export default function AppCountdown({ until, style }: AppCountdownProps) {
   );
 }
 
-const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
+const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
   StyleSheet.create({
     timeLabelStyle: {
       color: theme.colors.placeholder,
       fontFamily: theme.fonts.regular.fontFamily,
-      fontSize: wp('2.2%', insets),
     },
     digitStyle: {
       backgroundColor: 'transparent',
-      height: hp('3%', insets),
-      width: wp('9%', insets),
+      height: hp('2.25%', insets),
     },
     digitTxtStyle: {
       color: theme.colors.text,
       fontFamily: theme.fonts.medium.fontFamily,
       fontWeight: theme.fonts.medium.fontWeight,
-      fontSize: wp('5.2%', insets),
     },
   });

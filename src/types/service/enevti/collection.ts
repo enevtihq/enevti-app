@@ -14,16 +14,19 @@ export type Collection = {
   social: SocialProfile;
   packSize: number;
   stat: {
-    total: number;
+    minted: number;
     owner: number;
     floor: NFTPrice;
     volume: NFTPrice;
   };
-  available: string[];
+  minting: {
+    total: number;
+    available: number;
+    expire: number;
+    price: NFTPrice;
+  };
   minted: string[];
-  mintingExpire: number;
   originAddress: string;
-  price: NFTPrice;
   activity: {
     transaction: string;
     name: string;

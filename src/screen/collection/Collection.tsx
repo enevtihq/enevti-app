@@ -1,7 +1,6 @@
 import React from 'react';
 import { StackScreenProps } from '@react-navigation/stack';
 import { useDispatch, useSelector } from 'react-redux';
-import AppCountdown from '../../components/atoms/date/AppCountdown';
 import AppView from '../../components/atoms/view/AppView';
 import AppNetworkImage from '../../components/atoms/image/AppNetworkImage';
 import { IPFStoURL } from '../../service/ipfs';
@@ -22,6 +21,9 @@ import {
 } from '../../store/slices/ui/view/collection';
 import { StyleSheet, View } from 'react-native';
 import AppActivityIndicator from '../../components/atoms/loading/AppActivityIndicator';
+import { useTheme } from 'react-native-paper';
+import { Theme } from '../../theme/default';
+import AppCollectionMintingAvailable from '../../components/molecules/collection/AppCollectionMintingAvailable';
 
 type Props = StackScreenProps<RootStackParamList, 'Collection'>;
 
@@ -29,9 +31,16 @@ export default function Collection({ route }: Props) {
   const { id } = route.params;
   const dispatch = useDispatch();
   const insets = useSafeAreaInsets();
+  const theme = useTheme() as Theme;
   const styles = React.useMemo(() => makeStyles(), []);
+  const now = React.useMemo(() => Date.now(), []);
   const collection = useSelector(selectCollectionView);
   const collectionUndefined = useSelector(isCollectionUndefined);
+
+  const mintingAvailable = React.useMemo(
+    () => collection.minting.expire > now || collection.minting.available > 0,
+    [collection.minting.expire, collection.minting.available, now],
+  );
 
   const coverWidth = React.useMemo(() => wp('100%', insets), [insets]);
   const coverHeight = React.useMemo(
@@ -59,7 +68,9 @@ export default function Collection({ route }: Props) {
         url={IPFStoURL(collection.cover)}
         style={{ width: coverWidth, height: coverHeight }}
       />
-      <AppCountdown until={1000000} />
+      {mintingAvailable ? (
+        <AppCollectionMintingAvailable collection={collection} />
+      ) : null}
     </AppView>
   ) : (
     <View style={styles.loaderContainer}>

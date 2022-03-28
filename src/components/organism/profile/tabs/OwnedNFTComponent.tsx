@@ -40,7 +40,7 @@ function Component(
   const [refreshing, setRefreshing] = React.useState<boolean>(false);
 
   const styles = React.useMemo(
-    () => makeStyle(insets, headerHeight, displayed, disableHeaderAnimation),
+    () => makeStyles(insets, headerHeight, displayed, disableHeaderAnimation),
     [insets, headerHeight, displayed, disableHeaderAnimation],
   );
   const isScrollEnabled = React.useMemo(
@@ -112,7 +112,7 @@ function Component(
   );
 }
 
-const makeStyle = (
+const makeStyles = (
   insets: SafeAreaInsets,
   headerHeight: number,
   displayed: boolean,

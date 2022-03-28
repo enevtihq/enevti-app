@@ -8,6 +8,7 @@ import stake from './stake';
 import createNFT from './createNFT';
 import date from './date';
 import payment from './payment';
+import collection from './collection';
 
 export default {
   auth,
@@ -20,4 +21,5 @@ export default {
   createNFT,
   date,
   payment,
+  collection,
 };

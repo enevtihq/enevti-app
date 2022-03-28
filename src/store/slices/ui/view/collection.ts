@@ -21,16 +21,19 @@ const initialState: CollectionViewState = {
   },
   packSize: 0,
   stat: {
-    total: 0,
+    minted: 0,
     owner: 0,
     floor: { amount: '', currency: '' },
     volume: { amount: '', currency: '' },
   },
-  available: [],
+  minting: {
+    total: 0,
+    available: 0,
+    expire: 0,
+    price: { amount: '', currency: '' },
+  },
   minted: [],
-  mintingExpire: 0,
   originAddress: '',
-  price: { amount: '', currency: '' },
   activity: [],
 };
 

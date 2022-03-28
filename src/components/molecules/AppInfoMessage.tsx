@@ -19,7 +19,10 @@ interface AppInfoMessageProps {
 function Component({ icon, title, message, box }: AppInfoMessageProps) {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
-  const styles = React.useMemo(() => makeStyle(theme, insets), [theme, insets]);
+  const styles = React.useMemo(
+    () => makeStyles(theme, insets),
+    [theme, insets],
+  );
 
   return (
     <View style={box ? styles.boxed : styles.normal}>
@@ -42,7 +45,7 @@ function Component({ icon, title, message, box }: AppInfoMessageProps) {
   );
 }
 
-const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
+const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
   StyleSheet.create({
     boxed: {
       borderColor: theme.dark

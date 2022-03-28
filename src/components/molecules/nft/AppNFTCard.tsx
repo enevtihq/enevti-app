@@ -23,7 +23,10 @@ interface AppNFTCardProps {
 export default function AppNFTCard({ nft, width, style }: AppNFTCardProps) {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
-  const styles = React.useMemo(() => makeStyle(theme, insets), [theme, insets]);
+  const styles = React.useMemo(
+    () => makeStyles(theme, insets),
+    [theme, insets],
+  );
   const nftWidth = React.useMemo(
     () => width - wp('1%', insets),
     [width, insets],
@@ -66,7 +69,7 @@ export default function AppNFTCard({ nft, width, style }: AppNFTCardProps) {
   );
 }
 
-const makeStyle = (theme: Theme, insets: SafeAreaInsets) =>
+const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
   StyleSheet.create({
     container: {
       marginHorizontal: wp('0.5%', insets),
