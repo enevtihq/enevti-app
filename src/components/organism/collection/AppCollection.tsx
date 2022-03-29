@@ -239,7 +239,7 @@ export default function AppCollection({ id }: AppCollectionProps) {
   );
 
   return !collectionUndefined ? (
-    <View style={{ flex: 1 }}>
+    <View style={styles.collectionContainer}>
       <Animated.View style={[styles.collectionHeader, scrollStyle]}>
         <AppCollectionHeader
           collection={collection}
@@ -262,6 +262,9 @@ export default function AppCollection({ id }: AppCollectionProps) {
 
 const makeStyles = () =>
   StyleSheet.create({
+    collectionContainer: {
+      flex: 1,
+    },
     loaderContainer: {
       justifyContent: 'center',
       alignItems: 'center',
