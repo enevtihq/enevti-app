@@ -242,7 +242,11 @@ export default function Collection({ route }: Props) {
   );
 
   return !collectionUndefined ? (
-    <AppView darken translucentStatusBar edges={['bottom', 'left', 'right']}>
+    <AppView
+      darken
+      withModal
+      translucentStatusBar
+      edges={['bottom', 'left', 'right']}>
       <Animated.View style={[styles.collectionHeader, scrollStyle]}>
         <AppCollectionHeader
           collection={collection}

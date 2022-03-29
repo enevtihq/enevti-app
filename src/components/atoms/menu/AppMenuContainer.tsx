@@ -18,6 +18,7 @@ interface AppMenuContainerProps {
   onDismiss: () => void;
   anchor?: React.ReactNode;
   enablePanDownToClose?: boolean;
+  transparentBackdrop?: boolean;
   snapPoints?: string[];
   tapEverywhereToDismiss?: boolean;
   style?: StyleProp<ViewStyle>;
@@ -33,6 +34,7 @@ function Component({
   style,
   enablePanDownToClose = true,
   tapEverywhereToDismiss = false,
+  transparentBackdrop = false,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   memoKey,
 }: AppMenuContainerProps) {
@@ -90,12 +92,13 @@ function Component({
     props => (
       <BottomSheetBackdrop
         {...props}
+        opacity={transparentBackdrop ? 0 : undefined}
         appearsOnIndex={snapPoints ? snapPoints.length - 1 : 0}
         disappearsOnIndex={-1}
         pressBehavior={tapEverywhereToDismiss ? 'close' : 'none'}
       />
     ),
-    [snapPoints, tapEverywhereToDismiss],
+    [snapPoints, tapEverywhereToDismiss, transparentBackdrop],
   );
 
   return (
