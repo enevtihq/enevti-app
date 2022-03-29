@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Divider, TouchableRipple, useTheme } from 'react-native-paper';
 import { Theme } from '../../../theme/default';
-import { hp, SafeAreaInsets, wp } from '../../../utils/imageRatio';
+import { DimensionFunction } from '../../../utils/imageRatio';
 import { Collection } from '../../../types/service/enevti/collection';
 import AppNetworkImage from '../../atoms/image/AppNetworkImage';
 import { IPFStoURL } from '../../../service/ipfs';
@@ -18,6 +18,7 @@ import { numberKMB, parseAmount } from '../../../utils/format/amount';
 import AppIconComponent, { iconMap } from '../../atoms/icon/AppIconComponent';
 import AppCollectionDescriptionModal from './AppCollectionDescriptionModal';
 import { MINTING_AVAILABLE_VIEW_HEIGHT } from './AppCollectionMintingAvailable';
+import useDimension from 'enevti-app/utils/hook/useDimension';
 
 export const COLLECTION_HEADER_VIEW_HEIGHT = 55;
 
@@ -31,16 +32,14 @@ export default function AppCollectionHeader({
   mintingAvailable,
 }: AppCollectionHeaderProps) {
   const { t } = useTranslation();
+  const { hp, wp } = useDimension();
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
-  const styles = React.useMemo(
-    () => makeStyles(theme, insets),
-    [theme, insets],
-  );
+  const styles = React.useMemo(() => makeStyles(hp, wp), [hp, wp]);
   const [descriptionVisible, setDescriptionVisible] =
     React.useState<boolean>(false);
 
-  const coverWidth = React.useMemo(() => wp('100%', insets), [insets]);
+  const coverWidth = React.useMemo(() => wp('100%'), [wp]);
   const coverHeight = React.useMemo(
     () => insets.top + coverWidth * 0.5625,
     [coverWidth, insets],
@@ -66,7 +65,7 @@ export default function AppCollectionHeader({
     <View
       style={{
         backgroundColor: theme.colors.background,
-        height: hp(totalHeight, insets),
+        height: hp(totalHeight),
       }}>
       <AppNetworkImage
         url={IPFStoURL(collection.cover)}
@@ -104,8 +103,8 @@ export default function AppCollectionHeader({
 
             <AppTextBody4
               style={{
-                marginTop: hp('1%', insets),
-                paddingHorizontal: wp('5%', insets),
+                marginTop: hp('1%'),
+                paddingHorizontal: wp('5%'),
               }}
               numberOfLines={1}>
               {collection.description}
@@ -116,10 +115,10 @@ export default function AppCollectionHeader({
         <View style={styles.collectionChipsContainer}>
           <AppQuaternaryButton
             icon={iconMap.likeActive}
-            iconSize={hp('3%', insets)}
+            iconSize={hp('3%')}
             iconColor={theme.colors.placeholder}
             style={{
-              height: hp('4%', insets),
+              height: hp('4%'),
             }}
             onPress={() => console.log('Pressed')}>
             <AppTextBody4 style={{ color: theme.colors.placeholder }}>
@@ -128,10 +127,10 @@ export default function AppCollectionHeader({
           </AppQuaternaryButton>
           <AppQuaternaryButton
             icon={iconMap.commentFill}
-            iconSize={hp('3%', insets)}
+            iconSize={hp('3%')}
             iconColor={theme.colors.placeholder}
             style={{
-              height: hp('4%', insets),
+              height: hp('4%'),
             }}
             onPress={() => console.log('Pressed')}>
             <AppTextBody4 style={{ color: theme.colors.placeholder }}>
@@ -140,10 +139,10 @@ export default function AppCollectionHeader({
           </AppQuaternaryButton>
           <AppQuaternaryButton
             icon={iconMap.twitter}
-            iconSize={hp('3%', insets)}
+            iconSize={hp('3%')}
             iconColor={theme.colors.placeholder}
             style={{
-              height: hp('4%', insets),
+              height: hp('4%'),
             }}
             onPress={() => console.log('Pressed')}>
             <AppTextBody4 style={{ color: theme.colors.placeholder }}>
@@ -157,7 +156,7 @@ export default function AppCollectionHeader({
           </AppQuaternaryButton>
         </View>
 
-        <View style={{ paddingHorizontal: wp('5%', insets) }}>
+        <View style={{ paddingHorizontal: wp('5%') }}>
           <Divider />
           <View style={styles.createdBy}>
             <AppTextBody4 style={{ color: theme.colors.placeholder }}>
@@ -166,8 +165,8 @@ export default function AppCollectionHeader({
             <AppAvatarRenderer
               photo={collection.originAddress.photo}
               address={collection.originAddress.address}
-              size={wp('5%', insets)}
-              style={{ marginHorizontal: wp('2%', insets) }}
+              size={wp('5%')}
+              style={{ marginHorizontal: wp('2%') }}
             />
             <AppTextHeading4 numberOfLines={1} style={styles.creatorAddress}>
               {collection.originAddress.username
@@ -187,12 +186,12 @@ export default function AppCollectionHeader({
   );
 }
 
-const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
+const makeStyles = (hp: DimensionFunction, wp: DimensionFunction) =>
   StyleSheet.create({
     collectionName: {
       flexDirection: 'row',
-      paddingTop: wp('2%', insets),
-      paddingHorizontal: wp('5%', insets),
+      paddingTop: wp('2%'),
+      paddingHorizontal: wp('5%'),
     },
     collectionNameItem: {
       flex: 1,
@@ -201,12 +200,12 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
       alignSelf: 'center',
     },
     createdBy: {
-      marginVertical: hp('1.5%', insets),
+      marginVertical: hp('1.5%'),
       flexDirection: 'row',
       alignItems: 'center',
     },
     summary: {
-      marginTop: hp('0.5%', insets),
+      marginTop: hp('0.5%'),
       flexDirection: 'row',
       alignItems: 'center',
     },
@@ -215,9 +214,9 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
       height: '100%',
     },
     collectionChipsContainer: {
-      height: hp('3%', insets),
-      paddingHorizontal: wp('5%', insets),
-      marginVertical: hp('2%', insets),
+      height: hp('3%'),
+      paddingHorizontal: wp('5%'),
+      marginVertical: hp('2%'),
       flexDirection: 'row',
       alignItems: 'center',
     },

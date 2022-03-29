@@ -4,8 +4,8 @@ import Animated from 'react-native-reanimated';
 import { FlatGrid, FlatGridProps } from 'react-native-super-grid';
 import { NFTBase } from '../../../../types/nft';
 import { TOP_TABBAR_HEIGHT_PERCENTAGE } from '../../../atoms/view/AppTopTabBar';
-import { hp, SafeAreaInsets, wp } from '../../../../utils/imageRatio';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { DimensionFunction } from '../../../../utils/imageRatio';
+import useDimension from 'enevti-app/utils/hook/useDimension';
 import AppNFTCard from '../../../molecules/nft/AppNFTCard';
 
 const AnimatedFlatGrid =
@@ -31,27 +31,27 @@ function Component(
   }: MintedItemsComponentProps,
   ref: any,
 ) {
-  const insets = useSafeAreaInsets();
+  const { hp, wp } = useDimension();
   const mounted = React.useRef<boolean>(false);
   const [displayed, setDisplayed] = React.useState<boolean>(false);
   const [refreshing, setRefreshing] = React.useState<boolean>(false);
 
   const styles = React.useMemo(
-    () => makeStyles(insets, displayed, collectionHeaderHeight),
-    [insets, displayed, collectionHeaderHeight],
+    () => makeStyles(hp, displayed, collectionHeaderHeight),
+    [hp, displayed, collectionHeaderHeight],
   );
   const isScrollEnabled = React.useMemo(
     () => (refreshing ? false : scrollEnabled),
     [refreshing, scrollEnabled],
   );
-  const spacing = React.useMemo(() => wp('1%', insets), [insets]);
-  const itemDimension = React.useMemo(() => wp('48%', insets), [insets]);
+  const spacing = React.useMemo(() => wp('1%'), [wp]);
+  const itemDimension = React.useMemo(() => wp('48%'), [wp]);
   const progressViewOffset = React.useMemo(
     () =>
       Platform.OS === 'ios'
         ? 0
-        : hp(TOP_TABBAR_HEIGHT_PERCENTAGE, insets) + collectionHeaderHeight,
-    [collectionHeaderHeight, insets],
+        : hp(TOP_TABBAR_HEIGHT_PERCENTAGE) + collectionHeaderHeight,
+    [collectionHeaderHeight, hp],
   );
 
   const handleRefresh = React.useCallback(() => {
@@ -107,15 +107,14 @@ function Component(
 }
 
 const makeStyles = (
-  insets: SafeAreaInsets,
+  hp: DimensionFunction,
   displayed: boolean,
   collectionHeaderHeight: number,
 ) =>
   StyleSheet.create({
     contentContainerStyle: {
-      paddingTop:
-        hp(TOP_TABBAR_HEIGHT_PERCENTAGE, insets) + collectionHeaderHeight,
-      minHeight: hp(100, insets) + collectionHeaderHeight,
+      paddingTop: hp(TOP_TABBAR_HEIGHT_PERCENTAGE) + collectionHeaderHeight,
+      minHeight: hp(100) + collectionHeaderHeight,
       display: displayed ? undefined : 'none',
     },
   });

@@ -11,6 +11,7 @@ import AppStatusBar from './AppStatusBar';
 import Color from 'color';
 import { hp } from '../../../utils/imageRatio';
 import { HEADER_HEIGHT_PERCENTAGE } from './AppHeader';
+import { EdgeContext } from '../../../context';
 
 interface AppContainerProps {
   children: React.ReactNode;
@@ -37,28 +38,30 @@ export default function AppContainer({
   );
 
   return (
-    <SafeAreaView style={styles.container} edges={edges}>
-      <AppStatusBar />
-      {header ? header : null}
-      {translucentStatusBar ? null : Platform.OS === 'android' &&
-        edges &&
-        !edges.includes('top') ? (
-        <View style={{ marginTop: insets.top }} />
-      ) : null}
-      {header ? (
-        <View
-          style={{
-            marginTop: hp(
-              typeof headerHeight === 'number'
-                ? headerHeight
-                : HEADER_HEIGHT_PERCENTAGE,
-              insets,
-            ),
-          }}
-        />
-      ) : null}
-      {children}
-    </SafeAreaView>
+    <EdgeContext.Provider value={edges}>
+      <SafeAreaView style={styles.container} edges={edges}>
+        <AppStatusBar />
+        {header ? header : null}
+        {translucentStatusBar ? null : Platform.OS === 'android' &&
+          edges &&
+          !edges.includes('top') ? (
+          <View style={{ marginTop: insets.top }} />
+        ) : null}
+        {header ? (
+          <View
+            style={{
+              marginTop: hp(
+                typeof headerHeight === 'number'
+                  ? headerHeight
+                  : HEADER_HEIGHT_PERCENTAGE,
+                insets,
+              ),
+            }}
+          />
+        ) : null}
+        {children}
+      </SafeAreaView>
+    </EdgeContext.Provider>
   );
 }
 

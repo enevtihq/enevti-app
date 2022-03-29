@@ -1,7 +1,6 @@
 import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import React, { ComponentType } from 'react';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { hp, SafeAreaInsets } from '../../../utils/imageRatio';
+import { DimensionFunction } from '../../../utils/imageRatio';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import AppTopTabBar from '../../atoms/view/AppTopTabBar';
 import { useTheme } from 'react-native-paper';
@@ -9,6 +8,7 @@ import Color from 'color';
 import AppTextBody4 from '../../atoms/text/AppTextBody4';
 import { useTranslation } from 'react-i18next';
 import { HEADER_HEIGHT_PERCENTAGE } from '../../atoms/view/AppHeader';
+import useDimension from 'enevti-app/utils/hook/useDimension';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -28,10 +28,10 @@ export default function AppCollectionBody({
   style,
 }: AppCollectionBodyProps) {
   const { t } = useTranslation();
-  const insets = useSafeAreaInsets();
+  const { hp } = useDimension();
   const theme = useTheme();
-  const styles = React.useMemo(() => makeStyles(insets), [insets]);
-  const headerHeight = hp(HEADER_HEIGHT_PERCENTAGE, insets);
+  const styles = React.useMemo(() => makeStyles(hp), [hp]);
+  const headerHeight = hp(HEADER_HEIGHT_PERCENTAGE);
 
   return (
     <View style={[styles.profileBody, style]}>
@@ -87,7 +87,7 @@ export default function AppCollectionBody({
   );
 }
 
-const makeStyles = (insets: SafeAreaInsets) =>
+const makeStyles = (hp: DimensionFunction) =>
   StyleSheet.create({
     tabBarContainer: {
       top: 0,
@@ -97,7 +97,7 @@ const makeStyles = (insets: SafeAreaInsets) =>
       zIndex: 1,
     },
     profileBody: {
-      height: hp('100%', insets),
+      height: hp('100%'),
       zIndex: -1,
     },
   });
