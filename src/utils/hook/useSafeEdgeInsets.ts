@@ -6,13 +6,16 @@ import { SafeAreaInsets } from 'enevti-app/utils/imageRatio';
 export default function useSafeEdgeInsets(): SafeAreaInsets {
   const insets = useSafeAreaInsets();
   const edges = React.useContext(EdgeContext);
-  if (edges) {
+  if (edges !== undefined) {
     const ret = JSON.parse(JSON.stringify(insets));
     (['bottom', 'top', 'left', 'right'] as Edge[])
       .filter(x => !edges.includes(x))
       .forEach(x => (ret[x] = 0));
     return ret;
   } else {
+    console.warn(
+      'useSafeEdgeInsets resulted in undefined value, make sure you call this hook inside AppView / EdgeContext provider',
+    );
     return insets;
   }
 }

@@ -239,7 +239,7 @@ export default function AppCollection({ id }: AppCollectionProps) {
   );
 
   return !collectionUndefined ? (
-    <View>
+    <View style={{ flex: 1 }}>
       <Animated.View style={[styles.collectionHeader, scrollStyle]}>
         <AppCollectionHeader
           collection={collection}

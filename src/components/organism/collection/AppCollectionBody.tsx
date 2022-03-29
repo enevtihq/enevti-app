@@ -1,6 +1,5 @@
 import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import React, { ComponentType } from 'react';
-import { DimensionFunction } from '../../../utils/imageRatio';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import AppTopTabBar from '../../atoms/view/AppTopTabBar';
 import { useTheme } from 'react-native-paper';
@@ -30,7 +29,7 @@ export default function AppCollectionBody({
   const { t } = useTranslation();
   const { hp } = useDimension();
   const theme = useTheme();
-  const styles = React.useMemo(() => makeStyles(hp), [hp]);
+  const styles = React.useMemo(() => makeStyles(), []);
   const headerHeight = hp(HEADER_HEIGHT_PERCENTAGE);
 
   return (
@@ -87,7 +86,7 @@ export default function AppCollectionBody({
   );
 }
 
-const makeStyles = (hp: DimensionFunction) =>
+const makeStyles = () =>
   StyleSheet.create({
     tabBarContainer: {
       top: 0,
@@ -97,7 +96,7 @@ const makeStyles = (hp: DimensionFunction) =>
       zIndex: 1,
     },
     profileBody: {
-      height: hp('100%'),
+      flex: 1,
       zIndex: -1,
     },
   });
