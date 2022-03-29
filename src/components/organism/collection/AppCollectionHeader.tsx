@@ -1,4 +1,4 @@
-import { View, StyleSheet, LayoutChangeEvent } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -17,15 +17,18 @@ import AppQuaternaryButton from '../../atoms/button/AppQuaternaryButton';
 import { numberKMB, parseAmount } from '../../../utils/format/amount';
 import AppIconComponent, { iconMap } from '../../atoms/icon/AppIconComponent';
 import AppCollectionDescriptionModal from './AppCollectionDescriptionModal';
+import { MINTING_AVAILABLE_VIEW_HEIGHT } from './AppCollectionMintingAvailable';
+
+export const COLLECTION_HEADER_VIEW_HEIGHT = 55;
 
 interface AppCollectionHeaderProps {
   collection: Collection;
-  onLayout?: (e: LayoutChangeEvent) => void;
+  mintingAvailable: boolean;
 }
 
 export default function AppCollectionHeader({
   collection,
-  onLayout,
+  mintingAvailable,
 }: AppCollectionHeaderProps) {
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
@@ -34,22 +37,19 @@ export default function AppCollectionHeader({
     () => makeStyles(theme, insets),
     [theme, insets],
   );
-  const now = React.useMemo(() => Date.now(), []);
   const [descriptionVisible, setDescriptionVisible] =
     React.useState<boolean>(false);
-
-  const mintingAvailable = React.useMemo(
-    () =>
-      collection.minting.expire <= now || collection.minting.available === 0
-        ? false
-        : true,
-    [collection.minting.expire, collection.minting.available, now],
-  );
 
   const coverWidth = React.useMemo(() => wp('100%', insets), [insets]);
   const coverHeight = React.useMemo(
     () => insets.top + coverWidth * 0.5625,
     [coverWidth, insets],
+  );
+  const totalHeight = React.useMemo(
+    () =>
+      COLLECTION_HEADER_VIEW_HEIGHT +
+      (mintingAvailable ? MINTING_AVAILABLE_VIEW_HEIGHT : 0),
+    [mintingAvailable],
   );
 
   const descriptionModalOnDismiss = React.useCallback(
@@ -64,8 +64,10 @@ export default function AppCollectionHeader({
 
   return (
     <View
-      onLayout={onLayout}
-      style={{ backgroundColor: theme.colors.background }}>
+      style={{
+        backgroundColor: theme.colors.background,
+        height: hp(totalHeight, insets),
+      }}>
       <AppNetworkImage
         url={IPFStoURL(collection.cover)}
         style={{ width: coverWidth, height: coverHeight }}

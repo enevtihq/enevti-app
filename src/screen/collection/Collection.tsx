@@ -16,7 +16,7 @@ import {
   isCollectionUndefined,
   selectCollectionView,
 } from '../../store/slices/ui/view/collection';
-import { FlatList, LayoutChangeEvent, StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 import AppActivityIndicator from '../../components/atoms/loading/AppActivityIndicator';
 import { useTheme } from 'react-native-paper';
 import { Theme } from '../../theme/default';
@@ -34,6 +34,8 @@ import Animated, {
 import { HEADER_HEIGHT_PERCENTAGE } from '../../components/atoms/view/AppHeader';
 import { hp } from '../../utils/imageRatio';
 import { diffClamp } from '../../utils/animation';
+import { COLLECTION_HEADER_VIEW_HEIGHT } from '../../components/organism/collection/AppCollectionHeader';
+import { MINTING_AVAILABLE_VIEW_HEIGHT } from '../../components/organism/collection/AppCollectionMintingAvailable';
 
 type Props = StackScreenProps<RootStackParamList, 'Collection'>;
 
@@ -45,11 +47,30 @@ export default function Collection({ route }: Props) {
   const headerHeight = hp(HEADER_HEIGHT_PERCENTAGE, insets);
   const styles = React.useMemo(() => makeStyles(), []);
 
+  const collection = useSelector(selectCollectionView);
+  const collectionUndefined = useSelector(isCollectionUndefined);
+
+  const now = React.useMemo(() => Date.now(), []);
+  const mintingAvailable = React.useMemo(
+    () =>
+      collection.minting.expire <= now || collection.minting.available === 0
+        ? false
+        : true,
+    [collection.minting.expire, collection.minting.available, now],
+  );
+  const totalHeaderHeight = React.useMemo(
+    () =>
+      hp(
+        COLLECTION_HEADER_VIEW_HEIGHT +
+          (mintingAvailable ? MINTING_AVAILABLE_VIEW_HEIGHT : 0),
+        insets,
+      ),
+    [mintingAvailable, insets],
+  );
+
   const [mintedItemsMounted, setMintedItemsMounted] =
     React.useState<boolean>(false);
   const [activityMounted, setActivityMounted] = React.useState<boolean>(false);
-  const [collectionHeaderHeight, setCollectionHeaderHeight] =
-    React.useState<number>(0);
 
   const mintedRef = useAnimatedRef<FlatList>();
   // const activityRef = useAnimatedRef<FlatList>();
@@ -57,18 +78,7 @@ export default function Collection({ route }: Props) {
   const headerCollapsed = useSharedValue(true);
   const rawScrollY = useSharedValue(0);
   const tabScroll = useSharedValue(0);
-  const totalHeaderHeight = React.useMemo(
-    () => collectionHeaderHeight,
-    [collectionHeaderHeight],
-  );
   const disableHeaderAnimation = true;
-
-  const collection = useSelector(selectCollectionView);
-  const collectionUndefined = useSelector(isCollectionUndefined);
-
-  const onCollectionHeaderLayout = React.useCallback((e: LayoutChangeEvent) => {
-    setCollectionHeaderHeight(e.nativeEvent.layout.height);
-  }, []);
 
   const onCollectionScreenLoaded = React.useCallback(
     () => dispatch(loadCollection(id)),
@@ -223,7 +233,7 @@ export default function Collection({ route }: Props) {
       <MintedItemsComponent
         ref={mintedRef}
         nfts={collection.minted}
-        collectionHeaderHeight={collectionHeaderHeight}
+        collectionHeaderHeight={totalHeaderHeight}
         scrollEnabled={scrollEnabled}
         onScroll={mintedItemsScrollHandler}
         onMounted={mintedItemsOnMounted}
@@ -232,7 +242,7 @@ export default function Collection({ route }: Props) {
     ),
     [
       collection.minted,
-      collectionHeaderHeight,
+      totalHeaderHeight,
       mintedItemsOnMounted,
       mintedItemsScrollHandler,
       mintedRef,
@@ -250,11 +260,11 @@ export default function Collection({ route }: Props) {
       <Animated.View style={[styles.collectionHeader, scrollStyle]}>
         <AppCollectionHeader
           collection={collection}
-          onLayout={onCollectionHeaderLayout}
+          mintingAvailable={mintingAvailable}
         />
       </Animated.View>
       <AppCollectionBody
-        collectionHeaderHeight={collectionHeaderHeight}
+        collectionHeaderHeight={totalHeaderHeight}
         animatedTabBarStyle={animatedTabBarStyle}
         mintedItemsScreen={MintedItemsScreen}
         activityScreen={MintedItemsScreen}
