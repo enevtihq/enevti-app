@@ -1,6 +1,10 @@
 import React from 'react';
-import { StyleProp, ViewStyle } from 'react-native';
-import { IconButton } from 'react-native-paper';
+import { Platform, StyleProp, TextStyle, ViewStyle } from 'react-native';
+import { TouchableRipple, useTheme } from 'react-native-paper';
+import Animated from 'react-native-reanimated';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
+const AnimatedIcon = Animated.createAnimatedComponent(MaterialCommunityIcons);
 
 interface AppIconButtonProps {
   icon: string;
@@ -8,6 +12,7 @@ interface AppIconButtonProps {
   onPress?: (e?: any) => void;
   color?: string;
   style?: StyleProp<ViewStyle>;
+  animatedIconStyle?: StyleProp<TextStyle>;
 }
 
 export default function AppIconButton({
@@ -16,14 +21,26 @@ export default function AppIconButton({
   onPress,
   color,
   style,
+  animatedIconStyle,
 }: AppIconButtonProps) {
+  const theme = useTheme();
+  const iSize = size ? size : Platform.OS === 'ios' ? 35 : 23;
+
   return (
-    <IconButton
-      color={color}
-      icon={icon}
-      onPress={onPress}
-      size={size}
-      style={style}
-    />
+    <Animated.View
+      style={[
+        { borderRadius: iSize, overflow: hidden, width: iSize * 1.25 },
+        style,
+      ]}>
+      <TouchableRipple onPress={onPress} style={{ padding: iSize / 7 }}>
+        <AnimatedIcon
+          name={icon}
+          size={iSize}
+          style={[{ color: color ?? theme.colors.text }, animatedIconStyle]}
+        />
+      </TouchableRipple>
+    </Animated.View>
   );
 }
+
+const hidden = 'hidden';

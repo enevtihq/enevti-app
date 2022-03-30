@@ -28,10 +28,11 @@ export function resizeImageRatio(
   };
 }
 
-export function wp(widthPercent: string | number, insets: SafeAreaInsets) {
-  const insetsSize = ignoreOnPlatform.includes(Platform.OS)
-    ? 0
-    : insets.left + insets.right;
+export function wp(widthPercent: string | number, insets?: SafeAreaInsets) {
+  const insetsSize =
+    ignoreOnPlatform.includes(Platform.OS) || !insets
+      ? 0
+      : insets.left + insets.right;
   const elemWidth =
     typeof widthPercent === 'number' ? widthPercent : parseFloat(widthPercent);
   return PixelRatio.roundToNearestPixel(
@@ -39,10 +40,11 @@ export function wp(widthPercent: string | number, insets: SafeAreaInsets) {
   );
 }
 
-export function hp(heightPercent: string | number, insets: SafeAreaInsets) {
-  const insetsSize = ignoreOnPlatform.includes(Platform.OS)
-    ? 0
-    : insets.top + insets.bottom;
+export function hp(heightPercent: string | number, insets?: SafeAreaInsets) {
+  const insetsSize =
+    ignoreOnPlatform.includes(Platform.OS) || !insets
+      ? 0
+      : insets.top + insets.bottom;
   const elemHeight =
     typeof heightPercent === 'number'
       ? heightPercent

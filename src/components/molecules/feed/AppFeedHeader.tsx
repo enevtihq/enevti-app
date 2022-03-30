@@ -163,6 +163,7 @@ const makeStyles = (insets: SafeAreaInsets) =>
     },
     headerMoreButtonContainer: {
       justifyContent: 'center',
+      marginRight: -wp('1%', insets),
       width: wp('8%', insets),
     },
     headerMoreButton: {

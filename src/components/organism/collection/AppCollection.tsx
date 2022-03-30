@@ -22,19 +22,24 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import { HEADER_HEIGHT_PERCENTAGE } from '../../../components/atoms/view/AppHeader';
-import { diffClamp } from '../../../utils/animation';
 import { COLLECTION_HEADER_VIEW_HEIGHT } from '../../../components/organism/collection/AppCollectionHeader';
 import { MINTING_AVAILABLE_VIEW_HEIGHT } from '../../../components/organism/collection/AppCollectionMintingAvailable';
 import useDimension from 'enevti-app/utils/hook/useDimension';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface AppCollectionProps {
   id: string;
+  onScrollWorklet: (val: number) => void;
 }
 
-export default function AppCollection({ id }: AppCollectionProps) {
+export default function AppCollection({
+  id,
+  onScrollWorklet,
+}: AppCollectionProps) {
   const dispatch = useDispatch();
   const { hp } = useDimension();
-  const headerHeight = hp(HEADER_HEIGHT_PERCENTAGE);
+  const insets = useSafeAreaInsets();
+  const headerHeight = hp(HEADER_HEIGHT_PERCENTAGE) + insets.top;
   const styles = React.useMemo(() => makeStyles(), []);
 
   const collection = useSelector(selectCollectionView);
@@ -120,25 +125,10 @@ export default function AppCollection({ id }: AppCollectionProps) {
           tabScroll.value = event.contentOffset.y;
           ctx.current = totalHeaderHeight;
         } else {
-          if (!disableHeaderAnimation) {
-            const diff = event.contentOffset.y - ctx.prevY;
-            if (diff > 0 && event.contentOffset.y < totalHeaderHeight) {
-              tabScroll.value = event.contentOffset.y;
-            } else {
-              tabScroll.value = diffClamp(
-                ctx.current + diff,
-                totalHeaderHeight - headerHeight,
-                totalHeaderHeight,
-              );
-            }
-          } else {
-            tabScroll.value = totalHeaderHeight - headerHeight;
-          }
+          tabScroll.value = totalHeaderHeight - headerHeight;
         }
 
-        // !disableHeaderAnimation &&
-        //   onScrollWorklet &&
-        //   onScrollWorklet(event.contentOffset.y);
+        onScrollWorklet(event.contentOffset.y);
       },
       onBeginDrag: (event, ctx) => {
         ctx.prevY = event.contentOffset.y;

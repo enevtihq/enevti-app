@@ -68,9 +68,10 @@ function Component({
             backComponent
           ) : navigation ? (
             <AppIconButton
-              size={Platform.OS === 'ios' && !backIcon ? 35 : undefined}
+              size={Platform.OS === 'ios' && !backIcon ? 35 : 23}
               icon={backIcon ?? iconMap.arrowBack}
               onPress={() => navigation.goBack()}
+              style={{ marginLeft: wp('2%', insets) }}
             />
           ) : null
         ) : null}
