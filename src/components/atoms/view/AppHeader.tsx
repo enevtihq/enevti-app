@@ -92,7 +92,7 @@ const makeStyles = (theme: Theme, height: number, insets: SafeAreaInsets) =>
     },
     header: {
       position: 'absolute',
-      backgroundColor: theme.colors.background,
+      backgroundColor: 'transparent',
       width: '100%',
       marginTop: insets.top,
       height: height,

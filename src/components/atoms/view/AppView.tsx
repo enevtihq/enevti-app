@@ -18,7 +18,7 @@ import AppModalLoader from '../loading/AppModalLoader';
 interface AppViewProps {
   children: React.ReactNode;
   header?: React.ReactNode;
-  headerHeight?: number;
+  headerOffset?: number;
   translucentStatusBar?: boolean;
   darken?: boolean;
   style?: StyleProp<ViewStyle>;
@@ -35,7 +35,7 @@ export default function AppView({
   header,
   style,
   edges,
-  headerHeight,
+  headerOffset,
   withModal = false,
   withSnackbar = true,
   withPayment = false,
@@ -57,7 +57,7 @@ export default function AppView({
             <AppContainer
               translucentStatusBar={translucentStatusBar}
               header={header}
-              headerHeight={headerHeight}
+              headerOffset={headerOffset}
               darken={darken}
               edges={edges}>
               {children}
@@ -68,7 +68,7 @@ export default function AppView({
           <AppContainer
             translucentStatusBar={translucentStatusBar}
             header={header}
-            headerHeight={headerHeight}
+            headerOffset={headerOffset}
             darken={darken}
             edges={edges}>
             {children}

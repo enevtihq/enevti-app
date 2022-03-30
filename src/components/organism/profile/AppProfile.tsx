@@ -298,7 +298,7 @@ export default function AppProfile({
   );
 
   return !profileUndefined ? (
-    <View>
+    <View style={styles.profileContainer}>
       <Animated.View
         pointerEvents={'box-none'}
         style={[styles.profileHeader, scrollStyle]}>
@@ -337,6 +337,9 @@ export default function AppProfile({
 
 const makeStyles = (headerHeight: number, insets: SafeAreaInsets) =>
   StyleSheet.create({
+    profileContainer: {
+      flex: 1,
+    },
     profileHeader: {
       position: 'absolute',
       zIndex: 2,

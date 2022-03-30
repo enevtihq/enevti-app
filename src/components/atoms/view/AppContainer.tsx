@@ -16,7 +16,7 @@ import { EdgeContext } from '../../../context';
 interface AppContainerProps {
   children: React.ReactNode;
   header?: React.ReactNode;
-  headerHeight?: number;
+  headerOffset?: number;
   darken?: boolean;
   translucentStatusBar?: boolean;
   edges?: Edge[];
@@ -25,7 +25,7 @@ interface AppContainerProps {
 export default function AppContainer({
   children,
   header,
-  headerHeight,
+  headerOffset,
   darken = false,
   translucentStatusBar = false,
   edges,
@@ -51,8 +51,8 @@ export default function AppContainer({
           <View
             style={{
               marginTop: hp(
-                typeof headerHeight === 'number'
-                  ? headerHeight
+                typeof headerOffset === 'number'
+                  ? headerOffset
                   : HEADER_HEIGHT_PERCENTAGE,
                 insets,
               ),

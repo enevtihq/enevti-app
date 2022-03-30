@@ -730,7 +730,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
       withPayment
       withLoader
       edges={['bottom', 'left', 'right']}
-      headerHeight={0}
+      headerOffset={0}
       header={
         <AppHeader
           compact

@@ -9,7 +9,7 @@ export interface SafeAreaInsets {
 
 export type DimensionFunction = (dimension: number | string) => number;
 
-const ignoreOnPlatform: string[] = ['android'];
+const ignoreOnPlatform: string[] = [];
 let screenWidth = Dimensions.get('window').width;
 let screenHeight = Dimensions.get('window').height;
 

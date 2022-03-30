@@ -8,10 +8,11 @@ import {
 } from '../../store/slices/ui/global/statusbar';
 import { RootStackParamList } from '../../navigation';
 import AppCollection from 'enevti-app/components/organism/collection/AppCollection';
+import AppHeader from 'enevti-app/components/atoms/view/AppHeader';
 
 type Props = StackScreenProps<RootStackParamList, 'Collection'>;
 
-export default function Collection({ route }: Props) {
+export default function Collection({ navigation, route }: Props) {
   const { id } = route.params;
   const dispatch = useDispatch();
 
@@ -27,7 +28,9 @@ export default function Collection({ route }: Props) {
       darken
       withModal
       translucentStatusBar
-      edges={['bottom', 'left', 'right']}>
+      edges={['bottom', 'left', 'right']}
+      headerOffset={0}
+      header={<AppHeader back navigation={navigation} title={'Collection'} />}>
       <AppCollection id={id} />
     </AppView>
   );

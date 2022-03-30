@@ -34,7 +34,7 @@ export default function Profile({ navigation, route }: Props) {
       withModal
       withLoader
       edges={['left', 'right', 'bottom']}
-      headerHeight={0}
+      headerOffset={0}
       header={
         <AppHeader back navigation={navigation} title={t('home:profile')} />
       }>
