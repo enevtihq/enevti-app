@@ -31,6 +31,7 @@ interface AppHeaderWizardProps {
   back?: boolean;
   backIcon?: string;
   backComponent?: React.ReactNode;
+  onBack?: () => void;
   navigation?: StackNavigationProp<RootStackParamList>;
   style?: StyleProp<ViewStyle>;
   titleStyle?: StyleProp<TextStyle>;
@@ -48,6 +49,7 @@ function Component({
   back = false,
   backIcon,
   backComponent,
+  onBack,
   navigation,
   style,
   titleStyle,
@@ -60,6 +62,11 @@ function Component({
   const theme = useTheme() as Theme;
   const styles = React.useMemo(() => makeStyles(insets), [insets]);
 
+  const onBackPressed = React.useCallback(() => {
+    onBack && onBack();
+    navigation && navigation.goBack();
+  }, [navigation, onBack]);
+
   return (
     <View style={[styles.headerContainer, style]}>
       <View style={noHeaderSpace ? undefined : styles.headerSpace}>
@@ -70,7 +77,7 @@ function Component({
             <AppIconButton
               size={Platform.OS === 'ios' && !backIcon ? 35 : 23}
               icon={backIcon ?? iconMap.arrowBack}
-              onPress={() => navigation.goBack()}
+              onPress={onBackPressed}
               style={{ marginLeft: wp('2%', insets) }}
             />
           ) : null

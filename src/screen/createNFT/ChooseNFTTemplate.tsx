@@ -18,8 +18,12 @@ import Carousel from 'react-native-snap-carousel';
 import AppNFTRenderer from '../../components/molecules/nft/AppNFTRenderer';
 import { makeDummyNFT } from '../../utils/dummy/nft';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectCreateNFTTypeQueue } from '../../store/slices/queue/nft/create/type';
 import {
+  clearCreateNFTQueueType,
+  selectCreateNFTTypeQueue,
+} from '../../store/slices/queue/nft/create/type';
+import {
+  clearCreateNFTOneKindQueue,
   selectCreateNFTOneKindQueue,
   setCreateNFTOneKindChosenTemplate,
 } from '../../store/slices/queue/nft/create/onekind';
@@ -36,6 +40,7 @@ import AppIconButton from '../../components/atoms/icon/AppIconButton';
 import { showSnackbar } from '../../store/slices/ui/global/snackbar';
 import AppTextHeading1 from '../../components/atoms/text/AppTextHeading1';
 import { setCreateNFTQueueRoute } from '../../store/slices/queue/nft/create/route';
+import { cleanTMPImage } from 'enevti-app/service/enevti/nft';
 
 type Props = StackScreenProps<RootStackParamList, 'ChooseNFTTemplate'>;
 
@@ -132,11 +137,18 @@ export default function ChooseNFTTemplate({ navigation, route }: Props) {
     setDummyNFT(makeDummyNFT('pack'));
   }, [oneKindQueue.data.uri, packQueue.data, type]);
 
+  const onBack = React.useCallback(() => {
+    dispatch(clearCreateNFTOneKindQueue());
+    dispatch(clearCreateNFTQueueType());
+    cleanTMPImage();
+  }, [dispatch]);
+
   return (
     <AppView>
       <AppHeaderWizard
         back
         backIcon={mode === 'change' ? undefined : iconMap.close}
+        onBack={onBack}
         navigation={navigation}
         title={t('createNFT:chooseNFTTemplateTitle')}
         description={t('createNFT:chooseNFTTemplateDescription')}
