@@ -98,7 +98,6 @@ export default function Collection({ navigation, route }: Props) {
     <AppView
       darken
       withModal
-      translucentStatusBar
       edges={['bottom', 'left', 'right']}
       headerOffset={0}
       header={

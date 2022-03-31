@@ -41,7 +41,7 @@ const makeStyles = (insets: SafeAreaInsets) =>
   StyleSheet.create({
     fab: {
       position: 'absolute',
-      bottom: insets.bottom,
+      bottom: 0,
       right: 0,
       margin: wp('6%', insets),
       zIndex: 99,

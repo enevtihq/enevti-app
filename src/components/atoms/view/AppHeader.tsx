@@ -25,6 +25,7 @@ export const HEADER_HEIGHT_COMPACT_PERCENTAGE = 6;
 interface AppHeaderProps {
   children?: React.ReactNode;
   back?: boolean;
+  backIconSize?: number;
   navigation?: StackNavigationProp<RootStackParamList>;
   style?: StyleProp<ViewStyle>;
   backgroundStyle?: StyleProp<ViewStyle>;
@@ -49,6 +50,7 @@ export default function AppHeader({
   height,
   children,
   back = false,
+  backIconSize,
   backIcon,
   navigation,
   title,
@@ -73,7 +75,7 @@ export default function AppHeader({
         {back && navigation ? (
           <AppIconButton
             icon={backIcon ?? iconMap.arrowBack}
-            size={Platform.OS === 'ios' ? 35 : 23}
+            size={backIconSize ? backIconSize : Platform.OS === 'ios' ? 35 : 23}
             color={theme.colors.text}
             onPress={() => navigation.goBack()}
             style={styles.customBackIcon}

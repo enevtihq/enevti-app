@@ -730,12 +730,13 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
       withPayment
       withLoader
       edges={['bottom', 'left', 'right']}
-      headerOffset={0}
+      headerOffset={insets.top}
       header={
         <AppHeader
           compact
           back
           backIcon={iconMap.close}
+          backIconSize={23}
           navigation={navigation}
           title={' '}
         />

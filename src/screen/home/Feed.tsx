@@ -4,7 +4,6 @@ import {
   FlatListProps,
   NativeScrollEvent,
   NativeSyntheticEvent,
-  Platform,
   RefreshControl,
   StyleSheet,
   View,
@@ -106,9 +105,7 @@ export default function Feed({
   );
 
   return (
-    <AppView
-      darken={true}
-      edges={Platform.OS === 'ios' ? ['bottom', 'left', 'right'] : undefined}>
+    <AppView darken>
       <View style={styles.textContainer}>
         <AnimatedFlatList
           onScroll={onScroll}

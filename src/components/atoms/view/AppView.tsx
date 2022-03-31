@@ -19,7 +19,6 @@ interface AppViewProps {
   children: React.ReactNode;
   header?: React.ReactNode;
   headerOffset?: number;
-  translucentStatusBar?: boolean;
   darken?: boolean;
   style?: StyleProp<ViewStyle>;
   dismissKeyboard?: boolean;
@@ -42,7 +41,6 @@ export default function AppView({
   withLoader = false,
   darken = false,
   dismissKeyboard = false,
-  translucentStatusBar = false,
 }: AppViewProps) {
   const dispatch = useDispatch();
   const insets = useSafeAreaInsets();
@@ -55,7 +53,6 @@ export default function AppView({
         {withModal ? (
           <BottomSheetModalProvider>
             <AppContainer
-              translucentStatusBar={translucentStatusBar}
               header={header}
               headerOffset={headerOffset}
               darken={darken}
@@ -66,7 +63,6 @@ export default function AppView({
           </BottomSheetModalProvider>
         ) : (
           <AppContainer
-            translucentStatusBar={translucentStatusBar}
             header={header}
             headerOffset={headerOffset}
             darken={darken}

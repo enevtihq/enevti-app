@@ -1,4 +1,4 @@
-import { Platform, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import React from 'react';
 import {
   Edge,
@@ -18,7 +18,6 @@ interface AppContainerProps {
   header?: React.ReactNode;
   headerOffset?: number;
   darken?: boolean;
-  translucentStatusBar?: boolean;
   edges?: Edge[];
 }
 
@@ -27,7 +26,6 @@ export default function AppContainer({
   header,
   headerOffset,
   darken = false,
-  translucentStatusBar = false,
   edges,
 }: AppContainerProps) {
   const theme = useTheme() as Theme;
@@ -42,20 +40,13 @@ export default function AppContainer({
       <SafeAreaView style={styles.container} edges={edges}>
         <AppStatusBar />
         {header ? header : null}
-        {translucentStatusBar ? null : Platform.OS === 'android' &&
-          edges &&
-          !edges.includes('top') ? (
-          <View style={{ marginTop: insets.top }} />
-        ) : null}
         {header ? (
           <View
             style={{
-              marginTop: hp(
+              marginTop:
                 typeof headerOffset === 'number'
                   ? headerOffset
-                  : HEADER_HEIGHT_PERCENTAGE,
-                insets,
-              ),
+                  : hp(HEADER_HEIGHT_PERCENTAGE, insets) + insets.top,
             }}
           />
         ) : null}

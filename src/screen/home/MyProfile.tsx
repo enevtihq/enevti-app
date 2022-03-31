@@ -35,7 +35,7 @@ export default function MyProfile({
   const profileUndefined = useSelector(isMyProfileUndefined);
 
   return (
-    <AppView darken withLoader edges={['left', 'right', 'bottom']}>
+    <AppView darken withLoader edges={['left', 'right', 'bottom', 'top']}>
       <View style={styles.textContainer}>
         <AppProfile
           navigation={navigation}
