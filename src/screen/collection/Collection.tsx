@@ -5,6 +5,7 @@ import AppView from '../../components/atoms/view/AppView';
 import {
   resetStatusBarBackground,
   setStatusBarBackground,
+  setStatusBarTint,
 } from '../../store/slices/ui/global/statusbar';
 import { RootStackParamList } from '../../navigation';
 import AppCollection from 'enevti-app/components/organism/collection/AppCollection';
@@ -36,17 +37,18 @@ export default function Collection({ navigation, route }: Props) {
 
   React.useEffect(() => {
     dispatch(setStatusBarBackground('transparent'));
+    dispatch(setStatusBarTint('light'));
     return function cleanup() {
       dispatch(resetStatusBarBackground());
     };
   }, [dispatch]);
 
   const onHeaderAboveTreshold = React.useCallback(() => {
-    dispatch(setStatusBarBackground('system'));
+    dispatch(setStatusBarTint('system'));
   }, [dispatch]);
 
   const onHeaderBelowTreshold = React.useCallback(
-    () => dispatch(setStatusBarBackground('transparent')),
+    () => dispatch(setStatusBarTint('light')),
     [dispatch],
   );
 

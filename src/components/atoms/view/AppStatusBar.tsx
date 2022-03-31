@@ -12,15 +12,14 @@ export default function AppStatusBar() {
   const statusbarState = useSelector(selectStatusBarState);
   const barStyle = React.useMemo(
     () =>
-      (statusbarState.background === 'system' && theme.dark === true) ||
-      statusbarState.background === 'dark' ||
-      statusbarState.background === 'transparent'
+      (statusbarState.tint === 'system' && theme.dark === true) ||
+      statusbarState.tint === 'light'
         ? 'light-content'
-        : (statusbarState.background === 'system' && theme.dark === false) ||
-          statusbarState.background === 'light'
+        : (statusbarState.tint === 'system' && theme.dark === false) ||
+          statusbarState.tint === 'dark'
         ? 'dark-content'
         : undefined,
-    [statusbarState.background, theme.dark],
+    [statusbarState.tint, theme.dark],
   );
   const backgroundColor = React.useMemo(
     () =>
