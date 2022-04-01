@@ -42,7 +42,13 @@ export default function AppCollectionMintButton({
           style={styles.actionButtonGradient}>
           <AppQuaternaryButton
             box
-            icon={iconMap.buy}
+            icon={
+              collection.collectionType === 'onekind'
+                ? iconMap.buy
+                : collection.collectionType === 'packed'
+                ? iconMap.random
+                : undefined
+            }
             iconColor={'white'}
             iconSize={20}
             onPress={() => {}}

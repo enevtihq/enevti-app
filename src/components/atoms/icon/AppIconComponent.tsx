@@ -78,6 +78,7 @@ export const iconMap = {
   dollar: 'currency-usd',
   shield: 'shield-check',
   info: 'information-outline',
+  random: 'shuffle',
 };
 
 interface AppIconComponentProps {
