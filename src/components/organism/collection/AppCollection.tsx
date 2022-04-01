@@ -26,6 +26,7 @@ import { COLLECTION_HEADER_VIEW_HEIGHT } from '../../../components/organism/coll
 import { MINTING_AVAILABLE_VIEW_HEIGHT } from '../../../components/organism/collection/AppCollectionMintingAvailable';
 import useDimension from 'enevti-app/utils/hook/useDimension';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import CollectionActivityComponent from './tabs/CollectionActivityComponent';
 
 interface AppCollectionProps {
   id: string;
@@ -67,7 +68,7 @@ export default function AppCollection({
   const [activityMounted, setActivityMounted] = React.useState<boolean>(false);
 
   const mintedRef = useAnimatedRef<FlatList>();
-  // const activityRef = useAnimatedRef<FlatList>();
+  const activityRef = useAnimatedRef<FlatList>();
 
   const headerCollapsed = useSharedValue(true);
   const rawScrollY = useSharedValue(0);
@@ -186,7 +187,12 @@ export default function AppCollection({
       },
     });
 
-  const mintedItemsScrollHandler = useCustomAnimatedScrollHandler([]);
+  const mintedItemsScrollHandler = useCustomAnimatedScrollHandler([
+    activityRef,
+  ]);
+  const collectionActivityScrollHandler = useCustomAnimatedScrollHandler([
+    mintedRef,
+  ]);
 
   const scrollStyle = useAnimatedStyle(() => {
     return {
@@ -201,8 +207,8 @@ export default function AppCollection({
   });
 
   const scrollEnabled = React.useMemo(
-    () => (mintedItemsMounted ? true : false),
-    [mintedItemsMounted],
+    () => (mintedItemsMounted && activityMounted ? true : false),
+    [mintedItemsMounted, activityMounted],
   );
 
   const MintedItemsScreen = React.useCallback(
@@ -228,9 +234,34 @@ export default function AppCollection({
     ],
   );
 
+  const ActivityScreen = React.useCallback(
+    () => (
+      <CollectionActivityComponent
+        ref={activityRef}
+        activities={collection.activity}
+        collectionHeaderHeight={totalHeaderHeight}
+        scrollEnabled={scrollEnabled}
+        onScroll={collectionActivityScrollHandler}
+        onMounted={activityOnMounted}
+        onRefresh={onRefresh}
+      />
+    ),
+    [
+      activityOnMounted,
+      activityRef,
+      collection.activity,
+      collectionActivityScrollHandler,
+      onRefresh,
+      scrollEnabled,
+      totalHeaderHeight,
+    ],
+  );
+
   return !collectionUndefined ? (
     <View style={styles.collectionContainer}>
-      <Animated.View style={[styles.collectionHeader, scrollStyle]}>
+      <Animated.View
+        pointerEvents={'box-none'}
+        style={[styles.collectionHeader, scrollStyle]}>
         <AppCollectionHeader
           collection={collection}
           mintingAvailable={mintingAvailable}
@@ -240,7 +271,7 @@ export default function AppCollection({
         collectionHeaderHeight={totalHeaderHeight}
         animatedTabBarStyle={animatedTabBarStyle}
         mintedItemsScreen={MintedItemsScreen}
-        activityScreen={MintedItemsScreen}
+        activityScreen={ActivityScreen}
       />
     </View>
   ) : (

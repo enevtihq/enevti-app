@@ -63,17 +63,20 @@ export default function AppCollectionHeader({
 
   return (
     <View
+      pointerEvents={'box-none'}
       style={{
         backgroundColor: theme.colors.background,
         height: hp(totalHeight),
       }}>
-      <AppNetworkImage
-        url={IPFStoURL(collection.cover)}
-        style={{ width: coverWidth, height: coverHeight }}
-      />
-      {mintingAvailable ? (
-        <AppCollectionMintingAvailable collection={collection} />
-      ) : null}
+      <View pointerEvents={'none'}>
+        <AppNetworkImage
+          url={IPFStoURL(collection.cover)}
+          style={{ width: coverWidth, height: coverHeight }}
+        />
+        {mintingAvailable ? (
+          <AppCollectionMintingAvailable collection={collection} />
+        ) : null}
+      </View>
       <View>
         <TouchableRipple onPress={descriptionModalOnPress}>
           <View>

@@ -8,4 +8,5 @@ export default {
   statRedeemed: 'Redeemed',
   mintedItems: 'Minted Items',
   activity: 'Activity',
+  activityName: '{{name}} · to {{address}}',
 };

@@ -5,6 +5,8 @@ import * as RNLocalize from 'react-native-localize';
 import en from './en';
 import { selectLanguageState, setLanguage } from '../store/slices/userSetting';
 import { store } from '../store/state';
+import moment from 'moment';
+import 'moment/min/locales';
 
 const stateStore = store;
 
@@ -47,5 +49,9 @@ i18n
       escapeValue: false,
     },
   });
+
+const local = RNLocalize.getLocales();
+const lanTag = local[0].languageTag.toLowerCase();
+moment.locale(lanTag);
 
 export default i18n;

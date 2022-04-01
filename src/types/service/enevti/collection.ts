@@ -33,9 +33,8 @@ export type Collection = {
   activity: {
     transaction: string;
     name: string;
-    serial: number;
+    nft: NFTBase;
     date: number;
-    from: Persona;
     to: Persona;
     value: NFTPrice;
   }[];

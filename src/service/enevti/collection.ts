@@ -61,13 +61,38 @@ async function fetchCollection(id: string): Promise<Collection | undefined> {
       {
         transaction: 'fgagergdfsdf',
         name: 'sale',
-        serial: 12,
+        nft: getDummyNFTData(),
         date: 1648256592852,
-        from: {
+        to: {
           photo: '',
           address: 'lsk7opy8ksve7npbr32dtqxwpvg5u6aa3vtje5qtd',
           username: '',
         },
+        value: {
+          amount: '512134000',
+          currency: COIN_NAME,
+        },
+      },
+      {
+        transaction: 'fgagergdfsdf',
+        name: 'sale',
+        nft: getDummyNFTData(),
+        date: 1648256592852,
+        to: {
+          photo: '',
+          address: 'lsk7opy8ksve7npbr32dtqxwpvg5u6aa3vtje5qtd',
+          username: '',
+        },
+        value: {
+          amount: '512134000',
+          currency: COIN_NAME,
+        },
+      },
+      {
+        transaction: 'fgagergdfsdf',
+        name: 'sale',
+        nft: getDummyNFTData(),
+        date: 1648256592852,
         to: {
           photo: '',
           address: 'lsk7opy8ksve7npbr32dtqxwpvg5u6aa3vtje5qtd',

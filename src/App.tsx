@@ -10,8 +10,8 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import AppNavigationContainer from './navigation';
 import { persistor, store } from './store/state';
 import { getTheme } from './theme';
-import './translations/i18n';
 import { IconProvider } from './components/atoms/icon/AppIconComponent';
+import './translations/i18n';
 import './utils/debug/suppressWarning';
 
 const App = () => {
