@@ -5,7 +5,7 @@ import { Persona } from './persona';
 
 export type Collection = {
   id: string;
-  collectionType: string;
+  collectionType: 'onekind' | 'packed';
   name: string;
   description: string;
   cover: string;

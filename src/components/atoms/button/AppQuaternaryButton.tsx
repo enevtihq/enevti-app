@@ -21,6 +21,7 @@ interface AppQuaternaryButtonProps {
   iconColor?: string;
   style?: StyleProp<ViewStyle>;
   contentStyle?: StyleProp<ViewStyle>;
+  iconStyle?: StyleProp<ViewStyle>;
   contentContainerStyle?: StyleProp<ViewStyle>;
 }
 
@@ -33,6 +34,7 @@ export default function AppQuaternaryButton({
   icon,
   iconSize,
   iconColor,
+  iconStyle,
   style,
   contentStyle,
   contentContainerStyle,
@@ -65,7 +67,7 @@ export default function AppQuaternaryButton({
               name={icon}
               size={iconSize}
               color={iconColor ? iconColor : theme.colors.text}
-              style={[styles.icon, contentStyle]}
+              style={[styles.icon, iconStyle]}
             />
           )}
           <View style={contentStyle}>{children}</View>

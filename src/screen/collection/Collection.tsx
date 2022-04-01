@@ -35,12 +35,18 @@ export default function Collection({ navigation, route }: Props) {
 
   const collectionScroll = useSharedValue(0);
 
+  React.useEffect(
+    () =>
+      navigation.addListener('beforeRemove', e => {
+        dispatch(resetStatusBarBackground());
+        navigation.dispatch(e.data.action);
+      }),
+    [navigation, dispatch],
+  );
+
   React.useEffect(() => {
     dispatch(setStatusBarBackground('transparent'));
     dispatch(setStatusBarTint('light'));
-    return function cleanup() {
-      dispatch(resetStatusBarBackground());
-    };
   }, [dispatch]);
 
   const onHeaderAboveTreshold = React.useCallback(() => {

@@ -27,6 +27,7 @@ import { MINTING_AVAILABLE_VIEW_HEIGHT } from '../../../components/organism/coll
 import useDimension from 'enevti-app/utils/hook/useDimension';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import CollectionActivityComponent from './tabs/CollectionActivityComponent';
+import AppCollectionMintButton from './AppCollectionMintButton';
 
 interface AppCollectionProps {
   id: string;
@@ -268,6 +269,10 @@ export default function AppCollection({
         animatedTabBarStyle={animatedTabBarStyle}
         mintedItemsScreen={MintedItemsScreen}
         activityScreen={ActivityScreen}
+      />
+      <AppCollectionMintButton
+        collection={collection}
+        mintingAvailable={mintingAvailable}
       />
     </View>
   ) : (

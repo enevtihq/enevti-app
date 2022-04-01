@@ -9,4 +9,8 @@ export default {
   mintedItems: 'Minted Items',
   activity: 'Activity',
   activityName: '{{name}} · {{address}}',
+  mintOneKind: 'Mint Single',
+  mintOneKindDescription: 'One Kind NFT',
+  mintPacked: 'Mint Bundle',
+  mintPackedDescription: '{{packSize}} NFT / bundle',
 };

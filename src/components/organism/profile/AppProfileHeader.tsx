@@ -127,7 +127,7 @@ export default function AppProfileHeader({
               icon={iconMap.menu}
               iconSize={hp('2%', insets)}
               style={styles.profileActionMoreButton}
-              contentStyle={styles.profileActionMoreButtonContent}
+              iconStyle={styles.profileActionMoreButtonContent}
               onPress={() => setMenuVisible(true)}
             />
           }>
