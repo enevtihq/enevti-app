@@ -76,11 +76,16 @@ export default function AppCollection({
   const disableHeaderAnimation = true;
 
   const onCollectionScreenLoaded = React.useCallback(
-    () => dispatch(loadCollection(id)),
+    (reload: boolean = false) => dispatch(loadCollection(id, reload)),
     [id, dispatch],
   );
 
-  const onRefresh = React.useCallback(() => {}, []);
+  const onRefresh = React.useCallback(() => {
+    onCollectionScreenLoaded(true);
+    mintedRef.current?.scrollToOffset({ offset: 1 });
+    activityRef.current?.scrollToOffset({ offset: 1 });
+    onScrollWorklet && onScrollWorklet(0);
+  }, [onCollectionScreenLoaded, mintedRef, activityRef, onScrollWorklet]);
 
   React.useEffect(() => {
     onCollectionScreenLoaded();
@@ -133,9 +138,6 @@ export default function AppCollection({
       },
       onBeginDrag: (event, ctx) => {
         ctx.prevY = event.contentOffset.y;
-        // !disableHeaderAnimation &&
-        //   onBeginDragWorklet &&
-        //   onBeginDragWorklet(event.contentOffset.y);
       },
       onEndDrag: (event, ctx) => {
         if (event.contentOffset.y > totalHeaderHeight) {
@@ -157,9 +159,6 @@ export default function AppCollection({
             scrollTo(scrollRefList[i], 0, event.contentOffset.y, false);
           }
         }
-        // !disableHeaderAnimation &&
-        //   onEndDragWorklet &&
-        //   onEndDragWorklet(event.contentOffset.y);
       },
       onMomentumEnd: (event, ctx) => {
         if (event.contentOffset.y > totalHeaderHeight) {
@@ -181,9 +180,6 @@ export default function AppCollection({
             scrollTo(scrollRefList[i], 0, event.contentOffset.y, false);
           }
         }
-        // !disableHeaderAnimation &&
-        //   onMomentumEndWorklet &&
-        //   onMomentumEndWorklet(event.contentOffset.y);
       },
     });
 

@@ -60,7 +60,7 @@ async function fetchCollection(id: string): Promise<Collection | undefined> {
     activity: [
       {
         transaction: 'fgagergdfsdf',
-        name: 'sale',
+        name: 'mint',
         nft: getDummyNFTData(),
         date: 1648256592852,
         to: {
@@ -75,7 +75,7 @@ async function fetchCollection(id: string): Promise<Collection | undefined> {
       },
       {
         transaction: 'fgagergdfsdf',
-        name: 'sale',
+        name: 'mint',
         nft: getDummyNFTData(),
         date: 1648256592852,
         to: {
@@ -90,7 +90,7 @@ async function fetchCollection(id: string): Promise<Collection | undefined> {
       },
       {
         transaction: 'fgagergdfsdf',
-        name: 'sale',
+        name: 'mint',
         nft: getDummyNFTData(),
         date: 1648256592852,
         to: {

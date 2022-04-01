@@ -28,6 +28,7 @@ import moment from 'moment';
 import { useTranslation } from 'react-i18next';
 import AppTextHeading4 from 'enevti-app/components/atoms/text/AppTextHeading4';
 import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
+import AppTextHeading5 from 'enevti-app/components/atoms/text/AppTextHeading5';
 
 const COLLECTION_ACTIVITY_ITEM_HEIGHT = 9;
 const AnimatedFlatList = Animated.createAnimatedComponent<any>(FlatList);
@@ -115,12 +116,12 @@ function Component(
         }
         rightContent={
           <View style={styles.collectionRightContent}>
-            <AppTextHeading3
+            <AppTextHeading4
               numberOfLines={1}
               style={styles.collectionRightText}>
               {`${parseAmount(item.value.amount, true, 2)} `}
-              <AppTextHeading4>{`$${item.value.currency}`}</AppTextHeading4>
-            </AppTextHeading3>
+              <AppTextHeading5>{`$${item.value.currency}`}</AppTextHeading5>
+            </AppTextHeading4>
             <AppTextBody5
               style={[
                 styles.collectionRightText,

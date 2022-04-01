@@ -50,8 +50,7 @@ i18n
     },
   });
 
-const local = RNLocalize.getLocales();
-const lanTag = local[0].languageTag.toLowerCase();
-moment.locale(lanTag);
+const bestLang = RNLocalize.findBestAvailableLanguage(LANG_CODES);
+moment.locale(bestLang ? bestLang.languageTag : DEFAULT_LANG);
 
 export default i18n;
