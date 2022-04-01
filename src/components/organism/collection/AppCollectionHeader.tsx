@@ -20,7 +20,7 @@ import AppCollectionDescriptionModal from './AppCollectionDescriptionModal';
 import { MINTING_AVAILABLE_VIEW_HEIGHT } from './AppCollectionMintingAvailable';
 import useDimension from 'enevti-app/utils/hook/useDimension';
 
-export const COLLECTION_HEADER_VIEW_HEIGHT = 55;
+export const COLLECTION_HEADER_VIEW_HEIGHT = 56.5;
 
 interface AppCollectionHeaderProps {
   collection: Collection;

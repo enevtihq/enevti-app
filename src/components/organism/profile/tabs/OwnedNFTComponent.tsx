@@ -127,6 +127,7 @@ const makeStyles = (
         ) + headerHeight,
       minHeight:
         hp(PROFILE_HEADER_HEIGHT_PERCENTAGE + 100, insets) +
+        (Platform.OS === 'android' ? insets.top : 0) +
         (disableHeaderAnimation ? 0 : headerHeight),
       display: displayed ? undefined : 'none',
     },

@@ -2,9 +2,14 @@ import React from 'react';
 import { Platform, RefreshControl, StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { FlatGrid, FlatGridProps } from 'react-native-super-grid';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { NFTBase } from '../../../../types/nft';
 import { TOP_TABBAR_HEIGHT_PERCENTAGE } from '../../../atoms/view/AppTopTabBar';
-import { DimensionFunction } from '../../../../utils/imageRatio';
+import { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
+import {
+  DimensionFunction,
+  SafeAreaInsets,
+} from '../../../../utils/imageRatio';
 import useDimension from 'enevti-app/utils/hook/useDimension';
 import AppNFTCard from '../../../molecules/nft/AppNFTCard';
 
@@ -32,13 +37,14 @@ function Component(
   ref: any,
 ) {
   const { hp, wp } = useDimension();
+  const insets = useSafeAreaInsets();
   const mounted = React.useRef<boolean>(false);
   const [displayed, setDisplayed] = React.useState<boolean>(false);
   const [refreshing, setRefreshing] = React.useState<boolean>(false);
 
   const styles = React.useMemo(
-    () => makeStyles(hp, displayed, collectionHeaderHeight),
-    [hp, displayed, collectionHeaderHeight],
+    () => makeStyles(hp, displayed, collectionHeaderHeight, insets),
+    [hp, displayed, collectionHeaderHeight, insets],
   );
   const isScrollEnabled = React.useMemo(
     () => (refreshing ? false : scrollEnabled),
@@ -110,11 +116,16 @@ const makeStyles = (
   hp: DimensionFunction,
   displayed: boolean,
   collectionHeaderHeight: number,
+  insets: SafeAreaInsets,
 ) =>
   StyleSheet.create({
     contentContainerStyle: {
       paddingTop: hp(TOP_TABBAR_HEIGHT_PERCENTAGE) + collectionHeaderHeight,
-      minHeight: hp(100) + collectionHeaderHeight,
+      minHeight:
+        hp(100) +
+        collectionHeaderHeight -
+        hp(HEADER_HEIGHT_PERCENTAGE) -
+        (Platform.OS === 'ios' ? insets.top : 0),
       display: displayed ? undefined : 'none',
     },
   });

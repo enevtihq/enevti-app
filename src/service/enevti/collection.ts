@@ -7,7 +7,7 @@ async function fetchCollection(id: string): Promise<Collection | undefined> {
   console.log('collection id:', id);
   const mintedNFT = [];
 
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 2; i++) {
     mintedNFT.push(getDummyNFTData());
   }
 
