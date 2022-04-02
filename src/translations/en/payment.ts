@@ -1,5 +1,6 @@
 export default {
   success: 'Transaction Success',
+  successWithMessage: 'Transaction Success, {{message}}',
   transactionDetails: 'Transaction Details',
   gasFee: 'Gas Fee',
   gasFeeDescription: 'Gas is the blockchain transaction fee for miners',

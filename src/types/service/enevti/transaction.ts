@@ -32,3 +32,8 @@ export type CreateNFTOneKindTransaction = {
   quantity: number;
   mintingExpire: number;
 };
+
+export type MintCollectionTransaction = {
+  id: string;
+  quantity: number;
+};

@@ -21,6 +21,7 @@ const initialState: PaymentState = {
     icon: iconMap.dollar,
     name: '',
     description: '',
+    details: '',
     amount: BigInt(0),
     currency: '',
     payload: '',
@@ -63,6 +64,7 @@ const paymentSlice = createSlice({
       payment.action.icon = action.payload.icon;
       payment.action.name = action.payload.name;
       payment.action.description = action.payload.description;
+      payment.action.details = action.payload.details;
       payment.action.amount = action.payload.amount;
       payment.action.currency = action.payload.currency;
       payment.action.payload = action.payload.payload;

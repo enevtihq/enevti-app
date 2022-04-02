@@ -7,12 +7,17 @@ import useDimension from 'enevti-app/utils/hook/useDimension';
 import { useTheme } from 'react-native-paper';
 import LinearGradient from 'react-native-linear-gradient';
 import AppQuaternaryButton from 'enevti-app/components/atoms/button/AppQuaternaryButton';
-import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
+import {
+  iconMap,
+  UNDEFINED_ICON,
+} from 'enevti-app/components/atoms/icon/AppIconComponent';
 import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import AppTextHeading5 from 'enevti-app/components/atoms/text/AppTextHeading5';
 import { useTranslation } from 'react-i18next';
 import { parseAmount } from 'enevti-app/utils/format/amount';
+import { useDispatch } from 'react-redux';
+import { payMintCollection } from 'enevti-app/store/middleware/thunk/collection/payMintCollection';
 
 export const MINT_BUTTON_HEIGHT = 11.5;
 
@@ -26,12 +31,17 @@ export default function AppCollectionMintButton({
   mintingAvailable,
 }: AppCollectionMintButtonProps) {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const { hp, wp } = useDimension();
   const theme = useTheme() as Theme;
   const styles = React.useMemo(
     () => makeStyles(hp, wp, theme),
     [hp, wp, theme],
   );
+
+  const onMintPress = React.useCallback(() => {
+    dispatch(payMintCollection({ collection, quantity: 1 }));
+  }, [dispatch, collection]);
 
   return mintingAvailable ? (
     <View style={styles.actionContainer}>
@@ -47,11 +57,11 @@ export default function AppCollectionMintButton({
                 ? iconMap.buy
                 : collection.collectionType === 'packed'
                 ? iconMap.random
-                : undefined
+                : UNDEFINED_ICON
             }
             iconColor={'white'}
             iconSize={20}
-            onPress={() => {}}
+            onPress={onMintPress}
             contentContainerStyle={{ paddingHorizontal: wp('5%') }}
             contentStyle={styles.actionButtonContent}>
             <View style={styles.actionButtonLeft}>

@@ -105,6 +105,7 @@ export default function Collection({ navigation, route }: Props) {
       darken
       withModal
       withLoader
+      withPayment
       edges={['bottom', 'left', 'right']}
       headerOffset={0}
       header={

@@ -1,8 +1,9 @@
 export type PaymentAction = {
-  type: 'createNFTOneKind' | 'cancel' | '';
+  type: 'createNFTOneKind' | 'mintCollection' | 'cancel' | '';
   icon: string;
   name: string;
   description: string;
+  details?: string;
   amount: bigint;
   currency: string;
   payload: string;

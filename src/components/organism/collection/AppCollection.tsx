@@ -28,6 +28,13 @@ import useDimension from 'enevti-app/utils/hook/useDimension';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import CollectionActivityComponent from './tabs/CollectionActivityComponent';
 import AppCollectionMintButton from './AppCollectionMintButton';
+import usePaymentCallback from 'enevti-app/utils/hook/usePaymentCallback';
+import {
+  hideModalLoader,
+  showModalLoader,
+} from 'enevti-app/store/slices/ui/global/modalLoader';
+import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
+import { useTranslation } from 'react-i18next';
 
 interface AppCollectionProps {
   id: string;
@@ -38,6 +45,7 @@ export default function AppCollection({
   id,
   onScrollWorklet,
 }: AppCollectionProps) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { hp } = useDimension();
   const insets = useSafeAreaInsets();
@@ -104,6 +112,26 @@ export default function AppCollection({
     () => setActivityMounted(true),
     [],
   );
+
+  const paymentProcessCallback = React.useCallback(() => {
+    dispatch(showModalLoader());
+  }, [dispatch]);
+
+  const paymentSuccessCallback = React.useCallback(() => {
+    dispatch(hideModalLoader());
+    dispatch(showSnackbar({ mode: 'info', text: t('payment:success') }));
+  }, [dispatch, t]);
+
+  const paymentErrorCallback = React.useCallback(
+    () => dispatch(hideModalLoader()),
+    [dispatch],
+  );
+
+  usePaymentCallback({
+    onProcess: paymentProcessCallback,
+    onSuccess: paymentSuccessCallback,
+    onError: paymentErrorCallback,
+  });
 
   const useCustomAnimatedScrollHandler = (
     scrollRefList: React.RefObject<any>[],

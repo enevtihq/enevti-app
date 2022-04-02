@@ -127,7 +127,11 @@ export default function AppPaymentModal() {
         </AppTextHeading2>
         <AppPaymentItem
           title={paymentAction.name}
-          description={paymentAction.description}
+          description={
+            paymentAction.details
+              ? paymentAction.details
+              : paymentAction.description
+          }
           amount={paymentAction.amount}
           currency={paymentAction.currency}
         />

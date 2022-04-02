@@ -19,6 +19,7 @@ interface AppQuaternaryButtonProps {
   icon?: string;
   iconSize?: number;
   iconColor?: string;
+  loaderColor?: string;
   style?: StyleProp<ViewStyle>;
   contentStyle?: StyleProp<ViewStyle>;
   iconStyle?: StyleProp<ViewStyle>;
@@ -34,6 +35,7 @@ export default function AppQuaternaryButton({
   icon,
   iconSize,
   iconColor,
+  loaderColor,
   iconStyle,
   style,
   contentStyle,
@@ -52,8 +54,10 @@ export default function AppQuaternaryButton({
     <View style={[styles.quaternaryButton, style]}>
       <AppActivityIndicator
         animating={true}
-        style={contentStyle}
-        color={theme.colors.text}
+        style={[styles.loading, contentStyle]}
+        color={
+          loaderColor ? loaderColor : iconColor ? iconColor : theme.colors.text
+        }
       />
     </View>
   ) : (
@@ -82,6 +86,9 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets, box: boolean) =>
     quaternaryButton: {
       alignItems: 'center',
       paddingHorizontal: wp('2%', insets),
+    },
+    loading: {
+      height: hp('7.5%', insets),
     },
     buttonContainer: {
       borderWidth: box ? StyleSheet.hairlineWidth : 0,
