@@ -25,6 +25,7 @@ import { getCoinName } from '../../atoms/brand/AppBrandConstant';
 import { Profile } from '../../../types/service/enevti/profile';
 import { numberKMB, parseAmount } from '../../../utils/format/amount';
 import { menuItemHeigtPercentage } from '../../../utils/layout/menuItemHeigtPercentage';
+import AppPersonaLabel from 'enevti-app/components/molecules/avatar/AppPersonaLabel';
 
 interface AppProfileHeaderProps {
   navigation: StackNavigationProp<RootStackParamList>;
@@ -59,21 +60,14 @@ export default function AppProfileHeader({
       />
 
       <View style={{ height: hp('3.3%', insets) }}>
-        {persona.username ? (
-          <AppTextHeading2 numberOfLines={1}>
-            {persona.username}
-          </AppTextHeading2>
-        ) : persona.address ? (
-          <AppTextBody3
-            style={{
-              width: wp('50%', insets),
-            }}
-            numberOfLines={1}>
-            {persona.address}
-          </AppTextBody3>
-        ) : (
-          <AppTextBody3>?????</AppTextBody3>
-        )}
+        <AppPersonaLabel
+          persona={persona}
+          usernameComponent={AppTextHeading2}
+          addressComponent={AppTextBody3}
+          addressStyle={{
+            width: wp('50%', insets),
+          }}
+        />
       </View>
 
       <View style={styles.profileStatsContainer}>
