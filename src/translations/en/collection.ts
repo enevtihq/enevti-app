@@ -13,6 +13,6 @@ export default {
   mintOneKindDescription: 'One Kind NFT',
   mintPacked: 'Mint Bundle',
   mintPackedDescription: '{{packSize}} NFT / bundle',
-  mintingClosedIn: 'Minting ends {{momentFromNow}}',
+  mintingClosedIn: 'Mint ends {{momentFromNow}}',
   mintingPercent: '{{percent}}% minted',
 };

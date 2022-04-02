@@ -5,7 +5,7 @@ export default {
   oneKindTitle: 'One of a Kind',
   oneKindDescription:
     'Create NFT based on one image, highlight your masterpiece!',
-  packTitle: 'Compilation',
+  packTitle: 'Bundle',
   packDescription: 'Create NFT based on many image with gamification option',
   openCamera: 'Open Camera',
   pickFromGallery: 'Pick from Gallery',

@@ -13,4 +13,6 @@ export default {
   snackPay: "Paying '{{action}}' for {{amount}} ${{currency}} (in 3 seconds)",
   cancel: 'Cancel',
   paymentCancelled: 'Payment Cancelled',
+  payCreateNFTOneKindName: 'Create NFT',
+  payCreateNFTOneKindDescription: 'Create a One Kind NFT Collection',
 };

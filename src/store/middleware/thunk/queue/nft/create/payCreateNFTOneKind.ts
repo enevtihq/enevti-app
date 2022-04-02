@@ -11,6 +11,7 @@ import { AppThunk } from '../../../../../state';
 import { calculateGasFee } from '../../../../../../service/enevti/transaction';
 import { CreateNFTOneKindTransaction } from '../../../../../../types/service/enevti/transaction';
 import { makeDummyIPFS } from '../../../../../../utils/dummy/ipfs';
+import i18n from 'enevti-app/translations/i18n';
 
 export const payCreateNFTOneKind =
   (payload: CreateNFTOneKind): AppThunk =>
@@ -89,8 +90,8 @@ export const payCreateNFTOneKind =
       setPaymentAction({
         type: 'createNFTOneKind',
         icon: iconMap.nftOneKind,
-        name: 'Create NFT',
-        description: 'Create a One Kind NFT Collection',
+        name: i18n.t('payment:payCreateNFTOneKindName'),
+        description: i18n.t('payment:payCreateNFTOneKindDescription'),
         amount: BigInt(0),
         currency: COIN_NAME,
         payload: JSON.stringify(payload),
