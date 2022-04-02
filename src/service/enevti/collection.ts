@@ -45,7 +45,7 @@ async function fetchCollection(id: string): Promise<Collection | undefined> {
     minting: {
       total: 12,
       available: 4,
-      expire: 1648966392852,
+      expire: 1648986392852,
       price: {
         amount: '512134000',
         currency: COIN_NAME,

@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js';
 import { Profile } from '../../types/service/enevti/profile';
 import { store } from '../../store/state';
-import { getDummyNFTData, sleep } from './dummy';
+import { getDummyCollectionBaseDate, getDummyNFTData, sleep } from './dummy';
 import {
   selectMyProfileCache,
   setLastFetchMyProfileCache,
@@ -20,7 +20,7 @@ async function fetchProfile(address: string): Promise<Profile | undefined> {
 
   const ownedNFT = [];
   const onsaleNFT = [];
-  const mintedContainer: any[] = [];
+  const collection: any[] = [];
 
   for (let i = 0; i < 10; i++) {
     ownedNFT.push(getDummyNFTData());
@@ -28,6 +28,10 @@ async function fetchProfile(address: string): Promise<Profile | undefined> {
 
   for (let i = 0; i < 10; i++) {
     onsaleNFT.push(getDummyNFTData());
+  }
+
+  for (let i = 0; i < 2; i++) {
+    collection.push(getDummyCollectionBaseDate());
   }
 
   return {
@@ -44,7 +48,7 @@ async function fetchProfile(address: string): Promise<Profile | undefined> {
     },
     owned: ownedNFT,
     onsale: onsaleNFT,
-    minted: mintedContainer,
+    collection: collection,
   };
 }
 

@@ -17,7 +17,7 @@ const initialState: ProfileViewState = {
   social: { twitter: { link: '', stat: 0 } },
   owned: [],
   onsale: [],
-  minted: [],
+  collection: [],
 };
 
 const profileViewSlice = createSlice({
@@ -34,7 +34,7 @@ const profileViewSlice = createSlice({
       profile.social.twitter.stat = action.payload.social.twitter.stat;
       profile.owned = action.payload.owned.slice();
       profile.onsale = action.payload.onsale.slice();
-      profile.minted = action.payload.minted.slice();
+      profile.collection = action.payload.collection.slice();
     },
     setProfileViewLoaded: (profile, action: PayloadAction<boolean>) => {
       profile.loaded = action.payload;

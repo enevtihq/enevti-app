@@ -17,6 +17,7 @@ interface AppProfileBodyProps {
   animatedTabBarStyle: StyleProp<ViewStyle>;
   ownedNFTScreen: ComponentType<any>;
   onSaleNFTScreen: ComponentType<any>;
+  collectionScreen: ComponentType<any>;
   style?: StyleProp<ViewStyle>;
 }
 
@@ -25,6 +26,7 @@ export default function AppProfileBody({
   animatedTabBarStyle,
   ownedNFTScreen,
   onSaleNFTScreen,
+  collectionScreen,
   style,
 }: AppProfileBodyProps) {
   const { t } = useTranslation();
@@ -83,6 +85,17 @@ export default function AppProfileBody({
           }}
           name={t('profile:onsale')}
           component={onSaleNFTScreen}
+        />
+        <Tab.Screen
+          options={{
+            tabBarLabel: ({ color }) => (
+              <AppTextBody4 style={{ color: color }}>
+                {t('profile:collection')} (2)
+              </AppTextBody4>
+            ),
+          }}
+          name={t('profile:collection')}
+          component={collectionScreen}
         />
       </Tab.Navigator>
     </View>

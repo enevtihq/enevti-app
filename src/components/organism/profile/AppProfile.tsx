@@ -28,6 +28,7 @@ import {
 } from '../../../store/middleware/thunk/ui/view/profile';
 import { Profile } from '../../../types/service/enevti/profile';
 import { Persona } from '../../../types/service/enevti/persona';
+import CollectionListComponent from './tabs/CollectionListComponent';
 
 const noDisplay = 'none';
 const visible = 1;
@@ -69,9 +70,12 @@ export default function AppProfile({
 
   const [ownedMounted, setOwnedMounted] = React.useState<boolean>(false);
   const [onSaleMounted, setOnSaleMounted] = React.useState<boolean>(false);
+  const [collectionMounted, setCollectionMouted] =
+    React.useState<boolean>(false);
 
   const ownedRef = useAnimatedRef<FlatList>();
-  const onSaleRef = useAnimatedRef<any>();
+  const onSaleRef = useAnimatedRef<FlatList>();
+  const collectionRef = useAnimatedRef<FlatList>();
 
   const headerCollapsed = useSharedValue(true);
   const rawScrollY = useSharedValue(0);
@@ -195,8 +199,18 @@ export default function AppProfile({
       },
     });
 
-  const ownedScrollHandler = useCustomAnimatedScrollHandler([onSaleRef]);
-  const onSaleScrollHandler = useCustomAnimatedScrollHandler([ownedRef]);
+  const ownedScrollHandler = useCustomAnimatedScrollHandler([
+    onSaleRef,
+    collectionRef,
+  ]);
+  const onSaleScrollHandler = useCustomAnimatedScrollHandler([
+    ownedRef,
+    collectionRef,
+  ]);
+  const collectionScrollHandler = useCustomAnimatedScrollHandler([
+    ownedRef,
+    onSaleRef,
+  ]);
 
   const scrollStyle = useAnimatedStyle(() => {
     return {
@@ -211,8 +225,8 @@ export default function AppProfile({
   });
 
   const scrollEnabled = React.useMemo(
-    () => (ownedMounted && onSaleMounted ? true : false),
-    [ownedMounted, onSaleMounted],
+    () => (ownedMounted && onSaleMounted && collectionMounted ? true : false),
+    [ownedMounted, onSaleMounted, collectionMounted],
   );
 
   const onRefresh = React.useCallback(() => {
@@ -247,10 +261,21 @@ export default function AppProfile({
 
   const onSaleOnMounted = React.useCallback(() => setOnSaleMounted(true), []);
 
+  const collectionData = React.useMemo(
+    () => (!profileUndefined ? profile.collection : []),
+    [profile, profileUndefined],
+  );
+
+  const collectionOnMounted = React.useCallback(
+    () => setCollectionMouted(true),
+    [],
+  );
+
   const OwnedNFTScreen = React.useCallback(
     () => (
       <OwnedNFTComponent
         ref={ownedRef}
+        navigation={navigation}
         onScroll={ownedScrollHandler}
         scrollEnabled={scrollEnabled}
         headerHeight={headerHeight}
@@ -262,6 +287,7 @@ export default function AppProfile({
     ),
     [
       ownedRef,
+      navigation,
       headerHeight,
       ownedData,
       ownedScrollHandler,
@@ -276,6 +302,7 @@ export default function AppProfile({
     () => (
       <OnSaleNFTComponent
         ref={onSaleRef}
+        navigation={navigation}
         onScroll={onSaleScrollHandler}
         scrollEnabled={scrollEnabled}
         headerHeight={headerHeight}
@@ -287,11 +314,39 @@ export default function AppProfile({
     ),
     [
       onSaleRef,
+      navigation,
       headerHeight,
       onSaleData,
       onSaleScrollHandler,
       scrollEnabled,
       onSaleOnMounted,
+      onRefresh,
+      disableHeaderAnimation,
+    ],
+  );
+
+  const CollectionScreen = React.useCallback(
+    () => (
+      <CollectionListComponent
+        ref={collectionRef}
+        navigation={navigation}
+        onScroll={collectionScrollHandler}
+        scrollEnabled={scrollEnabled}
+        headerHeight={headerHeight}
+        data={collectionData}
+        onMounted={collectionOnMounted}
+        onRefresh={onRefresh}
+        disableHeaderAnimation={disableHeaderAnimation}
+      />
+    ),
+    [
+      collectionRef,
+      navigation,
+      headerHeight,
+      collectionData,
+      collectionScrollHandler,
+      scrollEnabled,
+      collectionOnMounted,
       onRefresh,
       disableHeaderAnimation,
     ],
@@ -313,6 +368,7 @@ export default function AppProfile({
         animatedTabBarStyle={animatedTabBarStyle}
         ownedNFTScreen={OwnedNFTScreen}
         onSaleNFTScreen={OnSaleNFTScreen}
+        collectionScreen={CollectionScreen}
         style={{
           opacity: ownedMounted && onSaleMounted ? visible : notVisible,
         }}

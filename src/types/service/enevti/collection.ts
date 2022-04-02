@@ -3,18 +3,10 @@ import { NFTPrice } from '../../nft/NFTPrice';
 import { SocialProfile } from '../../social';
 import { Persona } from './persona';
 
-export type Collection = {
+export type CollectionBase = {
   id: string;
-  collectionType: 'onekind' | 'packed';
   name: string;
-  description: string;
   cover: string;
-  symbol: string;
-  createdOn: number;
-  like: number;
-  comment: number;
-  social: SocialProfile;
-  packSize: number;
   stat: {
     minted: number;
     owner: number;
@@ -28,6 +20,17 @@ export type Collection = {
     expire: number;
     price: NFTPrice;
   };
+};
+
+export interface Collection extends CollectionBase {
+  collectionType: 'onekind' | 'packed';
+  description: string;
+  symbol: string;
+  createdOn: number;
+  like: number;
+  comment: number;
+  social: SocialProfile;
+  packSize: number;
   minted: NFTBase[];
   originAddress: Persona;
   activity: {
@@ -38,4 +41,4 @@ export type Collection = {
     to: Persona;
     value: NFTPrice;
   }[];
-};
+}

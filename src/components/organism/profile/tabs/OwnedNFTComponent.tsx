@@ -8,11 +8,14 @@ import { TOP_TABBAR_HEIGHT_PERCENTAGE } from '../../../atoms/view/AppTopTabBar';
 import { hp, SafeAreaInsets, wp } from '../../../../utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AppNFTRenderer from '../../../molecules/nft/AppNFTRenderer';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from 'enevti-app/navigation';
 
 const AnimatedFlatGrid =
   Animated.createAnimatedComponent<FlatGridProps<NFTBase>>(FlatGrid);
 
 interface OwnedNFTComponentProps {
+  navigation: StackNavigationProp<RootStackParamList>;
   data?: any;
   onScroll?: any;
   headerHeight?: any;
@@ -24,6 +27,7 @@ interface OwnedNFTComponentProps {
 
 function Component(
   {
+    navigation,
     data,
     onScroll,
     headerHeight,

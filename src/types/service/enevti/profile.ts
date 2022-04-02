@@ -10,5 +10,5 @@ export type Profile = {
   social: SocialProfile;
   owned: NFTBase[];
   onsale: NFTBase[];
-  minted: any[];
+  collection: any[];
 };
