@@ -12,13 +12,13 @@ import AppCollectionMintingAvailable from './AppCollectionMintingAvailable';
 import AppTextHeading2 from '../../atoms/text/AppTextHeading2';
 import AppTextBody4 from '../../atoms/text/AppTextBody4';
 import AppAvatarRenderer from '../../molecules/avatar/AppAvatarRenderer';
-import AppTextHeading4 from '../../atoms/text/AppTextHeading4';
 import AppQuaternaryButton from '../../atoms/button/AppQuaternaryButton';
 import { numberKMB, parseAmount } from '../../../utils/format/amount';
 import AppIconComponent, { iconMap } from '../../atoms/icon/AppIconComponent';
 import AppCollectionDescriptionModal from './AppCollectionDescriptionModal';
 import { MINTING_AVAILABLE_VIEW_HEIGHT } from './AppCollectionMintingAvailable';
 import useDimension from 'enevti-app/utils/hook/useDimension';
+import AppPersonaLabel from 'enevti-app/components/molecules/avatar/AppPersonaLabel';
 
 export const COLLECTION_HEADER_VIEW_HEIGHT = 56.5;
 
@@ -176,11 +176,10 @@ export default function AppCollectionHeader({
               size={wp('5%')}
               style={{ marginHorizontal: wp('2%') }}
             />
-            <AppTextHeading4 numberOfLines={1} style={styles.creatorAddress}>
-              {collection.originAddress.username
-                ? collection.originAddress.username
-                : collection.originAddress.address}
-            </AppTextHeading4>
+            <AppPersonaLabel
+              persona={collection.originAddress}
+              style={styles.creatorAddress}
+            />
           </View>
           <Divider />
         </View>

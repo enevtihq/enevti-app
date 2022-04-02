@@ -1,5 +1,6 @@
 import { NFTBase } from '../../nft';
 import { NFTPrice } from '../../nft/NFTPrice';
+import { Persona } from './persona';
 
 export interface FeedItem {
   type: string;
@@ -10,9 +11,7 @@ export interface FeedItem {
   name: string;
   description: string;
   promoted: boolean;
-  owner: string;
-  username: string;
-  photo: string;
+  owner: Persona;
   stake: string;
   delegate: boolean;
   nft: NFTBase[];

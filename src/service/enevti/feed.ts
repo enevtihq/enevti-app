@@ -27,9 +27,11 @@ function getFeedItemList(): FeedItem {
     description:
       'to celebrate our 2021 newest cat, we release new NFT collection withtons of utility that you can experience with your own eyes',
     promoted: true,
-    owner: 'lsk7opy8ksve7npbr32dtqxwpvg5u6aa3vtje5qtd',
-    username: '',
-    photo: '',
+    owner: {
+      username: '',
+      address: 'lsk7opy8ksve7npbr32dtqxwpvg5u6aa3vtje5qtd',
+      photo: '',
+    },
     stake: '542123',
     delegate: false,
     nft: randomNFT,

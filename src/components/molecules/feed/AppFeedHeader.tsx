@@ -19,6 +19,7 @@ import AppMenuItem from '../../atoms/menu/AppMenuItem';
 import { menuItemHeigtPercentage } from '../../../utils/layout/menuItemHeigtPercentage';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../navigation';
+import AppPersonaLabel from '../avatar/AppPersonaLabel';
 
 interface AppFeedHeaderProps {
   feed: FeedItem;
@@ -37,13 +38,13 @@ export default function AppFeedHeader({
   const [menuVisible, setMenuVisible] = React.useState<boolean>(false);
 
   const onProfileDetail = React.useCallback(() => {
-    navigation.navigate('Profile', { address: feed.owner });
+    navigation.navigate('Profile', { address: feed.owner.address });
   }, [navigation, feed.owner]);
 
   const onPromoteInfo = () => {};
 
   const onStake = React.useCallback(() => {
-    navigation.navigate('StakePool', { address: feed.owner });
+    navigation.navigate('StakePool', { address: feed.owner.address });
   }, [navigation, feed.owner]);
 
   const onCloseMenu = () => {
@@ -69,17 +70,18 @@ export default function AppFeedHeader({
   return (
     <View style={styles.headerContainer}>
       <AppAvatarRenderer
-        photo={feed.photo}
-        address={feed.owner}
+        photo={feed.owner.photo}
+        address={feed.owner.address}
         size={wp('10%', insets)}
       />
 
       <View style={styles.headerAvatarInfoContainer}>
-        <Pressable onPress={onProfileDetail} style={styles.headerAction}>
-          <AppTextHeading3 numberOfLines={1}>
-            {feed.username ? feed.username : feed.owner}
-          </AppTextHeading3>
-        </Pressable>
+        <AppPersonaLabel
+          persona={feed.owner}
+          textComponent={AppTextHeading3}
+          onPress={onProfileDetail}
+          style={styles.headerAction}
+        />
         {feed.promoted ? (
           <Pressable onPress={onPromoteInfo} style={styles.headerAction}>
             <AppTextBody5 numberOfLines={1}>
