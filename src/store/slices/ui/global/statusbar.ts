@@ -25,17 +25,14 @@ const statusBarSlice = createSlice({
     ) => {
       statusbar.tint = action.payload;
     },
-    resetStatusBarBackground: () => {
+    resetStatusBarState: () => {
       return initialState;
     },
   },
 });
 
-export const {
-  setStatusBarBackground,
-  setStatusBarTint,
-  resetStatusBarBackground,
-} = statusBarSlice.actions;
+export const { setStatusBarBackground, setStatusBarTint, resetStatusBarState } =
+  statusBarSlice.actions;
 export default statusBarSlice.reducer;
 
 export const selectStatusBarState = createSelector(

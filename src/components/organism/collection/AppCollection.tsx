@@ -35,15 +35,19 @@ import {
 } from 'enevti-app/store/slices/ui/global/modalLoader';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 import { useTranslation } from 'react-i18next';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from 'enevti-app/navigation';
 
 interface AppCollectionProps {
   id: string;
   onScrollWorklet: (val: number) => void;
+  navigation: StackNavigationProp<RootStackParamList>;
 }
 
 export default function AppCollection({
   id,
   onScrollWorklet,
+  navigation,
 }: AppCollectionProps) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -292,6 +296,7 @@ export default function AppCollection({
         pointerEvents={'box-none'}
         style={[styles.collectionHeader, scrollStyle]}>
         <AppCollectionHeader
+          navigation={navigation}
           collection={collection}
           mintingAvailable={mintingAvailable}
           onFinish={onRefresh}

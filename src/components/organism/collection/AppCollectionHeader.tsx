@@ -19,17 +19,21 @@ import AppCollectionDescriptionModal from './AppCollectionDescriptionModal';
 import { MINTING_AVAILABLE_VIEW_HEIGHT } from './AppCollectionMintingAvailable';
 import useDimension from 'enevti-app/utils/hook/useDimension';
 import AppPersonaLabel from 'enevti-app/components/molecules/avatar/AppPersonaLabel';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from 'enevti-app/navigation';
 
 export const COLLECTION_HEADER_VIEW_HEIGHT = 56.5;
 
 interface AppCollectionHeaderProps {
   collection: Collection;
+  navigation: StackNavigationProp<RootStackParamList>;
   mintingAvailable: boolean;
   onFinish?: () => void;
 }
 
 export default function AppCollectionHeader({
   collection,
+  navigation,
   mintingAvailable,
   onFinish,
 }: AppCollectionHeaderProps) {
@@ -52,6 +56,12 @@ export default function AppCollectionHeader({
       (mintingAvailable ? MINTING_AVAILABLE_VIEW_HEIGHT : 0),
     [mintingAvailable],
   );
+
+  const onCreatorDetail = React.useCallback(() => {
+    navigation.navigate('Profile', {
+      address: collection.originAddress.address,
+    });
+  }, [navigation, collection.originAddress.address]);
 
   const descriptionModalOnDismiss = React.useCallback(
     () => setDescriptionVisible(false),
@@ -179,6 +189,7 @@ export default function AppCollectionHeader({
             <AppPersonaLabel
               persona={collection.originAddress}
               style={styles.creatorAddress}
+              onPress={onCreatorDetail}
             />
           </View>
           <Divider />

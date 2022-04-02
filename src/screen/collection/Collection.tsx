@@ -3,7 +3,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { useDispatch } from 'react-redux';
 import AppView from '../../components/atoms/view/AppView';
 import {
-  resetStatusBarBackground,
+  resetStatusBarState,
   setStatusBarBackground,
   setStatusBarTint,
 } from '../../store/slices/ui/global/statusbar';
@@ -35,19 +35,27 @@ export default function Collection({ navigation, route }: Props) {
 
   const collectionScroll = useSharedValue(0);
 
-  React.useEffect(
-    () =>
-      navigation.addListener('beforeRemove', e => {
-        dispatch(resetStatusBarBackground());
-        navigation.dispatch(e.data.action);
-      }),
-    [navigation, dispatch],
-  );
-
-  React.useEffect(() => {
+  const onLoaded = React.useCallback(() => {
     dispatch(setStatusBarBackground('transparent'));
     dispatch(setStatusBarTint('light'));
   }, [dispatch]);
+
+  React.useEffect(() => {
+    const unsubscribeBlur = navigation.addListener('blur', () => {
+      dispatch(resetStatusBarState());
+    });
+    const unsubscribeFocus = navigation.addListener('focus', () => {
+      onLoaded();
+    });
+    return () => {
+      unsubscribeBlur();
+      unsubscribeFocus();
+    };
+  }, [navigation, dispatch, onLoaded]);
+
+  React.useEffect(() => {
+    onLoaded();
+  }, [onLoaded]);
 
   const onHeaderAboveTreshold = React.useCallback(() => {
     dispatch(setStatusBarTint('system'));
@@ -119,7 +127,11 @@ export default function Collection({ navigation, route }: Props) {
           iconStyle={iconStyle}
         />
       }>
-      <AppCollection id={id} onScrollWorklet={collectionOnScroll} />
+      <AppCollection
+        id={id}
+        onScrollWorklet={collectionOnScroll}
+        navigation={navigation}
+      />
     </AppView>
   );
 }
