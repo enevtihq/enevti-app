@@ -29,6 +29,7 @@ import { useTranslation } from 'react-i18next';
 import AppTextHeading4 from 'enevti-app/components/atoms/text/AppTextHeading4';
 import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
 import AppTextHeading5 from 'enevti-app/components/atoms/text/AppTextHeading5';
+import { MINT_BUTTON_HEIGHT } from '../AppCollectionMintButton';
 
 const COLLECTION_ACTIVITY_ITEM_HEIGHT = 9;
 const AnimatedFlatList = Animated.createAnimatedComponent<any>(FlatList);
@@ -40,6 +41,7 @@ interface CollectionActivityComponentProps {
   onMounted?: () => void;
   onRefresh?: () => void;
   scrollEnabled?: boolean;
+  mintingAvailable?: boolean;
 }
 
 function Component(
@@ -50,6 +52,7 @@ function Component(
     onMounted,
     onRefresh,
     scrollEnabled,
+    mintingAvailable,
   }: CollectionActivityComponentProps,
   ref: any,
 ) {
@@ -170,6 +173,14 @@ function Component(
     [itemHeight],
   );
 
+  const listFooter = React.useMemo(
+    () =>
+      mintingAvailable ? (
+        <View style={{ height: hp(MINT_BUTTON_HEIGHT) }} />
+      ) : undefined,
+    [hp, mintingAvailable],
+  );
+
   React.useEffect(() => {
     if (ref && ref.current) {
       mounted.current = true;
@@ -199,6 +210,7 @@ function Component(
       maxToRenderPerBatch={5}
       updateCellsBatchingPeriod={100}
       windowSize={5}
+      ListFooterComponent={listFooter}
     />
   );
 }

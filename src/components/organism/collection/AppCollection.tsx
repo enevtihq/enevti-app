@@ -246,6 +246,7 @@ export default function AppCollection({
         onScroll={mintedItemsScrollHandler}
         onMounted={mintedItemsOnMounted}
         onRefresh={onRefresh}
+        mintingAvailable={mintingAvailable}
       />
     ),
     [
@@ -256,6 +257,7 @@ export default function AppCollection({
       mintedRef,
       onRefresh,
       scrollEnabled,
+      mintingAvailable,
     ],
   );
 
@@ -269,6 +271,7 @@ export default function AppCollection({
         onScroll={collectionActivityScrollHandler}
         onMounted={activityOnMounted}
         onRefresh={onRefresh}
+        mintingAvailable={mintingAvailable}
       />
     ),
     [
@@ -279,6 +282,7 @@ export default function AppCollection({
       onRefresh,
       scrollEnabled,
       totalHeaderHeight,
+      mintingAvailable,
     ],
   );
 

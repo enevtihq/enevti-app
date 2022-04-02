@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, RefreshControl, StyleSheet } from 'react-native';
+import { Platform, RefreshControl, StyleSheet, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { FlatGrid, FlatGridProps } from 'react-native-super-grid';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -12,6 +12,7 @@ import {
 } from '../../../../utils/imageRatio';
 import useDimension from 'enevti-app/utils/hook/useDimension';
 import AppNFTCard from '../../../molecules/nft/AppNFTCard';
+import { MINT_BUTTON_HEIGHT } from '../AppCollectionMintButton';
 
 const AnimatedFlatGrid =
   Animated.createAnimatedComponent<FlatGridProps<NFTBase>>(FlatGrid);
@@ -23,6 +24,7 @@ interface MintedItemsComponentProps {
   onMounted?: () => void;
   onRefresh?: () => void;
   scrollEnabled?: boolean;
+  mintingAvailable?: boolean;
 }
 
 function Component(
@@ -33,6 +35,7 @@ function Component(
     onMounted,
     onRefresh,
     scrollEnabled,
+    mintingAvailable,
   }: MintedItemsComponentProps,
   ref: any,
 ) {
@@ -58,6 +61,14 @@ function Component(
         ? 0
         : hp(TOP_TABBAR_HEIGHT_PERCENTAGE) + collectionHeaderHeight,
     [collectionHeaderHeight, hp],
+  );
+
+  const listFooter = React.useMemo(
+    () =>
+      mintingAvailable ? (
+        <View style={{ height: hp(MINT_BUTTON_HEIGHT) }} />
+      ) : undefined,
+    [hp, mintingAvailable],
   );
 
   const handleRefresh = React.useCallback(() => {
@@ -108,6 +119,7 @@ function Component(
       data={nfts}
       renderItem={renderItem}
       refreshControl={refreshControl}
+      ListFooterComponent={listFooter}
     />
   );
 }
