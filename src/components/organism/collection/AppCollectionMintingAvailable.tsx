@@ -16,10 +16,12 @@ export const MINTING_AVAILABLE_VIEW_HEIGHT = 7;
 
 interface AppCollectionMintingAvailableProps {
   collection: Collection;
+  onFinish?: () => void;
 }
 
 export default function AppCollectionMintingAvailable({
   collection,
+  onFinish,
 }: AppCollectionMintingAvailableProps) {
   const { t } = useTranslation();
   const theme = useTheme() as Theme;
@@ -56,7 +58,7 @@ export default function AppCollectionMintingAvailable({
       </View>
       <View style={styles.mintingAvailableItem}>
         {collection.minting.expire > 0 ? (
-          <AppCountdown until={until} />
+          <AppCountdown until={until} onFinish={onFinish} />
         ) : (
           <View>
             <ProgressBar

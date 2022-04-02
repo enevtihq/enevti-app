@@ -25,11 +25,13 @@ export const COLLECTION_HEADER_VIEW_HEIGHT = 56.5;
 interface AppCollectionHeaderProps {
   collection: Collection;
   mintingAvailable: boolean;
+  onFinish?: () => void;
 }
 
 export default function AppCollectionHeader({
   collection,
   mintingAvailable,
+  onFinish,
 }: AppCollectionHeaderProps) {
   const { t } = useTranslation();
   const { hp, wp } = useDimension();
@@ -74,7 +76,10 @@ export default function AppCollectionHeader({
           style={{ width: coverWidth, height: coverHeight }}
         />
         {mintingAvailable ? (
-          <AppCollectionMintingAvailable collection={collection} />
+          <AppCollectionMintingAvailable
+            collection={collection}
+            onFinish={onFinish}
+          />
         ) : null}
       </View>
       <View>

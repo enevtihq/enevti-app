@@ -294,6 +294,7 @@ export default function AppCollection({
         <AppCollectionHeader
           collection={collection}
           mintingAvailable={mintingAvailable}
+          onFinish={onRefresh}
         />
       </Animated.View>
       <AppCollectionBody
