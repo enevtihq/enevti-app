@@ -86,6 +86,7 @@
     "react-native-sensitive-info": "^6.0.0-alpha.9",
     "react-native-snap-carousel": "^3.9.1",
     "react-native-splash-screen": "^3.3.0",
+    "react-native-status-bar-height": "^2.6.0",
     "react-native-super-grid": "^4.2.0",
     "react-native-svg": "^12.1.1",
     "react-native-tab-view": "^3.1.1",
