@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallowEqual } from 'react-redux';
-import AppFormWheelPicker from '../../molecules/wheelpicker/AppFormWheelPicker';
+import AppFormWheelPicker from 'enevti-app/components/molecules/wheelpicker/AppFormWheelPicker';
 
 interface AppDatePickerProps {
   label: string;

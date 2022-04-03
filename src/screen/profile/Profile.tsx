@@ -1,20 +1,20 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import AppView from '../../components/atoms/view/AppView';
+import AppView from 'enevti-app/components/atoms/view/AppView';
 import { StackScreenProps } from '@react-navigation/stack';
-import { RootStackParamList } from '../../navigation';
-import AppProfile from '../../components/organism/profile/AppProfile';
+import { RootStackParamList } from 'enevti-app/navigation';
+import AppProfile from 'enevti-app/components/organism/profile/AppProfile';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AppHeader, {
   HEADER_HEIGHT_PERCENTAGE,
-} from '../../components/atoms/view/AppHeader';
-import { hp } from '../../utils/imageRatio';
+} from 'enevti-app/components/atoms/view/AppHeader';
+import { hp } from 'enevti-app/utils/imageRatio';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import {
   isProfileUndefined,
   selectProfileView,
-} from '../../store/slices/ui/view/profile';
+} from 'enevti-app/store/slices/ui/view/profile';
 
 type Props = StackScreenProps<RootStackParamList, 'Profile'>;
 

@@ -1,17 +1,17 @@
 import React from 'react';
 import { View, StyleSheet, ViewStyle, StyleProp } from 'react-native';
 import { TouchableRipple, useTheme } from 'react-native-paper';
-import { SafeAreaInsets, wp } from '../../utils/imageRatio';
+import { SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
 import Color from 'color';
 
-import { Theme } from '../../theme/default';
-import AppTextHeading1 from '../atoms/text/AppTextHeading1';
-import AppTextBody5 from '../atoms/text/AppTextBody5';
+import { Theme } from 'enevti-app/theme/default';
+import AppTextHeading1 from 'enevti-app/components/atoms/text/AppTextHeading1';
+import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
-import { showSnackbar } from '../../store/slices/ui/global/snackbar';
+import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 
 interface AppPassphraseBoxProps {
   passphrase: string;

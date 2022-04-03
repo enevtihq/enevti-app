@@ -1,19 +1,19 @@
 import { View, StyleSheet } from 'react-native';
 import React from 'react';
-import AppMenuContainer from '../../atoms/menu/AppMenuContainer';
-import { Collection } from '../../../types/service/enevti/collection';
-import AppTextHeading2 from '../../atoms/text/AppTextHeading2';
+import AppMenuContainer from 'enevti-app/components/atoms/menu/AppMenuContainer';
+import { Collection } from 'enevti-app/types/service/enevti/collection';
+import AppTextHeading2 from 'enevti-app/components/atoms/text/AppTextHeading2';
 import { useTheme } from 'react-native-paper';
-import { Theme } from '../../../theme/default';
-import AppTextBody3 from '../../atoms/text/AppTextBody3';
-import AppTextBody4 from '../../atoms/text/AppTextBody4';
-import { hp, SafeAreaInsets, wp } from '../../../utils/imageRatio';
+import { Theme } from 'enevti-app/theme/default';
+import AppTextBody3 from 'enevti-app/components/atoms/text/AppTextBody3';
+import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
+import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Color from 'color';
 import { useTranslation } from 'react-i18next';
-import { numberKMB, parseAmount } from '../../../utils/format/amount';
-import AppTextHeading3 from '../../atoms/text/AppTextHeading3';
-import AppCurrencyIcon from '../../atoms/icon/AppCurrencyIcon';
+import { numberKMB, parseAmount } from 'enevti-app/utils/format/amount';
+import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
+import AppCurrencyIcon from 'enevti-app/components/atoms/icon/AppCurrencyIcon';
 
 interface AppCollectionDescriptionModalProps {
   collection: Collection;

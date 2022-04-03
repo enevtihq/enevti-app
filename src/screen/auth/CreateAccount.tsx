@@ -5,17 +5,17 @@ import { useTheme } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import { StackScreenProps } from '@react-navigation/stack';
 
-import { Theme } from '../../theme/default';
-import AppBrandBanner from '../../components/molecules/AppBrandBanner';
-import AppHeaderWizard from '../../components/molecules/AppHeaderWizard';
-import AppTextBody5 from '../../components/atoms/text/AppTextBody5';
-import { hp, wp, SafeAreaInsets } from '../../utils/imageRatio';
-import AppPrimaryButton from '../../components/atoms/button/AppPrimaryButton';
-import AppSecondaryButton from '../../components/atoms/button/AppSecondaryButton';
-import AppTextBody4 from '../../components/atoms/text/AppTextBody4';
-import { RootStackParamList } from '../../navigation';
-import AppView from '../../components/atoms/view/AppView';
-import AppGoogleSignInButton from '../../components/organism/AppGoogleSignInButton';
+import { Theme } from 'enevti-app/theme/default';
+import AppBrandBanner from 'enevti-app/components/molecules/AppBrandBanner';
+import AppHeaderWizard from 'enevti-app/components/molecules/AppHeaderWizard';
+import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
+import { hp, wp, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
+import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
+import AppSecondaryButton from 'enevti-app/components/atoms/button/AppSecondaryButton';
+import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
+import { RootStackParamList } from 'enevti-app/navigation';
+import AppView from 'enevti-app/components/atoms/view/AppView';
+import AppGoogleSignInButton from 'enevti-app/components/organism/AppGoogleSignInButton';
 import { CommonActions } from '@react-navigation/native';
 
 type Props = StackScreenProps<RootStackParamList, 'CreateAccount'>;

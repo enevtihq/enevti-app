@@ -1,28 +1,28 @@
 import { StyleSheet, View } from 'react-native';
 import React from 'react';
-import AppView from '../../components/atoms/view/AppView';
-import AppHeaderWizard from '../../components/molecules/AppHeaderWizard';
+import AppView from 'enevti-app/components/atoms/view/AppView';
+import AppHeaderWizard from 'enevti-app/components/molecules/AppHeaderWizard';
 import { StackScreenProps } from '@react-navigation/stack';
-import { RootStackParamList } from '../../navigation';
+import { RootStackParamList } from 'enevti-app/navigation';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { hp, SafeAreaInsets, wp } from '../../utils/imageRatio';
-import AppListItem from '../../components/molecules/list/AppListItem';
-import AppTextHeading3 from '../../components/atoms/text/AppTextHeading3';
-import AppTextBody4 from '../../components/atoms/text/AppTextBody4';
+import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
+import AppListItem from 'enevti-app/components/molecules/list/AppListItem';
+import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
+import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import { useTheme } from 'react-native-paper';
-import AppIconGradient from '../../components/molecules/AppIconGradient';
-import { iconMap } from '../../components/atoms/icon/AppIconComponent';
-import { Theme } from '../../theme/default';
+import AppIconGradient from 'enevti-app/components/molecules/AppIconGradient';
+import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
+import { Theme } from 'enevti-app/theme/default';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
-import { showSnackbar } from '../../store/slices/ui/global/snackbar';
+import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 import { ImageOrVideo } from 'react-native-image-crop-picker';
-import { setCreateNFTQueueType } from '../../store/slices/queue/nft/create/type';
+import { setCreateNFTQueueType } from 'enevti-app/store/slices/queue/nft/create/type';
 import {
   setCreateNFTOneKindMime,
   setCreateNFTOneKindURI,
-} from '../../store/slices/queue/nft/create/onekind';
-import AppCameraGalleryPicker from '../../components/organism/picker/AppCameraGalleryPicker';
+} from 'enevti-app/store/slices/queue/nft/create/onekind';
+import AppCameraGalleryPicker from 'enevti-app/components/organism/picker/AppCameraGalleryPicker';
 
 type Props = StackScreenProps<RootStackParamList, 'ChooseNFTType'>;
 

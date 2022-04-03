@@ -1,8 +1,8 @@
 import React from 'react';
 import { StatusBar, StyleSheet, View } from 'react-native';
-import AppView from '../../components/atoms/view/AppView';
+import AppView from 'enevti-app/components/atoms/view/AppView';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import AppTextHeading1 from '../../components/atoms/text/AppTextHeading1';
+import AppTextHeading1 from 'enevti-app/components/atoms/text/AppTextHeading1';
 import { useTheme } from 'react-native-paper';
 
 export default function Discover() {

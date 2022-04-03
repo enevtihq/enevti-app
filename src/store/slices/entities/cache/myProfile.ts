@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
-import { Profile } from '../../../../types/service/enevti/profile';
-import { RootState } from '../../../state';
+import { Profile } from 'enevti-app/types/service/enevti/profile';
+import { RootState } from 'enevti-app/store/state';
 
 const initialState: Profile & { lastFetch: number } = {
   nftSold: 0,

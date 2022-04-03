@@ -1,6 +1,6 @@
-import { COIN_NAME } from '../../components/atoms/brand/AppBrandConstant';
-import { NFTBase } from '../../types/nft';
-import { FeedItem, Feeds, Moments } from '../../types/service/enevti/feed';
+import { COIN_NAME } from 'enevti-app/components/atoms/brand/AppBrandConstant';
+import { NFTBase } from 'enevti-app/types/nft';
+import { FeedItem, Feeds, Moments } from 'enevti-app/types/service/enevti/feed';
 import { getDummyNFTData, sleep } from './dummy';
 
 function getFeedItemList(): FeedItem {

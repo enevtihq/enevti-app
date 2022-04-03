@@ -11,31 +11,31 @@ import {
   getGoogleAccessToken,
   googleInit,
   googleSignIn,
-} from '../../service/google/signIn';
+} from 'enevti-app/service/google/signIn';
 import {
   selectGoogleAPITokenState,
   setGoogleAPIToken,
-} from '../../store/slices/session/google';
-import { showSnackbar } from '../../store/slices/ui/global/snackbar';
+} from 'enevti-app/store/slices/session/google';
+import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 import AppDialogForm from './AppDialogForm';
 import { Dialog } from 'react-native-paper';
 import AppFormSecureTextInput from './AppFormSecureTextInput';
-import AppPrimaryButton from '../atoms/button/AppPrimaryButton';
+import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
 import {
   getSecretAppData,
   SecretAppData,
   updateSecretAppData,
-} from '../../service/google/appData';
-import { hp, SafeAreaInsets, wp } from '../../utils/imageRatio';
-import AppTertiaryButton from '../atoms/button/AppTertiaryButton';
-import { iconMap } from '../atoms/icon/AppIconComponent';
+} from 'enevti-app/service/google/appData';
+import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
+import AppTertiaryButton from 'enevti-app/components/atoms/button/AppTertiaryButton';
+import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import {
   decryptWithDevice,
   decryptWithPassword,
   encryptWithDevice,
-} from '../../utils/cryptography';
-import { handleError } from '../../utils/error/handle';
-import { initPassphraseWithDevice } from '../../store/middleware/thunk/session/initPassphraseWithDevice';
+} from 'enevti-app/utils/cryptography';
+import { handleError } from 'enevti-app/utils/error/handle';
+import { initPassphraseWithDevice } from 'enevti-app/store/middleware/thunk/session/initPassphraseWithDevice';
 
 YupPassword(Yup);
 

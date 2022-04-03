@@ -1,8 +1,8 @@
 import { StyleSheet } from 'react-native';
 import React from 'react';
 import FastImage from 'react-native-fast-image';
-import { NFTBase } from '../../../../types/nft';
-import { TemplateArgs } from '../../../../types/nft/NFTTemplate';
+import { NFTBase } from 'enevti-app/types/nft';
+import { TemplateArgs } from 'enevti-app/types/nft/NFTTemplate';
 
 interface UtilityBackgroundProps {
   nft: NFTBase;
@@ -16,22 +16,22 @@ export default React.memo(
 
     switch (nft.utility) {
       case 'videocall':
-        source = require('../../../../assets/nft-template/background/videocall.jpg');
+        source = require('enevti-app/assets/nft-template/background/videocall.jpg');
         break;
       case 'chat':
-        source = require('../../../../assets/nft-template/background/chat.jpg');
+        source = require('enevti-app/assets/nft-template/background/chat.jpg');
         break;
       case 'content':
-        source = require('../../../../assets/nft-template/background/content.jpg');
+        source = require('enevti-app/assets/nft-template/background/content.jpg');
         break;
       case 'gift':
-        source = require('../../../../assets/nft-template/background/gift.jpg');
+        source = require('enevti-app/assets/nft-template/background/gift.jpg');
         break;
       case 'qr':
-        source = require('../../../../assets/nft-template/background/qr.jpg');
+        source = require('enevti-app/assets/nft-template/background/qr.jpg');
         break;
       case 'stream':
-        source = require('../../../../assets/nft-template/background/stream.jpg');
+        source = require('enevti-app/assets/nft-template/background/stream.jpg');
         break;
       default:
         source = undefined;

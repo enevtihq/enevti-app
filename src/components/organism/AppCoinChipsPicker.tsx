@@ -1,13 +1,13 @@
 import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import AppListItem from '../molecules/list/AppListItem';
-import { hp, SafeAreaInsets, wp } from '../../utils/imageRatio';
-import AppBrandLogo from '../atoms/brand/AppBrandLogo';
-import AppTextBody4 from '../atoms/text/AppTextBody4';
-import { getCoinName } from '../atoms/brand/AppBrandConstant';
+import AppListItem from 'enevti-app/components/molecules/list/AppListItem';
+import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
+import AppBrandLogo from 'enevti-app/components/atoms/brand/AppBrandLogo';
+import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
+import { getCoinName } from 'enevti-app/components/atoms/brand/AppBrandConstant';
 import { StyleSheet, View } from 'react-native';
 import Color from 'color';
-import { Theme } from '../../theme/default';
+import { Theme } from 'enevti-app/theme/default';
 import { useTheme } from 'react-native-paper';
 
 interface AppCoinChipsPickerProps {

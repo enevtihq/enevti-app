@@ -1,13 +1,15 @@
 import { StyleSheet, View } from 'react-native';
 import React from 'react';
-import AppIconComponent, { iconMap } from '../../atoms/icon/AppIconComponent';
-import AppFormTextInputWithError from '../AppFormTextInputWithError';
+import AppIconComponent, {
+  iconMap,
+} from 'enevti-app/components/atoms/icon/AppIconComponent';
+import AppFormTextInputWithError from 'enevti-app/components/molecules/AppFormTextInputWithError';
 import { TouchableRipple, useTheme } from 'react-native-paper';
-import { hp, SafeAreaInsets, wp } from '../../../utils/imageRatio';
+import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Theme } from 'react-native-paper/lib/typescript/types';
 import { shallowEqual } from 'react-redux';
-import AppMenuContainer from '../../atoms/menu/AppMenuContainer';
+import AppMenuContainer from 'enevti-app/components/atoms/menu/AppMenuContainer';
 import AppWheelPicker from './AppWheelPicker';
 
 interface AppFormWheelPickerProps {

@@ -2,10 +2,10 @@ import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import React from 'react';
 import { TouchableRipple, useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { wp, SafeAreaInsets } from '../../utils/imageRatio';
-import AppTextBody4 from '../atoms/text/AppTextBody4';
-import { Theme } from '../../theme/default';
-import AppNetworkImage from '../atoms/image/AppNetworkImage';
+import { wp, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
+import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
+import { Theme } from 'enevti-app/theme/default';
+import AppNetworkImage from 'enevti-app/components/atoms/image/AppNetworkImage';
 
 interface AppPortraitOverlayBoxProps {
   url: string;

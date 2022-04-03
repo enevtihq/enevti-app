@@ -1,5 +1,5 @@
-import { COIN_NAME } from '../../components/atoms/brand/AppBrandConstant';
-import { Collection } from '../../types/service/enevti/collection';
+import { COIN_NAME } from 'enevti-app/components/atoms/brand/AppBrandConstant';
+import { Collection } from 'enevti-app/types/service/enevti/collection';
 import { getDummyNFTData, sleep } from './dummy';
 
 async function fetchCollection(id: string): Promise<Collection | undefined> {

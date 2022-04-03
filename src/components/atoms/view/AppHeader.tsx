@@ -12,12 +12,12 @@ import LinearGradient from 'react-native-linear-gradient';
 import { Appbar, useTheme } from 'react-native-paper';
 import Animated from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { RootStackParamList } from '../../../navigation';
-import { Theme } from '../../../theme/default';
-import { hp, SafeAreaInsets, wp } from '../../../utils/imageRatio';
-import AppBrandBanner from '../../molecules/AppBrandBanner';
-import AppIconButton from '../icon/AppIconButton';
-import { iconMap } from '../icon/AppIconComponent';
+import { RootStackParamList } from 'enevti-app/navigation';
+import { Theme } from 'enevti-app/theme/default';
+import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
+import AppBrandBanner from 'enevti-app/components/molecules/AppBrandBanner';
+import AppIconButton from 'enevti-app/components/atoms/icon/AppIconButton';
+import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 
 export const HEADER_HEIGHT_PERCENTAGE = 9.5;
 export const HEADER_HEIGHT_COMPACT_PERCENTAGE = 6;

@@ -2,10 +2,10 @@ import { StatusBar } from 'react-native';
 import React from 'react';
 import { useTheme } from 'react-native-paper';
 import { useSelector } from 'react-redux';
-import { Theme } from '../../../theme/default';
-import { selectStatusBarState } from '../../../store/slices/ui/global/statusbar';
-import lightTheme from '../../../theme/default';
-import darkTheme from '../../../theme/dark';
+import { Theme } from 'enevti-app/theme/default';
+import { selectStatusBarState } from 'enevti-app/store/slices/ui/global/statusbar';
+import lightTheme from 'enevti-app/theme/default';
+import darkTheme from 'enevti-app/theme/dark';
 
 export default function AppStatusBar() {
   const theme = useTheme() as Theme;

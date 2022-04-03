@@ -9,8 +9,8 @@ import {
 import ReactNativeCountdownComponent from 'react-native-countdown-component';
 import { useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { hp, SafeAreaInsets } from '../../../utils/imageRatio';
-import { Theme } from '../../../theme/default';
+import { hp, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
+import { Theme } from 'enevti-app/theme/default';
 import { useTranslation } from 'react-i18next';
 
 class CountDown extends ReactNativeCountdownComponent {

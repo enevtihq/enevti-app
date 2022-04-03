@@ -1,7 +1,7 @@
 import { StyleSheet, Text, Platform } from 'react-native';
 import React from 'react';
-import { NFTBase } from '../../../../types/nft';
-import { TemplateArgs } from '../../../../types/nft/NFTTemplate';
+import { NFTBase } from 'enevti-app/types/nft';
+import { TemplateArgs } from 'enevti-app/types/nft/NFTTemplate';
 import { useTheme } from 'react-native-paper';
 import { Theme } from 'react-native-paper/lib/typescript/types';
 import Color from 'color';

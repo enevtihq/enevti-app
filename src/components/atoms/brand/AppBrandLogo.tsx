@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image, ImageStyle, StyleProp, View } from 'react-native';
-import { resizeImageRatio } from '../../../utils/imageRatio';
+import { resizeImageRatio } from 'enevti-app/utils/imageRatio';
 
 interface AppBrandLogoProps {
   widthPercentage: number;
@@ -18,14 +18,14 @@ export default function AppBrandLogo({
   if (mode === 'default') {
     return (
       <Image
-        source={require('../../../assets/images/enevti-icon.png')}
+        source={require('enevti-app/assets/images/enevti-icon.png')}
         style={[{ width: sizeRatio.width, height: sizeRatio.height }, style]}
       />
     );
   } else if (mode === 'glow') {
     return (
       <Image
-        source={require('../../../assets/images/enevti-icon-glow.png')}
+        source={require('enevti-app/assets/images/enevti-icon-glow.png')}
         style={[{ width: sizeRatio.width, height: sizeRatio.height }, style]}
       />
     );

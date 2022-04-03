@@ -1,7 +1,7 @@
 import { sleep } from './dummy';
-import { NFTTemplateAsset } from '../../types/nft/NFTTemplate';
-import enevtiNFTTemplate from '../../components/atoms/nft/template/enevtiNFTTemplate';
-import blankNFTTemplate from '../../components/atoms/nft/template/blankNFTTemplate';
+import { NFTTemplateAsset } from 'enevti-app/types/nft/NFTTemplate';
+import enevtiNFTTemplate from 'enevti-app/components/atoms/nft/template/enevtiNFTTemplate';
+import blankNFTTemplate from 'enevti-app/components/atoms/nft/template/blankNFTTemplate';
 
 export function getBuiltInNFTTemplate(): NFTTemplateAsset[] {
   return [

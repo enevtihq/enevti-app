@@ -1,9 +1,9 @@
 import React from 'react';
 import { ImageStyle, StyleProp } from 'react-native';
 import { useTheme } from 'react-native-paper';
-import { Theme } from '../../theme/default';
-import AppDarkBrandBanner from '../atoms/brand/AppDarkBrandBanner';
-import AppLightBrandBanner from '../atoms/brand/AppLightBrandBanner';
+import { Theme } from 'enevti-app/theme/default';
+import AppDarkBrandBanner from 'enevti-app/components/atoms/brand/AppDarkBrandBanner';
+import AppLightBrandBanner from 'enevti-app/components/atoms/brand/AppLightBrandBanner';
 
 interface AppBrandBannerProps {
   widthPercentage: number;

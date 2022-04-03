@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import React from 'react';
-import { NFTBase } from '../../../../types/nft';
-import { TemplateArgs } from '../../../../types/nft/NFTTemplate';
+import { NFTBase } from 'enevti-app/types/nft';
+import { TemplateArgs } from 'enevti-app/types/nft/NFTTemplate';
 import FastImage from 'react-native-fast-image';
 
 interface RarityIconProps {
@@ -15,9 +15,9 @@ export default React.memo(
     const source =
       nft.NFTType !== 'onekind'
         ? nft.rarity.stat.percent < 50
-          ? require('../../../../assets/images/enevti-icon.png')
-          : require('../../../../assets/images/enevti-icon-gs.png')
-        : require('../../../../assets/images/enevti-icon.png');
+          ? require('enevti-app/assets/images/enevti-icon.png')
+          : require('enevti-app/assets/images/enevti-icon-gs.png')
+        : require('enevti-app/assets/images/enevti-icon.png');
 
     return (
       <FastImage

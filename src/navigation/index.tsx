@@ -10,26 +10,26 @@ import {
 import { useSelector } from 'react-redux';
 import { useColorScheme } from 'react-native';
 
-import CreateAccount from '../screen/auth/CreateAccount';
-import SetupLocalPassword from '../screen/auth/SetupLocalPassword';
-import ConfirmPassphrase from '../screen/auth/ConfirmPassphrase';
-import AccountCreated from '../screen/auth/AccountCreated';
-import ImportPassphrase from '../screen/auth/ImportPassphrase';
-import Login from '../screen/auth/Login';
+import CreateAccount from 'enevti-app/screen/auth/CreateAccount';
+import SetupLocalPassword from 'enevti-app/screen/auth/SetupLocalPassword';
+import ConfirmPassphrase from 'enevti-app/screen/auth/ConfirmPassphrase';
+import AccountCreated from 'enevti-app/screen/auth/AccountCreated';
+import ImportPassphrase from 'enevti-app/screen/auth/ImportPassphrase';
+import Login from 'enevti-app/screen/auth/Login';
 import Home from './Home';
-import StakePool from '../screen/stake/StakePool';
-import Profile from '../screen/profile/Profile';
-import ChooseNFTType from '../screen/createNFT/ChooseNFTType';
-import ChooseNFTTemplate from '../screen/createNFT/ChooseNFTTemplate';
-import CreateOneKindContract from '../screen/createNFT/CreateOneKindContract';
-import Collection from '../screen/collection/Collection';
+import StakePool from 'enevti-app/screen/stake/StakePool';
+import Profile from 'enevti-app/screen/profile/Profile';
+import ChooseNFTType from 'enevti-app/screen/createNFT/ChooseNFTType';
+import ChooseNFTTemplate from 'enevti-app/screen/createNFT/ChooseNFTTemplate';
+import CreateOneKindContract from 'enevti-app/screen/createNFT/CreateOneKindContract';
+import Collection from 'enevti-app/screen/collection/Collection';
 
-import { getTheme } from '../theme';
-import { selectAuthState } from '../store/slices/auth';
-import SetupGoogleBinderPassword from '../screen/auth/SetupGoogleBinderPassword';
-import useLockScreen from '../utils/hook/useLockScreen';
-import useScreenDisplayed from '../utils/hook/useScreenDisplayed';
-import { selectLockedState } from '../store/slices/ui/screen/locked';
+import { getTheme } from 'enevti-app/theme';
+import { selectAuthState } from 'enevti-app/store/slices/auth';
+import SetupGoogleBinderPassword from 'enevti-app/screen/auth/SetupGoogleBinderPassword';
+import useLockScreen from 'enevti-app/utils/hook/useLockScreen';
+import useScreenDisplayed from 'enevti-app/utils/hook/useScreenDisplayed';
+import { selectLockedState } from 'enevti-app/store/slices/ui/screen/locked';
 
 export type RootStackParamList = {
   CreateAccount: undefined;

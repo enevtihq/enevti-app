@@ -1,20 +1,20 @@
 import React from 'react';
 import { AppState } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectAuthState } from '../../store/slices/auth';
+import { selectAuthState } from 'enevti-app/store/slices/auth';
 import {
   selectDisplayState,
   setDisplayMaximized,
   setDisplayMinimized,
   setDisplayScreenState,
-} from '../../store/slices/ui/screen/display';
+} from 'enevti-app/store/slices/ui/screen/display';
 import {
   resetLastScreenActive,
   selectLastActiveState,
   setLastScreenActive,
-} from '../../store/slices/ui/screen/lastActive';
-import { lockScreen } from '../../store/slices/ui/screen/locked';
-import { lastFetchTreshold } from '../constant/lastFetch';
+} from 'enevti-app/store/slices/ui/screen/lastActive';
+import { lockScreen } from 'enevti-app/store/slices/ui/screen/locked';
+import { lastFetchTreshold } from 'enevti-app/utils/constant/lastFetch';
 
 export default function useScreenDisplayed() {
   const dispatch = useDispatch();

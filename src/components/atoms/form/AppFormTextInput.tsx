@@ -4,7 +4,7 @@ import { TextInput } from 'react-native-paper';
 import { useTheme } from 'react-native-paper';
 import Color from 'color';
 import { StyleSheet, View } from 'react-native';
-import AppTextBody5 from '../text/AppTextBody5';
+import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
 
 function AppFormTextInput(
   props: TextInputProps & {

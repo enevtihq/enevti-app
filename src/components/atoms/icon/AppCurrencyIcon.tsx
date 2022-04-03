@@ -1,6 +1,6 @@
 import { StyleProp, Image, ImageStyle } from 'react-native';
 import React from 'react';
-import { COIN_NAME } from '../brand/AppBrandConstant';
+import { COIN_NAME } from 'enevti-app/components/atoms/brand/AppBrandConstant';
 
 interface AppCurrencyIconProps {
   currency: string;
@@ -16,7 +16,7 @@ export default function AppCurrencyIcon({
   let source: any;
   switch (currency) {
     case COIN_NAME:
-      source = require('../../../assets/images/enevti-icon-glow.png');
+      source = require('enevti-app/assets/images/enevti-icon-glow.png');
       break;
     default:
       break;

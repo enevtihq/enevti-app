@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallowEqual } from 'react-redux';
-import { dayToString } from '../../../utils/date/dateToString';
-import AppFormWheelPicker from '../../molecules/wheelpicker/AppFormWheelPicker';
+import { dayToString } from 'enevti-app/utils/date/dateToString';
+import AppFormWheelPicker from 'enevti-app/components/molecules/wheelpicker/AppFormWheelPicker';
 
 interface AppDayPickerProps {
   label: string;

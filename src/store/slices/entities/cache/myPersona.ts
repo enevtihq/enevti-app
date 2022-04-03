@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
-import { Persona } from '../../../../types/service/enevti/persona';
-import { RootState } from '../../../state';
+import { Persona } from 'enevti-app/types/service/enevti/persona';
+import { RootState } from 'enevti-app/store/state';
 
 type PersonaCacheState = Persona & { lastFetch: number };
 

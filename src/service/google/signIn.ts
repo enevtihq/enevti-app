@@ -1,8 +1,8 @@
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { Platform } from 'react-native';
-import { isInternetReachable } from '../../utils/network';
-import i18n from '../../translations/i18n';
-import { ERRORCODE } from '../../utils/error/code';
+import { isInternetReachable } from 'enevti-app/utils/network';
+import i18n from 'enevti-app/translations/i18n';
+import { ERRORCODE } from 'enevti-app/utils/error/code';
 
 const GOOGLE_SCOPES = ['https://www.googleapis.com/auth/drive.appdata'];
 

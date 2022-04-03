@@ -1,15 +1,15 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import AppView from '../../components/atoms/view/AppView';
+import AppView from 'enevti-app/components/atoms/view/AppView';
 import { StackScreenProps } from '@react-navigation/stack';
-import { RootStackParamList } from '../../navigation';
+import { RootStackParamList } from 'enevti-app/navigation';
 import { useSelector } from 'react-redux';
-import { selectMyPersonaCache } from '../../store/slices/entities/cache/myPersona';
-import AppProfile from '../../components/organism/profile/AppProfile';
+import { selectMyPersonaCache } from 'enevti-app/store/slices/entities/cache/myPersona';
+import AppProfile from 'enevti-app/components/organism/profile/AppProfile';
 import {
   isMyProfileUndefined,
   selectMyProfileView,
-} from '../../store/slices/ui/view/myProfile';
+} from 'enevti-app/store/slices/ui/view/myProfile';
 
 type Props = StackScreenProps<RootStackParamList, 'MyProfile'>;
 

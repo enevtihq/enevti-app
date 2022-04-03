@@ -1,13 +1,13 @@
 import { View, StyleSheet } from 'react-native';
 import React from 'react';
-import { Theme } from '../../theme/default';
+import { Theme } from 'enevti-app/theme/default';
 import Color from 'color';
 import { useTheme } from 'react-native-paper';
-import AppIconComponent from '../atoms/icon/AppIconComponent';
-import { hp, SafeAreaInsets, wp } from '../../utils/imageRatio';
+import AppIconComponent from 'enevti-app/components/atoms/icon/AppIconComponent';
+import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import AppTextBody4 from '../atoms/text/AppTextBody4';
-import AppTextHeading3 from '../atoms/text/AppTextHeading3';
+import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
+import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
 
 interface AppInfoMessageProps {
   icon: string;

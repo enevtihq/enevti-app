@@ -1,5 +1,5 @@
-import { NFTBase } from '../../nft';
-import { SocialProfile } from '../../social';
+import { NFTBase } from 'enevti-app/types/nft';
+import { SocialProfile } from 'enevti-app/types/social';
 
 export type Profile = {
   nftSold: number;

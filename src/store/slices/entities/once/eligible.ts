@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
-import { RootState } from '../../../state';
+import { RootState } from 'enevti-app/store/state';
 
 const eligibleEntitySlice = createSlice({
   name: 'eligible',

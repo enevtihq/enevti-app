@@ -1,13 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
-import { iconMap } from '../../components/atoms/icon/AppIconComponent';
+import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import {
   PaymentAction,
   PaymentFee,
   PaymentState,
   PaymentStatus,
-} from '../../types/store/Payment';
-import { RootState } from '../state';
+} from 'enevti-app/types/store/Payment';
+import { RootState } from 'enevti-app/store/state';
 
 const initialState: PaymentState = {
   show: false,

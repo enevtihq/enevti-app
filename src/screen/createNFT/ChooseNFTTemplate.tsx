@@ -1,45 +1,45 @@
 import { View, StyleSheet } from 'react-native';
 import React from 'react';
-import AppView from '../../components/atoms/view/AppView';
-import AppHeaderWizard from '../../components/molecules/AppHeaderWizard';
-import { iconMap } from '../../components/atoms/icon/AppIconComponent';
+import AppView from 'enevti-app/components/atoms/view/AppView';
+import AppHeaderWizard from 'enevti-app/components/molecules/AppHeaderWizard';
+import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import { StackScreenProps } from '@react-navigation/stack';
-import { RootStackParamList } from '../../navigation';
+import { RootStackParamList } from 'enevti-app/navigation';
 import { useTranslation } from 'react-i18next';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from 'react-native-paper';
-import { Theme } from '../../theme/default';
-import { hp, SafeAreaInsets, wp } from '../../utils/imageRatio';
-import AppPrimaryButton from '../../components/atoms/button/AppPrimaryButton';
-import { getBuiltInNFTTemplate } from '../../service/enevti/template';
-import { NFTTemplateAsset } from '../../types/nft/NFTTemplate';
-import { NFTBase } from '../../types/nft';
+import { Theme } from 'enevti-app/theme/default';
+import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
+import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
+import { getBuiltInNFTTemplate } from 'enevti-app/service/enevti/template';
+import { NFTTemplateAsset } from 'enevti-app/types/nft/NFTTemplate';
+import { NFTBase } from 'enevti-app/types/nft';
 import Carousel from 'react-native-snap-carousel';
-import AppNFTRenderer from '../../components/molecules/nft/AppNFTRenderer';
-import { makeDummyNFT } from '../../utils/dummy/nft';
+import AppNFTRenderer from 'enevti-app/components/molecules/nft/AppNFTRenderer';
+import { makeDummyNFT } from 'enevti-app/utils/dummy/nft';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   clearCreateNFTQueueType,
   selectCreateNFTTypeQueue,
-} from '../../store/slices/queue/nft/create/type';
+} from 'enevti-app/store/slices/queue/nft/create/type';
 import {
   clearCreateNFTOneKindQueue,
   selectCreateNFTOneKindQueue,
   setCreateNFTOneKindChosenTemplate,
-} from '../../store/slices/queue/nft/create/onekind';
+} from 'enevti-app/store/slices/queue/nft/create/onekind';
 import {
   selectCreateNFTPackQueue,
   setCreateNFTPackChosenTemplate,
-} from '../../store/slices/queue/nft/create/pack';
-import { shuffleArray } from '../../utils/primitive/array';
+} from 'enevti-app/store/slices/queue/nft/create/pack';
+import { shuffleArray } from 'enevti-app/utils/primitive/array';
 import DropShadow from 'react-native-drop-shadow';
-import AppListItem from '../../components/molecules/list/AppListItem';
-import AppTextHeading3 from '../../components/atoms/text/AppTextHeading3';
-import AppTextBody4 from '../../components/atoms/text/AppTextBody4';
-import AppIconButton from '../../components/atoms/icon/AppIconButton';
-import { showSnackbar } from '../../store/slices/ui/global/snackbar';
-import AppTextHeading1 from '../../components/atoms/text/AppTextHeading1';
-import { setCreateNFTQueueRoute } from '../../store/slices/queue/nft/create/route';
+import AppListItem from 'enevti-app/components/molecules/list/AppListItem';
+import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
+import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
+import AppIconButton from 'enevti-app/components/atoms/icon/AppIconButton';
+import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
+import AppTextHeading1 from 'enevti-app/components/atoms/text/AppTextHeading1';
+import { setCreateNFTQueueRoute } from 'enevti-app/store/slices/queue/nft/create/route';
 import { cleanTMPImage } from 'enevti-app/service/enevti/nft';
 
 type Props = StackScreenProps<RootStackParamList, 'ChooseNFTTemplate'>;

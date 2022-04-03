@@ -12,21 +12,21 @@ import * as Lisk from '@liskhq/lisk-client';
 import {
   encryptWithDevice,
   encryptWithPassword,
-} from '../../utils/cryptography';
-import { Theme } from '../../theme/default';
-import AppHeaderWizard from '../../components/molecules/AppHeaderWizard';
-import { RootStackParamList } from '../../navigation';
-import AppFormSecureTextInput from '../../components/organism/AppFormSecureTextInput';
-import AppPrimaryButton from '../../components/atoms/button/AppPrimaryButton';
-import AppView from '../../components/atoms/view/AppView';
-import AppCheckbox from '../../components/atoms/form/AppCheckbox';
-import { hp, wp, SafeAreaInsets } from '../../utils/imageRatio';
-import { BRAND_NAME } from '../../components/atoms/brand/AppBrandConstant';
-import { setSecretAppData } from '../../service/google/appData';
+} from 'enevti-app/utils/cryptography';
+import { Theme } from 'enevti-app/theme/default';
+import AppHeaderWizard from 'enevti-app/components/molecules/AppHeaderWizard';
+import { RootStackParamList } from 'enevti-app/navigation';
+import AppFormSecureTextInput from 'enevti-app/components/organism/AppFormSecureTextInput';
+import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
+import AppView from 'enevti-app/components/atoms/view/AppView';
+import AppCheckbox from 'enevti-app/components/atoms/form/AppCheckbox';
+import { hp, wp, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
+import { BRAND_NAME } from 'enevti-app/components/atoms/brand/AppBrandConstant';
+import { setSecretAppData } from 'enevti-app/service/google/appData';
 import { useDispatch } from 'react-redux';
 import { CommonActions } from '@react-navigation/native';
-import { handleError } from '../../utils/error/handle';
-import { initPassphraseWithDevice } from '../../store/middleware/thunk/session/initPassphraseWithDevice';
+import { handleError } from 'enevti-app/utils/error/handle';
+import { initPassphraseWithDevice } from 'enevti-app/store/middleware/thunk/session/initPassphraseWithDevice';
 
 type Props = StackScreenProps<RootStackParamList, 'SetupGoogleBinderPassword'>;
 YupPassword(Yup);

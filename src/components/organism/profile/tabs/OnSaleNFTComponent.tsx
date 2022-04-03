@@ -2,12 +2,12 @@ import React from 'react';
 import { Platform, RefreshControl, StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { FlatGrid, FlatGridProps } from 'react-native-super-grid';
-import { NFTBase } from '../../../../types/nft';
-import { PROFILE_HEADER_HEIGHT_PERCENTAGE } from '../AppProfileHeader';
-import { TOP_TABBAR_HEIGHT_PERCENTAGE } from '../../../atoms/view/AppTopTabBar';
-import { hp, SafeAreaInsets, wp } from '../../../../utils/imageRatio';
+import { NFTBase } from 'enevti-app/types/nft';
+import { PROFILE_HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/organism/profile/AppProfileHeader';
+import { TOP_TABBAR_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppTopTabBar';
+import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import AppNFTCard from '../../../molecules/nft/AppNFTCard';
+import AppNFTCard from 'enevti-app/components/molecules/nft/AppNFTCard';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 

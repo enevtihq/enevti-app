@@ -11,23 +11,23 @@ import Animated, {
 import AppProfileHeader, {
   PROFILE_HEADER_HEIGHT_PERCENTAGE,
 } from './AppProfileHeader';
-import { hp, SafeAreaInsets, wp } from '../../../utils/imageRatio';
+import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../../../navigation';
-import { diffClamp } from '../../../utils/animation';
+import { RootStackParamList } from 'enevti-app/navigation';
+import { diffClamp } from 'enevti-app/utils/animation';
 import OwnedNFTComponent from './tabs/OwnedNFTComponent';
 import OnSaleNFTComponent from './tabs/OnSaleNFTComponent';
 import AppProfileBody from './AppProfileBody';
 import { useTheme } from 'react-native-paper';
-import AppActivityIndicator from '../../atoms/loading/AppActivityIndicator';
+import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
 import { useDispatch } from 'react-redux';
 import {
   loadProfile,
   unloadProfile,
-} from '../../../store/middleware/thunk/ui/view/profile';
-import { Profile } from '../../../types/service/enevti/profile';
-import { Persona } from '../../../types/service/enevti/persona';
+} from 'enevti-app/store/middleware/thunk/ui/view/profile';
+import { Profile } from 'enevti-app/types/service/enevti/profile';
+import { Persona } from 'enevti-app/types/service/enevti/persona';
 import CollectionListComponent from './tabs/CollectionListComponent';
 
 const noDisplay = 'none';

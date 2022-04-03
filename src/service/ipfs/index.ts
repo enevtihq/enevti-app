@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { makeDummyIPFS } from '../../utils/dummy/ipfs';
+import { makeDummyIPFS } from 'enevti-app/utils/dummy/ipfs';
 
 const IPFS_GATEWAY = 'https://cloudflare-ipfs.com/ipfs/';
 

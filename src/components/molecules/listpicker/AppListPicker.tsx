@@ -1,12 +1,12 @@
 import { StyleSheet, View } from 'react-native';
 import React from 'react';
-import { iconMap } from '../../atoms/icon/AppIconComponent';
-import AppListPickerItem from '../../molecules/listpicker/AppListPickerItem';
-import AppListPickerMenu from '../../molecules/listpicker/AppListPickerMenu';
-import { PickerItem } from '../../../types/screen/PickerItem';
+import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
+import AppListPickerItem from 'enevti-app/components/molecules/listpicker/AppListPickerItem';
+import AppListPickerMenu from 'enevti-app/components/molecules/listpicker/AppListPickerMenu';
+import { PickerItem } from 'enevti-app/types/screen/PickerItem';
 import { shallowEqual } from 'react-redux';
 import { useTheme } from 'react-native-paper';
-import { Theme } from '../../../theme/default';
+import { Theme } from 'enevti-app/theme/default';
 import Color from 'color';
 
 interface AppListPickerProps {

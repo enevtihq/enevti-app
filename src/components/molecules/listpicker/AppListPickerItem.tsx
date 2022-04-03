@@ -2,13 +2,15 @@ import React from 'react';
 import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Theme } from '../../../theme/default';
-import { SafeAreaInsets, wp } from '../../../utils/imageRatio';
-import AppIconComponent, { iconMap } from '../../atoms/icon/AppIconComponent';
-import AppTextBody4 from '../../atoms/text/AppTextBody4';
-import AppTextHeading3 from '../../atoms/text/AppTextHeading3';
-import AppIconGradient from '../../molecules/AppIconGradient';
-import AppListItem from '../../molecules/list/AppListItem';
+import { Theme } from 'enevti-app/theme/default';
+import { SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
+import AppIconComponent, {
+  iconMap,
+} from 'enevti-app/components/atoms/icon/AppIconComponent';
+import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
+import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
+import AppIconGradient from 'enevti-app/components/molecules/AppIconGradient';
+import AppListItem from 'enevti-app/components/molecules/list/AppListItem';
 
 interface AppListPickerItemProps {
   icon: string;

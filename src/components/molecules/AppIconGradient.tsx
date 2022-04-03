@@ -4,8 +4,8 @@ import LinearGradient from 'react-native-linear-gradient';
 import MaskedView from '@react-native-masked-view/masked-view';
 import { useTheme } from 'react-native-paper';
 
-import AppIconComponent from '../atoms/icon/AppIconComponent';
-import { Theme } from '../../theme/default';
+import AppIconComponent from 'enevti-app/components/atoms/icon/AppIconComponent';
+import { Theme } from 'enevti-app/theme/default';
 
 interface AppIconGradientProps {
   name: string;

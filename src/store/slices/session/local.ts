@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from '../../state';
+import { RootState } from 'enevti-app/store/state';
 import { createSelector } from 'reselect';
 
 const localSessionSlice = createSlice({

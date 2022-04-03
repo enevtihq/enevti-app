@@ -1,8 +1,8 @@
 import React from 'react';
 import { ReturnKeyTypeOptions, StyleProp, TextStyle } from 'react-native';
 import { TextInput, useTheme } from 'react-native-paper';
-import AppFormTextInputWithError from '../molecules/AppFormTextInputWithError';
-import { iconMap } from '../atoms/icon/AppIconComponent';
+import AppFormTextInputWithError from 'enevti-app/components/molecules/AppFormTextInputWithError';
+import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 
 interface AppFormSecureTextInputProps {
   label: string;

@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { uploadURItoIPFS } from '../../../../service/ipfs';
-import { setPaymentStatus } from '../../../../store/slices/payment';
-import { AppThunk } from '../../../../store/state';
-import { CreateNFTOneKind } from '../../../../types/store/CreateNFTQueue';
+import { uploadURItoIPFS } from 'enevti-app/service/ipfs';
+import { setPaymentStatus } from 'enevti-app/store/slices/payment';
+import { AppThunk } from 'enevti-app/store/state';
+import { CreateNFTOneKind } from 'enevti-app/types/store/CreateNFTQueue';
 
 export const reducePayCreateNFTOneKind =
   (): AppThunk => async (dispatch, getState) => {

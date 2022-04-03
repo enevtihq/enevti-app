@@ -14,61 +14,61 @@ import {
   setCreateNFTOneKindState,
   setCreateNFTOneKindStatus,
   setCreateNFTOneKindURI,
-} from '../../store/slices/queue/nft/create/onekind';
+} from 'enevti-app/store/slices/queue/nft/create/onekind';
 import * as Yup from 'yup';
 
-import { Theme } from '../../theme/default';
-import AppHeaderWizard from '../../components/molecules/AppHeaderWizard';
-import { RootStackParamList } from '../../navigation';
+import { Theme } from 'enevti-app/theme/default';
+import AppHeaderWizard from 'enevti-app/components/molecules/AppHeaderWizard';
+import { RootStackParamList } from 'enevti-app/navigation';
 import AppFormTextInputWithError, {
   AppFormTextInputWithErrorProps,
-} from '../../components/molecules/AppFormTextInputWithError';
-import AppPrimaryButton from '../../components/atoms/button/AppPrimaryButton';
-import AppView from '../../components/atoms/view/AppView';
-import { hp, wp, SafeAreaInsets } from '../../utils/imageRatio';
+} from 'enevti-app/components/molecules/AppFormTextInputWithError';
+import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
+import AppView from 'enevti-app/components/atoms/view/AppView';
+import { hp, wp, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
 import AppIconComponent, {
   iconMap,
-} from '../../components/atoms/icon/AppIconComponent';
+} from 'enevti-app/components/atoms/icon/AppIconComponent';
 import { ScrollView } from 'react-native-gesture-handler';
-import AppTextBody3 from '../../components/atoms/text/AppTextBody3';
-import { OneKindContractForm } from '../../types/screen/CreateOneKindContract';
-import AppCoinChipsPicker from '../../components/organism/AppCoinChipsPicker';
+import AppTextBody3 from 'enevti-app/components/atoms/text/AppTextBody3';
+import { OneKindContractForm } from 'enevti-app/types/screen/CreateOneKindContract';
+import AppCoinChipsPicker from 'enevti-app/components/organism/AppCoinChipsPicker';
 import {
   cleanTMPImage,
   isNameAvailable,
   isSymbolAvailable,
-} from '../../service/enevti/nft';
-import AppUtilityPicker from '../../components/organism/picker/AppUtilityPicker';
-import AppRecurringPicker from '../../components/organism/picker/AppRecurringPicker.tsx';
-import AppDateMonthPicker from '../../components/organism/datePicker/AppDateMonthPicker';
-import AppDayPicker from '../../components/organism/datePicker/AppDayPicker';
-import AppDatePicker from '../../components/organism/datePicker/AppDatePicker';
-import AppDateMonthYearPicker from '../../components/organism/datePicker/AppDateMonthYearPicker';
-import AppHourMinutePicker from '../../components/organism/datePicker/AppHourMinutePicker';
-import AppRedeemLimitPicker from '../../components/organism/picker/AppRedeemLimitPicker';
-import AppContentPicker from '../../components/organism/picker/AppContentPicker';
-import AppMintingPeriodPicker from '../../components/organism/picker/AppMintingPeriodPicker';
-import AppAccordion from '../../components/atoms/accordion/AppAccordion';
-import { NFTBase } from '../../types/nft';
-import { makeDummyNFT } from '../../utils/dummy/nft';
-import AppNFTRenderer from '../../components/molecules/nft/AppNFTRenderer';
-import AppInfoMessage from '../../components/molecules/AppInfoMessage';
-import AppQuaternaryButton from '../../components/atoms/button/AppQuaternaryButton';
-import AppTextBody4 from '../../components/atoms/text/AppTextBody4';
+} from 'enevti-app/service/enevti/nft';
+import AppUtilityPicker from 'enevti-app/components/organism/picker/AppUtilityPicker';
+import AppRecurringPicker from 'enevti-app/components/organism/picker/AppRecurringPicker.tsx';
+import AppDateMonthPicker from 'enevti-app/components/organism/datePicker/AppDateMonthPicker';
+import AppDayPicker from 'enevti-app/components/organism/datePicker/AppDayPicker';
+import AppDatePicker from 'enevti-app/components/organism/datePicker/AppDatePicker';
+import AppDateMonthYearPicker from 'enevti-app/components/organism/datePicker/AppDateMonthYearPicker';
+import AppHourMinutePicker from 'enevti-app/components/organism/datePicker/AppHourMinutePicker';
+import AppRedeemLimitPicker from 'enevti-app/components/organism/picker/AppRedeemLimitPicker';
+import AppContentPicker from 'enevti-app/components/organism/picker/AppContentPicker';
+import AppMintingPeriodPicker from 'enevti-app/components/organism/picker/AppMintingPeriodPicker';
+import AppAccordion from 'enevti-app/components/atoms/accordion/AppAccordion';
+import { NFTBase } from 'enevti-app/types/nft';
+import { makeDummyNFT } from 'enevti-app/utils/dummy/nft';
+import AppNFTRenderer from 'enevti-app/components/molecules/nft/AppNFTRenderer';
+import AppInfoMessage from 'enevti-app/components/molecules/AppInfoMessage';
+import AppQuaternaryButton from 'enevti-app/components/atoms/button/AppQuaternaryButton';
+import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import { ImageOrVideo } from 'react-native-image-crop-picker';
-import AppCameraGalleryPicker from '../../components/organism/picker/AppCameraGalleryPicker';
-import AppHeader from '../../components/atoms/view/AppHeader';
-import AppMenuContainer from '../../components/atoms/menu/AppMenuContainer';
-import AppSecondaryButton from '../../components/atoms/button/AppSecondaryButton';
-import { clearCreateNFTQueueType } from '../../store/slices/queue/nft/create/type';
-import { clearCreateNFTQueueRoute } from '../../store/slices/queue/nft/create/route';
-import usePaymentCallback from '../../utils/hook/usePaymentCallback';
+import AppCameraGalleryPicker from 'enevti-app/components/organism/picker/AppCameraGalleryPicker';
+import AppHeader from 'enevti-app/components/atoms/view/AppHeader';
+import AppMenuContainer from 'enevti-app/components/atoms/menu/AppMenuContainer';
+import AppSecondaryButton from 'enevti-app/components/atoms/button/AppSecondaryButton';
+import { clearCreateNFTQueueType } from 'enevti-app/store/slices/queue/nft/create/type';
+import { clearCreateNFTQueueRoute } from 'enevti-app/store/slices/queue/nft/create/route';
+import usePaymentCallback from 'enevti-app/utils/hook/usePaymentCallback';
 import {
   hideModalLoader,
   showModalLoader,
-} from '../../store/slices/ui/global/modalLoader';
-import { showSnackbar } from '../../store/slices/ui/global/snackbar';
-import { payCreateNFTOneKind } from '../../store/middleware/thunk/queue/nft/create/payCreateNFTOneKind';
+} from 'enevti-app/store/slices/ui/global/modalLoader';
+import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
+import { payCreateNFTOneKind } from 'enevti-app/store/middleware/thunk/queue/nft/create/payCreateNFTOneKind';
 
 type Props = StackScreenProps<RootStackParamList, 'CreateOneKindContract'>;
 

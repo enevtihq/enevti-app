@@ -1,18 +1,18 @@
 import { StyleSheet, View } from 'react-native';
 import React from 'react';
-import AppQuaternaryButton from '../../atoms/button/AppQuaternaryButton';
-import { iconMap } from '../../atoms/icon/AppIconComponent';
-import { hp, SafeAreaInsets, wp } from '../../../utils/imageRatio';
-import AppTextBody4 from '../../atoms/text/AppTextBody4';
-import AppTextHeading4 from '../../atoms/text/AppTextHeading4';
-import AppTextBody5 from '../../atoms/text/AppTextBody5';
-import { Theme } from '../../../theme/default';
+import AppQuaternaryButton from 'enevti-app/components/atoms/button/AppQuaternaryButton';
+import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
+import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
+import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
+import AppTextHeading4 from 'enevti-app/components/atoms/text/AppTextHeading4';
+import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
+import { Theme } from 'enevti-app/theme/default';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from 'react-native-paper';
-import { FeedItem } from '../../../types/service/enevti/feed';
-import { parseAmount } from '../../../utils/format/amount';
+import { FeedItem } from 'enevti-app/types/service/enevti/feed';
+import { parseAmount } from 'enevti-app/utils/format/amount';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../../../navigation';
+import { RootStackParamList } from 'enevti-app/navigation';
 
 interface AppFeedActionProps {
   feed: FeedItem;

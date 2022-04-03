@@ -1,15 +1,15 @@
 import BigNumber from 'bignumber.js';
-import { Profile } from '../../types/service/enevti/profile';
-import { store } from '../../store/state';
+import { Profile } from 'enevti-app/types/service/enevti/profile';
+import { store } from 'enevti-app/store/state';
 import { getDummyCollectionBaseDate, getDummyNFTData, sleep } from './dummy';
 import {
   selectMyProfileCache,
   setLastFetchMyProfileCache,
   setMyProfileCache,
-} from '../../store/slices/entities/cache/myProfile';
-import { lastFetchTreshold } from '../../utils/constant/lastFetch';
+} from 'enevti-app/store/slices/entities/cache/myProfile';
+import { lastFetchTreshold } from 'enevti-app/utils/constant/lastFetch';
 import { getMyAddress } from './persona';
-import { completeTokenUnit } from '../../utils/format/amount';
+import { completeTokenUnit } from 'enevti-app/utils/format/amount';
 
 export const MINIMUM_BASIC_UNIT_STAKE_ELIGIBILITY = 1000;
 

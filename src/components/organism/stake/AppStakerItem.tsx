@@ -1,20 +1,20 @@
 import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '@react-navigation/native';
-import { Theme } from '../../../theme/default';
-import { hp, SafeAreaInsets, wp } from '../../../utils/imageRatio';
-import AppAvatarRenderer from '../../molecules/avatar/AppAvatarRenderer';
-import AppTextHeading3 from '../../atoms/text/AppTextHeading3';
-import AppIconButton from '../../atoms/icon/AppIconButton';
-import { iconMap } from '../../atoms/icon/AppIconComponent';
-import AppTextBody4 from '../../atoms/text/AppTextBody4';
-import AppListItem from '../../molecules/list/AppListItem';
+import { Theme } from 'enevti-app/theme/default';
+import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
+import AppAvatarRenderer from 'enevti-app/components/molecules/avatar/AppAvatarRenderer';
+import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
+import AppIconButton from 'enevti-app/components/atoms/icon/AppIconButton';
+import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
+import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
+import AppListItem from 'enevti-app/components/molecules/list/AppListItem';
 import { StyleSheet } from 'react-native';
-import { StakerItem } from '../../../types/service/enevti/stake';
+import { StakerItem } from 'enevti-app/types/service/enevti/stake';
 import { useSelector } from 'react-redux';
-import { selectMyPersonaCache } from '../../../store/slices/entities/cache/myPersona';
-import { parseAmount } from '../../../utils/format/amount';
-import { getCoinName } from '../../atoms/brand/AppBrandConstant';
+import { selectMyPersonaCache } from 'enevti-app/store/slices/entities/cache/myPersona';
+import { parseAmount } from 'enevti-app/utils/format/amount';
+import { getCoinName } from 'enevti-app/components/atoms/brand/AppBrandConstant';
 
 export const STAKER_ITEM_HEIGHT_PERCENTAGE = 10;
 

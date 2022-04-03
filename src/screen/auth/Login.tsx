@@ -12,26 +12,26 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   decryptWithPassword,
   encryptWithDevice,
-} from '../../utils/cryptography';
-import { Theme } from '../../theme/default';
-import AppHeaderWizard from '../../components/molecules/AppHeaderWizard';
-import { RootStackParamList } from '../../navigation';
-import AppFormSecureTextInput from '../../components/organism/AppFormSecureTextInput';
-import AppPrimaryButton from '../../components/atoms/button/AppPrimaryButton';
-import AppView from '../../components/atoms/view/AppView';
-import AppCheckbox from '../../components/atoms/form/AppCheckbox';
-import { hp, wp, SafeAreaInsets } from '../../utils/imageRatio';
-import AppBrandLogo from '../../components/atoms/brand/AppBrandLogo';
-import { setLocalSessionKey } from '../../store/slices/session/local';
+} from 'enevti-app/utils/cryptography';
+import { Theme } from 'enevti-app/theme/default';
+import AppHeaderWizard from 'enevti-app/components/molecules/AppHeaderWizard';
+import { RootStackParamList } from 'enevti-app/navigation';
+import AppFormSecureTextInput from 'enevti-app/components/organism/AppFormSecureTextInput';
+import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
+import AppView from 'enevti-app/components/atoms/view/AppView';
+import AppCheckbox from 'enevti-app/components/atoms/form/AppCheckbox';
+import { hp, wp, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
+import AppBrandLogo from 'enevti-app/components/atoms/brand/AppBrandLogo';
+import { setLocalSessionKey } from 'enevti-app/store/slices/session/local';
 import {
   selectAuthState,
   setUnencryptedPassphraseAuth,
-} from '../../store/slices/auth';
-import { showSnackbar } from '../../store/slices/ui/global/snackbar';
+} from 'enevti-app/store/slices/auth';
+import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 import {
   selectLockedState,
   unlockScreen,
-} from '../../store/slices/ui/screen/locked';
+} from 'enevti-app/store/slices/ui/screen/locked';
 
 type Props = StackScreenProps<RootStackParamList, 'Login'>;
 YupPassword(Yup);

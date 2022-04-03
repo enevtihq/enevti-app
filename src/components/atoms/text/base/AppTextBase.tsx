@@ -2,8 +2,8 @@ import React from 'react';
 import { StyleProp, StyleSheet, TextStyle } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Theme } from '../../../../theme/default';
-import { SafeAreaInsets, wp } from '../../../../utils/imageRatio';
+import { Theme } from 'enevti-app/theme/default';
+import { SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
 import AppText from './AppText';
 import AppTextReadMore from './AppTextReadMore';
 

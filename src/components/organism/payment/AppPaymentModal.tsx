@@ -4,21 +4,21 @@ import { useTranslation } from 'react-i18next';
 import Color from 'color';
 import { useDispatch, useSelector } from 'react-redux';
 
-import AppMenuContainer from '../../atoms/menu/AppMenuContainer';
-import { hp, wp, SafeAreaInsets } from '../../../utils/imageRatio';
+import AppMenuContainer from 'enevti-app/components/atoms/menu/AppMenuContainer';
+import { hp, wp, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import AppTextHeading2 from '../../atoms/text/AppTextHeading2';
-import AppListItem from '../../molecules/list/AppListItem';
+import AppTextHeading2 from 'enevti-app/components/atoms/text/AppTextHeading2';
+import AppListItem from 'enevti-app/components/molecules/list/AppListItem';
 import { Divider, Portal, Snackbar, useTheme } from 'react-native-paper';
-import { Theme } from '../../../theme/default';
-import AppTextHeading3 from '../../atoms/text/AppTextHeading3';
-import AppIconGradient from '../../molecules/AppIconGradient';
-import AppTextBody4 from '../../atoms/text/AppTextBody4';
-import { COIN_NAME } from '../../atoms/brand/AppBrandConstant';
-import AppPrimaryButton from '../../atoms/button/AppPrimaryButton';
-import { iconMap } from '../../atoms/icon/AppIconComponent';
-import AppTextBody5 from '../../atoms/text/AppTextBody5';
-import { reducePayment } from '../../../store/middleware/thunk/payment';
+import { Theme } from 'enevti-app/theme/default';
+import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
+import AppIconGradient from 'enevti-app/components/molecules/AppIconGradient';
+import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
+import { COIN_NAME } from 'enevti-app/components/atoms/brand/AppBrandConstant';
+import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
+import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
+import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
+import { reducePayment } from 'enevti-app/store/middleware/thunk/payment';
 import {
   resetPaymentState,
   selectPaymentAction,
@@ -28,9 +28,9 @@ import {
   selectPaymentStatus,
   setPaymentActionType,
   setPaymentStatus,
-} from '../../../store/slices/payment';
+} from 'enevti-app/store/slices/payment';
 import AppPaymentItem from './AppPaymentItem';
-import { parseAmount } from '../../../utils/format/amount';
+import { parseAmount } from 'enevti-app/utils/format/amount';
 
 export default function AppPaymentModal() {
   const { t } = useTranslation();

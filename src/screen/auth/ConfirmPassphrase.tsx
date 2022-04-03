@@ -7,15 +7,15 @@ import { CommonActions } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { useDispatch } from 'react-redux';
 
-import { Theme } from '../../theme/default';
-import AppHeaderWizard from '../../components/molecules/AppHeaderWizard';
-import { RootStackParamList } from '../../navigation';
-import AppPrimaryButton from '../../components/atoms/button/AppPrimaryButton';
-import AppView from '../../components/atoms/view/AppView';
-import AppCheckbox from '../../components/atoms/form/AppCheckbox';
-import AppPassphraseBox from '../../components/organism/AppPassphraseBox';
-import { hp, wp, SafeAreaInsets } from '../../utils/imageRatio';
-import { initPassphrase } from '../../store/middleware/thunk/session/initPassphrase';
+import { Theme } from 'enevti-app/theme/default';
+import AppHeaderWizard from 'enevti-app/components/molecules/AppHeaderWizard';
+import { RootStackParamList } from 'enevti-app/navigation';
+import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
+import AppView from 'enevti-app/components/atoms/view/AppView';
+import AppCheckbox from 'enevti-app/components/atoms/form/AppCheckbox';
+import AppPassphraseBox from 'enevti-app/components/organism/AppPassphraseBox';
+import { hp, wp, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
+import { initPassphrase } from 'enevti-app/store/middleware/thunk/session/initPassphrase';
 
 type Props = StackScreenProps<RootStackParamList, 'ConfirmPassphrase'>;
 

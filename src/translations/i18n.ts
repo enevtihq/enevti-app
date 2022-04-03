@@ -3,8 +3,11 @@ import { initReactI18next } from 'react-i18next';
 import * as RNLocalize from 'react-native-localize';
 
 import en from './en';
-import { selectLanguageState, setLanguage } from '../store/slices/userSetting';
-import { store } from '../store/state';
+import {
+  selectLanguageState,
+  setLanguage,
+} from 'enevti-app/store/slices/userSetting';
+import { store } from 'enevti-app/store/state';
 import moment from 'moment';
 import 'moment/min/locales';
 

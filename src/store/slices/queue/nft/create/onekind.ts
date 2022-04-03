@@ -1,13 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
-import { COIN_NAME } from '../../../../../components/atoms/brand/AppBrandConstant';
-import { NFTTemplateAsset } from '../../../../../types/nft/NFTTemplate';
+import { COIN_NAME } from 'enevti-app/components/atoms/brand/AppBrandConstant';
+import { NFTTemplateAsset } from 'enevti-app/types/nft/NFTTemplate';
 import {
   OneKindContractForm,
   OneKindContractStatusForm,
-} from '../../../../../types/screen/CreateOneKindContract';
-import { CreateNFTOneKind } from '../../../../../types/store/CreateNFTQueue';
-import { RootState } from '../../../../state';
+} from 'enevti-app/types/screen/CreateOneKindContract';
+import { CreateNFTOneKind } from 'enevti-app/types/store/CreateNFTQueue';
+import { RootState } from 'enevti-app/store/state';
 
 export const createNFTOneKindQueueInitialState: CreateNFTOneKind = {
   data: {

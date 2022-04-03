@@ -1,5 +1,5 @@
 import NetInfo from '@react-native-community/netinfo';
-import i18n from '../translations/i18n';
+import i18n from 'enevti-app/translations/i18n';
 import { ERRORCODE } from './error/code';
 
 export async function isInternetReachable(): Promise<boolean> {

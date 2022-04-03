@@ -1,18 +1,20 @@
 import { Platform, StyleSheet, View } from 'react-native';
 import React from 'react';
-import AppTextHeading3 from '../../atoms/text/AppTextHeading3';
+import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { hp, SafeAreaInsets, wp } from '../../../utils/imageRatio';
-import { parseAmount } from '../../../utils/format/amount';
-import AppTextBody3 from '../../atoms/text/AppTextBody3';
+import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
+import { parseAmount } from 'enevti-app/utils/format/amount';
+import AppTextBody3 from 'enevti-app/components/atoms/text/AppTextBody3';
 import { Popable } from 'react-native-popable';
-import AppIconComponent, { iconMap } from '../../atoms/icon/AppIconComponent';
+import AppIconComponent, {
+  iconMap,
+} from 'enevti-app/components/atoms/icon/AppIconComponent';
 import { useTheme } from 'react-native-paper';
-import AppTextBody4 from '../../atoms/text/AppTextBody4';
+import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import Color from 'color';
-import { Theme } from '../../../theme/default';
-import AppTextHeading5 from '../../atoms/text/AppTextHeading5';
-import AppTextBody5 from '../../atoms/text/AppTextBody5';
+import { Theme } from 'enevti-app/theme/default';
+import AppTextHeading5 from 'enevti-app/components/atoms/text/AppTextHeading5';
+import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
 
 interface AppPaymentItemProps {
   title: string;

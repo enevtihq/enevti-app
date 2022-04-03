@@ -1,12 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
-import { NFTTemplateAsset } from '../../../../../types/nft/NFTTemplate';
+import { NFTTemplateAsset } from 'enevti-app/types/nft/NFTTemplate';
 import {
   CreateNFTPack,
   CreateNFTPackItemData,
   CreateNFTPackState,
-} from '../../../../../types/store/CreateNFTQueue';
-import { RootState } from '../../../../state';
+} from 'enevti-app/types/store/CreateNFTQueue';
+import { RootState } from 'enevti-app/store/state';
 
 export const createNFTPackQueueInitialState: CreateNFTPack = {
   data: [],

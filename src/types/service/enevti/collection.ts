@@ -1,6 +1,6 @@
-import { NFTBase } from '../../nft';
-import { NFTPrice } from '../../nft/NFTPrice';
-import { SocialProfile } from '../../social';
+import { NFTBase } from 'enevti-app/types/nft';
+import { NFTPrice } from 'enevti-app/types/nft/NFTPrice';
+import { SocialProfile } from 'enevti-app/types/social';
 import { Persona } from './persona';
 
 export type CollectionBase = {

@@ -2,16 +2,16 @@ import { View, StyleSheet, Dimensions } from 'react-native';
 import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from 'react-native-paper';
-import { SafeAreaInsets, wp } from '../../../utils/imageRatio';
-import { Theme } from '../../../theme/default';
+import { SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
+import { Theme } from 'enevti-app/theme/default';
 import Color from 'color';
 import AppFeedHeader from './AppFeedHeader';
 import AppFeedAction from './AppFeedAction';
 import AppFeedFooter from './AppFeedFooter';
-import { FeedItem } from '../../../types/service/enevti/feed';
+import { FeedItem } from 'enevti-app/types/service/enevti/feed';
 import AppFeedBody from './AppFeedBody';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../../../navigation';
+import { RootStackParamList } from 'enevti-app/navigation';
 
 interface AppFeedItemProps {
   feed: FeedItem;

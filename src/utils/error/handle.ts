@@ -1,5 +1,5 @@
-import { showSnackbar } from '../../store/slices/ui/global/snackbar';
-import { store } from '../../store/state';
+import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
+import { store } from 'enevti-app/store/state';
 
 export function handleError(err: any) {
   console.log(err.message);

@@ -4,9 +4,9 @@ import { TextInputProps } from 'react-native-paper/lib/typescript/components/Tex
 import { Theme } from 'react-native-paper/lib/typescript/types';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { shallowEqual } from 'react-redux';
-import { hp, SafeAreaInsets } from '../../utils/imageRatio';
-import AppFormTextInput from '../atoms/form/AppFormTextInput';
-import AppTextBody4 from '../atoms/text/AppTextBody4';
+import { hp, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
+import AppFormTextInput from 'enevti-app/components/atoms/form/AppFormTextInput';
+import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 
 export interface AppFormTextInputWithErrorProps extends TextInputProps {
   theme: Theme;

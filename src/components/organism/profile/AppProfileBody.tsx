@@ -1,13 +1,13 @@
 import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import React, { ComponentType } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { hp } from '../../../utils/imageRatio';
+import { hp } from 'enevti-app/utils/imageRatio';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import AppTopTabBar from '../../atoms/view/AppTopTabBar';
+import AppTopTabBar from 'enevti-app/components/atoms/view/AppTopTabBar';
 import { PROFILE_HEADER_HEIGHT_PERCENTAGE } from './AppProfileHeader';
 import { useTheme } from 'react-native-paper';
 import Color from 'color';
-import AppTextBody4 from '../../atoms/text/AppTextBody4';
+import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import { useTranslation } from 'react-i18next';
 
 const Tab = createMaterialTopTabNavigator();

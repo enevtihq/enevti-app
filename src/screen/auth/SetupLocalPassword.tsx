@@ -9,16 +9,16 @@ import * as Yup from 'yup';
 import YupPassword from 'yup-password';
 import * as Lisk from '@liskhq/lisk-client';
 
-import { encryptWithPassword } from '../../utils/cryptography';
-import { Theme } from '../../theme/default';
-import AppHeaderWizard from '../../components/molecules/AppHeaderWizard';
-import { RootStackParamList } from '../../navigation';
-import AppFormSecureTextInput from '../../components/organism/AppFormSecureTextInput';
-import AppPrimaryButton from '../../components/atoms/button/AppPrimaryButton';
-import AppView from '../../components/atoms/view/AppView';
-import AppCheckbox from '../../components/atoms/form/AppCheckbox';
-import { hp, wp, SafeAreaInsets } from '../../utils/imageRatio';
-import { BRAND_NAME } from '../../components/atoms/brand/AppBrandConstant';
+import { encryptWithPassword } from 'enevti-app/utils/cryptography';
+import { Theme } from 'enevti-app/theme/default';
+import AppHeaderWizard from 'enevti-app/components/molecules/AppHeaderWizard';
+import { RootStackParamList } from 'enevti-app/navigation';
+import AppFormSecureTextInput from 'enevti-app/components/organism/AppFormSecureTextInput';
+import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
+import AppView from 'enevti-app/components/atoms/view/AppView';
+import AppCheckbox from 'enevti-app/components/atoms/form/AppCheckbox';
+import { hp, wp, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
+import { BRAND_NAME } from 'enevti-app/components/atoms/brand/AppBrandConstant';
 
 type Props = StackScreenProps<RootStackParamList, 'SetupLocalPassword'>;
 YupPassword(Yup);

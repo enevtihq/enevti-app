@@ -1,16 +1,16 @@
-import { COIN_NAME } from '../../../../../../components/atoms/brand/AppBrandConstant';
-import { iconMap } from '../../../../../../components/atoms/icon/AppIconComponent';
+import { COIN_NAME } from 'enevti-app/components/atoms/brand/AppBrandConstant';
+import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import {
   setPaymentFee,
   setPaymentStatus,
   setPaymentAction,
   showPayment,
-} from '../../../../../slices/payment';
-import { CreateNFTOneKind } from '../../../../../../types/store/CreateNFTQueue';
-import { AppThunk } from '../../../../../state';
-import { calculateGasFee } from '../../../../../../service/enevti/transaction';
-import { CreateNFTOneKindTransaction } from '../../../../../../types/service/enevti/transaction';
-import { makeDummyIPFS } from '../../../../../../utils/dummy/ipfs';
+} from 'enevti-app/store/slices/payment';
+import { CreateNFTOneKind } from 'enevti-app/types/store/CreateNFTQueue';
+import { AppThunk } from 'enevti-app/store/state';
+import { calculateGasFee } from 'enevti-app/service/enevti/transaction';
+import { CreateNFTOneKindTransaction } from 'enevti-app/types/service/enevti/transaction';
+import { makeDummyIPFS } from 'enevti-app/utils/dummy/ipfs';
 import i18n from 'enevti-app/translations/i18n';
 
 export const payCreateNFTOneKind =

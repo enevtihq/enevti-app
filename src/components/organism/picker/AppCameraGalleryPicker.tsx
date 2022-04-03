@@ -1,12 +1,12 @@
 import React from 'react';
-import AppMenuContainer from '../../atoms/menu/AppMenuContainer';
-import AppMenuItem from '../../atoms/menu/AppMenuItem';
-import { iconMap } from '../../atoms/icon/AppIconComponent';
+import AppMenuContainer from 'enevti-app/components/atoms/menu/AppMenuContainer';
+import AppMenuItem from 'enevti-app/components/atoms/menu/AppMenuItem';
+import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import { useTranslation } from 'react-i18next';
-import { menuItemHeigtPercentage } from '../../../utils/layout/menuItemHeigtPercentage';
+import { menuItemHeigtPercentage } from 'enevti-app/utils/layout/menuItemHeigtPercentage';
 import ImageCropPicker, { ImageOrVideo } from 'react-native-image-crop-picker';
 import { IMAGE_CROP_PICKER_OPTION } from './AppContentPicker';
-import { handleError } from '../../../utils/error/handle';
+import { handleError } from 'enevti-app/utils/error/handle';
 import { shallowEqual } from 'react-redux';
 
 interface AppCameraGalleryPickerProps {

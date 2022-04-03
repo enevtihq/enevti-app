@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleProp, Text, TextStyle, Pressable } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from 'react-native-paper';
-import { Theme } from '../../../../theme/default';
+import { Theme } from 'enevti-app/theme/default';
 
 interface AppTextReadMoreProps {
   children: React.ReactNode;

@@ -8,9 +8,9 @@ import {
   View,
 } from 'react-native';
 import Animated from 'react-native-reanimated';
-import { PROFILE_HEADER_HEIGHT_PERCENTAGE } from '../AppProfileHeader';
-import { TOP_TABBAR_HEIGHT_PERCENTAGE } from '../../../atoms/view/AppTopTabBar';
-import { hp, SafeAreaInsets, wp } from '../../../../utils/imageRatio';
+import { PROFILE_HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/organism/profile/AppProfileHeader';
+import { TOP_TABBAR_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppTopTabBar';
+import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { CollectionBase } from 'enevti-app/types/service/enevti/collection';
 import AppListItem, {

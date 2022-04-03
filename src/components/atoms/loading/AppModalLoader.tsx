@@ -1,16 +1,16 @@
 import React from 'react';
 import { Modal, Portal, useTheme } from 'react-native-paper';
-import AppListItem from '../../molecules/list/AppListItem';
+import AppListItem from 'enevti-app/components/molecules/list/AppListItem';
 import AppActivityIndicator from './AppActivityIndicator';
-import AppTextBody4 from '../text/AppTextBody4';
+import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import { useTranslation } from 'react-i18next';
-import { wp } from '../../../utils/imageRatio';
+import { wp } from 'enevti-app/utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
 import {
   selectModalLoaderMessage,
   selectModalLoaderShow,
-} from '../../../store/slices/ui/global/modalLoader';
+} from 'enevti-app/store/slices/ui/global/modalLoader';
 
 export default function AppModalLoader() {
   const { t } = useTranslation();

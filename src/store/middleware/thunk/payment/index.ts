@@ -1,8 +1,8 @@
-import { AppThunk } from '../../../state';
+import { AppThunk } from 'enevti-app/store/state';
 import { reducePayCreateNFTOneKind } from './reducePayCreateNFTOneKind';
 import { reducePayMintCollection } from './reducePayMintCollection';
-import { handleError } from '../../../../utils/error/handle';
-import { showSnackbar } from '../../../slices/ui/global/snackbar';
+import { handleError } from 'enevti-app/utils/error/handle';
+import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 
 export const reducePayment = (): AppThunk => (dispatch, getState) => {
   const paymentType = getState().payment.action.type;

@@ -1,9 +1,9 @@
 import { CollectionBase } from 'enevti-app/types/service/enevti/collection';
-import { COIN_NAME } from '../../components/atoms/brand/AppBrandConstant';
-import enevtiNFTTemplate from '../../components/atoms/nft/template/enevtiNFTTemplate';
-import { NFTBase } from '../../types/nft/index';
-import { NFTUtility } from '../../types/nft/NFTUtility';
-import { shuffleArray } from '../../utils/primitive/array';
+import { COIN_NAME } from 'enevti-app/components/atoms/brand/AppBrandConstant';
+import enevtiNFTTemplate from 'enevti-app/components/atoms/nft/template/enevtiNFTTemplate';
+import { NFTBase } from 'enevti-app/types/nft/index';
+import { NFTUtility } from 'enevti-app/types/nft/NFTUtility';
+import { shuffleArray } from 'enevti-app/utils/primitive/array';
 
 export const getDummyCollectionBaseDate = (): CollectionBase => {
   return {

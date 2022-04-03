@@ -1,15 +1,15 @@
-import { getCollection } from '../../../../../service/enevti/collection';
-import { handleError } from '../../../../../utils/error/handle';
+import { getCollection } from 'enevti-app/service/enevti/collection';
+import { handleError } from 'enevti-app/utils/error/handle';
 import {
   setCollectionViewLoaded,
   setCollectionView,
   resetCollectionView,
-} from '../../../../slices/ui/view/collection';
+} from 'enevti-app/store/slices/ui/view/collection';
 import {
   hideModalLoader,
   showModalLoader,
-} from '../../../../slices/ui/global/modalLoader';
-import { AppThunk } from '../../../../state';
+} from 'enevti-app/store/slices/ui/global/modalLoader';
+import { AppThunk } from 'enevti-app/store/state';
 
 export const loadCollection =
   (id: string, reload: boolean = false): AppThunk =>

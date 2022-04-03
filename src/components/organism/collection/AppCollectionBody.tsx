@@ -1,12 +1,12 @@
 import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import React, { ComponentType } from 'react';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import AppTopTabBar from '../../atoms/view/AppTopTabBar';
+import AppTopTabBar from 'enevti-app/components/atoms/view/AppTopTabBar';
 import { useTheme } from 'react-native-paper';
 import Color from 'color';
-import AppTextBody4 from '../../atoms/text/AppTextBody4';
+import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import { useTranslation } from 'react-i18next';
-import { HEADER_HEIGHT_PERCENTAGE } from '../../atoms/view/AppHeader';
+import { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
 import useDimension from 'enevti-app/utils/hook/useDimension';
 
 const Tab = createMaterialTopTabNavigator();

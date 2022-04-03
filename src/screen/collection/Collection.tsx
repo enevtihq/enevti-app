@@ -1,13 +1,13 @@
 import React from 'react';
 import { StackScreenProps } from '@react-navigation/stack';
 import { useDispatch } from 'react-redux';
-import AppView from '../../components/atoms/view/AppView';
+import AppView from 'enevti-app/components/atoms/view/AppView';
 import {
   resetStatusBarState,
   setStatusBarBackground,
   setStatusBarTint,
-} from '../../store/slices/ui/global/statusbar';
-import { RootStackParamList } from '../../navigation';
+} from 'enevti-app/store/slices/ui/global/statusbar';
+import { RootStackParamList } from 'enevti-app/navigation';
 import AppCollection from 'enevti-app/components/organism/collection/AppCollection';
 import AppHeader, {
   HEADER_HEIGHT_PERCENTAGE,

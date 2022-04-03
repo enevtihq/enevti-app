@@ -1,13 +1,13 @@
 import { View, Text, StyleSheet } from 'react-native';
 import React from 'react';
-import AppTextHeading4 from '../../atoms/text/AppTextHeading4';
-import AppTextBody4 from '../../atoms/text/AppTextBody4';
+import AppTextHeading4 from 'enevti-app/components/atoms/text/AppTextHeading4';
+import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import { useTheme } from 'react-native-paper';
-import { Theme } from '../../../theme/default';
+import { Theme } from 'enevti-app/theme/default';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { hp, SafeAreaInsets, wp } from '../../../utils/imageRatio';
+import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
 import { useTranslation } from 'react-i18next';
-import { FeedItem } from '../../../types/service/enevti/feed';
+import { FeedItem } from 'enevti-app/types/service/enevti/feed';
 
 interface AppFeedFooterProps {
   feed: FeedItem;

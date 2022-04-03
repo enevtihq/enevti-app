@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
-import { RootState } from '../../../../state';
-import { RootStackParamList } from '../../../../../navigation';
+import { RootState } from 'enevti-app/store/state';
+import { RootStackParamList } from 'enevti-app/navigation';
 
 type CreateNFTRoute = keyof RootStackParamList | '';
 

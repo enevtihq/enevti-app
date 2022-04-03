@@ -2,15 +2,15 @@ import React from 'react';
 import { Portal, Dialog, useTheme } from 'react-native-paper';
 import { Keyboard, View, StyleSheet } from 'react-native';
 
-import AppIconGradient from '../molecules/AppIconGradient';
-import { iconMap } from '../atoms/icon/AppIconComponent';
-import { hp } from '../../utils/imageRatio';
+import AppIconGradient from 'enevti-app/components/molecules/AppIconGradient';
+import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
+import { hp } from 'enevti-app/utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import AppTextHeading1 from '../atoms/text/AppTextHeading1';
-import AppIconButton from '../atoms/icon/AppIconButton';
-import { SafeAreaInsets } from '../../utils/imageRatio';
-import AppTextBody4 from '../atoms/text/AppTextBody4';
-import AppKeyboardDismissOnClickView from '../atoms/view/AppKeyboardDismissOnClickView';
+import AppTextHeading1 from 'enevti-app/components/atoms/text/AppTextHeading1';
+import AppIconButton from 'enevti-app/components/atoms/icon/AppIconButton';
+import { SafeAreaInsets } from 'enevti-app/utils/imageRatio';
+import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
+import AppKeyboardDismissOnClickView from 'enevti-app/components/atoms/view/AppKeyboardDismissOnClickView';
 
 interface AppDialogFormProps {
   children: React.ReactNode;

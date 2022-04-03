@@ -2,13 +2,13 @@ import React from 'react';
 import { StyleProp, ViewStyle, StyleSheet, View } from 'react-native';
 import { TouchableRipple } from 'react-native-paper';
 import { useTheme } from 'react-native-paper';
-import { hp, SafeAreaInsets, wp } from '../../../utils/imageRatio';
+import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
 
-import { Theme } from '../../../theme/default';
+import { Theme } from 'enevti-app/theme/default';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Color from 'color';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import AppActivityIndicator from '../loading/AppActivityIndicator';
+import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
 
 interface AppQuaternaryButtonProps {
   children?: React.ReactNode;

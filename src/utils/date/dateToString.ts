@@ -1,4 +1,4 @@
-import i18n from '../../translations/i18n';
+import i18n from 'enevti-app/translations/i18n';
 
 export function dayToString(day: number) {
   switch (day) {

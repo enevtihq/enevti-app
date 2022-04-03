@@ -1,26 +1,23 @@
-import { getBasePersona } from '../../../../../service/enevti/persona';
-import {
-  getMyProfile,
-  getProfile,
-} from '../../../../../service/enevti/profile';
-import { handleError } from '../../../../../utils/error/handle';
-import { selectMyPersonaCache } from '../../../../slices/entities/cache/myPersona';
+import { getBasePersona } from 'enevti-app/service/enevti/persona';
+import { getMyProfile, getProfile } from 'enevti-app/service/enevti/profile';
+import { handleError } from 'enevti-app/utils/error/handle';
+import { selectMyPersonaCache } from 'enevti-app/store/slices/entities/cache/myPersona';
 import {
   hideModalLoader,
   showModalLoader,
-} from '../../../../slices/ui/global/modalLoader';
+} from 'enevti-app/store/slices/ui/global/modalLoader';
 import {
   setMyPersonaView,
   setMyProfileView,
   setMyProfileViewLoaded,
-} from '../../../../slices/ui/view/myProfile';
+} from 'enevti-app/store/slices/ui/view/myProfile';
 import {
   resetProfileView,
   setPersonaView,
   setProfileView,
   setProfileViewLoaded,
-} from '../../../../slices/ui/view/profile';
-import { AppThunk } from '../../../../state';
+} from 'enevti-app/store/slices/ui/view/profile';
+import { AppThunk } from 'enevti-app/store/state';
 
 export const loadProfile =
   (address: string, reload: boolean): AppThunk =>

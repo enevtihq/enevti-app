@@ -1,8 +1,8 @@
-import { NFTTemplateAsset } from '../nft/NFTTemplate';
+import { NFTTemplateAsset } from 'enevti-app/types/nft/NFTTemplate';
 import {
   OneKindContractForm,
   OneKindContractStatusForm,
-} from '../screen/CreateOneKindContract';
+} from 'enevti-app/types/screen/CreateOneKindContract';
 
 type CreateNFTTrait = {
   key: string;

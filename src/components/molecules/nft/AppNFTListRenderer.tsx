@@ -1,10 +1,10 @@
 import { View, FlatList } from 'react-native';
 import React from 'react';
 import AppNFTRenderer from './AppNFTRenderer';
-import AppPaginationIndicator from '../../atoms/pagination/AppPaginationIndicator';
-import { hp } from '../../../utils/imageRatio';
+import AppPaginationIndicator from 'enevti-app/components/atoms/pagination/AppPaginationIndicator';
+import { hp } from 'enevti-app/utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { NFTBase } from '../../../types/nft';
+import { NFTBase } from 'enevti-app/types/nft';
 
 interface AppNFTListRedererProps {
   nft: NFTBase[];

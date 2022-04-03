@@ -1,4 +1,4 @@
-import { RootStackParamList } from '../../navigation';
+import { RootStackParamList } from 'enevti-app/navigation';
 
 declare global {
   namespace ReactNavigation {

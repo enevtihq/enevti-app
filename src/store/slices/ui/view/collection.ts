@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
-import { Collection } from '../../../../types/service/enevti/collection';
-import { RootState } from '../../../state';
+import { Collection } from 'enevti-app/types/service/enevti/collection';
+import { RootState } from 'enevti-app/store/state';
 
 type CollectionViewState = Collection & { loaded: boolean };
 

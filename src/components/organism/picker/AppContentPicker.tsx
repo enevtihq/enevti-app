@@ -1,23 +1,23 @@
 import { StyleSheet, View } from 'react-native';
 import React from 'react';
-import AppListPickerItem from '../../molecules/listpicker/AppListPickerItem';
-import { iconMap } from '../../atoms/icon/AppIconComponent';
+import AppListPickerItem from 'enevti-app/components/molecules/listpicker/AppListPickerItem';
+import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import DocumentPicker, {
   DocumentPickerResponse,
 } from 'react-native-document-picker';
-import { handleError } from '../../../utils/error/handle';
-import AppIconButton from '../../atoms/icon/AppIconButton';
-import { SafeAreaInsets, wp } from '../../../utils/imageRatio';
+import { handleError } from 'enevti-app/utils/error/handle';
+import AppIconButton from 'enevti-app/components/atoms/icon/AppIconButton';
+import { SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import mimeToIcon from '../../../utils/mime/mimeToIcon';
-import { fileSizeKMG } from '../../../utils/format/fileSize';
+import mimeToIcon from 'enevti-app/utils/mime/mimeToIcon';
+import { fileSizeKMG } from 'enevti-app/utils/format/fileSize';
 import { shallowEqual } from 'react-redux';
-import { Theme } from '../../../theme/default';
+import { Theme } from 'enevti-app/theme/default';
 import Color from 'color';
 import { useTheme } from 'react-native-paper';
-import { NFT_RESOLUTION } from '../../../service/enevti/nft';
-import i18n from '../../../translations/i18n';
-import darkTheme from '../../../theme/dark';
+import { NFT_RESOLUTION } from 'enevti-app/service/enevti/nft';
+import i18n from 'enevti-app/translations/i18n';
+import darkTheme from 'enevti-app/theme/dark';
 import ImageCropPicker from 'react-native-image-crop-picker';
 
 export const IMAGE_CROP_PICKER_OPTION = {

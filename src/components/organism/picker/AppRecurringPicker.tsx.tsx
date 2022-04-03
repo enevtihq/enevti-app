@@ -1,8 +1,8 @@
 import React from 'react';
-import { iconMap } from '../../atoms/icon/AppIconComponent';
-import { PickerItem } from '../../../types/screen/PickerItem';
+import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
+import { PickerItem } from 'enevti-app/types/screen/PickerItem';
 import { useTranslation } from 'react-i18next';
-import AppListPicker from '../../molecules/listpicker/AppListPicker';
+import AppListPicker from 'enevti-app/components/molecules/listpicker/AppListPicker';
 import { shallowEqual } from 'react-redux';
 
 interface AppRecurringPickerProps {

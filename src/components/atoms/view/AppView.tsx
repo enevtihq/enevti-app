@@ -6,14 +6,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   hideSnackbar,
   selectSnackBarState,
-} from '../../../store/slices/ui/global/snackbar';
-import AppSnackbar from '../snackbar/AppSnackbar';
-import { SafeAreaInsets, wp } from '../../../utils/imageRatio';
+} from 'enevti-app/store/slices/ui/global/snackbar';
+import AppSnackbar from 'enevti-app/components/atoms/snackbar/AppSnackbar';
+import { SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
 import AppKeyboardDismissOnClickView from './AppKeyboardDismissOnClickView';
 import AppContainer from './AppContainer';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import AppPaymentModal from '../../organism/payment/AppPaymentModal';
-import AppModalLoader from '../loading/AppModalLoader';
+import AppPaymentModal from 'enevti-app/components/organism/payment/AppPaymentModal';
+import AppModalLoader from 'enevti-app/components/atoms/loading/AppModalLoader';
 
 interface AppViewProps {
   children: React.ReactNode;

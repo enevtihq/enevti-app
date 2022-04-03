@@ -1,12 +1,15 @@
 import React from 'react';
 import { StackScreenProps } from '@react-navigation/stack';
-import { RootStackParamList } from '../../navigation';
-import AppView from '../../components/atoms/view/AppView';
-import AppHeader from '../../components/atoms/view/AppHeader';
-import AppFloatingActionButton from '../../components/atoms/view/AppFloatingActionButton';
-import { StakePoolData, StakerItem } from '../../types/service/enevti/stake';
-import { getStakePoolCompleteData } from '../../service/enevti/stake';
-import { handleError } from '../../utils/error/handle';
+import { RootStackParamList } from 'enevti-app/navigation';
+import AppView from 'enevti-app/components/atoms/view/AppView';
+import AppHeader from 'enevti-app/components/atoms/view/AppHeader';
+import AppFloatingActionButton from 'enevti-app/components/atoms/view/AppFloatingActionButton';
+import {
+  StakePoolData,
+  StakerItem,
+} from 'enevti-app/types/service/enevti/stake';
+import { getStakePoolCompleteData } from 'enevti-app/service/enevti/stake';
+import { handleError } from 'enevti-app/utils/error/handle';
 import Animated, {
   runOnJS,
   useAnimatedScrollHandler,
@@ -21,15 +24,15 @@ import {
 } from 'react-native';
 import AppStakerItem, {
   STAKER_ITEM_HEIGHT_PERCENTAGE,
-} from '../../components/organism/stake/AppStakerItem';
-import { LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE } from '../../components/molecules/list/AppListItem';
-import { hp } from '../../utils/imageRatio';
+} from 'enevti-app/components/organism/stake/AppStakerItem';
+import { LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE } from 'enevti-app/components/molecules/list/AppListItem';
+import { hp } from 'enevti-app/utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { iconMap } from '../../components/atoms/icon/AppIconComponent';
+import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
-import { selectMyPersonaCache } from '../../store/slices/entities/cache/myPersona';
-import AppMenuContainer from '../../components/atoms/menu/AppMenuContainer';
+import { selectMyPersonaCache } from 'enevti-app/store/slices/entities/cache/myPersona';
+import AppMenuContainer from 'enevti-app/components/atoms/menu/AppMenuContainer';
 
 const AnimatedFlatList =
   Animated.createAnimatedComponent<FlatListProps<StakerItem>>(FlatList);

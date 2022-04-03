@@ -1,21 +1,21 @@
-import { Persona } from '../../types/service/enevti/persona';
-import { store } from '../../store/state';
+import { Persona } from 'enevti-app/types/service/enevti/persona';
+import { store } from 'enevti-app/store/state';
 import {
   decryptWithDevice,
   decryptWithPassword,
-} from '../../utils/cryptography';
+} from 'enevti-app/utils/cryptography';
 import * as Lisk from '@liskhq/lisk-client';
-import { ERRORCODE } from '../../utils/error/code';
-import { sleep } from '../../service/enevti/dummy';
-import { lastFetchTreshold } from '../../utils/constant/lastFetch';
+import { ERRORCODE } from 'enevti-app/utils/error/code';
+import { sleep } from 'enevti-app/service/enevti/dummy';
+import { lastFetchTreshold } from 'enevti-app/utils/constant/lastFetch';
 import {
   setMyPersonaCache,
   setLastFetchMyPersonaCache,
   selectMyPersonaCache,
   setMyPersonaAddressCache,
-} from '../../store/slices/entities/cache/myPersona';
-import { selectAuthState } from '../../store/slices/auth';
-import { selectLocalSession } from '../../store/slices/session/local';
+} from 'enevti-app/store/slices/entities/cache/myPersona';
+import { selectAuthState } from 'enevti-app/store/slices/auth';
+import { selectLocalSession } from 'enevti-app/store/slices/session/local';
 
 async function fetchPersona(address: string): Promise<Persona> {
   await sleep(1000);

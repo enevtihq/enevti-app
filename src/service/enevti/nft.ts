@@ -1,5 +1,5 @@
 import ImageCropPicker from 'react-native-image-crop-picker';
-import { handleError } from '../../utils/error/handle';
+import { handleError } from 'enevti-app/utils/error/handle';
 import { sleep } from './dummy';
 
 export const NFT_RESOLUTION = 500;

@@ -3,8 +3,8 @@ import React from 'react';
 import { CommonPicker } from '@yz1311/react-native-wheel-picker';
 import { useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { SafeAreaInsets, wp } from '../../../utils/imageRatio';
-import { Theme } from '../../../theme/default';
+import { SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
+import { Theme } from 'enevti-app/theme/default';
 import { useTranslation } from 'react-i18next';
 
 interface AppWheelPickerProps {

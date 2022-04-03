@@ -9,17 +9,19 @@ import {
 } from 'react-native';
 import { useTheme } from 'react-native-paper';
 
-import { hp, wp, SafeAreaInsets } from '../../utils/imageRatio';
-import AppTextHeading1 from '../../components/atoms/text/AppTextHeading1';
-import AppTextBody4 from '../atoms/text/AppTextBody4';
-import { iconMap } from '../atoms/icon/AppIconComponent';
-import AppIconButton from '../atoms/icon/AppIconButton';
+import { hp, wp, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
+import AppTextHeading1 from 'enevti-app/components/atoms/text/AppTextHeading1';
+import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
+import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
+import AppIconButton from 'enevti-app/components/atoms/icon/AppIconButton';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AppIconGradient from './AppIconGradient';
-import { Theme } from '../../theme/default';
-import AppEmojiComponent, { emojiMap } from '../atoms/icon/AppEmojiComponent';
+import { Theme } from 'enevti-app/theme/default';
+import AppEmojiComponent, {
+  emojiMap,
+} from 'enevti-app/components/atoms/icon/AppEmojiComponent';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../../navigation';
+import { RootStackParamList } from 'enevti-app/navigation';
 import { shallowEqual } from 'react-redux';
 
 interface AppHeaderWizardProps {

@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
-import { RootState } from '../../../state';
+import { RootState } from 'enevti-app/store/state';
 
 type DisplayInitialState = {
   current: string;

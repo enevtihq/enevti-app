@@ -1,11 +1,11 @@
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import React from 'react';
 import { useTheme } from 'react-native-paper';
-import AppTextBody4 from '../atoms/text/AppTextBody4';
-import { SafeAreaInsets, wp, hp } from '../../utils/imageRatio';
+import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
+import { SafeAreaInsets, wp, hp } from 'enevti-app/utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AppIconGradient from './AppIconGradient';
-import { Theme } from '../../theme/default';
+import { Theme } from 'enevti-app/theme/default';
 
 interface AppIconBannerProps {
   children: React.ReactNode;

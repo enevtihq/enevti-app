@@ -5,7 +5,7 @@ import { createImageProgress } from 'react-native-image-progress';
 import FI, { ImageStyle } from 'react-native-fast-image';
 import { useTheme } from 'react-native-paper';
 
-import { Theme } from '../../../theme/default';
+import { Theme } from 'enevti-app/theme/default';
 
 const FastImage = createImageProgress(FI);
 

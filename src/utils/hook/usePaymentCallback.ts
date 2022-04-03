@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   resetPaymentState,
   selectPaymentStatus,
-} from '../../store/slices/payment';
+} from 'enevti-app/store/slices/payment';
 
 interface PaymentCallbackHookProps {
   onIdle?: () => void;

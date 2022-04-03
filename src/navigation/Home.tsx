@@ -1,12 +1,12 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Feed from '../screen/home/Feed';
-import Statistics from '../screen/home/Statistics';
-import Discover from '../screen/home/Discover';
-import MyProfile from '../screen/home/MyProfile';
+import Feed from 'enevti-app/screen/home/Feed';
+import Statistics from 'enevti-app/screen/home/Statistics';
+import Discover from 'enevti-app/screen/home/Discover';
+import MyProfile from 'enevti-app/screen/home/MyProfile';
 import AppHeader, {
   HEADER_HEIGHT_PERCENTAGE,
-} from '../components/atoms/view/AppHeader';
+} from 'enevti-app/components/atoms/view/AppHeader';
 import {
   useAnimatedScrollHandler,
   useSharedValue,
@@ -17,55 +17,55 @@ import {
 } from 'react-native-reanimated';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { diffClamp } from '../utils/animation';
-import AppTabBar from '../components/atoms/view/AppTabBar';
-import { hp, SafeAreaInsets, wp } from '../utils/imageRatio';
+import { diffClamp } from 'enevti-app/utils/animation';
+import AppTabBar from 'enevti-app/components/atoms/view/AppTabBar';
+import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import AppHeaderAction from '../components/atoms/view/AppHeaderAction';
-import { iconMap } from '../components/atoms/icon/AppIconComponent';
+import AppHeaderAction from 'enevti-app/components/atoms/view/AppHeaderAction';
+import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import { TouchableRipple, useTheme } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
-import { getMyBasePersona } from '../service/enevti/persona';
-import AppAvatarRenderer from '../components/molecules/avatar/AppAvatarRenderer';
+import { getMyBasePersona } from 'enevti-app/service/enevti/persona';
+import AppAvatarRenderer from 'enevti-app/components/molecules/avatar/AppAvatarRenderer';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectMyPersonaCache } from '../store/slices/entities/cache/myPersona';
-import { selectMyProfileCache } from '../store/slices/entities/cache/myProfile';
+import { selectMyPersonaCache } from 'enevti-app/store/slices/entities/cache/myPersona';
+import { selectMyProfileCache } from 'enevti-app/store/slices/entities/cache/myProfile';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { StyleSheet, View } from 'react-native';
 import Color from 'color';
-import AppIconGradient from '../components/molecules/AppIconGradient';
-import { Theme } from '../theme/default';
+import AppIconGradient from 'enevti-app/components/molecules/AppIconGradient';
+import { Theme } from 'enevti-app/theme/default';
 import {
   getMyProfile,
   isProfileCanCreateNFT,
   MINIMUM_BASIC_UNIT_STAKE_ELIGIBILITY,
-} from '../service/enevti/profile';
+} from 'enevti-app/service/enevti/profile';
 import {
   selectOnceEligible,
   touchOnceEligible,
-} from '../store/slices/entities/once/eligible';
-import AppMenuContainer from '../components/atoms/menu/AppMenuContainer';
-import AppHeaderWizard from '../components/molecules/AppHeaderWizard';
+} from 'enevti-app/store/slices/entities/once/eligible';
+import AppMenuContainer from 'enevti-app/components/atoms/menu/AppMenuContainer';
+import AppHeaderWizard from 'enevti-app/components/molecules/AppHeaderWizard';
 
-import NotEligibleIMG from '../assets/svg/undraw_stand_out_-1-oag.svg';
-import { getCoinName } from '../components/atoms/brand/AppBrandConstant';
-import AppSecondaryButton from '../components/atoms/button/AppSecondaryButton';
-import AppQuaternaryButton from '../components/atoms/button/AppQuaternaryButton';
-import AppTextBody4 from '../components/atoms/text/AppTextBody4';
+import NotEligibleIMG from 'enevti-app/assets/svg/undraw_stand_out_-1-oag.svg';
+import { getCoinName } from 'enevti-app/components/atoms/brand/AppBrandConstant';
+import AppSecondaryButton from 'enevti-app/components/atoms/button/AppSecondaryButton';
+import AppQuaternaryButton from 'enevti-app/components/atoms/button/AppQuaternaryButton';
+import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '.';
 import {
   clearCreateNFTQueueRoute,
   selectCreateNFTRouteQueue,
-} from '../store/slices/queue/nft/create/route';
-import AppPrimaryButton from '../components/atoms/button/AppPrimaryButton';
+} from 'enevti-app/store/slices/queue/nft/create/route';
+import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
 import {
   clearCreateNFTQueueType,
   selectCreateNFTTypeQueue,
-} from '../store/slices/queue/nft/create/type';
-import { clearCreateNFTOneKindQueue } from '../store/slices/queue/nft/create/onekind';
-import { cleanTMPImage } from '../service/enevti/nft';
-import { clearCreateNFTPackQueue } from '../store/slices/queue/nft/create/pack';
+} from 'enevti-app/store/slices/queue/nft/create/type';
+import { clearCreateNFTOneKindQueue } from 'enevti-app/store/slices/queue/nft/create/onekind';
+import { cleanTMPImage } from 'enevti-app/service/enevti/nft';
+import { clearCreateNFTPackQueue } from 'enevti-app/store/slices/queue/nft/create/pack';
 
 const Tab = createBottomTabNavigator();
 const TABBAR_HEIGHT_PERCENTAGE = 8;

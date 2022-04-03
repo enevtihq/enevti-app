@@ -3,16 +3,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   loadCollection,
   unloadCollection,
-} from '../../../store/middleware/thunk/ui/view/collection';
+} from 'enevti-app/store/middleware/thunk/ui/view/collection';
 import {
   isCollectionUndefined,
   selectCollectionView,
-} from '../../../store/slices/ui/view/collection';
+} from 'enevti-app/store/slices/ui/view/collection';
 import { FlatList, StyleSheet, View } from 'react-native';
-import AppActivityIndicator from '../../../components/atoms/loading/AppActivityIndicator';
-import AppCollectionHeader from '../../../components/organism/collection/AppCollectionHeader';
-import AppCollectionBody from '../../../components/organism/collection/AppCollectionBody';
-import MintedItemsComponent from '../../../components/organism/collection/tabs/MintedItemsComponent';
+import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
+import AppCollectionHeader from 'enevti-app/components/organism/collection/AppCollectionHeader';
+import AppCollectionBody from 'enevti-app/components/organism/collection/AppCollectionBody';
+import MintedItemsComponent from 'enevti-app/components/organism/collection/tabs/MintedItemsComponent';
 import Animated, {
   scrollTo,
   useAnimatedRef,
@@ -21,9 +21,9 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
-import { HEADER_HEIGHT_PERCENTAGE } from '../../../components/atoms/view/AppHeader';
-import { COLLECTION_HEADER_VIEW_HEIGHT } from '../../../components/organism/collection/AppCollectionHeader';
-import { MINTING_AVAILABLE_VIEW_HEIGHT } from '../../../components/organism/collection/AppCollectionMintingAvailable';
+import { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
+import { COLLECTION_HEADER_VIEW_HEIGHT } from 'enevti-app/components/organism/collection/AppCollectionHeader';
+import { MINTING_AVAILABLE_VIEW_HEIGHT } from 'enevti-app/components/organism/collection/AppCollectionMintingAvailable';
 import useDimension from 'enevti-app/utils/hook/useDimension';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import CollectionActivityComponent from './tabs/CollectionActivityComponent';

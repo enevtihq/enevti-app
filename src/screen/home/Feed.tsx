@@ -8,20 +8,20 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import AppView from '../../components/atoms/view/AppView';
+import AppView from 'enevti-app/components/atoms/view/AppView';
 
 import { StackScreenProps } from '@react-navigation/stack';
-import { RootStackParamList } from '../../navigation';
-import AppRecentMoments from '../../components/organism/AppRecentMoments';
-import AppFeedItem from '../../components/molecules/feed/AppFeedItem';
-import { Feeds, FeedItem, Moments } from '../../types/service/enevti/feed';
-import { getFeedList, getMomentsList } from '../../service/enevti/feed';
+import { RootStackParamList } from 'enevti-app/navigation';
+import AppRecentMoments from 'enevti-app/components/organism/AppRecentMoments';
+import AppFeedItem from 'enevti-app/components/molecules/feed/AppFeedItem';
+import { Feeds, FeedItem, Moments } from 'enevti-app/types/service/enevti/feed';
+import { getFeedList, getMomentsList } from 'enevti-app/service/enevti/feed';
 import Animated from 'react-native-reanimated';
-import { handleError } from '../../utils/error/handle';
-import { hp, wp } from '../../utils/imageRatio';
+import { handleError } from 'enevti-app/utils/error/handle';
+import { hp, wp } from 'enevti-app/utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { getMyBasePersona } from '../../service/enevti/persona';
-import { getMyProfile } from '../../service/enevti/profile';
+import { getMyBasePersona } from 'enevti-app/service/enevti/persona';
+import { getMyProfile } from 'enevti-app/service/enevti/profile';
 
 const AnimatedFlatList =
   Animated.createAnimatedComponent<FlatListProps<FeedItem>>(FlatList);

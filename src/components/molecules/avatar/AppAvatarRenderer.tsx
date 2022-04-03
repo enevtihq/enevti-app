@@ -3,10 +3,10 @@ import React from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { ImageStyle } from 'react-native-fast-image';
 
-import AppNetworkImage from '../../atoms/image/AppNetworkImage';
-import { IPFStoURL } from '../../../service/ipfs';
-import Avatar from '../../atoms/avatar';
-import { iconMap } from '../../atoms/icon/AppIconComponent';
+import AppNetworkImage from 'enevti-app/components/atoms/image/AppNetworkImage';
+import { IPFStoURL } from 'enevti-app/service/ipfs';
+import Avatar from 'enevti-app/components/atoms/avatar';
+import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 
 import { useTheme } from 'react-native-paper';
 

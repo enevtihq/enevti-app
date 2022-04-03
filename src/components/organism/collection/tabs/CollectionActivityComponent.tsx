@@ -9,12 +9,9 @@ import {
 import { useTheme } from 'react-native-paper';
 import Animated from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { TOP_TABBAR_HEIGHT_PERCENTAGE } from '../../../atoms/view/AppTopTabBar';
+import { TOP_TABBAR_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppTopTabBar';
 import { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
-import {
-  DimensionFunction,
-  SafeAreaInsets,
-} from '../../../../utils/imageRatio';
+import { DimensionFunction, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
 import useDimension from 'enevti-app/utils/hook/useDimension';
 import AppListItem, {
   LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE,
@@ -29,7 +26,7 @@ import { useTranslation } from 'react-i18next';
 import AppTextHeading4 from 'enevti-app/components/atoms/text/AppTextHeading4';
 import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
 import AppTextHeading5 from 'enevti-app/components/atoms/text/AppTextHeading5';
-import { MINT_BUTTON_HEIGHT } from '../AppCollectionMintButton';
+import { MINT_BUTTON_HEIGHT } from 'enevti-app/components/organism/collection/AppCollectionMintButton';
 
 const COLLECTION_ACTIVITY_ITEM_HEIGHT = 9;
 const AnimatedFlatList = Animated.createAnimatedComponent<any>(FlatList);

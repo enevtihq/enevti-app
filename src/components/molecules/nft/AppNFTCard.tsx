@@ -1,17 +1,19 @@
 import { View, ViewStyle, StyleProp, StyleSheet } from 'react-native';
 import React from 'react';
-import { NFTBase } from '../../../types/nft';
-import { wp, SafeAreaInsets, hp } from '../../../utils/imageRatio';
+import { NFTBase } from 'enevti-app/types/nft';
+import { wp, SafeAreaInsets, hp } from 'enevti-app/utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from 'react-native-paper';
-import { Theme } from '../../../theme/default';
+import { Theme } from 'enevti-app/theme/default';
 import AppNFTRenderer from './AppNFTRenderer';
-import AppTextBody4 from '../../atoms/text/AppTextBody4';
-import AppTextHeading3 from '../../atoms/text/AppTextHeading3';
-import AppTextHeading4 from '../../atoms/text/AppTextHeading4';
-import { parseAmount } from '../../../utils/format/amount';
-import AppTextBody5 from '../../atoms/text/AppTextBody5';
-import AppIconComponent, { iconMap } from '../../atoms/icon/AppIconComponent';
+import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
+import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
+import AppTextHeading4 from 'enevti-app/components/atoms/text/AppTextHeading4';
+import { parseAmount } from 'enevti-app/utils/format/amount';
+import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
+import AppIconComponent, {
+  iconMap,
+} from 'enevti-app/components/atoms/icon/AppIconComponent';
 import Color from 'color';
 
 interface AppNFTCardProps {

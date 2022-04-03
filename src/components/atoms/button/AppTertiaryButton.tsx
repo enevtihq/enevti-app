@@ -3,12 +3,12 @@ import { StyleProp, ViewStyle, StyleSheet, View } from 'react-native';
 import { Button } from 'react-native-paper';
 import { IconSource } from 'react-native-paper/lib/typescript/components/Icon';
 import { useTheme } from 'react-native-paper';
-import { hp, SafeAreaInsets } from '../../../utils/imageRatio';
+import { hp, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
 import Color from 'color';
 
-import { Theme } from '../../../theme/default';
+import { Theme } from 'enevti-app/theme/default';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import AppActivityIndicator from '../loading/AppActivityIndicator';
+import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
 
 interface AppTertiaryButtonProps {
   children: React.ReactNode;

@@ -1,9 +1,9 @@
 import { StyleProp, StyleSheet, TextStyle } from 'react-native';
 import React from 'react';
 import { Menu, useTheme } from 'react-native-paper';
-import { Theme } from '../../../theme/default';
+import { Theme } from 'enevti-app/theme/default';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { hp, SafeAreaInsets, wp } from '../../../utils/imageRatio';
+import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
 
 export const MENU_ITEM_HEIGHT_PERCENTAGE = 6;
 
