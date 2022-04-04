@@ -73,7 +73,7 @@ export const getDummyNFTData = (): NFTBase => {
         },
       ],
     },
-    redeem: {
+    partition: {
       parts: [
         'wfvfasdfwfwrgegwrhjtjut',
         'wfvfasdfwfwrgegwrhjtjut',
@@ -93,7 +93,6 @@ export async function sleep(time: number, signal?: AbortController['signal']) {
     }
     const timeout = setTimeout(resolve, time);
     signal?.addEventListener('abort', () => {
-      console.log('aborted');
       clearTimeout(timeout);
       reject(AbortError);
     });

@@ -2,6 +2,9 @@ import { NFTBase } from 'enevti-app/types/nft';
 import { NFTPrice } from 'enevti-app/types/nft/NFTPrice';
 import { SocialProfile } from 'enevti-app/types/social';
 import { Persona } from './persona';
+import { NFTActivity } from 'enevti-app/types/nft/NFTActivity';
+
+export type CollectionActivity = NFTActivity & { nft: NFTBase };
 
 export type CollectionBase = {
   id: string;
@@ -33,12 +36,5 @@ export interface Collection extends CollectionBase {
   packSize: number;
   minted: NFTBase[];
   originAddress: Persona;
-  activity: {
-    transaction: string;
-    name: string;
-    nft: NFTBase;
-    date: number;
-    to: Persona;
-    value: NFTPrice;
-  }[];
+  activity: CollectionActivity[];
 }

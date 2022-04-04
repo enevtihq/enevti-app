@@ -19,10 +19,10 @@ export default React.memo(
 
     if (nft.NFTType === 'onekind') {
       text = 'One Kind';
-    } else if (nft.NFTType === 'pack' && nft.redeem.parts.length > 0) {
-      text = `${nft.redeem.parts.length.toString()} Parts`;
+    } else if (nft.NFTType === 'pack' && nft.partition.parts.length > 0) {
+      text = `${nft.partition.parts.length.toString()} Parts`;
     } else if (nft.NFTType === 'upgradable') {
-      text = `Combine ${nft.redeem.upgradeMaterial.toString()}`;
+      text = `Combine ${nft.partition.upgradeMaterial.toString()}`;
     }
 
     const w = (parseFloat(args.width) * width) / 100.0;
