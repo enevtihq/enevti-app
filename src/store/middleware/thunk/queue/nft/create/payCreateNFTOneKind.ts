@@ -23,6 +23,8 @@ export const payCreateNFTOneKind =
     const content = payload.state.utility === 'content' ? makeDummyIPFS() : '';
     const contentMime =
       payload.state.utility === 'content' ? payload.state.contentType : '';
+    const contentSize =
+      payload.state.utility === 'content' ? payload.state.contentSize : -1;
     let until: number;
     if (payload.state.recurring !== 'anytime') {
       const now = new Date();
@@ -51,9 +53,11 @@ export const payCreateNFTOneKind =
       cover: cover,
       data: data,
       dataMime: payload.data.mime,
+      dataSize: payload.data.size,
       utility: payload.state.utility,
       content: content,
       contentMime: contentMime,
+      contentSize: contentSize,
       recurring: payload.state.recurring,
       time: {
         day: payload.state.timeDay,

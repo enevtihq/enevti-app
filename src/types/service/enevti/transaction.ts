@@ -5,9 +5,11 @@ export type CreateNFTOneKindTransaction = {
   cover: string;
   data: string;
   dataMime: string;
+  dataSize: number;
   utility: string;
   content: string;
   contentMime: string;
+  contentSize: number;
   recurring: string;
   time: {
     day: number;
