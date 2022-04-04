@@ -13,10 +13,13 @@ import { completeTokenUnit } from 'enevti-app/utils/format/amount';
 
 export const MINIMUM_BASIC_UNIT_STAKE_ELIGIBILITY = 1000;
 
-async function fetchProfile(address: string): Promise<Profile | undefined> {
+async function fetchProfile(
+  address: string,
+  signal?: AbortController['signal'],
+): Promise<Profile | undefined> {
   console.log(address);
 
-  await sleep(1000);
+  await sleep(1000, signal);
 
   const ownedNFT = [];
   const onsaleNFT = [];
@@ -58,12 +61,14 @@ function parseProfileCache(profile: Profile) {
 
 export async function getProfile(
   address: string,
+  signal?: AbortController['signal'],
 ): Promise<Profile | undefined> {
-  return await fetchProfile(address);
+  return await fetchProfile(address, signal);
 }
 
 export async function getMyProfile(
   force: boolean = false,
+  signal?: AbortController['signal'],
 ): Promise<Profile | undefined> {
   const now = Date.now();
   const myAddress = await getMyAddress();
@@ -71,7 +76,7 @@ export async function getMyProfile(
   let myProfile: Profile = selectMyProfileCache(store.getState());
 
   if (force || now - lastFetch > lastFetchTreshold.profile) {
-    const profileResponse = await getProfile(myAddress);
+    const profileResponse = await getProfile(myAddress, signal);
     if (profileResponse) {
       myProfile = profileResponse;
       store.dispatch(setLastFetchMyProfileCache(now));

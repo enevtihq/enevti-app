@@ -29,6 +29,7 @@ import {
 import { Profile } from 'enevti-app/types/service/enevti/profile';
 import { Persona } from 'enevti-app/types/service/enevti/persona';
 import CollectionListComponent from './tabs/CollectionListComponent';
+import { AppAsyncThunk } from 'enevti-app/types/store/AppAsyncThunk';
 
 const noDisplay = 'none';
 const visible = 1;
@@ -85,14 +86,17 @@ export default function AppProfile({
     hp(PROFILE_HEADER_HEIGHT_PERCENTAGE, insets) + headerHeight;
 
   const onProfileScreenLoaded = React.useCallback(
-    (reload: boolean = false) => dispatch(loadProfile(address, reload)),
+    (reload: boolean = false) => {
+      return dispatch(loadProfile({ address, reload }));
+    },
     [address, dispatch],
-  );
+  ) as AppAsyncThunk;
 
   React.useEffect(() => {
-    onProfileScreenLoaded();
+    const promise = onProfileScreenLoaded();
     return function cleanup() {
       dispatch(unloadProfile(address));
+      promise.abort();
     };
   }, [onProfileScreenLoaded, dispatch, address]);
 

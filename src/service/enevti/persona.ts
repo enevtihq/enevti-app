@@ -17,8 +17,11 @@ import {
 import { selectAuthState } from 'enevti-app/store/slices/auth';
 import { selectLocalSession } from 'enevti-app/store/slices/session/local';
 
-async function fetchPersona(address: string): Promise<Persona> {
-  await sleep(1000);
+async function fetchPersona(
+  address: string,
+  signal?: AbortController['signal'],
+): Promise<Persona> {
+  await sleep(1000, signal);
   return {
     photo: '',
     address: address,
@@ -63,18 +66,24 @@ export async function getMyAddress() {
   }
 }
 
-export async function getBasePersona(address: string): Promise<Persona> {
-  return await fetchPersona(address);
+export async function getBasePersona(
+  address: string,
+  signal?: AbortController['signal'],
+): Promise<Persona> {
+  return await fetchPersona(address, signal);
 }
 
-export async function getMyBasePersona(force = false): Promise<Persona> {
+export async function getMyBasePersona(
+  force = false,
+  signal?: AbortController['signal'],
+): Promise<Persona> {
   const now = Date.now();
   const address = await getMyAddress();
   const lastFetch = selectMyPersonaCache(store.getState()).lastFetch;
   let myPersona: Persona = selectMyPersonaCache(store.getState());
 
   if (force || now - lastFetch > lastFetchTreshold.persona) {
-    myPersona = await getBasePersona(address);
+    myPersona = await getBasePersona(address, signal);
     store.dispatch(setLastFetchMyPersonaCache(now));
     store.dispatch(setMyPersonaCache(myPersona));
   }

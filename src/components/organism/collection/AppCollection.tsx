@@ -37,6 +37,7 @@ import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 import { useTranslation } from 'react-i18next';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
+import { AppAsyncThunk } from 'enevti-app/types/store/AppAsyncThunk';
 
 interface AppCollectionProps {
   id: string;
@@ -89,9 +90,9 @@ export default function AppCollection({
   const disableHeaderAnimation = true;
 
   const onCollectionScreenLoaded = React.useCallback(
-    (reload: boolean = false) => dispatch(loadCollection(id, reload)),
+    (reload: boolean = false) => dispatch(loadCollection({ id, reload })),
     [id, dispatch],
-  );
+  ) as AppAsyncThunk;
 
   const onRefresh = React.useCallback(() => {
     onCollectionScreenLoaded(true);
@@ -101,9 +102,10 @@ export default function AppCollection({
   }, [onCollectionScreenLoaded, mintedRef, activityRef, onScrollWorklet]);
 
   React.useEffect(() => {
-    onCollectionScreenLoaded();
+    const promise = onCollectionScreenLoaded();
     return function cleanup() {
       dispatch(unloadCollection());
+      promise.abort();
     };
   }, [dispatch, onCollectionScreenLoaded]);
 

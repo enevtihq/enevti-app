@@ -1,11 +1,14 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { makeDummyIPFS } from 'enevti-app/utils/dummy/ipfs';
+import { sleep } from 'enevti-app/service/enevti/dummy';
 
 const IPFS_GATEWAY = 'https://cloudflare-ipfs.com/ipfs/';
 
 export const IPFStoURL = (hash: string) => IPFS_GATEWAY + hash;
 
-export async function uploadURItoIPFS(uri: string) {
-  await new Promise(r => setTimeout(r, 5000));
+export async function uploadURItoIPFS(
+  uri: string,
+  signal?: AbortController['signal'],
+) {
+  await sleep(5000, signal);
   return makeDummyIPFS();
 }

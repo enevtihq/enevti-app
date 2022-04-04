@@ -20,7 +20,9 @@ export function getBuiltInNFTTemplate(): NFTTemplateAsset[] {
   ];
 }
 
-export async function getMoreNFTTemplate(): Promise<NFTTemplateAsset[]> {
-  await sleep(1000);
+export async function getMoreNFTTemplate(
+  signal?: AbortController['signal'],
+): Promise<NFTTemplateAsset[]> {
+  await sleep(1000, signal);
   return [];
 }

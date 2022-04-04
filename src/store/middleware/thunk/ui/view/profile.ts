@@ -17,25 +17,31 @@ import {
   setProfileView,
   setProfileViewLoaded,
 } from 'enevti-app/store/slices/ui/view/profile';
-import { AppThunk } from 'enevti-app/store/state';
+import { AppThunk, AsyncThunkAPI } from 'enevti-app/store/state';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 
-export const loadProfile =
-  (address: string, reload: boolean): AppThunk =>
-  async (dispatch, getState) => {
-    dispatch({ type: 'profileView/loadProfile' });
+type LoadProfileArgs = { address: string; reload: boolean };
+
+export const loadProfile = createAsyncThunk<
+  void,
+  LoadProfileArgs,
+  AsyncThunkAPI
+>(
+  'profileView/loadProfile',
+  async ({ address, reload }, { dispatch, getState, signal }) => {
     try {
       reload && dispatch(showModalLoader());
       const myPersona = selectMyPersonaCache(getState());
       if (address === myPersona.address) {
-        const profileResponse = await getMyProfile(reload);
+        const profileResponse = await getMyProfile(reload, signal);
         if (profileResponse) {
           dispatch(setMyProfileViewLoaded(true));
           dispatch(setMyProfileView(profileResponse));
           dispatch(setMyPersonaView(myPersona));
         }
       } else {
-        const personaBase = await getBasePersona(address);
-        const profileResponse = await getProfile(address);
+        const personaBase = await getBasePersona(address, signal);
+        const profileResponse = await getProfile(address, signal);
         if (personaBase && profileResponse) {
           dispatch(setProfileViewLoaded(true));
           dispatch(setProfileView(profileResponse));
@@ -47,7 +53,8 @@ export const loadProfile =
     } finally {
       reload && dispatch(hideModalLoader());
     }
-  };
+  },
+);
 
 export const unloadProfile =
   (address: string): AppThunk =>

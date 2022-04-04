@@ -70,7 +70,7 @@ export default function AppView({
             {children}
           </AppContainer>
         )}
-        {withLoader ? <AppModalLoader /> : null}
+        {withLoader || withPayment ? <AppModalLoader /> : null}
         {withSnackbar ? (
           <AppSnackbar
             mode={snackbarState.mode}

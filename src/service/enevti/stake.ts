@@ -3,10 +3,11 @@ import { sleep } from './dummy';
 
 export async function getStakePoolCompleteData(
   address: string,
+  signal?: AbortController['signal'],
 ): Promise<StakePoolData | undefined> {
   console.log(address);
 
-  await sleep(1000);
+  await sleep(1000, signal);
 
   return {
     staker: [

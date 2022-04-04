@@ -38,8 +38,10 @@ function getFeedItemList(): FeedItem {
   };
 }
 
-export async function getFeedList(): Promise<Feeds | undefined> {
-  await sleep(1000);
+export async function getFeedList(
+  signal?: AbortController['signal'],
+): Promise<Feeds | undefined> {
+  await sleep(1000, signal);
 
   let randomCount = Math.random() * 10;
   if (randomCount === 0) {
@@ -55,8 +57,10 @@ export async function getFeedList(): Promise<Feeds | undefined> {
   return randomFeed;
 }
 
-export async function getMomentsList(): Promise<Moments | undefined> {
-  await sleep(1000);
+export async function getMomentsList(
+  signal?: AbortController['signal'],
+): Promise<Moments | undefined> {
+  await sleep(1000, signal);
 
   let randomCount = Math.random() * 10;
   if (randomCount === 1) {

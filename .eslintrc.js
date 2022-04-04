@@ -9,6 +9,7 @@ module.exports = {
   },
   globals: {
     JSX: true,
+    AbortController: true,
   },
   env: {
     es2020: true,

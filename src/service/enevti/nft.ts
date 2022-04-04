@@ -10,14 +10,20 @@ export function cleanTMPImage() {
   });
 }
 
-export async function isNameAvailable(name: string): Promise<boolean> {
-  await sleep(1000);
+export async function isNameAvailable(
+  name: string,
+  signal?: AbortController['signal'],
+): Promise<boolean> {
+  await sleep(1000, signal);
   console.log(name);
   return true;
 }
 
-export async function isSymbolAvailable(name: string): Promise<boolean> {
-  await sleep(1000);
+export async function isSymbolAvailable(
+  name: string,
+  signal?: AbortController['signal'],
+): Promise<boolean> {
+  await sleep(1000, signal);
   console.log(name);
   return true;
 }

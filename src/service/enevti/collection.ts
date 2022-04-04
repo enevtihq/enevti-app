@@ -2,8 +2,11 @@ import { COIN_NAME } from 'enevti-app/components/atoms/brand/AppBrandConstant';
 import { Collection } from 'enevti-app/types/service/enevti/collection';
 import { getDummyNFTData, sleep } from './dummy';
 
-async function fetchCollection(id: string): Promise<Collection | undefined> {
-  await sleep(1000);
+async function fetchCollection(
+  id: string,
+  signal?: AbortController['signal'],
+): Promise<Collection | undefined> {
+  await sleep(1000, signal);
   console.log('collection id:', id);
   const mintedNFT = [];
 
@@ -109,6 +112,7 @@ async function fetchCollection(id: string): Promise<Collection | undefined> {
 
 export async function getCollection(
   id: string,
+  signal?: AbortController['signal'],
 ): Promise<Collection | undefined> {
-  return await fetchCollection(id);
+  return await fetchCollection(id, signal);
 }

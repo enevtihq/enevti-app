@@ -4,6 +4,7 @@ import enevtiNFTTemplate from 'enevti-app/components/atoms/nft/template/enevtiNF
 import { NFTBase } from 'enevti-app/types/nft/index';
 import { NFTUtility } from 'enevti-app/types/nft/NFTUtility';
 import { shuffleArray } from 'enevti-app/utils/primitive/array';
+import { AbortError } from 'enevti-app/utils/error/type';
 
 export const getDummyCollectionBaseDate = (): CollectionBase => {
   return {
@@ -85,6 +86,16 @@ export const getDummyNFTData = (): NFTBase => {
   };
 };
 
-export async function sleep(time: number) {
-  await new Promise(r => setTimeout(r, time));
+export async function sleep(time: number, signal?: AbortController['signal']) {
+  await new Promise((resolve, reject) => {
+    if (signal && signal.aborted) {
+      return reject(AbortError);
+    }
+    const timeout = setTimeout(resolve, time);
+    signal?.addEventListener('abort', () => {
+      console.log('aborted');
+      clearTimeout(timeout);
+      reject(AbortError);
+    });
+  });
 }

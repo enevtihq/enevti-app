@@ -1,13 +1,19 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { uploadURItoIPFS } from 'enevti-app/service/ipfs';
 import { setPaymentStatus } from 'enevti-app/store/slices/payment';
+import {
+  hideModalLoader,
+  showModalLoader,
+} from 'enevti-app/store/slices/ui/global/modalLoader';
 import { AppThunk } from 'enevti-app/store/state';
 import { CreateNFTOneKind } from 'enevti-app/types/store/CreateNFTQueue';
 
 export const reducePayCreateNFTOneKind =
   (): AppThunk => async (dispatch, getState) => {
+    dispatch(showModalLoader());
     dispatch({ type: 'payment/reducePayCreateNFTOneKind' });
     dispatch(setPaymentStatus({ type: 'process', message: '' }));
+
     const payload = JSON.parse(
       getState().payment.action.payload,
     ) as CreateNFTOneKind;
@@ -21,5 +27,7 @@ export const reducePayCreateNFTOneKind =
         : '';
     // TODO: construct new transactionPayload
     // TODO: use Lisk Client to submit transaction to Blockchain
+
     dispatch(setPaymentStatus({ type: 'success', message: '' }));
+    dispatch(hideModalLoader());
   };
