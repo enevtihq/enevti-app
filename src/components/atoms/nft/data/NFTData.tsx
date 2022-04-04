@@ -13,7 +13,7 @@ interface NFTDataProps {
 }
 
 const handleRenderNFTData = (nftObject: NFTBase, dataUri?: string) => {
-  switch (mimeMapping(nftObject.dataMime)) {
+  switch (mimeMapping(nftObject.data.mime)) {
     case 'image':
       return <NFTImageData nft={nftObject} dataUri={dataUri} />;
     default:

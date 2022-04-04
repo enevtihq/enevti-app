@@ -8,6 +8,7 @@ import { NFTPartition } from './NFTPartition';
 import { NFTRedeem } from './NFTRedeem';
 import { NFTRoyalty } from './NFTRoyalty';
 import { NFTActivity } from './NFTActivity';
+import { NFTContent } from './NFTContent';
 
 export type NFTBase = {
   id: string;
@@ -15,8 +16,7 @@ export type NFTBase = {
   name: string;
   symbol: string;
   serial: string;
-  data: string;
-  dataMime: 'image/jpeg';
+  data: NFTContent;
   template: NFTTemplateData;
   NFTType: NFTType;
   utility: NFTUtility;

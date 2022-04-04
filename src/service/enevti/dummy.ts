@@ -57,8 +57,11 @@ export const getDummyNFTData = (): NFTBase => {
       currency: COIN_NAME,
     },
     onSale: shuffleArray([true, false]),
-    data: 'Qmb3jKA6Vn1azR6aSMnT6geGMkg818uBkfSHNg8ui1a9dy',
-    dataMime: 'image/jpeg',
+    data: {
+      cid: 'Qmb3jKA6Vn1azR6aSMnT6geGMkg818uBkfSHNg8ui1a9dy',
+      mime: 'image/jpeg',
+      size: -1,
+    },
     NFTType: 'onekind',
     utility: utilityOption[Math.floor(Math.random() * utilityOption.length)],
     rarity: {

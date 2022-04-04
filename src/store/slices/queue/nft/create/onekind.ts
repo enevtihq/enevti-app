@@ -13,6 +13,7 @@ export const createNFTOneKindQueueInitialState: CreateNFTOneKind = {
   data: {
     uri: '',
     mime: '',
+    size: -1,
   },
   choosenTemplate: {
     id: '',
@@ -62,11 +63,13 @@ const createNFTOneKindQueueSlice = createSlice({
   name: 'onekind',
   initialState: createNFTOneKindQueueInitialState,
   reducers: {
-    setCreateNFTOneKindURI: (onekind, action: PayloadAction<string>) => {
-      onekind.data.uri = action.payload;
-    },
-    setCreateNFTOneKindMime: (onekind, action: PayloadAction<string>) => {
-      onekind.data.mime = action.payload;
+    setCreateNFTOneKindData: (
+      onekind,
+      action: PayloadAction<CreateNFTOneKind['data']>,
+    ) => {
+      onekind.data.uri = action.payload.uri;
+      onekind.data.mime = action.payload.mime;
+      onekind.data.size = action.payload.size;
     },
     setCreateNFTOneKindChosenTemplate: (
       onekind,
@@ -93,8 +96,7 @@ const createNFTOneKindQueueSlice = createSlice({
 });
 
 export const {
-  setCreateNFTOneKindURI,
-  setCreateNFTOneKindMime,
+  setCreateNFTOneKindData,
   setCreateNFTOneKindChosenTemplate,
   setCreateNFTOneKindState,
   setCreateNFTOneKindStatus,

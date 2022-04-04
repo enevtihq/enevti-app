@@ -11,9 +11,9 @@ import {
   clearCreateNFTOneKindQueue,
   createNFTOneKindQueueInitialState,
   selectCreateNFTOneKindQueue,
+  setCreateNFTOneKindData,
   setCreateNFTOneKindState,
   setCreateNFTOneKindStatus,
-  setCreateNFTOneKindURI,
 } from 'enevti-app/store/slices/queue/nft/create/onekind';
 import * as Yup from 'yup';
 
@@ -448,7 +448,13 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
 
   const onOneKindImagePicked = React.useCallback(
     (image: ImageOrVideo) => {
-      dispatch(setCreateNFTOneKindURI(image.path));
+      dispatch(
+        setCreateNFTOneKindData({
+          uri: image.path,
+          mime: image.mime,
+          size: image.size,
+        }),
+      );
       setOneKindSheetVisible(false);
     },
     [dispatch],

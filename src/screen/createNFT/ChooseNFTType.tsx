@@ -18,10 +18,7 @@ import { useDispatch } from 'react-redux';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 import { ImageOrVideo } from 'react-native-image-crop-picker';
 import { setCreateNFTQueueType } from 'enevti-app/store/slices/queue/nft/create/type';
-import {
-  setCreateNFTOneKindMime,
-  setCreateNFTOneKindURI,
-} from 'enevti-app/store/slices/queue/nft/create/onekind';
+import { setCreateNFTOneKindData } from 'enevti-app/store/slices/queue/nft/create/onekind';
 import AppCameraGalleryPicker from 'enevti-app/components/organism/picker/AppCameraGalleryPicker';
 
 type Props = StackScreenProps<RootStackParamList, 'ChooseNFTType'>;
@@ -38,8 +35,13 @@ export default function ChooseNFTType({ navigation }: Props) {
 
   const onOneKindImagePicked = (image: ImageOrVideo) => {
     dispatch(setCreateNFTQueueType('onekind'));
-    dispatch(setCreateNFTOneKindURI(image.path));
-    dispatch(setCreateNFTOneKindMime(image.mime));
+    dispatch(
+      setCreateNFTOneKindData({
+        uri: image.path,
+        mime: image.mime,
+        size: image.size,
+      }),
+    );
     setOneKindSheetVisible(false);
     navigation.replace('ChooseNFTTemplate', { mode: 'normal' });
   };
