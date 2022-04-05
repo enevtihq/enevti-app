@@ -182,7 +182,8 @@ export default function AppNFTDetailsHeader({
         <View style={{ paddingHorizontal: wp('5%') }}>
           <Divider />
           <View style={styles.createdOwnedBy}>
-            <AppTextBody4 style={{ color: theme.colors.placeholder }}>
+            <AppTextBody4
+              style={{ color: theme.colors.placeholder, width: wp('20%') }}>
               Created By{' '}
             </AppTextBody4>
             <AppAvatarRenderer
@@ -199,7 +200,8 @@ export default function AppNFTDetailsHeader({
           </View>
           <Divider />
           <View style={styles.createdOwnedBy}>
-            <AppTextBody4 style={{ color: theme.colors.placeholder }}>
+            <AppTextBody4
+              style={{ color: theme.colors.placeholder, width: wp('20%') }}>
               Owned By{' '}
             </AppTextBody4>
             <AppAvatarRenderer
