@@ -55,7 +55,7 @@ async function fetchCollection(
       },
     },
     minted: mintedNFT,
-    originAddress: {
+    creator: {
       photo: '',
       address: 'lsk7opy8ksve7npbr32dtqxwpvg5u6aa3vtje5qtd',
       username: '',

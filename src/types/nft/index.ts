@@ -31,9 +31,9 @@ export interface NFT extends NFTBase {
   comment: number;
   description: string;
   createdOn: number;
-  ownerAddress: Persona;
-  originAddress: Persona;
-  originChain: string;
+  owner: Persona;
+  creator: Persona;
+  chain: string;
   royalty: NFTRoyalty;
   activity: NFTActivity[];
 }

@@ -34,7 +34,7 @@ const initialState: CollectionViewState = {
     price: { amount: '', currency: '' },
   },
   minted: [],
-  originAddress: { photo: '', address: '', username: '' },
+  creator: { photo: '', address: '', username: '' },
   activity: [],
 };
 

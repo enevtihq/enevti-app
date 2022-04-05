@@ -4,4 +4,5 @@ export type NFTUtility =
   | 'gift'
   | 'qr'
   | 'stream'
-  | 'videocall';
+  | 'videocall'
+  | '';

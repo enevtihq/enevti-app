@@ -49,7 +49,7 @@ export type CreateNFTPackItem = {
   until: number;
   redeemLimit: number;
   royalty: {
-    origin: number;
+    creator: number;
     staker: number;
   };
 };

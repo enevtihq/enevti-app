@@ -244,7 +244,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
             .transform(value => (isNaN(value) ? undefined : value))
             .min(0, t('form:greaterEqualZero')),
         }),
-        royaltyOrigin: Yup.number()
+        royaltyCreator: Yup.number()
           .transform(value => (isNaN(value) ? undefined : value))
           .min(0, t('form:greaterEqualZero')),
         royaltyStaker: Yup.number()
@@ -1013,9 +1013,9 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
             {commonFormInput(
               formikProps,
               creatorRoyaltyInput,
-              'royaltyOrigin',
-              t('createNFT:collectionRoyaltyOrigin'),
-              t('createNFT:collectionRoyaltyOriginDescription'),
+              'royaltyCreator',
+              t('createNFT:collectionRoyaltyCreator'),
+              t('createNFT:collectionRoyaltyCreatorDescription'),
               {
                 memoKey: ['error', 'showError'],
                 keyboardType: 'number-pad',

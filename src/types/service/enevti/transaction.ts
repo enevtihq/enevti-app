@@ -24,7 +24,7 @@ export type CreateNFTOneKindTransaction = {
   until: number;
   redeemLimit: number;
   royalty: {
-    origin: number;
+    creator: number;
     staker: number;
   };
   price: {

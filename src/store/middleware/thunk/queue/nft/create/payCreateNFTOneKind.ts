@@ -72,8 +72,8 @@ export const payCreateNFTOneKind =
       until: until,
       redeemLimit: parseInt(payload.state.redeemLimit, 10),
       royalty: {
-        origin: parseInt(
-          payload.state.royaltyOrigin ? payload.state.royaltyOrigin : '0',
+        creator: parseInt(
+          payload.state.royaltyCreator ? payload.state.royaltyCreator : '0',
           10,
         ),
         staker: parseInt(

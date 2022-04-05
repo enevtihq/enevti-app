@@ -63,9 +63,9 @@ export default function AppCollectionHeader({
 
   const onCreatorDetail = React.useCallback(() => {
     navigation.navigate('Profile', {
-      address: collection.originAddress.address,
+      address: collection.creator.address,
     });
-  }, [navigation, collection.originAddress.address]);
+  }, [navigation, collection.creator.address]);
 
   const descriptionModalOnDismiss = React.useCallback(
     () => setDescriptionVisible(false),
@@ -185,13 +185,13 @@ export default function AppCollectionHeader({
               {t('collection:createdBy')}{' '}
             </AppTextBody4>
             <AppAvatarRenderer
-              photo={collection.originAddress.photo}
-              address={collection.originAddress.address}
+              photo={collection.creator.photo}
+              address={collection.creator.address}
               size={wp('5%')}
               style={{ marginHorizontal: wp('2%') }}
             />
             <AppPersonaLabel
-              persona={collection.originAddress}
+              persona={collection.creator}
               style={styles.creatorAddress}
               onPress={onCreatorDetail}
             />

@@ -1,4 +1,4 @@
 export type NFTRoyalty = {
-  origin: number;
+  creator: number;
   staker: number;
 };

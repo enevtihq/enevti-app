@@ -26,7 +26,7 @@ export type CollectionBase = {
 };
 
 export interface Collection extends CollectionBase {
-  collectionType: 'onekind' | 'packed';
+  collectionType: 'onekind' | 'packed' | '';
   description: string;
   symbol: string;
   createdOn: number;
@@ -35,6 +35,6 @@ export interface Collection extends CollectionBase {
   social: SocialProfile;
   packSize: number;
   minted: NFTBase[];
-  originAddress: Persona;
+  creator: Persona;
   activity: CollectionActivity[];
 }

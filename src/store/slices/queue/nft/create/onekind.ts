@@ -50,7 +50,7 @@ export const createNFTOneKindQueueInitialState: CreateNFTOneKind = {
     untilMinute: -1,
     redeemLimitOption: '',
     redeemLimit: '',
-    royaltyOrigin: '',
+    royaltyCreator: '',
     royaltyStaker: '',
   },
   status: {

@@ -2,7 +2,7 @@ import { NFTContent } from './NFTContent';
 import { NFTSecret } from './NFTSecret';
 
 export type NFTRedeem = {
-  status: 'ready' | 'pending-secret' | 'limit-exceeded';
+  status: 'ready' | 'pending-secret' | 'limit-exceeded' | '';
   count: number;
   limit: number;
   touched: number;
