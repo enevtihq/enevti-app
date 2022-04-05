@@ -30,7 +30,7 @@ import SetupGoogleBinderPassword from 'enevti-app/screen/auth/SetupGoogleBinderP
 import useLockScreen from 'enevti-app/utils/hook/useLockScreen';
 import useScreenDisplayed from 'enevti-app/utils/hook/useScreenDisplayed';
 import { selectLockedState } from 'enevti-app/store/slices/ui/screen/locked';
-import NFTDetails from 'enevti-app/screen/collection/NFTDetails';
+import NFTDetails from 'enevti-app/screen/nftDetails/NFTDetails';
 
 export type RootStackParamList = {
   CreateAccount: undefined;

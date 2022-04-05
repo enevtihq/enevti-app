@@ -5,7 +5,6 @@ import AppView from 'enevti-app/components/atoms/view/AppView';
 import {
   resetStatusBarState,
   setStatusBarBackground,
-  setStatusBarTint,
 } from 'enevti-app/store/slices/ui/global/statusbar';
 import { RootStackParamList } from 'enevti-app/navigation';
 import AppHeader, {
@@ -20,8 +19,8 @@ import {
 } from 'react-native-reanimated';
 import { useTheme } from 'react-native-paper';
 import { hp, wp } from 'enevti-app/utils/imageRatio';
-import { View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import AppNFTDetails from 'enevti-app/components/organism/nftDetails/AppNFTDetails';
 
 type Props = StackScreenProps<RootStackParamList, 'NFTDetails'>;
 
@@ -39,7 +38,6 @@ export default function NFTDetails({ navigation, route }: Props) {
 
   const onLoaded = React.useCallback(() => {
     dispatch(setStatusBarBackground('transparent'));
-    dispatch(setStatusBarTint('light'));
   }, [dispatch]);
 
   React.useEffect(() => {
@@ -60,11 +58,11 @@ export default function NFTDetails({ navigation, route }: Props) {
   }, [onLoaded]);
 
   const onHeaderAboveTreshold = React.useCallback(() => {
-    dispatch(setStatusBarTint('system'));
+    dispatch(setStatusBarBackground('system'));
   }, [dispatch]);
 
   const onHeaderBelowTreshold = React.useCallback(
-    () => dispatch(setStatusBarTint('light')),
+    () => dispatch(setStatusBarBackground('transparent')),
     [dispatch],
   );
 
@@ -84,16 +82,6 @@ export default function NFTDetails({ navigation, route }: Props) {
         nftDetailsScroll.value,
         [0, 1],
         ['transparent', theme.colors.text],
-      ) as string,
-    };
-  });
-
-  const iconStyle = useAnimatedStyle(() => {
-    return {
-      color: interpolateColor(
-        nftDetailsScroll.value,
-        [0, 1],
-        ['#ffffff', theme.colors.text],
       ) as string,
     };
   });
@@ -123,15 +111,17 @@ export default function NFTDetails({ navigation, route }: Props) {
       header={
         <AppHeader
           back
-          withAnimatedGradient
           navigation={navigation}
           title={t('nftDetails:headerTitle')}
           backgroundStyle={headerBackgroundStyle}
           textStyle={textStyle}
-          iconStyle={iconStyle}
         />
       }>
-      <View />
+      <AppNFTDetails
+        id={id}
+        onScrollWorklet={nftDetailsOnScroll}
+        navigation={navigation}
+      />
     </AppView>
   );
 }
