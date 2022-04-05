@@ -9,6 +9,7 @@ import createNFT from './createNFT';
 import date from './date';
 import payment from './payment';
 import collection from './collection';
+import nftDetails from './nftDetails';
 
 export default {
   auth,
@@ -22,4 +23,5 @@ export default {
   date,
   payment,
   collection,
+  nftDetails,
 };

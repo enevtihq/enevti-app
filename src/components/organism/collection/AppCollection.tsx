@@ -253,6 +253,7 @@ export default function AppCollection({
         onMounted={mintedItemsOnMounted}
         onRefresh={onRefresh}
         mintingAvailable={mintingAvailable}
+        navigation={navigation}
       />
     ),
     [
@@ -264,6 +265,7 @@ export default function AppCollection({
       onRefresh,
       scrollEnabled,
       mintingAvailable,
+      navigation,
     ],
   );
 

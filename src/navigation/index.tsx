@@ -30,6 +30,7 @@ import SetupGoogleBinderPassword from 'enevti-app/screen/auth/SetupGoogleBinderP
 import useLockScreen from 'enevti-app/utils/hook/useLockScreen';
 import useScreenDisplayed from 'enevti-app/utils/hook/useScreenDisplayed';
 import { selectLockedState } from 'enevti-app/store/slices/ui/screen/locked';
+import NFTDetails from 'enevti-app/screen/collection/NFTDetails';
 
 export type RootStackParamList = {
   CreateAccount: undefined;
@@ -60,6 +61,9 @@ export type RootStackParamList = {
     normal?: boolean;
   };
   Collection: {
+    id: string;
+  };
+  NFTDetails: {
     id: string;
   };
 };
@@ -203,6 +207,14 @@ export default function AppNavigationContainer() {
         <Stack.Screen
           name="Collection"
           component={Collection}
+          options={{
+            headerShown: false,
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          }}
+        />
+        <Stack.Screen
+          name="NFTDetails"
+          component={NFTDetails}
           options={{
             headerShown: false,
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,

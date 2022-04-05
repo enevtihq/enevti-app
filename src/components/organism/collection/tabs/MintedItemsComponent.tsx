@@ -10,6 +10,8 @@ import { DimensionFunction, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
 import useDimension from 'enevti-app/utils/hook/useDimension';
 import AppNFTCard from 'enevti-app/components/molecules/nft/AppNFTCard';
 import { MINT_BUTTON_HEIGHT } from 'enevti-app/components/organism/collection/AppCollectionMintButton';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from 'enevti-app/navigation';
 
 const AnimatedFlatGrid =
   Animated.createAnimatedComponent<FlatGridProps<NFTBase>>(FlatGrid);
@@ -22,6 +24,7 @@ interface MintedItemsComponentProps {
   onRefresh?: () => void;
   scrollEnabled?: boolean;
   mintingAvailable?: boolean;
+  navigation?: StackNavigationProp<RootStackParamList>;
 }
 
 function Component(
@@ -33,6 +36,7 @@ function Component(
     onRefresh,
     scrollEnabled,
     mintingAvailable,
+    navigation,
   }: MintedItemsComponentProps,
   ref: any,
 ) {
@@ -88,8 +92,10 @@ function Component(
   );
 
   const renderItem = React.useCallback(
-    ({ item }) => <AppNFTCard nft={item} width={itemDimension} />,
-    [itemDimension],
+    ({ item }) => (
+      <AppNFTCard nft={item} width={itemDimension} navigation={navigation} />
+    ),
+    [itemDimension, navigation],
   );
 
   React.useEffect(() => {

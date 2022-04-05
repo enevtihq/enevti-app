@@ -84,8 +84,14 @@ function Component(
   );
 
   const renderItem = React.useCallback(
-    ({ item }) => <AppNFTRenderer nft={item} width={itemDimension} />,
-    [itemDimension],
+    ({ item }) => (
+      <AppNFTRenderer
+        nft={item}
+        width={itemDimension}
+        navigation={navigation}
+      />
+    ),
+    [itemDimension, navigation],
   );
 
   React.useEffect(() => {

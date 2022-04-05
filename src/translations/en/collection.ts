@@ -1,4 +1,5 @@
 export default {
+  headerTitle: 'Collection',
   mintingAvailable: 'Minting Available!',
   mintingProgress: '{{minted}} of {{total}} Minted',
   createdBy: 'Created By:',

@@ -3,7 +3,7 @@ import React from 'react';
 import { NFTBase } from 'enevti-app/types/nft';
 import { wp, SafeAreaInsets, hp } from 'enevti-app/utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useTheme } from 'react-native-paper';
+import { TouchableRipple, useTheme } from 'react-native-paper';
 import { Theme } from 'enevti-app/theme/default';
 import AppNFTRenderer from './AppNFTRenderer';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
@@ -15,14 +15,22 @@ import AppIconComponent, {
   iconMap,
 } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import Color from 'color';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from 'enevti-app/navigation';
 
 interface AppNFTCardProps {
   nft: NFTBase;
   width: number;
   style?: StyleProp<ViewStyle>;
+  navigation?: StackNavigationProp<RootStackParamList>;
 }
 
-export default function AppNFTCard({ nft, width, style }: AppNFTCardProps) {
+export default function AppNFTCard({
+  nft,
+  width,
+  style,
+  navigation,
+}: AppNFTCardProps) {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
   const styles = React.useMemo(
@@ -32,6 +40,14 @@ export default function AppNFTCard({ nft, width, style }: AppNFTCardProps) {
   const nftWidth = React.useMemo(
     () => width - wp('1%', insets),
     [width, insets],
+  );
+
+  const onNavigate = React.useCallback(
+    () =>
+      navigation
+        ? navigation.navigate('NFTDetails', { id: nft.id })
+        : undefined,
+    [navigation, nft.id],
   );
 
   return (
@@ -66,6 +82,11 @@ export default function AppNFTCard({ nft, width, style }: AppNFTCardProps) {
             </AppTextHeading4>
           )}
         </View>
+        {navigation ? (
+          <TouchableRipple style={styles.rippleOverlay} onPress={onNavigate}>
+            <View />
+          </TouchableRipple>
+        ) : null}
       </View>
     </View>
   );
@@ -79,6 +100,7 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
       paddingTop: hp('2%', insets),
       backgroundColor: theme.colors.background,
       borderRadius: theme.roundness,
+      overflow: 'hidden',
       borderWidth: StyleSheet.hairlineWidth,
       borderColor: Color(theme.colors.text).alpha(0.05).rgb().toString(),
     },
@@ -102,5 +124,8 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
     },
     currency: {
       textAlignVertical: 'center',
+    },
+    rippleOverlay: {
+      ...StyleSheet.absoluteFillObject,
     },
   });

@@ -20,19 +20,36 @@ import PartitionIcon from 'enevti-app/components/atoms/nft/partition/PartitionIc
 import PartitionLabel from 'enevti-app/components/atoms/nft/partition/PartitionLabel';
 import UtilityIcon from 'enevti-app/components/atoms/nft/utility/UtilityIcon';
 import UtilityLabel from 'enevti-app/components/atoms/nft/utility/UtilityLabel';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from 'enevti-app/navigation';
+import { TouchableRipple } from 'react-native-paper';
 
 interface AppNFTRendererProps {
   nft: NFTBase;
   width: number;
   style?: StyleProp<ViewStyle>;
   dataUri?: string;
+  navigation?: StackNavigationProp<RootStackParamList>;
 }
 
 const THUMBNAIL_TRESHOLD = 0.33;
 
 export default React.memo(
-  function AppNFTRenderer({ nft, width, style, dataUri }: AppNFTRendererProps) {
+  function AppNFTRenderer({
+    nft,
+    width,
+    style,
+    dataUri,
+    navigation,
+  }: AppNFTRendererProps) {
     const styles = React.useMemo(() => makeStyles(), []);
+    const onNavigate = React.useCallback(
+      () =>
+        navigation
+          ? navigation.navigate('NFTDetails', { id: nft.id })
+          : undefined,
+      [navigation, nft.id],
+    );
 
     const handleRenderNFTTemplate = React.useCallback(
       (
@@ -167,6 +184,11 @@ export default React.memo(
           : nft.template.main.map((templateItem, index) =>
               handleRenderNFTTemplate(templateItem, nft, index, width, dataUri),
             )}
+        {navigation ? (
+          <TouchableRipple style={styles.rippleOverlay} onPress={onNavigate}>
+            <View />
+          </TouchableRipple>
+        ) : null}
       </View>
     );
   },
@@ -182,5 +204,8 @@ const makeStyles = () =>
     nftContainer: {
       width: '100%',
       aspectRatio: 1,
+    },
+    rippleOverlay: {
+      ...StyleSheet.absoluteFillObject,
     },
   });

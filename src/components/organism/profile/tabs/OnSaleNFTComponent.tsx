@@ -84,8 +84,10 @@ function Component(
   );
 
   const renderItem = React.useCallback(
-    ({ item }) => <AppNFTCard nft={item} width={itemDimension} />,
-    [itemDimension],
+    ({ item }) => (
+      <AppNFTCard nft={item} width={itemDimension} navigation={navigation} />
+    ),
+    [itemDimension, navigation],
   );
 
   React.useEffect(() => {

@@ -8,7 +8,6 @@ import {
   setStatusBarTint,
 } from 'enevti-app/store/slices/ui/global/statusbar';
 import { RootStackParamList } from 'enevti-app/navigation';
-import AppCollection from 'enevti-app/components/organism/collection/AppCollection';
 import AppHeader, {
   HEADER_HEIGHT_PERCENTAGE,
 } from 'enevti-app/components/atoms/view/AppHeader';
@@ -21,11 +20,12 @@ import {
 } from 'react-native-reanimated';
 import { useTheme } from 'react-native-paper';
 import { hp, wp } from 'enevti-app/utils/imageRatio';
+import { View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
-type Props = StackScreenProps<RootStackParamList, 'Collection'>;
+type Props = StackScreenProps<RootStackParamList, 'NFTDetails'>;
 
-export default function Collection({ navigation, route }: Props) {
+export default function NFTDetails({ navigation, route }: Props) {
   const { t } = useTranslation();
   const { id } = route.params;
   const dispatch = useDispatch();
@@ -35,7 +35,7 @@ export default function Collection({ navigation, route }: Props) {
     [],
   );
 
-  const collectionScroll = useSharedValue(0);
+  const nftDetailsScroll = useSharedValue(0);
 
   const onLoaded = React.useCallback(() => {
     dispatch(setStatusBarBackground('transparent'));
@@ -71,7 +71,7 @@ export default function Collection({ navigation, route }: Props) {
   const headerBackgroundStyle = useAnimatedStyle(() => {
     return {
       backgroundColor: interpolateColor(
-        collectionScroll.value,
+        nftDetailsScroll.value,
         [0, 1],
         ['transparent', theme.colors.background],
       ) as string,
@@ -81,7 +81,7 @@ export default function Collection({ navigation, route }: Props) {
   const textStyle = useAnimatedStyle(() => {
     return {
       color: interpolateColor(
-        collectionScroll.value,
+        nftDetailsScroll.value,
         [0, 1],
         ['transparent', theme.colors.text],
       ) as string,
@@ -91,24 +91,26 @@ export default function Collection({ navigation, route }: Props) {
   const iconStyle = useAnimatedStyle(() => {
     return {
       color: interpolateColor(
-        collectionScroll.value,
+        nftDetailsScroll.value,
         [0, 1],
         ['#ffffff', theme.colors.text],
       ) as string,
     };
   });
 
-  const collectionOnScroll = React.useCallback((val: number) => {
+  const nftDetailsOnScroll = React.useCallback((val: number) => {
     'worklet';
-    if (val > headerTreshold && collectionScroll.value === 0) {
-      collectionScroll.value = withTiming(1, { duration: 200 });
+    if (val > headerTreshold && nftDetailsScroll.value === 0) {
+      nftDetailsScroll.value = withTiming(1, { duration: 200 });
       runOnJS(onHeaderAboveTreshold)();
-    } else if (val <= headerTreshold && collectionScroll.value === 1) {
-      collectionScroll.value = withTiming(0, { duration: 200 });
+    } else if (val <= headerTreshold && nftDetailsScroll.value === 1) {
+      nftDetailsScroll.value = withTiming(0, { duration: 200 });
       runOnJS(onHeaderBelowTreshold)();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  console.log(id, nftDetailsOnScroll);
 
   return (
     <AppView
@@ -123,17 +125,13 @@ export default function Collection({ navigation, route }: Props) {
           back
           withAnimatedGradient
           navigation={navigation}
-          title={t('collection:headerTitle')}
+          title={t('nftDetails:headerTitle')}
           backgroundStyle={headerBackgroundStyle}
           textStyle={textStyle}
           iconStyle={iconStyle}
         />
       }>
-      <AppCollection
-        id={id}
-        onScrollWorklet={collectionOnScroll}
-        navigation={navigation}
-      />
+      <View />
     </AppView>
   );
 }
