@@ -25,7 +25,7 @@ import NFTData from 'enevti-app/components/atoms/nft/data/NFTData';
 import AppNFTDetailsDescriptionModal from './AppNFTDetailsDescriptionModal';
 
 export const NFT_DETAILS_HEADER_VIEW_HEIGHT =
-  53 + (getStatusBarHeight() / Dimensions.get('window').height) * 100;
+  83 + (getStatusBarHeight() / Dimensions.get('window').height) * 100;
 
 interface AppNFTDetailsHeaderProps {
   nft: NFT;

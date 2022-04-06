@@ -9,17 +9,14 @@ import {
 import { useTheme } from 'react-native-paper';
 import Animated from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { TOP_TABBAR_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppTopTabBar';
 import { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
 import { DimensionFunction, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
 import useDimension from 'enevti-app/utils/hook/useDimension';
 import AppListItem, {
   LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE,
 } from 'enevti-app/components/molecules/list/AppListItem';
-import AppNFTRenderer from 'enevti-app/components/molecules/nft/AppNFTRenderer';
 import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
-import { Collection } from 'enevti-app/types/service/enevti/collection';
 import { parseAmount } from 'enevti-app/utils/format/amount';
 import moment from 'moment';
 import { useTranslation } from 'react-i18next';
@@ -27,12 +24,17 @@ import AppTextHeading4 from 'enevti-app/components/atoms/text/AppTextHeading4';
 import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
 import AppTextHeading5 from 'enevti-app/components/atoms/text/AppTextHeading5';
 import { MINT_BUTTON_HEIGHT } from 'enevti-app/components/organism/collection/AppCollectionMintButton';
+import { NFT } from 'enevti-app/types/nft';
+import AppIconComponent, {
+  iconMap,
+} from 'enevti-app/components/atoms/icon/AppIconComponent';
+import { NFT_DETAILS_TOP_TABBAR_HEIGHT_PERCENTAGE } from '../AppNFTDetailsBody';
 
 const COLLECTION_ACTIVITY_ITEM_HEIGHT = 9;
 const AnimatedFlatList = Animated.createAnimatedComponent<any>(FlatList);
 
 interface NFTActivityComponentProps {
-  activities: Collection['activity'];
+  activities: NFT['activity'];
   onScroll?: any;
   collectionHeaderHeight?: any;
   onMounted?: () => void;
@@ -80,7 +82,7 @@ function Component(
     () =>
       Platform.OS === 'ios'
         ? 0
-        : hp(TOP_TABBAR_HEIGHT_PERCENTAGE) + collectionHeaderHeight,
+        : hp(NFT_DETAILS_TOP_TABBAR_HEIGHT_PERCENTAGE) + collectionHeaderHeight,
     [collectionHeaderHeight, hp],
   );
 
@@ -104,13 +106,14 @@ function Component(
   );
 
   const renderItem = React.useCallback(
-    ({ item }: { item: Collection['activity'][0] }) => (
+    ({ item }: { item: NFT['activity'][0] }) => (
       <AppListItem
         style={styles.collectionItem}
         leftContent={
-          <AppNFTRenderer
-            nft={item.nft}
-            width={wp('13%')}
+          <AppIconComponent
+            name={iconMap.accountCircle}
+            size={25}
+            color={theme.colors.text}
             style={styles.nftRenderer}
           />
         }
@@ -132,9 +135,7 @@ function Component(
             </AppTextBody5>
           </View>
         }>
-        <AppTextHeading3 numberOfLines={1}>
-          {item.nft.symbol}#{item.nft.serial}
-        </AppTextHeading3>
+        <AppTextHeading3 numberOfLines={1}>{item.name}</AppTextHeading3>
         <AppTextBody4
           style={{ color: theme.colors.placeholder }}
           numberOfLines={1}>
@@ -151,13 +152,13 @@ function Component(
       styles.collectionRightText,
       styles.nftRenderer,
       theme.colors.placeholder,
+      theme.colors.text,
       t,
-      wp,
     ],
   );
 
   const keyExtractor = React.useCallback(
-    (item: Collection['activity'][0]) => item.nft.id,
+    (item: NFT['activity'][0]) => item.transaction,
     [],
   );
 
@@ -221,7 +222,8 @@ const makeStyles = (
 ) =>
   StyleSheet.create({
     contentContainerStyle: {
-      paddingTop: hp(TOP_TABBAR_HEIGHT_PERCENTAGE) + collectionHeaderHeight,
+      paddingTop:
+        hp(NFT_DETAILS_TOP_TABBAR_HEIGHT_PERCENTAGE) + collectionHeaderHeight,
       minHeight:
         hp(100) +
         collectionHeaderHeight -

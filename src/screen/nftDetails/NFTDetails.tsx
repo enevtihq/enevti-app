@@ -18,9 +18,11 @@ import {
   withTiming,
 } from 'react-native-reanimated';
 import { useTheme } from 'react-native-paper';
-import { hp, wp } from 'enevti-app/utils/imageRatio';
+import { hp } from 'enevti-app/utils/imageRatio';
 import { useTranslation } from 'react-i18next';
 import AppNFTDetails from 'enevti-app/components/organism/nftDetails/AppNFTDetails';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
+import { Dimensions } from 'react-native';
 
 type Props = StackScreenProps<RootStackParamList, 'NFTDetails'>;
 
@@ -30,7 +32,9 @@ export default function NFTDetails({ navigation, route }: Props) {
   const dispatch = useDispatch();
   const theme = useTheme();
   const headerTreshold = React.useMemo(
-    () => wp('100%') * 0.5625 - hp(HEADER_HEIGHT_PERCENTAGE),
+    () =>
+      hp(HEADER_HEIGHT_PERCENTAGE) +
+      (getStatusBarHeight() / Dimensions.get('window').height) * 100,
     [],
   );
 
@@ -57,14 +61,9 @@ export default function NFTDetails({ navigation, route }: Props) {
     onLoaded();
   }, [onLoaded]);
 
-  const onHeaderAboveTreshold = React.useCallback(() => {
-    dispatch(setStatusBarBackground('system'));
-  }, [dispatch]);
+  const onHeaderAboveTreshold = React.useCallback(() => {}, []);
 
-  const onHeaderBelowTreshold = React.useCallback(
-    () => dispatch(setStatusBarBackground('transparent')),
-    [dispatch],
-  );
+  const onHeaderBelowTreshold = React.useCallback(() => {}, []);
 
   const headerBackgroundStyle = useAnimatedStyle(() => {
     return {

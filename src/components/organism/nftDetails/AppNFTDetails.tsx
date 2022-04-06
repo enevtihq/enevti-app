@@ -15,7 +15,6 @@ import { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHe
 import { NFT_DETAILS_HEADER_VIEW_HEIGHT } from 'enevti-app/components/organism/nftDetails/AppNFTDetailsHeader';
 import useDimension from 'enevti-app/utils/hook/useDimension';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useTranslation } from 'react-i18next';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { AppAsyncThunk } from 'enevti-app/types/store/AppAsyncThunk';
@@ -28,6 +27,7 @@ import {
   loadNFTDetails,
   unloadNFTDetails,
 } from 'enevti-app/store/middleware/thunk/ui/view/nftDetails';
+import AppNFTDetailsBody from './AppNFTDetailsBody';
 
 interface AppNFTDetailsProps {
   id: string;
@@ -40,7 +40,6 @@ export default function AppNFTDetails({
   onScrollWorklet,
   navigation,
 }: AppNFTDetailsProps) {
-  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { hp } = useDimension();
   const insets = useSafeAreaInsets();
@@ -205,16 +204,11 @@ export default function AppNFTDetails({
         style={[styles.nftDetailsHeader, scrollStyle]}>
         <AppNFTDetailsHeader navigation={navigation} nft={nftDetails} />
       </Animated.View>
-      {/* <AppCollectionBody
+      <AppNFTDetailsBody
         collectionHeaderHeight={totalHeaderHeight}
         animatedTabBarStyle={animatedTabBarStyle}
-        mintedItemsScreen={MintedItemsScreen}
         activityScreen={ActivityScreen}
       />
-      <AppCollectionMintButton
-        collection={collection}
-        mintingAvailable={mintingAvailable}
-      /> */}
     </View>
   ) : (
     <View style={styles.loaderContainer}>

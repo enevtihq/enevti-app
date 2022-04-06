@@ -8,24 +8,26 @@ import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import { useTranslation } from 'react-i18next';
 import { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
 import useDimension from 'enevti-app/utils/hook/useDimension';
+import { TOP_TABBAR_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppTopTabBar';
+
+export const NFT_DETAILS_TOP_TABBAR_HEIGHT_PERCENTAGE =
+  TOP_TABBAR_HEIGHT_PERCENTAGE;
 
 const Tab = createMaterialTopTabNavigator();
 
-interface AppCollectionBodyProps {
+interface AppNFTDetailsBodyProps {
   collectionHeaderHeight: number;
   animatedTabBarStyle: StyleProp<ViewStyle>;
-  mintedItemsScreen: ComponentType<any>;
   activityScreen: ComponentType<any>;
   style?: StyleProp<ViewStyle>;
 }
 
-export default function AppCollectionBody({
+export default function AppNFTDetailsBody({
   collectionHeaderHeight,
   animatedTabBarStyle,
-  mintedItemsScreen,
   activityScreen,
   style,
-}: AppCollectionBodyProps) {
+}: AppNFTDetailsBodyProps) {
   const { t } = useTranslation();
   const { hp } = useDimension();
   const theme = useTheme();
@@ -63,17 +65,6 @@ export default function AppCollectionBody({
           options={{
             tabBarLabel: ({ color }) => (
               <AppTextBody4 style={{ color: color }}>
-                {t('collection:mintedItems')}
-              </AppTextBody4>
-            ),
-          }}
-          name={t('collection:mintedItems')}
-          component={mintedItemsScreen}
-        />
-        <Tab.Screen
-          options={{
-            tabBarLabel: ({ color }) => (
-              <AppTextBody4 style={{ color: color }}>
                 {t('collection:activity')}
               </AppTextBody4>
             ),
@@ -94,6 +85,7 @@ const makeStyles = () =>
       right: 0,
       position: 'absolute',
       zIndex: 1,
+      display: 'none',
     },
     profileBody: {
       flex: 1,
