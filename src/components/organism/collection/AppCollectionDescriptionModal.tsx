@@ -33,12 +33,12 @@ export default function AppCollectionDescriptionModal({
     () => makeStyles(theme, insets),
     [theme, insets],
   );
-  const paymentSnapPoints = React.useMemo(() => ['75%'], []);
+  const snapPoints = React.useMemo(() => ['75%'], []);
   return (
     <AppMenuContainer
       tapEverywhereToDismiss
       enablePanDownToClose
-      snapPoints={paymentSnapPoints}
+      snapPoints={snapPoints}
       visible={visible}
       onDismiss={onDismiss}>
       <View

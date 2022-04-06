@@ -1,6 +1,5 @@
 import { View, StyleSheet, Dimensions } from 'react-native';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Divider, TouchableRipple, useTheme } from 'react-native-paper';
 import { Theme } from 'enevti-app/theme/default';
@@ -23,6 +22,7 @@ import { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHe
 import AppNFTRenderer from 'enevti-app/components/molecules/nft/AppNFTRenderer';
 import { BlurView } from '@react-native-community/blur';
 import NFTData from 'enevti-app/components/atoms/nft/data/NFTData';
+import AppNFTDetailsDescriptionModal from './AppNFTDetailsDescriptionModal';
 
 export const NFT_DETAILS_HEADER_VIEW_HEIGHT =
   53 + (getStatusBarHeight() / Dimensions.get('window').height) * 100;
@@ -36,7 +36,6 @@ export default function AppNFTDetailsHeader({
   nft,
   navigation,
 }: AppNFTDetailsHeaderProps) {
-  const { t } = useTranslation();
   const { hp, wp } = useDimension();
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
@@ -219,11 +218,11 @@ export default function AppNFTDetailsHeader({
           <Divider />
         </View>
       </View>
-      {/* <AppCollectionDescriptionModal
+      <AppNFTDetailsDescriptionModal
         nft={nft}
         visible={descriptionVisible}
         onDismiss={descriptionModalOnDismiss}
-      /> */}
+      />
     </View>
   );
 }
