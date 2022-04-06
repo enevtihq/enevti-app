@@ -136,7 +136,7 @@ function Component(
           style={{ color: theme.colors.placeholder }}
           numberOfLines={1}>
           {t('collection:activityName', {
-            name: item.name,
+            name: t('collection:to'),
             address: item.to.username ? item.to.username : item.to.address,
           })}
         </AppTextBody4>

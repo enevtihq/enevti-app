@@ -6,9 +6,9 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import AppTopTabBar from 'enevti-app/components/atoms/view/AppTopTabBar';
 import { PROFILE_HEADER_HEIGHT_PERCENTAGE } from './AppProfileHeader';
 import { useTheme } from 'react-native-paper';
-import Color from 'color';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import { useTranslation } from 'react-i18next';
+import { BackgroundColorContext } from 'enevti-app/context';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -32,6 +32,7 @@ export default function AppProfileBody({
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const theme = useTheme();
+  const backgroundColor = React.useContext(BackgroundColorContext);
   const styles = React.useMemo(() => makeStyles(), []);
 
   return (
@@ -51,12 +52,7 @@ export default function AppProfileBody({
             ]}
           />
         )}
-        sceneContainerStyle={{
-          backgroundColor: Color(theme.colors.background)
-            .darken(theme.dark ? 0.1 : 0.02)
-            .rgb()
-            .toString(),
-        }}
+        sceneContainerStyle={{ backgroundColor: backgroundColor }}
         screenOptions={{
           tabBarStyle: {
             elevation: 0,

@@ -11,7 +11,7 @@ import AppStatusBar from './AppStatusBar';
 import Color from 'color';
 import { hp } from 'enevti-app/utils/imageRatio';
 import { HEADER_HEIGHT_PERCENTAGE } from './AppHeader';
-import { EdgeContext } from 'enevti-app/context';
+import { BackgroundColorContext, EdgeContext } from 'enevti-app/context';
 
 interface AppContainerProps {
   children: React.ReactNode;
@@ -30,41 +30,44 @@ export default function AppContainer({
 }: AppContainerProps) {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
+  const backgroundColor = darken
+    ? Color(theme.colors.background)
+        .darken(theme.dark ? 0.1 : 0.02)
+        .rgb()
+        .toString()
+    : theme.colors.background;
   const styles = React.useMemo(
-    () => makeStyles(theme, darken),
-    [theme, darken],
+    () => makeStyles(theme, backgroundColor),
+    [theme, backgroundColor],
   );
 
   return (
     <EdgeContext.Provider value={edges}>
-      <SafeAreaView style={styles.container} edges={edges}>
-        <AppStatusBar />
-        {header ? header : null}
-        {header ? (
-          <View
-            style={{
-              marginTop:
-                typeof headerOffset === 'number'
-                  ? headerOffset
-                  : hp(HEADER_HEIGHT_PERCENTAGE, insets) + insets.top,
-            }}
-          />
-        ) : null}
-        {children}
-      </SafeAreaView>
+      <BackgroundColorContext.Provider value={backgroundColor}>
+        <SafeAreaView style={styles.container} edges={edges}>
+          <AppStatusBar />
+          {header ? header : null}
+          {header ? (
+            <View
+              style={{
+                marginTop:
+                  typeof headerOffset === 'number'
+                    ? headerOffset
+                    : hp(HEADER_HEIGHT_PERCENTAGE, insets) + insets.top,
+              }}
+            />
+          ) : null}
+          {children}
+        </SafeAreaView>
+      </BackgroundColorContext.Provider>
     </EdgeContext.Provider>
   );
 }
 
-const makeStyles = (theme: Theme, darken: boolean) =>
+const makeStyles = (theme: Theme, backgroundColor: string) =>
   StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: darken
-        ? Color(theme.colors.background)
-            .darken(theme.dark ? 0.1 : 0.02)
-            .rgb()
-            .toString()
-        : theme.colors.background,
+      backgroundColor: backgroundColor,
     },
   });

@@ -16,4 +16,5 @@ export default {
   mintPackedDescription: '{{packSize}} NFT / bundle',
   mintingClosedIn: 'Mint ends {{momentFromNow}}',
   mintingPercent: '{{percent}}% minted',
+  to: 'To',
 };
