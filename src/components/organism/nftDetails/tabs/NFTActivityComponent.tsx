@@ -24,10 +24,8 @@ import AppTextHeading4 from 'enevti-app/components/atoms/text/AppTextHeading4';
 import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
 import AppTextHeading5 from 'enevti-app/components/atoms/text/AppTextHeading5';
 import { NFT } from 'enevti-app/types/nft';
-import AppIconComponent, {
-  iconMap,
-} from 'enevti-app/components/atoms/icon/AppIconComponent';
 import { NFT_DETAILS_TOP_TABBAR_HEIGHT_PERCENTAGE } from '../AppNFTDetailsBody';
+import AppActivityIcon from 'enevti-app/components/molecules/activity/AppActivityIcon';
 
 const COLLECTION_ACTIVITY_ITEM_HEIGHT = 9;
 const AnimatedFlatList = Animated.createAnimatedComponent<any>(FlatList);
@@ -105,14 +103,7 @@ function Component(
     ({ item }: { item: NFT['activity'][0] }) => (
       <AppListItem
         style={styles.collectionItem}
-        leftContent={
-          <AppIconComponent
-            name={iconMap.accountCircle}
-            size={35}
-            color={theme.colors.placeholder}
-            style={styles.activityIcon}
-          />
-        }
+        leftContent={<AppActivityIcon activityName={item.name} />}
         rightContent={
           <View style={styles.collectionRightContent}>
             <AppTextHeading4
@@ -146,7 +137,6 @@ function Component(
       styles.collectionItem,
       styles.collectionRightContent,
       styles.collectionRightText,
-      styles.activityIcon,
       theme.colors.placeholder,
       t,
     ],
@@ -232,11 +222,6 @@ const makeStyles = (
     },
     collectionRightText: {
       textAlign: 'right',
-    },
-    activityIcon: {
-      width: wp('13%'),
-      marginLeft: wp('2%'),
-      alignSelf: 'center',
     },
   });
 
