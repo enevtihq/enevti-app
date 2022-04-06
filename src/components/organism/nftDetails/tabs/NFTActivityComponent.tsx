@@ -8,9 +8,9 @@ import {
 } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import Animated from 'react-native-reanimated';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
-import { DimensionFunction, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
+// import { useSafeAreaInsets } from 'react-native-safe-area-context';
+// import { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
+import { DimensionFunction } from 'enevti-app/utils/imageRatio';
 import useDimension from 'enevti-app/utils/hook/useDimension';
 import AppListItem, {
   LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE,
@@ -58,14 +58,13 @@ function Component(
   const { hp, wp } = useDimension();
   const { t } = useTranslation();
   const theme = useTheme();
-  const insets = useSafeAreaInsets();
   const mounted = React.useRef<boolean>(false);
   const [displayed, setDisplayed] = React.useState<boolean>(false);
   const [refreshing, setRefreshing] = React.useState<boolean>(false);
 
   const styles = React.useMemo(
-    () => makeStyles(hp, wp, displayed, collectionHeaderHeight, insets),
-    [hp, wp, displayed, collectionHeaderHeight, insets],
+    () => makeStyles(hp, wp, displayed, collectionHeaderHeight),
+    [hp, wp, displayed, collectionHeaderHeight],
   );
   const isScrollEnabled = React.useMemo(
     () => (refreshing ? false : scrollEnabled),
@@ -218,17 +217,17 @@ const makeStyles = (
   wp: DimensionFunction,
   displayed: boolean,
   collectionHeaderHeight: number,
-  insets: SafeAreaInsets,
+  // insets: SafeAreaInsets,
 ) =>
   StyleSheet.create({
     contentContainerStyle: {
       paddingTop:
         hp(NFT_DETAILS_TOP_TABBAR_HEIGHT_PERCENTAGE) + collectionHeaderHeight,
-      minHeight:
-        hp(100) +
-        collectionHeaderHeight -
-        hp(HEADER_HEIGHT_PERCENTAGE) -
-        (Platform.OS === 'ios' ? insets.top : 0),
+      // minHeight:
+      //   hp(100) +
+      //   collectionHeaderHeight -
+      //   hp(HEADER_HEIGHT_PERCENTAGE) -
+      //   (Platform.OS === 'ios' ? insets.top : 0),
       display: displayed ? undefined : 'none',
     },
     collectionItem: {
