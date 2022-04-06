@@ -8,10 +8,9 @@ import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import { useTranslation } from 'react-i18next';
 import { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
 import useDimension from 'enevti-app/utils/hook/useDimension';
-import { TOP_TABBAR_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppTopTabBar';
+// import { TOP_TABBAR_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppTopTabBar';
 
-export const NFT_DETAILS_TOP_TABBAR_HEIGHT_PERCENTAGE =
-  TOP_TABBAR_HEIGHT_PERCENTAGE;
+export const NFT_DETAILS_TOP_TABBAR_HEIGHT_PERCENTAGE = 2;
 
 const Tab = createMaterialTopTabNavigator();
 

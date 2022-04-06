@@ -23,7 +23,6 @@ import { useTranslation } from 'react-i18next';
 import AppTextHeading4 from 'enevti-app/components/atoms/text/AppTextHeading4';
 import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
 import AppTextHeading5 from 'enevti-app/components/atoms/text/AppTextHeading5';
-import { MINT_BUTTON_HEIGHT } from 'enevti-app/components/organism/collection/AppCollectionMintButton';
 import { NFT } from 'enevti-app/types/nft';
 import AppIconComponent, {
   iconMap,
@@ -40,7 +39,6 @@ interface NFTActivityComponentProps {
   onMounted?: () => void;
   onRefresh?: () => void;
   scrollEnabled?: boolean;
-  mintingAvailable?: boolean;
 }
 
 function Component(
@@ -51,7 +49,6 @@ function Component(
     onMounted,
     onRefresh,
     scrollEnabled,
-    mintingAvailable,
   }: NFTActivityComponentProps,
   ref: any,
 ) {
@@ -111,9 +108,9 @@ function Component(
         leftContent={
           <AppIconComponent
             name={iconMap.accountCircle}
-            size={25}
-            color={theme.colors.text}
-            style={styles.nftRenderer}
+            size={35}
+            color={theme.colors.placeholder}
+            style={styles.activityIcon}
           />
         }
         rightContent={
@@ -149,9 +146,8 @@ function Component(
       styles.collectionItem,
       styles.collectionRightContent,
       styles.collectionRightText,
-      styles.nftRenderer,
+      styles.activityIcon,
       theme.colors.placeholder,
-      theme.colors.text,
       t,
     ],
   );
@@ -171,11 +167,8 @@ function Component(
   );
 
   const listFooter = React.useMemo(
-    () =>
-      mintingAvailable ? (
-        <View style={{ height: hp(MINT_BUTTON_HEIGHT) }} />
-      ) : undefined,
-    [hp, mintingAvailable],
+    () => <View style={{ height: hp(5) }} />,
+    [hp],
   );
 
   React.useEffect(() => {
@@ -240,9 +233,9 @@ const makeStyles = (
     collectionRightText: {
       textAlign: 'right',
     },
-    nftRenderer: {
+    activityIcon: {
       width: wp('13%'),
-      marginRight: wp('2%'),
+      marginLeft: wp('2%'),
       alignSelf: 'center',
     },
   });

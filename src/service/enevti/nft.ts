@@ -136,7 +136,41 @@ async function fetchNFT(
         until: 3600000,
       },
     },
-    activity: [],
+    activity: [
+      {
+        transaction: 'veavaefasdfff',
+        name: 'sale',
+        to: {
+          photo: '',
+          address: 'lsk7opy8ksve7npbr32dtqxwpvg5u6aa3vtje5qtd',
+          username: '',
+        },
+        value: { amount: '2535623412', currency: COIN_NAME },
+        date: 1649172800701,
+      },
+      {
+        transaction: 'vewe34avaefaff',
+        name: 'sale',
+        to: {
+          photo: '',
+          address: 'lsk7opy8ksve7npbr32dtqxwpvg5u6aa3vtje5qtd',
+          username: '',
+        },
+        value: { amount: '2535623412', currency: COIN_NAME },
+        date: 1649172800701,
+      },
+      {
+        transaction: 'veavaefaff',
+        name: 'sale',
+        to: {
+          photo: '',
+          address: 'lsk7opy8ksve7npbr32dtqxwpvg5u6aa3vtje5qtd',
+          username: '',
+        },
+        value: { amount: '2535623412', currency: COIN_NAME },
+        date: 1649172800701,
+      },
+    ],
     royalty: {
       creator: 10,
       staker: 5,
