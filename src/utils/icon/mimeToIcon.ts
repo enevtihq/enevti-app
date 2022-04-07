@@ -2,7 +2,7 @@ import {
   iconMap,
   UNDEFINED_ICON,
 } from 'enevti-app/components/atoms/icon/AppIconComponent';
-import mimeMapping from './mimeMapping';
+import mimeMapping from 'enevti-app/utils/mime/mimeMapping';
 
 const iconMappings = {
   image: iconMap.fileImage,

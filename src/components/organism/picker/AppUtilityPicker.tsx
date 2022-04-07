@@ -1,9 +1,9 @@
 import React from 'react';
-import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import { PickerItem } from 'enevti-app/types/screen/PickerItem';
 import { useTranslation } from 'react-i18next';
 import AppListPicker from 'enevti-app/components/molecules/listpicker/AppListPicker';
 import { shallowEqual } from 'react-redux';
+import utilityToIcon from 'enevti-app/utils/icon/utilityToIcon';
 
 interface AppUtilityPickerProps {
   value?: string;
@@ -19,42 +19,42 @@ function Component({ value, onSelected, memoKey }: AppUtilityPickerProps) {
     () => [
       {
         value: 'content',
-        icon: iconMap.utilityContent,
+        icon: utilityToIcon('content'),
         title: t('createNFT:utilityContent'),
         description: t('createNFT:utilityContentDescription'),
         disabled: false,
       },
       {
         value: 'videocall',
-        icon: iconMap.utilityVideoCall,
+        icon: utilityToIcon('videocall'),
         title: t('createNFT:utilityVideoCall'),
         description: t('createNFT:utilityVideoCallDescription'),
         disabled: false,
       },
       {
         value: 'chat',
-        icon: iconMap.utilityChat,
+        icon: utilityToIcon('chat'),
         title: t('createNFT:utilityChat'),
         description: t('createNFT:utilityChatDescription'),
         disabled: true,
       },
       {
         value: 'gift',
-        icon: iconMap.utilityGift,
+        icon: utilityToIcon('gift'),
         title: t('createNFT:utilityGift'),
         description: t('createNFT:utilityGiftDescription'),
         disabled: true,
       },
       {
         value: 'qr',
-        icon: iconMap.utilityQR,
+        icon: utilityToIcon('qr'),
         title: t('createNFT:utilityQR'),
         description: t('createNFT:utilityQRDescription'),
         disabled: true,
       },
       {
         value: 'stream',
-        icon: iconMap.utilityStream,
+        icon: utilityToIcon('stream'),
         title: t('createNFT:utilityStream'),
         description: t('createNFT:utilityStreamDescription'),
         disabled: true,

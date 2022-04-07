@@ -23,9 +23,10 @@ import AppNFTRenderer from 'enevti-app/components/molecules/nft/AppNFTRenderer';
 import { BlurView } from '@react-native-community/blur';
 import NFTData from 'enevti-app/components/atoms/nft/data/NFTData';
 import AppNFTDetailsDescriptionModal from './AppNFTDetailsDescriptionModal';
+import AppNFTDetailsRedeemBar from './AppNFTDetailsRedeemBar';
 
 export const NFT_DETAILS_HEADER_VIEW_HEIGHT =
-  83 + (getStatusBarHeight() / Dimensions.get('window').height) * 100;
+  94 + (getStatusBarHeight() / Dimensions.get('window').height) * 100;
 
 interface AppNFTDetailsHeaderProps {
   nft: NFT;
@@ -122,8 +123,8 @@ export default function AppNFTDetailsHeader({
       <View>
         <TouchableRipple onPress={descriptionModalOnPress}>
           <View>
-            <View style={styles.collectionName}>
-              <View style={styles.collectionNameItem}>
+            <View style={styles.nftDetailsName}>
+              <View style={styles.nftDetailsNameItem}>
                 <AppTextHeading2>
                   {nft.symbol}#{nft.serial}
                 </AppTextHeading2>
@@ -138,7 +139,7 @@ export default function AppNFTDetailsHeader({
                 name={iconMap.dropDown}
                 size={30}
                 color={theme.colors.placeholder}
-                style={styles.collectionNameDropdown}
+                style={styles.nftDetailsNameDropdown}
               />
             </View>
 
@@ -151,7 +152,9 @@ export default function AppNFTDetailsHeader({
           </View>
         </TouchableRipple>
 
-        <View style={styles.collectionChipsContainer}>
+        <AppNFTDetailsRedeemBar nft={nft} />
+
+        <View style={styles.nftDetailsChipsContainer}>
           <AppQuaternaryButton
             icon={iconMap.likeActive}
             iconSize={hp('3%')}
@@ -229,15 +232,15 @@ export default function AppNFTDetailsHeader({
 
 const makeStyles = (hp: DimensionFunction, wp: DimensionFunction) =>
   StyleSheet.create({
-    collectionName: {
+    nftDetailsName: {
       flexDirection: 'row',
       paddingTop: wp('4%'),
       paddingHorizontal: wp('5%'),
     },
-    collectionNameItem: {
+    nftDetailsNameItem: {
       flex: 1,
     },
-    collectionNameDropdown: {
+    nftDetailsNameDropdown: {
       alignSelf: 'center',
     },
     createdOwnedBy: {
@@ -254,10 +257,11 @@ const makeStyles = (hp: DimensionFunction, wp: DimensionFunction) =>
       flex: 1,
       height: '100%',
     },
-    collectionChipsContainer: {
+    nftDetailsChipsContainer: {
       height: hp('3%'),
       paddingHorizontal: wp('5%'),
-      marginVertical: hp('2%'),
+      marginTop: hp('1.5%'),
+      marginBottom: hp('2%'),
       flexDirection: 'row',
       alignItems: 'center',
     },

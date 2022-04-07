@@ -161,6 +161,15 @@ function Component(
     [hp],
   );
 
+  const listHeader = React.useMemo(
+    () => (
+      <AppTextHeading3 style={{ marginLeft: wp('5%'), marginBottom: hp('2%') }}>
+        Activity
+      </AppTextHeading3>
+    ),
+    [hp, wp],
+  );
+
   React.useEffect(() => {
     if (ref && ref.current) {
       mounted.current = true;
@@ -191,6 +200,7 @@ function Component(
       updateCellsBatchingPeriod={100}
       windowSize={5}
       ListFooterComponent={listFooter}
+      ListHeaderComponent={listHeader}
     />
   );
 }

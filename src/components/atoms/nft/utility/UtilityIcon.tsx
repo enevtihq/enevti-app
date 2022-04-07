@@ -4,7 +4,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 import { NFTBase } from 'enevti-app/types/nft';
 import { TemplateArgs } from 'enevti-app/types/nft/NFTTemplate';
-import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
+import utilityToIcon from 'enevti-app/utils/icon/utilityToIcon';
 
 interface UtilityIconProps {
   nft: NFTBase;
@@ -18,31 +18,7 @@ export default React.memo(
 
     const w = (parseFloat(args.width) * width) / 100.0;
     const iconSize = w * 0.75;
-
-    let icon: string = 'help-circle-outline';
-
-    switch (nft.utility) {
-      case 'videocall':
-        icon = iconMap.utilityVideoCall;
-        break;
-      case 'chat':
-        icon = iconMap.utilityChat;
-        break;
-      case 'content':
-        icon = iconMap.utilityContent;
-        break;
-      case 'gift':
-        icon = iconMap.utilityGift;
-        break;
-      case 'qr':
-        icon = iconMap.utilityQR;
-        break;
-      case 'stream':
-        icon = iconMap.utilityStream;
-        break;
-      default:
-        break;
-    }
+    const icon = utilityToIcon(nft.utility);
 
     return (
       <MaterialCommunityIcons

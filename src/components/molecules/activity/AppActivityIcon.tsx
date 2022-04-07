@@ -1,16 +1,10 @@
 import { StyleSheet } from 'react-native';
 import React from 'react';
-import AppIconComponent, {
-  iconMap,
-  UNDEFINED_ICON,
-} from 'enevti-app/components/atoms/icon/AppIconComponent';
+import AppIconComponent from 'enevti-app/components/atoms/icon/AppIconComponent';
 import { useTheme } from 'react-native-paper';
 import useDimension from 'enevti-app/utils/hook/useDimension';
 import { DimensionFunction } from 'enevti-app/utils/imageRatio';
-
-const activityNameIcon = {
-  sale: iconMap.accountCircle,
-};
+import activityToIcon from 'enevti-app/utils/icon/activityToIcon';
 
 interface AppActivityIconProps {
   activityName: string;
@@ -22,14 +16,10 @@ export default function AppActivityIcon({
   const theme = useTheme();
   const { wp } = useDimension();
   const styles = React.useMemo(() => makeStyles(wp), [wp]);
-  const iconName =
-    activityName in activityNameIcon
-      ? (activityNameIcon as any)[activityName]
-      : UNDEFINED_ICON;
 
   return (
     <AppIconComponent
-      name={iconName}
+      name={activityToIcon(activityName)}
       size={35}
       color={theme.colors.placeholder}
       style={styles.activityIcon}

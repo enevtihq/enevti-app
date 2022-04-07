@@ -9,7 +9,7 @@ import { handleError } from 'enevti-app/utils/error/handle';
 import AppIconButton from 'enevti-app/components/atoms/icon/AppIconButton';
 import { SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import mimeToIcon from 'enevti-app/utils/mime/mimeToIcon';
+import mimeToIcon from 'enevti-app/utils/icon/mimeToIcon';
 import { fileSizeKMG } from 'enevti-app/utils/format/fileSize';
 import { shallowEqual } from 'react-redux';
 import { Theme } from 'enevti-app/theme/default';
