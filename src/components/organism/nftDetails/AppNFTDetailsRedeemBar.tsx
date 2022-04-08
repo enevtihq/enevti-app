@@ -29,36 +29,33 @@ export default function AppNFTDetailsRedeemBar({
   );
 
   return (
-    <View style={styles.listContainer}>
-      <View style={{ flexDirection: 'row' }}>
+    <View style={styles.redeemContainer}>
+      <View style={styles.redeemRow}>
         <AppIconGradient
           name={utilityToIcon(nft.utility)}
           size={25}
           colors={[theme.colors.primary, theme.colors.secondary]}
-          style={{ alignSelf: 'center', marginRight: wp('3%', insets) }}
+          style={styles.redeemRowIcon}
         />
-        <View style={{ flex: 1 }}>
-          <AppTextBody5 style={{ lineHeight: hp('1.5%', insets) }}>
+        <View style={styles.redeemBarUtilityContainer}>
+          <AppTextBody5 style={styles.redeemBarUtilityText}>
             Utility
           </AppTextBody5>
           <AppTextHeading3>Video Call</AppTextHeading3>
         </View>
-        <AppPrimaryButton
-          style={{
-            height: hp('4%', insets),
-            justifyContent: 'center',
-            alignSelf: 'center',
-          }}>
-          <AppTextHeading4 style={{ color: 'white' }}>Redeem</AppTextHeading4>
+        <AppPrimaryButton style={styles.redeemBarButton}>
+          <AppTextHeading4 style={styles.redeemBarButtonText}>
+            Redeem
+          </AppTextHeading4>
         </AppPrimaryButton>
       </View>
-      <Divider style={{ marginVertical: wp('2%', insets) }} />
-      <View style={{ height: hp('5%', insets) }}>
-        <TouchableRipple onPress={() => {}}>
-          <AppTextBody4 style={{ color: theme.colors.placeholder }}>
+      <Divider style={styles.divider} />
+      <View style={styles.calendarContainer}>
+        <TouchableRipple onPress={() => {}} style={styles.calendarPressable}>
+          <AppTextBody4 style={styles.calendarLabelText}>
             Every Month · September, 12 · 10:00 - 12:00 AM GMT+12 · 5 Redeem
             Remaining{' '}
-            <AppTextBody5 style={{ color: theme.colors.primary }}>
+            <AppTextBody5 style={styles.calendarActionText}>
               (Add To Calendar)
             </AppTextBody5>
           </AppTextBody4>
@@ -70,7 +67,7 @@ export default function AppNFTDetailsRedeemBar({
 
 const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
   StyleSheet.create({
-    listContainer: {
+    redeemContainer: {
       marginHorizontal: wp('5%', insets),
       paddingVertical: wp('2%', insets),
       paddingHorizontal: wp('3%', insets),
@@ -79,5 +76,44 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
       borderWidth: StyleSheet.hairlineWidth,
       borderColor: Color(theme.colors.text).alpha(0.05).rgb().toString(),
       overflow: 'hidden',
+    },
+    redeemRow: {
+      flexDirection: 'row',
+    },
+    redeemRowIcon: {
+      alignSelf: 'center',
+      marginRight: wp('3%', insets),
+    },
+    redeemBarUtilityContainer: {
+      flex: 1,
+    },
+    redeemBarUtilityText: {
+      lineHeight: hp('1.5%', insets),
+    },
+    redeemBarButton: {
+      height: hp('4%', insets),
+      justifyContent: 'center',
+      alignSelf: 'center',
+    },
+    redeemBarButtonText: {
+      color: 'white',
+    },
+    divider: {
+      marginVertical: wp('2%', insets),
+    },
+    calendarContainer: {
+      height: hp('5%', insets),
+    },
+    calendarPressable: {
+      height: '100%',
+      justifyContent: 'center',
+    },
+    calendarLabelText: {
+      color: theme.colors.placeholder,
+      lineHeight: hp('2.5%', insets),
+    },
+    calendarActionText: {
+      color: theme.colors.primary,
+      lineHeight: hp('2.5%', insets),
     },
   });
