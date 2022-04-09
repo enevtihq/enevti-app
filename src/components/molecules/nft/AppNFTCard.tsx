@@ -44,9 +44,7 @@ export default function AppNFTCard({
 
   const onNavigate = React.useCallback(
     () =>
-      navigation
-        ? navigation.navigate('NFTDetails', { id: nft.id })
-        : undefined,
+      navigation ? navigation.push('NFTDetails', { id: nft.id }) : undefined,
     [navigation, nft.id],
   );
 

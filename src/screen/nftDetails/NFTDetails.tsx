@@ -97,8 +97,6 @@ export default function NFTDetails({ navigation, route }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log(id, nftDetailsOnScroll);
-
   return (
     <AppView
       darken

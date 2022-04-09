@@ -8,9 +8,10 @@ import { useTranslation } from 'react-i18next';
 import { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
 import useDimension from 'enevti-app/utils/hook/useDimension';
 import { BackgroundColorContext } from 'enevti-app/context';
-// import { TOP_TABBAR_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppTopTabBar';
+import { TOP_TABBAR_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppTopTabBar';
 
-export const NFT_DETAILS_TOP_TABBAR_HEIGHT_PERCENTAGE = 2;
+export const NFT_DETAILS_TOP_TABBAR_HEIGHT_PERCENTAGE =
+  TOP_TABBAR_HEIGHT_PERCENTAGE;
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -18,6 +19,7 @@ interface AppNFTDetailsBodyProps {
   collectionHeaderHeight: number;
   animatedTabBarStyle: StyleProp<ViewStyle>;
   activityScreen: ComponentType<any>;
+  summaryScreen: ComponentType<any>;
   style?: StyleProp<ViewStyle>;
 }
 
@@ -25,6 +27,7 @@ export default function AppNFTDetailsBody({
   collectionHeaderHeight,
   animatedTabBarStyle,
   activityScreen,
+  summaryScreen,
   style,
 }: AppNFTDetailsBodyProps) {
   const { t } = useTranslation();
@@ -60,11 +63,22 @@ export default function AppNFTDetailsBody({
           options={{
             tabBarLabel: ({ color }) => (
               <AppTextBody4 style={{ color: color }}>
-                {t('collection:activity')}
+                {t('nftDetails:summary')}
               </AppTextBody4>
             ),
           }}
-          name={t('collection:activity')}
+          name={t('nftDetails:summary')}
+          component={summaryScreen}
+        />
+        <Tab.Screen
+          options={{
+            tabBarLabel: ({ color }) => (
+              <AppTextBody4 style={{ color: color }}>
+                {t('nftDetails:activity')}
+              </AppTextBody4>
+            ),
+          }}
+          name={t('nftDetails:activity')}
           component={activityScreen}
         />
       </Tab.Navigator>
@@ -80,7 +94,6 @@ const makeStyles = () =>
       right: 0,
       position: 'absolute',
       zIndex: 1,
-      display: 'none',
     },
     profileBody: {
       flex: 1,

@@ -3,10 +3,12 @@ import { List } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { shallowEqual } from 'react-redux';
 import { wp } from 'enevti-app/utils/imageRatio';
+import { StyleProp, TextStyle } from 'react-native';
 
 interface AppAccordionProps {
   children: React.ReactNode;
   title: React.ReactNode;
+  titleStyle?: StyleProp<TextStyle>;
   expanded?: boolean;
   onPress?: () => void;
   memoKey?: (keyof AppAccordionProps)[];
@@ -14,6 +16,7 @@ interface AppAccordionProps {
 
 function Component({
   title,
+  titleStyle,
   expanded,
   children,
   onPress,
@@ -25,7 +28,7 @@ function Component({
   return (
     <List.Accordion
       title={title}
-      titleStyle={{ marginLeft: wp('2%', insets) }}
+      titleStyle={[{ marginLeft: wp('2%', insets) }, titleStyle]}
       expanded={expanded}
       onPress={onPress}>
       {children}

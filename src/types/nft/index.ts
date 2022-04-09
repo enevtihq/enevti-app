@@ -27,6 +27,7 @@ export type NFTBase = {
 };
 
 export interface NFT extends NFTBase {
+  collectionId: string;
   redeem: NFTRedeem;
   comment: number;
   description: string;

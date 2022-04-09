@@ -28,11 +28,17 @@ export const makeDummyNFT = (
 
   return {
     id: 'id',
+    like: 0,
+    price: { amount: '', currency: '' },
+    onSale: false,
     symbol: 'SYMBL',
     serial: Math.floor(Math.random() * 100).toString(),
     name: 'Collection Name',
-    data: data,
-    dataMime: 'image/jpeg',
+    data: {
+      cid: data,
+      mime: 'image/jpeg',
+      size: 0,
+    },
     NFTType: nftType,
     utility: shuffledUtility,
     rarity: {
@@ -47,7 +53,7 @@ export const makeDummyNFT = (
         },
       ],
     },
-    redeem: {
+    partition: {
       parts: new Array(shuffledPartSize).fill('id'),
       upgradeMaterial: shuffledPartSize,
     },

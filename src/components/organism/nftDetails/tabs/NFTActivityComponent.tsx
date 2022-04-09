@@ -10,7 +10,7 @@ import { useTheme } from 'react-native-paper';
 import Animated from 'react-native-reanimated';
 // import { useSafeAreaInsets } from 'react-native-safe-area-context';
 // import { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
-import { DimensionFunction } from 'enevti-app/utils/imageRatio';
+import { DimensionFunction, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
 import useDimension from 'enevti-app/utils/hook/useDimension';
 import AppListItem, {
   LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE,
@@ -26,6 +26,8 @@ import AppTextHeading5 from 'enevti-app/components/atoms/text/AppTextHeading5';
 import { NFT } from 'enevti-app/types/nft';
 import { NFT_DETAILS_TOP_TABBAR_HEIGHT_PERCENTAGE } from '../AppNFTDetailsBody';
 import AppActivityIcon from 'enevti-app/components/molecules/activity/AppActivityIcon';
+import { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const COLLECTION_ACTIVITY_ITEM_HEIGHT = 9;
 const AnimatedFlatList = Animated.createAnimatedComponent<any>(FlatList);
@@ -52,14 +54,15 @@ function Component(
 ) {
   const { hp, wp } = useDimension();
   const { t } = useTranslation();
+  const insets = useSafeAreaInsets();
   const theme = useTheme();
   const mounted = React.useRef<boolean>(false);
   const [displayed, setDisplayed] = React.useState<boolean>(false);
   const [refreshing, setRefreshing] = React.useState<boolean>(false);
 
   const styles = React.useMemo(
-    () => makeStyles(hp, wp, displayed, collectionHeaderHeight),
-    [hp, wp, displayed, collectionHeaderHeight],
+    () => makeStyles(hp, wp, displayed, collectionHeaderHeight, insets),
+    [hp, wp, displayed, collectionHeaderHeight, insets],
   );
   const isScrollEnabled = React.useMemo(
     () => (refreshing ? false : scrollEnabled),
@@ -161,15 +164,6 @@ function Component(
     [hp],
   );
 
-  const listHeader = React.useMemo(
-    () => (
-      <AppTextHeading3 style={{ marginLeft: wp('5%'), marginBottom: hp('2%') }}>
-        Activity
-      </AppTextHeading3>
-    ),
-    [hp, wp],
-  );
-
   React.useEffect(() => {
     if (ref && ref.current) {
       mounted.current = true;
@@ -200,7 +194,6 @@ function Component(
       updateCellsBatchingPeriod={100}
       windowSize={5}
       ListFooterComponent={listFooter}
-      ListHeaderComponent={listHeader}
     />
   );
 }
@@ -210,17 +203,17 @@ const makeStyles = (
   wp: DimensionFunction,
   displayed: boolean,
   collectionHeaderHeight: number,
-  // insets: SafeAreaInsets,
+  insets: SafeAreaInsets,
 ) =>
   StyleSheet.create({
     contentContainerStyle: {
       paddingTop:
         hp(NFT_DETAILS_TOP_TABBAR_HEIGHT_PERCENTAGE) + collectionHeaderHeight,
-      // minHeight:
-      //   hp(100) +
-      //   collectionHeaderHeight -
-      //   hp(HEADER_HEIGHT_PERCENTAGE) -
-      //   (Platform.OS === 'ios' ? insets.top : 0),
+      minHeight:
+        hp(100) +
+        collectionHeaderHeight -
+        hp(HEADER_HEIGHT_PERCENTAGE) -
+        (Platform.OS === 'ios' ? insets.top : 0),
       display: displayed ? undefined : 'none',
     },
     collectionItem: {

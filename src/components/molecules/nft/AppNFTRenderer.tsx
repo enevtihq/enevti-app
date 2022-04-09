@@ -45,9 +45,7 @@ export default React.memo(
     const styles = React.useMemo(() => makeStyles(), []);
     const onNavigate = React.useCallback(
       () =>
-        navigation
-          ? navigation.navigate('NFTDetails', { id: nft.id })
-          : undefined,
+        navigation ? navigation.push('NFTDetails', { id: nft.id }) : undefined,
       [navigation, nft.id],
     );
 

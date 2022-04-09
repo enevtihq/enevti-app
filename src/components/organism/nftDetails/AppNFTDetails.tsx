@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { FlatList, ScrollView, StyleSheet, View } from 'react-native';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
 import AppNFTDetailsHeader from 'enevti-app/components/organism/nftDetails/AppNFTDetailsHeader';
 import Animated, {
@@ -28,6 +28,7 @@ import {
   unloadNFTDetails,
 } from 'enevti-app/store/middleware/thunk/ui/view/nftDetails';
 import AppNFTDetailsBody from './AppNFTDetailsBody';
+import NFTSummaryComponent from './tabs/NFTSummaryComponent';
 
 interface AppNFTDetailsProps {
   id: string;
@@ -54,8 +55,10 @@ export default function AppNFTDetails({
     [hp],
   );
 
+  const [summaryMounted, setSummaryMounted] = React.useState<boolean>(false);
   const [activityMounted, setActivityMounted] = React.useState<boolean>(false);
 
+  const summaryRef = useAnimatedRef<ScrollView>();
   const activityRef = useAnimatedRef<FlatList>();
 
   const headerCollapsed = useSharedValue(true);
@@ -80,6 +83,8 @@ export default function AppNFTDetails({
       promise.abort();
     };
   }, [dispatch, onNFTDetailsScreenLoaded]);
+
+  const summaryOnMounted = React.useCallback(() => setSummaryMounted(true), []);
 
   const activityOnMounted = React.useCallback(
     () => setActivityMounted(true),
@@ -155,7 +160,8 @@ export default function AppNFTDetails({
       },
     });
 
-  const collectionActivityScrollHandler = useCustomAnimatedScrollHandler([]);
+  const nftSummaryScrollHandler = useCustomAnimatedScrollHandler([activityRef]);
+  const nftActivityScrollHandler = useCustomAnimatedScrollHandler([summaryRef]);
 
   const scrollStyle = useAnimatedStyle(() => {
     return {
@@ -170,8 +176,33 @@ export default function AppNFTDetails({
   });
 
   const scrollEnabled = React.useMemo(
-    () => (activityMounted ? true : false),
-    [activityMounted],
+    () => (summaryMounted && activityMounted ? true : false),
+    [summaryMounted, activityMounted],
+  );
+
+  const SummaryScreen = React.useCallback(
+    () => (
+      <NFTSummaryComponent
+        navigation={navigation}
+        ref={summaryRef}
+        nft={nftDetails}
+        collectionHeaderHeight={totalHeaderHeight}
+        scrollEnabled={scrollEnabled}
+        onScroll={nftSummaryScrollHandler}
+        onMounted={summaryOnMounted}
+        onRefresh={onRefresh}
+      />
+    ),
+    [
+      navigation,
+      summaryOnMounted,
+      summaryRef,
+      nftDetails,
+      nftSummaryScrollHandler,
+      onRefresh,
+      scrollEnabled,
+      totalHeaderHeight,
+    ],
   );
 
   const ActivityScreen = React.useCallback(
@@ -181,7 +212,7 @@ export default function AppNFTDetails({
         activities={nftDetails.activity}
         collectionHeaderHeight={totalHeaderHeight}
         scrollEnabled={scrollEnabled}
-        onScroll={collectionActivityScrollHandler}
+        onScroll={nftActivityScrollHandler}
         onMounted={activityOnMounted}
         onRefresh={onRefresh}
       />
@@ -190,7 +221,7 @@ export default function AppNFTDetails({
       activityOnMounted,
       activityRef,
       nftDetails.activity,
-      collectionActivityScrollHandler,
+      nftActivityScrollHandler,
       onRefresh,
       scrollEnabled,
       totalHeaderHeight,
@@ -208,6 +239,7 @@ export default function AppNFTDetails({
         collectionHeaderHeight={totalHeaderHeight}
         animatedTabBarStyle={animatedTabBarStyle}
         activityScreen={ActivityScreen}
+        summaryScreen={SummaryScreen}
       />
     </View>
   ) : (

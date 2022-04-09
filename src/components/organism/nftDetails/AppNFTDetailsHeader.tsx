@@ -1,19 +1,9 @@
 import { View, StyleSheet, Dimensions } from 'react-native';
 import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Divider, TouchableRipple, useTheme } from 'react-native-paper';
+import { useTheme } from 'react-native-paper';
 import { Theme } from 'enevti-app/theme/default';
-import { DimensionFunction } from 'enevti-app/utils/imageRatio';
-import AppTextHeading2 from 'enevti-app/components/atoms/text/AppTextHeading2';
-import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
-import AppAvatarRenderer from 'enevti-app/components/molecules/avatar/AppAvatarRenderer';
-import AppQuaternaryButton from 'enevti-app/components/atoms/button/AppQuaternaryButton';
-import { numberKMB } from 'enevti-app/utils/format/amount';
-import AppIconComponent, {
-  iconMap,
-} from 'enevti-app/components/atoms/icon/AppIconComponent';
 import useDimension from 'enevti-app/utils/hook/useDimension';
-import AppPersonaLabel from 'enevti-app/components/molecules/avatar/AppPersonaLabel';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
@@ -22,27 +12,20 @@ import { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHe
 import AppNFTRenderer from 'enevti-app/components/molecules/nft/AppNFTRenderer';
 import { BlurView } from '@react-native-community/blur';
 import NFTData from 'enevti-app/components/atoms/nft/data/NFTData';
-import AppNFTDetailsDescriptionModal from './AppNFTDetailsDescriptionModal';
-import AppNFTDetailsRedeemBar from './AppNFTDetailsRedeemBar';
 
 export const NFT_DETAILS_HEADER_VIEW_HEIGHT =
-  94 + (getStatusBarHeight() / Dimensions.get('window').height) * 100;
+  53 + (getStatusBarHeight() / Dimensions.get('window').height) * 100;
 
 interface AppNFTDetailsHeaderProps {
   nft: NFT;
   navigation: StackNavigationProp<RootStackParamList>;
 }
 
-export default function AppNFTDetailsHeader({
-  nft,
-  navigation,
-}: AppNFTDetailsHeaderProps) {
+export default function AppNFTDetailsHeader({ nft }: AppNFTDetailsHeaderProps) {
   const { hp, wp } = useDimension();
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
-  const styles = React.useMemo(() => makeStyles(hp, wp), [hp, wp]);
-  const [descriptionVisible, setDescriptionVisible] =
-    React.useState<boolean>(false);
+  const styles = React.useMemo(() => makeStyles(), []);
 
   const nftContainerPaddingTop = React.useMemo(
     () => insets.top + hp(HEADER_HEIGHT_PERCENTAGE),
@@ -50,33 +33,7 @@ export default function AppNFTDetailsHeader({
   );
   const nftWidth = React.useMemo(() => wp('80%'), [wp]);
   const nftContainerWidth = React.useMemo(() => wp('100%'), [wp]);
-  const nftContainerHeight = React.useMemo(
-    () => nftContainerWidth + nftContainerPaddingTop,
-    [nftContainerWidth, nftContainerPaddingTop],
-  );
   const totalHeight = React.useMemo(() => NFT_DETAILS_HEADER_VIEW_HEIGHT, []);
-
-  const onCreatorDetail = React.useCallback(() => {
-    navigation.navigate('Profile', {
-      address: nft.creator.address,
-    });
-  }, [navigation, nft.creator.address]);
-
-  const onOwnerDetail = React.useCallback(() => {
-    navigation.navigate('Profile', {
-      address: nft.owner.address,
-    });
-  }, [navigation, nft.owner.address]);
-
-  const descriptionModalOnDismiss = React.useCallback(
-    () => setDescriptionVisible(false),
-    [],
-  );
-
-  const descriptionModalOnPress = React.useCallback(
-    () => setDescriptionVisible(old => !old),
-    [],
-  );
 
   return (
     <View
@@ -91,7 +48,7 @@ export default function AppNFTDetailsHeader({
           styles.overflowHidden,
           {
             width: nftContainerWidth,
-            height: nftContainerHeight - wp('7.5%'),
+            height: hp(totalHeight),
           },
         ]}>
         <View style={styles.nftBackground}>
@@ -120,151 +77,12 @@ export default function AppNFTDetailsHeader({
           <AppNFTRenderer nft={nft} width={nftWidth} />
         </View>
       </View>
-      <View>
-        <TouchableRipple onPress={descriptionModalOnPress}>
-          <View>
-            <View style={styles.nftDetailsName}>
-              <View style={styles.nftDetailsNameItem}>
-                <AppTextHeading2>
-                  {nft.symbol}#{nft.serial}
-                </AppTextHeading2>
-
-                <View style={styles.summary}>
-                  <AppTextBody4 style={{ color: theme.colors.placeholder }}>
-                    Super Rare · 0.04%
-                  </AppTextBody4>
-                </View>
-              </View>
-              <AppIconComponent
-                name={iconMap.dropDown}
-                size={30}
-                color={theme.colors.placeholder}
-                style={styles.nftDetailsNameDropdown}
-              />
-            </View>
-
-            <View
-              style={{
-                marginTop: hp('1%'),
-                paddingHorizontal: wp('5%'),
-              }}
-            />
-          </View>
-        </TouchableRipple>
-
-        <AppNFTDetailsRedeemBar nft={nft} />
-
-        <View style={styles.nftDetailsChipsContainer}>
-          <AppQuaternaryButton
-            icon={iconMap.likeActive}
-            iconSize={hp('3%')}
-            iconColor={theme.colors.placeholder}
-            style={{
-              height: hp('4%'),
-            }}
-            onPress={() => console.log('Pressed')}>
-            <AppTextBody4 style={{ color: theme.colors.placeholder }}>
-              {numberKMB(nft.like, 2)}
-            </AppTextBody4>
-          </AppQuaternaryButton>
-          <AppQuaternaryButton
-            icon={iconMap.commentFill}
-            iconSize={hp('3%')}
-            iconColor={theme.colors.placeholder}
-            style={{
-              height: hp('4%'),
-            }}
-            onPress={() => console.log('Pressed')}>
-            <AppTextBody4 style={{ color: theme.colors.placeholder }}>
-              {numberKMB(nft.comment, 2)}
-            </AppTextBody4>
-          </AppQuaternaryButton>
-        </View>
-
-        <View style={{ paddingHorizontal: wp('5%') }}>
-          <Divider />
-          <View style={styles.createdOwnedBy}>
-            <AppTextBody4
-              style={{ color: theme.colors.placeholder, width: wp('20%') }}>
-              Created By{' '}
-            </AppTextBody4>
-            <AppAvatarRenderer
-              photo={nft.creator.photo}
-              address={nft.creator.address}
-              size={wp('5%')}
-              style={{ marginHorizontal: wp('2%') }}
-            />
-            <AppPersonaLabel
-              persona={nft.creator}
-              style={styles.creatorOwnerAddress}
-              onPress={onCreatorDetail}
-            />
-          </View>
-          <Divider />
-          <View style={styles.createdOwnedBy}>
-            <AppTextBody4
-              style={{ color: theme.colors.placeholder, width: wp('20%') }}>
-              Owned By{' '}
-            </AppTextBody4>
-            <AppAvatarRenderer
-              photo={nft.owner.photo}
-              address={nft.owner.address}
-              size={wp('5%')}
-              style={{ marginHorizontal: wp('2%') }}
-            />
-            <AppPersonaLabel
-              persona={nft.owner}
-              style={styles.creatorOwnerAddress}
-              onPress={onOwnerDetail}
-            />
-          </View>
-          <Divider />
-        </View>
-      </View>
-      <AppNFTDetailsDescriptionModal
-        nft={nft}
-        visible={descriptionVisible}
-        onDismiss={descriptionModalOnDismiss}
-      />
     </View>
   );
 }
 
-const makeStyles = (hp: DimensionFunction, wp: DimensionFunction) =>
+const makeStyles = () =>
   StyleSheet.create({
-    nftDetailsName: {
-      flexDirection: 'row',
-      paddingTop: wp('4%'),
-      paddingHorizontal: wp('5%'),
-    },
-    nftDetailsNameItem: {
-      flex: 1,
-    },
-    nftDetailsNameDropdown: {
-      alignSelf: 'center',
-    },
-    createdOwnedBy: {
-      marginVertical: hp('1.5%'),
-      flexDirection: 'row',
-      alignItems: 'center',
-    },
-    summary: {
-      marginTop: hp('0.5%'),
-      flexDirection: 'row',
-      alignItems: 'center',
-    },
-    creatorOwnerAddress: {
-      flex: 1,
-      height: '100%',
-    },
-    nftDetailsChipsContainer: {
-      height: hp('3%'),
-      paddingHorizontal: wp('5%'),
-      marginTop: hp('1.5%'),
-      marginBottom: hp('2%'),
-      flexDirection: 'row',
-      alignItems: 'center',
-    },
     absolute: {
       position: 'absolute',
       top: 0,
