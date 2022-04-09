@@ -124,7 +124,9 @@ function Component(
   return (
     <Animated.ScrollView
       ref={ref}
+      showsVerticalScrollIndicator={false}
       onScroll={onScroll}
+      onMomentumScrollEnd={() => {}}
       refreshControl={refreshControl}
       contentContainerStyle={styles.contentContainerStyle}
       scrollEnabled={isScrollEnabled}>
