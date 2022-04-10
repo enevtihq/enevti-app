@@ -41,7 +41,7 @@ export default function AppNFTDetailsRedeemBar({
           <AppTextBody5 style={styles.redeemBarUtilityText}>
             Utility
           </AppTextBody5>
-          <AppTextHeading3>Video Call</AppTextHeading3>
+          <AppTextHeading3>Exclusive Content</AppTextHeading3>
         </View>
         <AppPrimaryButton style={styles.redeemBarButton}>
           <AppTextHeading4 style={styles.redeemBarButtonText}>

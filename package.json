@@ -67,6 +67,7 @@
     "react-native-drop-shadow": "0.0.4",
     "react-native-emoji": "^1.8.0",
     "react-native-fast-image": "^8.5.11",
+    "react-native-fs": "^2.19.0",
     "react-native-gesture-handler": "^2.2.0",
     "react-native-image-crop-picker": "^0.37.3",
     "react-native-image-progress": "^1.2.0",
