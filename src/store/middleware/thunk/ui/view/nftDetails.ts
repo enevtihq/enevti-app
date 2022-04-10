@@ -7,7 +7,7 @@ import { AppThunk, AsyncThunkAPI } from 'enevti-app/store/state';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { getNFT } from 'enevti-app/service/enevti/nft';
 import {
-  resetNFTDetailsView,
+  clearNFTDetailsById,
   setNFTDetailsLoaded,
   setNFTDetailsView,
 } from 'enevti-app/store/slices/ui/view/nftDetails';
@@ -25,8 +25,8 @@ export const loadNFTDetails = createAsyncThunk<
       reload && dispatch(showModalLoader());
       const nftReponse = await getNFT(id, signal);
       if (nftReponse) {
-        dispatch(setNFTDetailsLoaded(true));
         dispatch(setNFTDetailsView(nftReponse));
+        dispatch(setNFTDetailsLoaded({ id, value: true }));
       }
     } catch (err: any) {
       handleError(err);
@@ -36,6 +36,8 @@ export const loadNFTDetails = createAsyncThunk<
   },
 );
 
-export const unloadNFTDetails = (): AppThunk => dispatch => {
-  dispatch(resetNFTDetailsView());
-};
+export const unloadNFTDetails =
+  (id: string): AppThunk =>
+  dispatch => {
+    dispatch(clearNFTDetailsById(id));
+  };

@@ -38,6 +38,7 @@ import { useTranslation } from 'react-i18next';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { AppAsyncThunk } from 'enevti-app/types/store/AppAsyncThunk';
+import { RootState } from 'enevti-app/store/state';
 
 interface AppCollectionProps {
   id: string;
@@ -57,8 +58,12 @@ export default function AppCollection({
   const headerHeight = hp(HEADER_HEIGHT_PERCENTAGE) + insets.top;
   const styles = React.useMemo(() => makeStyles(), []);
 
-  const collection = useSelector(selectCollectionView);
-  const collectionUndefined = useSelector(isCollectionUndefined);
+  const collection = useSelector((state: RootState) =>
+    selectCollectionView(state, id),
+  );
+  const collectionUndefined = useSelector((state: RootState) =>
+    isCollectionUndefined(state, id),
+  );
 
   const now = React.useMemo(() => Date.now(), []);
   const mintingAvailable = React.useMemo(
@@ -103,10 +108,10 @@ export default function AppCollection({
   React.useEffect(() => {
     const promise = onCollectionScreenLoaded();
     return function cleanup() {
-      dispatch(unloadCollection());
+      dispatch(unloadCollection(id));
       promise.abort();
     };
-  }, [dispatch, onCollectionScreenLoaded]);
+  }, [dispatch, onCollectionScreenLoaded, id]);
 
   const mintedItemsOnMounted = React.useCallback(
     () => setMintedItemsMounted(true),

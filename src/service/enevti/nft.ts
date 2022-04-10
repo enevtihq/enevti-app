@@ -51,7 +51,7 @@ async function fetchNFT(
   ];
 
   return {
-    id: Math.random().toString(),
+    id: id,
     collectionId: Math.random().toString(),
     like: 10,
     comment: 3,

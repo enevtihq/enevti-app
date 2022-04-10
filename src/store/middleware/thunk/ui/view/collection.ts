@@ -3,7 +3,7 @@ import { handleError } from 'enevti-app/utils/error/handle';
 import {
   setCollectionViewLoaded,
   setCollectionView,
-  resetCollectionView,
+  clearCollectionById,
 } from 'enevti-app/store/slices/ui/view/collection';
 import {
   hideModalLoader,
@@ -25,8 +25,8 @@ export const loadCollection = createAsyncThunk<
       reload && dispatch(showModalLoader());
       const collectionResponse = await getCollection(id, signal);
       if (collectionResponse) {
-        dispatch(setCollectionViewLoaded(true));
         dispatch(setCollectionView(collectionResponse));
+        dispatch(setCollectionViewLoaded({ id, value: true }));
       }
     } catch (err: any) {
       handleError(err);
@@ -36,6 +36,8 @@ export const loadCollection = createAsyncThunk<
   },
 );
 
-export const unloadCollection = (): AppThunk => dispatch => {
-  dispatch(resetCollectionView());
-};
+export const unloadCollection =
+  (id: string): AppThunk =>
+  dispatch => {
+    dispatch(clearCollectionById(id));
+  };

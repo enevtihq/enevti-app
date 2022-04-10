@@ -4,9 +4,15 @@ import { Persona } from 'enevti-app/types/service/enevti/persona';
 import { Profile } from 'enevti-app/types/service/enevti/profile';
 import { RootState } from 'enevti-app/store/state';
 
-type ProfileViewState = Profile & { loaded: boolean; persona: Persona };
+type ProfileView = Profile & { persona: Persona };
 
-const initialState: ProfileViewState = {
+type ProfileViewState = ProfileView & { loaded: boolean };
+
+type ProfileViewStore = {
+  [key: string]: ProfileViewState;
+};
+
+const initialStateItem: ProfileViewState = {
   loaded: false,
   persona: { username: '', photo: '', address: '' },
   nftSold: 0,
@@ -20,29 +26,28 @@ const initialState: ProfileViewState = {
   collection: [],
 };
 
+const initialState: ProfileViewStore = {};
+
 const profileViewSlice = createSlice({
   name: 'profileView',
   initialState,
   reducers: {
-    setProfileView: (profile, action: PayloadAction<Profile>) => {
-      profile.nftSold = action.payload.nftSold;
-      profile.treasuryAct = action.payload.treasuryAct;
-      profile.serveRate = action.payload.serveRate;
-      profile.stake = action.payload.stake;
-      profile.balance = action.payload.balance;
-      profile.social.twitter.link = action.payload.social.twitter.link;
-      profile.social.twitter.stat = action.payload.social.twitter.stat;
-      profile.owned = action.payload.owned.slice();
-      profile.onsale = action.payload.onsale.slice();
-      profile.collection = action.payload.collection.slice();
+    setProfileView: (profile, action: PayloadAction<ProfileView>) => {
+      Object.assign(profile, {
+        [action.payload.persona.address]: action.payload,
+      });
     },
-    setProfileViewLoaded: (profile, action: PayloadAction<boolean>) => {
-      profile.loaded = action.payload;
+    setProfileViewLoaded: (
+      profile,
+      action: PayloadAction<{ address: string; value: boolean }>,
+    ) => {
+      profile[action.payload.address].loaded = action.payload.value;
     },
-    setPersonaView: (profile, action: PayloadAction<Persona>) => {
-      profile.persona.username = action.payload.username;
-      profile.persona.photo = action.payload.photo;
-      profile.persona.address = action.payload.address;
+    clearProfileByAddress: (profile, action: PayloadAction<string>) => {
+      delete profile[action.payload];
+    },
+    resetProfileByAddress: (profile, action: PayloadAction<string>) => {
+      Object.assign(profile[action.payload], initialStateItem);
     },
     resetProfileView: () => {
       return initialState;
@@ -53,17 +58,26 @@ const profileViewSlice = createSlice({
 export const {
   setProfileView,
   setProfileViewLoaded,
-  setPersonaView,
   resetProfileView,
+  clearProfileByAddress,
+  resetProfileByAddress,
 } = profileViewSlice.actions;
 export default profileViewSlice.reducer;
 
 export const selectProfileView = createSelector(
-  (state: RootState) => state,
-  (state: RootState) => state.ui.view.profile,
+  [
+    (state: RootState) => state.ui.view.profile,
+    (state: RootState, address: string) => address,
+  ],
+  (profile: ProfileViewStore, address: string) =>
+    profile.hasOwnProperty(address) ? profile[address] : initialStateItem,
 );
 
 export const isProfileUndefined = createSelector(
-  (state: RootState) => state.ui.view.profile,
-  (profile: ProfileViewState) => !profile.loaded,
+  [
+    (state: RootState) => state.ui.view.profile,
+    (state: RootState, address: string) => address,
+  ],
+  (profile: ProfileViewStore, address: string) =>
+    profile.hasOwnProperty(address) ? !profile[address].loaded : true,
 );

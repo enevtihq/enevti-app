@@ -29,6 +29,7 @@ import {
 } from 'enevti-app/store/middleware/thunk/ui/view/nftDetails';
 import AppNFTDetailsBody from './AppNFTDetailsBody';
 import NFTSummaryComponent from './tabs/NFTSummaryComponent';
+import { RootState } from 'enevti-app/store/state';
 
 interface AppNFTDetailsProps {
   id: string;
@@ -47,8 +48,12 @@ export default function AppNFTDetails({
   const headerHeight = hp(HEADER_HEIGHT_PERCENTAGE) + insets.top;
   const styles = React.useMemo(() => makeStyles(), []);
 
-  const nftDetails = useSelector(selectNFTDetailsView);
-  const nftDetailsUndefined = useSelector(isNFTDetailsUndefined);
+  const nftDetails = useSelector((state: RootState) =>
+    selectNFTDetailsView(state, id),
+  );
+  const nftDetailsUndefined = useSelector((state: RootState) =>
+    isNFTDetailsUndefined(state, id),
+  );
 
   const totalHeaderHeight = React.useMemo(
     () => hp(NFT_DETAILS_HEADER_VIEW_HEIGHT),
@@ -79,10 +84,10 @@ export default function AppNFTDetails({
   React.useEffect(() => {
     const promise = onNFTDetailsScreenLoaded();
     return function cleanup() {
-      dispatch(unloadNFTDetails());
+      dispatch(unloadNFTDetails(id));
       promise.abort();
     };
-  }, [dispatch, onNFTDetailsScreenLoaded]);
+  }, [dispatch, onNFTDetailsScreenLoaded, id]);
 
   const summaryOnMounted = React.useCallback(() => setSummaryMounted(true), []);
 

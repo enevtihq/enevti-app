@@ -7,13 +7,12 @@ import {
   showModalLoader,
 } from 'enevti-app/store/slices/ui/global/modalLoader';
 import {
-  setMyPersonaView,
+  resetMyProfileView,
   setMyProfileView,
   setMyProfileViewLoaded,
 } from 'enevti-app/store/slices/ui/view/myProfile';
 import {
-  resetProfileView,
-  setPersonaView,
+  clearProfileByAddress,
   setProfileView,
   setProfileViewLoaded,
 } from 'enevti-app/store/slices/ui/view/profile';
@@ -35,17 +34,19 @@ export const loadProfile = createAsyncThunk<
       if (address === myPersona.address) {
         const profileResponse = await getMyProfile(reload, signal);
         if (profileResponse) {
+          dispatch(
+            setMyProfileView({ ...profileResponse, persona: myPersona }),
+          );
           dispatch(setMyProfileViewLoaded(true));
-          dispatch(setMyProfileView(profileResponse));
-          dispatch(setMyPersonaView(myPersona));
         }
       } else {
         const personaBase = await getBasePersona(address, signal);
         const profileResponse = await getProfile(address, signal);
         if (personaBase && profileResponse) {
-          dispatch(setProfileViewLoaded(true));
-          dispatch(setProfileView(profileResponse));
-          dispatch(setPersonaView(personaBase));
+          dispatch(
+            setProfileView({ ...profileResponse, persona: personaBase }),
+          );
+          dispatch(setProfileViewLoaded({ address, value: true }));
         }
       }
     } catch (err: any) {
@@ -61,6 +62,8 @@ export const unloadProfile =
   (dispatch, getState) => {
     const myPersona = selectMyPersonaCache(getState());
     if (address !== myPersona.address) {
-      dispatch(resetProfileView());
+      dispatch(clearProfileByAddress(address));
+    } else {
+      dispatch(resetMyProfileView());
     }
   };

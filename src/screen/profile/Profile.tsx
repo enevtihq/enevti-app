@@ -15,6 +15,7 @@ import {
   isProfileUndefined,
   selectProfileView,
 } from 'enevti-app/store/slices/ui/view/profile';
+import { RootState } from 'enevti-app/store/state';
 
 type Props = StackScreenProps<RootStackParamList, 'Profile'>;
 
@@ -25,8 +26,12 @@ export default function Profile({ navigation, route }: Props) {
   const styles = React.useMemo(() => makeStyles(), []);
   const headerHeight = hp(HEADER_HEIGHT_PERCENTAGE, insets);
 
-  const profile = useSelector(selectProfileView);
-  const profileUndefined = useSelector(isProfileUndefined);
+  const profile = useSelector((state: RootState) =>
+    selectProfileView(state, address),
+  );
+  const profileUndefined = useSelector((state: RootState) =>
+    isProfileUndefined(state, address),
+  );
 
   return (
     <AppView

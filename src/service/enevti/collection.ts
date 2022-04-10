@@ -15,7 +15,7 @@ async function fetchCollection(
   }
 
   return {
-    id: Math.random().toString(),
+    id: id,
     collectionType: 'onekind',
     name: 'Eye Collection',
     description:

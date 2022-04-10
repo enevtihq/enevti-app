@@ -29,6 +29,10 @@ async function fetchPersona(
   };
 }
 
+export function passphraseToAddress(passphrase: string) {
+  return Lisk.cryptography.getBase32AddressFromPassphrase(passphrase);
+}
+
 export async function getMyAddress() {
   const myPersona: Persona = selectMyPersonaCache(store.getState());
   if (myPersona.address) {
@@ -58,8 +62,7 @@ export async function getMyAddress() {
       };
     }
 
-    const myAddress =
-      Lisk.cryptography.getBase32AddressFromPassphrase(authToken);
+    const myAddress = passphraseToAddress(authToken);
     store.dispatch(setMyPersonaAddressCache(myAddress));
 
     return myAddress;
