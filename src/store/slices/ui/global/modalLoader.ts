@@ -3,11 +3,18 @@ import { createSelector } from 'reselect';
 import { RootState } from 'enevti-app/store/state';
 
 interface ModalLoaderState {
+  mode: 'activity' | 'progress';
   show: boolean;
   text: string;
+  progress: number;
 }
 
-const initialState: ModalLoaderState = { show: false, text: '' };
+const initialState: ModalLoaderState = {
+  mode: 'activity',
+  show: false,
+  text: '',
+  progress: 0,
+};
 
 const modalLoaderSlice = createSlice({
   name: 'modalLoader',
@@ -15,10 +22,25 @@ const modalLoaderSlice = createSlice({
   reducers: {
     showModalLoader: loader => {
       loader.show = true;
-      loader.text = initialState.text;
     },
     hideModalLoader: loader => {
       loader.show = false;
+      loader.text = initialState.text;
+    },
+    setModalLoaderMode: (
+      loader,
+      action: PayloadAction<'activity' | 'progress'>,
+    ) => {
+      loader.mode = action.payload;
+    },
+    resetModalLoaderMode: loader => {
+      loader.mode = initialState.mode;
+    },
+    setModalLoaderProgress: (loader, action: PayloadAction<number>) => {
+      loader.progress = action.payload;
+    },
+    resetModalLoaderProgress: loader => {
+      loader.progress = initialState.progress;
     },
     setModalLoaderText: (loader, action: PayloadAction<string>) => {
       loader.text = action.payload;
@@ -36,11 +58,20 @@ const modalLoaderSlice = createSlice({
 export const {
   showModalLoader,
   hideModalLoader,
+  setModalLoaderMode,
+  resetModalLoaderMode,
+  setModalLoaderProgress,
+  resetModalLoaderProgress,
   setModalLoaderText,
   resetModalLoaderText,
   setModalLoaderState,
 } = modalLoaderSlice.actions;
 export default modalLoaderSlice.reducer;
+
+export const selectModalLoaderMode = createSelector(
+  (state: RootState) => state,
+  (state: RootState) => state.ui.global.modalLoader.mode,
+);
 
 export const selectModalLoaderState = createSelector(
   (state: RootState) => state,
@@ -55,4 +86,9 @@ export const selectModalLoaderShow = createSelector(
 export const selectModalLoaderMessage = createSelector(
   (state: RootState) => state,
   (state: RootState) => state.ui.global.modalLoader.text,
+);
+
+export const selectModalLoaderProgress = createSelector(
+  (state: RootState) => state,
+  (state: RootState) => state.ui.global.modalLoader.progress,
 );

@@ -105,7 +105,7 @@ export default function Feed({
   );
 
   return (
-    <AppView darken>
+    <AppView darken withLoader>
       <View style={styles.textContainer}>
         <AnimatedFlatList
           onScroll={onScroll}
