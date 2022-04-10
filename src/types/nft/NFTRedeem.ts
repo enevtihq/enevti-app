@@ -1,4 +1,4 @@
-import { NFTContent } from './NFTContent';
+import { NFTContentSecure } from './NFTContent';
 import { NFTSecret } from './NFTSecret';
 
 export type NFTRedeem = {
@@ -7,7 +7,7 @@ export type NFTRedeem = {
   limit: number;
   touched: number;
   secret: NFTSecret;
-  content: NFTContent;
+  content: NFTContentSecure;
   schedule: {
     recurring: string;
     time: {

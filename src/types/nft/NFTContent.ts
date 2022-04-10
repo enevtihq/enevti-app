@@ -3,3 +3,8 @@ export type NFTContent = {
   mime: string;
   size: number;
 };
+
+export interface NFTContentSecure extends NFTContent {
+  iv: string;
+  salt: string;
+}
