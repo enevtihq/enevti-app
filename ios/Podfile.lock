@@ -308,6 +308,8 @@ PODS:
     - React-Core
   - react-native-document-picker (8.0.0):
     - React-Core
+  - react-native-encryption (1.0.0):
+    - React
   - react-native-netinfo (7.1.7):
     - React-Core
   - react-native-pager-view (5.4.11):
@@ -385,6 +387,8 @@ PODS:
     - React-jsi (= 0.66.4)
     - React-logger (= 0.66.4)
     - React-perflogger (= 0.66.4)
+  - RNCalendarEvents (2.2.0):
+    - React
   - RNCAsyncStorage (1.15.15):
     - React-Core
   - RNCClipboard (1.8.5):
@@ -397,6 +401,8 @@ PODS:
     - React-Core
     - SDWebImage (~> 5.11.1)
     - SDWebImageWebPCoder (~> 0.8.4)
+  - RNFileViewer (2.1.5):
+    - React-Core
   - RNFS (2.19.0):
     - React-Core
   - RNGestureHandler (2.2.0):
@@ -512,6 +518,7 @@ DEPENDENCIES:
   - "react-native-blur (from `../node_modules/@react-native-community/blur`)"
   - react-native-config (from `../node_modules/react-native-config`)
   - react-native-document-picker (from `../node_modules/react-native-document-picker`)
+  - "react-native-encryption (from `../node_modules/@dhairyasharma/react-native-encryption`)"
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-pager-view (from `../node_modules/react-native-pager-view`)
   - react-native-randombytes (from `../node_modules/react-native-randombytes`)
@@ -530,11 +537,13 @@ DEPENDENCIES:
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - React-runtimeexecutor (from `../node_modules/react-native/ReactCommon/runtimeexecutor`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - RNCalendarEvents (from `../node_modules/react-native-calendar-events`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCClipboard (from `../node_modules/@react-native-clipboard/clipboard`)"
   - "RNCMaskedView (from `../node_modules/@react-native-masked-view/masked-view`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNFastImage (from `../node_modules/react-native-fast-image`)
+  - RNFileViewer (from `../node_modules/react-native-file-viewer`)
   - RNFS (from `../node_modules/react-native-fs`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - "RNGoogleSignin (from `../node_modules/@react-native-google-signin/google-signin`)"
@@ -620,6 +629,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-config"
   react-native-document-picker:
     :path: "../node_modules/react-native-document-picker"
+  react-native-encryption:
+    :path: "../node_modules/@dhairyasharma/react-native-encryption"
   react-native-netinfo:
     :path: "../node_modules/@react-native-community/netinfo"
   react-native-pager-view:
@@ -656,6 +667,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/runtimeexecutor"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  RNCalendarEvents:
+    :path: "../node_modules/react-native-calendar-events"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
   RNCClipboard:
@@ -666,6 +679,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-device-info"
   RNFastImage:
     :path: "../node_modules/react-native-fast-image"
+  RNFileViewer:
+    :path: "../node_modules/react-native-file-viewer"
   RNFS:
     :path: "../node_modules/react-native-fs"
   RNGestureHandler:
@@ -733,6 +748,7 @@ SPEC CHECKSUMS:
   react-native-blur: cad4d93b364f91e7b7931b3fa935455487e5c33c
   react-native-config: 6502b1879f97ed5ac570a029961fc35ea606cd14
   react-native-document-picker: 772d04a4bc5c35da9abe27b08ac271420ae3f9ef
+  react-native-encryption: bb2ee52d749b4874990b6cf43435524c9f1a5a1a
   react-native-netinfo: 1792d13894f12e8050c6cd7207192c74025e90d1
   react-native-pager-view: fb87ee16641224bfc41e94e6b276f106ce584b74
   react-native-randombytes: 5fc412efe7b5c55b9002c0004d75fe5fabcaa507
@@ -751,11 +767,13 @@ SPEC CHECKSUMS:
   React-RCTVibration: e3ffca672dd3772536cb844274094b0e2c31b187
   React-runtimeexecutor: dec32ee6f2e2a26e13e58152271535fadff5455a
   ReactCommon: 57b69f6383eafcbd7da625bfa6003810332313c4
+  RNCalendarEvents: 99a07d9a74a62b5b423d8c9df04dc0b8f8b94faf
   RNCAsyncStorage: 69b1e4d51107f5f0847d086c23513465869d046e
   RNCClipboard: 471860adba60079ac22058c663c91b3a875a7609
   RNCMaskedView: d367b2a8df3992114e31b32b091a0c00dc800827
   RNDeviceInfo: 417b2ef4456c13a9d50ad8c57895eea837b735a8
   RNFastImage: 1f2cab428712a4baaf78d6169eaec7f622556dd7
+  RNFileViewer: ce7ca3ac370e18554d35d6355cffd7c30437c592
   RNFS: fc610f78fdf8bfc89a9e5cc2f898519f4dba1002
   RNGestureHandler: bf572f552ea324acd5b5464b8d30755b2d8c1de6
   RNGoogleSignin: aeb29e549e6748da3e5847516fdd1327c85894c5

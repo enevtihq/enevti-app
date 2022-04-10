@@ -104,6 +104,8 @@
 	<key>NSCameraUsageDescription</key>
 	<string>$(PRODUCT_NAME) requires to access camera for uploading photos to your profile</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>$(PRODUCT_NAME) requires to access Audio recording to record and uplod videos</string>
+	<string>$(PRODUCT_NAME) requires to access Audio recording to record and upload videos</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>$(PRODUCT_NAME) requires access to the calendar to save redeem events</string>
 </dict>
 </plist>

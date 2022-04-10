@@ -12,6 +12,7 @@
     "postinstall": "patch-package"
   },
   "dependencies": {
+    "@dhairyasharma/react-native-encryption": "^1.0.0",
     "@gorhom/bottom-sheet": "^4.1.5",
     "@liskhq/lisk-client": "^5.2.1",
     "@react-native-async-storage/async-storage": "^1.15.15",
@@ -58,6 +59,7 @@
     "react-native-background-timer": "^2.4.1",
     "react-native-base64": "^0.2.1",
     "react-native-blob-util": "^0.14.0",
+    "react-native-calendar-events": "^2.2.0",
     "react-native-config": "^1.4.5",
     "react-native-countdown-component": "^2.7.1",
     "react-native-crypto": "^2.2.0",
@@ -67,6 +69,7 @@
     "react-native-drop-shadow": "0.0.4",
     "react-native-emoji": "^1.8.0",
     "react-native-fast-image": "^8.5.11",
+    "react-native-file-viewer": "^2.1.5",
     "react-native-fs": "^2.19.0",
     "react-native-gesture-handler": "^2.2.0",
     "react-native-image-crop-picker": "^0.37.3",

@@ -29,4 +29,11 @@
         android:windowSoftInputMode="adjustPan">
       </activity>
     </application>
+    <queries>
+    <!-- TODO: Add More Declaration, as Granular as Possible! (https://www.npmjs.com/package/react-native-file-viewer) -->
+      <intent>
+        <action android:name="android.intent.action.VIEW" />
+        <data android:mimeType="*/*" />
+      </intent>
+    </queries>
 </manifest>
