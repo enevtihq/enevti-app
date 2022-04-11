@@ -86,7 +86,7 @@ export default function AppCollectionHeader({
       }}>
       <View pointerEvents={'none'}>
         <AppNetworkImage
-          url={IPFStoURL(collection.cover)}
+          url={IPFStoURL(collection.cover.cid)}
           style={{ width: coverWidth, height: coverHeight }}
         />
         {mintingAvailable ? (

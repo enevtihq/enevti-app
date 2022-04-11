@@ -4,7 +4,10 @@ import {
 } from 'enevti-app/store/slices/ui/global/modalLoader';
 import { AppThunk } from 'enevti-app/store/state';
 import { NFT } from 'enevti-app/types/nft';
-import { STORAGE_PATH_REDEEM } from 'enevti-app/utils/constant/storage';
+import {
+  STORAGE_PATH_REDEEM,
+  IOS_TEMP_FOLDER,
+} from 'enevti-app/utils/constant/storage';
 import { handleError } from 'enevti-app/utils/error/handle';
 import {
   decryptAsymmetric,
@@ -28,6 +31,14 @@ function invalidSignature(nft: NFT) {
   throw Error(`Invald Signature: ${nft.id}`);
 }
 
+async function redeemDone(nft: NFT) {
+  const localDecryptedFile = `${STORAGE_PATH_REDEEM}/${nft.symbol}#${nft.serial}.${nft.redeem.content.extension}`;
+  await RNFS.unlink(localDecryptedFile);
+  if (await RNFS.exists(`${STORAGE_PATH_REDEEM}/${IOS_TEMP_FOLDER}`)) {
+    await RNFS.unlink(`${STORAGE_PATH_REDEEM}/${IOS_TEMP_FOLDER}`);
+  }
+}
+
 export const reduceRedeemContent =
   (nft: NFT): AppThunk =>
   async dispatch => {
@@ -39,8 +50,8 @@ export const reduceRedeemContent =
         await RNFS.mkdir(STORAGE_PATH_REDEEM);
       }
 
-      const localEncryptedFile = `${STORAGE_PATH_REDEEM}/${nft.id}.${ENCRYPTED_FILE_EXTENSION}`;
-      const localDecryptedFile = `${STORAGE_PATH_REDEEM}/${nft.id}.${nft.redeem.content.extension}`;
+      const localEncryptedFile = `${STORAGE_PATH_REDEEM}/${nft.symbol}#${nft.serial}.${ENCRYPTED_FILE_EXTENSION}`;
+      const localDecryptedFile = `${STORAGE_PATH_REDEEM}/${nft.symbol}#${nft.serial}.${nft.redeem.content.extension}`;
 
       const decryptedSecret = await decryptAsymmetric(
         nft.redeem.secret.cipher,
@@ -59,10 +70,12 @@ export const reduceRedeemContent =
         invalidSignature(nft);
       }
 
-      await RNFS.downloadFile({
-        fromUrl: IPFStoURL(nft.redeem.content.cid),
-        toFile: localEncryptedFile,
-      }).promise;
+      if (!(await RNFS.exists(localEncryptedFile))) {
+        await RNFS.downloadFile({
+          fromUrl: IPFStoURL(nft.redeem.content.cid),
+          toFile: localEncryptedFile,
+        }).promise;
+      }
 
       const decryptedFile = await decryptFile(
         localEncryptedFile,
@@ -75,13 +88,14 @@ export const reduceRedeemContent =
         fileDecryptionFailed(nft);
       }
 
-      await RNFS.unlink(localEncryptedFile);
-      await FileViewer.open(localDecryptedFile);
-
-      console.log('finish');
+      await FileViewer.open(localDecryptedFile, {
+        onDismiss: async () => {
+          await redeemDone(nft);
+          dispatch(hideModalLoader());
+        },
+      });
     } catch (err) {
       handleError(err);
-    } finally {
       dispatch(hideModalLoader());
     }
   };
