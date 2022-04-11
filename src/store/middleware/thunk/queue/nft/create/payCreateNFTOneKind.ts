@@ -19,12 +19,22 @@ export const payCreateNFTOneKind =
     dispatch({ type: 'onekind/payCreateNFTOneKind' });
     dispatch(setPaymentStatus({ type: 'initiated', message: '' }));
     const data = makeDummyIPFS();
+
     const cover = payload.state.coverUri ? makeDummyIPFS() : '';
+    const coverMime = payload.state.coverUri ? payload.state.coverType : '';
+    const coverExtension = payload.state.coverUri
+      ? payload.state.coverExtension
+      : '';
+    const coverSize = payload.state.coverUri ? payload.state.coverSize : -1;
+
     const content = payload.state.utility === 'content' ? makeDummyIPFS() : '';
     const contentMime =
       payload.state.utility === 'content' ? payload.state.contentType : '';
+    const contentExtension =
+      payload.state.utility === 'content' ? payload.state.contentExtension : '';
     const contentSize =
       payload.state.utility === 'content' ? payload.state.contentSize : -1;
+
     let until: number;
     if (payload.state.recurring !== 'anytime') {
       const now = new Date();
@@ -51,12 +61,17 @@ export const payCreateNFTOneKind =
       description: payload.state.description,
       symbol: payload.state.symbol,
       cover: cover,
+      coverMime: coverMime,
+      coverExtension: coverExtension,
+      coverSize: coverSize,
       data: data,
       dataMime: payload.data.mime,
+      dataExtension: payload.data.extension,
       dataSize: payload.data.size,
       utility: payload.state.utility,
       content: content,
       contentMime: contentMime,
+      contentExtension: contentExtension,
       contentSize: contentSize,
       recurring: payload.state.recurring,
       time: {

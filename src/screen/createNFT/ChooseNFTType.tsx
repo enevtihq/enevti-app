@@ -20,6 +20,7 @@ import { ImageOrVideo } from 'react-native-image-crop-picker';
 import { setCreateNFTQueueType } from 'enevti-app/store/slices/queue/nft/create/type';
 import { setCreateNFTOneKindData } from 'enevti-app/store/slices/queue/nft/create/onekind';
 import AppCameraGalleryPicker from 'enevti-app/components/organism/picker/AppCameraGalleryPicker';
+import getFileExtension from 'enevti-app/utils/mime/getFileExtension';
 
 type Props = StackScreenProps<RootStackParamList, 'ChooseNFTType'>;
 
@@ -39,6 +40,7 @@ export default function ChooseNFTType({ navigation }: Props) {
       setCreateNFTOneKindData({
         uri: image.path,
         mime: image.mime,
+        extension: getFileExtension(image.path),
         size: image.size,
       }),
     );

@@ -37,6 +37,7 @@ export const makeDummyNFT = (
     data: {
       cid: data,
       mime: 'image/jpeg',
+      extension: 'jpg',
       size: 0,
     },
     NFTType: nftType,

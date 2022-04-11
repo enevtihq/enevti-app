@@ -60,6 +60,7 @@ export const getDummyNFTData = (): NFTBase => {
     data: {
       cid: 'Qmb3jKA6Vn1azR6aSMnT6geGMkg818uBkfSHNg8ui1a9dy',
       mime: 'image/jpeg',
+      extension: 'jpg',
       size: -1,
     },
     NFTType: 'onekind',

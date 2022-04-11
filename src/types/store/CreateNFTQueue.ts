@@ -12,6 +12,7 @@ type CreateNFTTrait = {
 type CreateNFTData = {
   uri: string;
   mime: string;
+  extension: string;
   size: number;
 };
 

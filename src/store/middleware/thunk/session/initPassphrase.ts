@@ -11,9 +11,9 @@ import { passphraseToAddress } from 'enevti-app/service/enevti/persona';
 export const initPassphrase =
   (passphrase: string, localKey: string): AppThunk =>
   async dispatch => {
-    dispatch(setMyPersonaAddressCache(passphraseToAddress(passphrase)));
-    dispatch(setEncryptedPassphraseAuth(passphrase));
-    dispatch(setLocalSessionKey(localKey));
     dispatch(resetMyPersonaCache());
     dispatch(resetMyProfileCache());
+    dispatch(setEncryptedPassphraseAuth(passphrase));
+    dispatch(setLocalSessionKey(localKey));
+    dispatch(setMyPersonaAddressCache(passphraseToAddress(passphrase)));
   };

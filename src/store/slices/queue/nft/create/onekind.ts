@@ -13,6 +13,7 @@ export const createNFTOneKindQueueInitialState: CreateNFTOneKind = {
   data: {
     uri: '',
     mime: '',
+    extension: '',
     size: -1,
   },
   choosenTemplate: {
@@ -28,6 +29,7 @@ export const createNFTOneKindQueueInitialState: CreateNFTOneKind = {
     coverName: '',
     coverSize: 0,
     coverType: '',
+    coverExtension: '',
     coverUri: '',
     priceAmount: '',
     priceCurrency: COIN_NAME,
@@ -38,6 +40,7 @@ export const createNFTOneKindQueueInitialState: CreateNFTOneKind = {
     contentName: '',
     contentSize: 0,
     contentType: '',
+    contentExtension: '',
     contentUri: '',
     recurring: '',
     timeDay: -1,
@@ -67,9 +70,7 @@ const createNFTOneKindQueueSlice = createSlice({
       onekind,
       action: PayloadAction<CreateNFTOneKind['data']>,
     ) => {
-      onekind.data.uri = action.payload.uri;
-      onekind.data.mime = action.payload.mime;
-      onekind.data.size = action.payload.size;
+      Object.assign(onekind.data, action.payload);
     },
     setCreateNFTOneKindChosenTemplate: (
       onekind,

@@ -100,9 +100,7 @@ export default function NFTDetails({ navigation, route }: Props) {
   return (
     <AppView
       darken
-      withModal
       withLoader
-      withPayment
       edges={['bottom', 'left', 'right']}
       headerOffset={0}
       header={

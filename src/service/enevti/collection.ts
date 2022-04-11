@@ -20,7 +20,12 @@ async function fetchCollection(
     name: 'Eye Collection',
     description:
       'A lot of eye collection with mind blowing utility that goes beyond arts and collectible, we try to create something remarkable with eyes and your vision. Eyes symbolyze how we see something new on the world, so this collection also emphasize new vision for humanity and NFT world as a whole',
-    cover: 'Qmb3jKA6Vn1azR6aSMnT6geGMkg818uBkfSHNg8ui1a9dy',
+    cover: {
+      cid: 'Qmb3jKA6Vn1azR6aSMnT6geGMkg818uBkfSHNg8ui1a9dy',
+      mime: 'image/jpeg',
+      extension: 'jpg',
+      size: 0,
+    },
     createdOn: 1648256392852,
     symbol: 'EYECL',
     like: 123,

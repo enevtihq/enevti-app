@@ -5,11 +5,13 @@ export type OneKindContractForm = {
   coverName: string;
   coverSize: number;
   coverType: string;
+  coverExtension: string;
   coverUri: string;
   utility: string;
   contentName: string;
   contentSize: number;
   contentType: string;
+  contentExtension: string;
   contentUri: string;
   recurring: string;
   timeDay: number;

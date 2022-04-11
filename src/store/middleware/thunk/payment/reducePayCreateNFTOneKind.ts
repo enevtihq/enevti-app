@@ -21,10 +21,14 @@ export const reducePayCreateNFTOneKind =
     const cover = payload.state.coverUri
       ? await uploadURItoIPFS(payload.state.coverUri)
       : '';
+
+    // TODO: check if folder for content upload is exist
+    // TODO: prepare encrypted content file to upload to IPFS
     const content =
       payload.state.utility === 'content'
         ? await uploadURItoIPFS(payload.state.contentUri)
         : '';
+
     // TODO: construct new transactionPayload
     // TODO: use Lisk Client to submit transaction to Blockchain
 

@@ -23,6 +23,7 @@ const initialStateItem: NFTDetailsViewState = {
   data: {
     cid: '',
     mime: '',
+    extension: '',
     size: -1,
   },
   template: {
@@ -54,13 +55,13 @@ const initialStateItem: NFTDetailsViewState = {
     touched: -1,
     secret: {
       cipher: '',
-      nonce: '',
       signature: '',
       signer: '',
     },
     content: {
       cid: '',
       mime: '',
+      extension: '',
       size: -1,
       iv: '',
       salt: '',

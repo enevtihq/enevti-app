@@ -3,12 +3,17 @@ export type CreateNFTOneKindTransaction = {
   description: string;
   symbol: string;
   cover: string;
+  coverMime: string;
+  coverExtension: string;
+  coverSize: number;
   data: string;
   dataMime: string;
+  dataExtension: string;
   dataSize: number;
   utility: string;
   content: string;
   contentMime: string;
+  contentExtension: string;
   contentSize: number;
   recurring: string;
   time: {

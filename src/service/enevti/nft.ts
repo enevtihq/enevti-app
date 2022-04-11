@@ -41,6 +41,7 @@ async function fetchNFT(
   await sleep(1000, signal);
   console.log('collection id:', id);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const utilityOption: NFTUtility[] = [
     'videocall',
     'chat',
@@ -80,10 +81,11 @@ async function fetchNFT(
     data: {
       cid: 'Qmb3jKA6Vn1azR6aSMnT6geGMkg818uBkfSHNg8ui1a9dy',
       mime: 'image/jpeg',
+      extension: 'jpg',
       size: -1,
     },
     NFTType: 'onekind',
-    utility: utilityOption[Math.floor(Math.random() * utilityOption.length)],
+    utility: 'content',
     rarity: {
       stat: {
         rank: 12,
@@ -112,17 +114,20 @@ async function fetchNFT(
       limit: 5,
       touched: 1649172800701,
       secret: {
-        cipher: '',
-        nonce: '',
-        signature: '',
-        signer: '',
+        cipher:
+          'eyJlbmNyeXB0ZWRNZXNzYWdlIjoiMmZiZmY2MDAyMTc5MDE1ODk5YTVjMWJkMzBjYTBjODUzOTI1ODZkYjYyNzBmMTYzMzEzYWZkMWNmNzY1MWE3Y2VhZjFhNTYyOGE5ZjJjYTJhN2E1YzhlMDE5MTI0YzkyYmVjNGRiYzBiOTk0YjBhNjgzMmYxZTg3MTc0NDk4MGFlODRkY2EyZDE4YTg1NTE2MDE4YTVjYTc3ZGE1ZWI2OGIwNjkyYmEzMmRhNjFkZTA3OTNjYTFhNjg1YjhmOWU0Yzc5MTE4OGE2ZGNlZmZhYzY1NTM1MzU3Y2IzMjQ0NGU0Y2RkYWY4ZDQ5YmU2YjE5ZDg0ZTJkYmYwYzgxMzk3ZTgxODkxYmVmZTk4MThjZTg3ODAyOTdkYTA1OGYyYmMyMTkwYjM0ZTk2MDM3MWRhZjNhZGU4ZWNjMGJhM2JiNDU2OTIzNmY4MzdiZjk4ODI5M2E4MmQxNjc0MzMyMWQ2NmVlNDViZmE2ZjUzZWNiZjQ5MzlhYTRkZDRkZjRiNjM4MGYyN2ZmNzkwYmFjOWUzNjZhNmEwZGMzY2MzYWNhYjZjNzIwMTZjOWUyNTIxZTA2OWY1OGUxMzczM2Y3OGZmOWFjNDQxYTg2ZmQyNWY2NDhjYTE2M2ZmMDQwY2UwZjY3N2Q1ODc3NTgzYWMwYzdjYzRjN2NhYjMzNWRkOGI2MjgxN2IzYzU4NTkyMzJhYWUxYzVlYTI4MWJhYTZlNDBhZCIsIm5vbmNlIjoiNTdkMmFlOTRiMjQ1ZGQ0Y2E1MjY3MjQxYTk2MWMzZDNlOGY4Mjc2YWQyYTM2NDY5In0=',
+        signature:
+          '6c691c2139f32017e6fbe81ce849e728838dec3ffa24f0417dce617aa8fa66d2fe2f115bb9f11cf321553ce4a60e751157dc941800c473c77feec7a70f8ef805',
+        signer:
+          '44fc724f611d822fbb946e4084d27cc07197bb3ab4d0406a17ade813cd7aee15',
       },
       content: {
-        cid: 'Qmb3jKA6Vn1azR6aSMnT6geGMkg818uBkfSHNg8ui1a9dy',
-        mime: 'image/jpeg',
-        size: -1,
-        iv: '',
-        salt: '',
+        cid: 'QmYanPVeUCBKfxXGcTBCjS8HjYLuf3qscqGV1peF5iszkC',
+        mime: 'audio/mpeg',
+        extension: 'mp3',
+        size: 3548243,
+        iv: '5899c28e12159a2b65c097054a58c0c3',
+        salt: '9136de3e95f38b5207be8ef9d8fd322a',
       },
       schedule: {
         recurring: 'every-year',

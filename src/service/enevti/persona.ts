@@ -33,36 +33,41 @@ export function passphraseToAddress(passphrase: string) {
   return Lisk.cryptography.getBase32AddressFromPassphrase(passphrase);
 }
 
+export async function getMyPassphrase() {
+  const auth = selectAuthState(store.getState());
+  let authToken = auth.token;
+
+  if (authToken && auth.encrypted) {
+    const localKey = selectLocalSession(store.getState()).key;
+    if (localKey) {
+      authToken = (await decryptWithPassword(authToken, localKey)).data;
+    } else {
+      throw {
+        name: 'KeyError',
+        code: ERRORCODE.WRONG_LOCALKEY,
+        message: 'Wrong Local Key',
+      };
+    }
+  } else if (authToken && !auth.encrypted) {
+    authToken = (await decryptWithDevice(authToken)).data;
+  } else {
+    throw {
+      name: 'UnknownError',
+      code: ERRORCODE.UNKNOWN,
+      message: 'Unknown Error: persona.ts',
+    };
+  }
+  return authToken;
+}
+
 export async function getMyAddress() {
   const myPersona: Persona = selectMyPersonaCache(store.getState());
   if (myPersona.address) {
     return myPersona.address;
   } else {
-    const auth = selectAuthState(store.getState());
-    let authToken = auth.token;
+    const myPassphrase = await getMyPassphrase();
 
-    if (authToken && auth.encrypted) {
-      const localKey = selectLocalSession(store.getState()).key;
-      if (localKey) {
-        authToken = (await decryptWithPassword(authToken, localKey)).data;
-      } else {
-        throw {
-          name: 'KeyError',
-          code: ERRORCODE.WRONG_LOCALKEY,
-          message: 'Wrong Local Key',
-        };
-      }
-    } else if (authToken && !auth.encrypted) {
-      authToken = (await decryptWithDevice(authToken)).data;
-    } else {
-      throw {
-        name: 'UnknownError',
-        code: ERRORCODE.UNKNOWN,
-        message: 'Unknown Error: persona.ts',
-      };
-    }
-
-    const myAddress = passphraseToAddress(authToken);
+    const myAddress = passphraseToAddress(myPassphrase);
     store.dispatch(setMyPersonaAddressCache(myAddress));
 
     return myAddress;

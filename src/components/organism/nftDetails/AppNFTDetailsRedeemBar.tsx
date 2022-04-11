@@ -13,6 +13,8 @@ import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButto
 import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
 import AppTextHeading4 from 'enevti-app/components/atoms/text/AppTextHeading4';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
+import { useDispatch } from 'react-redux';
+import { reduceRedeem } from 'enevti-app/store/middleware/thunk/redeem';
 
 interface AppNFTDetailsRedeemBarProps {
   nft: NFT;
@@ -21,12 +23,17 @@ interface AppNFTDetailsRedeemBarProps {
 export default function AppNFTDetailsRedeemBar({
   nft,
 }: AppNFTDetailsRedeemBarProps) {
+  const dispatch = useDispatch();
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
   const styles = React.useMemo(
     () => makeStyles(theme, insets),
     [theme, insets],
   );
+
+  const onRedeem = React.useCallback(() => {
+    dispatch(reduceRedeem(nft));
+  }, [dispatch, nft]);
 
   return (
     <View style={styles.redeemContainer}>
@@ -43,7 +50,7 @@ export default function AppNFTDetailsRedeemBar({
           </AppTextBody5>
           <AppTextHeading3>Exclusive Content</AppTextHeading3>
         </View>
-        <AppPrimaryButton style={styles.redeemBarButton}>
+        <AppPrimaryButton style={styles.redeemBarButton} onPress={onRedeem}>
           <AppTextHeading4 style={styles.redeemBarButtonText}>
             Redeem
           </AppTextHeading4>

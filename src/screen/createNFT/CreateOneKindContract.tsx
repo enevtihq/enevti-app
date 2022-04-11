@@ -69,6 +69,7 @@ import {
 } from 'enevti-app/store/slices/ui/global/modalLoader';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 import { payCreateNFTOneKind } from 'enevti-app/store/middleware/thunk/queue/nft/create/payCreateNFTOneKind';
+import getFileExtension from 'enevti-app/utils/mime/getFileExtension';
 
 type Props = StackScreenProps<RootStackParamList, 'CreateOneKindContract'>;
 
@@ -127,6 +128,7 @@ const contentKey: (keyof OneKindContractForm)[] = [
   'contentName',
   'contentSize',
   'contentType',
+  'contentExtension',
   'contentUri',
 ];
 
@@ -134,6 +136,7 @@ const coverKey: (keyof OneKindContractForm)[] = [
   'coverName',
   'coverSize',
   'coverType',
+  'coverExtension',
   'coverUri',
 ];
 
@@ -336,6 +339,11 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
     formikProps.setFieldValue('coverName', item.name, false);
     formikProps.setFieldValue('coverSize', item.size, false);
     formikProps.setFieldValue('coverType', item.type, false);
+    formikProps.setFieldValue(
+      'coverExtension',
+      getFileExtension(item.name),
+      false,
+    );
     formikProps.setFieldValue('coverUri', item.uri, false);
     setMultipleFieldTouched(formikProps, coverKey, true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -379,6 +387,11 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
     formikProps.setFieldValue('contentName', item.name, false);
     formikProps.setFieldValue('contentSize', item.size, false);
     formikProps.setFieldValue('contentType', item.type, false);
+    formikProps.setFieldValue(
+      'contentExtension',
+      getFileExtension(item.name),
+      false,
+    );
     formikProps.setFieldValue('contentUri', item.uri, true);
     setMultipleFieldTouched(formikProps, contentKey, true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -452,6 +465,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
         setCreateNFTOneKindData({
           uri: image.path,
           mime: image.mime,
+          extension: getFileExtension(image.path),
           size: image.size,
         }),
       );

@@ -3,13 +3,14 @@ import { NFTPrice } from 'enevti-app/types/nft/NFTPrice';
 import { SocialProfile } from 'enevti-app/types/social';
 import { Persona } from './persona';
 import { NFTActivity } from 'enevti-app/types/nft/NFTActivity';
+import { NFTContent } from 'enevti-app/types/nft/NFTContent';
 
 export type CollectionActivity = NFTActivity & { nft: NFTBase };
 
 export type CollectionBase = {
   id: string;
   name: string;
-  cover: string;
+  cover: NFTContent;
   stat: {
     minted: number;
     owner: number;
