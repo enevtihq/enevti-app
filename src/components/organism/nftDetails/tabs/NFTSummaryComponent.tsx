@@ -124,6 +124,7 @@ function Component(
   return (
     <Animated.ScrollView
       ref={ref}
+      scrollEventThrottle={16}
       showsVerticalScrollIndicator={false}
       onScroll={onScroll}
       onMomentumScrollEnd={() => {}}
