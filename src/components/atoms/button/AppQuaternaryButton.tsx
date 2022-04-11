@@ -89,6 +89,7 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets, box: boolean) =>
     },
     loading: {
       height: hp('7.5%', insets),
+      justifyContent: 'center',
     },
     buttonContainer: {
       borderWidth: box ? StyleSheet.hairlineWidth : 0,

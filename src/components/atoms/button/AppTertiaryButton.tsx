@@ -38,7 +38,7 @@ export default function AppTertiaryButton({
     <View style={[styles.tertiaryLoading, styles.tertiaryButton, style]}>
       <AppActivityIndicator
         animating={true}
-        style={styles.content}
+        style={styles.loading}
         color={theme.colors.text}
       />
     </View>
@@ -73,5 +73,9 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
     },
     content: {
       height: hp('7.5%', insets),
+    },
+    loading: {
+      height: hp('7.5%', insets),
+      justifyContent: 'center',
     },
   });

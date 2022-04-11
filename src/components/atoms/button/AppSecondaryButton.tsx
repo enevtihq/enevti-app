@@ -38,7 +38,7 @@ export default function AppSecondaryButton({
     <View style={[styles.secondaryButton, style]}>
       <AppActivityIndicator
         animating={true}
-        style={styles.content}
+        style={styles.loading}
         color={theme.colors.text}
       />
     </View>
@@ -68,5 +68,9 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
     },
     content: {
       height: hp('7.5%', insets),
+    },
+    loading: {
+      height: hp('7.5%', insets),
+      justifyContent: 'center',
     },
   });

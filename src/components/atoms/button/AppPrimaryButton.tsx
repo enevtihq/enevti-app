@@ -48,7 +48,7 @@ export default function AppPrimaryButton({
       {loading ? (
         <AppActivityIndicator
           animating={true}
-          style={styles.content}
+          style={styles.loading}
           color="white"
         />
       ) : (
@@ -72,6 +72,10 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
     primaryButton: {
       borderRadius: theme.roundness,
       height: hp('7.5%', insets),
+    },
+    loading: {
+      height: hp('7.5%', insets),
+      justifyContent: 'center',
     },
     content: {
       height: hp('7.5%', insets),
