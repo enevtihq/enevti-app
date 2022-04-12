@@ -214,15 +214,15 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
           then: Yup.string().required(),
         }),
         timeDay: Yup.number().when('recurring', {
-          is: (val: string) => val === 'every-week' || val === 'once',
+          is: (val: string) => val === 'weekly' || val === 'once',
           then: Yup.number().min(0, t('form:greaterEqualZero')),
         }),
         timeDate: Yup.number().when('recurring', {
-          is: (val: string) => val === 'every-month' || val === 'once',
+          is: (val: string) => val === 'monthly' || val === 'once',
           then: Yup.number().min(0, t('form:greaterEqualZero')),
         }),
         timeMonth: Yup.number().when('recurring', {
-          is: (val: string) => val === 'every-year' || val === 'once',
+          is: (val: string) => val === 'yearly' || val === 'once',
           then: Yup.number().min(0, t('form:greaterEqualZero')),
         }),
         timeYear: Yup.number().when('recurring', {
@@ -399,7 +399,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
 
   const onSelectedRecurringPicker = React.useCallback(item => {
     resetRedeemTimeKeyFields(formikProps);
-    if (item.value === 'every-day') {
+    if (item.value === 'daily') {
       setMultipleFieldTouched(formikProps, ['timeDay', 'timeDate'], true);
     }
     formikProps.setFieldValue('recurring', item.value, true);
@@ -948,19 +948,19 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
               </>
             ) : null}
 
-            {formikProps.values.recurring === 'every-week' ? (
+            {formikProps.values.recurring === 'weekly' ? (
               <AppDayPicker
                 label={t('createNFT:redeemDay')}
                 onSelected={onSelectedDayPicker}
                 value={dayPickerValue}
               />
-            ) : formikProps.values.recurring === 'every-month' ? (
+            ) : formikProps.values.recurring === 'monthly' ? (
               <AppDatePicker
                 label={t('createNFT:redeemDate')}
                 onSelected={onSelectedDatePicker}
                 value={datePickerValue}
               />
-            ) : formikProps.values.recurring === 'every-year' ? (
+            ) : formikProps.values.recurring === 'yearly' ? (
               <AppDateMonthPicker
                 label={t('createNFT:redeemMonthAndDate')}
                 onSelected={onSelectedDateMonthPicker}

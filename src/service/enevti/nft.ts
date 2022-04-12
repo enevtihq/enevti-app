@@ -130,7 +130,7 @@ async function fetchNFT(
         salt: '9136de3e95f38b5207be8ef9d8fd322a',
       },
       schedule: {
-        recurring: 'every-year',
+        recurring: 'yearly',
         time: {
           day: -1,
           date: 5,

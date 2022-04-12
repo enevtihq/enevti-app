@@ -139,7 +139,7 @@ function Component(
         leftContent={
           <View style={styles.collectionCoverContainer}>
             <AppNetworkImage
-              url={IPFStoURL(item.cover)}
+              url={IPFStoURL(item.cover.cid)}
               style={styles.collectionCover}
             />
           </View>

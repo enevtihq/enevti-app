@@ -18,25 +18,25 @@ function Component({ value, onSelected, memoKey }: AppRecurringPickerProps) {
   const recurringItem: PickerItem[] = React.useMemo(
     () => [
       {
-        value: 'every-day',
+        value: 'daily',
         icon: iconMap.everyDay,
         title: t('createNFT:recurringEveryDay'),
         description: t('createNFT:recurringEveryDayDescription'),
       },
       {
-        value: 'every-week',
+        value: 'weekly',
         icon: iconMap.everyWeek,
         title: t('createNFT:recurringEveryWeek'),
         description: t('createNFT:recurringEveryWeekDescription'),
       },
       {
-        value: 'every-month',
+        value: 'monthly',
         icon: iconMap.everyMonth,
         title: t('createNFT:recurringEveryMonth'),
         description: t('createNFT:recurringEveryMonthDescription'),
       },
       {
-        value: 'every-year',
+        value: 'yearly',
         icon: iconMap.everyYear,
         title: t('createNFT:recurringEveryYear'),
         description: t('createNFT:recurringEveryYearDescription'),

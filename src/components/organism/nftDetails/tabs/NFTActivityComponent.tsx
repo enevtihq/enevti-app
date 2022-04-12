@@ -213,7 +213,7 @@ const makeStyles = (
         hp(100) +
         collectionHeaderHeight -
         hp(HEADER_HEIGHT_PERCENTAGE) -
-        (Platform.OS === 'ios' ? insets.top : 0),
+        (Platform.OS === 'ios' ? insets.top * 0.9 : 0),
       display: displayed ? undefined : 'none',
     },
     collectionItem: {
