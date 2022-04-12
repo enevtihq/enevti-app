@@ -8,10 +8,10 @@ interface AppPersonaLabelProps {
   onPress?: () => void;
   style?: StyleProp<TextStyle>;
   usernameStyle?: StyleProp<TextStyle>;
-  addressStyle?: StyleProp<TextStyle>;
+  base32Style?: StyleProp<TextStyle>;
   textComponent?: any;
   usernameComponent?: any;
-  addressComponent?: any;
+  base32Component?: any;
 }
 
 export default function AppPersonaLabel({
@@ -19,16 +19,16 @@ export default function AppPersonaLabel({
   onPress,
   style,
   usernameStyle,
-  addressStyle,
+  base32Style,
   textComponent,
   usernameComponent,
-  addressComponent,
+  base32Component,
 }: AppPersonaLabelProps) {
   const LabelView = onPress ? Pressable : View;
   const label = persona.username
     ? persona.username
-    : persona.address
-    ? persona.address
+    : persona.base32
+    ? persona.base32
     : '???';
   const DefaultComponent = AppTextHeading4;
   const Text = textComponent
@@ -37,15 +37,15 @@ export default function AppPersonaLabel({
     ? usernameComponent
       ? usernameComponent
       : DefaultComponent
-    : persona.address
-    ? addressComponent
-      ? addressComponent
+    : persona.base32
+    ? base32Component
+      ? base32Component
       : DefaultComponent
     : DefaultComponent;
   const additionalStyle = persona.username
     ? usernameStyle
-    : persona.address
-    ? addressStyle
+    : persona.base32
+    ? base32Style
     : undefined;
 
   return (

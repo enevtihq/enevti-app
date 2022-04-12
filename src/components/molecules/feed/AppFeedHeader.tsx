@@ -69,11 +69,7 @@ export default function AppFeedHeader({
 
   return (
     <View style={styles.headerContainer}>
-      <AppAvatarRenderer
-        photo={feed.owner.photo}
-        address={feed.owner.address}
-        size={wp('10%', insets)}
-      />
+      <AppAvatarRenderer persona={feed.owner} size={wp('10%', insets)} />
 
       <View style={styles.headerAvatarInfoContainer}>
         <AppPersonaLabel

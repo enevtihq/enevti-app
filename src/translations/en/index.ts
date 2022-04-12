@@ -10,6 +10,7 @@ import date from './date';
 import payment from './payment';
 import collection from './collection';
 import nftDetails from './nftDetails';
+import error from './error';
 
 export default {
   auth,
@@ -24,4 +25,5 @@ export default {
   payment,
   collection,
   nftDetails,
+  error,
 };

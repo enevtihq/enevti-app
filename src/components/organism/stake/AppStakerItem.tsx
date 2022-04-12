@@ -37,8 +37,7 @@ export default function AppStakerItem({ staker }: AppStakerItemProps) {
       style={styles.stakerContainer}
       leftContent={
         <AppAvatarRenderer
-          address={staker.persona.address}
-          photo={staker.persona.photo}
+          persona={staker.persona}
           size={wp('12%', insets)}
           style={styles.avatar}
         />

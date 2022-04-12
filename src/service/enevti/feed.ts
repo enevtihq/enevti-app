@@ -29,7 +29,8 @@ function getFeedItemList(): FeedItem {
     promoted: true,
     owner: {
       username: '',
-      address: 'lsk7opy8ksve7npbr32dtqxwpvg5u6aa3vtje5qtd',
+      base32: 'lsk7opy8ksve7npbr32dtqxwpvg5u6aa3vtje5qtd',
+      address: '730917d362b38e434918d4ea1b905f5c159ca053',
       photo: '',
     },
     stake: '542123',

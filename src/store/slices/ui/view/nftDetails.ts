@@ -56,7 +56,8 @@ const initialStateItem: NFTDetailsViewState = {
     secret: {
       cipher: '',
       signature: '',
-      signer: '',
+      sender: '',
+      recipient: '',
     },
     content: {
       cid: '',
@@ -79,15 +80,18 @@ const initialStateItem: NFTDetailsViewState = {
         minute: -1,
       },
       until: -1,
+      timezoneOffset: 0,
     },
   },
   owner: {
     address: '',
+    base32: '',
     username: '',
     photo: '',
   },
   creator: {
     address: '',
+    base32: '',
     username: '',
     photo: '',
   },

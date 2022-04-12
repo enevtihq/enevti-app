@@ -9,6 +9,7 @@ const initialState: PersonaCacheState = {
   username: '',
   photo: '',
   address: '',
+  base32: '',
   lastFetch: 0,
 };
 
@@ -19,10 +20,13 @@ const personaEntitySlice = createSlice({
     setMyPersonaCache: (persona, action: PayloadAction<Persona>) => {
       persona.username = action.payload.username;
       persona.photo = action.payload.photo;
-      persona.address = action.payload.address;
+      persona.base32 = action.payload.base32;
     },
     setLastFetchMyPersonaCache: (persona, action: PayloadAction<number>) => {
       persona.lastFetch = action.payload;
+    },
+    setMyPersonaBase32Cache: (persona, action: PayloadAction<string>) => {
+      persona.base32 = action.payload;
     },
     setMyPersonaAddressCache: (persona, action: PayloadAction<string>) => {
       persona.address = action.payload;
@@ -36,6 +40,7 @@ const personaEntitySlice = createSlice({
 export const {
   setMyPersonaCache,
   setLastFetchMyPersonaCache,
+  setMyPersonaBase32Cache,
   setMyPersonaAddressCache,
   resetMyPersonaCache,
 } = personaEntitySlice.actions;

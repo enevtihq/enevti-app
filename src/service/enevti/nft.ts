@@ -65,12 +65,14 @@ async function fetchNFT(
       'A lot of eye collection with mind blowing utility that goes beyond arts and collectible, we try to create something remarkable with eyes and your vision. Eyes symbolyze how we see something new on the world, so this collection also emphasize new vision for humanity and NFT world as a whole',
     owner: {
       photo: '',
-      address: 'lsk7opy8ksve7npbr32dtqxwpvg5u6aa3vtje5qtd',
+      base32: 'lsk7opy8ksve7npbr32dtqxwpvg5u6aa3vtje5qtd',
+      address: '730917d362b38e434918d4ea1b905f5c159ca053',
       username: '',
     },
     creator: {
       photo: '',
-      address: 'lsk7opy8ksve7npbr32dtqxwpvg5u6aa3vtje5qtd',
+      base32: 'lsk7opy8ksve7npbr32dtqxwpvg5u6aa3vtje5qtd',
+      address: '730917d362b38e434918d4ea1b905f5c159ca053',
       username: '',
     },
     price: {
@@ -118,8 +120,10 @@ async function fetchNFT(
           'eyJlbmNyeXB0ZWRNZXNzYWdlIjoiMmZiZmY2MDAyMTc5MDE1ODk5YTVjMWJkMzBjYTBjODUzOTI1ODZkYjYyNzBmMTYzMzEzYWZkMWNmNzY1MWE3Y2VhZjFhNTYyOGE5ZjJjYTJhN2E1YzhlMDE5MTI0YzkyYmVjNGRiYzBiOTk0YjBhNjgzMmYxZTg3MTc0NDk4MGFlODRkY2EyZDE4YTg1NTE2MDE4YTVjYTc3ZGE1ZWI2OGIwNjkyYmEzMmRhNjFkZTA3OTNjYTFhNjg1YjhmOWU0Yzc5MTE4OGE2ZGNlZmZhYzY1NTM1MzU3Y2IzMjQ0NGU0Y2RkYWY4ZDQ5YmU2YjE5ZDg0ZTJkYmYwYzgxMzk3ZTgxODkxYmVmZTk4MThjZTg3ODAyOTdkYTA1OGYyYmMyMTkwYjM0ZTk2MDM3MWRhZjNhZGU4ZWNjMGJhM2JiNDU2OTIzNmY4MzdiZjk4ODI5M2E4MmQxNjc0MzMyMWQ2NmVlNDViZmE2ZjUzZWNiZjQ5MzlhYTRkZDRkZjRiNjM4MGYyN2ZmNzkwYmFjOWUzNjZhNmEwZGMzY2MzYWNhYjZjNzIwMTZjOWUyNTIxZTA2OWY1OGUxMzczM2Y3OGZmOWFjNDQxYTg2ZmQyNWY2NDhjYTE2M2ZmMDQwY2UwZjY3N2Q1ODc3NTgzYWMwYzdjYzRjN2NhYjMzNWRkOGI2MjgxN2IzYzU4NTkyMzJhYWUxYzVlYTI4MWJhYTZlNDBhZCIsIm5vbmNlIjoiNTdkMmFlOTRiMjQ1ZGQ0Y2E1MjY3MjQxYTk2MWMzZDNlOGY4Mjc2YWQyYTM2NDY5In0=',
         signature:
           '6c691c2139f32017e6fbe81ce849e728838dec3ffa24f0417dce617aa8fa66d2fe2f115bb9f11cf321553ce4a60e751157dc941800c473c77feec7a70f8ef805',
-        signer:
+        sender:
           '44fc724f611d822fbb946e4084d27cc07197bb3ab4d0406a17ade813cd7aee15',
+        recipient:
+          '0383eb71af2c6d201b3fdfcb324cc11ee79514465a559d6da3ac5f038397ae80',
       },
       content: {
         cid: 'QmYanPVeUCBKfxXGcTBCjS8HjYLuf3qscqGV1peF5iszkC',
@@ -142,6 +146,7 @@ async function fetchNFT(
           minute: 0,
         },
         until: 3600000,
+        timezoneOffset: -420,
       },
     },
     activity: [
@@ -150,7 +155,8 @@ async function fetchNFT(
         name: 'sale',
         to: {
           photo: '',
-          address: 'lsk7opy8ksve7npbr32dtqxwpvg5u6aa3vtje5qtd',
+          base32: 'lsk7opy8ksve7npbr32dtqxwpvg5u6aa3vtje5qtd',
+          address: '730917d362b38e434918d4ea1b905f5c159ca053',
           username: '',
         },
         value: { amount: '2535623412', currency: COIN_NAME },
@@ -161,7 +167,8 @@ async function fetchNFT(
         name: 'sale',
         to: {
           photo: '',
-          address: 'lsk7opy8ksve7npbr32dtqxwpvg5u6aa3vtje5qtd',
+          base32: 'lsk7opy8ksve7npbr32dtqxwpvg5u6aa3vtje5qtd',
+          address: '730917d362b38e434918d4ea1b905f5c159ca053',
           username: '',
         },
         value: { amount: '2535623412', currency: COIN_NAME },
@@ -172,7 +179,8 @@ async function fetchNFT(
         name: 'sale',
         to: {
           photo: '',
-          address: 'lsk7opy8ksve7npbr32dtqxwpvg5u6aa3vtje5qtd',
+          base32: 'lsk7opy8ksve7npbr32dtqxwpvg5u6aa3vtje5qtd',
+          address: '730917d362b38e434918d4ea1b905f5c159ca053',
           username: '',
         },
         value: { amount: '2535623412', currency: COIN_NAME },

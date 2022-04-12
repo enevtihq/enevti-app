@@ -56,6 +56,7 @@
     "react": "17.0.2",
     "react-i18next": "^11.15.3",
     "react-native": "0.66.4",
+    "react-native-aes-crypto": "^2.1.0",
     "react-native-background-timer": "^2.4.1",
     "react-native-base64": "^0.2.1",
     "react-native-blob-util": "^0.14.0",

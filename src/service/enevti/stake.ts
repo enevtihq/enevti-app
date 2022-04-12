@@ -14,7 +14,8 @@ export async function getStakePoolCompleteData(
       {
         persona: {
           photo: '',
-          address: 'lsk7opy8ksve7npbr32dtqxwpvg5u6aa3vtje5qtd',
+          base32: 'lsk7opy8ksve7npbr32dtqxwpvg5u6aa3vtje5qtd',
+          address: '730917d362b38e434918d4ea1b905f5c159ca053',
           username: 'aldhosutra',
         },
         rank: 1,
@@ -24,7 +25,8 @@ export async function getStakePoolCompleteData(
       {
         persona: {
           photo: 'Qmb3jKA6Vn1azR6aSMnT6geGMkg818uBkfSHNg8ui1a9dy',
-          address: 'lsk9w9qc6vs4d3qyqh322n69pebc2fdvsy4xsg5c9',
+          base32: 'lsk9w9qc6vs4d3qyqh322n69pebc2fdvsy4xsg5c9',
+          address: '730917d362b38e434918d4ea1b905f5c159ca053',
           username: 'bayuwahyuadi',
         },
         rank: 2,
@@ -34,7 +36,8 @@ export async function getStakePoolCompleteData(
       {
         persona: {
           photo: '',
-          address: 'lsk3kocke8xfya6p83cenoxqzx268kyztmfcag92z',
+          base32: 'lsk3kocke8xfya6p83cenoxqzx268kyztmfcag92z',
+          address: '730917d362b38e434918d4ea1b905f5c159ca053',
           username: '',
         },
         rank: 3,

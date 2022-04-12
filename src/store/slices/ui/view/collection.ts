@@ -15,7 +15,12 @@ const initialStateItem: CollectionViewState = {
   collectionType: '',
   name: '',
   description: '',
-  cover: '',
+  cover: {
+    cid: '',
+    extension: '',
+    mime: '',
+    size: 0,
+  },
   symbol: '',
   createdOn: 0,
   like: 0,
@@ -38,7 +43,7 @@ const initialStateItem: CollectionViewState = {
     price: { amount: '', currency: '' },
   },
   minted: [],
-  creator: { photo: '', address: '', username: '' },
+  creator: { photo: '', base32: '', username: '', address: '' },
   activity: [],
 };
 

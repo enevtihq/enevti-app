@@ -3,6 +3,7 @@ import { reducePayCreateNFTOneKind } from './reducePayCreateNFTOneKind';
 import { reducePayMintCollection } from './reducePayMintCollection';
 import { handleError } from 'enevti-app/utils/error/handle';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
+import i18n from 'enevti-app/translations/i18n';
 
 export const reducePayment = (): AppThunk => (dispatch, getState) => {
   const paymentType = getState().payment.action.type;
@@ -19,7 +20,7 @@ export const reducePayment = (): AppThunk => (dispatch, getState) => {
       );
       break;
     default:
-      handleError({ message: 'unknown payment type' });
+      handleError({ message: i18n.t('error:unknownPayment') });
       break;
   }
 };

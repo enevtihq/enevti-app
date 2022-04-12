@@ -62,7 +62,8 @@ async function fetchCollection(
     minted: mintedNFT,
     creator: {
       photo: '',
-      address: 'lsk7opy8ksve7npbr32dtqxwpvg5u6aa3vtje5qtd',
+      base32: 'lsk7opy8ksve7npbr32dtqxwpvg5u6aa3vtje5qtd',
+      address: '730917d362b38e434918d4ea1b905f5c159ca053',
       username: '',
     },
     activity: [
@@ -73,7 +74,8 @@ async function fetchCollection(
         date: 1648256592852,
         to: {
           photo: '',
-          address: 'lsk7opy8ksve7npbr32dtqxwpvg5u6aa3vtje5qtd',
+          base32: 'lsk7opy8ksve7npbr32dtqxwpvg5u6aa3vtje5qtd',
+          address: '730917d362b38e434918d4ea1b905f5c159ca053',
           username: '',
         },
         value: {
@@ -88,7 +90,8 @@ async function fetchCollection(
         date: 1648256592852,
         to: {
           photo: '',
-          address: 'lsk7opy8ksve7npbr32dtqxwpvg5u6aa3vtje5qtd',
+          base32: 'lsk7opy8ksve7npbr32dtqxwpvg5u6aa3vtje5qtd',
+          address: '730917d362b38e434918d4ea1b905f5c159ca053',
           username: '',
         },
         value: {
@@ -103,7 +106,8 @@ async function fetchCollection(
         date: 1648256592852,
         to: {
           photo: '',
-          address: 'lsk7opy8ksve7npbr32dtqxwpvg5u6aa3vtje5qtd',
+          base32: 'lsk7opy8ksve7npbr32dtqxwpvg5u6aa3vtje5qtd',
+          address: '730917d362b38e434918d4ea1b905f5c159ca053',
           username: '',
         },
         value: {

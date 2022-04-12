@@ -53,8 +53,7 @@ export default function AppProfileHeader({
   return (
     <View pointerEvents={'box-none'} style={styles.profileHeaderContainer}>
       <AppAvatarRenderer
-        address={persona.address}
-        photo={persona.photo}
+        persona={persona}
         size={wp('25%', insets)}
         style={{ marginBottom: hp('2%', insets) }}
       />
@@ -63,8 +62,8 @@ export default function AppProfileHeader({
         <AppPersonaLabel
           persona={persona}
           usernameComponent={AppTextHeading2}
-          addressComponent={AppTextBody3}
-          addressStyle={{
+          base32Component={AppTextBody3}
+          base32Style={{
             width: wp('50%', insets),
           }}
         />

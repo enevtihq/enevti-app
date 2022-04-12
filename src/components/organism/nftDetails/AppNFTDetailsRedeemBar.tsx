@@ -60,7 +60,7 @@ export default function AppNFTDetailsRedeemBar({
       <View style={styles.calendarContainer}>
         <TouchableRipple onPress={() => {}} style={styles.calendarPressable}>
           <AppTextBody4 style={styles.calendarLabelText}>
-            Every Month · September, 12 · 10:00 - 12:00 AM GMT+12 · 5 Redeem
+            Every Month · September, 12 · 10:00 - 12:00 AM UTC+12 · 5 Redeem
             Remaining{' '}
             <AppTextBody5 style={styles.calendarActionText}>
               (Add To Calendar)

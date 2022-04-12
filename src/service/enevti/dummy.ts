@@ -9,7 +9,12 @@ import { AbortError } from 'enevti-app/utils/error/type';
 export const getDummyCollectionBaseDate = (): CollectionBase => {
   return {
     id: Math.random().toString(),
-    cover: 'Qmb3jKA6Vn1azR6aSMnT6geGMkg818uBkfSHNg8ui1a9dy',
+    cover: {
+      cid: 'Qmb3jKA6Vn1azR6aSMnT6geGMkg818uBkfSHNg8ui1a9dy',
+      extension: 'jpg',
+      mime: 'image/jpeg',
+      size: 0,
+    },
     name: 'EyeCollection',
     minting: {
       total: 12,

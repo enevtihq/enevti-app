@@ -12,6 +12,7 @@ import {
   setMyPersonaCache,
   setLastFetchMyPersonaCache,
   selectMyPersonaCache,
+  setMyPersonaBase32Cache,
   setMyPersonaAddressCache,
 } from 'enevti-app/store/slices/entities/cache/myPersona';
 import { selectAuthState } from 'enevti-app/store/slices/auth';
@@ -25,12 +26,27 @@ async function fetchPersona(
   return {
     photo: '',
     address: address,
+    base32: addressToBase32(address),
     username: 'aldhosutra',
   };
 }
 
-export function passphraseToAddress(passphrase: string) {
+export function addressToBase32(address: string) {
+  return Lisk.cryptography.getBase32AddressFromAddress(
+    Buffer.from(address, 'hex'),
+  );
+}
+
+export function base32ToAddress(base32: string) {
+  return Lisk.cryptography.getAddressFromBase32Address(base32).toString('hex');
+}
+
+export function passphraseToBase32(passphrase: string) {
   return Lisk.cryptography.getBase32AddressFromPassphrase(passphrase);
+}
+
+export function passphraseToAddress(passphrase: string) {
+  return Lisk.cryptography.getAddressFromPassphrase(passphrase).toString('hex');
 }
 
 export async function getMyPassphrase() {
@@ -60,6 +76,20 @@ export async function getMyPassphrase() {
   return authToken;
 }
 
+export async function getMyBase32() {
+  const myPersona: Persona = selectMyPersonaCache(store.getState());
+  if (myPersona.base32) {
+    return myPersona.base32;
+  } else {
+    const myPassphrase = await getMyPassphrase();
+
+    const myBase32 = passphraseToBase32(myPassphrase);
+    store.dispatch(setMyPersonaBase32Cache(myBase32));
+
+    return myBase32;
+  }
+}
+
 export async function getMyAddress() {
   const myPersona: Persona = selectMyPersonaCache(store.getState());
   if (myPersona.address) {
@@ -74,6 +104,15 @@ export async function getMyAddress() {
   }
 }
 
+export async function getMyBase32AndAddress() {
+  const address = await getMyAddress();
+  const base32 = await getMyBase32();
+  return {
+    address,
+    base32,
+  };
+}
+
 export async function getBasePersona(
   address: string,
   signal?: AbortController['signal'],
@@ -86,12 +125,12 @@ export async function getMyBasePersona(
   signal?: AbortController['signal'],
 ): Promise<Persona> {
   const now = Date.now();
-  const address = await getMyAddress();
+  const my = await getMyBase32AndAddress();
   const lastFetch = selectMyPersonaCache(store.getState()).lastFetch;
   let myPersona: Persona = selectMyPersonaCache(store.getState());
 
   if (force || now - lastFetch > lastFetchTreshold.persona) {
-    myPersona = await getBasePersona(address, signal);
+    myPersona = await getBasePersona(my.address, signal);
     store.dispatch(setLastFetchMyPersonaCache(now));
     store.dispatch(setMyPersonaCache(myPersona));
   }

@@ -9,19 +9,18 @@ import Avatar from 'enevti-app/components/atoms/avatar';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 
 import { useTheme } from 'react-native-paper';
+import { Persona } from 'enevti-app/types/service/enevti/persona';
 
 interface AppAvatarRendererProps {
   size: number;
-  photo?: string;
-  address?: string;
+  persona: Persona;
   style?: StyleProp<ImageStyle>;
   color?: string;
 }
 
 export default function AppAvatarRenderer({
   size,
-  photo,
-  address,
+  persona,
   style,
   color,
 }: AppAvatarRendererProps) {
@@ -30,10 +29,10 @@ export default function AppAvatarRenderer({
 
   return (
     <View style={[styles.container, style]}>
-      {photo ? (
-        <AppNetworkImage style={styles.image} url={IPFStoURL(photo)} />
-      ) : address ? (
-        <Avatar address={address} />
+      {persona.photo ? (
+        <AppNetworkImage style={styles.image} url={IPFStoURL(persona.photo)} />
+      ) : persona.base32 ? (
+        <Avatar address={persona.base32} />
       ) : (
         <MaterialCommunityIcons
           name={iconMap.accountCircle}

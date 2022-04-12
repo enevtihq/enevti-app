@@ -55,7 +55,7 @@ export const reduceRedeemContent =
 
       const decryptedSecret = await decryptAsymmetric(
         nft.redeem.secret.cipher,
-        nft.redeem.secret.signer,
+        nft.redeem.secret.sender,
       );
       if (decryptedSecret.status === 'error') {
         secretDecryptionFailed(nft);
@@ -64,7 +64,7 @@ export const reduceRedeemContent =
       const isSignatureValid = await verifySignature(
         decryptedSecret.data,
         nft.redeem.secret.signature,
-        nft.redeem.secret.signer,
+        nft.redeem.secret.sender,
       );
       if (!isSignatureValid) {
         invalidSignature(nft);

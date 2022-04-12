@@ -21,5 +21,6 @@ export type NFTRedeem = {
       minute: number;
     };
     until: number;
+    timezoneOffset: number;
   };
 };

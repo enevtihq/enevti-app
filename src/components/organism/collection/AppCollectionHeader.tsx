@@ -185,8 +185,7 @@ export default function AppCollectionHeader({
               {t('collection:createdBy')}{' '}
             </AppTextBody4>
             <AppAvatarRenderer
-              photo={collection.creator.photo}
-              address={collection.creator.address}
+              persona={collection.creator}
               size={wp('5%')}
               style={{ marginHorizontal: wp('2%') }}
             />

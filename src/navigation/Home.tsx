@@ -526,8 +526,7 @@ export default function Home({ navigation }: Props) {
               <AppAvatarRenderer
                 color={color}
                 size={size * 1.1}
-                photo={myPersona?.photo}
-                address={myPersona?.address}
+                persona={myPersona}
               />
             ),
             tabBarButton: props => (

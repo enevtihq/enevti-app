@@ -191,8 +191,7 @@ function Component(
             {t('nftDetails:createdBy')}{' '}
           </AppTextBody4>
           <AppAvatarRenderer
-            photo={nft.creator.photo}
-            address={nft.creator.address}
+            persona={nft.creator}
             size={wp('5%')}
             style={{ marginHorizontal: wp('2%') }}
           />
@@ -209,8 +208,7 @@ function Component(
             {t('nftDetails:ownedBy')}{' '}
           </AppTextBody4>
           <AppAvatarRenderer
-            photo={nft.owner.photo}
-            address={nft.owner.address}
+            persona={nft.owner}
             size={wp('5%')}
             style={{ marginHorizontal: wp('2%') }}
           />

@@ -10,7 +10,7 @@ type MyProfileViewState = MyProfileView & { loaded: boolean };
 
 const initialState: MyProfileViewState = {
   loaded: false,
-  persona: { username: '', photo: '', address: '' },
+  persona: { username: '', photo: '', base32: '', address: '' },
   nftSold: 0,
   treasuryAct: 0,
   serveRate: 0,

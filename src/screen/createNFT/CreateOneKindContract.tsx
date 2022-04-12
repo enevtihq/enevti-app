@@ -70,6 +70,7 @@ import {
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 import { payCreateNFTOneKind } from 'enevti-app/store/middleware/thunk/queue/nft/create/payCreateNFTOneKind';
 import getFileExtension from 'enevti-app/utils/mime/getFileExtension';
+import timezoneOffsetLabel from 'enevti-app/utils/date/timezoneOffsetLabel';
 
 type Props = StackScreenProps<RootStackParamList, 'CreateOneKindContract'>;
 
@@ -477,14 +478,14 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
   const labelHourMinutePickerStart = React.useMemo(
     () =>
       t('createNFT:redeemStartTime') +
-      ` (UTC${timezoneOffset > 0 ? '-' : '+'}${(timezoneOffset * -1) / 60})`,
+      ` (${timezoneOffsetLabel(timezoneOffset)})`,
     [t, timezoneOffset],
   );
 
   const labelHourMinutePickerEnd = React.useMemo(
     () =>
       t('createNFT:redeemEndTime') +
-      ` (UTC${timezoneOffset > 0 ? '-' : '+'}${(timezoneOffset * -1) / 60})`,
+      ` (${timezoneOffsetLabel(timezoneOffset)})`,
     [t, timezoneOffset],
   );
 

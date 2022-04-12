@@ -21,6 +21,7 @@ interface AppMenuContainerProps {
   transparentBackdrop?: boolean;
   snapPoints?: string[];
   tapEverywhereToDismiss?: boolean;
+  backDisabled?: boolean;
   style?: StyleProp<ViewStyle>;
   memoKey?: (keyof AppMenuContainerProps)[];
 }
@@ -35,6 +36,7 @@ function Component({
   enablePanDownToClose = true,
   tapEverywhereToDismiss = false,
   transparentBackdrop = false,
+  backDisabled = false,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   memoKey,
 }: AppMenuContainerProps) {
@@ -56,6 +58,9 @@ function Component({
   useFocusEffect(
     React.useCallback(() => {
       const onBackPress = () => {
+        if (backDisabled) {
+          return true;
+        }
         if (isVisible.current) {
           bottomSheetRef.current?.dismiss();
           return true;
@@ -66,7 +71,7 @@ function Component({
       BackHandler.addEventListener('hardwareBackPress', onBackPress);
       return () =>
         BackHandler.removeEventListener('hardwareBackPress', onBackPress);
-    }, [isVisible]),
+    }, [isVisible, backDisabled]),
   );
 
   React.useEffect(() => {
