@@ -7,7 +7,6 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import YupPassword from 'yup-password';
-import * as Lisk from '@liskhq/lisk-client';
 
 import {
   encryptWithDevice,
@@ -27,6 +26,7 @@ import { useDispatch } from 'react-redux';
 import { CommonActions } from '@react-navigation/native';
 import { handleError } from 'enevti-app/utils/error/handle';
 import { initPassphraseWithDevice } from 'enevti-app/store/middleware/thunk/session/initPassphraseWithDevice';
+import { generatePassphrase } from 'enevti-app/utils/passphrase';
 
 type Props = StackScreenProps<RootStackParamList, 'SetupGoogleBinderPassword'>;
 YupPassword(Yup);
@@ -53,7 +53,7 @@ export default function SetupGoogleBinderPassword({ navigation }: Props) {
 
   const handleFormSubmit = async (values: any) => {
     try {
-      const passphrase = Lisk.passphrase.Mnemonic.generateMnemonic();
+      const passphrase = generatePassphrase();
       const encryptedPassphrase = await encryptWithPassword(
         passphrase,
         values.password,
@@ -63,7 +63,7 @@ export default function SetupGoogleBinderPassword({ navigation }: Props) {
         device: bindedPassphrase,
         encrypted: encryptedPassphrase,
       });
-      dispatch(initPassphraseWithDevice(bindedPassphrase));
+      dispatch(initPassphraseWithDevice(bindedPassphrase, passphrase));
 
       setIsLoading(false);
 

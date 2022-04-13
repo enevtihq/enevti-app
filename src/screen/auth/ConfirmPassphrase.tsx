@@ -32,7 +32,7 @@ export default function ConfirmPassphrase({ route, navigation }: Props) {
   const [checked, setChecked] = React.useState<boolean>(false);
 
   const handleContinue = async () => {
-    dispatch(initPassphrase(encryptedPassphrase, localKey));
+    dispatch(initPassphrase(encryptedPassphrase, passphrase, localKey));
     navigation.dispatch(
       CommonActions.reset({
         index: 0,

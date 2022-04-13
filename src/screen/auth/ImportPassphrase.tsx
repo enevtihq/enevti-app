@@ -52,7 +52,9 @@ export default function ImportPassphrase({ navigation }: Props) {
       values.passphrase,
       values.password,
     );
-    dispatch(initPassphrase(encryptedPassphrase, values.password));
+    dispatch(
+      initPassphrase(encryptedPassphrase, values.passphrase, values.password),
+    );
     setIsLoading(false);
     navigation.replace('AccountCreated');
   };

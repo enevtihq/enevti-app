@@ -31,6 +31,7 @@ import useLockScreen from 'enevti-app/utils/hook/useLockScreen';
 import useScreenDisplayed from 'enevti-app/utils/hook/useScreenDisplayed';
 import { selectLockedState } from 'enevti-app/store/slices/ui/screen/locked';
 import NFTDetails from 'enevti-app/screen/nftDetails/NFTDetails';
+import { EncryptedData } from 'enevti-app/types/utils/cryptography';
 
 export type RootStackParamList = {
   CreateAccount: undefined;
@@ -38,7 +39,7 @@ export type RootStackParamList = {
   SetupGoogleBinderPassword: undefined;
   ConfirmPassphrase: {
     passphrase: string;
-    encryptedPassphrase: string;
+    encryptedPassphrase: EncryptedData;
     localKey: string;
   };
   AccountCreated: undefined;
@@ -76,11 +77,12 @@ export default function AppNavigationContainer() {
   const locked = useSelector(selectLockedState);
 
   const auth = useSelector(selectAuthState);
-  const initialRoute = auth.encrypted
-    ? 'Login'
-    : auth.token
-    ? 'Home'
-    : 'CreateAccount';
+  const initialRoute = 'CreateAccount';
+  // const initialRoute = auth.encrypted
+  //   ? 'Login'
+  //   : auth.token
+  //   ? 'Home'
+  //   : 'CreateAccount';
 
   useLockScreen();
   useScreenDisplayed();

@@ -56,7 +56,8 @@ export async function getMyPassphrase() {
   if (authToken && auth.encrypted) {
     const localKey = selectLocalSession(store.getState()).key;
     if (localKey) {
-      authToken = (await decryptWithPassword(authToken, localKey)).data;
+      authToken = (await decryptWithPassword(authToken, localKey, auth.version))
+        .data;
     } else {
       throw {
         name: 'KeyError',
@@ -65,7 +66,7 @@ export async function getMyPassphrase() {
       };
     }
   } else if (authToken && !auth.encrypted) {
-    authToken = (await decryptWithDevice(authToken)).data;
+    authToken = (await decryptWithDevice(authToken, auth.version)).data;
   } else {
     throw {
       name: 'UnknownError',

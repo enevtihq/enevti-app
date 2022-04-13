@@ -132,6 +132,7 @@ async function fetchNFT(
         size: 3548243,
         iv: '5899c28e12159a2b65c097054a58c0c3',
         salt: '9136de3e95f38b5207be8ef9d8fd322a',
+        version: 1,
       },
       schedule: {
         recurring: 'yearly',

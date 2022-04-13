@@ -82,6 +82,7 @@ export const reduceRedeemContent =
         decryptedSecret.data,
         nft.redeem.content.iv,
         nft.redeem.content.salt,
+        nft.redeem.content.version,
         localDecryptedFile,
       );
       if (decryptedFile.status === 'error') {

@@ -66,6 +66,7 @@ const initialStateItem: NFTDetailsViewState = {
       size: -1,
       iv: '',
       salt: '',
+      version: 0,
     },
     schedule: {
       recurring: '',

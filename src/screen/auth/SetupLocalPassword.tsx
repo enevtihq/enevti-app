@@ -7,7 +7,6 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import YupPassword from 'yup-password';
-import * as Lisk from '@liskhq/lisk-client';
 
 import { encryptWithPassword } from 'enevti-app/utils/cryptography';
 import { Theme } from 'enevti-app/theme/default';
@@ -19,6 +18,7 @@ import AppView from 'enevti-app/components/atoms/view/AppView';
 import AppCheckbox from 'enevti-app/components/atoms/form/AppCheckbox';
 import { hp, wp, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
 import { BRAND_NAME } from 'enevti-app/components/atoms/brand/AppBrandConstant';
+import { generatePassphrase } from 'enevti-app/utils/passphrase';
 
 type Props = StackScreenProps<RootStackParamList, 'SetupLocalPassword'>;
 YupPassword(Yup);
@@ -43,7 +43,7 @@ export default function SetupLocalPassword({ navigation }: Props) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   const handleFormSubmit = async (values: any) => {
-    const passphrase = Lisk.passphrase.Mnemonic.generateMnemonic();
+    const passphrase = generatePassphrase();
     const encryptedPassphrase = await encryptWithPassword(
       passphrase,
       values.password,

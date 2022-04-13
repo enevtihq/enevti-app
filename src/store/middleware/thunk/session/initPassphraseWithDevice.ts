@@ -10,13 +10,14 @@ import {
   passphraseToBase32,
   passphraseToAddress,
 } from 'enevti-app/service/enevti/persona';
+import { EncryptedData } from 'enevti-app/types/utils/cryptography';
 
 export const initPassphraseWithDevice =
-  (passphrase: string): AppThunk =>
+  (encryptedPassphrase: EncryptedData, plainPassphrase: string): AppThunk =>
   async dispatch => {
     dispatch(resetMyPersonaCache());
     dispatch(resetMyProfileCache());
-    dispatch(setUnencryptedPassphraseAuth(passphrase));
-    dispatch(setMyPersonaBase32Cache(passphraseToBase32(passphrase)));
-    dispatch(setMyPersonaAddressCache(passphraseToAddress(passphrase)));
+    dispatch(setUnencryptedPassphraseAuth(encryptedPassphrase));
+    dispatch(setMyPersonaBase32Cache(passphraseToBase32(plainPassphrase)));
+    dispatch(setMyPersonaAddressCache(passphraseToAddress(plainPassphrase)));
   };

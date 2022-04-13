@@ -32,6 +32,7 @@ import {
   selectLockedState,
   unlockScreen,
 } from 'enevti-app/store/slices/ui/screen/locked';
+import { isValidPassphrase } from 'enevti-app/utils/passphrase';
 
 type Props = StackScreenProps<RootStackParamList, 'Login'>;
 YupPassword(Yup);
@@ -57,8 +58,9 @@ export default function Login({ navigation }: Props) {
     const decrypted = await decryptWithPassword(
       authState.token,
       values.password,
+      authState.version,
     );
-    if (decrypted.status === 'error') {
+    if (decrypted.status === 'error' || !isValidPassphrase(decrypted.data)) {
       dispatch(showSnackbar({ mode: 'error', text: t('auth:wrongPassword') }));
       setIsLoading(false);
       return;

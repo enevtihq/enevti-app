@@ -23,6 +23,7 @@ import AppFormSecureTextInput from './AppFormSecureTextInput';
 import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
 import {
   getSecretAppData,
+  isExistingAccount,
   SecretAppData,
   updateSecretAppData,
 } from 'enevti-app/service/google/appData';
@@ -36,8 +37,22 @@ import {
 } from 'enevti-app/utils/cryptography';
 import { handleError } from 'enevti-app/utils/error/handle';
 import { initPassphraseWithDevice } from 'enevti-app/store/middleware/thunk/session/initPassphraseWithDevice';
+import { isValidPassphrase } from 'enevti-app/utils/passphrase';
 
 YupPassword(Yup);
+
+const initialSecretData: SecretAppData = {
+  device: {
+    status: '',
+    data: '',
+    version: 0,
+  },
+  encrypted: {
+    status: '',
+    data: '',
+    version: 0,
+  },
+};
 
 const validationSchema = Yup.object().shape({
   password: Yup.string().password().required(),
@@ -62,10 +77,8 @@ export default function AppGoogleSignInButton({
     React.useState<boolean>(false);
   const [isDialogButtonLoading, setIsDialogButtonLoading] =
     React.useState<boolean>(false);
-  const [secretData, setSecretData] = React.useState<SecretAppData>({
-    device: '',
-    encrypted: '',
-  });
+  const [secretData, setSecretData] =
+    React.useState<SecretAppData>(initialSecretData);
 
   React.useEffect(() => {
     googleInit();
@@ -84,13 +97,19 @@ export default function AppGoogleSignInButton({
       const data = await getSecretAppData();
       setSecretData(data);
 
-      if (data.device && data.encrypted) {
-        const decrypted = await decryptWithDevice(data.device);
-        if (decrypted.status === 'error') {
+      if (isExistingAccount(data)) {
+        const decrypted = await decryptWithDevice(
+          data.device.data,
+          data.device.version,
+        );
+        if (
+          decrypted.status === 'error' ||
+          !isValidPassphrase(decrypted.data)
+        ) {
           setShowInputGoogleDialog(true);
           return;
         } else {
-          dispatch(initPassphraseWithDevice(data.device));
+          dispatch(initPassphraseWithDevice(data.device, decrypted.data));
           onExistingAccount();
         }
       } else {
@@ -106,10 +125,11 @@ export default function AppGoogleSignInButton({
   const handleDialogFormSubmit = async (values: any) => {
     try {
       const decrypted = await decryptWithPassword(
-        secretData.encrypted,
+        secretData.encrypted.data,
         values.password,
+        secretData.encrypted.version,
       );
-      if (decrypted.status === 'error') {
+      if (decrypted.status === 'error' || !isValidPassphrase(decrypted.data)) {
         dispatch(
           showSnackbar({
             mode: 'error',
@@ -123,7 +143,7 @@ export default function AppGoogleSignInButton({
           device: newBindedData,
           encrypted: secretData.encrypted,
         });
-        dispatch(initPassphraseWithDevice(newBindedData));
+        dispatch(initPassphraseWithDevice(newBindedData, decrypted.data));
         setShowInputGoogleDialog(false);
         onExistingAccount();
       }
@@ -138,10 +158,7 @@ export default function AppGoogleSignInButton({
     setIsLoadingGoogle(false);
     setShowInputGoogleDialog(false);
     setIsDialogButtonLoading(false);
-    setSecretData({
-      device: '',
-      encrypted: '',
-    });
+    setSecretData(initialSecretData);
     dispatch(
       showSnackbar({
         mode: 'error',

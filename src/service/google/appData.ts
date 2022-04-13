@@ -3,6 +3,7 @@ import {
   selectGoogleAPITokenState,
 } from 'enevti-app/store/slices/session/google';
 import { store } from 'enevti-app/store/state';
+import { EncryptedData } from 'enevti-app/types/utils/cryptography';
 import { isInternetReachable } from 'enevti-app/utils/network';
 import { getGoogleAccessToken, googleInit, googleSignIn } from './signIn';
 
@@ -17,8 +18,8 @@ interface MetaData {
 }
 
 export interface SecretAppData {
-  device: string;
-  encrypted: string;
+  device: EncryptedData;
+  encrypted: EncryptedData;
 }
 
 const stateStore = store;
@@ -110,11 +111,26 @@ async function getSecretId(): Promise<string> {
   });
 }
 
+export function isExistingAccount(data: SecretAppData): boolean {
+  return !!data.device.data && !!data.encrypted.data;
+}
+
 export async function getSecretAppData(): Promise<SecretAppData> {
   await isInternetReachable();
   const id = await getSecretId();
   if (!id) {
-    return { device: '', encrypted: '' };
+    return {
+      device: {
+        status: '',
+        data: '',
+        version: 0,
+      },
+      encrypted: {
+        status: '',
+        data: '',
+        version: 0,
+      },
+    };
   }
 
   const options = await configureGetOptions();
