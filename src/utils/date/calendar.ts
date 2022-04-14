@@ -146,14 +146,14 @@ export const addRedeemCalendarEvent = async (nft: NFT) => {
 
   const redeemEvent: CalendarEventWritable = {
     description: i18n.t('nftDetails:calendarDescription'),
+    notes: i18n.t('nftDetails:calendarDescription'),
     alarms: [{ date: 60 }],
     startDate: new Date(startTime).toISOString(),
     endDate: new Date(startTime + nft.redeem.schedule.until).toISOString(),
-    location: getAppLink('nft', `${nft.symbol}#${nft.serial}`),
+    location: getAppLink('nft-serial', `${nft.symbol}#${nft.serial}`),
+    url: getAppLink('nft-serial', `${nft.symbol}#${nft.serial}`),
     recurrence: recurrence,
   };
-
-  console.log(redeemEvent);
 
   await addCalendarEvent(nftToRedeemCalendarTitle(nft), redeemEvent);
 
