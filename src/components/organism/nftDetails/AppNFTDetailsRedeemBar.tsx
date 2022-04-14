@@ -15,6 +15,7 @@ import AppTextHeading4 from 'enevti-app/components/atoms/text/AppTextHeading4';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import { useDispatch } from 'react-redux';
 import { reduceRedeem } from 'enevti-app/store/middleware/thunk/redeem';
+import { addRedeemCalendarEvent } from 'enevti-app/utils/date/calendar';
 
 interface AppNFTDetailsRedeemBarProps {
   nft: NFT;
@@ -58,7 +59,11 @@ export default function AppNFTDetailsRedeemBar({
       </View>
       <Divider style={styles.divider} />
       <View style={styles.calendarContainer}>
-        <TouchableRipple onPress={() => {}} style={styles.calendarPressable}>
+        <TouchableRipple
+          onPress={async () => {
+            await addRedeemCalendarEvent(nft);
+          }}
+          style={styles.calendarPressable}>
           <AppTextBody4 style={styles.calendarLabelText}>
             Every Month · September, 12 · 10:00 - 12:00 AM UTC+12 · 5 Redeem
             Remaining{' '}

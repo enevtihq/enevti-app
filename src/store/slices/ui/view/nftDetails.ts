@@ -81,7 +81,6 @@ const initialStateItem: NFTDetailsViewState = {
         minute: -1,
       },
       until: -1,
-      timezoneOffset: 0,
     },
   },
   owner: {

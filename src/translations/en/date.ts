@@ -22,4 +22,9 @@ export default {
   hours: 'Hours',
   minutes: 'Minutes',
   seconds: 'Seconds',
+  startingNext: 'starting next {{next}}',
+  day: 'day',
+  week: 'week',
+  month: 'month',
+  year: 'year',
 };

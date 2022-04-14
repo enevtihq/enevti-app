@@ -77,12 +77,11 @@ export default function AppNavigationContainer() {
   const locked = useSelector(selectLockedState);
 
   const auth = useSelector(selectAuthState);
-  const initialRoute = 'CreateAccount';
-  // const initialRoute = auth.encrypted
-  //   ? 'Login'
-  //   : auth.token
-  //   ? 'Home'
-  //   : 'CreateAccount';
+  const initialRoute = auth.encrypted
+    ? 'Login'
+    : auth.token
+    ? 'Home'
+    : 'CreateAccount';
 
   useLockScreen();
   useScreenDisplayed();

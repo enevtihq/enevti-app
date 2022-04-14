@@ -138,16 +138,15 @@ async function fetchNFT(
         recurring: 'yearly',
         time: {
           day: -1,
-          date: 5,
+          date: 14,
           month: 3,
           year: -1,
         },
         from: {
-          hour: 10,
+          hour: 2,
           minute: 0,
         },
         until: 3600000,
-        timezoneOffset: -420,
       },
     },
     activity: [

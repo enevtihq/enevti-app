@@ -22,6 +22,7 @@ export const reducePayCreateNFTOneKind =
       ? await uploadURItoIPFS(payload.state.coverUri)
       : '';
 
+    // TODO: parse schedule in local format (new Date(y, m, d, h, m)), then store in UTC (getUTCHours())
     // TODO: check if folder for content upload is exist
     // TODO: prepare encrypted content file to upload to IPFS
     const content =

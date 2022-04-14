@@ -22,7 +22,7 @@ export default React.memo(
         text = 'Video Call';
         break;
       case 'chat':
-        text = 'Direct Chat';
+        text = 'Exclusive Chat';
         break;
       case 'content':
         text = 'Exclusive Content';
