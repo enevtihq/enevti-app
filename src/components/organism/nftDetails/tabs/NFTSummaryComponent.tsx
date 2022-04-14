@@ -100,13 +100,13 @@ function Component(
 
   const onCreatorDetail = React.useCallback(() => {
     navigation.push('Profile', {
-      address: nft.creator.address,
+      arg: nft.creator.address,
     });
   }, [navigation, nft.creator.address]);
 
   const onOwnerDetail = React.useCallback(() => {
     navigation.push('Profile', {
-      address: nft.owner.address,
+      arg: nft.owner.address,
     });
   }, [navigation, nft.owner.address]);
 
@@ -231,7 +231,7 @@ function Component(
               <Pressable
                 style={styles.collectionDetail}
                 onPress={() =>
-                  navigation.push('Collection', { id: nft.collectionId })
+                  navigation.push('Collection', { arg: nft.collectionId })
                 }>
                 <AppTextHeading3>{nft.name}</AppTextHeading3>
               </Pressable>

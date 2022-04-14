@@ -1,9 +1,9 @@
-import { getCollection } from 'enevti-app/service/enevti/collection';
+import { getCollectionByRouteParam } from 'enevti-app/service/enevti/collection';
 import { handleError } from 'enevti-app/utils/error/handle';
 import {
   setCollectionViewLoaded,
   setCollectionView,
-  clearCollectionById,
+  clearCollectionByKey,
 } from 'enevti-app/store/slices/ui/view/collection';
 import {
   hideModalLoader,
@@ -11,8 +11,14 @@ import {
 } from 'enevti-app/store/slices/ui/global/modalLoader';
 import { AppThunk, AsyncThunkAPI } from 'enevti-app/store/state';
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from 'enevti-app/navigation';
 
-type LoadCollectionArgs = { id: string; reload: boolean };
+type CollectionRoute = StackScreenProps<
+  RootStackParamList,
+  'Collection'
+>['route']['params'];
+type LoadCollectionArgs = { routeParam: CollectionRoute; reload: boolean };
 
 export const loadCollection = createAsyncThunk<
   void,
@@ -20,13 +26,18 @@ export const loadCollection = createAsyncThunk<
   AsyncThunkAPI
 >(
   'collectionView/loadCollection',
-  async ({ id, reload = false }, { dispatch, signal }) => {
+  async ({ routeParam, reload = false }, { dispatch, signal }) => {
     try {
       reload && dispatch(showModalLoader());
-      const collectionResponse = await getCollection(id, signal);
+      const collectionResponse = await getCollectionByRouteParam(
+        routeParam,
+        signal,
+      );
       if (collectionResponse) {
-        dispatch(setCollectionView(collectionResponse));
-        dispatch(setCollectionViewLoaded({ id, value: true }));
+        dispatch(
+          setCollectionView({ key: routeParam.arg, value: collectionResponse }),
+        );
+        dispatch(setCollectionViewLoaded({ key: routeParam.arg, value: true }));
       }
     } catch (err: any) {
       handleError(err);
@@ -37,7 +48,7 @@ export const loadCollection = createAsyncThunk<
 );
 
 export const unloadCollection =
-  (id: string): AppThunk =>
+  (key: string): AppThunk =>
   dispatch => {
-    dispatch(clearCollectionById(id));
+    dispatch(clearCollectionByKey(key));
   };

@@ -30,6 +30,7 @@ import { Profile } from 'enevti-app/types/service/enevti/profile';
 import { Persona } from 'enevti-app/types/service/enevti/persona';
 import CollectionListComponent from './tabs/CollectionListComponent';
 import { AppAsyncThunk } from 'enevti-app/types/store/AppAsyncThunk';
+import { RouteProp } from '@react-navigation/native';
 
 const noDisplay = 'none';
 const visible = 1;
@@ -37,7 +38,7 @@ const notVisible = 0;
 
 interface AppProfileProps {
   navigation: StackNavigationProp<RootStackParamList>;
-  address: string;
+  route: RouteProp<RootStackParamList, 'Profile'>;
   profile: Profile & { persona: Persona };
   profileUndefined: boolean;
   onScrollWorklet?: (val: number) => void;
@@ -50,7 +51,7 @@ interface AppProfileProps {
 
 export default function AppProfile({
   navigation,
-  address,
+  route,
   profile,
   profileUndefined,
   onScrollWorklet,
@@ -87,18 +88,18 @@ export default function AppProfile({
 
   const onProfileScreenLoaded = React.useCallback(
     (reload: boolean = false) => {
-      return dispatch(loadProfile({ address, reload }));
+      return dispatch(loadProfile({ routeParam: route.params, reload }));
     },
-    [address, dispatch],
+    [dispatch, route.params],
   ) as AppAsyncThunk;
 
   React.useEffect(() => {
     const promise = onProfileScreenLoaded();
     return function cleanup() {
-      dispatch(unloadProfile(address));
+      dispatch(unloadProfile(route.params));
       promise.abort();
     };
-  }, [onProfileScreenLoaded, dispatch, address]);
+  }, [onProfileScreenLoaded, dispatch, route.params]);
 
   const useCustomAnimatedScrollHandler = (
     scrollRefList: React.RefObject<any>[],

@@ -126,7 +126,7 @@ function Component(
 
   const onCollectionClick = React.useCallback(
     id => () => {
-      navigation.push('Collection', { id: id });
+      navigation.push('Collection', { arg: id });
     },
     [navigation],
   );

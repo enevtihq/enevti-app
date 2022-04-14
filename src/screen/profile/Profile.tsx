@@ -20,17 +20,16 @@ import { RootState } from 'enevti-app/store/state';
 type Props = StackScreenProps<RootStackParamList, 'Profile'>;
 
 export default function Profile({ navigation, route }: Props) {
-  const { address } = route.params;
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const styles = React.useMemo(() => makeStyles(), []);
   const headerHeight = hp(HEADER_HEIGHT_PERCENTAGE, insets);
 
   const profile = useSelector((state: RootState) =>
-    selectProfileView(state, address),
+    selectProfileView(state, route.params.arg),
   );
   const profileUndefined = useSelector((state: RootState) =>
-    isProfileUndefined(state, address),
+    isProfileUndefined(state, route.params.arg),
   );
 
   return (
@@ -47,8 +46,8 @@ export default function Profile({ navigation, route }: Props) {
         <AppProfile
           disableHeaderAnimation
           navigation={navigation}
+          route={route}
           headerHeight={headerHeight}
-          address={address}
           profile={profile}
           profileUndefined={profileUndefined}
         />

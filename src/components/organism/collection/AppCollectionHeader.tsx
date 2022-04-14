@@ -63,7 +63,7 @@ export default function AppCollectionHeader({
 
   const onCreatorDetail = React.useCallback(() => {
     navigation.navigate('Profile', {
-      address: collection.creator.address,
+      arg: collection.creator.address,
     });
   }, [navigation, collection.creator.address]);
 

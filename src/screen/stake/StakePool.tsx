@@ -40,7 +40,7 @@ const AnimatedFlatList =
 type Props = StackScreenProps<RootStackParamList, 'StakePool'>;
 
 export default function StakePool({ navigation, route }: Props) {
-  const { address } = route.params;
+  const address = route.params.arg;
   const myPersona = useSelector(selectMyPersonaCache);
   const selfStake = address === myPersona.address;
 

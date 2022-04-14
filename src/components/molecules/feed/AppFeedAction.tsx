@@ -37,7 +37,7 @@ export default React.memo(
     const onComment = () => {};
 
     const onBuy = React.useCallback(() => {
-      navigation.push('Collection', { id: feed.id });
+      navigation.push('Collection', { arg: feed.id });
     }, [navigation, feed.id]);
 
     return (

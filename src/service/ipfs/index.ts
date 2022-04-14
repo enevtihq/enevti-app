@@ -1,5 +1,5 @@
 import { makeDummyIPFS } from 'enevti-app/utils/dummy/ipfs';
-import { sleep } from 'enevti-app/service/enevti/dummy';
+import sleep from 'enevti-app/utils/dummy/sleep';
 
 const IPFS_GATEWAY = 'https://cloudflare-ipfs.com/ipfs/';
 

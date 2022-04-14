@@ -39,17 +39,18 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { AppAsyncThunk } from 'enevti-app/types/store/AppAsyncThunk';
 import { RootState } from 'enevti-app/store/state';
+import { RouteProp } from '@react-navigation/native';
 
 interface AppCollectionProps {
-  id: string;
   onScrollWorklet: (val: number) => void;
   navigation: StackNavigationProp<RootStackParamList>;
+  route: RouteProp<RootStackParamList, 'Collection'>;
 }
 
 export default function AppCollection({
-  id,
   onScrollWorklet,
   navigation,
+  route,
 }: AppCollectionProps) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -59,10 +60,10 @@ export default function AppCollection({
   const styles = React.useMemo(() => makeStyles(), []);
 
   const collection = useSelector((state: RootState) =>
-    selectCollectionView(state, id),
+    selectCollectionView(state, route.params.arg),
   );
   const collectionUndefined = useSelector((state: RootState) =>
-    isCollectionUndefined(state, id),
+    isCollectionUndefined(state, route.params.arg),
   );
 
   const now = React.useMemo(() => Date.now(), []);
@@ -94,8 +95,9 @@ export default function AppCollection({
   const tabScroll = useSharedValue(0);
 
   const onCollectionScreenLoaded = React.useCallback(
-    (reload: boolean = false) => dispatch(loadCollection({ id, reload })),
-    [id, dispatch],
+    (reload: boolean = false) =>
+      dispatch(loadCollection({ routeParam: route.params, reload })),
+    [dispatch, route.params],
   ) as AppAsyncThunk;
 
   const onRefresh = React.useCallback(() => {
@@ -108,10 +110,10 @@ export default function AppCollection({
   React.useEffect(() => {
     const promise = onCollectionScreenLoaded();
     return function cleanup() {
-      dispatch(unloadCollection(id));
+      dispatch(unloadCollection(route.params.arg));
       promise.abort();
     };
-  }, [dispatch, onCollectionScreenLoaded, id]);
+  }, [dispatch, onCollectionScreenLoaded, route.params.arg]);
 
   const mintedItemsOnMounted = React.useCallback(
     () => setMintedItemsMounted(true),

@@ -5,14 +5,20 @@ import {
 } from 'enevti-app/store/slices/ui/global/modalLoader';
 import { AppThunk, AsyncThunkAPI } from 'enevti-app/store/state';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { getNFT } from 'enevti-app/service/enevti/nft';
+import { getNFTbyRouteParam } from 'enevti-app/service/enevti/nft';
 import {
-  clearNFTDetailsById,
+  clearNFTDetailsByKey,
   setNFTDetailsLoaded,
   setNFTDetailsView,
 } from 'enevti-app/store/slices/ui/view/nftDetails';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from 'enevti-app/navigation';
 
-type loadNFTArgs = { id: string; reload: boolean };
+type NFTDetailsRoute = StackScreenProps<
+  RootStackParamList,
+  'NFTDetails'
+>['route']['params'];
+type loadNFTArgs = { routeParam: NFTDetailsRoute; reload: boolean };
 
 export const loadNFTDetails = createAsyncThunk<
   void,
@@ -20,13 +26,15 @@ export const loadNFTDetails = createAsyncThunk<
   AsyncThunkAPI
 >(
   'nftDetailsView/loadNFTDetails',
-  async ({ id, reload = false }, { dispatch, signal }) => {
+  async ({ routeParam, reload = false }, { dispatch, signal }) => {
     try {
       reload && dispatch(showModalLoader());
-      const nftReponse = await getNFT(id, signal);
-      if (nftReponse) {
-        dispatch(setNFTDetailsView(nftReponse));
-        dispatch(setNFTDetailsLoaded({ id, value: true }));
+      const nftResponse = await getNFTbyRouteParam(routeParam, signal);
+      if (nftResponse) {
+        dispatch(
+          setNFTDetailsView({ key: routeParam.arg, value: nftResponse }),
+        );
+        dispatch(setNFTDetailsLoaded({ key: routeParam.arg, value: true }));
       }
     } catch (err: any) {
       handleError(err);
@@ -37,7 +45,7 @@ export const loadNFTDetails = createAsyncThunk<
 );
 
 export const unloadNFTDetails =
-  (id: string): AppThunk =>
+  (key: string): AppThunk =>
   dispatch => {
-    dispatch(clearNFTDetailsById(id));
+    dispatch(clearNFTDetailsByKey(key));
   };

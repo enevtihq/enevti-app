@@ -1,5 +1,5 @@
 import { StakePoolData } from 'enevti-app/types/service/enevti/stake';
-import { sleep } from './dummy';
+import sleep from 'enevti-app/utils/dummy/sleep';
 
 export async function getStakePoolCompleteData(
   address: string,

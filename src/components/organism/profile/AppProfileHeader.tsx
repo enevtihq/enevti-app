@@ -99,7 +99,7 @@ export default function AppProfileHeader({
           style={styles.profileActionButton}
           icon={iconMap.pool}
           onPress={() =>
-            navigation.navigate('StakePool', { address: persona.address })
+            navigation.navigate('StakePool', { arg: persona.address })
           }>
           {t('profile:stakeAndInsight') + '  '}
           <AppTextBody5

@@ -30,17 +30,18 @@ import {
 import AppNFTDetailsBody from './AppNFTDetailsBody';
 import NFTSummaryComponent from './tabs/NFTSummaryComponent';
 import { RootState } from 'enevti-app/store/state';
+import { RouteProp } from '@react-navigation/native';
 
 interface AppNFTDetailsProps {
-  id: string;
   onScrollWorklet: (val: number) => void;
   navigation: StackNavigationProp<RootStackParamList>;
+  route: RouteProp<RootStackParamList, 'NFTDetails'>;
 }
 
 export default function AppNFTDetails({
-  id,
   onScrollWorklet,
   navigation,
+  route,
 }: AppNFTDetailsProps) {
   const dispatch = useDispatch();
   const { hp } = useDimension();
@@ -49,10 +50,10 @@ export default function AppNFTDetails({
   const styles = React.useMemo(() => makeStyles(), []);
 
   const nftDetails = useSelector((state: RootState) =>
-    selectNFTDetailsView(state, id),
+    selectNFTDetailsView(state, route.params.arg),
   );
   const nftDetailsUndefined = useSelector((state: RootState) =>
-    isNFTDetailsUndefined(state, id),
+    isNFTDetailsUndefined(state, route.params.arg),
   );
 
   const totalHeaderHeight = React.useMemo(
@@ -71,8 +72,9 @@ export default function AppNFTDetails({
   const tabScroll = useSharedValue(0);
 
   const onNFTDetailsScreenLoaded = React.useCallback(
-    (reload: boolean = false) => dispatch(loadNFTDetails({ id, reload })),
-    [id, dispatch],
+    (reload: boolean = false) =>
+      dispatch(loadNFTDetails({ routeParam: route.params, reload })),
+    [dispatch, route.params],
   ) as AppAsyncThunk;
 
   const onRefresh = React.useCallback(() => {
@@ -84,10 +86,10 @@ export default function AppNFTDetails({
   React.useEffect(() => {
     const promise = onNFTDetailsScreenLoaded();
     return function cleanup() {
-      dispatch(unloadNFTDetails(id));
+      dispatch(unloadNFTDetails(route.params.arg));
       promise.abort();
     };
-  }, [dispatch, onNFTDetailsScreenLoaded, id]);
+  }, [dispatch, onNFTDetailsScreenLoaded, route.params.arg]);
 
   const summaryOnMounted = React.useCallback(() => setSummaryMounted(true), []);
 

@@ -1,7 +1,8 @@
 import { COIN_NAME } from 'enevti-app/components/atoms/brand/AppBrandConstant';
 import { NFTBase } from 'enevti-app/types/nft';
 import { FeedItem, Feeds, Moments } from 'enevti-app/types/service/enevti/feed';
-import { getDummyNFTData, sleep } from './dummy';
+import sleep from 'enevti-app/utils/dummy/sleep';
+import { getDummyNFTData } from './dummy';
 
 function getFeedItemList(): FeedItem {
   let randomCount = Math.random() * 10;

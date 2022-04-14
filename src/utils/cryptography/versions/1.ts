@@ -7,6 +7,7 @@ import {
   EncryptedFile,
   DecryptedFile,
 } from 'enevti-app/types/utils/cryptography';
+import sleep from 'enevti-app/utils/dummy/sleep';
 
 const VERSION = 1;
 
@@ -16,6 +17,7 @@ export async function encryptText_v1(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   iterations: number,
 ): Promise<EncryptedData> {
+  await sleep(1);
   const encrypted = await RNEncryptionModule.encryptText(plainText, password);
   const ret: EncryptedBase = {
     iterations: 65536,
@@ -37,6 +39,7 @@ export async function decryptText_v1(
   encryptedBase64: string,
   password: string,
 ): Promise<DecryptedData> {
+  await sleep(1);
   const fromBase64 = JSON.parse(
     base64.decode(encryptedBase64),
   ) as EncryptedBase;
@@ -64,6 +67,7 @@ export async function encryptFile_v1(
   outputFile: string,
   password: string,
 ): Promise<EncryptedFile> {
+  await sleep(1);
   const ret = await RNEncryptionModule.encryptFile(
     inputFile,
     outputFile,
@@ -93,6 +97,7 @@ export async function decryptFile_v1(
   iv: string,
   salt: string,
 ): Promise<DecryptedFile> {
+  await sleep(1);
   const ret = await RNEncryptionModule.decryptFile(
     inputFile,
     outputFile,

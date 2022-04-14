@@ -1,7 +1,8 @@
 import BigNumber from 'bignumber.js';
 import { Profile } from 'enevti-app/types/service/enevti/profile';
 import { store } from 'enevti-app/store/state';
-import { getDummyCollectionBaseDate, getDummyNFTData, sleep } from './dummy';
+import sleep from 'enevti-app/utils/dummy/sleep';
+import { getDummyCollectionBaseDate, getDummyNFTData } from './dummy';
 import {
   selectMyProfileCache,
   setLastFetchMyProfileCache,
@@ -70,6 +71,7 @@ export async function getMyProfile(
   force: boolean = false,
   signal?: AbortController['signal'],
 ): Promise<Profile | undefined> {
+  await sleep(1);
   const now = Date.now();
   const myAddress = await getMyAddress();
   const lastFetch = selectMyProfileCache(store.getState()).lastFetch;

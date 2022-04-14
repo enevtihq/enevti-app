@@ -6,7 +6,7 @@ import {
 } from 'enevti-app/utils/cryptography';
 import * as Lisk from '@liskhq/lisk-client';
 import { ERRORCODE } from 'enevti-app/utils/error/code';
-import { sleep } from 'enevti-app/service/enevti/dummy';
+import sleep from 'enevti-app/utils/dummy/sleep';
 import { lastFetchTreshold } from 'enevti-app/utils/constant/lastFetch';
 import {
   setMyPersonaCache,
@@ -17,6 +17,13 @@ import {
 } from 'enevti-app/store/slices/entities/cache/myPersona';
 import { selectAuthState } from 'enevti-app/store/slices/auth';
 import { selectLocalSession } from 'enevti-app/store/slices/session/local';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from 'enevti-app/navigation';
+
+type ProfileRoute = StackScreenProps<
+  RootStackParamList,
+  'Profile'
+>['route']['params'];
 
 async function fetchPersona(
   address: string,
@@ -28,6 +35,19 @@ async function fetchPersona(
     address: address,
     base32: addressToBase32(address),
     username: 'aldhosutra',
+  };
+}
+
+async function fetchPersonaByUsername(
+  username: string,
+  signal?: AbortController['signal'],
+): Promise<Persona> {
+  await sleep(1000, signal);
+  return {
+    photo: '',
+    address: '3d4a6ef61ba235dc60c7a5fdb2c775138cb00b51',
+    base32: addressToBase32('3d4a6ef61ba235dc60c7a5fdb2c775138cb00b51'),
+    username: username,
   };
 }
 
@@ -119,6 +139,30 @@ export async function getBasePersona(
   signal?: AbortController['signal'],
 ): Promise<Persona> {
   return await fetchPersona(address, signal);
+}
+
+export async function getBasePersonaByUsername(
+  username: string,
+  signal?: AbortController['signal'],
+) {
+  return await fetchPersonaByUsername(username, signal);
+}
+
+export async function getBasePersonaByRouteParam(
+  routeParam: ProfileRoute,
+  signal?: AbortController['signal'],
+) {
+  switch (routeParam.mode) {
+    case 'a':
+      return await fetchPersona(routeParam.arg, signal);
+    case 'b':
+      const address = base32ToAddress(routeParam.arg);
+      return await fetchPersona(address, signal);
+    case 'u':
+      return await fetchPersonaByUsername(routeParam.arg, signal);
+    default:
+      return await fetchPersona(routeParam.arg, signal);
+  }
 }
 
 export async function getMyBasePersona(

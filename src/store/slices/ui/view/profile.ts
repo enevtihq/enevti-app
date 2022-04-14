@@ -32,21 +32,24 @@ const profileViewSlice = createSlice({
   name: 'profileView',
   initialState,
   reducers: {
-    setProfileView: (profile, action: PayloadAction<ProfileView>) => {
+    setProfileView: (
+      profile,
+      action: PayloadAction<{ key: string; value: ProfileView }>,
+    ) => {
       Object.assign(profile, {
-        [action.payload.persona.address]: action.payload,
+        [action.payload.key]: action.payload.value,
       });
     },
     setProfileViewLoaded: (
       profile,
-      action: PayloadAction<{ address: string; value: boolean }>,
+      action: PayloadAction<{ key: string; value: boolean }>,
     ) => {
-      profile[action.payload.address].loaded = action.payload.value;
+      profile[action.payload.key].loaded = action.payload.value;
     },
-    clearProfileByAddress: (profile, action: PayloadAction<string>) => {
+    clearProfileByKey: (profile, action: PayloadAction<string>) => {
       delete profile[action.payload];
     },
-    resetProfileByAddress: (profile, action: PayloadAction<string>) => {
+    resetProfileByKey: (profile, action: PayloadAction<string>) => {
       Object.assign(profile[action.payload], initialStateItem);
     },
     resetProfileView: () => {
@@ -59,25 +62,25 @@ export const {
   setProfileView,
   setProfileViewLoaded,
   resetProfileView,
-  clearProfileByAddress,
-  resetProfileByAddress,
+  clearProfileByKey,
+  resetProfileByKey,
 } = profileViewSlice.actions;
 export default profileViewSlice.reducer;
 
 export const selectProfileView = createSelector(
   [
     (state: RootState) => state.ui.view.profile,
-    (state: RootState, address: string) => address,
+    (state: RootState, key: string) => key,
   ],
-  (profile: ProfileViewStore, address: string) =>
-    profile.hasOwnProperty(address) ? profile[address] : initialStateItem,
+  (profile: ProfileViewStore, key: string) =>
+    profile.hasOwnProperty(key) ? profile[key] : initialStateItem,
 );
 
 export const isProfileUndefined = createSelector(
   [
     (state: RootState) => state.ui.view.profile,
-    (state: RootState, address: string) => address,
+    (state: RootState, key: string) => key,
   ],
-  (profile: ProfileViewStore, address: string) =>
-    profile.hasOwnProperty(address) ? !profile[address].loaded : true,
+  (profile: ProfileViewStore, key: string) =>
+    profile.hasOwnProperty(key) ? !profile[key].loaded : true,
 );

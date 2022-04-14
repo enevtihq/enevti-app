@@ -28,7 +28,6 @@ type Props = StackScreenProps<RootStackParamList, 'NFTDetails'>;
 
 export default function NFTDetails({ navigation, route }: Props) {
   const { t } = useTranslation();
-  const { id } = route.params;
   const dispatch = useDispatch();
   const theme = useTheme();
   const headerTreshold = React.useMemo(
@@ -113,9 +112,9 @@ export default function NFTDetails({ navigation, route }: Props) {
         />
       }>
       <AppNFTDetails
-        id={id}
         onScrollWorklet={nftDetailsOnScroll}
         navigation={navigation}
+        route={route}
       />
     </AppView>
   );

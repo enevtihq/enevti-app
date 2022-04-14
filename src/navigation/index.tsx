@@ -8,7 +8,7 @@ import {
   CardStyleInterpolators,
 } from '@react-navigation/stack';
 import { useSelector } from 'react-redux';
-import { useColorScheme } from 'react-native';
+import { StyleSheet, useColorScheme } from 'react-native';
 
 import CreateAccount from 'enevti-app/screen/auth/CreateAccount';
 import SetupLocalPassword from 'enevti-app/screen/auth/SetupLocalPassword';
@@ -32,6 +32,10 @@ import useScreenDisplayed from 'enevti-app/utils/hook/useScreenDisplayed';
 import { selectLockedState } from 'enevti-app/store/slices/ui/screen/locked';
 import NFTDetails from 'enevti-app/screen/nftDetails/NFTDetails';
 import { EncryptedData } from 'enevti-app/types/utils/cryptography';
+import { linking } from 'enevti-app/utils/linking';
+import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
+import { useTheme } from 'react-native-paper';
+import { Theme } from 'enevti-app/theme/default';
 
 export type RootStackParamList = {
   CreateAccount: undefined;
@@ -48,12 +52,6 @@ export type RootStackParamList = {
   Home: undefined;
   Feed: undefined;
   MyProfile: undefined;
-  Profile: {
-    address: string;
-  };
-  StakePool: {
-    address: string;
-  };
   ChooseNFTType: undefined;
   ChooseNFTTemplate: {
     mode: 'normal' | 'change';
@@ -61,11 +59,21 @@ export type RootStackParamList = {
   CreateOneKindContract: {
     normal?: boolean;
   };
+  Profile: {
+    arg: string;
+    mode?: 'a' | 'b' | 'u';
+  };
+  StakePool: {
+    arg: string;
+    mode?: 'a' | 'b' | 'u';
+  };
   Collection: {
-    id: string;
+    arg: string;
+    mode?: 'id' | 's';
   };
   NFTDetails: {
-    id: string;
+    arg: string;
+    mode?: 'id' | 's';
   };
 };
 
@@ -76,12 +84,20 @@ export default function AppNavigationContainer() {
   const navigationRef = useNavigationContainerRef<RootStackParamList>();
   const locked = useSelector(selectLockedState);
 
+  const theme = useTheme() as Theme;
+  const styles = React.useMemo(() => makeStyles(theme), [theme]);
+  const LinkingFallback = React.useMemo(
+    () => <AppActivityIndicator style={styles.fallbackLoading} />,
+    [styles.fallbackLoading],
+  );
+
   const auth = useSelector(selectAuthState);
   const initialRoute = auth.encrypted
     ? 'Login'
     : auth.token
     ? 'Home'
     : 'CreateAccount';
+  const navLinking = React.useMemo(() => linking(initialRoute), [initialRoute]);
 
   useLockScreen();
   useScreenDisplayed();
@@ -99,6 +115,8 @@ export default function AppNavigationContainer() {
   return (
     <NavigationContainer
       ref={navigationRef}
+      linking={navLinking}
+      fallback={LinkingFallback}
       theme={getTheme(colorScheme!.toString())}>
       <Stack.Navigator initialRouteName={initialRoute}>
         <Stack.Screen
@@ -225,3 +243,13 @@ export default function AppNavigationContainer() {
     </NavigationContainer>
   );
 }
+
+const makeStyles = (theme: Theme) =>
+  StyleSheet.create({
+    fallbackLoading: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: theme.colors.background,
+      flex: 1,
+    },
+  });

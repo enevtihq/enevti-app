@@ -10,6 +10,7 @@ import {
   isMyProfileUndefined,
   selectMyProfileView,
 } from 'enevti-app/store/slices/ui/view/myProfile';
+import { RouteProp } from '@react-navigation/native';
 
 type Props = StackScreenProps<RootStackParamList, 'MyProfile'>;
 
@@ -33,14 +34,18 @@ export default function MyProfile({
   const myPersona = useSelector(selectMyPersonaCache);
   const profile = useSelector(selectMyProfileView);
   const profileUndefined = useSelector(isMyProfileUndefined);
+  const myRoute = React.useMemo(
+    () => ({ params: { arg: myPersona.address, mode: 'a' } }),
+    [myPersona.address],
+  ) as RouteProp<RootStackParamList, 'Profile'>;
 
   return (
     <AppView darken withLoader edges={['left', 'right', 'bottom', 'top']}>
       <View style={styles.textContainer}>
         <AppProfile
           navigation={navigation}
+          route={myRoute}
           headerHeight={headerHeight}
-          address={myPersona.address}
           profile={profile}
           profileUndefined={profileUndefined}
           onScrollWorklet={onScrollWorklet}

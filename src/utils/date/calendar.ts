@@ -145,13 +145,15 @@ export const addRedeemCalendarEvent = async (nft: NFT) => {
       : nft.redeem.schedule.recurring;
 
   const redeemEvent: CalendarEventWritable = {
-    description: i18n.t('nftDetails:calendarDescription'),
+    url: getAppLink('nft-serial', `${nft.symbol}#${nft.serial}`),
+    description: `${getAppLink(
+      'nft-serial',
+      `${nft.symbol}#${nft.serial}`,
+    )}\n\n${i18n.t('nftDetails:calendarDescription')}`,
     notes: i18n.t('nftDetails:calendarDescription'),
     alarms: [{ date: 60 }],
     startDate: new Date(startTime).toISOString(),
     endDate: new Date(startTime + nft.redeem.schedule.until).toISOString(),
-    location: getAppLink('nft-serial', `${nft.symbol}#${nft.serial}`),
-    url: getAppLink('nft-serial', `${nft.symbol}#${nft.serial}`),
     recurrence: recurrence,
   };
 
@@ -161,10 +163,5 @@ export const addRedeemCalendarEvent = async (nft: NFT) => {
     nextTime ? ', ' + i18n.t('date:startingNext', { next: nextTime }) : ''
   }!`;
 
-  store.dispatch(
-    showSnackbar({
-      mode: 'info',
-      text: snackLabel,
-    }),
-  );
+  store.dispatch(showSnackbar({ mode: 'info', text: snackLabel }));
 };

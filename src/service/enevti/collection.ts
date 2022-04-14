@@ -1,127 +1,55 @@
-import { COIN_NAME } from 'enevti-app/components/atoms/brand/AppBrandConstant';
+import { StackScreenProps } from '@react-navigation/stack';
 import { Collection } from 'enevti-app/types/service/enevti/collection';
-import { getDummyNFTData, sleep } from './dummy';
+import { RootStackParamList } from 'enevti-app/navigation';
+import sleep from 'enevti-app/utils/dummy/sleep';
+import { getDummyCollectionFullData } from './dummy';
 
-async function fetchCollection(
+type CollectionRoute = StackScreenProps<
+  RootStackParamList,
+  'Collection'
+>['route']['params'];
+
+async function fetchCollectionById(
   id: string,
   signal?: AbortController['signal'],
 ): Promise<Collection | undefined> {
   await sleep(1000, signal);
-  console.log('collection id:', id);
-  const mintedNFT = [];
 
-  for (let i = 0; i < 2; i++) {
-    mintedNFT.push(getDummyNFTData());
-  }
+  const ret = getDummyCollectionFullData();
+  ret.id = id;
 
-  return {
-    id: id,
-    collectionType: 'onekind',
-    name: 'Eye Collection',
-    description:
-      'A lot of eye collection with mind blowing utility that goes beyond arts and collectible, we try to create something remarkable with eyes and your vision. Eyes symbolyze how we see something new on the world, so this collection also emphasize new vision for humanity and NFT world as a whole',
-    cover: {
-      cid: 'Qmb3jKA6Vn1azR6aSMnT6geGMkg818uBkfSHNg8ui1a9dy',
-      mime: 'image/jpeg',
-      extension: 'jpg',
-      size: 0,
-    },
-    createdOn: 1648256392852,
-    symbol: 'EYECL',
-    like: 123,
-    comment: 12,
-    social: {
-      twitter: {
-        link: 'https://twitter.com/aldhosutra',
-        stat: 1120,
-      },
-    },
-    packSize: 1,
-    stat: {
-      minted: 7,
-      owner: 1,
-      redeemed: 1,
-      floor: {
-        amount: '512432134000',
-        currency: COIN_NAME,
-      },
-      volume: {
-        amount: '512134000',
-        currency: COIN_NAME,
-      },
-    },
-    minting: {
-      total: 12,
-      available: 4,
-      expire: 1648986392852,
-      price: {
-        amount: '512134000',
-        currency: COIN_NAME,
-      },
-    },
-    minted: mintedNFT,
-    creator: {
-      photo: '',
-      base32: 'lsk7opy8ksve7npbr32dtqxwpvg5u6aa3vtje5qtd',
-      address: '730917d362b38e434918d4ea1b905f5c159ca053',
-      username: '',
-    },
-    activity: [
-      {
-        transaction: 'fgagergdfsdf',
-        name: 'mint',
-        nft: getDummyNFTData(),
-        date: 1648256592852,
-        to: {
-          photo: '',
-          base32: 'lsk7opy8ksve7npbr32dtqxwpvg5u6aa3vtje5qtd',
-          address: '730917d362b38e434918d4ea1b905f5c159ca053',
-          username: '',
-        },
-        value: {
-          amount: '512134000',
-          currency: COIN_NAME,
-        },
-      },
-      {
-        transaction: 'fgagergdfsdf',
-        name: 'mint',
-        nft: getDummyNFTData(),
-        date: 1648256592852,
-        to: {
-          photo: '',
-          base32: 'lsk7opy8ksve7npbr32dtqxwpvg5u6aa3vtje5qtd',
-          address: '730917d362b38e434918d4ea1b905f5c159ca053',
-          username: '',
-        },
-        value: {
-          amount: '512134000',
-          currency: COIN_NAME,
-        },
-      },
-      {
-        transaction: 'fgagergdfsdf',
-        name: 'mint',
-        nft: getDummyNFTData(),
-        date: 1648256592852,
-        to: {
-          photo: '',
-          base32: 'lsk7opy8ksve7npbr32dtqxwpvg5u6aa3vtje5qtd',
-          address: '730917d362b38e434918d4ea1b905f5c159ca053',
-          username: '',
-        },
-        value: {
-          amount: '512134000',
-          currency: COIN_NAME,
-        },
-      },
-    ],
-  };
+  return ret;
 }
 
-export async function getCollection(
+async function fetchCollectionBySymbol(
+  symbol: string,
+  signal?: AbortController['signal'],
+): Promise<Collection | undefined> {
+  await sleep(1000, signal);
+
+  const ret = getDummyCollectionFullData();
+  ret.symbol = symbol;
+
+  return ret;
+}
+
+export async function getCollectionById(
   id: string,
   signal?: AbortController['signal'],
 ): Promise<Collection | undefined> {
-  return await fetchCollection(id, signal);
+  return await fetchCollectionById(id, signal);
+}
+
+export async function getCollectionByRouteParam(
+  routeParam: CollectionRoute,
+  signal?: AbortController['signal'],
+) {
+  switch (routeParam.mode) {
+    case 's':
+      return await fetchCollectionBySymbol(routeParam.arg, signal);
+    case 'id':
+      return await fetchCollectionById(routeParam.arg, signal);
+    default:
+      return await fetchCollectionById(routeParam.arg, signal);
+  }
 }

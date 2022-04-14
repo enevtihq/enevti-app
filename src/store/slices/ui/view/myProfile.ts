@@ -43,8 +43,8 @@ export const { setMyProfileView, setMyProfileViewLoaded, resetMyProfileView } =
 export default myProfileViewSlice.reducer;
 
 export const selectMyProfileView = createSelector(
-  (state: RootState) => state,
   (state: RootState) => state.ui.view.myProfile,
+  (profile: MyProfileViewState) => profile,
 );
 
 export const isMyProfileUndefined = createSelector(

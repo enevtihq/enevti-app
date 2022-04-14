@@ -27,7 +27,6 @@ type Props = StackScreenProps<RootStackParamList, 'Collection'>;
 
 export default function Collection({ navigation, route }: Props) {
   const { t } = useTranslation();
-  const { id } = route.params;
   const dispatch = useDispatch();
   const theme = useTheme();
   const headerTreshold = React.useMemo(
@@ -130,9 +129,9 @@ export default function Collection({ navigation, route }: Props) {
         />
       }>
       <AppCollection
-        id={id}
         onScrollWorklet={collectionOnScroll}
         navigation={navigation}
+        route={route}
       />
     </AppView>
   );

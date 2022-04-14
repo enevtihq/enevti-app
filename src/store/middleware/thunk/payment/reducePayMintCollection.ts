@@ -2,7 +2,7 @@
 import { MintCollectionTransaction } from 'enevti-app/types/service/enevti/transaction';
 import { setPaymentStatus } from 'enevti-app/store/slices/payment';
 import { AppThunk } from 'enevti-app/store/state';
-import { sleep } from 'enevti-app/service/enevti/dummy';
+import sleep from 'enevti-app/utils/dummy/sleep';
 import {
   hideModalLoader,
   showModalLoader,

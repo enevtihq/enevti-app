@@ -53,19 +53,22 @@ const collectionViewSlice = createSlice({
   name: 'collectionView',
   initialState,
   reducers: {
-    setCollectionView: (collection, action: PayloadAction<Collection>) => {
-      Object.assign(collection, { [action.payload.id]: action.payload });
+    setCollectionView: (
+      collection,
+      action: PayloadAction<{ key: string; value: Collection }>,
+    ) => {
+      Object.assign(collection, { [action.payload.key]: action.payload.value });
     },
     setCollectionViewLoaded: (
       collection,
-      action: PayloadAction<{ id: string; value: boolean }>,
+      action: PayloadAction<{ key: string; value: boolean }>,
     ) => {
-      collection[action.payload.id].loaded = action.payload.value;
+      collection[action.payload.key].loaded = action.payload.value;
     },
-    clearCollectionById: (collection, action: PayloadAction<string>) => {
+    clearCollectionByKey: (collection, action: PayloadAction<string>) => {
       delete collection[action.payload];
     },
-    resetCollectionById: (collection, action: PayloadAction<string>) => {
+    resetCollectionByKey: (collection, action: PayloadAction<string>) => {
       Object.assign(collection[action.payload], initialStateItem);
     },
     resetCollectionView: () => {
@@ -77,8 +80,8 @@ const collectionViewSlice = createSlice({
 export const {
   setCollectionView,
   setCollectionViewLoaded,
-  clearCollectionById,
-  resetCollectionById,
+  clearCollectionByKey,
+  resetCollectionByKey,
   resetCollectionView,
 } = collectionViewSlice.actions;
 export default collectionViewSlice.reducer;
@@ -86,17 +89,17 @@ export default collectionViewSlice.reducer;
 export const selectCollectionView = createSelector(
   [
     (state: RootState) => state.ui.view.collection,
-    (state: RootState, id: string) => id,
+    (state: RootState, key: string) => key,
   ],
-  (collections: CollectionViewStore, id: string) =>
-    collections.hasOwnProperty(id) ? collections[id] : initialStateItem,
+  (collections: CollectionViewStore, key: string) =>
+    collections.hasOwnProperty(key) ? collections[key] : initialStateItem,
 );
 
 export const isCollectionUndefined = createSelector(
   [
     (state: RootState) => state.ui.view.collection,
-    (state: RootState, id: string) => id,
+    (state: RootState, key: string) => key,
   ],
-  (collections: CollectionViewStore, id: string) =>
-    collections.hasOwnProperty(id) ? !collections[id].loaded : true,
+  (collections: CollectionViewStore, key: string) =>
+    collections.hasOwnProperty(key) ? !collections[key].loaded : true,
 );
