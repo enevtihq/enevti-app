@@ -1,3 +1,5 @@
+import i18n from 'enevti-app/translations/i18n';
+
 export function fileSizeKMG(num: number, decimal?: number): string {
   if (num < 1000) {
     return decimal
@@ -16,6 +18,6 @@ export function fileSizeKMG(num: number, decimal?: number): string {
       ? (num / 1000000000).toFixed(decimal).toString() + ' GB'
       : (num / 1000000000).toString() + ' GB';
   } else {
-    return 'unknown';
+    return i18n.t('error:unknown');
   }
 }

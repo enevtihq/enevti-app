@@ -246,7 +246,7 @@ export const getDummyNFTFullData = (): NFT => {
       size: -1,
     },
     NFTType: 'onekind',
-    utility: 'content',
+    utility: 'videocall',
     rarity: {
       stat: {
         rank: 12,
@@ -294,12 +294,12 @@ export const getDummyNFTFullData = (): NFT => {
         version: 1,
       },
       schedule: {
-        recurring: 'yearly',
+        recurring: 'once',
         time: {
           day: -1,
-          date: 15,
+          date: 16,
           month: 3,
-          year: -1,
+          year: 2022,
         },
         from: {
           hour: 2,

@@ -70,7 +70,7 @@ export default function AppCollectionMintButton({
                   ? t('collection:mintOneKind')
                   : collection.collectionType === 'packed'
                   ? t('collection:mintPacked')
-                  : 'Unknown'}
+                  : t('error:unknown')}
               </AppTextHeading3>
               <AppTextBody4 style={styles.whiteText} numberOfLines={1}>
                 {collection.collectionType === 'onekind'
@@ -79,7 +79,7 @@ export default function AppCollectionMintButton({
                   ? t('collection:mintPackedDescription', {
                       packSize: collection.packSize,
                     })
-                  : 'Unknown'}
+                  : t('error:unknown')}
               </AppTextBody4>
             </View>
             <View style={styles.actionButtonRight}>

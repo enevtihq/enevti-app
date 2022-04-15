@@ -1,4 +1,5 @@
 import BigNumber from 'bignumber.js';
+import i18n from 'enevti-app/translations/i18n';
 
 export function basicTokenUnit(amount: string): string {
   return new BigNumber(amount).div(100000000).toString();
@@ -38,7 +39,7 @@ export function bigNumberKMB(num: BigNumber, decimal?: number): string {
       ? num.div(1000000000).decimalPlaces(decimal).toString() + 'B'
       : num.div(1000000000).toString() + 'B';
   } else {
-    return 'unknown';
+    return i18n.t('error:unknown');
   }
 }
 
@@ -58,6 +59,6 @@ export function numberKMB(num: number, decimal?: number): string {
       ? (num / 1000000000).toFixed(decimal).toString() + 'B'
       : (num / 1000000000).toString() + 'B';
   } else {
-    return 'unknown';
+    return i18n.t('error:unknown');
   }
 }

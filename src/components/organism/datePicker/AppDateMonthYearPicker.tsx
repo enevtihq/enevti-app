@@ -3,6 +3,7 @@ import { shallowEqual } from 'react-redux';
 import { monthToString } from 'enevti-app/utils/date/dateToString';
 import getDaysInMonthUTC from 'enevti-app/utils/date/getDaysInMonth';
 import AppFormWheelPicker from 'enevti-app/components/molecules/wheelpicker/AppFormWheelPicker';
+import { ordinalWithSuffix } from 'enevti-app/utils/format/number';
 
 interface AppDateMonthYearPickerProps {
   label: string;
@@ -39,15 +40,9 @@ function Component({
   const valueToString = React.useMemo(
     () =>
       value && value[0] !== -1 && value[1] !== -1 && value[2] !== -1
-        ? `${monthToString(value[1])} ${value[2].toString()}${
-            value[2] === 1
-              ? 'st'
-              : value[2] === 2
-              ? 'nd'
-              : value[2] === 3
-              ? 'rd'
-              : 'th'
-          }, ${value[0]}`
+        ? `${monthToString(value[1])} ${ordinalWithSuffix(value[2])}, ${
+            value[0]
+          }`
         : undefined,
     [value],
   );

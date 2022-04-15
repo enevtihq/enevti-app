@@ -5,7 +5,7 @@ export default function utilityToLabel(utility: string) {
 
   switch (utility) {
     case 'videocall':
-      text = i18n.t('create:utilityVideoCall');
+      text = i18n.t('createNFT:utilityVideoCall');
       break;
     case 'chat':
       text = i18n.t('createNFT:utilityChat');
@@ -23,6 +23,7 @@ export default function utilityToLabel(utility: string) {
       text = i18n.t('createNFT:utilityStream');
       break;
     default:
+      text = i18n.t('error:unknown');
       break;
   }
 

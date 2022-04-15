@@ -16,6 +16,9 @@ import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import { useDispatch } from 'react-redux';
 import { reduceRedeem } from 'enevti-app/store/middleware/thunk/redeem';
 import { addRedeemCalendarEvent } from 'enevti-app/utils/date/calendar';
+import { useTranslation } from 'react-i18next';
+import utilityToLabel from 'enevti-app/utils/format/utilityToLabel';
+import nftToRedeemScheduleLabel from 'enevti-app/utils/date/nftToRedeemScheduleLabel';
 
 interface AppNFTDetailsRedeemBarProps {
   nft: NFT;
@@ -24,6 +27,7 @@ interface AppNFTDetailsRedeemBarProps {
 export default function AppNFTDetailsRedeemBar({
   nft,
 }: AppNFTDetailsRedeemBarProps) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
@@ -36,6 +40,12 @@ export default function AppNFTDetailsRedeemBar({
     dispatch(reduceRedeem(nft));
   }, [dispatch, nft]);
 
+  const onAddEvent = React.useCallback(async () => {
+    await addRedeemCalendarEvent(nft);
+  }, [nft]);
+
+  const RedeemScheduleView = nft.utility !== 'content' ? TouchableRipple : View;
+
   return (
     <View style={styles.redeemContainer}>
       <View style={styles.redeemRow}>
@@ -47,32 +57,27 @@ export default function AppNFTDetailsRedeemBar({
         />
         <View style={styles.redeemBarUtilityContainer}>
           <AppTextBody5 style={styles.redeemBarUtilityText}>
-            Utility
+            {t('createNFT:nftUtility')}
           </AppTextBody5>
-          <AppTextHeading3>Exclusive Content</AppTextHeading3>
+          <AppTextHeading3>{utilityToLabel(nft.utility)}</AppTextHeading3>
         </View>
         <AppPrimaryButton style={styles.redeemBarButton} onPress={onRedeem}>
           <AppTextHeading4 style={styles.redeemBarButtonText}>
-            Redeem
+            {t('nftDetails:redeem')}
           </AppTextHeading4>
         </AppPrimaryButton>
       </View>
       <Divider style={styles.divider} />
-      <View style={styles.calendarContainer}>
-        <TouchableRipple
-          onPress={async () => {
-            await addRedeemCalendarEvent(nft);
-          }}
-          style={styles.calendarPressable}>
-          <AppTextBody4 style={styles.calendarLabelText}>
-            Every Month · September, 12 · 10:00 - 12:00 AM UTC+12 · 5 Redeem
-            Remaining{' '}
+      <RedeemScheduleView onPress={onAddEvent} style={styles.calendarPressable}>
+        <AppTextBody4 style={styles.calendarLabelText}>
+          {`${nftToRedeemScheduleLabel(nft)} `}
+          {nft.utility !== 'content' ? (
             <AppTextBody5 style={styles.calendarActionText}>
-              (Add To Calendar)
+              ({t('nftDetails:addToCalendar')})
             </AppTextBody5>
-          </AppTextBody4>
-        </TouchableRipple>
-      </View>
+          ) : null}
+        </AppTextBody4>
+      </RedeemScheduleView>
     </View>
   );
 }
@@ -113,11 +118,7 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
     divider: {
       marginVertical: wp('2%', insets),
     },
-    calendarContainer: {
-      height: hp('5%', insets),
-    },
     calendarPressable: {
-      height: '100%',
       justifyContent: 'center',
     },
     calendarLabelText: {

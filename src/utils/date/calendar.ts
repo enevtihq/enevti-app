@@ -6,6 +6,7 @@ import { NFT } from 'enevti-app/types/nft';
 import nftToRedeemCalendarTitle from 'enevti-app/utils/date/nftToRedeemCalendarTitle';
 import { store } from 'enevti-app/store/state';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
+import { getRedeemTimeUTC } from 'enevti-app/utils/date/redeemDate';
 
 import { handleError } from '../error/handle';
 import { getAppLink } from '../linking';
@@ -53,28 +54,18 @@ export const addCalendarEvent = async (
 
 export const addRedeemCalendarEvent = async (nft: NFT) => {
   const now = new Date();
-  const year = now.getUTCFullYear();
-  const month = now.getUTCMonth();
-  const date = now.getUTCDate();
+  const baseTime: number = getRedeemTimeUTC(nft);
 
   let startTime: number = 0;
-  let baseTime: number = 0;
   let nextTime: string = '';
   const nftTime = { ...nft.redeem.schedule.time, ...nft.redeem.schedule.from };
 
   switch (nft.redeem.schedule.recurring) {
     case 'daily':
-      baseTime = Date.UTC(year, month, date, nftTime.hour, nftTime.minute);
       if (baseTime > now.getTime()) {
         startTime = baseTime;
       } else {
-        startTime = Date.UTC(
-          year,
-          month,
-          date + 1,
-          nftTime.hour,
-          nftTime.minute,
-        );
+        startTime = getRedeemTimeUTC(nft, { date: 1 });
         nextTime = i18n.t('date:day');
       }
       break;
@@ -85,55 +76,23 @@ export const addRedeemCalendarEvent = async (nft: NFT) => {
       }
       break;
     case 'monthly':
-      baseTime = Date.UTC(
-        year,
-        month,
-        nftTime.date,
-        nftTime.hour,
-        nftTime.minute,
-      );
       if (baseTime > now.getTime()) {
         startTime = baseTime;
       } else {
-        startTime = Date.UTC(
-          year,
-          month + 1,
-          nftTime.date,
-          nftTime.hour,
-          nftTime.minute,
-        );
+        startTime = getRedeemTimeUTC(nft, { month: 1 });
         nextTime = i18n.t('date:month');
       }
       break;
     case 'yearly':
-      baseTime = Date.UTC(
-        year,
-        nftTime.month,
-        nftTime.date,
-        nftTime.hour,
-        nftTime.minute,
-      );
       if (baseTime > now.getTime()) {
         startTime = baseTime;
       } else {
-        startTime = Date.UTC(
-          year + 1,
-          nftTime.month,
-          nftTime.date,
-          nftTime.hour,
-          nftTime.minute,
-        );
+        startTime = getRedeemTimeUTC(nft, { year: 1 });
         nextTime = i18n.t('date:year');
       }
       break;
     case 'once':
-      startTime = Date.UTC(
-        nftTime.year,
-        nftTime.month,
-        nftTime.date,
-        nftTime.hour,
-        nftTime.minute,
-      );
+      startTime = baseTime;
       break;
     default:
       throw new Error(i18n.t('error:unknownRecurring'));

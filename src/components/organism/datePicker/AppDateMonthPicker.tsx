@@ -4,6 +4,7 @@ import { monthToString } from 'enevti-app/utils/date/dateToString';
 import getDaysInMonthUTC from 'enevti-app/utils/date/getDaysInMonth';
 import propsEqualityCheck from 'enevti-app/utils/debug/propsEqualityCheck';
 import AppFormWheelPicker from 'enevti-app/components/molecules/wheelpicker/AppFormWheelPicker';
+import { ordinalWithSuffix } from 'enevti-app/utils/format/number';
 
 interface AppDateMonthPickerProps {
   label: string;
@@ -40,15 +41,7 @@ function Component({
   const valueToString = React.useMemo(
     () =>
       value && value[0] !== -1 && value[1] !== -1
-        ? `${monthToString(value[0])} ${value[1].toString()}${
-            value[1] === 1
-              ? 'st'
-              : value[1] === 2
-              ? 'nd'
-              : value[1] === 3
-              ? 'rd'
-              : 'th'
-          }`
+        ? `${monthToString(value[0])} ${ordinalWithSuffix(value[1])}`
         : undefined,
     [value],
   );

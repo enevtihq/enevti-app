@@ -49,3 +49,9 @@ export function monthToString(month: number) {
     default:
   }
 }
+
+export function dateToHourMinuteString(date: Date) {
+  return `${('0' + date.getHours().toString()).slice(-2)}:${(
+    '0' + date.getMinutes().toString()
+  ).slice(-2)}`;
+}

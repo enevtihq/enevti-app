@@ -1,6 +1,7 @@
 import React from 'react';
 import { shallowEqual } from 'react-redux';
 import AppFormWheelPicker from 'enevti-app/components/molecules/wheelpicker/AppFormWheelPicker';
+import { ordinalWithSuffix } from 'enevti-app/utils/format/number';
 
 interface AppDatePickerProps {
   label: string;
@@ -33,17 +34,7 @@ function Component({
 
   const valueToString = React.useMemo(
     () =>
-      value && value[0] !== -1
-        ? `${value[0].toString()}${
-            value[0] === 1
-              ? 'st'
-              : value[0] === 2
-              ? 'nd'
-              : value[0] === 3
-              ? 'rd'
-              : 'th'
-          }`
-        : undefined,
+      value && value[0] !== -1 ? `${ordinalWithSuffix(value[0])}` : undefined,
     [value],
   );
 

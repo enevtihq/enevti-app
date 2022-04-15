@@ -39,7 +39,7 @@ export const payMintCollection =
             ? i18n.t('collection:mintOneKind')
             : payload.collection.collectionType === 'packed'
             ? i18n.t('collection:mintPacked')
-            : 'Unknown',
+            : i18n.t('error:unknown'),
         description: `${payload.collection.name} (${
           payload.collection.collectionType === 'onekind'
             ? i18n.t('collection:mintOneKindDescription')
@@ -47,7 +47,7 @@ export const payMintCollection =
             ? i18n.t('collection:mintPackedDescription', {
                 packSize: payload.collection.packSize,
               })
-            : 'Unknown'
+            : i18n.t('error:unknown')
         })`,
         amount:
           BigInt(payload.collection.minting.price.amount) *
