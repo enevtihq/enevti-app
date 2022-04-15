@@ -19,6 +19,8 @@ import { addRedeemCalendarEvent } from 'enevti-app/utils/date/calendar';
 import { useTranslation } from 'react-i18next';
 import utilityToLabel from 'enevti-app/utils/format/utilityToLabel';
 import nftToRedeemScheduleLabel from 'enevti-app/utils/date/nftToRedeemScheduleLabel';
+import { getMyAddress } from 'enevti-app/service/enevti/persona';
+import { isRedeemTimeUTC } from 'enevti-app/utils/date/redeemDate';
 
 interface AppNFTDetailsRedeemBarProps {
   nft: NFT;
@@ -36,6 +38,21 @@ export default function AppNFTDetailsRedeemBar({
     [theme, insets],
   );
 
+  const [redeemButtonDisabled, setRedeemButtonDisabled] =
+    React.useState<boolean>(false);
+
+  const onLoaded = React.useCallback(async () => {
+    const addr = await getMyAddress();
+    const isTime = isRedeemTimeUTC(nft);
+    setRedeemButtonDisabled(
+      nft.owner.address !== addr || nft.redeem.status !== 'ready' || !isTime,
+    );
+  }, [nft]);
+
+  React.useEffect(() => {
+    onLoaded();
+  }, [onLoaded]);
+
   const onRedeem = React.useCallback(() => {
     dispatch(reduceRedeem(nft));
   }, [dispatch, nft]);
@@ -44,7 +61,12 @@ export default function AppNFTDetailsRedeemBar({
     await addRedeemCalendarEvent(nft);
   }, [nft]);
 
-  const RedeemScheduleView = nft.utility !== 'content' ? TouchableRipple : View;
+  const RedeemScheduleView =
+    nft.utility !== 'content' &&
+    nft.redeem.status !== 'limit-exceeded' &&
+    nft.redeem.schedule.recurring !== 'instant'
+      ? TouchableRipple
+      : View;
 
   return (
     <View style={styles.redeemContainer}>
@@ -61,7 +83,10 @@ export default function AppNFTDetailsRedeemBar({
           </AppTextBody5>
           <AppTextHeading3>{utilityToLabel(nft.utility)}</AppTextHeading3>
         </View>
-        <AppPrimaryButton style={styles.redeemBarButton} onPress={onRedeem}>
+        <AppPrimaryButton
+          disabled={redeemButtonDisabled}
+          style={styles.redeemBarButton}
+          onPress={onRedeem}>
           <AppTextHeading4 style={styles.redeemBarButtonText}>
             {t('nftDetails:redeem')}
           </AppTextHeading4>

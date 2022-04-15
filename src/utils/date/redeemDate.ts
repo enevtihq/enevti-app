@@ -1,3 +1,4 @@
+import i18n from 'enevti-app/translations/i18n';
 import { NFT } from 'enevti-app/types/nft';
 import { dateOfNearestDay } from './calendar';
 
@@ -16,6 +17,10 @@ export function getRedeemTime(nft: NFT, offset?: RedeemTimeOffset) {
   const month = now.getMonth();
   const date = now.getDate();
   const nftTime = { ...nft.redeem.schedule.time, ...nft.redeem.schedule.from };
+
+  if (nft.redeem.schedule.recurring === 'instant') {
+    throw Error(i18n.t('error:invalidRecurring'));
+  }
 
   switch (nft.redeem.schedule.recurring) {
     case 'daily':
@@ -79,6 +84,10 @@ export function getRedeemTimeUTC(nft: NFT, offset?: RedeemTimeOffset) {
   const date = now.getUTCDate();
   const nftTime = { ...nft.redeem.schedule.time, ...nft.redeem.schedule.from };
 
+  if (nft.redeem.schedule.recurring === 'instant') {
+    throw Error(i18n.t('error:invalidRecurring'));
+  }
+
   switch (nft.redeem.schedule.recurring) {
     case 'daily':
       time = Date.UTC(
@@ -131,4 +140,40 @@ export function getRedeemTimeUTC(nft: NFT, offset?: RedeemTimeOffset) {
   }
 
   return time;
+}
+
+export function getRedeemDate(nft: NFT) {
+  return new Date(getRedeemTime(nft));
+}
+
+export function getRedeemDateUTC(nft: NFT) {
+  return new Date(getRedeemTimeUTC(nft));
+}
+
+export function isRedeemTime(nft: NFT) {
+  if (
+    nft.redeem.schedule.recurring === 'instant' ||
+    nft.utility === 'content'
+  ) {
+    return true;
+  }
+
+  const now = Date.now();
+  const redeemStartTime = getRedeemTime(nft);
+  const redeemEndTime = redeemStartTime + nft.redeem.schedule.until;
+  return redeemStartTime < now && now < redeemEndTime;
+}
+
+export function isRedeemTimeUTC(nft: NFT) {
+  if (
+    nft.redeem.schedule.recurring === 'instant' ||
+    nft.utility === 'content'
+  ) {
+    return true;
+  }
+
+  const now = Date.now();
+  const redeemStartTime = getRedeemTimeUTC(nft);
+  const redeemEndTime = redeemStartTime + nft.redeem.schedule.until;
+  return redeemStartTime < now && now < redeemEndTime;
 }

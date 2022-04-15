@@ -60,6 +60,10 @@ export const addRedeemCalendarEvent = async (nft: NFT) => {
   let nextTime: string = '';
   const nftTime = { ...nft.redeem.schedule.time, ...nft.redeem.schedule.from };
 
+  if (nft.redeem.schedule.recurring === 'instant') {
+    throw Error(i18n.t('error:invalidRecurring'));
+  }
+
   switch (nft.redeem.schedule.recurring) {
     case 'daily':
       if (baseTime > now.getTime()) {

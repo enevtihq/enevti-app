@@ -246,7 +246,7 @@ export const getDummyNFTFullData = (): NFT => {
       size: -1,
     },
     NFTType: 'onekind',
-    utility: 'content',
+    utility: 'videocall',
     rarity: {
       stat: {
         rank: 12,
@@ -255,7 +255,7 @@ export const getDummyNFTFullData = (): NFT => {
       trait: [
         {
           key: 'utility',
-          value: 'content',
+          value: 'videocall',
         },
       ],
     },

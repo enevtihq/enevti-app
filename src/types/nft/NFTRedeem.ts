@@ -9,7 +9,14 @@ export type NFTRedeem = {
   secret: NFTSecret;
   content: NFTContentSecure;
   schedule: {
-    recurring: 'daily' | 'weekly' | 'monthly' | 'yearly' | 'once' | '';
+    recurring:
+      | 'daily'
+      | 'weekly'
+      | 'monthly'
+      | 'yearly'
+      | 'once'
+      | 'instant'
+      | '';
     time: {
       day: number;
       date: number;

@@ -6,4 +6,5 @@ export default {
   unknownRecurring: 'unknown recurring type',
   unsupportedCryptoVersion: 'Unsupported App Cryptography Version',
   unauthorizedCalendar: 'Access calendar not authorized',
+  invalidRecurring: 'invalid recurring type',
 };

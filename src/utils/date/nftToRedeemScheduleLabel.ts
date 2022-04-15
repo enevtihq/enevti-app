@@ -28,6 +28,10 @@ export default function nftToRedeemScheduleLabel(nft: NFT) {
       size: fileSizeKMG(nft.redeem.content.size, 2),
     });
   } else {
+    if (nft.redeem.schedule.recurring === 'instant') {
+      throw Error(i18n.t('error:invalidRecurring'));
+    }
+
     ret +=
       (nft.redeem.schedule.recurring === 'once'
         ? `${i18n.t('nftDetails:redeem')} `
