@@ -89,7 +89,7 @@ export const getDummyCollectionFullData = (): Collection => {
     minting: {
       total: 12,
       available: 4,
-      expire: 1648986392852,
+      expire: 1658986392852,
       price: {
         amount: '512134000',
         currency: COIN_NAME,
@@ -302,7 +302,7 @@ export const getDummyNFTFullData = (): NFT => {
           year: 2022,
         },
         from: {
-          hour: 2,
+          hour: 14,
           minute: 0,
         },
         until: 3600000,

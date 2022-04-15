@@ -21,6 +21,7 @@ import utilityToLabel from 'enevti-app/utils/format/utilityToLabel';
 import nftToRedeemScheduleLabel from 'enevti-app/utils/date/nftToRedeemScheduleLabel';
 import { getMyAddress } from 'enevti-app/service/enevti/persona';
 import { isRedeemTimeUTC } from 'enevti-app/utils/date/redeemDate';
+import AppPoppableIcon from 'enevti-app/components/molecules/menu/AppPoppableIcon';
 
 interface AppNFTDetailsRedeemBarProps {
   nft: NFT;
@@ -38,16 +39,32 @@ export default function AppNFTDetailsRedeemBar({
     [theme, insets],
   );
 
+  const [redeemError, setRedeemError] = React.useState<string>();
   const [redeemButtonDisabled, setRedeemButtonDisabled] =
     React.useState<boolean>(false);
 
   const onLoaded = React.useCallback(async () => {
     const addr = await getMyAddress();
     const isTime = isRedeemTimeUTC(nft);
-    setRedeemButtonDisabled(
-      nft.owner.address !== addr || nft.redeem.status !== 'ready' || !isTime,
-    );
-  }, [nft]);
+
+    let error: string = t('nftDetails:redeemError');
+    let errorCount: number = 1;
+
+    const isExceeded = nft.redeem.status === 'limit-exceeded';
+    const isNotOwner = nft.owner.address !== addr;
+    const isPending = nft.redeem.status === 'pending-secret';
+    const isNotTime = !isTime;
+
+    isExceeded
+      ? (error += `\n${errorCount++}. ${t('error:redeemExceeded')}`)
+      : {};
+    isNotOwner ? (error += `\n${errorCount++}. ${t('error:notTheOwner')}`) : {};
+    isPending ? (error += `\n${errorCount++}. ${t('error:isPending')}`) : {};
+    isNotTime ? (error += `\n${errorCount++}. ${t('error:notTheTime')}`) : {};
+
+    setRedeemButtonDisabled(isExceeded || isNotOwner || isPending || isNotTime);
+    setRedeemError(error);
+  }, [nft, t]);
 
   React.useEffect(() => {
     onLoaded();
@@ -91,6 +108,14 @@ export default function AppNFTDetailsRedeemBar({
             {t('nftDetails:redeem')}
           </AppTextHeading4>
         </AppPrimaryButton>
+        {redeemButtonDisabled && redeemError ? (
+          <AppPoppableIcon
+            position={'left'}
+            content={redeemError}
+            width={75}
+            iconStyle={styles.popableInfoIcon}
+          />
+        ) : null}
       </View>
       <Divider style={styles.divider} />
       <RedeemScheduleView onPress={onAddEvent} style={styles.calendarPressable}>
@@ -153,5 +178,11 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
     calendarActionText: {
       color: theme.colors.primary,
       lineHeight: hp('2.5%', insets),
+    },
+    popableInfoIcon: {
+      height: hp('4%', insets),
+      width: wp('7%', insets),
+      justifyContent: 'center',
+      alignItems: 'center',
     },
   });
