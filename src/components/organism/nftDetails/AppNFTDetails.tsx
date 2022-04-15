@@ -31,6 +31,12 @@ import AppNFTDetailsBody from './AppNFTDetailsBody';
 import NFTSummaryComponent from './tabs/NFTSummaryComponent';
 import { RootState } from 'enevti-app/store/state';
 import { RouteProp } from '@react-navigation/native';
+import { DimensionFunction } from 'enevti-app/utils/imageRatio';
+import { useTheme } from 'react-native-paper';
+
+const noDisplay = 'none';
+const visible = 1;
+const notVisible = 0;
 
 interface AppNFTDetailsProps {
   onScrollWorklet: (val: number) => void;
@@ -44,10 +50,11 @@ export default function AppNFTDetails({
   route,
 }: AppNFTDetailsProps) {
   const dispatch = useDispatch();
-  const { hp } = useDimension();
+  const { hp, wp } = useDimension();
+  const theme = useTheme();
   const insets = useSafeAreaInsets();
   const headerHeight = hp(HEADER_HEIGHT_PERCENTAGE) + insets.top;
-  const styles = React.useMemo(() => makeStyles(), []);
+  const styles = React.useMemo(() => makeStyles(hp, wp), [hp, wp]);
 
   const nftDetails = useSelector((state: RootState) =>
     selectNFTDetailsView(state, route.params.arg),
@@ -247,7 +254,20 @@ export default function AppNFTDetails({
         animatedTabBarStyle={animatedTabBarStyle}
         activityScreen={ActivityScreen}
         summaryScreen={SummaryScreen}
+        style={{
+          opacity: scrollEnabled ? visible : notVisible,
+        }}
       />
+      {scrollEnabled ? null : (
+        <AppActivityIndicator
+          animating={true}
+          style={[
+            styles.mountedIndicator,
+            { display: scrollEnabled ? noDisplay : undefined },
+          ]}
+          color={theme.colors.primary}
+        />
+      )}
     </View>
   ) : (
     <View style={styles.loaderContainer}>
@@ -256,7 +276,7 @@ export default function AppNFTDetails({
   );
 }
 
-const makeStyles = () =>
+const makeStyles = (hp: DimensionFunction, wp: DimensionFunction) =>
   StyleSheet.create({
     nftDetailsContainer: {
       flex: 1,
@@ -270,5 +290,10 @@ const makeStyles = () =>
     nftDetailsHeader: {
       position: 'absolute',
       zIndex: 2,
+    },
+    mountedIndicator: {
+      position: 'absolute',
+      top: hp(NFT_DETAILS_HEADER_VIEW_HEIGHT + 15),
+      left: wp('48%'),
     },
   });

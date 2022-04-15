@@ -40,6 +40,12 @@ import { RootStackParamList } from 'enevti-app/navigation';
 import { AppAsyncThunk } from 'enevti-app/types/store/AppAsyncThunk';
 import { RootState } from 'enevti-app/store/state';
 import { RouteProp } from '@react-navigation/native';
+import { DimensionFunction } from 'enevti-app/utils/imageRatio';
+import { useTheme } from 'react-native-paper';
+
+const noDisplay = 'none';
+const visible = 1;
+const notVisible = 0;
 
 interface AppCollectionProps {
   onScrollWorklet: (val: number) => void;
@@ -54,10 +60,10 @@ export default function AppCollection({
 }: AppCollectionProps) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { hp } = useDimension();
+  const { hp, wp } = useDimension();
+  const theme = useTheme();
   const insets = useSafeAreaInsets();
   const headerHeight = hp(HEADER_HEIGHT_PERCENTAGE) + insets.top;
-  const styles = React.useMemo(() => makeStyles(), []);
 
   const collection = useSelector((state: RootState) =>
     selectCollectionView(state, route.params.arg),
@@ -74,13 +80,19 @@ export default function AppCollection({
         : true,
     [collection.minting.expire, collection.minting.available, now],
   );
-  const totalHeaderHeight = React.useMemo(
+  const headerPercentage = React.useMemo(
     () =>
-      hp(
-        COLLECTION_HEADER_VIEW_HEIGHT +
-          (mintingAvailable ? MINTING_AVAILABLE_VIEW_HEIGHT : 0),
-      ),
-    [mintingAvailable, hp],
+      COLLECTION_HEADER_VIEW_HEIGHT +
+      (mintingAvailable ? MINTING_AVAILABLE_VIEW_HEIGHT : 0),
+    [mintingAvailable],
+  );
+  const totalHeaderHeight = React.useMemo(
+    () => hp(headerPercentage),
+    [hp, headerPercentage],
+  );
+  const styles = React.useMemo(
+    () => makeStyles(hp, wp, headerPercentage),
+    [hp, wp, headerPercentage],
   );
 
   const [mintedItemsMounted, setMintedItemsMounted] =
@@ -307,7 +319,20 @@ export default function AppCollection({
         animatedTabBarStyle={animatedTabBarStyle}
         mintedItemsScreen={MintedItemsScreen}
         activityScreen={ActivityScreen}
+        style={{
+          opacity: scrollEnabled ? visible : notVisible,
+        }}
       />
+      {scrollEnabled ? null : (
+        <AppActivityIndicator
+          animating={true}
+          style={[
+            styles.mountedIndicator,
+            { display: scrollEnabled ? noDisplay : undefined },
+          ]}
+          color={theme.colors.primary}
+        />
+      )}
       <AppCollectionMintButton
         collection={collection}
         mintingAvailable={mintingAvailable}
@@ -320,7 +345,11 @@ export default function AppCollection({
   );
 }
 
-const makeStyles = () =>
+const makeStyles = (
+  hp: DimensionFunction,
+  wp: DimensionFunction,
+  headerPercentage: number,
+) =>
   StyleSheet.create({
     collectionContainer: {
       flex: 1,
@@ -334,5 +363,10 @@ const makeStyles = () =>
     collectionHeader: {
       position: 'absolute',
       zIndex: 2,
+    },
+    mountedIndicator: {
+      position: 'absolute',
+      top: hp(headerPercentage + 15),
+      left: wp('48%'),
     },
   });

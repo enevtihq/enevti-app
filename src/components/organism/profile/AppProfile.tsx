@@ -408,7 +408,7 @@ const makeStyles = (headerHeight: number, insets: SafeAreaInsets) =>
     },
     mountedIndicator: {
       position: 'absolute',
-      top: hp('60%', insets),
+      top: hp(PROFILE_HEADER_HEIGHT_PERCENTAGE + 20, insets),
       left: wp('48%', insets),
     },
     loaderContainer: {
