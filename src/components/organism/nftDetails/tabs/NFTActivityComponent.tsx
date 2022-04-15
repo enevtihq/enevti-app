@@ -8,8 +8,6 @@ import {
 } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import Animated from 'react-native-reanimated';
-// import { useSafeAreaInsets } from 'react-native-safe-area-context';
-// import { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
 import { DimensionFunction, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
 import useDimension from 'enevti-app/utils/hook/useDimension';
 import AppListItem, {
@@ -28,6 +26,7 @@ import { NFT_DETAILS_TOP_TABBAR_HEIGHT_PERCENTAGE } from '../AppNFTDetailsBody';
 import AppActivityIcon from 'enevti-app/components/molecules/activity/AppActivityIcon';
 import { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { parsePersonaLabel } from 'enevti-app/service/enevti/persona';
 
 const COLLECTION_ACTIVITY_ITEM_HEIGHT = 9;
 const AnimatedFlatList = Animated.createAnimatedComponent<any>(FlatList);
@@ -131,7 +130,7 @@ function Component(
           numberOfLines={1}>
           {t('collection:activityName', {
             name: t('collection:to'),
-            address: item.to.username ? item.to.username : item.to.address,
+            address: parsePersonaLabel(item.to),
           })}
         </AppTextBody4>
       </AppListItem>

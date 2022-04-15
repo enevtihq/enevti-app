@@ -51,6 +51,14 @@ async function fetchPersonaByUsername(
   };
 }
 
+export function parsePersonaLabel(persona: Persona) {
+  return persona.username
+    ? persona.username
+    : persona.base32
+    ? persona.base32
+    : '???';
+}
+
 export function addressToBase32(address: string) {
   return Lisk.cryptography.getBase32AddressFromAddress(
     Buffer.from(address, 'hex'),

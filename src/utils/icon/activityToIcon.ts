@@ -4,7 +4,8 @@ import {
 } from 'enevti-app/components/atoms/icon/AppIconComponent';
 
 const iconMappings = {
-  sale: iconMap.accountCircle,
+  mint: iconMap.mint,
+  redeem: iconMap.redeem,
 };
 
 export default function activityToIcon(activity: string) {

@@ -77,6 +77,8 @@ export const emojiMap = {
   shield: UNDEFINED_EMOJI,
   info: UNDEFINED_EMOJI,
   random: UNDEFINED_EMOJI,
+  redeem: UNDEFINED_EMOJI,
+  mint: UNDEFINED_EMOJI,
 };
 
 interface AppEmojiComponentProps {

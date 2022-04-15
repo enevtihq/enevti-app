@@ -79,6 +79,8 @@ export const iconMap = {
   shield: 'shield-check',
   info: 'information-outline',
   random: 'shuffle',
+  redeem: 'gift-open-outline',
+  mint: 'postage-stamp',
 };
 
 interface AppIconComponentProps {

@@ -26,6 +26,7 @@ import { useTranslation } from 'react-i18next';
 import AppTextHeading4 from 'enevti-app/components/atoms/text/AppTextHeading4';
 import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
 import AppTextHeading5 from 'enevti-app/components/atoms/text/AppTextHeading5';
+import { parsePersonaLabel } from 'enevti-app/service/enevti/persona';
 import { MINT_BUTTON_HEIGHT } from 'enevti-app/components/organism/collection/AppCollectionMintButton';
 
 const COLLECTION_ACTIVITY_ITEM_HEIGHT = 9;
@@ -140,7 +141,7 @@ function Component(
           numberOfLines={1}>
           {t('collection:activityName', {
             name: item.name,
-            address: item.to.username ? item.to.username : item.to.address,
+            address: parsePersonaLabel(item.to),
           })}
         </AppTextBody4>
       </AppListItem>
@@ -243,6 +244,8 @@ const makeStyles = (
       width: wp('13%'),
       marginRight: wp('2%'),
       alignSelf: 'center',
+      borderRadius: wp('13%'),
+      overflow: 'hidden',
     },
   });
 

@@ -2,6 +2,7 @@ import { View, StyleProp, TextStyle, Pressable } from 'react-native';
 import React from 'react';
 import { Persona } from 'enevti-app/types/service/enevti/persona';
 import AppTextHeading4 from 'enevti-app/components/atoms/text/AppTextHeading4';
+import { parsePersonaLabel } from 'enevti-app/service/enevti/persona';
 
 interface AppPersonaLabelProps {
   persona: Persona;
@@ -25,11 +26,7 @@ export default function AppPersonaLabel({
   base32Component,
 }: AppPersonaLabelProps) {
   const LabelView = onPress ? Pressable : View;
-  const label = persona.username
-    ? persona.username
-    : persona.base32
-    ? persona.base32
-    : '???';
+  const label = parsePersonaLabel(persona);
   const DefaultComponent = AppTextHeading4;
   const Text = textComponent
     ? textComponent

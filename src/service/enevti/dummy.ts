@@ -311,7 +311,7 @@ export const getDummyNFTFullData = (): NFT => {
     activity: [
       {
         transaction: 'veavaefasdfff',
-        name: 'sale',
+        name: 'mint',
         to: {
           photo: '',
           base32: 'lsk7opy8ksve7npbr32dtqxwpvg5u6aa3vtje5qtd',
@@ -323,7 +323,7 @@ export const getDummyNFTFullData = (): NFT => {
       },
       {
         transaction: 'vewe34avaefaff',
-        name: 'sale',
+        name: 'mint',
         to: {
           photo: '',
           base32: 'lsk7opy8ksve7npbr32dtqxwpvg5u6aa3vtje5qtd',
@@ -335,7 +335,7 @@ export const getDummyNFTFullData = (): NFT => {
       },
       {
         transaction: 'veavaefaff',
-        name: 'sale',
+        name: 'mint',
         to: {
           photo: '',
           base32: 'lsk7opy8ksve7npbr32dtqxwpvg5u6aa3vtje5qtd',
