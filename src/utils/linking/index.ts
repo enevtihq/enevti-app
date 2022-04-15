@@ -1,5 +1,6 @@
 import { LinkingOptions } from '@react-navigation/native';
 import { RootStackParamList } from 'enevti-app/navigation';
+import { Linking } from 'react-native';
 
 type AppLinking = (
   initialRouteName: keyof RootStackParamList,
@@ -40,6 +41,9 @@ export const linking: AppLinking = initialRouteName => {
           path: 'profile/:mode/:arg',
         },
       },
+    },
+    async getInitialURL() {
+      return Linking.getInitialURL();
     },
   };
 };

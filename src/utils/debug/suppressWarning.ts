@@ -8,6 +8,7 @@ __DEV__ &&
     'Require cycle: node_modules/react-native/Libraries/Network/fetch.js',
     'Require cycle: node_modules/@liskhq/lisk-validator/node_modules/semver/classes/comparator.js',
     'Require cycle: src/utils/cryptography/index.ts -> src/service/enevti/persona.ts -> src/utils/cryptography/index.ts',
+    'Require cycle: src/utils/date/calendar.ts -> src/utils/date/redeemDate.ts -> src/utils/date/calendar.ts',
     'RCTBridge required dispatch_sync to load RNGestureHandlerModule. This may lead to deadlocks',
     "EventEmitter.removeListener('change', ...): Method has been deprecated. Please instead use `remove()` on the subscription returned by `EventEmitter.addListener`.",
     "AsyncStorage has been extracted from react-native core and will be removed in a future release. It can now be installed and imported from '@react-native-async-storage/async-storage' instead of 'react-native'. See https://github.com/react-native-async-storage/async-storage",
