@@ -61,19 +61,19 @@ export type RootStackParamList = {
   };
   Profile: {
     arg: string;
-    mode?: 'a' | 'b' | 'u';
+    mode: 'a' | 'b' | 'u';
   };
   StakePool: {
     arg: string;
-    mode?: 'a' | 'b' | 'u';
+    mode: 'a' | 'b' | 'u';
   };
   Collection: {
     arg: string;
-    mode?: 'id' | 's';
+    mode: 'id' | 's';
   };
   NFTDetails: {
     arg: string;
-    mode?: 'id' | 's';
+    mode: 'id' | 's';
   };
 };
 

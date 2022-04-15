@@ -325,6 +325,7 @@ export default function Home({ navigation }: Props) {
                 setUneligibleSheetVisible(false);
                 navigation.navigate('StakePool', {
                   arg: myPersona.address,
+                  mode: 'a',
                 });
               }}>
               <AppTextBody4 style={{ color: theme.colors.primary }}>

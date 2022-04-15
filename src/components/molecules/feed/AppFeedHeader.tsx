@@ -38,13 +38,13 @@ export default function AppFeedHeader({
   const [menuVisible, setMenuVisible] = React.useState<boolean>(false);
 
   const onProfileDetail = React.useCallback(() => {
-    navigation.push('Profile', { arg: feed.owner.address });
+    navigation.push('Profile', { arg: feed.owner.address, mode: 'a' });
   }, [navigation, feed.owner]);
 
   const onPromoteInfo = () => {};
 
   const onStake = React.useCallback(() => {
-    navigation.push('StakePool', { arg: feed.owner.address });
+    navigation.push('StakePool', { arg: feed.owner.address, mode: 'a' });
   }, [navigation, feed.owner]);
 
   const onCloseMenu = () => {
