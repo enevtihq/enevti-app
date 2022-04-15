@@ -111,6 +111,8 @@ function Component({
       {anchor}
       <BottomSheetModal
         ref={bottomSheetRef}
+        keyboardBehavior={'interactive'}
+        keyboardBlurBehavior={'restore'}
         onChange={onChange}
         snapPoints={parseSnapPoints(snapPoints ?? defaultSnapPoints)}
         enablePanDownToClose={enablePanDownToClose}

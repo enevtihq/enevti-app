@@ -15,7 +15,7 @@ import AppSecondaryButton from 'enevti-app/components/atoms/button/AppSecondaryB
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import { RootStackParamList } from 'enevti-app/navigation';
 import AppView from 'enevti-app/components/atoms/view/AppView';
-import AppGoogleSignInButton from 'enevti-app/components/organism/AppGoogleSignInButton';
+import AppGoogleSignInButton from 'enevti-app/components/organism/google/AppGoogleSignInButton';
 import { CommonActions } from '@react-navigation/native';
 
 type Props = StackScreenProps<RootStackParamList, 'CreateAccount'>;
@@ -30,7 +30,7 @@ export default function CreateAccount({ navigation }: Props) {
   const { t } = useTranslation();
 
   return (
-    <AppView>
+    <AppView withModal>
       <AppHeaderWizard
         component={
           <AppBrandBanner widthPercentage={0.5} style={styles.headerImage} />

@@ -14,6 +14,7 @@ import AppContainer from './AppContainer';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import AppPaymentModal from 'enevti-app/components/organism/payment/AppPaymentModal';
 import AppModalLoader from 'enevti-app/components/atoms/loading/AppModalLoader';
+import { ModalContext } from 'enevti-app/context';
 
 interface AppViewProps {
   children: React.ReactNode;
@@ -48,10 +49,21 @@ export default function AppView({
   const snackbarState = useSelector(selectSnackBarState);
 
   return (
-    <AppKeyboardDismissOnClickView activate={dismissKeyboard}>
-      <View style={[styles.view, style]}>
-        {withModal ? (
-          <BottomSheetModalProvider>
+    <ModalContext.Provider value={withModal}>
+      <AppKeyboardDismissOnClickView activate={dismissKeyboard}>
+        <View style={[styles.view, style]}>
+          {withModal ? (
+            <BottomSheetModalProvider>
+              <AppContainer
+                header={header}
+                headerOffset={headerOffset}
+                darken={darken}
+                edges={edges}>
+                {children}
+              </AppContainer>
+              {withPayment ? <AppPaymentModal /> : null}
+            </BottomSheetModalProvider>
+          ) : (
             <AppContainer
               header={header}
               headerOffset={headerOffset}
@@ -59,30 +71,21 @@ export default function AppView({
               edges={edges}>
               {children}
             </AppContainer>
-            {withPayment ? <AppPaymentModal /> : null}
-          </BottomSheetModalProvider>
-        ) : (
-          <AppContainer
-            header={header}
-            headerOffset={headerOffset}
-            darken={darken}
-            edges={edges}>
-            {children}
-          </AppContainer>
-        )}
-        {withLoader || withPayment ? <AppModalLoader /> : null}
-        {withSnackbar ? (
-          <AppSnackbar
-            mode={snackbarState.mode}
-            visible={snackbarState.show}
-            style={styles.snackbar}
-            onDismiss={() => dispatch(hideSnackbar())}
-            duration={1500}>
-            {snackbarState.text}
-          </AppSnackbar>
-        ) : null}
-      </View>
-    </AppKeyboardDismissOnClickView>
+          )}
+          {withLoader || withPayment ? <AppModalLoader /> : null}
+          {withSnackbar ? (
+            <AppSnackbar
+              mode={snackbarState.mode}
+              visible={snackbarState.show}
+              style={styles.snackbar}
+              onDismiss={() => dispatch(hideSnackbar())}
+              duration={1500}>
+              {snackbarState.text}
+            </AppSnackbar>
+          ) : null}
+        </View>
+      </AppKeyboardDismissOnClickView>
+    </ModalContext.Provider>
   );
 }
 

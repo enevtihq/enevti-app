@@ -5,6 +5,8 @@ import { useTheme } from 'react-native-paper';
 import Color from 'color';
 import { StyleSheet, View } from 'react-native';
 import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
+import { useBottomSheetInternal } from '@gorhom/bottom-sheet';
+import { ModalContext } from 'enevti-app/context';
 
 function AppFormTextInput(
   props: TextInputProps & {
@@ -14,6 +16,8 @@ function AppFormTextInput(
   },
   ref: any,
 ) {
+  const { shouldHandleKeyboardEvents } = useBottomSheetInternal();
+  const withModal = React.useContext(ModalContext);
   const theme = useTheme();
   const styles = React.useMemo(() => makeStyles(theme), [theme]);
   const height = props.numberOfLines ? props.numberOfLines * 25 : undefined;
@@ -30,18 +34,20 @@ function AppFormTextInput(
 
   const onFocus = React.useCallback(
     e => {
+      withModal ? (shouldHandleKeyboardEvents.value = true) : {};
       setMaxLengthShow(true);
       props.onFocus && props.onFocus(e);
     },
-    [props],
+    [props, shouldHandleKeyboardEvents, withModal],
   );
 
   const onBlur = React.useCallback(
     e => {
+      withModal ? (shouldHandleKeyboardEvents.value = false) : {};
       setMaxLengthShow(false);
       props.onBlur && props.onBlur(e);
     },
-    [props],
+    [props, shouldHandleKeyboardEvents, withModal],
   );
 
   const onChangeText = React.useCallback(
