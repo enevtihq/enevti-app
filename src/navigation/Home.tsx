@@ -47,7 +47,6 @@ import {
 import AppMenuContainer from 'enevti-app/components/atoms/menu/AppMenuContainer';
 import AppHeaderWizard from 'enevti-app/components/molecules/AppHeaderWizard';
 
-import NotEligibleIMG from 'enevti-app/assets/svg/undraw_stand_out_-1-oag.svg';
 import { getCoinName } from 'enevti-app/components/atoms/brand/AppBrandConstant';
 import AppSecondaryButton from 'enevti-app/components/atoms/button/AppSecondaryButton';
 import AppQuaternaryButton from 'enevti-app/components/atoms/button/AppQuaternaryButton';
@@ -295,17 +294,12 @@ export default function Home({ navigation }: Props) {
       {canCreateNFT ? null : (
         <AppMenuContainer
           visible={uneligibleSheetVisible}
-          snapPoints={['70%']}
+          snapPoints={['55%']}
           onDismiss={() => setUneligibleSheetVisible(false)}>
           <AppHeaderWizard
-            component={
-              <View style={styles.notEligibleImage}>
-                <NotEligibleIMG
-                  width={wp('80%', insets)}
-                  height={hp('20%', insets)}
-                />
-              </View>
-            }
+            noHeaderSpace
+            mode={'icon'}
+            modeData={'notEligibleCreator'}
             style={styles.notEligibleContainer}
             title={t('home:notEligible')}
             description={t('home:notEligibleDescription', {
@@ -566,8 +560,9 @@ const makeStyles = (insets: SafeAreaInsets) =>
     },
     notEligibleContainer: {
       width: wp('90%', insets),
+      marginTop: hp('3%', insets),
       alignSelf: 'center',
-      flex: 0,
+      flex: 1,
     },
     notEligibleGoToStakeButton: {
       width: '100%',

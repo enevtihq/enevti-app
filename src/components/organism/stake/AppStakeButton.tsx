@@ -6,7 +6,6 @@ import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import AppHeaderWizard from 'enevti-app/components/molecules/AppHeaderWizard';
-import AppFormSecureTextInput from 'enevti-app/components/organism/AppFormSecureTextInput';
 import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
 import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -14,17 +13,27 @@ import { useSelector } from 'react-redux';
 import { selectMyPersonaCache } from 'enevti-app/store/slices/entities/cache/myPersona';
 import { Persona } from 'enevti-app/types/service/enevti/persona';
 import { useTranslation } from 'react-i18next';
+import AppCoinChipsPicker from 'enevti-app/components/organism/AppCoinChipsPicker';
+import AppFormTextInputWithError from 'enevti-app/components/molecules/AppFormTextInputWithError';
+import { useTheme } from 'react-native-paper';
 
 const validationSchema = Yup.object().shape({
   stake: Yup.number().positive().required(),
 });
 
+const initialValues = {
+  stake: '',
+};
+
+type StakeForm = typeof initialValues;
+
 interface AppStakeButtonProps {
   persona: Persona;
   visible: boolean;
   extended: boolean;
-  onPress: () => void;
-  onModalDismiss: () => void;
+  onPress?: () => void;
+  onModalDismiss?: () => void;
+  onModalSubmit?: (values: StakeForm) => void;
 }
 
 export default function AppStakeButton({
@@ -33,23 +42,32 @@ export default function AppStakeButton({
   extended,
   onPress,
   onModalDismiss,
+  onModalSubmit,
 }: AppStakeButtonProps) {
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
+  const theme = useTheme();
   const styles = React.useMemo(() => makeStyles(insets), [insets]);
   const snapPoints = React.useMemo(() => ['62%'], []);
 
+  const [activePrice, setActivePrice] = React.useState<boolean>(false);
   const myPersona = useSelector(selectMyPersonaCache);
   const selfStake = persona.address === myPersona.address;
 
-  const onStakeSubmit = React.useCallback((values: { stake: string }) => {
-    console.log(values);
-  }, []);
+  const onStakeSubmit = React.useCallback(
+    (values: StakeForm) => {
+      onModalSubmit && onModalSubmit(values);
+    },
+    [onModalSubmit],
+  );
 
   return (
     <AppMenuContainer
       visible={visible}
-      onDismiss={onModalDismiss}
+      onDismiss={() => {
+        setActivePrice(false);
+        onModalDismiss && onModalDismiss();
+      }}
       snapPoints={snapPoints}
       anchor={
         <AppFloatingActionButton
@@ -60,9 +78,7 @@ export default function AppStakeButton({
         />
       }>
       <Formik
-        initialValues={{
-          stake: '',
-        }}
+        initialValues={initialValues}
         onSubmit={async values => {
           Keyboard.dismiss();
           await onStakeSubmit(values);
@@ -82,22 +98,39 @@ export default function AppStakeButton({
             <AppHeaderWizard
               noHeaderSpace
               mode={'icon'}
-              modeData={'passphrase'}
+              modeData={'stake'}
               style={styles.modalHeader}
-              title={t('auth:inputBinderPassword')}
-              description={t('auth:inputBinderPasswordBody')}
+              title={t('stake:addStakeTitle')}
+              description={t('stake:addStakeDescription')}
             />
             <View style={styles.dialogContent}>
-              <AppFormSecureTextInput
-                label={t('auth:yourBinderPassword')}
-                value={values.stake}
-                errorText={errors.stake}
-                showError={touched.stake}
-                touchHandler={() => setFieldTouched('stake')}
+              <AppFormTextInputWithError
+                hideMaxLengthIndicator
+                maxLength={13}
+                rowEndComponent={
+                  <AppCoinChipsPicker
+                    active={activePrice}
+                    error={touched.stake && !!errors.stake}
+                  />
+                }
+                theme={theme}
                 onChangeText={handleChange('stake')}
-                onSubmitEditing={isValid && dirty ? handleSubmit : () => {}}
-                blurOnSubmit={true}
+                value={values.stake}
                 returnKeyType={'done'}
+                autoComplete={'off'}
+                autoCorrect={false}
+                label={t('stake:addStakePlaceholder')}
+                onBlur={() => {
+                  setActivePrice(false);
+                  setFieldTouched('stake');
+                }}
+                errorText={errors.stake}
+                error={touched.stake && !!errors.stake}
+                showError={touched.stake}
+                blurOnSubmit={true}
+                onSubmitEditing={isValid && dirty ? handleSubmit : () => {}}
+                onFocus={() => setActivePrice(true)}
+                keyboardType={'number-pad'}
               />
             </View>
             <View style={styles.dialogAction}>
@@ -105,7 +138,7 @@ export default function AppStakeButton({
                 onPress={handleSubmit}
                 disabled={!(isValid && dirty)}
                 style={styles.dialogButton}>
-                {t('auth:loginButton')}
+                {selfStake ? t('stake:selfStake') : t('stake:addStake')}
               </AppPrimaryButton>
             </View>
           </View>

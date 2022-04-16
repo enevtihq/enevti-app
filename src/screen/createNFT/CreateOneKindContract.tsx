@@ -562,6 +562,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
   const CoinChips = React.useMemo(
     () => (
       <AppCoinChipsPicker
+        dense
         active={activePrice}
         error={
           formikProps.touched.priceAmount && !!formikProps.errors.priceAmount

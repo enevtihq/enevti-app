@@ -13,14 +13,17 @@ import { useTheme } from 'react-native-paper';
 interface AppCoinChipsPickerProps {
   active?: boolean;
   error?: boolean;
+  dense?: boolean;
 }
 
-function Component({ active, error }: AppCoinChipsPickerProps) {
+function Component({ active, error, dense = false }: AppCoinChipsPickerProps) {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
   const styles = React.useMemo(() => makeStyles(insets), [insets]);
+  const denseHeight = active ? '4.9%' : error ? '5.2%' : '4.9%';
+  const normalHeight = active ? '7.25%' : error ? '7.55%' : '7.25%';
 
-  const height = hp(active ? '4.9%' : error ? '5.2%' : '4.9%', insets);
+  const height = hp(dense ? denseHeight : normalHeight, insets);
   const borderWidth = active ? 2 : error ? 1 : 2;
   const borderColor = error
     ? theme.colors.error
