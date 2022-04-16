@@ -39,6 +39,14 @@ export default function AppNFTDetailsRedeemBar({
     [theme, insets],
   );
 
+  const canAddCalendar = React.useMemo(
+    () =>
+      nft.utility !== 'content' &&
+      nft.redeem.status !== 'limit-exceeded' &&
+      nft.redeem.schedule.recurring !== 'instant',
+    [nft],
+  );
+
   const [redeemError, setRedeemError] = React.useState<string>();
   const [redeemButtonDisabled, setRedeemButtonDisabled] =
     React.useState<boolean>(false);
@@ -78,12 +86,7 @@ export default function AppNFTDetailsRedeemBar({
     await addRedeemCalendarEvent(nft);
   }, [nft]);
 
-  const RedeemScheduleView =
-    nft.utility !== 'content' &&
-    nft.redeem.status !== 'limit-exceeded' &&
-    nft.redeem.schedule.recurring !== 'instant'
-      ? TouchableRipple
-      : View;
+  const RedeemScheduleView = canAddCalendar ? TouchableRipple : View;
 
   return (
     <View style={styles.redeemContainer}>
@@ -121,7 +124,7 @@ export default function AppNFTDetailsRedeemBar({
       <RedeemScheduleView onPress={onAddEvent} style={styles.calendarPressable}>
         <AppTextBody4 style={styles.calendarLabelText}>
           {`${nftToRedeemScheduleLabel(nft)} `}
-          {nft.utility !== 'content' ? (
+          {canAddCalendar ? (
             <AppTextBody5 style={styles.calendarActionText}>
               ({t('nftDetails:addToCalendar')})
             </AppTextBody5>

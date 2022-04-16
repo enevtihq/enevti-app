@@ -79,6 +79,8 @@ export const emojiMap = {
   random: UNDEFINED_EMOJI,
   redeem: UNDEFINED_EMOJI,
   mint: UNDEFINED_EMOJI,
+  stake: UNDEFINED_EMOJI,
+  notEligibleCreator: UNDEFINED_EMOJI,
 };
 
 interface AppEmojiComponentProps {

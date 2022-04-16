@@ -1,49 +1,69 @@
 import { StakePoolData } from 'enevti-app/types/service/enevti/stake';
-import sleep from 'enevti-app/utils/dummy/sleep';
+import {
+  getBasePersona,
+  getBasePersonaByUsername,
+  base32ToAddress,
+} from 'enevti-app/service/enevti/persona';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from 'enevti-app/navigation';
+import { getStakePoolStakerData } from './dummy';
 
-export async function getStakePoolCompleteData(
+type StakePoolRoute = StackScreenProps<
+  RootStackParamList,
+  'StakePool'
+>['route']['params'];
+
+async function fetchStakePool(
   address: string,
   signal?: AbortController['signal'],
 ): Promise<StakePoolData | undefined> {
-  console.log(address);
-
-  await sleep(1000, signal);
+  const persona = await getBasePersona(address, signal);
 
   return {
-    staker: [
-      {
-        persona: {
-          photo: '',
-          base32: 'lsk7opy8ksve7npbr32dtqxwpvg5u6aa3vtje5qtd',
-          address: '730917d362b38e434918d4ea1b905f5c159ca053',
-          username: 'aldhosutra',
-        },
-        rank: 1,
-        stake: '250300000000',
-        portion: 0.2134,
-      },
-      {
-        persona: {
-          photo: 'Qmb3jKA6Vn1azR6aSMnT6geGMkg818uBkfSHNg8ui1a9dy',
-          base32: 'lsk9w9qc6vs4d3qyqh322n69pebc2fdvsy4xsg5c9',
-          address: '730917d362b38e434918d4ea1b905f5c159ca053',
-          username: 'bayuwahyuadi',
-        },
-        rank: 2,
-        stake: '20300000000',
-        portion: 0.234,
-      },
-      {
-        persona: {
-          photo: '',
-          base32: 'lsk3kocke8xfya6p83cenoxqzx268kyztmfcag92z',
-          address: '730917d362b38e434918d4ea1b905f5c159ca053',
-          username: '',
-        },
-        rank: 3,
-        stake: '5300000000',
-        portion: 0.14,
-      },
-    ],
+    owner: persona,
+    staker: getStakePoolStakerData(),
   };
+}
+
+async function fetchStakePoolByUsername(
+  username: string,
+  signal?: AbortController['signal'],
+): Promise<StakePoolData | undefined> {
+  const persona = await getBasePersonaByUsername(username, signal);
+
+  return {
+    owner: persona,
+    staker: getStakePoolStakerData(),
+  };
+}
+
+export async function getStakePoolData(
+  address: string,
+  signal?: AbortController['signal'],
+): Promise<StakePoolData | undefined> {
+  return await fetchStakePool(address, signal);
+}
+
+export async function getStakePoolDataByUsername(
+  username: string,
+  signal?: AbortController['signal'],
+): Promise<StakePoolData | undefined> {
+  return await fetchStakePoolByUsername(username, signal);
+}
+
+export async function getStakePoolDataByRouteParam(
+  routeParam: StakePoolRoute,
+  signal?: AbortController['signal'],
+) {
+  switch (routeParam.mode) {
+    case 'a':
+      return await fetchStakePool(routeParam.arg, signal);
+    case 'b':
+      const address = base32ToAddress(routeParam.arg);
+      return await fetchStakePool(address, signal);
+    case 'u':
+      return await fetchStakePoolByUsername(routeParam.arg, signal);
+    default:
+      return await fetchStakePool(routeParam.arg, signal);
+  }
 }

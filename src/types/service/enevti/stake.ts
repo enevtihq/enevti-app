@@ -8,5 +8,6 @@ export type StakerItem = {
 };
 
 export type StakePoolData = {
+  owner: Persona;
   staker: StakerItem[];
 };

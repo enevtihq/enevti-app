@@ -81,6 +81,8 @@ export const iconMap = {
   random: 'shuffle',
   redeem: 'gift-open-outline',
   mint: 'postage-stamp',
+  stake: 'account-cash',
+  notEligibleCreator: 'badge-account-alert',
 };
 
 interface AppIconComponentProps {

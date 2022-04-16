@@ -17,7 +17,7 @@ import {
   setGoogleAPIToken,
 } from 'enevti-app/store/slices/session/google';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
-import AppFormSecureTextInput from '../AppFormSecureTextInput';
+import AppFormSecureTextInput from 'enevti-app/components/organism/AppFormSecureTextInput';
 import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
 import {
   getSecretAppData,
@@ -36,8 +36,8 @@ import {
 import { handleError } from 'enevti-app/utils/error/handle';
 import { initPassphraseWithDevice } from 'enevti-app/store/middleware/thunk/session/initPassphraseWithDevice';
 import { isValidPassphrase } from 'enevti-app/utils/passphrase';
-import AppMenuContainer from '../../atoms/menu/AppMenuContainer';
-import AppHeaderWizard from '../../molecules/AppHeaderWizard';
+import AppMenuContainer from 'enevti-app/components/atoms/menu/AppMenuContainer';
+import AppHeaderWizard from 'enevti-app/components/molecules/AppHeaderWizard';
 
 YupPassword(Yup);
 

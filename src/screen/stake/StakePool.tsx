@@ -3,123 +3,13 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import AppView from 'enevti-app/components/atoms/view/AppView';
 import AppHeader from 'enevti-app/components/atoms/view/AppHeader';
-import AppFloatingActionButton from 'enevti-app/components/atoms/view/AppFloatingActionButton';
-import {
-  StakePoolData,
-  StakerItem,
-} from 'enevti-app/types/service/enevti/stake';
-import { getStakePoolCompleteData } from 'enevti-app/service/enevti/stake';
-import { handleError } from 'enevti-app/utils/error/handle';
-import Animated, {
-  runOnJS,
-  useAnimatedScrollHandler,
-  useSharedValue,
-} from 'react-native-reanimated';
-import {
-  FlatList,
-  FlatListProps,
-  RefreshControl,
-  Text,
-  View,
-} from 'react-native';
-import AppStakerItem, {
-  STAKER_ITEM_HEIGHT_PERCENTAGE,
-} from 'enevti-app/components/organism/stake/AppStakerItem';
-import { LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE } from 'enevti-app/components/molecules/list/AppListItem';
-import { hp } from 'enevti-app/utils/imageRatio';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
-import { selectMyPersonaCache } from 'enevti-app/store/slices/entities/cache/myPersona';
-import AppMenuContainer from 'enevti-app/components/atoms/menu/AppMenuContainer';
-
-const AnimatedFlatList =
-  Animated.createAnimatedComponent<FlatListProps<StakerItem>>(FlatList);
+import AppStakePool from 'enevti-app/components/organism/stake/AppStakePool';
 
 type Props = StackScreenProps<RootStackParamList, 'StakePool'>;
 
 export default function StakePool({ navigation, route }: Props) {
-  const address = route.params.arg;
-  const myPersona = useSelector(selectMyPersonaCache);
-  const selfStake = address === myPersona.address;
-
   const { t } = useTranslation();
-  const insets = useSafeAreaInsets();
-  const extendedTreshold = hp('10%', insets);
-
-  const [menuVisible, setMenuVisible] = React.useState<boolean>(false);
-  const [stakePool, setStakePool] = React.useState<StakePoolData>();
-  const [refreshing, setRefreshing] = React.useState<boolean>(false);
-  const [extended, setExtended] = React.useState(true);
-  const UIExtended = useSharedValue(true);
-
-  const setJSExtended = (value: boolean) => {
-    setExtended(value);
-  };
-
-  const onScroll = useAnimatedScrollHandler({
-    onScroll: event => {
-      if (event.contentOffset.y > extendedTreshold) {
-        if (UIExtended.value) {
-          runOnJS(setJSExtended)(false);
-          UIExtended.value = false;
-        }
-      } else {
-        if (!UIExtended.value) {
-          runOnJS(setJSExtended)(true);
-          UIExtended.value = true;
-        }
-      }
-    },
-  });
-
-  const handleRefresh = async () => {
-    setRefreshing(true);
-    // async onSaleRefreshFunction Here
-    setRefreshing(false);
-  };
-
-  const onLoaded = React.useCallback(async () => {
-    try {
-      const pool = await getStakePoolCompleteData(address);
-      if (pool) {
-        setStakePool(pool);
-      }
-    } catch (err: any) {
-      handleError(err);
-    }
-  }, [address]);
-
-  const onOpenStakeMenu = React.useCallback(async () => {
-    setMenuVisible(!menuVisible);
-  }, [menuVisible]);
-
-  React.useEffect(() => {
-    onLoaded();
-  }, [onLoaded]);
-
-  const renderItem = React.useCallback(
-    ({ item }: any) => <AppStakerItem staker={item} />,
-    [],
-  );
-
-  const keyExtractor = React.useCallback(
-    item => item.rank.toString() + item.persona.address,
-    [],
-  );
-
-  const getItemLayout = React.useCallback(
-    (_, index) => ({
-      length:
-        STAKER_ITEM_HEIGHT_PERCENTAGE + LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE,
-      offset:
-        (STAKER_ITEM_HEIGHT_PERCENTAGE + LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE) *
-        index,
-      index,
-    }),
-    [],
-  );
 
   return (
     <AppView
@@ -129,41 +19,7 @@ export default function StakePool({ navigation, route }: Props) {
       header={
         <AppHeader back navigation={navigation} title={t('stake:stakePool')} />
       }>
-      <AnimatedFlatList
-        onScroll={onScroll}
-        scrollEventThrottle={16}
-        data={stakePool?.staker}
-        renderItem={renderItem}
-        keyExtractor={keyExtractor}
-        removeClippedSubviews={true}
-        initialNumToRender={2}
-        maxToRenderPerBatch={5}
-        updateCellsBatchingPeriod={100}
-        windowSize={5}
-        getItemLayout={getItemLayout}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
-        }
-      />
-      <AppMenuContainer
-        visible={menuVisible}
-        onDismiss={() => setMenuVisible(false)}
-        anchor={
-          <AppFloatingActionButton
-            label={selfStake ? t('stake:selfStake') : t('stake:addStake')}
-            icon={iconMap.add}
-            extended={extended}
-            onPress={onOpenStakeMenu}
-          />
-        }>
-        <View
-          style={{
-            flex: 1,
-            alignItems: 'center',
-          }}>
-          <Text>Awesome 🎉</Text>
-        </View>
-      </AppMenuContainer>
+      <AppStakePool route={route} />
     </AppView>
   );
 }

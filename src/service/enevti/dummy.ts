@@ -7,6 +7,7 @@ import enevtiNFTTemplate from 'enevti-app/components/atoms/nft/template/enevtiNF
 import { NFT, NFTBase } from 'enevti-app/types/nft/index';
 import { NFTUtility } from 'enevti-app/types/nft/NFTUtility';
 import { shuffleArray } from 'enevti-app/utils/primitive/array';
+import { StakePoolData } from 'enevti-app/types/service/enevti/stake';
 
 export const getDummyCollectionBaseDate = (): CollectionBase => {
   return {
@@ -246,7 +247,7 @@ export const getDummyNFTFullData = (): NFT => {
       size: -1,
     },
     NFTType: 'onekind',
-    utility: 'videocall',
+    utility: 'content',
     rarity: {
       stat: {
         rank: 12,
@@ -255,7 +256,7 @@ export const getDummyNFTFullData = (): NFT => {
       trait: [
         {
           key: 'utility',
-          value: 'videocall',
+          value: 'content',
         },
       ],
     },
@@ -294,15 +295,15 @@ export const getDummyNFTFullData = (): NFT => {
         version: 1,
       },
       schedule: {
-        recurring: 'once',
+        recurring: 'monthly',
         time: {
           day: -1,
           date: 16,
-          month: 3,
-          year: 2022,
+          month: -1,
+          year: -1,
         },
         from: {
-          hour: 14,
+          hour: 13,
           minute: 0,
         },
         until: 3600000,
@@ -351,4 +352,42 @@ export const getDummyNFTFullData = (): NFT => {
       staker: 5,
     },
   };
+};
+
+export const getStakePoolStakerData = (): StakePoolData['staker'] => {
+  return [
+    {
+      persona: {
+        photo: '',
+        base32: 'lsk7opy8ksve7npbr32dtqxwpvg5u6aa3vtje5qtd',
+        address: '730917d362b38e434918d4ea1b905f5c159ca053',
+        username: 'aldhosutra',
+      },
+      rank: 1,
+      stake: '250300000000',
+      portion: 0.2134,
+    },
+    {
+      persona: {
+        photo: 'Qmb3jKA6Vn1azR6aSMnT6geGMkg818uBkfSHNg8ui1a9dy',
+        base32: 'lsk9w9qc6vs4d3qyqh322n69pebc2fdvsy4xsg5c9',
+        address: '730917d362b38e434918d4ea1b905f5c159ca053',
+        username: 'bayuwahyuadi',
+      },
+      rank: 2,
+      stake: '20300000000',
+      portion: 0.234,
+    },
+    {
+      persona: {
+        photo: '',
+        base32: 'lsk3kocke8xfya6p83cenoxqzx268kyztmfcag92z',
+        address: '730917d362b38e434918d4ea1b905f5c159ca053',
+        username: '',
+      },
+      rank: 3,
+      stake: '5300000000',
+      portion: 0.14,
+    },
+  ];
 };
