@@ -180,6 +180,7 @@ export default function AppGoogleSignInButton({
       </AppTertiaryButton>
       <AppMenuContainer
         backDisabled
+        dismissKeyboard
         visible={showInputGoogleDialog}
         snapPoints={snapPoints}
         onDismiss={handleDialogDismiss}>

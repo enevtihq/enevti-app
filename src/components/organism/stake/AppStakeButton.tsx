@@ -14,7 +14,7 @@ import { selectMyPersonaCache } from 'enevti-app/store/slices/entities/cache/myP
 import { Persona } from 'enevti-app/types/service/enevti/persona';
 import { useTranslation } from 'react-i18next';
 import AppCoinChipsPicker from 'enevti-app/components/organism/AppCoinChipsPicker';
-import AppFormTextInputWithError from 'enevti-app/components/molecules/AppFormTextInputWithError';
+import AppMenuFormTextInputWithError from 'enevti-app/components/molecules/menu/AppMenuFormTextInputWithError';
 import { useTheme } from 'react-native-paper';
 import i18n from 'enevti-app/translations/i18n';
 import { StakeForm } from 'enevti-app/types/store/StakeForm';
@@ -60,6 +60,7 @@ export default function AppStakeButton({
 
   const onStakeSubmit = React.useCallback(
     (values: StakeForm) => {
+      onModalSubmit && onModalSubmit(values);
       dispatch(
         payAddStake({
           persona,
@@ -69,13 +70,13 @@ export default function AppStakeButton({
           },
         }),
       );
-      onModalSubmit && onModalSubmit(values);
     },
     [onModalSubmit, dispatch, persona],
   );
 
   return (
     <AppMenuContainer
+      dismissKeyboard
       visible={visible}
       onDismiss={() => {
         setActivePrice(false);
@@ -117,7 +118,7 @@ export default function AppStakeButton({
               description={t('stake:addStakeDescription')}
             />
             <View style={styles.dialogContent}>
-              <AppFormTextInputWithError
+              <AppMenuFormTextInputWithError
                 hideMaxLengthIndicator
                 maxLength={13}
                 rowEndComponent={

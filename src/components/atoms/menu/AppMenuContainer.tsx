@@ -7,10 +7,12 @@ import {
   View,
   ViewStyle,
   Platform,
+  StyleSheet,
 } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { shallowEqual } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import AppKeyboardDismissOnClickView from 'enevti-app/components/atoms/view/AppKeyboardDismissOnClickView';
 
 interface AppMenuContainerProps {
   visible: boolean;
@@ -19,6 +21,7 @@ interface AppMenuContainerProps {
   anchor?: React.ReactNode;
   enablePanDownToClose?: boolean;
   transparentBackdrop?: boolean;
+  dismissKeyboard?: boolean;
   snapPoints?: string[];
   tapEverywhereToDismiss?: boolean;
   backDisabled?: boolean;
@@ -37,11 +40,14 @@ function Component({
   tapEverywhereToDismiss = false,
   transparentBackdrop = false,
   backDisabled = false,
+  dismissKeyboard = false,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   memoKey,
 }: AppMenuContainerProps) {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
+  const styles = React.useMemo(() => makeStyles(), []);
+
   const bottomSheetRef = React.useRef<BottomSheetModal>(null);
   const defaultSnapPoints = React.useMemo(() => ['50%'], []);
   const snapInsets = React.useMemo(
@@ -49,6 +55,7 @@ function Component({
     [insets.top],
   );
   const isVisible = React.useRef(false);
+  const MenuContainer = dismissKeyboard ? AppKeyboardDismissOnClickView : View;
 
   const parseSnapPoints = React.useCallback(
     (snaps: string[]) => snaps.map(a => `${parseFloat(a) * snapInsets}%`),
@@ -118,11 +125,18 @@ function Component({
         enablePanDownToClose={enablePanDownToClose}
         backgroundStyle={{ backgroundColor: theme.colors.background }}
         backdropComponent={renderBackdrop}>
-        {children}
+        <MenuContainer style={styles.menuChild}>{children}</MenuContainer>
       </BottomSheetModal>
     </View>
   );
 }
+
+const makeStyles = () =>
+  StyleSheet.create({
+    menuChild: {
+      flex: 1,
+    },
+  });
 
 const AppMenuContainer = React.memo(Component, (prevProps, nextProps) => {
   if (prevProps.memoKey) {
