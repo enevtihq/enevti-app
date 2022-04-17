@@ -61,7 +61,7 @@ export default function SetupLocalPassword({ navigation }: Props) {
       <AppHeaderWizard
         back
         navigation={navigation}
-        mode={'emoji'}
+        mode={'icon'}
         modeData={'password'}
         title={t('auth:localPasswordHeader')}
         description={t('auth:localPasswordBody')}

@@ -84,7 +84,7 @@ export default function SetupGoogleBinderPassword({ navigation }: Props) {
       <AppHeaderWizard
         back
         navigation={navigation}
-        mode={'emoji'}
+        mode={'icon'}
         modeData={'binderPassword'}
         title={t('auth:binderPasswordHeader')}
         description={t('auth:binderPasswordBody')}

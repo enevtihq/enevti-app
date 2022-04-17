@@ -92,7 +92,6 @@ export default function AppNavigationContainer() {
   );
 
   const auth = useSelector(selectAuthState);
-  // const initialRoute = 'CreateAccount';
   const initialRoute = auth.encrypted
     ? 'Login'
     : auth.token

@@ -17,9 +17,6 @@ import AppIconButton from 'enevti-app/components/atoms/icon/AppIconButton';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AppIconGradient from './AppIconGradient';
 import { Theme } from 'enevti-app/theme/default';
-import AppEmojiComponent, {
-  emojiMap,
-} from 'enevti-app/components/atoms/icon/AppEmojiComponent';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { shallowEqual } from 'react-redux';
@@ -27,7 +24,7 @@ import { shallowEqual } from 'react-redux';
 interface AppHeaderWizardProps {
   title?: string;
   description?: string;
-  mode?: 'icon' | 'emoji' | 'component';
+  mode?: 'icon' | 'component';
   modeData?: keyof typeof iconMap;
   component?: React.ReactNode;
   back?: boolean;
@@ -92,8 +89,6 @@ function Component({
           colors={[theme.colors.primary, theme.colors.secondary]}
           style={styles.headerImage}
         />
-      ) : mode === 'emoji' && modeData ? (
-        <AppEmojiComponent name={emojiMap[modeData]} style={styles.emoji} />
       ) : mode === 'component' && component ? (
         component
       ) : null}

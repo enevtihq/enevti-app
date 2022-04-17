@@ -64,7 +64,7 @@ export default function ImportPassphrase({ navigation }: Props) {
       <AppHeaderWizard
         back
         navigation={navigation}
-        mode={'emoji'}
+        mode={'icon'}
         modeData={'importAccount'}
         title={t('auth:importAccountHeader')}
         description={t('auth:importAccountBody')}

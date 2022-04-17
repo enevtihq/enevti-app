@@ -41,7 +41,7 @@ export default function AccountCreated({ navigation }: Props) {
     <AppView>
       <AppHeaderWizard
         navigation={navigation}
-        mode={'emoji'}
+        mode={'icon'}
         modeData={'accountCreated'}
         title={t('auth:accountCreated')}
         description={t('auth:accountCreatedBrief')}
