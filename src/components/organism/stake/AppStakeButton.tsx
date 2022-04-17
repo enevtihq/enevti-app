@@ -21,6 +21,7 @@ import { StakeForm } from 'enevti-app/types/store/StakeForm';
 import { payAddStake } from 'enevti-app/store/middleware/thunk/payment/creator/payAddStake';
 import { COIN_NAME } from 'enevti-app/components/atoms/brand/AppBrandConstant';
 import { completeTokenUnit } from 'enevti-app/utils/format/amount';
+import usePaymentCallback from 'enevti-app/utils/hook/usePaymentCallback';
 
 const validationSchema = Yup.object().shape({
   stake: Yup.string().required(i18n.t('form:required')),
@@ -55,13 +56,15 @@ export default function AppStakeButton({
   const snapPoints = React.useMemo(() => ['62%'], []);
 
   const [activePrice, setActivePrice] = React.useState<boolean>(false);
+  const paymentThunkRef = React.useRef<any>();
+
   const myPersona = useSelector(selectMyPersonaCache);
   const selfStake = persona.address === myPersona.address;
 
   const onStakeSubmit = React.useCallback(
     (values: StakeForm) => {
       onModalSubmit && onModalSubmit(values);
-      dispatch(
+      paymentThunkRef.current = dispatch(
         payAddStake({
           persona,
           stake: {
@@ -73,6 +76,14 @@ export default function AppStakeButton({
     },
     [onModalSubmit, dispatch, persona],
   );
+
+  const paymentIdleCallback = React.useCallback(() => {
+    paymentThunkRef.current?.abort();
+  }, []);
+
+  usePaymentCallback({
+    onIdle: paymentIdleCallback,
+  });
 
   return (
     <AppMenuContainer

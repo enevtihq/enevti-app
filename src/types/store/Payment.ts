@@ -1,4 +1,5 @@
 export type PaymentAction = {
+  loaded: boolean;
   type: 'createNFTOneKind' | 'mintCollection' | 'addStake' | 'cancel' | '';
   icon: string;
   name: string;
@@ -10,6 +11,7 @@ export type PaymentAction = {
 };
 
 export type PaymentFee = {
+  loaded: boolean;
   gas: bigint;
   platform: bigint;
 };

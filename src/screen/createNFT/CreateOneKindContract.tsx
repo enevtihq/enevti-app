@@ -158,6 +158,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
   );
   const itemWidth = React.useMemo(() => wp('90%', insets), [insets]);
   const closeMenuSnapPoints = React.useMemo(() => ['42%'], []);
+  const paymentThunkRef = React.useRef<any>();
 
   const nameInput = React.useRef<TextInput>();
   const descriptionInput = React.useRef<TextInput>();
@@ -271,8 +272,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
 
   const handleFormSubmit = async (values: OneKindContractForm) => {
     const payload = Object.assign({}, oneKindContractStore, { state: values });
-    dispatch(payCreateNFTOneKind(payload));
-    setIsLoading(false);
+    paymentThunkRef.current = dispatch(payCreateNFTOneKind(payload));
   };
 
   const discardFormState = React.useCallback(() => {
@@ -293,6 +293,11 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
     navigation.goBack();
   }, [dispatch, formikProps.values, formikProps.status, navigation]);
 
+  const paymentIdleCallback = React.useCallback(() => {
+    setIsLoading(false);
+    paymentThunkRef.current?.abort();
+  }, []);
+
   const paymentProcessCallback = React.useCallback(() => {
     dispatch(showModalLoader());
   }, [dispatch]);
@@ -309,6 +314,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
   );
 
   usePaymentCallback({
+    onIdle: paymentIdleCallback,
     onProcess: paymentProcessCallback,
     onSuccess: paymentSuccessCallback,
     onError: paymentErrorCallback,

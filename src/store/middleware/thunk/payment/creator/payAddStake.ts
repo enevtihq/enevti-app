@@ -13,6 +13,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { parsePersonaLabel } from 'enevti-app/service/enevti/persona';
 import { Persona } from 'enevti-app/types/service/enevti/persona';
 import { NFTPrice } from 'enevti-app/types/nft/NFTPrice';
+import { handleError } from 'enevti-app/utils/error/handle';
 
 type PayAddStakePayload = { persona: Persona; stake: NFTPrice };
 
@@ -21,27 +22,31 @@ export const payAddStake = createAsyncThunk<
   PayAddStakePayload,
   AsyncThunkAPI
 >('stakePool/payAddStake', async (payload, { dispatch, signal }) => {
-  dispatch(setPaymentStatus({ type: 'initiated', message: '' }));
+  try {
+    dispatch(setPaymentStatus({ type: 'initiated', message: '' }));
+    dispatch(showPayment());
 
-  const transactionPayload: AddStakeTransaction = {
-    address: payload.persona.address,
-    amount: payload.stake,
-  };
-  const gasFee = await calculateGasFee(transactionPayload, signal);
+    const transactionPayload: AddStakeTransaction = {
+      address: payload.persona.address,
+      amount: payload.stake,
+    };
+    const gasFee = await calculateGasFee(transactionPayload, signal);
 
-  dispatch(setPaymentFee({ gas: gasFee, platform: BigInt(0) }));
-  dispatch(
-    setPaymentAction({
-      type: 'addStake',
-      icon: iconMap.stake,
-      name: i18n.t('payment:payAddStakeName'),
-      description: i18n.t('payment:payAddStakeDescription', {
-        account: parsePersonaLabel(payload.persona),
+    dispatch(setPaymentFee({ gas: gasFee, platform: BigInt(0) }));
+    dispatch(
+      setPaymentAction({
+        type: 'addStake',
+        icon: iconMap.stake,
+        name: i18n.t('payment:payAddStakeName'),
+        description: i18n.t('payment:payAddStakeDescription', {
+          account: parsePersonaLabel(payload.persona),
+        }),
+        amount: BigInt(transactionPayload.amount.amount),
+        currency: transactionPayload.amount.currency,
+        payload: JSON.stringify(payload),
       }),
-      amount: BigInt(transactionPayload.amount.amount),
-      currency: transactionPayload.amount.currency,
-      payload: JSON.stringify(payload),
-    }),
-  );
-  dispatch(showPayment());
+    );
+  } catch (err) {
+    handleError(err);
+  }
 });

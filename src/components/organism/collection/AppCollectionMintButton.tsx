@@ -19,6 +19,7 @@ import { parseAmount } from 'enevti-app/utils/format/amount';
 import { useDispatch } from 'react-redux';
 import { payMintCollection } from 'enevti-app/store/middleware/thunk/payment/creator/payMintCollection';
 import DropShadow from 'react-native-drop-shadow';
+import usePaymentCallback from 'enevti-app/utils/hook/usePaymentCallback';
 
 export const MINT_BUTTON_HEIGHT = 11.5;
 
@@ -40,8 +41,23 @@ export default function AppCollectionMintButton({
     [hp, wp, theme],
   );
 
+  const [loading, setLoading] = React.useState<boolean>(false);
+  const paymentThunkRef = React.useRef<any>();
+
+  const paymentIdleCallback = React.useCallback(() => {
+    setLoading(false);
+    paymentThunkRef.current?.abort();
+  }, []);
+
+  usePaymentCallback({
+    onIdle: paymentIdleCallback,
+  });
+
   const onMintPress = React.useCallback(() => {
-    dispatch(payMintCollection({ collection, quantity: 1 }));
+    setLoading(true);
+    paymentThunkRef.current = dispatch(
+      payMintCollection({ collection, quantity: 1 }),
+    );
   }, [dispatch, collection]);
 
   return mintingAvailable ? (
@@ -53,6 +69,7 @@ export default function AppCollectionMintButton({
           style={styles.actionButtonGradient}>
           <AppQuaternaryButton
             box
+            loading={loading}
             icon={
               collection.collectionType === 'onekind'
                 ? iconMap.buy

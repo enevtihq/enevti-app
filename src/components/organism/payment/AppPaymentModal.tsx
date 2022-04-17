@@ -28,9 +28,11 @@ import {
   selectPaymentStatus,
   setPaymentActionType,
   setPaymentStatus,
+  isPaymentUndefined,
 } from 'enevti-app/store/slices/payment';
 import AppPaymentItem from './AppPaymentItem';
 import { parseAmount } from 'enevti-app/utils/format/amount';
+import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
 
 export default function AppPaymentModal() {
   const { t } = useTranslation();
@@ -44,11 +46,13 @@ export default function AppPaymentModal() {
   const paymentSnapPoints = React.useMemo(() => ['70%'], []);
   const defaultCoin = React.useMemo(() => COIN_NAME, []);
 
+  const paymentShowState = useSelector(selectPaymentShowState);
   const paymentMode = useSelector(selectPaymentMode);
   const paymentStatus = useSelector(selectPaymentStatus);
-  const paymentShowState = useSelector(selectPaymentShowState);
   const paymentAction = useSelector(selectPaymentAction);
   const paymentFee = useSelector(selectPaymentFee);
+  const paymentUndefined = useSelector(isPaymentUndefined);
+
   const paymentTotalAmountCurrency = defaultCoin;
   const paymentTotalAmount =
     paymentAction.amount + paymentFee.gas + paymentFee.platform;
@@ -98,94 +102,102 @@ export default function AppPaymentModal() {
       snapPoints={paymentSnapPoints}
       visible={paymentShowState}
       onDismiss={paymentDismiss}>
-      <AppListItem
-        leftContent={
-          <AppIconGradient
-            name={paymentAction.icon}
-            size={wp('12%', insets)}
-            androidRenderingMode={'software'}
-            colors={[theme.colors.primary, theme.colors.secondary]}
-            style={styles.headerIcon}
-          />
-        }>
-        <AppTextHeading3 numberOfLines={1} style={styles.headerTitle}>
-          {paymentAction.name}
-        </AppTextHeading3>
-        <AppTextBody4
-          style={{ color: theme.colors.placeholder }}
-          numberOfLines={1}>
-          {paymentAction.description}
-        </AppTextBody4>
-      </AppListItem>
+      {!paymentUndefined ? (
+        <View style={styles.paymentContainer}>
+          <AppListItem
+            leftContent={
+              <AppIconGradient
+                name={paymentAction.icon}
+                size={wp('12%', insets)}
+                androidRenderingMode={'software'}
+                colors={[theme.colors.primary, theme.colors.secondary]}
+                style={styles.headerIcon}
+              />
+            }>
+            <AppTextHeading3 numberOfLines={1} style={styles.headerTitle}>
+              {paymentAction.name}
+            </AppTextHeading3>
+            <AppTextBody4
+              style={{ color: theme.colors.placeholder }}
+              numberOfLines={1}>
+              {paymentAction.description}
+            </AppTextBody4>
+          </AppListItem>
 
-      <View style={styles.dividerView} />
-      <Divider style={styles.divider} />
+          <View style={styles.dividerView} />
+          <Divider style={styles.divider} />
 
-      <View style={styles.transactionItem}>
-        <AppTextHeading2 style={styles.transactionDetailsHeading}>
-          {t('payment:transactionDetails')}
-        </AppTextHeading2>
-        <AppPaymentItem
-          title={paymentAction.name}
-          description={
-            paymentAction.details
-              ? paymentAction.details
-              : paymentAction.description
-          }
-          amount={paymentAction.amount}
-          currency={paymentAction.currency}
-        />
-        <AppPaymentItem
-          title={t('payment:platformFee')}
-          description={
-            paymentFee.platform.toString() === '0'
-              ? t('payment:platformFeeDescription')
-              : undefined
-          }
-          amount={paymentFee.platform}
-          currency={defaultCoin}
-        />
-        <AppPaymentItem
-          title={t('payment:gasFee')}
-          description={t('payment:gasFeeDescription')}
-          amount={paymentFee.gas}
-          currency={defaultCoin}
-        />
-        <Divider style={styles.bottomDivider} />
-        <AppPaymentItem
-          bold
-          hideTooltip
-          title={t('payment:total')}
-          amount={paymentTotalAmount}
-          currency={paymentTotalAmountCurrency}
-        />
-      </View>
+          <View style={styles.transactionItem}>
+            <AppTextHeading2 style={styles.transactionDetailsHeading}>
+              {t('payment:transactionDetails')}
+            </AppTextHeading2>
+            <AppPaymentItem
+              title={paymentAction.name}
+              description={
+                paymentAction.details
+                  ? paymentAction.details
+                  : paymentAction.description
+              }
+              amount={paymentAction.amount}
+              currency={paymentAction.currency}
+            />
+            <AppPaymentItem
+              title={t('payment:platformFee')}
+              description={
+                paymentFee.platform.toString() === '0'
+                  ? t('payment:platformFeeDescription')
+                  : undefined
+              }
+              amount={paymentFee.platform}
+              currency={defaultCoin}
+            />
+            <AppPaymentItem
+              title={t('payment:gasFee')}
+              description={t('payment:gasFeeDescription')}
+              amount={paymentFee.gas}
+              currency={defaultCoin}
+            />
+            <Divider style={styles.bottomDivider} />
+            <AppPaymentItem
+              bold
+              hideTooltip
+              title={t('payment:total')}
+              amount={paymentTotalAmount}
+              currency={paymentTotalAmountCurrency}
+            />
+          </View>
 
-      <AppListItem
-        containerStyle={styles.secureNoteView}
-        leftContent={
-          <AppIconGradient
-            name={iconMap.shield}
-            size={wp('5%', insets)}
-            androidRenderingMode={'software'}
-            colors={[theme.colors.primary, theme.colors.secondary]}
-            style={styles.secureNoteIcon}
-          />
-        }>
-        <AppTextBody5 style={styles.secureNoteText} numberOfLines={2}>
-          {t('payment:secureNote')}
-        </AppTextBody5>
-      </AppListItem>
+          <AppListItem
+            containerStyle={styles.secureNoteView}
+            leftContent={
+              <AppIconGradient
+                name={iconMap.shield}
+                size={wp('5%', insets)}
+                androidRenderingMode={'software'}
+                colors={[theme.colors.primary, theme.colors.secondary]}
+                style={styles.secureNoteIcon}
+              />
+            }>
+            <AppTextBody5 style={styles.secureNoteText} numberOfLines={2}>
+              {t('payment:secureNote')}
+            </AppTextBody5>
+          </AppListItem>
 
-      <Divider />
+          <Divider />
 
-      <View style={styles.payButton}>
-        <AppPrimaryButton
-          loading={paymentStatus.type === 'process'}
-          onPress={payCallback}>
-          {t('payment:pay')}
-        </AppPrimaryButton>
-      </View>
+          <View style={styles.payButton}>
+            <AppPrimaryButton
+              loading={paymentStatus.type === 'process'}
+              onPress={payCallback}>
+              {t('payment:pay')}
+            </AppPrimaryButton>
+          </View>
+        </View>
+      ) : (
+        <View style={styles.loaderContainer}>
+          <AppActivityIndicator animating />
+        </View>
+      )}
     </AppMenuContainer>
   ) : paymentMode === 'compact' ? (
     <Portal>
@@ -208,6 +220,15 @@ export default function AppPaymentModal() {
 
 const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
   StyleSheet.create({
+    loaderContainer: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: '100%',
+      flex: 1,
+    },
+    paymentContainer: {
+      flex: 1,
+    },
     payButton: {
       paddingHorizontal: wp('5%', insets),
       marginTop: hp('2%', insets),

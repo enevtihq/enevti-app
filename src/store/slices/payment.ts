@@ -17,6 +17,7 @@ const initialState: PaymentState = {
     message: '',
   },
   action: {
+    loaded: false,
     type: '',
     icon: iconMap.dollar,
     name: '',
@@ -27,6 +28,7 @@ const initialState: PaymentState = {
     payload: '',
   },
   fee: {
+    loaded: false,
     gas: BigInt(0),
     platform: BigInt(0),
   },
@@ -59,7 +61,11 @@ const paymentSlice = createSlice({
     ) => {
       payment.action.type = action.payload;
     },
-    setPaymentAction: (payment, action: PayloadAction<PaymentAction>) => {
+    setPaymentAction: (
+      payment,
+      action: PayloadAction<Omit<PaymentAction, 'loaded'>>,
+    ) => {
+      payment.action.loaded = true;
       payment.action.type = action.payload.type;
       payment.action.icon = action.payload.icon;
       payment.action.name = action.payload.name;
@@ -70,6 +76,7 @@ const paymentSlice = createSlice({
       payment.action.payload = action.payload.payload;
     },
     resetPaymentAction: payment => {
+      payment.action.loaded = false;
       payment.action.type = initialState.action.type;
       payment.action.icon = initialState.action.icon;
       payment.action.name = initialState.action.name;
@@ -78,11 +85,16 @@ const paymentSlice = createSlice({
       payment.action.currency = initialState.action.currency;
       payment.action.payload = initialState.action.payload;
     },
-    setPaymentFee: (payment, action: PayloadAction<PaymentFee>) => {
+    setPaymentFee: (
+      payment,
+      action: PayloadAction<Omit<PaymentFee, 'loaded'>>,
+    ) => {
+      payment.fee.loaded = true;
       payment.fee.gas = action.payload.gas;
       payment.fee.platform = action.payload.platform;
     },
     resetPaymentFee: payment => {
+      payment.fee.loaded = false;
       payment.fee.gas = initialState.fee.gas;
       payment.fee.platform = initialState.fee.platform;
     },
@@ -139,4 +151,9 @@ export const selectPaymentAction = createSelector(
 export const selectPaymentFee = createSelector(
   (state: RootState) => state,
   (state: RootState) => state.payment.fee,
+);
+
+export const isPaymentUndefined = createSelector(
+  (state: RootState) => state.payment,
+  (payment: PaymentState) => !payment.action.loaded && !payment.fee.loaded,
 );
