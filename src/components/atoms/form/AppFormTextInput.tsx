@@ -5,19 +5,14 @@ import { useTheme } from 'react-native-paper';
 import Color from 'color';
 import { StyleSheet, View } from 'react-native';
 import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
-import { useBottomSheetInternal } from '@gorhom/bottom-sheet';
-import { ModalContext } from 'enevti-app/context';
 
-function AppFormTextInput(
-  props: TextInputProps & {
-    endComponent?: React.ReactNode;
-    rowEndComponent?: React.ReactNode;
-    hideMaxLengthIndicator?: boolean;
-  },
-  ref: any,
-) {
-  const { shouldHandleKeyboardEvents } = useBottomSheetInternal();
-  const withModal = React.useContext(ModalContext);
+export type AppFormTextInputProps = TextInputProps & {
+  endComponent?: React.ReactNode;
+  rowEndComponent?: React.ReactNode;
+  hideMaxLengthIndicator?: boolean;
+};
+
+function AppFormTextInput(props: AppFormTextInputProps, ref: any) {
   const theme = useTheme();
   const styles = React.useMemo(() => makeStyles(theme), [theme]);
   const height = props.numberOfLines ? props.numberOfLines * 25 : undefined;
@@ -34,20 +29,18 @@ function AppFormTextInput(
 
   const onFocus = React.useCallback(
     e => {
-      withModal ? (shouldHandleKeyboardEvents.value = true) : {};
       setMaxLengthShow(true);
       props.onFocus && props.onFocus(e);
     },
-    [props, shouldHandleKeyboardEvents, withModal],
+    [props],
   );
 
   const onBlur = React.useCallback(
     e => {
-      withModal ? (shouldHandleKeyboardEvents.value = false) : {};
       setMaxLengthShow(false);
       props.onBlur && props.onBlur(e);
     },
-    [props, shouldHandleKeyboardEvents, withModal],
+    [props],
   );
 
   const onChangeText = React.useCallback(

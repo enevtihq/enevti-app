@@ -17,7 +17,7 @@ import {
   setGoogleAPIToken,
 } from 'enevti-app/store/slices/session/google';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
-import AppFormSecureTextInput from 'enevti-app/components/organism/AppFormSecureTextInput';
+import AppMenuFormSecureTextInput from 'enevti-app/components/organism/menu/AppMenuFormSecureTextInput';
 import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
 import {
   getSecretAppData,
@@ -213,7 +213,7 @@ export default function AppGoogleSignInButton({
                 description={t('auth:inputBinderPasswordBody')}
               />
               <View style={styles.dialogContent}>
-                <AppFormSecureTextInput
+                <AppMenuFormSecureTextInput
                   label={t('auth:yourBinderPassword')}
                   value={values.password}
                   errorText={

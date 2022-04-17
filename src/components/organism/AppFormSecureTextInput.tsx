@@ -4,12 +4,13 @@ import { TextInput, useTheme } from 'react-native-paper';
 import AppFormTextInputWithError from 'enevti-app/components/molecules/AppFormTextInputWithError';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 
-interface AppFormSecureTextInputProps {
+export interface AppFormSecureTextInputProps {
   label: string;
   value: string;
   onChangeText: (text: string) => void;
   dense?: boolean;
   touchHandler?: () => void;
+  onFocus?: (e: any) => void;
   errorText?: string;
   showError?: boolean;
   onSubmitEditing?: () => void;
@@ -24,6 +25,7 @@ function AppFormSecureTextInput(
     value,
     showError,
     touchHandler,
+    onFocus,
     errorText,
     onChangeText,
     dense,
@@ -47,6 +49,7 @@ function AppFormSecureTextInput(
       errorText={errorText}
       secureTextEntry={secure}
       textContentType={'password'}
+      onFocus={onFocus}
       onBlur={() => {
         setSecure(true);
         touchHandler && touchHandler();
