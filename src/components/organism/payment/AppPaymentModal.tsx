@@ -18,7 +18,7 @@ import { COIN_NAME } from 'enevti-app/components/atoms/brand/AppBrandConstant';
 import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
-import { reducePayment } from 'enevti-app/store/middleware/thunk/payment';
+import { reducePayment } from 'enevti-app/store/middleware/thunk/payment/reducer';
 import {
   resetPaymentState,
   selectPaymentAction,

@@ -15,6 +15,8 @@ export default function StakePool({ navigation, route }: Props) {
     <AppView
       darken
       withModal
+      withLoader
+      withPayment
       edges={['left', 'bottom', 'right']}
       header={
         <AppHeader back navigation={navigation} title={t('stake:stakePool')} />

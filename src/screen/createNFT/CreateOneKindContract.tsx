@@ -68,7 +68,7 @@ import {
   showModalLoader,
 } from 'enevti-app/store/slices/ui/global/modalLoader';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
-import { payCreateNFTOneKind } from 'enevti-app/store/middleware/thunk/queue/nft/create/payCreateNFTOneKind';
+import { payCreateNFTOneKind } from 'enevti-app/store/middleware/thunk/payment/creator/payCreateNFTOneKind';
 import getFileExtension from 'enevti-app/utils/mime/getFileExtension';
 import timezoneOffsetLabel from 'enevti-app/utils/date/timezoneOffsetLabel';
 

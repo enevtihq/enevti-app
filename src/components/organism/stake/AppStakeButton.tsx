@@ -9,23 +9,26 @@ import AppHeaderWizard from 'enevti-app/components/molecules/AppHeaderWizard';
 import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
 import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectMyPersonaCache } from 'enevti-app/store/slices/entities/cache/myPersona';
 import { Persona } from 'enevti-app/types/service/enevti/persona';
 import { useTranslation } from 'react-i18next';
 import AppCoinChipsPicker from 'enevti-app/components/organism/AppCoinChipsPicker';
 import AppFormTextInputWithError from 'enevti-app/components/molecules/AppFormTextInputWithError';
 import { useTheme } from 'react-native-paper';
+import i18n from 'enevti-app/translations/i18n';
+import { StakeForm } from 'enevti-app/types/store/StakeForm';
+import { payAddStake } from 'enevti-app/store/middleware/thunk/payment/creator/payAddStake';
+import { COIN_NAME } from 'enevti-app/components/atoms/brand/AppBrandConstant';
+import { completeTokenUnit } from 'enevti-app/utils/format/amount';
 
 const validationSchema = Yup.object().shape({
-  stake: Yup.number().positive().required(),
+  stake: Yup.string().required(i18n.t('form:required')),
 });
 
-const initialValues = {
+const initialValues: StakeForm = {
   stake: '',
 };
-
-type StakeForm = typeof initialValues;
 
 interface AppStakeButtonProps {
   persona: Persona;
@@ -45,6 +48,7 @@ export default function AppStakeButton({
   onModalSubmit,
 }: AppStakeButtonProps) {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const insets = useSafeAreaInsets();
   const theme = useTheme();
   const styles = React.useMemo(() => makeStyles(insets), [insets]);
@@ -56,9 +60,18 @@ export default function AppStakeButton({
 
   const onStakeSubmit = React.useCallback(
     (values: StakeForm) => {
+      dispatch(
+        payAddStake({
+          persona,
+          stake: {
+            amount: completeTokenUnit(values.stake),
+            currency: COIN_NAME,
+          },
+        }),
+      );
       onModalSubmit && onModalSubmit(values);
     },
-    [onModalSubmit],
+    [onModalSubmit, dispatch, persona],
   );
 
   return (

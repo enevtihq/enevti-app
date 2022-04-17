@@ -1,5 +1,5 @@
 export type PaymentAction = {
-  type: 'createNFTOneKind' | 'mintCollection' | 'cancel' | '';
+  type: 'createNFTOneKind' | 'mintCollection' | 'addStake' | 'cancel' | '';
   icon: string;
   name: string;
   description: string;

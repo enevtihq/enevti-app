@@ -17,7 +17,7 @@ import AppTextHeading5 from 'enevti-app/components/atoms/text/AppTextHeading5';
 import { useTranslation } from 'react-i18next';
 import { parseAmount } from 'enevti-app/utils/format/amount';
 import { useDispatch } from 'react-redux';
-import { payMintCollection } from 'enevti-app/store/middleware/thunk/collection/payMintCollection';
+import { payMintCollection } from 'enevti-app/store/middleware/thunk/payment/creator/payMintCollection';
 
 export const MINT_BUTTON_HEIGHT = 11.5;
 
@@ -67,16 +67,16 @@ export default function AppCollectionMintButton({
             <View style={styles.actionButtonLeft}>
               <AppTextHeading3 numberOfLines={1} style={styles.whiteText}>
                 {collection.collectionType === 'onekind'
-                  ? t('collection:mintOneKind')
+                  ? t('payment:payMintOneKindName')
                   : collection.collectionType === 'packed'
-                  ? t('collection:mintPacked')
+                  ? t('payment:payMintPackedName')
                   : t('error:unknown')}
               </AppTextHeading3>
               <AppTextBody4 style={styles.whiteText} numberOfLines={1}>
                 {collection.collectionType === 'onekind'
-                  ? t('collection:mintOneKindDescription')
+                  ? t('payment:payMintOneKindDescription')
                   : collection.collectionType === 'packed'
-                  ? t('collection:mintPackedDescription', {
+                  ? t('payment:payMintPackedDescription', {
                       packSize: collection.packSize,
                     })
                   : t('error:unknown')}

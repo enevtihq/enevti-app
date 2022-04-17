@@ -15,4 +15,10 @@ export default {
   paymentCancelled: 'Payment Cancelled',
   payCreateNFTOneKindName: 'Create NFT',
   payCreateNFTOneKindDescription: 'Create a One Kind NFT Collection',
+  payMintOneKindName: 'Mint Single',
+  payMintOneKindDescription: 'One Kind NFT',
+  payMintPackedName: 'Mint Bundle',
+  payMintPackedDescription: '{{packSize}} NFT / bundle',
+  payAddStakeName: 'Add Stake',
+  payAddStakeDescription: 'Stake to {{account}}',
 };

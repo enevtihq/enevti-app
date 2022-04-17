@@ -34,6 +34,13 @@ import AppStakerItem, {
 import AppStakeButton from 'enevti-app/components/organism/stake/AppStakeButton';
 import { LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE } from 'enevti-app/components/molecules/list/AppListItem';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
+import {
+  hideModalLoader,
+  showModalLoader,
+} from 'enevti-app/store/slices/ui/global/modalLoader';
+import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
+import usePaymentCallback from 'enevti-app/utils/hook/usePaymentCallback';
+import { useTranslation } from 'react-i18next';
 
 const AnimatedFlatList =
   Animated.createAnimatedComponent<FlatListProps<StakerItem>>(FlatList);
@@ -43,6 +50,7 @@ interface AppStakePoolProps {
 }
 
 export default function AppStakePool({ route }: AppStakePoolProps) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const insets = useSafeAreaInsets();
   const styles = React.useMemo(() => makeStyles(), []);
@@ -82,6 +90,26 @@ export default function AppStakePool({ route }: AppStakePoolProps) {
       promise.abort();
     };
   }, [onStakePoolScreenLoaded, dispatch, route.params.arg]);
+
+  const paymentProcessCallback = React.useCallback(() => {
+    dispatch(showModalLoader());
+  }, [dispatch]);
+
+  const paymentSuccessCallback = React.useCallback(() => {
+    dispatch(hideModalLoader());
+    dispatch(showSnackbar({ mode: 'info', text: t('payment:success') }));
+  }, [dispatch, t]);
+
+  const paymentErrorCallback = React.useCallback(
+    () => dispatch(hideModalLoader()),
+    [dispatch],
+  );
+
+  usePaymentCallback({
+    onProcess: paymentProcessCallback,
+    onSuccess: paymentSuccessCallback,
+    onError: paymentErrorCallback,
+  });
 
   const onStakeButtonDismiss = React.useCallback(() => {
     setMenuVisible(false);
@@ -160,6 +188,7 @@ export default function AppStakePool({ route }: AppStakePoolProps) {
         extended={extended}
         onPress={onStakeButtonPress}
         onModalDismiss={onStakeButtonDismiss}
+        onModalSubmit={onStakeButtonDismiss}
       />
     </View>
   ) : (
