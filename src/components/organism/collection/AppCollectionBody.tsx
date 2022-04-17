@@ -89,7 +89,7 @@ const makeStyles = () =>
       left: 0,
       right: 0,
       position: 'absolute',
-      zIndex: 1,
+      zIndex: 3,
     },
     profileBody: {
       flex: 1,

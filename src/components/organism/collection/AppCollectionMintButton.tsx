@@ -1,4 +1,4 @@
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Platform } from 'react-native';
 import React from 'react';
 import { Collection } from 'enevti-app/types/service/enevti/collection';
 import { DimensionFunction } from 'enevti-app/utils/imageRatio';
@@ -18,6 +18,7 @@ import { useTranslation } from 'react-i18next';
 import { parseAmount } from 'enevti-app/utils/format/amount';
 import { useDispatch } from 'react-redux';
 import { payMintCollection } from 'enevti-app/store/middleware/thunk/payment/creator/payMintCollection';
+import DropShadow from 'react-native-drop-shadow';
 
 export const MINT_BUTTON_HEIGHT = 11.5;
 
@@ -46,7 +47,7 @@ export default function AppCollectionMintButton({
   return mintingAvailable ? (
     <View style={styles.actionContainer}>
       <View style={{ height: hp('2%') }} />
-      <View style={styles.actionButton}>
+      <DropShadow style={styles.actionButton}>
         <LinearGradient
           colors={[theme.colors.primary, theme.colors.secondary]}
           style={styles.actionButtonGradient}>
@@ -62,6 +63,7 @@ export default function AppCollectionMintButton({
             iconColor={'white'}
             iconSize={20}
             onPress={onMintPress}
+            style={styles.actionButtonGradient}
             contentContainerStyle={{ paddingHorizontal: wp('5%') }}
             contentStyle={styles.actionButtonContent}>
             <View style={styles.actionButtonLeft}>
@@ -94,7 +96,7 @@ export default function AppCollectionMintButton({
             </View>
           </AppQuaternaryButton>
         </LinearGradient>
-      </View>
+      </DropShadow>
     </View>
   ) : null;
 }
@@ -107,18 +109,23 @@ const makeStyles = (
   StyleSheet.create({
     actionContainer: {
       position: 'absolute',
-      backgroundColor: theme.colors.background,
       width: '100%',
       height: hp(MINT_BUTTON_HEIGHT),
-      bottom: 0,
+      bottom: hp(Platform.OS === 'ios' ? 0 : 2),
     },
     actionButton: {
       marginBottom: hp('2%'),
       marginLeft: wp('5%'),
       marginRight: wp('5%'),
+      width: wp('70%'),
+      alignSelf: 'center',
+      shadowColor: '#000000',
+      shadowOffset: { width: 0, height: 8 },
+      shadowOpacity: theme.dark ? 1 : 0.3,
+      shadowRadius: theme.dark ? 10 : 7,
     },
     actionButtonGradient: {
-      borderRadius: theme.roundness,
+      borderRadius: theme.roundness * 2,
     },
     actionButtonContent: {
       flexDirection: 'row',
