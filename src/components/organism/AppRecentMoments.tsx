@@ -60,7 +60,7 @@ export default React.memo(
     );
 
     return !isUndefined ? (
-      moments ? (
+      moments && moments.length > 0 ? (
         <View style={{ height: hp('32.75%', insets) }}>
           <View
             style={{

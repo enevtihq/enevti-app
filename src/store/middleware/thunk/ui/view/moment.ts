@@ -33,7 +33,7 @@ export const loadMoments = createAsyncThunk<
         now - selectLastFetchMomentCache(getState()) > lastFetchTimeout.moment
       ) {
         const moments = await getMoments(signal);
-        if (moments) {
+        if (moments !== undefined) {
           dispatch(setMomentView(moments));
           dispatch(setLastFetchMomentCache(now));
           dispatch(setMomentItemsCache(parseMomentCache(moments)));

@@ -33,7 +33,7 @@ export const loadStakePool = createAsyncThunk<
         routeParam,
         signal,
       );
-      if (stakePoolResponse) {
+      if (stakePoolResponse !== undefined) {
         dispatch(
           setStakePoolView({ key: routeParam.arg, value: stakePoolResponse }),
         );

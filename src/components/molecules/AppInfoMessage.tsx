@@ -1,4 +1,4 @@
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import React from 'react';
 import { Theme } from 'enevti-app/theme/default';
 import Color from 'color';
@@ -14,9 +14,10 @@ interface AppInfoMessageProps {
   message: string;
   title?: string;
   box?: boolean;
+  style?: StyleProp<ViewStyle>;
 }
 
-function Component({ icon, title, message, box }: AppInfoMessageProps) {
+function Component({ icon, title, message, box, style }: AppInfoMessageProps) {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
   const styles = React.useMemo(
@@ -25,7 +26,7 @@ function Component({ icon, title, message, box }: AppInfoMessageProps) {
   );
 
   return (
-    <View style={box ? styles.boxed : styles.normal}>
+    <View style={[box ? styles.boxed : styles.normal, style]}>
       <AppIconComponent
         name={icon}
         size={wp('15%', insets)}

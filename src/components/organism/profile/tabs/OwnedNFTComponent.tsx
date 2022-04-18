@@ -10,6 +10,9 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AppNFTRenderer from 'enevti-app/components/molecules/nft/AppNFTRenderer';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
+import AppInfoMessage from 'enevti-app/components/molecules/AppInfoMessage';
+import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
+import { useTranslation } from 'react-i18next';
 
 const AnimatedFlatGrid =
   Animated.createAnimatedComponent<FlatGridProps<NFTBase>>(FlatGrid);
@@ -38,6 +41,7 @@ function Component(
   }: OwnedNFTComponentProps,
   ref: any,
 ) {
+  const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const mounted = React.useRef<boolean>(false);
   const [displayed, setDisplayed] = React.useState<boolean>(false);
@@ -83,6 +87,11 @@ function Component(
     [handleRefresh, progressViewOffset],
   );
 
+  const emptyComponent = React.useMemo(
+    () => <AppInfoMessage icon={iconMap.empty} message={t('error:noData')} />,
+    [t],
+  );
+
   const renderItem = React.useCallback(
     ({ item }) => (
       <AppNFTRenderer
@@ -118,6 +127,7 @@ function Component(
       data={data}
       renderItem={renderItem}
       refreshControl={refreshControl}
+      ListEmptyComponent={emptyComponent}
     />
   );
 }

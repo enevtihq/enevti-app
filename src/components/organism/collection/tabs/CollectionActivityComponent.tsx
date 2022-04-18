@@ -28,6 +28,8 @@ import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
 import AppTextHeading5 from 'enevti-app/components/atoms/text/AppTextHeading5';
 import { parsePersonaLabel } from 'enevti-app/service/enevti/persona';
 import { MINT_BUTTON_HEIGHT } from 'enevti-app/components/organism/collection/AppCollectionMintButton';
+import AppInfoMessage from 'enevti-app/components/molecules/AppInfoMessage';
+import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 
 const COLLECTION_ACTIVITY_ITEM_HEIGHT = 9;
 const AnimatedFlatList = Animated.createAnimatedComponent<any>(FlatList);
@@ -102,6 +104,11 @@ function Component(
       />
     ),
     [handleRefresh, progressViewOffset],
+  );
+
+  const emptyComponent = React.useMemo(
+    () => <AppInfoMessage icon={iconMap.empty} message={t('error:noData')} />,
+    [t],
   );
 
   const renderItem = React.useCallback(
@@ -203,6 +210,7 @@ function Component(
       data={activities}
       renderItem={renderItem}
       refreshControl={refreshControl}
+      ListEmptyComponent={emptyComponent}
       removeClippedSubviews={true}
       initialNumToRender={2}
       maxToRenderPerBatch={5}

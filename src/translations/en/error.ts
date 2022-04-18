@@ -12,4 +12,5 @@ export default {
   unsupportedCryptoVersion: 'Unsupported App Cryptography Version',
   unauthorizedCalendar: 'Access calendar not authorized',
   invalidRecurring: 'invalid recurring type',
+  noData: 'Nothing here yet!',
 };

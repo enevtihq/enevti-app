@@ -15,7 +15,7 @@ const feedViewSlice = createSlice({
   initialState,
   reducers: {
     setFeedView: (feed, action: PayloadAction<Feeds>) => {
-      Object.assign(feed.items, action.payload);
+      feed.items = action.payload.slice();
     },
     setFeedViewLoaded: (feed, action: PayloadAction<boolean>) => {
       feed.loaded = action.payload;

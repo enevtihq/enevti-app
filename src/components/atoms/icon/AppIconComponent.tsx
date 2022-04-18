@@ -83,6 +83,7 @@ export const iconMap = {
   mint: 'postage-stamp',
   stake: 'account-cash',
   notEligibleCreator: 'badge-account-alert',
+  empty: 'package-variant',
 };
 
 interface AppIconComponentProps {

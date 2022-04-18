@@ -29,6 +29,8 @@ import { useTheme } from 'react-native-paper';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { useTranslation } from 'react-i18next';
+import AppInfoMessage from 'enevti-app/components/molecules/AppInfoMessage';
+import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 
 const PROFILE_COLLECTION_ITEM_HEIGHT = 9;
 
@@ -111,6 +113,11 @@ function Component(
       />
     ),
     [handleRefresh, progressViewOffset],
+  );
+
+  const emptyComponent = React.useMemo(
+    () => <AppInfoMessage icon={iconMap.empty} message={t('error:noData')} />,
+    [t],
   );
 
   const keyExtractor = React.useCallback((item: CollectionBase) => item.id, []);
@@ -218,6 +225,7 @@ function Component(
       data={data}
       renderItem={renderItem}
       refreshControl={refreshControl}
+      ListEmptyComponent={emptyComponent}
       removeClippedSubviews={true}
       initialNumToRender={5}
       maxToRenderPerBatch={10}

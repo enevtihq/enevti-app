@@ -15,7 +15,7 @@ const momentViewSlice = createSlice({
   initialState,
   reducers: {
     setMomentView: (moment, action: PayloadAction<Moments>) => {
-      Object.assign(moment.items, action.payload);
+      moment.items = action.payload.slice();
     },
     setMomentViewLoaded: (moment, action: PayloadAction<boolean>) => {
       moment.loaded = action.payload;

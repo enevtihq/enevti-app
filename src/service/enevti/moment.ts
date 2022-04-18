@@ -5,7 +5,7 @@ import { getDummyMomentItem } from './dummy';
 async function fetchMoments(
   signal?: AbortController['signal'],
 ): Promise<Moments> {
-  await sleep(3000, signal);
+  await sleep(1000, signal);
 
   let randomCount = Math.random() * 10;
   if (randomCount === 1) {
@@ -17,7 +17,7 @@ async function fetchMoments(
     randomMoments.push(getDummyMomentItem());
   }
 
-  return randomMoments;
+  return [];
 }
 
 export function parseMomentCache(moments: Moments) {
@@ -27,5 +27,5 @@ export function parseMomentCache(moments: Moments) {
 export async function getMoments(
   signal?: AbortController['signal'],
 ): Promise<Moments | undefined> {
-  return fetchMoments(signal);
+  return await fetchMoments(signal);
 }

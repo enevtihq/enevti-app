@@ -50,7 +50,7 @@ export const loadProfile = createAsyncThunk<
       reload && dispatch(showModalLoader());
       if (routeParam.arg === myPersona[argType]) {
         const profileResponse = await getMyProfile(reload, signal);
-        if (profileResponse) {
+        if (profileResponse !== undefined) {
           dispatch(
             setMyProfileView({ ...profileResponse, persona: myPersona }),
           );
@@ -62,7 +62,7 @@ export const loadProfile = createAsyncThunk<
           signal,
         );
         const profileResponse = await getProfile(personaBase.address, signal);
-        if (personaBase && profileResponse) {
+        if (personaBase !== undefined && profileResponse !== undefined) {
           dispatch(
             setProfileView({
               key: routeParam.arg,

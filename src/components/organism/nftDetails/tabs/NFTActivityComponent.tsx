@@ -27,6 +27,8 @@ import AppActivityIcon from 'enevti-app/components/molecules/activity/AppActivit
 import { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { parsePersonaLabel } from 'enevti-app/service/enevti/persona';
+import AppInfoMessage from 'enevti-app/components/molecules/AppInfoMessage';
+import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 
 const COLLECTION_ACTIVITY_ITEM_HEIGHT = 9;
 const AnimatedFlatList = Animated.createAnimatedComponent<any>(FlatList);
@@ -99,6 +101,11 @@ function Component(
       />
     ),
     [handleRefresh, progressViewOffset],
+  );
+
+  const emptyComponent = React.useMemo(
+    () => <AppInfoMessage icon={iconMap.empty} message={t('error:noData')} />,
+    [t],
   );
 
   const renderItem = React.useCallback(
@@ -187,6 +194,7 @@ function Component(
       data={activities}
       renderItem={renderItem}
       refreshControl={refreshControl}
+      ListEmptyComponent={emptyComponent}
       removeClippedSubviews={true}
       initialNumToRender={2}
       maxToRenderPerBatch={5}

@@ -26,5 +26,5 @@ export function parseFeedCache(feeds: Feeds) {
 export async function getFeeds(
   signal?: AbortController['signal'],
 ): Promise<Feeds | undefined> {
-  return fetchFeeds(signal);
+  return await fetchFeeds(signal);
 }

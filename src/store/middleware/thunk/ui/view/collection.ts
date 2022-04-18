@@ -33,7 +33,7 @@ export const loadCollection = createAsyncThunk<
         routeParam,
         signal,
       );
-      if (collectionResponse) {
+      if (collectionResponse !== undefined) {
         dispatch(
           setCollectionView({ key: routeParam.arg, value: collectionResponse }),
         );

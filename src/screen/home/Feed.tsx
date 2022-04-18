@@ -37,6 +37,9 @@ import {
   selectMomentView,
 } from 'enevti-app/store/slices/ui/view/moment';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
+import AppInfoMessage from 'enevti-app/components/molecules/AppInfoMessage';
+import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
+import { useTranslation } from 'react-i18next';
 
 const AnimatedFlatList =
   Animated.createAnimatedComponent<FlatListProps<any>>(FlatList);
@@ -54,6 +57,7 @@ export default function Feed({
   headerHeight,
 }: FeedProps) {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const styles = React.useMemo(() => makeStyles(headerHeight), [headerHeight]);
   const insets = useSafeAreaInsets();
   const feedHeight = hp('24%', insets) + wp('95%', insets);
@@ -84,11 +88,19 @@ export default function Feed({
       setRefreshing(true);
       await handleLoadFeed(reload).unwrap();
       await handleLoadMoment(reload).unwrap();
-      feedRef.current?.scrollToOffset({ offset: 1 });
+      reload && feedRef.current?.scrollToOffset({ offset: 1 });
       setRefreshing(false);
     },
     [handleLoadFeed, handleLoadMoment, feedRef],
   );
+
+  const handleRefresh = React.useCallback(async () => {
+    try {
+      onLoaded(true);
+    } catch (err: any) {
+      handleError(err);
+    }
+  }, [onLoaded]);
 
   React.useEffect(() => {
     onLoaded();
@@ -97,14 +109,6 @@ export default function Feed({
       dispatch(unloadFeeds());
     };
   }, [onLoaded, dispatch]);
-
-  const handleRefresh = async () => {
-    try {
-      onLoaded(true);
-    } catch (err: any) {
-      handleError(err);
-    }
-  };
 
   const ListHeaderComponent = React.useCallback(
     () => <AppRecentMoments moments={moments} isUndefined={momentsUndefined} />,
@@ -127,6 +131,35 @@ export default function Feed({
     [feedHeight],
   );
 
+  const refreshControl = React.useMemo(
+    () => (
+      <RefreshControl
+        refreshing={refreshing}
+        onRefresh={handleRefresh}
+        progressViewOffset={headerHeight}
+      />
+    ),
+    [refreshing, handleRefresh, headerHeight],
+  );
+
+  const emptyComponent = React.useMemo(
+    () => <AppInfoMessage icon={iconMap.empty} message={t('error:noData')} />,
+    [t],
+  );
+
+  const contentContainerStyle = React.useMemo(
+    () =>
+      feeds.length > 0 || moments.length > 0
+        ? styles.listContentContainer
+        : styles.listContentEmptyContainer,
+    [
+      feeds.length,
+      moments.length,
+      styles.listContentContainer,
+      styles.listContentEmptyContainer,
+    ],
+  );
+
   return (
     <AppView darken withLoader>
       <View style={styles.textContainer}>
@@ -145,14 +178,9 @@ export default function Feed({
             updateCellsBatchingPeriod={50}
             windowSize={11}
             getItemLayout={getItemLayout}
-            contentContainerStyle={styles.listContentContainer}
-            refreshControl={
-              <RefreshControl
-                refreshing={refreshing}
-                onRefresh={handleRefresh}
-                progressViewOffset={headerHeight}
-              />
-            }
+            contentContainerStyle={contentContainerStyle}
+            ListEmptyComponent={emptyComponent}
+            refreshControl={refreshControl}
           />
         ) : (
           <View style={styles.loaderContainer}>
@@ -171,6 +199,10 @@ const makeStyles = (headerHeight: number) =>
     },
     listContentContainer: {
       paddingTop: headerHeight,
+    },
+    listContentEmptyContainer: {
+      flex: 1,
+      justifyContent: 'center',
     },
     loaderContainer: {
       justifyContent: 'center',

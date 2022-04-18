@@ -30,7 +30,7 @@ export const loadNFTDetails = createAsyncThunk<
     try {
       reload && dispatch(showModalLoader());
       const nftResponse = await getNFTbyRouteParam(routeParam, signal);
-      if (nftResponse) {
+      if (nftResponse !== undefined) {
         dispatch(
           setNFTDetailsView({ key: routeParam.arg, value: nftResponse }),
         );

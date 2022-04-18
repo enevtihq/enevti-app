@@ -29,7 +29,7 @@ export const loadFeeds = createAsyncThunk<void, loadFeedsArgs, AsyncThunkAPI>(
         now - selectLastFetchFeedCache(getState()) > lastFetchTimeout.feed
       ) {
         const feeds = await getFeeds(signal);
-        if (feeds) {
+        if (feeds !== undefined) {
           dispatch(setFeedView(feeds));
           dispatch(setLastFetchFeedCache(now));
           dispatch(setFeedItemsCache(parseFeedCache(feeds)));
