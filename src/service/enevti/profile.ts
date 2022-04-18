@@ -8,7 +8,7 @@ import {
   setLastFetchMyProfileCache,
   setMyProfileCache,
 } from 'enevti-app/store/slices/entities/cache/myProfile';
-import { lastFetchTreshold } from 'enevti-app/utils/constant/lastFetch';
+import { lastFetchTimeout } from 'enevti-app/utils/constant/lastFetch';
 import { getMyAddress } from './persona';
 import { completeTokenUnit } from 'enevti-app/utils/format/amount';
 
@@ -77,7 +77,7 @@ export async function getMyProfile(
   const lastFetch = selectMyProfileCache(store.getState()).lastFetch;
   let myProfile: Profile = selectMyProfileCache(store.getState());
 
-  if (force || now - lastFetch > lastFetchTreshold.profile) {
+  if (force || now - lastFetch > lastFetchTimeout.profile) {
     const profileResponse = await getProfile(myAddress, signal);
     if (profileResponse) {
       myProfile = profileResponse;

@@ -7,7 +7,7 @@ import {
 import * as Lisk from '@liskhq/lisk-client';
 import { ERRORCODE } from 'enevti-app/utils/error/code';
 import sleep from 'enevti-app/utils/dummy/sleep';
-import { lastFetchTreshold } from 'enevti-app/utils/constant/lastFetch';
+import { lastFetchTimeout } from 'enevti-app/utils/constant/lastFetch';
 import {
   setMyPersonaCache,
   setLastFetchMyPersonaCache,
@@ -182,7 +182,7 @@ export async function getMyBasePersona(
   const lastFetch = selectMyPersonaCache(store.getState()).lastFetch;
   let myPersona: Persona = selectMyPersonaCache(store.getState());
 
-  if (force || now - lastFetch > lastFetchTreshold.persona) {
+  if (force || now - lastFetch > lastFetchTimeout.persona) {
     myPersona = await getBasePersona(my.address, signal);
     store.dispatch(setLastFetchMyPersonaCache(now));
     store.dispatch(setMyPersonaCache(myPersona));

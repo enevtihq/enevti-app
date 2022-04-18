@@ -8,13 +8,17 @@ import { useTranslation } from 'react-i18next';
 import { Divider } from 'react-native-paper';
 import { Moments } from 'enevti-app/types/service/enevti/feed';
 import { IPFStoURL } from 'enevti-app/service/ipfs';
+import AppActivityIndicator from '../atoms/loading/AppActivityIndicator';
+
+const center = 'center';
 
 interface AppRecentMomentsProps {
   moments?: Moments;
+  isUndefined?: boolean;
 }
 
 export default React.memo(
-  function AppRecentMoments({ moments }: AppRecentMomentsProps) {
+  function AppRecentMoments({ moments, isUndefined }: AppRecentMomentsProps) {
     const insets = useSafeAreaInsets();
     const { t } = useTranslation();
 
@@ -55,40 +59,46 @@ export default React.memo(
       [insets],
     );
 
-    return moments ? (
-      <View>
-        <View
-          style={{
-            paddingHorizontal: wp('5%', insets),
-            marginVertical: hp('2%', insets),
-          }}>
-          <AppTextHeading3>{t('home:recentMoments')}</AppTextHeading3>
+    return !isUndefined ? (
+      moments ? (
+        <View style={{ height: hp('32.75%', insets) }}>
+          <View
+            style={{
+              paddingHorizontal: wp('5%', insets),
+              marginVertical: hp('2%', insets),
+            }}>
+            <AppTextHeading3>{t('home:recentMoments')}</AppTextHeading3>
+          </View>
+          <FlatList
+            horizontal
+            data={moments}
+            ListHeaderComponent={listHeaderComponent}
+            ListFooterComponent={listFooterComponent}
+            renderItem={renderItem}
+            keyExtractor={keyExtractor}
+            showsHorizontalScrollIndicator={false}
+            removeClippedSubviews={true}
+            initialNumToRender={4}
+            maxToRenderPerBatch={1}
+            updateCellsBatchingPeriod={500}
+            windowSize={7}
+            getItemLayout={getItemLayout}
+          />
+          <Divider
+            style={{
+              marginHorizontal: wp('5%', insets),
+              marginTop: hp('2%', insets),
+              marginBottom: wp('5%', insets),
+            }}
+          />
         </View>
-        <FlatList
-          horizontal
-          data={moments}
-          ListHeaderComponent={listHeaderComponent}
-          ListFooterComponent={listFooterComponent}
-          renderItem={renderItem}
-          keyExtractor={keyExtractor}
-          showsHorizontalScrollIndicator={false}
-          removeClippedSubviews={true}
-          initialNumToRender={4}
-          maxToRenderPerBatch={1}
-          updateCellsBatchingPeriod={500}
-          windowSize={7}
-          getItemLayout={getItemLayout}
-        />
-        <Divider
-          style={{
-            marginHorizontal: wp('5%', insets),
-            marginTop: hp('2%', insets),
-            marginBottom: wp('5%', insets),
-          }}
-        />
-      </View>
+      ) : (
+        <View style={{ marginBottom: wp('5%', insets) }} />
+      )
     ) : (
-      <View style={{ marginBottom: wp('5%', insets) }} />
+      <View style={{ height: hp('32.75%', insets), justifyContent: center }}>
+        <AppActivityIndicator animating />
+      </View>
     );
   },
   (props, nextProps) => {

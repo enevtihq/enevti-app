@@ -4,6 +4,8 @@ import myProfileViewReducer from './myProfile';
 import collectionViewReducer from './collection';
 import nftDetailsViewReducer from './nftDetails';
 import stakePoolReducer from './stakePool';
+import feedViewReducer from './feed';
+import momentViewReducer from './moment';
 
 export default combineReducers({
   profile: profileViewReducer,
@@ -11,4 +13,6 @@ export default combineReducers({
   collection: collectionViewReducer,
   nftDetails: nftDetailsViewReducer,
   stakePool: stakePoolReducer,
+  feed: feedViewReducer,
+  moment: momentViewReducer,
 });

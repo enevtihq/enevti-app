@@ -14,17 +14,32 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import AppRecentMoments from 'enevti-app/components/organism/AppRecentMoments';
 import AppFeedItem from 'enevti-app/components/molecules/feed/AppFeedItem';
-import { Feeds, FeedItem, Moments } from 'enevti-app/types/service/enevti/feed';
-import { getFeedList, getMomentsList } from 'enevti-app/service/enevti/feed';
-import Animated from 'react-native-reanimated';
+import Animated, { useAnimatedRef } from 'react-native-reanimated';
 import { handleError } from 'enevti-app/utils/error/handle';
 import { hp, wp } from 'enevti-app/utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { getMyBasePersona } from 'enevti-app/service/enevti/persona';
-import { getMyProfile } from 'enevti-app/service/enevti/profile';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  loadFeeds,
+  unloadFeeds,
+} from 'enevti-app/store/middleware/thunk/ui/view/feed';
+import {
+  loadMoments,
+  unloadMoments,
+} from 'enevti-app/store/middleware/thunk/ui/view/moment';
+import { AppAsyncThunk } from 'enevti-app/types/store/AppAsyncThunk';
+import {
+  isFeedUndefined,
+  selectFeedView,
+} from 'enevti-app/store/slices/ui/view/feed';
+import {
+  isMomentUndefined,
+  selectMomentView,
+} from 'enevti-app/store/slices/ui/view/moment';
+import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
 
 const AnimatedFlatList =
-  Animated.createAnimatedComponent<FlatListProps<FeedItem>>(FlatList);
+  Animated.createAnimatedComponent<FlatListProps<any>>(FlatList);
 
 type Props = StackScreenProps<RootStackParamList, 'Feed'>;
 
@@ -38,54 +53,62 @@ export default function Feed({
   onScroll,
   headerHeight,
 }: FeedProps) {
+  const dispatch = useDispatch();
   const styles = React.useMemo(() => makeStyles(headerHeight), [headerHeight]);
   const insets = useSafeAreaInsets();
   const feedHeight = hp('24%', insets) + wp('95%', insets);
-
-  const [feedItem, setFeedItem] = React.useState<Feeds>();
-  const [momentsItem, setMomentsItem] = React.useState<Moments>();
   const [refreshing, setRefreshing] = React.useState<boolean>(false);
+  const feedRef = useAnimatedRef<FlatList>();
+
+  const feeds = useSelector(selectFeedView);
+  const feedsUndefined = useSelector(isFeedUndefined);
+  const moments = useSelector(selectMomentView);
+  const momentsUndefined = useSelector(isMomentUndefined);
+
+  const handleLoadMoment = React.useCallback(
+    (reload: boolean = false) => {
+      return dispatch(loadMoments({ reload }));
+    },
+    [dispatch],
+  ) as AppAsyncThunk;
+
+  const handleLoadFeed = React.useCallback(
+    (reload: boolean = false) => {
+      return dispatch(loadFeeds({ reload }));
+    },
+    [dispatch],
+  ) as AppAsyncThunk;
+
+  const onLoaded = React.useCallback(
+    async (reload: boolean = false) => {
+      setRefreshing(true);
+      await handleLoadFeed(reload).unwrap();
+      await handleLoadMoment(reload).unwrap();
+      feedRef.current?.scrollToOffset({ offset: 1 });
+      setRefreshing(false);
+    },
+    [handleLoadFeed, handleLoadMoment, feedRef],
+  );
+
+  React.useEffect(() => {
+    onLoaded();
+    return function cleanup() {
+      dispatch(unloadMoments());
+      dispatch(unloadFeeds());
+    };
+  }, [onLoaded, dispatch]);
 
   const handleRefresh = async () => {
     try {
-      setRefreshing(true);
-      await onFeedScreenLoaded();
-      await getMyBasePersona(true);
-      await getMyProfile(true);
-    } catch (err: any) {
-      handleError(err);
-    } finally {
-      setRefreshing(false);
-    }
-  };
-
-  const onFeedScreenLoaded = async () => {
-    try {
-      const feed = await getFeedList();
-      const moments = await getMomentsList();
-      if (feed) {
-        setFeedItem(feed);
-      }
-      if (moments) {
-        setMomentsItem(moments);
-      }
+      onLoaded(true);
     } catch (err: any) {
       handleError(err);
     }
   };
-
-  React.useEffect(() => {
-    try {
-      onFeedScreenLoaded();
-      getMyBasePersona();
-    } catch (err: any) {
-      handleError(err);
-    }
-  }, []);
 
   const ListHeaderComponent = React.useCallback(
-    () => <AppRecentMoments moments={momentsItem} />,
-    [momentsItem],
+    () => <AppRecentMoments moments={moments} isUndefined={momentsUndefined} />,
+    [moments, momentsUndefined],
   );
 
   const renderItem = React.useCallback(
@@ -107,28 +130,35 @@ export default function Feed({
   return (
     <AppView darken withLoader>
       <View style={styles.textContainer}>
-        <AnimatedFlatList
-          onScroll={onScroll}
-          scrollEventThrottle={16}
-          data={feedItem}
-          ListHeaderComponent={ListHeaderComponent}
-          renderItem={renderItem}
-          keyExtractor={keyExtractor}
-          removeClippedSubviews={true}
-          initialNumToRender={2}
-          maxToRenderPerBatch={5}
-          updateCellsBatchingPeriod={100}
-          windowSize={5}
-          getItemLayout={getItemLayout}
-          contentContainerStyle={styles.listContentContainer}
-          refreshControl={
-            <RefreshControl
-              refreshing={refreshing}
-              onRefresh={handleRefresh}
-              progressViewOffset={headerHeight}
-            />
-          }
-        />
+        {!feedsUndefined ? (
+          <AnimatedFlatList
+            ref={feedRef}
+            onScroll={onScroll}
+            scrollEventThrottle={16}
+            data={feeds}
+            ListHeaderComponent={ListHeaderComponent}
+            renderItem={renderItem}
+            keyExtractor={keyExtractor}
+            removeClippedSubviews={true}
+            initialNumToRender={6}
+            maxToRenderPerBatch={10}
+            updateCellsBatchingPeriod={50}
+            windowSize={11}
+            getItemLayout={getItemLayout}
+            contentContainerStyle={styles.listContentContainer}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={handleRefresh}
+                progressViewOffset={headerHeight}
+              />
+            }
+          />
+        ) : (
+          <View style={styles.loaderContainer}>
+            <AppActivityIndicator animating />
+          </View>
+        )}
       </View>
     </AppView>
   );
@@ -141,5 +171,11 @@ const makeStyles = (headerHeight: number) =>
     },
     listContentContainer: {
       paddingTop: headerHeight,
+    },
+    loaderContainer: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: '100%',
+      height: '100%',
     },
   });

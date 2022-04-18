@@ -9,10 +9,12 @@ const parseLastFetch = (value: number, unit: 'second' | 'minute' | 'hour') => {
   }
 };
 
-const defaultTreshold = parseLastFetch(10, 'minute');
+const defaultTimeout = parseLastFetch(10, 'minute');
 
-export const lastFetchTreshold = {
-  persona: defaultTreshold,
-  profile: defaultTreshold,
+export const lastFetchTimeout = {
+  persona: defaultTimeout,
+  profile: defaultTimeout,
   display: parseLastFetch(15, 'minute'),
+  feed: defaultTimeout,
+  moment: defaultTimeout,
 };

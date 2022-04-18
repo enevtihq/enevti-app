@@ -14,7 +14,7 @@ import {
   setLastScreenActive,
 } from 'enevti-app/store/slices/ui/screen/lastActive';
 import { lockScreen } from 'enevti-app/store/slices/ui/screen/locked';
-import { lastFetchTreshold } from 'enevti-app/utils/constant/lastFetch';
+import { lastFetchTimeout } from 'enevti-app/utils/constant/lastFetch';
 
 export default function useScreenDisplayed() {
   const dispatch = useDispatch();
@@ -26,7 +26,7 @@ export default function useScreenDisplayed() {
     (nextState: string) => {
       if (!display.maximized && nextState === 'active') {
         dispatch(setDisplayMaximized());
-        if (auth.type && Date.now() - lastActive > lastFetchTreshold.display) {
+        if (auth.type && Date.now() - lastActive > lastFetchTimeout.display) {
           dispatch(lockScreen());
         }
         dispatch(resetLastScreenActive());
