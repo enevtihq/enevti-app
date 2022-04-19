@@ -1,4 +1,7 @@
-import { getBasePersonaByRouteParam } from 'enevti-app/service/enevti/persona';
+import {
+  getBasePersonaByRouteParam,
+  getMyBasePersona,
+} from 'enevti-app/service/enevti/persona';
 import { getMyProfile, getProfile } from 'enevti-app/service/enevti/profile';
 import { handleError } from 'enevti-app/utils/error/handle';
 import { selectMyPersonaCache } from 'enevti-app/store/slices/entities/cache/myPersona';
@@ -49,10 +52,11 @@ export const loadProfile = createAsyncThunk<
           : defaultArgType;
       reload && dispatch(showModalLoader());
       if (routeParam.arg === myPersona[argType]) {
+        const personaResponse = await getMyBasePersona(reload, signal);
         const profileResponse = await getMyProfile(reload, signal);
         if (profileResponse !== undefined) {
           dispatch(
-            setMyProfileView({ ...profileResponse, persona: myPersona }),
+            setMyProfileView({ ...profileResponse, persona: personaResponse }),
           );
           dispatch(setMyProfileViewLoaded(true));
         }

@@ -19,11 +19,14 @@ import { selectAuthState } from 'enevti-app/store/slices/auth';
 import { selectLocalSession } from 'enevti-app/store/slices/session/local';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
+import { COIN_NAME } from 'enevti-app/components/atoms/brand/AppBrandConstant';
 
 type ProfileRoute = StackScreenProps<
   RootStackParamList,
   'Profile'
 >['route']['params'];
+
+const PREFIX = COIN_NAME.toLowerCase();
 
 async function fetchPersona(
   address: string,
@@ -34,7 +37,7 @@ async function fetchPersona(
     photo: '',
     address: address,
     base32: addressToBase32(address),
-    username: 'aldhosutra',
+    username: '',
   };
 }
 
@@ -62,15 +65,18 @@ export function parsePersonaLabel(persona: Persona) {
 export function addressToBase32(address: string) {
   return Lisk.cryptography.getBase32AddressFromAddress(
     Buffer.from(address, 'hex'),
+    PREFIX,
   );
 }
 
 export function base32ToAddress(base32: string) {
-  return Lisk.cryptography.getAddressFromBase32Address(base32).toString('hex');
+  return Lisk.cryptography
+    .getAddressFromBase32Address(base32, PREFIX)
+    .toString('hex');
 }
 
 export function passphraseToBase32(passphrase: string) {
-  return Lisk.cryptography.getBase32AddressFromPassphrase(passphrase);
+  return Lisk.cryptography.getBase32AddressFromPassphrase(passphrase, PREFIX);
 }
 
 export function passphraseToAddress(passphrase: string) {
