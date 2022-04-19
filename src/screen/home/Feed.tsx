@@ -170,6 +170,7 @@ export default function Feed({
             scrollEventThrottle={16}
             data={feeds}
             ListHeaderComponent={ListHeaderComponent}
+            showsVerticalScrollIndicator={false}
             renderItem={renderItem}
             keyExtractor={keyExtractor}
             removeClippedSubviews={true}
