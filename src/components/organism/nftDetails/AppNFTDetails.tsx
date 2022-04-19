@@ -86,9 +86,10 @@ export default function AppNFTDetails({
 
   const onRefresh = React.useCallback(() => {
     onNFTDetailsScreenLoaded(true);
-    activityRef.current?.scrollToOffset({ offset: 1 });
+    summaryRef.current?.scrollTo({ x: 0, y: 0 });
+    activityRef.current?.scrollToOffset({ offset: 0 });
     onScrollWorklet && onScrollWorklet(0);
-  }, [onNFTDetailsScreenLoaded, activityRef, onScrollWorklet]);
+  }, [onNFTDetailsScreenLoaded, summaryRef, activityRef, onScrollWorklet]);
 
   React.useEffect(() => {
     const promise = onNFTDetailsScreenLoaded();

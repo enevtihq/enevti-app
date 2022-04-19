@@ -114,8 +114,8 @@ export default function AppCollection({
 
   const onRefresh = React.useCallback(() => {
     onCollectionScreenLoaded(true);
-    mintedRef.current?.scrollToOffset({ offset: 1 });
-    activityRef.current?.scrollToOffset({ offset: 1 });
+    mintedRef.current?.scrollToOffset({ offset: 0 });
+    activityRef.current?.scrollToOffset({ offset: 0 });
     onScrollWorklet && onScrollWorklet(0);
   }, [onCollectionScreenLoaded, mintedRef, activityRef, onScrollWorklet]);
 

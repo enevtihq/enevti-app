@@ -88,7 +88,7 @@ export default function Feed({
       setRefreshing(true);
       await handleLoadFeed(reload).unwrap();
       await handleLoadMoment(reload).unwrap();
-      reload && feedRef.current?.scrollToOffset({ offset: 1 });
+      reload && feedRef.current?.scrollToOffset({ offset: 0 });
       setRefreshing(false);
     },
     [handleLoadFeed, handleLoadMoment, feedRef],

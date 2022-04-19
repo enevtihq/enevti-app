@@ -236,8 +236,9 @@ export default function AppProfile({
 
   const onRefresh = React.useCallback(() => {
     onProfileScreenLoaded(true);
-    ownedRef.current?.scrollToOffset({ offset: 1 });
-    onSaleRef.current?.scrollToOffset({ offset: 1 });
+    ownedRef.current?.scrollToOffset({ offset: 0 });
+    onSaleRef.current?.scrollToOffset({ offset: 0 });
+    collectionRef.current?.scrollToOffset({ offset: 0 });
     onBeginDragWorklet && onBeginDragWorklet(0);
     onScrollWorklet && onScrollWorklet(0);
     onEndDragWorklet && onEndDragWorklet(0);
@@ -246,6 +247,7 @@ export default function AppProfile({
     onProfileScreenLoaded,
     ownedRef,
     onSaleRef,
+    collectionRef,
     onScrollWorklet,
     onBeginDragWorklet,
     onEndDragWorklet,

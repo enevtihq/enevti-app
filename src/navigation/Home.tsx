@@ -137,11 +137,17 @@ export default function Home({ navigation }: Props) {
       if (ctx.current === undefined) {
         ctx.current = 0;
       }
-      tabScrollY[0].value = diffClamp(
-        ctx.current + diff,
-        0,
-        headerHeight + insets.top,
-      );
+      if (event.contentOffset.y === 0) {
+        ctx.prevY = 0;
+        ctx.current = 0;
+        tabScrollY[0].value = 0;
+      } else {
+        tabScrollY[0].value = diffClamp(
+          ctx.current + diff,
+          0,
+          headerHeight + insets.top,
+        );
+      }
     },
     onBeginDrag: (event, ctx) => {
       ctx.prevY = event.contentOffset.y;
@@ -194,11 +200,17 @@ export default function Home({ navigation }: Props) {
   const myProfileOnScrollWorklet = React.useCallback((val: number) => {
     'worklet';
     const diff = val - myProfilePrevYSharedValue.value;
-    tabScrollY[3].value = diffClamp(
-      myProfileInterpolatedYSharedValue.value + diff,
-      0,
-      headerHeight + insets.top,
-    );
+    if (val === 0) {
+      myProfilePrevYSharedValue.value = 0;
+      myProfileInterpolatedYSharedValue.value = 0;
+      tabScrollY[3].value = 0;
+    } else {
+      tabScrollY[3].value = diffClamp(
+        myProfileInterpolatedYSharedValue.value + diff,
+        0,
+        headerHeight + insets.top,
+      );
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
