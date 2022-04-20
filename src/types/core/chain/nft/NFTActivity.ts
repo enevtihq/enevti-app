@@ -1,4 +1,4 @@
-import { Persona } from '../service/enevti/persona';
+import { Persona } from '../../account/persona';
 import { NFTPrice } from './NFTPrice';
 
 export type NFTActivity = {

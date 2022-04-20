@@ -2,7 +2,7 @@ import RNCalendarEvents, {
   CalendarEventWritable,
 } from 'react-native-calendar-events';
 import i18n from 'enevti-app/translations/i18n';
-import { NFT } from 'enevti-app/types/nft';
+import { NFT } from 'enevti-app/types/core/chain/nft';
 import nftToRedeemCalendarTitle from 'enevti-app/utils/date/nftToRedeemCalendarTitle';
 import { store } from 'enevti-app/store/state';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';

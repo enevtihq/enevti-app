@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
 import { RootState } from 'enevti-app/store/state';
-import { Moments } from 'enevti-app/types/service/enevti/feed';
+import { Moments } from 'enevti-app/types/core/service/feed';
 
 type MomentViewState = { loaded: boolean; items: Moments };
 

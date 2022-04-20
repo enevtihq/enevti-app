@@ -1,5 +1,5 @@
 import { StackScreenProps } from '@react-navigation/stack';
-import { Collection } from 'enevti-app/types/service/enevti/collection';
+import { Collection } from 'enevti-app/types/core/chain/collection';
 import { RootStackParamList } from 'enevti-app/navigation';
 import sleep from 'enevti-app/utils/dummy/sleep';
 import { getDummyCollectionFullData } from './dummy';

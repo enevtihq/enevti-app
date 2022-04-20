@@ -3,7 +3,7 @@ import {
   selectGoogleAPITokenState,
 } from 'enevti-app/store/slices/session/google';
 import { store } from 'enevti-app/store/state';
-import { EncryptedData } from 'enevti-app/types/utils/cryptography';
+import { EncryptedData } from 'enevti-app/types/core/service/cryptography';
 import { isInternetReachable } from 'enevti-app/utils/network';
 import { getGoogleAccessToken, googleInit, googleSignIn } from './signIn';
 

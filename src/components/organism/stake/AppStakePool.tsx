@@ -13,7 +13,7 @@ import Animated, {
   useAnimatedScrollHandler,
   useSharedValue,
 } from 'react-native-reanimated';
-import { StakerItem } from 'enevti-app/types/service/enevti/stake';
+import { StakerItem } from 'enevti-app/types/core/chain/stake';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { hp } from 'enevti-app/utils/imageRatio';
@@ -27,7 +27,7 @@ import {
   loadStakePool,
   unloadStakePool,
 } from 'enevti-app/store/middleware/thunk/ui/view/stakePool';
-import { AppAsyncThunk } from 'enevti-app/types/store/AppAsyncThunk';
+import { AppAsyncThunk } from 'enevti-app/types/ui/store/AppAsyncThunk';
 import AppStakerItem, {
   STAKER_ITEM_HEIGHT_PERCENTAGE,
 } from 'enevti-app/components/organism/stake/AppStakerItem';

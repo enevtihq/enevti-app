@@ -12,7 +12,7 @@ import { PROFILE_HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/organism
 import { TOP_TABBAR_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppTopTabBar';
 import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { CollectionBase } from 'enevti-app/types/service/enevti/collection';
+import { CollectionBase } from 'enevti-app/types/core/chain/collection';
 import AppListItem, {
   LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE,
 } from 'enevti-app/components/molecules/list/AppListItem';

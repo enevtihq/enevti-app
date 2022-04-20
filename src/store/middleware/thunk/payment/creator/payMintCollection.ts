@@ -10,11 +10,11 @@ import {
 } from 'enevti-app/store/slices/payment';
 import { AsyncThunkAPI } from 'enevti-app/store/state';
 import { calculateGasFee } from 'enevti-app/service/enevti/transaction';
-import { Collection } from 'enevti-app/types/service/enevti/collection';
-import { MintCollectionTransaction } from 'enevti-app/types/service/enevti/transaction';
+import { Collection } from 'enevti-app/types/core/chain/collection';
 import i18n from 'enevti-app/translations/i18n';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { handleError } from 'enevti-app/utils/error/handle';
+import { MintNFTAsset } from 'enevti-app/types/core/asset/mint_nft_asset';
 
 type PayMintCollectionPayload = { collection: Collection; quantity: number };
 
@@ -27,7 +27,7 @@ export const payMintCollection = createAsyncThunk<
     dispatch(setPaymentStatus({ type: 'initiated', message: '' }));
     dispatch(showPayment());
 
-    const transactionPayload: MintCollectionTransaction = {
+    const transactionPayload: MintNFTAsset = {
       id: payload.collection.id,
       quantity: payload.quantity,
     };

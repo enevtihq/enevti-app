@@ -17,7 +17,7 @@ import useDimension from 'enevti-app/utils/hook/useDimension';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
-import { AppAsyncThunk } from 'enevti-app/types/store/AppAsyncThunk';
+import { AppAsyncThunk } from 'enevti-app/types/ui/store/AppAsyncThunk';
 import {
   isNFTDetailsUndefined,
   selectNFTDetailsView,

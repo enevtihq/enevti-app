@@ -1,7 +1,7 @@
 import { View, StyleSheet } from 'react-native';
 import React from 'react';
 import AppMenuContainer from 'enevti-app/components/atoms/menu/AppMenuContainer';
-import { Collection } from 'enevti-app/types/service/enevti/collection';
+import { Collection } from 'enevti-app/types/core/chain/collection';
 import AppTextHeading2 from 'enevti-app/components/atoms/text/AppTextHeading2';
 import { useTheme } from 'react-native-paper';
 import { Theme } from 'enevti-app/theme/default';

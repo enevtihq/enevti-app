@@ -2,8 +2,8 @@ import { StyleSheet } from 'react-native';
 import React from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { NFTBase } from 'enevti-app/types/nft';
-import { TemplateArgs } from 'enevti-app/types/nft/NFTTemplate';
+import { NFTBase } from 'enevti-app/types/core/chain/nft';
+import { TemplateArgs } from 'enevti-app/types/core/chain/nft/NFTTemplate';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 
 interface PartitionIconProps {

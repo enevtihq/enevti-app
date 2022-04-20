@@ -1,5 +1,5 @@
 import i18n from 'enevti-app/translations/i18n';
-import { NFT } from 'enevti-app/types/nft';
+import { NFT } from 'enevti-app/types/core/chain/nft';
 import { dateOfNearestDay } from './calendar';
 
 type RedeemTimeOffset = {

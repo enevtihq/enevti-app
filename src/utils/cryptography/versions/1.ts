@@ -6,7 +6,7 @@ import {
   DecryptedData,
   EncryptedFile,
   DecryptedFile,
-} from 'enevti-app/types/utils/cryptography';
+} from 'enevti-app/types/core/service/cryptography';
 import sleep from 'enevti-app/utils/dummy/sleep';
 
 const VERSION = 1;

@@ -5,7 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Divider, TouchableRipple, useTheme } from 'react-native-paper';
 import { Theme } from 'enevti-app/theme/default';
 import { DimensionFunction } from 'enevti-app/utils/imageRatio';
-import { Collection } from 'enevti-app/types/service/enevti/collection';
+import { Collection } from 'enevti-app/types/core/chain/collection';
 import AppNetworkImage from 'enevti-app/components/atoms/image/AppNetworkImage';
 import { IPFStoURL } from 'enevti-app/service/ipfs';
 import AppCollectionMintingAvailable from './AppCollectionMintingAvailable';

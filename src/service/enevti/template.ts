@@ -1,5 +1,5 @@
 import sleep from 'enevti-app/utils/dummy/sleep';
-import { NFTTemplateAsset } from 'enevti-app/types/nft/NFTTemplate';
+import { NFTTemplateAsset } from 'enevti-app/types/core/chain/nft/NFTTemplate';
 import enevtiNFTTemplate from 'enevti-app/components/atoms/nft/template/enevtiNFTTemplate';
 import blankNFTTemplate from 'enevti-app/components/atoms/nft/template/blankNFTTemplate';
 

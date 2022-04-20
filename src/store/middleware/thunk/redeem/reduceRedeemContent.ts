@@ -3,7 +3,7 @@ import {
   showModalLoader,
 } from 'enevti-app/store/slices/ui/global/modalLoader';
 import { AppThunk } from 'enevti-app/store/state';
-import { NFT } from 'enevti-app/types/nft';
+import { NFT } from 'enevti-app/types/core/chain/nft';
 import {
   STORAGE_PATH_REDEEM,
   IOS_TEMP_FOLDER,

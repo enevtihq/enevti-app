@@ -3,7 +3,7 @@ import { NFTType } from './NFTType';
 import { NFTTemplateData } from './NFTTemplate';
 import { NFTUtility } from './NFTUtility';
 import { NFTPrice } from './NFTPrice';
-import { Persona } from '../service/enevti/persona';
+import { Persona } from '../../account/persona';
 import { NFTPartition } from './NFTPartition';
 import { NFTRedeem } from './NFTRedeem';
 import { NFTRoyalty } from './NFTRoyalty';

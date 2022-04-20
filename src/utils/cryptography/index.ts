@@ -8,7 +8,7 @@ import {
   DecryptedFile,
   EncryptedData,
   EncryptedFile,
-} from 'enevti-app/types/utils/cryptography';
+} from 'enevti-app/types/core/service/cryptography';
 import { appCrypto } from './versions';
 import i18n from 'enevti-app/translations/i18n';
 

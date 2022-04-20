@@ -1,4 +1,4 @@
-import { StakePoolData } from 'enevti-app/types/service/enevti/stake';
+import { StakePoolData } from 'enevti-app/types/core/chain/stake';
 import {
   getBasePersona,
   getBasePersonaByUsername,

@@ -7,7 +7,7 @@ import { Theme } from 'enevti-app/theme/default';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
 import { useTranslation } from 'react-i18next';
-import { FeedItem } from 'enevti-app/types/service/enevti/feed';
+import { FeedItem } from 'enevti-app/types/core/service/feed';
 
 interface AppFeedFooterProps {
   feed: FeedItem;

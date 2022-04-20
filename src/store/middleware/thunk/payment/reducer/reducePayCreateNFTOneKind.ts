@@ -6,7 +6,7 @@ import {
   showModalLoader,
 } from 'enevti-app/store/slices/ui/global/modalLoader';
 import { AppThunk } from 'enevti-app/store/state';
-import { CreateNFTOneKind } from 'enevti-app/types/store/CreateNFTQueue';
+import { CreateNFTOneKind } from 'enevti-app/types/ui/store/CreateNFTQueue';
 
 export const reducePayCreateNFTOneKind =
   (): AppThunk => async (dispatch, getState) => {

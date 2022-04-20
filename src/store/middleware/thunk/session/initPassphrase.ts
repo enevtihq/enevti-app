@@ -11,7 +11,7 @@ import {
   passphraseToBase32,
   passphraseToAddress,
 } from 'enevti-app/service/enevti/persona';
-import { EncryptedData } from 'enevti-app/types/utils/cryptography';
+import { EncryptedData } from 'enevti-app/types/core/service/cryptography';
 
 export const initPassphrase =
   (

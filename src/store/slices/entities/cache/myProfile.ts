@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
-import { Profile } from 'enevti-app/types/service/enevti/profile';
+import { Profile } from 'enevti-app/types/core/account/profile';
 import { RootState } from 'enevti-app/store/state';
 
 const initialState: Profile & { lastFetch: number } = {

@@ -4,7 +4,7 @@ import AppNFTRenderer from './AppNFTRenderer';
 import AppPaginationIndicator from 'enevti-app/components/atoms/pagination/AppPaginationIndicator';
 import { hp } from 'enevti-app/utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { NFTBase } from 'enevti-app/types/nft';
+import { NFTBase } from 'enevti-app/types/core/chain/nft';
 
 interface AppNFTListRedererProps {
   nft: NFTBase[];

@@ -6,7 +6,7 @@ import {
   PaymentFee,
   PaymentState,
   PaymentStatus,
-} from 'enevti-app/types/store/Payment';
+} from 'enevti-app/types/ui/store/Payment';
 import { RootState } from 'enevti-app/store/state';
 
 const initialState: PaymentState = {

@@ -23,7 +23,7 @@ import { AppThunk, AsyncThunkAPI } from 'enevti-app/store/state';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
-import { Persona } from 'enevti-app/types/service/enevti/persona';
+import { Persona } from 'enevti-app/types/core/account/persona';
 
 type ProfileRoute = StackScreenProps<
   RootStackParamList,

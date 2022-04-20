@@ -1,4 +1,4 @@
-import { Persona } from './persona';
+import { Persona } from '../account/persona';
 
 export type StakerItem = {
   persona: Persona;

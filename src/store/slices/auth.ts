@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
 import { RootState } from 'enevti-app/store/state';
-import { EncryptedData } from 'enevti-app/types/utils/cryptography';
+import { EncryptedData } from 'enevti-app/types/core/service/cryptography';
 
 const authSlice = createSlice({
   name: 'auth',

@@ -1,8 +1,8 @@
 import { StyleSheet, View } from 'react-native';
 import React from 'react';
-import { NFTBase } from 'enevti-app/types/nft';
+import { NFTBase } from 'enevti-app/types/core/chain/nft';
 import NFTImageData from './contentType/NFTImageData';
-import { TemplateArgs } from 'enevti-app/types/nft/NFTTemplate';
+import { TemplateArgs } from 'enevti-app/types/core/chain/nft/NFTTemplate';
 import mimeMapping from 'enevti-app/utils/mime/mimeMapping';
 
 interface NFTDataProps {

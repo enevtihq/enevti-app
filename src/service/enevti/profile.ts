@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js';
-import { Profile } from 'enevti-app/types/service/enevti/profile';
+import { Profile } from 'enevti-app/types/core/account/profile';
 import { store } from 'enevti-app/store/state';
 import sleep from 'enevti-app/utils/dummy/sleep';
 import { getDummyCollectionBaseDate, getDummyNFTData } from './dummy';
@@ -24,7 +24,7 @@ async function fetchProfile(
 
   const ownedNFT = [];
   const onsaleNFT = [];
-  const collection: any[] = [];
+  const collection = [];
 
   for (let i = 0; i < 10; i++) {
     ownedNFT.push(getDummyNFTData());

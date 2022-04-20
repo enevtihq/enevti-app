@@ -4,7 +4,7 @@ import AppIconComponent, {
   iconMap,
 } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import AppListPickerMenu from 'enevti-app/components/molecules/listpicker/AppListPickerMenu';
-import { PickerItem } from 'enevti-app/types/screen/PickerItem';
+import { PickerItem } from 'enevti-app/types/ui/screen/PickerItem';
 import AppFormTextInputWithError from 'enevti-app/components/molecules/AppFormTextInputWithError';
 import { TouchableRipple, useTheme } from 'react-native-paper';
 import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';

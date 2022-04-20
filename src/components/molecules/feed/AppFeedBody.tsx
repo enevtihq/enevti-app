@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { FeedItem } from 'enevti-app/types/service/enevti/feed';
+import { FeedItem } from 'enevti-app/types/core/service/feed';
 import { hp } from 'enevti-app/utils/imageRatio';
 import AppNFTListRenderer from 'enevti-app/components/molecules/nft/AppNFTListRenderer';
 import AppNFTRenderer from 'enevti-app/components/molecules/nft/AppNFTRenderer';

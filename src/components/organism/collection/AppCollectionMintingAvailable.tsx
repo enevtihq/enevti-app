@@ -1,7 +1,7 @@
 import { StyleSheet, View } from 'react-native';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Collection } from 'enevti-app/types/service/enevti/collection';
+import { Collection } from 'enevti-app/types/core/chain/collection';
 import { ProgressBar, useTheme } from 'react-native-paper';
 import { Theme } from 'enevti-app/theme/default';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';

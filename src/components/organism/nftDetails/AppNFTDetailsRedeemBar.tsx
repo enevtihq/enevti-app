@@ -1,6 +1,6 @@
 import { View, StyleSheet } from 'react-native';
 import React from 'react';
-import { NFT } from 'enevti-app/types/nft';
+import { NFT } from 'enevti-app/types/core/chain/nft';
 import { Theme } from 'enevti-app/theme/default';
 import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
 import Color from 'color';

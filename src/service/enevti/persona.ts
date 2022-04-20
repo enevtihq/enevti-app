@@ -1,4 +1,4 @@
-import { Persona } from 'enevti-app/types/service/enevti/persona';
+import { Persona } from 'enevti-app/types/core/account/persona';
 import { store } from 'enevti-app/store/state';
 import {
   decryptWithDevice,

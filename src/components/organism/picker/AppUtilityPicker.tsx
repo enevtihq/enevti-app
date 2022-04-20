@@ -1,5 +1,5 @@
 import React from 'react';
-import { PickerItem } from 'enevti-app/types/screen/PickerItem';
+import { PickerItem } from 'enevti-app/types/ui/screen/PickerItem';
 import { useTranslation } from 'react-i18next';
 import AppListPicker from 'enevti-app/components/molecules/listpicker/AppListPicker';
 import { shallowEqual } from 'react-redux';

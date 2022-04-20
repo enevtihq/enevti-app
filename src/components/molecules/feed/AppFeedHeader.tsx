@@ -9,7 +9,7 @@ import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getCoinName } from 'enevti-app/components/atoms/brand/AppBrandConstant';
 import { useTranslation } from 'react-i18next';
-import { FeedItem } from 'enevti-app/types/service/enevti/feed';
+import { FeedItem } from 'enevti-app/types/core/service/feed';
 import { parseAmount } from 'enevti-app/utils/format/amount';
 import { Divider, useTheme } from 'react-native-paper';
 import { Theme } from 'enevti-app/theme/default';

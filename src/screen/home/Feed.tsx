@@ -27,7 +27,7 @@ import {
   loadMoments,
   unloadMoments,
 } from 'enevti-app/store/middleware/thunk/ui/view/moment';
-import { AppAsyncThunk } from 'enevti-app/types/store/AppAsyncThunk';
+import { AppAsyncThunk } from 'enevti-app/types/ui/store/AppAsyncThunk';
 import {
   isFeedUndefined,
   selectFeedView,

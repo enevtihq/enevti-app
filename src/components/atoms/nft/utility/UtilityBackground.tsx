@@ -1,8 +1,8 @@
 import { StyleSheet } from 'react-native';
 import React from 'react';
 import FastImage from 'react-native-fast-image';
-import { NFTBase } from 'enevti-app/types/nft';
-import { TemplateArgs } from 'enevti-app/types/nft/NFTTemplate';
+import { NFTBase } from 'enevti-app/types/core/chain/nft';
+import { TemplateArgs } from 'enevti-app/types/core/chain/nft/NFTTemplate';
 
 interface UtilityBackgroundProps {
   nft: NFTBase;

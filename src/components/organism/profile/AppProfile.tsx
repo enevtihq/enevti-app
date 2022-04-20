@@ -26,10 +26,10 @@ import {
   loadProfile,
   unloadProfile,
 } from 'enevti-app/store/middleware/thunk/ui/view/profile';
-import { Profile } from 'enevti-app/types/service/enevti/profile';
-import { Persona } from 'enevti-app/types/service/enevti/persona';
+import { Profile } from 'enevti-app/types/core/account/profile';
+import { Persona } from 'enevti-app/types/core/account/persona';
 import CollectionListComponent from './tabs/CollectionListComponent';
-import { AppAsyncThunk } from 'enevti-app/types/store/AppAsyncThunk';
+import { AppAsyncThunk } from 'enevti-app/types/ui/store/AppAsyncThunk';
 import { RouteProp } from '@react-navigation/native';
 
 const noDisplay = 'none';

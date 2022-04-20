@@ -7,13 +7,13 @@ import {
 } from 'enevti-app/store/slices/payment';
 import { AsyncThunkAPI } from 'enevti-app/store/state';
 import { calculateGasFee } from 'enevti-app/service/enevti/transaction';
-import { AddStakeTransaction } from 'enevti-app/types/service/enevti/transaction';
 import i18n from 'enevti-app/translations/i18n';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { parsePersonaLabel } from 'enevti-app/service/enevti/persona';
-import { Persona } from 'enevti-app/types/service/enevti/persona';
-import { NFTPrice } from 'enevti-app/types/nft/NFTPrice';
+import { Persona } from 'enevti-app/types/core/account/persona';
+import { NFTPrice } from 'enevti-app/types/core/chain/nft/NFTPrice';
 import { handleError } from 'enevti-app/utils/error/handle';
+import { AddStakeAsset } from 'enevti-app/types/core/asset/add_stake_asset';
 
 type PayAddStakePayload = { persona: Persona; stake: NFTPrice };
 
@@ -26,7 +26,7 @@ export const payAddStake = createAsyncThunk<
     dispatch(setPaymentStatus({ type: 'initiated', message: '' }));
     dispatch(showPayment());
 
-    const transactionPayload: AddStakeTransaction = {
+    const transactionPayload: AddStakeAsset = {
       address: payload.persona.address,
       amount: payload.stake,
     };

@@ -6,14 +6,14 @@ import {
   setPaymentAction,
   showPayment,
 } from 'enevti-app/store/slices/payment';
-import { CreateNFTOneKind } from 'enevti-app/types/store/CreateNFTQueue';
+import { CreateNFTOneKind } from 'enevti-app/types/ui/store/CreateNFTQueue';
 import { AsyncThunkAPI } from 'enevti-app/store/state';
 import { calculateGasFee } from 'enevti-app/service/enevti/transaction';
-import { CreateNFTOneKindTransaction } from 'enevti-app/types/service/enevti/transaction';
 import { makeDummyIPFS } from 'enevti-app/utils/dummy/ipfs';
 import i18n from 'enevti-app/translations/i18n';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { handleError } from 'enevti-app/utils/error/handle';
+import { CreateNFTOneKindNFTAsset } from 'enevti-app/types/core/asset/create_onekind_nft_asset';
 
 export const payCreateNFTOneKind = createAsyncThunk<
   void,
@@ -61,7 +61,7 @@ export const payCreateNFTOneKind = createAsyncThunk<
     } else {
       until = 0;
     }
-    const transactionPayload: CreateNFTOneKindTransaction = {
+    const transactionPayload: CreateNFTOneKindNFTAsset = {
       name: payload.state.name,
       description: payload.state.description,
       symbol: payload.state.symbol,

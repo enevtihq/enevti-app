@@ -6,9 +6,9 @@ import {
   ViewStyle,
 } from 'react-native';
 import React from 'react';
-import { NFTBase } from 'enevti-app/types/nft';
+import { NFTBase } from 'enevti-app/types/core/chain/nft';
 import UtilityBackground from 'enevti-app/components/atoms/nft/utility/UtilityBackground';
-import { NFTTemplateItem } from 'enevti-app/types/nft/NFTTemplate';
+import { NFTTemplateItem } from 'enevti-app/types/core/chain/nft/NFTTemplate';
 import NFTData from 'enevti-app/components/atoms/nft/data/NFTData';
 import Box from 'enevti-app/components/atoms/nft/misc/Box';
 import RarityIcon from 'enevti-app/components/atoms/nft/rarity/RarityIcon';

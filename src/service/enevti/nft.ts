@@ -1,6 +1,6 @@
 import ImageCropPicker from 'react-native-image-crop-picker';
 import { handleError } from 'enevti-app/utils/error/handle';
-import { NFT } from 'enevti-app/types/nft';
+import { NFT } from 'enevti-app/types/core/chain/nft';
 import sleep from 'enevti-app/utils/dummy/sleep';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';

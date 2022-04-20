@@ -37,7 +37,7 @@ import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 import { useTranslation } from 'react-i18next';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
-import { AppAsyncThunk } from 'enevti-app/types/store/AppAsyncThunk';
+import { AppAsyncThunk } from 'enevti-app/types/ui/store/AppAsyncThunk';
 import { RootState } from 'enevti-app/store/state';
 import { RouteProp } from '@react-navigation/native';
 import { DimensionFunction } from 'enevti-app/utils/imageRatio';

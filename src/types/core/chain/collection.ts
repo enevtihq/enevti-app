@@ -1,9 +1,9 @@
-import { NFTBase } from 'enevti-app/types/nft';
-import { NFTPrice } from 'enevti-app/types/nft/NFTPrice';
-import { SocialProfile } from 'enevti-app/types/social';
-import { Persona } from './persona';
-import { NFTActivity } from 'enevti-app/types/nft/NFTActivity';
-import { NFTContent } from 'enevti-app/types/nft/NFTContent';
+import { NFTBase } from 'enevti-app/types/core/chain/nft';
+import { NFTPrice } from 'enevti-app/types/core/chain/nft/NFTPrice';
+import { Persona } from '../account/persona';
+import { NFTActivity } from 'enevti-app/types/core/chain/nft/NFTActivity';
+import { NFTContent } from 'enevti-app/types/core/chain/nft/NFTContent';
+import { SocialProfile } from 'enevti-app/types/core/account/social';
 
 export type CollectionActivity = NFTActivity & { nft: NFTBase };
 

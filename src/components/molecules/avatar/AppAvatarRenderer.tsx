@@ -9,7 +9,7 @@ import Avatar from 'enevti-app/components/atoms/avatar';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 
 import { useTheme } from 'react-native-paper';
-import { Persona } from 'enevti-app/types/service/enevti/persona';
+import { Persona } from 'enevti-app/types/core/account/persona';
 
 interface AppAvatarRendererProps {
   size: number;

@@ -1,4 +1,4 @@
-import { Moments } from 'enevti-app/types/service/enevti/feed';
+import { Moments } from 'enevti-app/types/core/service/feed';
 import sleep from 'enevti-app/utils/dummy/sleep';
 import { getDummyMomentItem } from './dummy';
 

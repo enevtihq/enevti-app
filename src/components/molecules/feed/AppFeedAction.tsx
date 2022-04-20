@@ -9,7 +9,7 @@ import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
 import { Theme } from 'enevti-app/theme/default';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from 'react-native-paper';
-import { FeedItem } from 'enevti-app/types/service/enevti/feed';
+import { FeedItem } from 'enevti-app/types/core/service/feed';
 import { parseAmount } from 'enevti-app/utils/format/amount';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';

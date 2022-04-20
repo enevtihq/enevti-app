@@ -1,6 +1,6 @@
 import { StyleSheet, Image } from 'react-native';
 import React from 'react';
-import { NFTBase } from 'enevti-app/types/nft';
+import { NFTBase } from 'enevti-app/types/core/chain/nft';
 import AppNetworkImage from 'enevti-app/components/atoms/image/AppNetworkImage';
 import { IPFStoURL } from 'enevti-app/service/ipfs';
 import { shallowEqual } from 'react-redux';

@@ -1,6 +1,4 @@
-import { NFTPrice } from 'enevti-app/types/nft/NFTPrice';
-
-export type CreateNFTOneKindTransaction = {
+export type CreateNFTOneKindNFTAsset = {
   name: string;
   description: string;
   symbol: string;
@@ -40,14 +38,4 @@ export type CreateNFTOneKindTransaction = {
   };
   quantity: number;
   mintingExpire: number;
-};
-
-export type MintCollectionTransaction = {
-  id: string;
-  quantity: number;
-};
-
-export type AddStakeTransaction = {
-  address: string;
-  amount: NFTPrice;
 };

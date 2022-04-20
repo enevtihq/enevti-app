@@ -1,7 +1,7 @@
 import React from 'react';
 import AppMenuContainer from 'enevti-app/components/atoms/menu/AppMenuContainer';
 import AppListPickerItem from './AppListPickerItem';
-import { PickerItem } from 'enevti-app/types/screen/PickerItem';
+import { PickerItem } from 'enevti-app/types/ui/screen/PickerItem';
 
 interface AppListPickerMenuProps {
   items: PickerItem[];

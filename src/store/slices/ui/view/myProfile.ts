@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
-import { Persona } from 'enevti-app/types/service/enevti/persona';
-import { Profile } from 'enevti-app/types/service/enevti/profile';
+import { Persona } from 'enevti-app/types/core/account/persona';
+import { Profile } from 'enevti-app/types/core/account/profile';
 import { RootState } from 'enevti-app/store/state';
 
 type MyProfileView = Profile & { persona: Persona };

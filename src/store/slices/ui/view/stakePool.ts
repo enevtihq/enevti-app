@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
 import { RootState } from 'enevti-app/store/state';
-import { StakePoolData } from 'enevti-app/types/service/enevti/stake';
+import { StakePoolData } from 'enevti-app/types/core/chain/stake';
 
 type StakePoolViewState = StakePoolData & { loaded: boolean };
 

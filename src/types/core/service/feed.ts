@@ -1,6 +1,6 @@
-import { NFTBase } from 'enevti-app/types/nft';
-import { NFTPrice } from 'enevti-app/types/nft/NFTPrice';
-import { Persona } from './persona';
+import { NFTBase } from 'enevti-app/types/core/chain/nft';
+import { NFTPrice } from 'enevti-app/types/core/chain/nft/NFTPrice';
+import { Persona } from '../account/persona';
 
 export interface FeedItem {
   type: string;

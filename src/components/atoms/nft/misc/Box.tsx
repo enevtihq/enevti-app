@@ -1,6 +1,6 @@
 import { View, StyleSheet } from 'react-native';
 import React from 'react';
-import { TemplateArgs } from 'enevti-app/types/nft/NFTTemplate';
+import { TemplateArgs } from 'enevti-app/types/core/chain/nft/NFTTemplate';
 
 interface BoxProps {
   args: TemplateArgs;

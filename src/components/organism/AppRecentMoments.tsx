@@ -6,7 +6,7 @@ import { hp, wp } from 'enevti-app/utils/imageRatio';
 import AppPortraitOverlayBox from 'enevti-app/components/molecules/AppPortraitOverlayBox';
 import { useTranslation } from 'react-i18next';
 import { Divider } from 'react-native-paper';
-import { Moments } from 'enevti-app/types/service/enevti/feed';
+import { Moments } from 'enevti-app/types/core/service/feed';
 import { IPFStoURL } from 'enevti-app/service/ipfs';
 import AppActivityIndicator from '../atoms/loading/AppActivityIndicator';
 

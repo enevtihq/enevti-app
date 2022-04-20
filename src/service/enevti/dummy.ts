@@ -1,14 +1,14 @@
 import {
   Collection,
   CollectionBase,
-} from 'enevti-app/types/service/enevti/collection';
+} from 'enevti-app/types/core/chain/collection';
 import { COIN_NAME } from 'enevti-app/components/atoms/brand/AppBrandConstant';
 import enevtiNFTTemplate from 'enevti-app/components/atoms/nft/template/enevtiNFTTemplate';
-import { NFT, NFTBase } from 'enevti-app/types/nft/index';
-import { NFTUtility } from 'enevti-app/types/nft/NFTUtility';
+import { NFT, NFTBase } from 'enevti-app/types/core/chain/nft/index';
+import { NFTUtility } from 'enevti-app/types/core/chain/nft/NFTUtility';
 import { shuffleArray } from 'enevti-app/utils/primitive/array';
-import { StakePoolData } from 'enevti-app/types/service/enevti/stake';
-import { FeedItem, MomentItem } from 'enevti-app/types/service/enevti/feed';
+import { StakePoolData } from 'enevti-app/types/core/chain/stake';
+import { FeedItem, MomentItem } from 'enevti-app/types/core/service/feed';
 
 export const getDummyMomentItem = (): MomentItem => {
   return {

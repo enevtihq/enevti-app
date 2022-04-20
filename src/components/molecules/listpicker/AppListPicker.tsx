@@ -3,7 +3,7 @@ import React from 'react';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import AppListPickerItem from 'enevti-app/components/molecules/listpicker/AppListPickerItem';
 import AppListPickerMenu from 'enevti-app/components/molecules/listpicker/AppListPickerMenu';
-import { PickerItem } from 'enevti-app/types/screen/PickerItem';
+import { PickerItem } from 'enevti-app/types/ui/screen/PickerItem';
 import { shallowEqual } from 'react-redux';
 import { useTheme } from 'react-native-paper';
 import { Theme } from 'enevti-app/theme/default';

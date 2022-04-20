@@ -1,6 +1,6 @@
 import { View, StyleProp, TextStyle, Pressable } from 'react-native';
 import React from 'react';
-import { Persona } from 'enevti-app/types/service/enevti/persona';
+import { Persona } from 'enevti-app/types/core/account/persona';
 import AppTextHeading4 from 'enevti-app/components/atoms/text/AppTextHeading4';
 import { parsePersonaLabel } from 'enevti-app/service/enevti/persona';
 

@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { MintCollectionTransaction } from 'enevti-app/types/service/enevti/transaction';
 import { setPaymentStatus } from 'enevti-app/store/slices/payment';
 import { AppThunk } from 'enevti-app/store/state';
 import sleep from 'enevti-app/utils/dummy/sleep';
@@ -7,6 +6,7 @@ import {
   hideModalLoader,
   showModalLoader,
 } from 'enevti-app/store/slices/ui/global/modalLoader';
+import { MintNFTAsset } from 'enevti-app/types/core/asset/mint_nft_asset';
 
 export const reducePayMintCollection =
   (): AppThunk => async (dispatch, getState) => {
@@ -16,7 +16,7 @@ export const reducePayMintCollection =
 
     const payload = JSON.parse(
       getState().payment.action.payload,
-    ) as MintCollectionTransaction;
+    ) as MintNFTAsset;
     await sleep(5000);
     // TODO: use Lisk Client to submit transaction to Blockchain
 

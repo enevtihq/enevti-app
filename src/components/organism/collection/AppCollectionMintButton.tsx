@@ -1,6 +1,6 @@
 import { View, StyleSheet, Platform } from 'react-native';
 import React from 'react';
-import { Collection } from 'enevti-app/types/service/enevti/collection';
+import { Collection } from 'enevti-app/types/core/chain/collection';
 import { DimensionFunction } from 'enevti-app/utils/imageRatio';
 import { Theme } from 'enevti-app/theme/default';
 import useDimension from 'enevti-app/utils/hook/useDimension';

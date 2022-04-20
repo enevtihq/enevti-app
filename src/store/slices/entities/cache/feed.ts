@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
 import { RootState } from 'enevti-app/store/state';
-import { Feeds } from 'enevti-app/types/service/enevti/feed';
+import { Feeds } from 'enevti-app/types/core/service/feed';
 
 type FeedCacheState = { lastFetch: number; items: Feeds };
 
