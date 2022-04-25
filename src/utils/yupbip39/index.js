@@ -8,12 +8,9 @@ function bip39() {
     test(value) {
       if (value) {
         return new Promise((resolve, reject) => {
-          const errors =
-            Lisk.passphrase.validation.getPassphraseValidationErrors(value);
+          const errors = Lisk.passphrase.validation.getPassphraseValidationErrors(value);
           if (errors.length !== 0) {
-            reject(
-              this.createError({ path: this.path, message: errors.toString() }),
-            );
+            reject(this.createError({ path: this.path, message: errors.toString() }));
           }
           resolve(true);
         });

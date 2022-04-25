@@ -23,8 +23,7 @@ const feedCacheSlice = createSlice({
   },
 });
 
-export const { setFeedItemsCache, setLastFetchFeedCache, resetFeedCache } =
-  feedCacheSlice.actions;
+export const { setFeedItemsCache, setLastFetchFeedCache, resetFeedCache } = feedCacheSlice.actions;
 export default feedCacheSlice.reducer;
 
 export const selectFeedItemsCache = createSelector(

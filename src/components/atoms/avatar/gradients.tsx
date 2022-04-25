@@ -30,16 +30,9 @@ const getCoordinations = (slope: number) => {
 export const Gradients = ({ scheme }: any) => (
   <Defs>
     {[...scheme.primary, ...scheme.secondary].map(spec => (
-      <LinearGradient
-        id={spec.id}
-        key={spec.id}
-        {...getCoordinations(spec.rotate)}>
+      <LinearGradient id={spec.id} key={spec.id} {...getCoordinations(spec.rotate)}>
         {spec.colors.map((color: string, i: number) => (
-          <Stop
-            stopColor={color}
-            offset={`${i * (100 / (spec.colors.length - 1))}%`}
-            key={i}
-          />
+          <Stop stopColor={color} offset={`${i * (100 / (spec.colors.length - 1))}%`} key={i} />
         ))}
       </LinearGradient>
     ))}

@@ -1,13 +1,6 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
-import {
-  Platform,
-  StyleProp,
-  StyleSheet,
-  TextStyle,
-  View,
-  ViewStyle,
-} from 'react-native';
+import { Platform, StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { Appbar, useTheme } from 'react-native-paper';
 import Animated from 'react-native-reanimated';
@@ -84,13 +77,9 @@ export default function AppHeader({
         ) : null}
         {title ? (
           <View style={{ marginLeft: wp('5%', insets) }}>
-            <Animated.Text style={[styles.title, textStyle]}>
-              {title}
-            </Animated.Text>
+            <Animated.Text style={[styles.title, textStyle]}>{title}</Animated.Text>
             {subtitle ? (
-              <Animated.Text style={[styles.subtitle, subtitleStyle]}>
-                {subtitle}
-              </Animated.Text>
+              <Animated.Text style={[styles.subtitle, subtitleStyle]}>{subtitle}</Animated.Text>
             ) : null}
           </View>
         ) : (
@@ -101,10 +90,7 @@ export default function AppHeader({
       </Appbar.Header>
       <Animated.View style={[styles.headerBar, backgroundStyle]} />
       {withAnimatedGradient ? (
-        <LinearGradient
-          colors={['#000000', 'transparent']}
-          style={styles.headerGradientBar}
-        />
+        <LinearGradient colors={['#000000', 'transparent']} style={styles.headerGradientBar} />
       ) : null}
     </Animated.View>
   );

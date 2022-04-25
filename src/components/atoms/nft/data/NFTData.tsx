@@ -21,19 +21,10 @@ const handleRenderNFTData = (nftObject: NFTBase, dataUri?: string) => {
   }
 };
 
-export default function NFTData({
-  nft,
-  args,
-  box = false,
-  dataUri,
-}: NFTDataProps) {
+export default function NFTData({ nft, args, box = false, dataUri }: NFTDataProps) {
   const styles = React.useMemo(() => makeStyles(box, args), [box, args]);
 
-  return (
-    <View style={styles.nftDataContainer}>
-      {handleRenderNFTData(nft, dataUri)}
-    </View>
-  );
+  return <View style={styles.nftDataContainer}>{handleRenderNFTData(nft, dataUri)}</View>;
 }
 
 const makeStyles = (box: boolean, args: TemplateArgs) =>

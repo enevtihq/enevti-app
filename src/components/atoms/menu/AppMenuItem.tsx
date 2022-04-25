@@ -24,10 +24,7 @@ export default function AppMenuItem({
 }: AppMenuItemProps) {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
-  const styles = React.useMemo(
-    () => makeStyles(theme, insets),
-    [theme, insets],
-  );
+  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
 
   return (
     <Menu.Item

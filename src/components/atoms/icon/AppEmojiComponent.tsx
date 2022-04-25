@@ -7,9 +7,6 @@ interface AppEmojiComponentProps {
   style?: StyleProp<ViewStyle>;
 }
 
-export default function AppEmojiComponent({
-  name,
-  style,
-}: AppEmojiComponentProps) {
+export default function AppEmojiComponent({ name, style }: AppEmojiComponentProps) {
   return <Emoji name={name} style={style} />;
 }

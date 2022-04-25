@@ -29,18 +29,11 @@ export default function AppTertiaryButton({
 }: AppTertiaryButtonProps): JSX.Element {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
-  const styles = React.useMemo(
-    () => makeStyles(theme, insets),
-    [theme, insets],
-  );
+  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
 
   return loading ? (
     <View style={[styles.tertiaryLoading, styles.tertiaryButton, style]}>
-      <AppActivityIndicator
-        animating={true}
-        style={styles.loading}
-        color={theme.colors.text}
-      />
+      <AppActivityIndicator animating={true} style={styles.loading} color={theme.colors.text} />
     </View>
   ) : (
     <Button

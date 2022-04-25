@@ -1,9 +1,6 @@
 import { Persona } from 'enevti-app/types/core/account/persona';
 import { store } from 'enevti-app/store/state';
-import {
-  decryptWithDevice,
-  decryptWithPassword,
-} from 'enevti-app/utils/cryptography';
+import { decryptWithDevice, decryptWithPassword } from 'enevti-app/utils/cryptography';
 import * as Lisk from '@liskhq/lisk-client';
 import { ERRORCODE } from 'enevti-app/utils/error/code';
 import sleep from 'enevti-app/utils/dummy/sleep';
@@ -19,19 +16,13 @@ import { selectAuthState } from 'enevti-app/store/slices/auth';
 import { selectLocalSession } from 'enevti-app/store/slices/session/local';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
-import { COIN_NAME } from 'enevti-app/components/atoms/brand/AppBrandConstant';
+import { COIN_NAME } from 'enevti-app/utils/constant/identifier';
 
-type ProfileRoute = StackScreenProps<
-  RootStackParamList,
-  'Profile'
->['route']['params'];
+type ProfileRoute = StackScreenProps<RootStackParamList, 'Profile'>['route']['params'];
 
 const PREFIX = COIN_NAME.toLowerCase();
 
-async function fetchPersona(
-  address: string,
-  signal?: AbortController['signal'],
-): Promise<Persona> {
+async function fetchPersona(address: string, signal?: AbortController['signal']): Promise<Persona> {
   await sleep(1000, signal);
   return {
     photo: '',
@@ -55,24 +46,15 @@ async function fetchPersonaByUsername(
 }
 
 export function parsePersonaLabel(persona: Persona) {
-  return persona.username
-    ? persona.username
-    : persona.base32
-    ? persona.base32
-    : '???';
+  return persona.username ? persona.username : persona.base32 ? persona.base32 : '???';
 }
 
 export function addressToBase32(address: string) {
-  return Lisk.cryptography.getBase32AddressFromAddress(
-    Buffer.from(address, 'hex'),
-    PREFIX,
-  );
+  return Lisk.cryptography.getBase32AddressFromAddress(Buffer.from(address, 'hex'), PREFIX);
 }
 
 export function base32ToAddress(base32: string) {
-  return Lisk.cryptography
-    .getAddressFromBase32Address(base32, PREFIX)
-    .toString('hex');
+  return Lisk.cryptography.getAddressFromBase32Address(base32, PREFIX).toString('hex');
 }
 
 export function passphraseToBase32(passphrase: string) {
@@ -90,8 +72,7 @@ export async function getMyPassphrase() {
   if (authToken && auth.encrypted) {
     const localKey = selectLocalSession(store.getState()).key;
     if (localKey) {
-      authToken = (await decryptWithPassword(authToken, localKey, auth.version))
-        .data;
+      authToken = (await decryptWithPassword(authToken, localKey, auth.version)).data;
     } else {
       throw {
         name: 'KeyError',
@@ -109,6 +90,13 @@ export async function getMyPassphrase() {
     };
   }
   return authToken;
+}
+
+export async function getMyPublicKey() {
+  const passphrase = await getMyPassphrase();
+  return Lisk.cryptography
+    .getAddressAndPublicKeyFromPassphrase(passphrase)
+    .publicKey.toString('hex');
 }
 
 export async function getMyBase32() {

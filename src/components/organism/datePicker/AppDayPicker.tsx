@@ -22,10 +22,7 @@ function Component({
   const [pickerData, setPickerData] = React.useState<any>();
 
   const dayIndex = React.useMemo(() => Array.from(Array(7).keys()), []);
-  const dayStringIndex = React.useMemo(
-    () => dayIndex.map(day => dayToString(day)),
-    [dayIndex],
-  );
+  const dayStringIndex = React.useMemo(() => dayIndex.map(day => dayToString(day)), [dayIndex]);
 
   const pickerValue = React.useMemo(
     () => [value && value[0] !== -1 ? dayToString(value[0])! : ''],
@@ -47,9 +44,7 @@ function Component({
       items={pickerData}
       value={valueToString}
       pickerValue={pickerValue}
-      onSelected={data =>
-        onSelected && onSelected([dayStringIndex.indexOf(data[0])])
-      }
+      onSelected={data => onSelected && onSelected([dayStringIndex.indexOf(data[0])])}
       onCancel={data => onCancel && onCancel([dayStringIndex.indexOf(data[0])])}
     />
   );

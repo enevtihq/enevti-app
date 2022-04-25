@@ -14,7 +14,7 @@ import { Theme } from 'enevti-app/theme/default';
 import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
 import AppIconGradient from 'enevti-app/components/molecules/AppIconGradient';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
-import { COIN_NAME } from 'enevti-app/components/atoms/brand/AppBrandConstant';
+import { COIN_NAME } from 'enevti-app/utils/constant/identifier';
 import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
@@ -39,10 +39,7 @@ export default function AppPaymentModal() {
   const dispatch = useDispatch();
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
-  const styles = React.useMemo(
-    () => makeStyles(theme, insets),
-    [theme, insets],
-  );
+  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
   const paymentSnapPoints = React.useMemo(() => ['70%'], []);
   const defaultCoin = React.useMemo(() => COIN_NAME, []);
 
@@ -54,17 +51,13 @@ export default function AppPaymentModal() {
   const paymentUndefined = useSelector(isPaymentUndefined);
 
   const paymentTotalAmountCurrency = defaultCoin;
-  const paymentTotalAmount =
-    paymentAction.amount + paymentFee.gas + paymentFee.platform;
+  const paymentTotalAmount = paymentAction.amount + paymentFee.gas + paymentFee.platform;
 
   const paymentDismiss = React.useCallback(() => {
     dispatch(resetPaymentState());
   }, [dispatch]);
 
-  const payCallback = React.useCallback(
-    () => dispatch(reducePayment()),
-    [dispatch],
-  );
+  const payCallback = React.useCallback(() => dispatch(reducePayment()), [dispatch]);
 
   const onSnackDismiss = React.useCallback(() => {
     payCallback();
@@ -117,9 +110,7 @@ export default function AppPaymentModal() {
             <AppTextHeading3 numberOfLines={1} style={styles.headerTitle}>
               {paymentAction.name}
             </AppTextHeading3>
-            <AppTextBody4
-              style={{ color: theme.colors.placeholder }}
-              numberOfLines={1}>
+            <AppTextBody4 style={{ color: theme.colors.placeholder }} numberOfLines={1}>
               {paymentAction.description}
             </AppTextBody4>
           </AppListItem>
@@ -134,9 +125,7 @@ export default function AppPaymentModal() {
             <AppPaymentItem
               title={paymentAction.name}
               description={
-                paymentAction.details
-                  ? paymentAction.details
-                  : paymentAction.description
+                paymentAction.details ? paymentAction.details : paymentAction.description
               }
               amount={paymentAction.amount}
               currency={paymentAction.currency}
@@ -186,9 +175,7 @@ export default function AppPaymentModal() {
           <Divider />
 
           <View style={styles.payButton}>
-            <AppPrimaryButton
-              loading={paymentStatus.type === 'process'}
-              onPress={payCallback}>
+            <AppPrimaryButton loading={paymentStatus.type === 'process'} onPress={payCallback}>
               {t('payment:pay')}
             </AppPrimaryButton>
           </View>
@@ -246,10 +233,7 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
     },
     divider: {
       height: 20,
-      backgroundColor: Color(theme.colors.placeholder)
-        .alpha(0.05)
-        .rgb()
-        .toString(),
+      backgroundColor: Color(theme.colors.placeholder).alpha(0.05).rgb().toString(),
     },
     bottomDivider: {
       marginBottom: hp('1%', insets),

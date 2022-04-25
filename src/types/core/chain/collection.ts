@@ -1,11 +1,33 @@
-import { NFTBase } from 'enevti-app/types/core/chain/nft';
-import { NFTPrice } from 'enevti-app/types/core/chain/nft/NFTPrice';
-import { Persona } from '../account/persona';
-import { NFTActivity } from 'enevti-app/types/core/chain/nft/NFTActivity';
-import { NFTContent } from 'enevti-app/types/core/chain/nft/NFTContent';
-import { SocialProfile } from 'enevti-app/types/core/account/social';
+import { NFTBase } from './nft';
+import { NFTPrice, NFTPriceAsset } from './nft/NFTPrice';
+import { Persona, PersonaAsset } from '../account/persona';
+import { NFTActivity, NFTActivityChainItems } from './nft/NFTActivity';
+import { NFTContent } from './nft/NFTContent';
+import { SocialProfile, SocialProfileAsset } from '../account/social';
+import { CollectionIdAsset, NFTIdAsset } from './id';
+import { NFTType } from './nft/NFTType';
 
-export type CollectionActivity = NFTActivity & { nft: NFTBase };
+export type AllCollection = {
+  items: CollectionIdAsset[];
+};
+
+export type CollectionActivityName = 'created' | 'minted';
+
+export type CollectionActivity = Omit<NFTActivity, 'name'> & {
+  name: CollectionActivityName;
+  nfts: NFTBase[];
+};
+
+export type CollectionActivityAsset = Buffer;
+
+export type CollectionActivityChainItems = Omit<NFTActivityChainItems, 'name'> & {
+  name: CollectionActivityName;
+  nfts: NFTIdAsset[];
+};
+
+export type CollectionActivityChain = {
+  items: CollectionActivityChainItems[];
+};
 
 export type CollectionBase = {
   id: string;
@@ -27,7 +49,7 @@ export type CollectionBase = {
 };
 
 export interface Collection extends CollectionBase {
-  collectionType: 'onekind' | 'packed' | '';
+  collectionType: NFTType;
   description: string;
   symbol: string;
   createdOn: number;
@@ -38,4 +60,29 @@ export interface Collection extends CollectionBase {
   minted: NFTBase[];
   creator: Persona;
   activity: CollectionActivity[];
+  promoted: boolean;
+}
+
+export interface CollectionAsset
+  extends Omit<
+    Collection,
+    'creator' | 'id' | 'minted' | 'activity' | 'social' | 'stat' | 'minting'
+  > {
+  id: CollectionIdAsset;
+  creator: PersonaAsset;
+  minted: NFTIdAsset[];
+  social: SocialProfileAsset;
+  stat: {
+    minted: number;
+    owner: Buffer[];
+    redeemed: number;
+    floor: NFTPriceAsset;
+    volume: NFTPriceAsset;
+  };
+  minting: {
+    total: NFTIdAsset[];
+    available: NFTIdAsset[];
+    expire: number;
+    price: NFTPriceAsset;
+  };
 }

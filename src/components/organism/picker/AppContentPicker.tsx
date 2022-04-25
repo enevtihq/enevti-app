@@ -2,9 +2,7 @@ import { StyleSheet, View } from 'react-native';
 import React from 'react';
 import AppListPickerItem from 'enevti-app/components/molecules/listpicker/AppListPickerItem';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
-import DocumentPicker, {
-  DocumentPickerResponse,
-} from 'react-native-document-picker';
+import DocumentPicker, { DocumentPickerResponse } from 'react-native-document-picker';
 import { handleError } from 'enevti-app/utils/error/handle';
 import AppIconButton from 'enevti-app/components/atoms/icon/AppIconButton';
 import { SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
@@ -57,17 +55,12 @@ function Component({
 }: AppContentPickerProps) {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
-  const styles = React.useMemo(
-    () => makeStyles(theme, insets),
-    [theme, insets],
-  );
+  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
 
   const handleDocumentSelection = React.useCallback(async () => {
     try {
       if (type === DocumentPicker.types.images) {
-        const response = await ImageCropPicker.openPicker(
-          IMAGE_CROP_PICKER_OPTION,
-        );
+        const response = await ImageCropPicker.openPicker(IMAGE_CROP_PICKER_OPTION);
         onSelected &&
           onSelected({
             fileCopyUri: null,

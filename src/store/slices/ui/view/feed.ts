@@ -26,8 +26,7 @@ const feedViewSlice = createSlice({
   },
 });
 
-export const { setFeedView, setFeedViewLoaded, resetFeedView } =
-  feedViewSlice.actions;
+export const { setFeedView, setFeedViewLoaded, resetFeedView } = feedViewSlice.actions;
 export default feedViewSlice.reducer;
 
 export const selectFeedView = createSelector(

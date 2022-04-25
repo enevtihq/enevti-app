@@ -30,27 +30,14 @@ export default function AppPrimaryButton({
 }: AppPrimaryButtonProps): JSX.Element {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
-  const styles = React.useMemo(
-    () => makeStyles(theme, insets),
-    [theme, insets],
-  );
-  const primary = disabled
-    ? Color('black').alpha(0.5).rgb().string()
-    : theme.colors.primary;
-  const secondary = disabled
-    ? Color('black').alpha(0.5).rgb().string()
-    : theme.colors.secondary;
+  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
+  const primary = disabled ? Color('black').alpha(0.5).rgb().string() : theme.colors.primary;
+  const secondary = disabled ? Color('black').alpha(0.5).rgb().string() : theme.colors.secondary;
 
   return (
-    <LinearGradient
-      colors={[primary, secondary]}
-      style={[styles.primaryButton, style]}>
+    <LinearGradient colors={[primary, secondary]} style={[styles.primaryButton, style]}>
       {loading ? (
-        <AppActivityIndicator
-          animating={true}
-          style={styles.loading}
-          color="white"
-        />
+        <AppActivityIndicator animating={true} style={styles.loading} color="white" />
       ) : (
         <Button
           disabled={disabled}

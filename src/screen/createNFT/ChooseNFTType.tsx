@@ -31,8 +31,7 @@ export default function ChooseNFTType({ navigation }: Props) {
   const theme = useTheme() as Theme;
   const styles = React.useMemo(() => makeStyles(insets), [insets]);
 
-  const [oneKindSheetVisible, setOneKindSheetVisible] =
-    React.useState<boolean>(false);
+  const [oneKindSheetVisible, setOneKindSheetVisible] = React.useState<boolean>(false);
 
   const onOneKindImagePicked = (image: ImageOrVideo) => {
     dispatch(setCreateNFTQueueType('onekind'));
@@ -53,10 +52,7 @@ export default function ChooseNFTType({ navigation }: Props) {
     [],
   );
 
-  const onOneKindImageDismiss = React.useCallback(
-    () => setOneKindSheetVisible(false),
-    [],
-  );
+  const onOneKindImageDismiss = React.useCallback(() => setOneKindSheetVisible(false), []);
 
   return (
     <AppView withModal>
@@ -97,9 +93,7 @@ export default function ChooseNFTType({ navigation }: Props) {
 
       <AppListItem
         style={styles.nftTypeItem}
-        onPress={() =>
-          dispatch(showSnackbar({ mode: 'info', text: 'Coming Soon :)' }))
-        }
+        onPress={() => dispatch(showSnackbar({ mode: 'info', text: 'Coming Soon :)' }))}
         leftContent={
           <AppIconGradient
             name={iconMap.nftPartitioned}

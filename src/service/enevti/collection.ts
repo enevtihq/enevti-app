@@ -4,10 +4,7 @@ import { RootStackParamList } from 'enevti-app/navigation';
 import sleep from 'enevti-app/utils/dummy/sleep';
 import { getDummyCollectionFullData } from './dummy';
 
-type CollectionRoute = StackScreenProps<
-  RootStackParamList,
-  'Collection'
->['route']['params'];
+type CollectionRoute = StackScreenProps<RootStackParamList, 'Collection'>['route']['params'];
 
 async function fetchCollectionById(
   id: string,

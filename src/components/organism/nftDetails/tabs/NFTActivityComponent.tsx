@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  Platform,
-  RefreshControl,
-  StyleSheet,
-  FlatList,
-  View,
-} from 'react-native';
+import { Platform, RefreshControl, StyleSheet, FlatList, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import Animated from 'react-native-reanimated';
 import { DimensionFunction, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
@@ -70,10 +64,7 @@ function Component(
     [refreshing, scrollEnabled],
   );
   const itemHeight = React.useMemo(
-    () =>
-      wp(
-        COLLECTION_ACTIVITY_ITEM_HEIGHT + LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE,
-      ),
+    () => wp(COLLECTION_ACTIVITY_ITEM_HEIGHT + LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE),
     [wp],
   );
   const progressViewOffset = React.useMemo(
@@ -115,26 +106,19 @@ function Component(
         leftContent={<AppActivityIcon activityName={item.name} />}
         rightContent={
           <View style={styles.collectionRightContent}>
-            <AppTextHeading4
-              numberOfLines={1}
-              style={styles.collectionRightText}>
+            <AppTextHeading4 numberOfLines={1} style={styles.collectionRightText}>
               {`${parseAmount(item.value.amount, true, 2)} `}
               <AppTextHeading5>{`$${item.value.currency}`}</AppTextHeading5>
             </AppTextHeading4>
             <AppTextBody5
-              style={[
-                styles.collectionRightText,
-                { color: theme.colors.placeholder },
-              ]}
+              style={[styles.collectionRightText, { color: theme.colors.placeholder }]}
               numberOfLines={1}>
               {moment(item.date).fromNow()}
             </AppTextBody5>
           </View>
         }>
         <AppTextHeading3 numberOfLines={1}>{item.name}</AppTextHeading3>
-        <AppTextBody4
-          style={{ color: theme.colors.placeholder }}
-          numberOfLines={1}>
+        <AppTextBody4 style={{ color: theme.colors.placeholder }} numberOfLines={1}>
           {t('collection:activityName', {
             name: t('collection:to'),
             address: parsePersonaLabel(item.to),
@@ -151,10 +135,7 @@ function Component(
     ],
   );
 
-  const keyExtractor = React.useCallback(
-    (item: NFT['activity'][0]) => item.transaction,
-    [],
-  );
+  const keyExtractor = React.useCallback((item: NFT['activity'][0]) => item.transaction, []);
 
   const getItemLayout = React.useCallback(
     (_, index) => ({
@@ -165,10 +146,7 @@ function Component(
     [itemHeight],
   );
 
-  const listFooter = React.useMemo(
-    () => <View style={{ height: hp(5) }} />,
-    [hp],
-  );
+  const listFooter = React.useMemo(() => <View style={{ height: hp(5) }} />, [hp]);
 
   React.useEffect(() => {
     if (ref && ref.current) {
@@ -214,8 +192,7 @@ const makeStyles = (
 ) =>
   StyleSheet.create({
     contentContainerStyle: {
-      paddingTop:
-        hp(NFT_DETAILS_TOP_TABBAR_HEIGHT_PERCENTAGE) + collectionHeaderHeight,
+      paddingTop: hp(NFT_DETAILS_TOP_TABBAR_HEIGHT_PERCENTAGE) + collectionHeaderHeight,
       minHeight:
         hp(100) +
         collectionHeaderHeight -

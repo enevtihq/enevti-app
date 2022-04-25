@@ -27,11 +27,7 @@ export default function AppIconButton({
   const iSize = size ? size : Platform.OS === 'ios' ? 35 : 23;
 
   return (
-    <Animated.View
-      style={[
-        { borderRadius: iSize, overflow: hidden, width: iSize * 1.25 },
-        style,
-      ]}>
+    <Animated.View style={[{ borderRadius: iSize, overflow: hidden, width: iSize * 1.25 }, style]}>
       <TouchableRipple onPress={onPress} style={{ padding: iSize / 7 }}>
         <AnimatedIcon
           name={icon}

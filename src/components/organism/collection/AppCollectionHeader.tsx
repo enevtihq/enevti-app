@@ -5,7 +5,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Divider, TouchableRipple, useTheme } from 'react-native-paper';
 import { Theme } from 'enevti-app/theme/default';
 import { DimensionFunction } from 'enevti-app/utils/imageRatio';
-import { Collection } from 'enevti-app/types/core/chain/collection';
 import AppNetworkImage from 'enevti-app/components/atoms/image/AppNetworkImage';
 import { IPFStoURL } from 'enevti-app/service/ipfs';
 import AppCollectionMintingAvailable from './AppCollectionMintingAvailable';
@@ -14,9 +13,7 @@ import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import AppAvatarRenderer from 'enevti-app/components/molecules/avatar/AppAvatarRenderer';
 import AppQuaternaryButton from 'enevti-app/components/atoms/button/AppQuaternaryButton';
 import { numberKMB, parseAmount } from 'enevti-app/utils/format/amount';
-import AppIconComponent, {
-  iconMap,
-} from 'enevti-app/components/atoms/icon/AppIconComponent';
+import AppIconComponent, { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import AppCollectionDescriptionModal from './AppCollectionDescriptionModal';
 import { MINTING_AVAILABLE_VIEW_HEIGHT } from './AppCollectionMintingAvailable';
 import useDimension from 'enevti-app/utils/hook/useDimension';
@@ -24,6 +21,7 @@ import AppPersonaLabel from 'enevti-app/components/molecules/avatar/AppPersonaLa
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
+import { Collection } from 'enevti-app/types/core/chain/collection';
 
 export const COLLECTION_HEADER_VIEW_HEIGHT =
   53 + (getStatusBarHeight() / Dimensions.get('window').height) * 100;
@@ -46,18 +44,12 @@ export default function AppCollectionHeader({
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
   const styles = React.useMemo(() => makeStyles(hp, wp), [hp, wp]);
-  const [descriptionVisible, setDescriptionVisible] =
-    React.useState<boolean>(false);
+  const [descriptionVisible, setDescriptionVisible] = React.useState<boolean>(false);
 
   const coverWidth = React.useMemo(() => wp('100%'), [wp]);
-  const coverHeight = React.useMemo(
-    () => insets.top + coverWidth * 0.5625,
-    [coverWidth, insets],
-  );
+  const coverHeight = React.useMemo(() => insets.top + coverWidth * 0.5625, [coverWidth, insets]);
   const totalHeight = React.useMemo(
-    () =>
-      COLLECTION_HEADER_VIEW_HEIGHT +
-      (mintingAvailable ? MINTING_AVAILABLE_VIEW_HEIGHT : 0),
+    () => COLLECTION_HEADER_VIEW_HEIGHT + (mintingAvailable ? MINTING_AVAILABLE_VIEW_HEIGHT : 0),
     [mintingAvailable],
   );
 
@@ -68,15 +60,9 @@ export default function AppCollectionHeader({
     });
   }, [navigation, collection.creator.address]);
 
-  const descriptionModalOnDismiss = React.useCallback(
-    () => setDescriptionVisible(false),
-    [],
-  );
+  const descriptionModalOnDismiss = React.useCallback(() => setDescriptionVisible(false), []);
 
-  const descriptionModalOnPress = React.useCallback(
-    () => setDescriptionVisible(old => !old),
-    [],
-  );
+  const descriptionModalOnPress = React.useCallback(() => setDescriptionVisible(old => !old), []);
 
   return (
     <View
@@ -91,10 +77,7 @@ export default function AppCollectionHeader({
           style={{ width: coverWidth, height: coverHeight }}
         />
         {mintingAvailable ? (
-          <AppCollectionMintingAvailable
-            collection={collection}
-            onFinish={onFinish}
-          />
+          <AppCollectionMintingAvailable collection={collection} onFinish={onFinish} />
         ) : null}
       </View>
       <View>
@@ -106,13 +89,11 @@ export default function AppCollectionHeader({
 
                 <View style={styles.summary}>
                   <AppTextBody4 style={{ color: theme.colors.placeholder }}>
-                    {`${collection.stat.minted} ${t(
-                      'collection:statItem',
-                    )} · ${t('collection:statFloorPrice')}: ${parseAmount(
-                      collection.stat.floor.amount,
-                      true,
-                      2,
-                    )} $${collection.stat.floor.currency}`}
+                    {`${collection.stat.minted} ${t('collection:statItem')} · ${t(
+                      'collection:statFloorPrice',
+                    )}: ${parseAmount(collection.stat.floor.amount, true, 2)} $${
+                      collection.stat.floor.currency
+                    }`}
                   </AppTextBody4>
                 </View>
               </View>
@@ -169,12 +150,7 @@ export default function AppCollectionHeader({
             }}
             onPress={() => console.log('Pressed')}>
             <AppTextBody4 style={{ color: theme.colors.placeholder }}>
-              {numberKMB(
-                collection.social.twitter.stat
-                  ? collection.social.twitter.stat
-                  : 0,
-                2,
-              )}
+              {numberKMB(collection.social.twitter.stat ? collection.social.twitter.stat : 0, 2)}
             </AppTextBody4>
           </AppQuaternaryButton>
         </View>

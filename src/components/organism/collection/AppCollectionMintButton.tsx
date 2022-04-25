@@ -1,16 +1,12 @@
 import { View, StyleSheet, Platform } from 'react-native';
 import React from 'react';
-import { Collection } from 'enevti-app/types/core/chain/collection';
 import { DimensionFunction } from 'enevti-app/utils/imageRatio';
 import { Theme } from 'enevti-app/theme/default';
 import useDimension from 'enevti-app/utils/hook/useDimension';
 import { useTheme } from 'react-native-paper';
 import LinearGradient from 'react-native-linear-gradient';
 import AppQuaternaryButton from 'enevti-app/components/atoms/button/AppQuaternaryButton';
-import {
-  iconMap,
-  UNDEFINED_ICON,
-} from 'enevti-app/components/atoms/icon/AppIconComponent';
+import { iconMap, UNDEFINED_ICON } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import AppTextHeading5 from 'enevti-app/components/atoms/text/AppTextHeading5';
@@ -20,6 +16,7 @@ import { useDispatch } from 'react-redux';
 import { payMintCollection } from 'enevti-app/store/middleware/thunk/payment/creator/payMintCollection';
 import DropShadow from 'react-native-drop-shadow';
 import usePaymentCallback from 'enevti-app/utils/hook/usePaymentCallback';
+import { Collection } from 'enevti-app/types/core/chain/collection';
 
 export const MINT_BUTTON_HEIGHT = 11.5;
 
@@ -36,10 +33,7 @@ export default function AppCollectionMintButton({
   const dispatch = useDispatch();
   const { hp, wp } = useDimension();
   const theme = useTheme() as Theme;
-  const styles = React.useMemo(
-    () => makeStyles(hp, wp, theme),
-    [hp, wp, theme],
-  );
+  const styles = React.useMemo(() => makeStyles(hp, wp, theme), [hp, wp, theme]);
 
   const [loading, setLoading] = React.useState<boolean>(false);
   const paymentThunkRef = React.useRef<any>();
@@ -55,9 +49,7 @@ export default function AppCollectionMintButton({
 
   const onMintPress = React.useCallback(() => {
     setLoading(true);
-    paymentThunkRef.current = dispatch(
-      payMintCollection({ collection, quantity: 1 }),
-    );
+    paymentThunkRef.current = dispatch(payMintCollection({ collection, quantity: 1 }));
   }, [dispatch, collection]);
 
   return mintingAvailable ? (
@@ -118,11 +110,7 @@ export default function AppCollectionMintButton({
   ) : null;
 }
 
-const makeStyles = (
-  hp: DimensionFunction,
-  wp: DimensionFunction,
-  theme: Theme,
-) =>
+const makeStyles = (hp: DimensionFunction, wp: DimensionFunction, theme: Theme) =>
   StyleSheet.create({
     actionContainer: {
       position: 'absolute',

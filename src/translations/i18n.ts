@@ -3,10 +3,7 @@ import { initReactI18next } from 'react-i18next';
 import * as RNLocalize from 'react-native-localize';
 
 import en from './en';
-import {
-  selectLanguageState,
-  setLanguage,
-} from 'enevti-app/store/slices/userSetting';
+import { selectLanguageState, setLanguage } from 'enevti-app/store/slices/userSetting';
 import { store } from 'enevti-app/store/state';
 import moment from 'moment';
 import 'moment/min/locales';
@@ -25,10 +22,7 @@ const LANGUAGE_DETECTOR: LanguageDetectorModule = {
   init: () => {},
   detect: () => {
     const userSettingLanguage = selectLanguageState(stateStore.getState());
-    if (
-      userSettingLanguage === 'system' ||
-      !LANG_CODES.includes(userSettingLanguage)
-    ) {
+    if (userSettingLanguage === 'system' || !LANG_CODES.includes(userSettingLanguage)) {
       const bestLang = RNLocalize.findBestAvailableLanguage(LANG_CODES);
       return bestLang ? bestLang.languageTag : DEFAULT_LANG;
     }

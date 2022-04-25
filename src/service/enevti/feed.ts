@@ -23,8 +23,6 @@ export function parseFeedCache(feeds: Feeds) {
   return feeds.slice(0, 10);
 }
 
-export async function getFeeds(
-  signal?: AbortController['signal'],
-): Promise<Feeds | undefined> {
+export async function getFeeds(signal?: AbortController['signal']): Promise<Feeds | undefined> {
   return await fetchFeeds(signal);
 }

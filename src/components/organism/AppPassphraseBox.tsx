@@ -18,18 +18,12 @@ interface AppPassphraseBoxProps {
   style?: StyleProp<ViewStyle>;
 }
 
-export default function AppPassphraseBox({
-  passphrase,
-  style,
-}: AppPassphraseBoxProps) {
+export default function AppPassphraseBox({ passphrase, style }: AppPassphraseBoxProps) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
-  const styles = React.useMemo(
-    () => makeStyles(theme, insets),
-    [theme, insets],
-  );
+  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
 
   return (
     <View style={styles.container}>
@@ -37,9 +31,7 @@ export default function AppPassphraseBox({
         rippleColor="rgba(0, 0, 0, .32)"
         onPress={() => {
           Clipboard.setString(passphrase);
-          dispatch(
-            showSnackbar({ mode: 'info', text: t('form:passphraseCopied') }),
-          );
+          dispatch(showSnackbar({ mode: 'info', text: t('form:passphraseCopied') }));
         }}
         style={[styles.touchBox, style]}>
         <View style={[styles.box]}>

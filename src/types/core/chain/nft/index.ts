@@ -2,13 +2,18 @@ import { NFTRarity } from './NFTRarity';
 import { NFTType } from './NFTType';
 import { NFTTemplateData } from './NFTTemplate';
 import { NFTUtility } from './NFTUtility';
-import { NFTPrice } from './NFTPrice';
-import { Persona } from '../../account/persona';
+import { NFTPrice, NFTPriceAsset } from './NFTPrice';
+import { Persona, PersonaAsset } from '../../account/persona';
 import { NFTPartition } from './NFTPartition';
-import { NFTRedeem } from './NFTRedeem';
+import { NFTRedeem, NFTRedeemAsset } from './NFTRedeem';
 import { NFTRoyalty } from './NFTRoyalty';
 import { NFTActivity } from './NFTActivity';
 import { NFTContent } from './NFTContent';
+import { CollectionIdAsset, NFTIdAsset } from '../id';
+
+export type AllNFT = {
+  items: NFTIdAsset[];
+};
 
 export type NFTBase = {
   id: string;
@@ -34,7 +39,21 @@ export interface NFT extends NFTBase {
   createdOn: number;
   owner: Persona;
   creator: Persona;
-  chain: string;
+  networkIdentifier: string;
   royalty: NFTRoyalty;
   activity: NFTActivity[];
+}
+
+export interface NFTAsset
+  extends Omit<
+    NFT,
+    'id' | 'collectionId' | 'owner' | 'creator' | 'activity' | 'template' | 'redeem' | 'price'
+  > {
+  id: NFTIdAsset;
+  collectionId: CollectionIdAsset;
+  owner: PersonaAsset;
+  creator: PersonaAsset;
+  template: string;
+  redeem: NFTRedeemAsset;
+  price: NFTPriceAsset;
 }

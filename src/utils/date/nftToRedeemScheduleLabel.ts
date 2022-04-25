@@ -1,5 +1,4 @@
 import i18n from 'enevti-app/translations/i18n';
-import { NFT } from 'enevti-app/types/core/chain/nft';
 import { fileSizeKMG } from 'enevti-app/utils/format/fileSize';
 import recurringToLabel from 'enevti-app/utils/date/recurringToLabel';
 import timezoneOffsetLabel from 'enevti-app/utils/date/timezoneOffsetLabel';
@@ -10,6 +9,7 @@ import {
 } from 'enevti-app/utils/date/dateToString';
 import { ordinalWithSuffix } from '../format/number';
 import { getRedeemTimeUTC } from './redeemDate';
+import { NFT } from 'enevti-app/types/core/chain/nft';
 
 export default function nftToRedeemScheduleLabel(nft: NFT) {
   let ret: string = '';
@@ -28,14 +28,13 @@ export default function nftToRedeemScheduleLabel(nft: NFT) {
       size: fileSizeKMG(nft.redeem.content.size, 2),
     });
   } else {
-    if (nft.redeem.schedule.recurring === 'instant') {
+    if (nft.redeem.schedule.recurring === 'anytime') {
       throw Error(i18n.t('error:invalidRecurring'));
     }
 
     ret +=
-      (nft.redeem.schedule.recurring === 'once'
-        ? `${i18n.t('nftDetails:redeem')} `
-        : '') + recurringToLabel(nft.redeem.schedule.recurring);
+      (nft.redeem.schedule.recurring === 'once' ? `${i18n.t('nftDetails:redeem')} ` : '') +
+      recurringToLabel(nft.redeem.schedule.recurring);
 
     switch (nft.redeem.schedule.recurring) {
       case 'daily':
@@ -50,14 +49,12 @@ export default function nftToRedeemScheduleLabel(nft: NFT) {
           }) + separator;
         break;
       case 'yearly':
-        timeString = `${monthToString(
-          startTime.getMonth(),
-        )!}, ${ordinalWithSuffix(startTime.getDate())}${separator}`;
+        timeString = `${monthToString(startTime.getMonth())!}, ${ordinalWithSuffix(
+          startTime.getDate(),
+        )}${separator}`;
         break;
       case 'once':
-        timeString = `${monthToString(
-          startTime.getMonth(),
-        )!}, ${ordinalWithSuffix(
+        timeString = `${monthToString(startTime.getMonth())!}, ${ordinalWithSuffix(
           startTime.getDate(),
         )} ${startTime.getFullYear()}${separator}`;
         break;

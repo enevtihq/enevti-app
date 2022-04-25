@@ -1,14 +1,8 @@
-import {
-  getBasePersonaByRouteParam,
-  getMyBasePersona,
-} from 'enevti-app/service/enevti/persona';
+import { getBasePersonaByRouteParam, getMyBasePersona } from 'enevti-app/service/enevti/persona';
 import { getMyProfile, getProfile } from 'enevti-app/service/enevti/profile';
 import { handleError } from 'enevti-app/utils/error/handle';
 import { selectMyPersonaCache } from 'enevti-app/store/slices/entities/cache/myPersona';
-import {
-  hideModalLoader,
-  showModalLoader,
-} from 'enevti-app/store/slices/ui/global/modalLoader';
+import { hideModalLoader, showModalLoader } from 'enevti-app/store/slices/ui/global/modalLoader';
 import {
   resetMyProfileView,
   setMyProfileView,
@@ -25,19 +19,12 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { Persona } from 'enevti-app/types/core/account/persona';
 
-type ProfileRoute = StackScreenProps<
-  RootStackParamList,
-  'Profile'
->['route']['params'];
+type ProfileRoute = StackScreenProps<RootStackParamList, 'Profile'>['route']['params'];
 type LoadProfileArgs = { routeParam: ProfileRoute; reload: boolean };
 
 const defaultArgType = 'address';
 
-export const loadProfile = createAsyncThunk<
-  void,
-  LoadProfileArgs,
-  AsyncThunkAPI
->(
+export const loadProfile = createAsyncThunk<void, LoadProfileArgs, AsyncThunkAPI>(
   'profileView/loadProfile',
   async ({ routeParam, reload }, { dispatch, getState, signal }) => {
     try {
@@ -55,16 +42,11 @@ export const loadProfile = createAsyncThunk<
         const personaResponse = await getMyBasePersona(reload, signal);
         const profileResponse = await getMyProfile(reload, signal);
         if (profileResponse !== undefined) {
-          dispatch(
-            setMyProfileView({ ...profileResponse, persona: personaResponse }),
-          );
+          dispatch(setMyProfileView({ ...profileResponse, persona: personaResponse }));
           dispatch(setMyProfileViewLoaded(true));
         }
       } else {
-        const personaBase = await getBasePersonaByRouteParam(
-          routeParam,
-          signal,
-        );
+        const personaBase = await getBasePersonaByRouteParam(routeParam, signal);
         const profileResponse = await getProfile(personaBase.address, signal);
         if (personaBase !== undefined && profileResponse !== undefined) {
           dispatch(

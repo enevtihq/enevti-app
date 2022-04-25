@@ -49,9 +49,7 @@ function Component({
   React.useEffect(() => {
     let data: any = {};
     for (const month in monthIndex) {
-      data[monthToString(parseFloat(month))!] = getDaysInMonthUTC(
-        parseFloat(month),
-      );
+      data[monthToString(parseFloat(month))!] = getDaysInMonthUTC(parseFloat(month));
     }
     setPickerData(data);
   }, [monthIndex]);
@@ -63,12 +61,10 @@ function Component({
       value={valueToString}
       pickerValue={pickerValue}
       onSelected={data =>
-        onSelected &&
-        onSelected([monthStringIndex.indexOf(data[0]), parseFloat(data[1])])
+        onSelected && onSelected([monthStringIndex.indexOf(data[0]), parseFloat(data[1])])
       }
       onCancel={data =>
-        onCancel &&
-        onCancel([monthStringIndex.indexOf(data[0]), parseFloat(data[1])])
+        onCancel && onCancel([monthStringIndex.indexOf(data[0]), parseFloat(data[1])])
       }
     />
   );

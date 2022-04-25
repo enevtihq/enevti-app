@@ -1,3 +1,9 @@
+import { TemplateIdAsset } from '../id';
+
+export type AllNFTTemplate = {
+  items: TemplateIdAsset[];
+};
+
 export interface TemplateArgs {
   x: string;
   y: string;
@@ -33,7 +39,7 @@ export type NFTTemplateData = {
 };
 
 export type NFTTemplateAsset = {
-  id: string;
+  readonly id: string;
   name: string;
   description: string;
   data: NFTTemplateData;

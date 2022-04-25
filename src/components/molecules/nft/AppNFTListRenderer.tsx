@@ -13,11 +13,7 @@ interface AppNFTListRedererProps {
 }
 
 export default React.memo(
-  function AppNFTListRenderer({
-    nft,
-    width,
-    itemWidth,
-  }: AppNFTListRedererProps) {
+  function AppNFTListRenderer({ nft, width, itemWidth }: AppNFTListRedererProps) {
     const insets = useSafeAreaInsets();
     const [currentPage, setCurrentPage] = React.useState<number>(0);
 

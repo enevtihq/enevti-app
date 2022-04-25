@@ -30,10 +30,7 @@ function Component({
 }: AppPaymentItemProps) {
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
-  const styles = React.useMemo(
-    () => makeStyles(theme, insets),
-    [theme, insets],
-  );
+  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
   const AppText = bold ? AppTextHeading3 : AppTextBody3;
   const CurrencyText = bold ? AppTextHeading5 : AppTextBody5;
 

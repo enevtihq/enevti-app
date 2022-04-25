@@ -1,13 +1,6 @@
-import {
-  hideModalLoader,
-  showModalLoader,
-} from 'enevti-app/store/slices/ui/global/modalLoader';
+import { hideModalLoader, showModalLoader } from 'enevti-app/store/slices/ui/global/modalLoader';
 import { AppThunk } from 'enevti-app/store/state';
-import { NFT } from 'enevti-app/types/core/chain/nft';
-import {
-  STORAGE_PATH_REDEEM,
-  IOS_TEMP_FOLDER,
-} from 'enevti-app/utils/constant/storage';
+import { STORAGE_PATH_REDEEM, IOS_TEMP_FOLDER } from 'enevti-app/utils/constant/storage';
 import { handleError } from 'enevti-app/utils/error/handle';
 import {
   decryptAsymmetric,
@@ -18,6 +11,7 @@ import {
 import RNFS from 'react-native-fs';
 import { IPFStoURL } from 'enevti-app/service/ipfs';
 import FileViewer from 'react-native-file-viewer';
+import { NFT } from 'enevti-app/types/core/chain/nft';
 
 function secretDecryptionFailed(nft: NFT) {
   throw Error(`Secret Decryption Failed: ${nft.id}`);

@@ -25,9 +25,7 @@ export function AppMenuFormTextInput(props: AppFormTextInputProps, ref: any) {
     [props, shouldHandleKeyboardEvents, withModal],
   );
 
-  return (
-    <AppFormTextInput {...props} ref={ref} onBlur={onBlur} onFocus={onFocus} />
-  );
+  return <AppFormTextInput {...props} ref={ref} onBlur={onBlur} onFocus={onFocus} />;
 }
 
 const forwardedAppMenuFormTextInput = React.forwardRef(AppMenuFormTextInput);

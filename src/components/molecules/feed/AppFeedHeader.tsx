@@ -7,7 +7,7 @@ import AppIconButton from 'enevti-app/components/atoms/icon/AppIconButton';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { getCoinName } from 'enevti-app/components/atoms/brand/AppBrandConstant';
+import { getCoinName } from 'enevti-app/utils/constant/identifier';
 import { useTranslation } from 'react-i18next';
 import { FeedItem } from 'enevti-app/types/core/service/feed';
 import { parseAmount } from 'enevti-app/utils/format/amount';
@@ -26,10 +26,7 @@ interface AppFeedHeaderProps {
   navigation: StackNavigationProp<RootStackParamList>;
 }
 
-export default function AppFeedHeader({
-  feed,
-  navigation,
-}: AppFeedHeaderProps) {
+export default function AppFeedHeader({ feed, navigation }: AppFeedHeaderProps) {
   const { t } = useTranslation();
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
@@ -80,25 +77,18 @@ export default function AppFeedHeader({
         />
         {feed.promoted ? (
           <Pressable onPress={onPromoteInfo} style={styles.headerAction}>
-            <AppTextBody5 numberOfLines={1}>
-              {t('home:promotedByCommunity')}
-            </AppTextBody5>
+            <AppTextBody5 numberOfLines={1}>{t('home:promotedByCommunity')}</AppTextBody5>
           </Pressable>
         ) : (
           <View />
         )}
       </View>
 
-      <AppQuaternaryButton
-        box
-        style={styles.headerPoolContainer}
-        onPress={() => onStake()}>
+      <AppQuaternaryButton box style={styles.headerPoolContainer} onPress={() => onStake()}>
         <AppTextHeading3 style={styles.headerPoolText}>
           {parseAmount(feed.stake, true, 2)}
         </AppTextHeading3>
-        <AppTextBody5 style={styles.headerPoolText}>
-          {getCoinName()}
-        </AppTextBody5>
+        <AppTextBody5 style={styles.headerPoolText}>{getCoinName()}</AppTextBody5>
       </AppQuaternaryButton>
 
       <View style={styles.headerMoreButtonContainer}>
@@ -122,11 +112,7 @@ export default function AppFeedHeader({
             title={t('home:report')}
           />
           <Divider />
-          <AppMenuItem
-            onPress={onPromote}
-            disabled={!feed.delegate}
-            title={t('home:promote')}
-          />
+          <AppMenuItem onPress={onPromote} disabled={!feed.delegate} title={t('home:promote')} />
         </AppMenuContainer>
       </View>
     </View>

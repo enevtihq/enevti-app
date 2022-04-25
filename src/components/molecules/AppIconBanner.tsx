@@ -13,11 +13,7 @@ interface AppIconBannerProps {
   style?: StyleProp<ViewStyle>;
 }
 
-export default function AppIconBanner({
-  children,
-  name,
-  style,
-}: AppIconBannerProps) {
+export default function AppIconBanner({ children, name, style }: AppIconBannerProps) {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
   const styles = React.useMemo(() => makeStyles(insets), [insets]);

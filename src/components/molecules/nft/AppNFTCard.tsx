@@ -11,9 +11,7 @@ import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
 import AppTextHeading4 from 'enevti-app/components/atoms/text/AppTextHeading4';
 import { parseAmount } from 'enevti-app/utils/format/amount';
 import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
-import AppIconComponent, {
-  iconMap,
-} from 'enevti-app/components/atoms/icon/AppIconComponent';
+import AppIconComponent, { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import Color from 'color';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
@@ -25,28 +23,14 @@ interface AppNFTCardProps {
   navigation?: StackNavigationProp<RootStackParamList>;
 }
 
-export default function AppNFTCard({
-  nft,
-  width,
-  style,
-  navigation,
-}: AppNFTCardProps) {
+export default function AppNFTCard({ nft, width, style, navigation }: AppNFTCardProps) {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
-  const styles = React.useMemo(
-    () => makeStyles(theme, insets),
-    [theme, insets],
-  );
-  const nftWidth = React.useMemo(
-    () => width - wp('1%', insets),
-    [width, insets],
-  );
+  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
+  const nftWidth = React.useMemo(() => width - wp('1%', insets), [width, insets]);
 
   const onNavigate = React.useCallback(
-    () =>
-      navigation
-        ? navigation.push('NFTDetails', { arg: nft.id, mode: 'id' })
-        : undefined,
+    () => (navigation ? navigation.push('NFTDetails', { arg: nft.id, mode: 'id' }) : undefined),
     [navigation, nft.id],
   );
 
@@ -73,11 +57,7 @@ export default function AppNFTCard({
             </AppTextHeading4>
           ) : (
             <AppTextHeading4 numberOfLines={1}>
-              <AppIconComponent
-                name={iconMap.likeInactive}
-                size={10}
-                color={theme.colors.text}
-              />{' '}
+              <AppIconComponent name={iconMap.likeInactive} size={10} color={theme.colors.text} />{' '}
               {nft.like}
             </AppTextHeading4>
           )}

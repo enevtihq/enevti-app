@@ -1,3 +1,6 @@
+import { NFTRecurring } from 'enevti-app/types/core/chain/nft/NFTRedeem';
+import { NFTUtility } from 'enevti-app/types/core/chain/nft/NFTUtility';
+
 export type OneKindContractForm = {
   name: string;
   description: string;
@@ -7,13 +10,13 @@ export type OneKindContractForm = {
   coverType: string;
   coverExtension: string;
   coverUri: string;
-  utility: string;
+  utility: NFTUtility;
   contentName: string;
   contentSize: number;
   contentType: string;
   contentExtension: string;
   contentUri: string;
-  recurring: string;
+  recurring: NFTRecurring;
   timeDay: number;
   timeDate: number;
   timeMonth: number;

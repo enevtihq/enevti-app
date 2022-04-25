@@ -1,4 +1,4 @@
-import { NFTPrice } from 'enevti-app/types/core/chain/nft/NFTPrice';
+import { NFTPrice } from '../chain/nft/NFTPrice';
 
 export type AddStakeAsset = {
   address: string;

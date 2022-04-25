@@ -1,9 +1,6 @@
 import React from 'react';
 import Animated from 'react-native-reanimated';
-import {
-  MaterialTopTabBar,
-  MaterialTopTabBarProps,
-} from '@react-navigation/material-top-tabs';
+import { MaterialTopTabBar, MaterialTopTabBarProps } from '@react-navigation/material-top-tabs';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';

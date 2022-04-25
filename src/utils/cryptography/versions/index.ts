@@ -1,9 +1,4 @@
-import {
-  encryptText_v1,
-  decryptText_v1,
-  encryptFile_v1,
-  decryptFile_v1,
-} from './1';
+import { encryptText_v1, decryptText_v1, encryptFile_v1, decryptFile_v1 } from './1';
 
 interface AppCrypto {
   [key: number]: {

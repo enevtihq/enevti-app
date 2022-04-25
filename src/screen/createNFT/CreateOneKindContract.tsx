@@ -26,18 +26,12 @@ import AppFormTextInputWithError, {
 import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
 import AppView from 'enevti-app/components/atoms/view/AppView';
 import { hp, wp, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
-import AppIconComponent, {
-  iconMap,
-} from 'enevti-app/components/atoms/icon/AppIconComponent';
+import AppIconComponent, { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import { ScrollView } from 'react-native-gesture-handler';
 import AppTextBody3 from 'enevti-app/components/atoms/text/AppTextBody3';
 import { OneKindContractForm } from 'enevti-app/types/ui/screen/CreateOneKindContract';
 import AppCoinChipsPicker from 'enevti-app/components/organism/AppCoinChipsPicker';
-import {
-  cleanTMPImage,
-  isNameAvailable,
-  isSymbolAvailable,
-} from 'enevti-app/service/enevti/nft';
+import { cleanTMPImage, isNameAvailable, isSymbolAvailable } from 'enevti-app/service/enevti/nft';
 import AppUtilityPicker from 'enevti-app/components/organism/picker/AppUtilityPicker';
 import AppRecurringPicker from 'enevti-app/components/organism/picker/AppRecurringPicker.tsx';
 import AppDateMonthPicker from 'enevti-app/components/organism/datePicker/AppDateMonthPicker';
@@ -63,10 +57,7 @@ import AppSecondaryButton from 'enevti-app/components/atoms/button/AppSecondaryB
 import { clearCreateNFTQueueType } from 'enevti-app/store/slices/queue/nft/create/type';
 import { clearCreateNFTQueueRoute } from 'enevti-app/store/slices/queue/nft/create/route';
 import usePaymentCallback from 'enevti-app/utils/hook/usePaymentCallback';
-import {
-  hideModalLoader,
-  showModalLoader,
-} from 'enevti-app/store/slices/ui/global/modalLoader';
+import { hideModalLoader, showModalLoader } from 'enevti-app/store/slices/ui/global/modalLoader';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 import { payCreateNFTOneKind } from 'enevti-app/store/middleware/thunk/payment/creator/payCreateNFTOneKind';
 import getFileExtension from 'enevti-app/utils/mime/getFileExtension';
@@ -148,14 +139,8 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
   const paperTheme = useTheme();
   const theme = paperTheme as Theme;
   const insets = useSafeAreaInsets();
-  const styles = React.useMemo(
-    () => makeStyles(theme, insets),
-    [theme, insets],
-  );
-  const timezoneOffset = React.useMemo(
-    () => new Date().getTimezoneOffset(),
-    [],
-  );
+  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
+  const timezoneOffset = React.useMemo(() => new Date().getTimezoneOffset(), []);
   const itemWidth = React.useMemo(() => wp('90%', insets), [insets]);
   const closeMenuSnapPoints = React.useMemo(() => ['42%'], []);
   const paymentThunkRef = React.useRef<any>();
@@ -176,10 +161,8 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
       template: oneKindContractStore.choosenTemplate.data,
     }),
   );
-  const [oneKindSheetVisible, setOneKindSheetVisible] =
-    React.useState<boolean>(false);
-  const [closeMenuVisible, setCloseMenuVisible] =
-    React.useState<boolean>(false);
+  const [oneKindSheetVisible, setOneKindSheetVisible] = React.useState<boolean>(false);
+  const [closeMenuVisible, setCloseMenuVisible] = React.useState<boolean>(false);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [activePrice, setActivePrice] = React.useState<boolean>(false);
   const [identityExpanded, setIdentityExpanded] = React.useState<boolean>(true);
@@ -308,10 +291,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
     discardFormState();
   }, [dispatch, discardFormState, t]);
 
-  const paymentErrorCallback = React.useCallback(
-    () => dispatch(hideModalLoader()),
-    [dispatch],
-  );
+  const paymentErrorCallback = React.useCallback(() => dispatch(hideModalLoader()), [dispatch]);
 
   usePaymentCallback({
     onIdle: paymentIdleCallback,
@@ -326,15 +306,11 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
   );
 
   const commonOnEndEditing = React.useCallback(
-    (key, formik) => (e: any) =>
-      formik.setFieldValue(key, e.nativeEvent.text, true),
+    (key, formik) => (e: any) => formik.setFieldValue(key, e.nativeEvent.text, true),
     [],
   );
 
-  const commonOnBlur = React.useCallback(
-    (key, formik) => () => formik.setFieldTouched(key),
-    [],
-  );
+  const commonOnBlur = React.useCallback((key, formik) => () => formik.setFieldTouched(key), []);
 
   const onDeleteCoverPicker = React.useCallback(() => {
     setMultipleFieldValue(formikProps, coverKey, true);
@@ -346,11 +322,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
     formikProps.setFieldValue('coverName', item.name, false);
     formikProps.setFieldValue('coverSize', item.size, false);
     formikProps.setFieldValue('coverType', item.type, false);
-    formikProps.setFieldValue(
-      'coverExtension',
-      getFileExtension(item.name),
-      false,
-    );
+    formikProps.setFieldValue('coverExtension', getFileExtension(item.name), false);
     formikProps.setFieldValue('coverUri', item.uri, false);
     setMultipleFieldTouched(formikProps, coverKey, true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -359,8 +331,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
   const onFocusPriceInput = React.useCallback(() => setActivePrice(true), []);
 
   const onBlurPriceInput = React.useCallback(() => {
-    !formikProps.touched.priceAmount &&
-      formikProps.setFieldTouched('priceAmount');
+    !formikProps.touched.priceAmount && formikProps.setFieldTouched('priceAmount');
     setActivePrice(false);
   }, [formikProps]);
 
@@ -394,11 +365,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
     formikProps.setFieldValue('contentName', item.name, false);
     formikProps.setFieldValue('contentSize', item.size, false);
     formikProps.setFieldValue('contentType', item.type, false);
-    formikProps.setFieldValue(
-      'contentExtension',
-      getFileExtension(item.name),
-      false,
-    );
+    formikProps.setFieldValue('contentExtension', getFileExtension(item.name), false);
     formikProps.setFieldValue('contentUri', item.uri, true);
     setMultipleFieldTouched(formikProps, contentKey, true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -436,11 +403,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
     formikProps.setFieldValue('timeYear', value[0], true);
     formikProps.setFieldValue('timeMonth', value[1], true);
     formikProps.setFieldValue('timeDate', value[2], true);
-    setMultipleFieldTouched(
-      formikProps,
-      ['timeYear', 'timeMonth', 'timeDate'],
-      true,
-    );
+    setMultipleFieldTouched(formikProps, ['timeYear', 'timeMonth', 'timeDate'], true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -482,16 +445,12 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
   );
 
   const labelHourMinutePickerStart = React.useMemo(
-    () =>
-      t('createNFT:redeemStartTime') +
-      ` (${timezoneOffsetLabel(timezoneOffset)})`,
+    () => t('createNFT:redeemStartTime') + ` (${timezoneOffsetLabel(timezoneOffset)})`,
     [t, timezoneOffset],
   );
 
   const labelHourMinutePickerEnd = React.useMemo(
-    () =>
-      t('createNFT:redeemEndTime') +
-      ` (${timezoneOffsetLabel(timezoneOffset)})`,
+    () => t('createNFT:redeemEndTime') + ` (${timezoneOffsetLabel(timezoneOffset)})`,
     [t, timezoneOffset],
   );
 
@@ -511,16 +470,8 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
   );
 
   const dateMonthYearPickerValue = React.useMemo(
-    () => [
-      formikProps.values.timeYear,
-      formikProps.values.timeMonth,
-      formikProps.values.timeDate,
-    ],
-    [
-      formikProps.values.timeYear,
-      formikProps.values.timeMonth,
-      formikProps.values.timeDate,
-    ],
+    () => [formikProps.values.timeYear, formikProps.values.timeMonth, formikProps.values.timeDate],
+    [formikProps.values.timeYear, formikProps.values.timeMonth, formikProps.values.timeDate],
   );
 
   const hourMinuteStartValue = React.useMemo(
@@ -570,16 +521,10 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
       <AppCoinChipsPicker
         dense
         active={activePrice}
-        error={
-          formikProps.touched.priceAmount && !!formikProps.errors.priceAmount
-        }
+        error={formikProps.touched.priceAmount && !!formikProps.errors.priceAmount}
       />
     ),
-    [
-      formikProps.touched.priceAmount,
-      formikProps.errors.priceAmount,
-      activePrice,
-    ],
+    [formikProps.touched.priceAmount, formikProps.errors.priceAmount, activePrice],
   );
 
   React.useEffect(() => {
@@ -651,13 +596,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
         {...options}
       />
     ),
-    [
-      paperTheme,
-      styles.formInput,
-      nextRefCallback,
-      commonOnEndEditing,
-      commonOnBlur,
-    ],
+    [paperTheme, styles.formInput, nextRefCallback, commonOnEndEditing, commonOnBlur],
   );
 
   const accordionHeader = React.useCallback(
@@ -686,11 +625,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
   );
 
   const mintingHeader = React.useMemo(
-    () =>
-      accordionHeader(
-        iconMap.mintingBehaviour,
-        t('createNFT:nftMintingBehaviour'),
-      ),
+    () => accordionHeader(iconMap.mintingBehaviour, t('createNFT:nftMintingBehaviour')),
     [accordionHeader, t],
   );
 
@@ -729,10 +664,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
     [previewExpanded],
   );
 
-  const previewChangeImageOnDismiss = React.useCallback(
-    () => setOneKindSheetVisible(false),
-    [],
-  );
+  const previewChangeImageOnDismiss = React.useCallback(() => setOneKindSheetVisible(false), []);
 
   const previewChangeImageOnPress = React.useCallback(
     () => setOneKindSheetVisible(old => !old),
@@ -747,10 +679,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
     [navigation],
   );
 
-  const closeMenuOnDismiss = React.useCallback(
-    () => setCloseMenuVisible(false),
-    [],
-  );
+  const closeMenuOnDismiss = React.useCallback(() => setCloseMenuVisible(false), []);
 
   return (
     <AppView
@@ -798,8 +727,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
                   : formikProps.errors.name,
                 error:
                   formikProps.touched.name &&
-                  (!formikProps.status.nameAvailable ||
-                    !!formikProps.errors.name),
+                  (!formikProps.status.nameAvailable || !!formikProps.errors.name),
                 onEndEditing: async e => {
                   const text = e.nativeEvent.text;
                   formikProps.setFieldValue('name', text, true);
@@ -840,8 +768,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
                   : formikProps.errors.symbol,
                 error:
                   formikProps.touched.symbol &&
-                  (!formikProps.status.symbolAvailable ||
-                    !!formikProps.errors.symbol),
+                  (!formikProps.status.symbolAvailable || !!formikProps.errors.symbol),
                 onEndEditing: async e => {
                   const text = e.nativeEvent.text;
                   formikProps.setFieldValue('symbol', text, true);
@@ -934,8 +861,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
 
             <View style={{ height: hp('1%', insets) }} />
 
-            {formikProps.values.utility &&
-            formikProps.values.utility === 'content' ? (
+            {formikProps.values.utility && formikProps.values.utility === 'content' ? (
               <AppContentPicker
                 title={t('createNFT:selectContent')}
                 description={t('createNFT:selectContentDescription')}
@@ -945,8 +871,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
               />
             ) : null}
 
-            {formikProps.values.utility &&
-            formikProps.values.utility !== 'content' ? (
+            {formikProps.values.utility && formikProps.values.utility !== 'content' ? (
               <>
                 <AppRecurringPicker
                   value={formikProps.values.recurring}
@@ -1062,9 +987,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
             onPress={previewHeaderCallback}
             title={previewHeader}>
             <View style={{ height: hp('1%', insets) }} />
-            {formikProps.values.name &&
-            formikProps.values.symbol &&
-            formikProps.values.utility ? (
+            {formikProps.values.name && formikProps.values.symbol && formikProps.values.utility ? (
               <View style={styles.formInput}>
                 <AppNFTRenderer
                   nft={dummyNFT}
@@ -1145,9 +1068,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
           </View>
           <View style={styles.closeMenuActionSpace} />
           <View style={styles.closeMenuItemAction}>
-            <AppPrimaryButton onPress={saveFormState}>
-              {t('createNFT:save')}
-            </AppPrimaryButton>
+            <AppPrimaryButton onPress={saveFormState}>{t('createNFT:save')}</AppPrimaryButton>
           </View>
         </View>
       </AppMenuContainer>

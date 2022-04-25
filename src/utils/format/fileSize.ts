@@ -2,9 +2,7 @@ import i18n from 'enevti-app/translations/i18n';
 
 export function fileSizeKMG(num: number, decimal?: number): string {
   if (num < 1000) {
-    return decimal
-      ? num.toFixed(decimal).toString() + ' bytes'
-      : num.toString() + ' bytes';
+    return decimal ? num.toFixed(decimal).toString() + ' bytes' : num.toString() + ' bytes';
   } else if (num > 999 && num < 1000000) {
     return decimal
       ? (num / 1000).toFixed(decimal).toString() + ' KB'

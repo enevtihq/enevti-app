@@ -14,8 +14,7 @@ import AppInfoMessage from 'enevti-app/components/molecules/AppInfoMessage';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import { useTranslation } from 'react-i18next';
 
-const AnimatedFlatGrid =
-  Animated.createAnimatedComponent<FlatGridProps<NFTBase>>(FlatGrid);
+const AnimatedFlatGrid = Animated.createAnimatedComponent<FlatGridProps<NFTBase>>(FlatGrid);
 
 interface OwnedNFTComponentProps {
   navigation: StackNavigationProp<RootStackParamList>;
@@ -61,10 +60,8 @@ function Component(
     () =>
       Platform.OS === 'ios'
         ? headerHeight
-        : hp(
-            PROFILE_HEADER_HEIGHT_PERCENTAGE + TOP_TABBAR_HEIGHT_PERCENTAGE,
-            insets,
-          ) + headerHeight,
+        : hp(PROFILE_HEADER_HEIGHT_PERCENTAGE + TOP_TABBAR_HEIGHT_PERCENTAGE, insets) +
+          headerHeight,
     [headerHeight, insets],
   );
 
@@ -93,13 +90,7 @@ function Component(
   );
 
   const renderItem = React.useCallback(
-    ({ item }) => (
-      <AppNFTRenderer
-        nft={item}
-        width={itemDimension}
-        navigation={navigation}
-      />
-    ),
+    ({ item }) => <AppNFTRenderer nft={item} width={itemDimension} navigation={navigation} />,
     [itemDimension, navigation],
   );
 
@@ -141,10 +132,7 @@ const makeStyles = (
   StyleSheet.create({
     contentContainerStyle: {
       paddingTop:
-        hp(
-          PROFILE_HEADER_HEIGHT_PERCENTAGE + TOP_TABBAR_HEIGHT_PERCENTAGE,
-          insets,
-        ) + headerHeight,
+        hp(PROFILE_HEADER_HEIGHT_PERCENTAGE + TOP_TABBAR_HEIGHT_PERCENTAGE, insets) + headerHeight,
       minHeight:
         hp(PROFILE_HEADER_HEIGHT_PERCENTAGE + 100, insets) +
         (Platform.OS === 'android' ? insets.top : 0) +

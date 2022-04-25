@@ -12,9 +12,7 @@ interface AppActivityIconProps {
   activityName: string;
 }
 
-export default function AppActivityIcon({
-  activityName,
-}: AppActivityIconProps) {
+export default function AppActivityIcon({ activityName }: AppActivityIconProps) {
   const theme = useTheme() as Theme;
   const { wp } = useDimension();
   const styles = React.useMemo(() => makeStyles(wp, theme), [wp, theme]);
@@ -45,9 +43,6 @@ const makeStyles = (wp: DimensionFunction, theme: Theme) =>
       height: wp('10%'),
       alignSelf: 'center',
       borderRadius: wp('10%'),
-      backgroundColor: Color(theme.colors.placeholder)
-        .alpha(0.05)
-        .rgb()
-        .toString(),
+      backgroundColor: Color(theme.colors.placeholder).alpha(0.05).rgb().toString(),
     },
   });

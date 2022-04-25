@@ -33,8 +33,7 @@ function Component({
   );
 
   const valueToString = React.useMemo(
-    () =>
-      value && value[0] !== -1 ? `${ordinalWithSuffix(value[0])}` : undefined,
+    () => (value && value[0] !== -1 ? `${ordinalWithSuffix(value[0])}` : undefined),
     [value],
   );
 

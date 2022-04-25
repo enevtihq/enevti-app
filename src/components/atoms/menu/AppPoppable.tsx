@@ -25,10 +25,7 @@ export default function AppPoppable({
 }: AppPoppableProps) {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
-  const styles = React.useMemo(
-    () => makeStyles(theme, insets, width),
-    [theme, insets, width],
-  );
+  const styles = React.useMemo(() => makeStyles(theme, insets, width), [theme, insets, width]);
   return (
     <Popable
       position={position}

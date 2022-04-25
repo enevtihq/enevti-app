@@ -10,30 +10,19 @@ interface AppTextReadMoreProps {
   readMoreLimit?: number;
 }
 
-export default function AppTextReadMore({
-  children,
-  style,
-  readMoreLimit,
-}: AppTextReadMoreProps) {
+export default function AppTextReadMore({ children, style, readMoreLimit }: AppTextReadMoreProps) {
   const { t } = useTranslation();
   const theme = useTheme() as Theme;
 
-  const [childrenCollapsed, setChildrenCollapsed] =
-    React.useState<boolean>(false);
+  const [childrenCollapsed, setChildrenCollapsed] = React.useState<boolean>(false);
   const text = React.useMemo(
     () =>
       !childrenCollapsed
-        ? `${(children! as string).substring(
-            0,
-            readMoreLimit! - t('form:seeMore').length,
-          )}...`
+        ? `${(children! as string).substring(0, readMoreLimit! - t('form:seeMore').length)}...`
         : `${children}`,
     [t, children, childrenCollapsed, readMoreLimit],
   );
-  const onReadMorePress = React.useCallback(
-    () => setChildrenCollapsed(old => !old),
-    [],
-  );
+  const onReadMorePress = React.useCallback(() => setChildrenCollapsed(old => !old), []);
 
   return (
     <Pressable onPress={onReadMorePress}>

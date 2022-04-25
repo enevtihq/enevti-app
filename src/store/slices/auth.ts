@@ -7,19 +7,13 @@ const authSlice = createSlice({
   name: 'auth',
   initialState: { type: '', encrypted: false, token: '', version: 0 },
   reducers: {
-    setEncryptedPassphraseAuth: (
-      auth,
-      action: PayloadAction<EncryptedData>,
-    ) => {
+    setEncryptedPassphraseAuth: (auth, action: PayloadAction<EncryptedData>) => {
       auth.type = 'passphrase';
       auth.encrypted = true;
       auth.token = action.payload.data;
       auth.version = action.payload.version;
     },
-    setUnencryptedPassphraseAuth: (
-      auth,
-      action: PayloadAction<EncryptedData>,
-    ) => {
+    setUnencryptedPassphraseAuth: (auth, action: PayloadAction<EncryptedData>) => {
       auth.type = 'passphrase';
       auth.encrypted = false;
       auth.token = action.payload.data;
@@ -28,8 +22,7 @@ const authSlice = createSlice({
   },
 });
 
-export const { setEncryptedPassphraseAuth, setUnencryptedPassphraseAuth } =
-  authSlice.actions;
+export const { setEncryptedPassphraseAuth, setUnencryptedPassphraseAuth } = authSlice.actions;
 export default authSlice.reducer;
 
 export const selectAuthState = createSelector(

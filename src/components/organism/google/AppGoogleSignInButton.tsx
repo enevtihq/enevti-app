@@ -7,11 +7,7 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import YupPassword from 'yup-password';
 
-import {
-  getGoogleAccessToken,
-  googleInit,
-  googleSignIn,
-} from 'enevti-app/service/google/signIn';
+import { getGoogleAccessToken, googleInit, googleSignIn } from 'enevti-app/service/google/signIn';
 import {
   selectGoogleAPITokenState,
   setGoogleAPIToken,
@@ -75,12 +71,9 @@ export default function AppGoogleSignInButton({
 
   const snapPoints = React.useMemo(() => ['62%'], []);
   const [isLoadingGoogle, setIsLoadingGoogle] = React.useState<boolean>(false);
-  const [showInputGoogleDialog, setShowInputGoogleDialog] =
-    React.useState<boolean>(false);
-  const [isDialogButtonLoading, setIsDialogButtonLoading] =
-    React.useState<boolean>(false);
-  const [secretData, setSecretData] =
-    React.useState<SecretAppData>(initialSecretData);
+  const [showInputGoogleDialog, setShowInputGoogleDialog] = React.useState<boolean>(false);
+  const [isDialogButtonLoading, setIsDialogButtonLoading] = React.useState<boolean>(false);
+  const [secretData, setSecretData] = React.useState<SecretAppData>(initialSecretData);
 
   React.useEffect(() => {
     googleInit();
@@ -100,14 +93,8 @@ export default function AppGoogleSignInButton({
       setSecretData(data);
 
       if (isExistingAccount(data)) {
-        const decrypted = await decryptWithDevice(
-          data.device.data,
-          data.device.version,
-        );
-        if (
-          decrypted.status === 'error' ||
-          !isValidPassphrase(decrypted.data)
-        ) {
+        const decrypted = await decryptWithDevice(data.device.data, data.device.version);
+        if (decrypted.status === 'error' || !isValidPassphrase(decrypted.data)) {
           setShowInputGoogleDialog(true);
           return;
         } else {

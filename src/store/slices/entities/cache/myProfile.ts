@@ -11,7 +11,7 @@ const initialState: Profile & { lastFetch: number } = {
   balance: '',
   social: { twitter: { link: '', stat: 0 } },
   owned: [],
-  onsale: [],
+  onSale: [],
   collection: [],
   lastFetch: 0,
 };
@@ -29,7 +29,7 @@ const profileEntitySlice = createSlice({
       profile.social.twitter.link = action.payload.social.twitter.link;
       profile.social.twitter.stat = action.payload.social.twitter.stat;
       profile.owned = action.payload.owned.slice();
-      profile.onsale = action.payload.onsale.slice();
+      profile.onSale = action.payload.onSale.slice();
       profile.collection = action.payload.collection.slice();
     },
     setLastFetchMyProfileCache: (profile, action: PayloadAction<number>) => {
@@ -41,11 +41,8 @@ const profileEntitySlice = createSlice({
   },
 });
 
-export const {
-  setMyProfileCache,
-  setLastFetchMyProfileCache,
-  resetMyProfileCache,
-} = profileEntitySlice.actions;
+export const { setMyProfileCache, setLastFetchMyProfileCache, resetMyProfileCache } =
+  profileEntitySlice.actions;
 export default profileEntitySlice.reducer;
 
 export const selectMyProfileCache = createSelector(

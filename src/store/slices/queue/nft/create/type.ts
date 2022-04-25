@@ -6,10 +6,7 @@ const createNFTTypeQueueSlice = createSlice({
   name: 'type',
   initialState: '',
   reducers: {
-    setCreateNFTQueueType: (
-      _,
-      action: PayloadAction<'onekind' | 'pack' | ''>,
-    ) => {
+    setCreateNFTQueueType: (_, action: PayloadAction<'onekind' | 'pack' | ''>) => {
       return action.payload;
     },
     clearCreateNFTQueueType: () => {
@@ -18,8 +15,7 @@ const createNFTTypeQueueSlice = createSlice({
   },
 });
 
-export const { setCreateNFTQueueType, clearCreateNFTQueueType } =
-  createNFTTypeQueueSlice.actions;
+export const { setCreateNFTQueueType, clearCreateNFTQueueType } = createNFTTypeQueueSlice.actions;
 export default createNFTTypeQueueSlice.reducer;
 
 export const selectCreateNFTTypeQueue = createSelector(

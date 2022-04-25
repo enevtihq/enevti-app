@@ -30,10 +30,7 @@ function AppFormTextInputWithError(
   ref: any,
 ) {
   const insets = useSafeAreaInsets();
-  const styles = React.useMemo(
-    () => makeStyles(theme, insets),
-    [theme, insets],
-  );
+  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
 
   return (
     <View style={[props.style]}>
@@ -62,9 +59,7 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
     },
   });
 
-const forwardedAppFormTextInputWithError = React.forwardRef(
-  AppFormTextInputWithError,
-);
+const forwardedAppFormTextInputWithError = React.forwardRef(AppFormTextInputWithError);
 
 const memoizedAppFormTextInputWithError = React.memo(
   forwardedAppFormTextInputWithError,

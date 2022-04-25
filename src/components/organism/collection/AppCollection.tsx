@@ -29,10 +29,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import CollectionActivityComponent from './tabs/CollectionActivityComponent';
 import AppCollectionMintButton from './AppCollectionMintButton';
 import usePaymentCallback from 'enevti-app/utils/hook/usePaymentCallback';
-import {
-  hideModalLoader,
-  showModalLoader,
-} from 'enevti-app/store/slices/ui/global/modalLoader';
+import { hideModalLoader, showModalLoader } from 'enevti-app/store/slices/ui/global/modalLoader';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 import { useTranslation } from 'react-i18next';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -53,11 +50,7 @@ interface AppCollectionProps {
   route: RouteProp<RootStackParamList, 'Collection'>;
 }
 
-export default function AppCollection({
-  onScrollWorklet,
-  navigation,
-  route,
-}: AppCollectionProps) {
+export default function AppCollection({ onScrollWorklet, navigation, route }: AppCollectionProps) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { hp, wp } = useDimension();
@@ -74,29 +67,20 @@ export default function AppCollection({
 
   const now = React.useMemo(() => Date.now(), []);
   const mintingAvailable = React.useMemo(
-    () =>
-      collection.minting.expire <= now || collection.minting.available === 0
-        ? false
-        : true,
+    () => (collection.minting.expire <= now || collection.minting.available === 0 ? false : true),
     [collection.minting.expire, collection.minting.available, now],
   );
   const headerPercentage = React.useMemo(
-    () =>
-      COLLECTION_HEADER_VIEW_HEIGHT +
-      (mintingAvailable ? MINTING_AVAILABLE_VIEW_HEIGHT : 0),
+    () => COLLECTION_HEADER_VIEW_HEIGHT + (mintingAvailable ? MINTING_AVAILABLE_VIEW_HEIGHT : 0),
     [mintingAvailable],
   );
-  const totalHeaderHeight = React.useMemo(
-    () => hp(headerPercentage),
-    [hp, headerPercentage],
-  );
+  const totalHeaderHeight = React.useMemo(() => hp(headerPercentage), [hp, headerPercentage]);
   const styles = React.useMemo(
     () => makeStyles(hp, wp, headerPercentage),
     [hp, wp, headerPercentage],
   );
 
-  const [mintedItemsMounted, setMintedItemsMounted] =
-    React.useState<boolean>(false);
+  const [mintedItemsMounted, setMintedItemsMounted] = React.useState<boolean>(false);
   const [activityMounted, setActivityMounted] = React.useState<boolean>(false);
 
   const mintedRef = useAnimatedRef<FlatList>();
@@ -107,8 +91,7 @@ export default function AppCollection({
   const tabScroll = useSharedValue(0);
 
   const onCollectionScreenLoaded = React.useCallback(
-    (reload: boolean = false) =>
-      dispatch(loadCollection({ routeParam: route.params, reload })),
+    (reload: boolean = false) => dispatch(loadCollection({ routeParam: route.params, reload })),
     [dispatch, route.params],
   ) as AppAsyncThunk;
 
@@ -127,15 +110,9 @@ export default function AppCollection({
     };
   }, [dispatch, onCollectionScreenLoaded, route.params.arg]);
 
-  const mintedItemsOnMounted = React.useCallback(
-    () => setMintedItemsMounted(true),
-    [],
-  );
+  const mintedItemsOnMounted = React.useCallback(() => setMintedItemsMounted(true), []);
 
-  const activityOnMounted = React.useCallback(
-    () => setActivityMounted(true),
-    [],
-  );
+  const activityOnMounted = React.useCallback(() => setActivityMounted(true), []);
 
   const paymentProcessCallback = React.useCallback(() => {
     dispatch(showModalLoader());
@@ -146,10 +123,7 @@ export default function AppCollection({
     dispatch(showSnackbar({ mode: 'info', text: t('payment:success') }));
   }, [dispatch, t]);
 
-  const paymentErrorCallback = React.useCallback(
-    () => dispatch(hideModalLoader()),
-    [dispatch],
-  );
+  const paymentErrorCallback = React.useCallback(() => dispatch(hideModalLoader()), [dispatch]);
 
   usePaymentCallback({
     onProcess: paymentProcessCallback,
@@ -157,9 +131,7 @@ export default function AppCollection({
     onError: paymentErrorCallback,
   });
 
-  const useCustomAnimatedScrollHandler = (
-    scrollRefList: React.RefObject<any>[],
-  ) =>
+  const useCustomAnimatedScrollHandler = (scrollRefList: React.RefObject<any>[]) =>
     useAnimatedScrollHandler({
       onScroll: (event, ctx: { prevY: number; current: number }) => {
         rawScrollY.value = event.contentOffset.y;
@@ -226,12 +198,8 @@ export default function AppCollection({
       },
     });
 
-  const mintedItemsScrollHandler = useCustomAnimatedScrollHandler([
-    activityRef,
-  ]);
-  const collectionActivityScrollHandler = useCustomAnimatedScrollHandler([
-    mintedRef,
-  ]);
+  const mintedItemsScrollHandler = useCustomAnimatedScrollHandler([activityRef]);
+  const collectionActivityScrollHandler = useCustomAnimatedScrollHandler([mintedRef]);
 
   const scrollStyle = useAnimatedStyle(() => {
     return {
@@ -304,9 +272,7 @@ export default function AppCollection({
 
   return !collectionUndefined ? (
     <View style={styles.collectionContainer}>
-      <Animated.View
-        pointerEvents={'box-none'}
-        style={[styles.collectionHeader, scrollStyle]}>
+      <Animated.View pointerEvents={'box-none'} style={[styles.collectionHeader, scrollStyle]}>
         <AppCollectionHeader
           navigation={navigation}
           collection={collection}
@@ -326,17 +292,11 @@ export default function AppCollection({
       {scrollEnabled ? null : (
         <AppActivityIndicator
           animating={true}
-          style={[
-            styles.mountedIndicator,
-            { display: scrollEnabled ? noDisplay : undefined },
-          ]}
+          style={[styles.mountedIndicator, { display: scrollEnabled ? noDisplay : undefined }]}
           color={theme.colors.primary}
         />
       )}
-      <AppCollectionMintButton
-        collection={collection}
-        mintingAvailable={mintingAvailable}
-      />
+      <AppCollectionMintButton collection={collection} mintingAvailable={mintingAvailable} />
     </View>
   ) : (
     <View style={styles.loaderContainer}>
@@ -345,11 +305,7 @@ export default function AppCollection({
   );
 }
 
-const makeStyles = (
-  hp: DimensionFunction,
-  wp: DimensionFunction,
-  headerPercentage: number,
-) =>
+const makeStyles = (hp: DimensionFunction, wp: DimensionFunction, headerPercentage: number) =>
   StyleSheet.create({
     collectionContainer: {
       flex: 1,

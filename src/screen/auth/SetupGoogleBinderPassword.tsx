@@ -8,10 +8,7 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import YupPassword from 'yup-password';
 
-import {
-  encryptWithDevice,
-  encryptWithPassword,
-} from 'enevti-app/utils/cryptography';
+import { encryptWithDevice, encryptWithPassword } from 'enevti-app/utils/cryptography';
 import { Theme } from 'enevti-app/theme/default';
 import AppHeaderWizard from 'enevti-app/components/molecules/AppHeaderWizard';
 import { RootStackParamList } from 'enevti-app/navigation';
@@ -20,7 +17,7 @@ import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButto
 import AppView from 'enevti-app/components/atoms/view/AppView';
 import AppCheckbox from 'enevti-app/components/atoms/form/AppCheckbox';
 import { hp, wp, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
-import { BRAND_NAME } from 'enevti-app/components/atoms/brand/AppBrandConstant';
+import { COMMUNITY_IDENTIFIER } from 'enevti-app/utils/constant/identifier';
 import { setSecretAppData } from 'enevti-app/service/google/appData';
 import { useDispatch } from 'react-redux';
 import { CommonActions } from '@react-navigation/native';
@@ -42,10 +39,7 @@ const validationSchema = Yup.object().shape({
 export default function SetupGoogleBinderPassword({ navigation }: Props) {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
-  const styles = React.useMemo(
-    () => makeStyles(theme, insets),
-    [theme, insets],
-  );
+  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const confirmPasswordInput = React.useRef<any>();
@@ -54,10 +48,7 @@ export default function SetupGoogleBinderPassword({ navigation }: Props) {
   const handleFormSubmit = async (values: any) => {
     try {
       const passphrase = generatePassphrase();
-      const encryptedPassphrase = await encryptWithPassword(
-        passphrase,
-        values.password,
-      );
+      const encryptedPassphrase = await encryptWithPassword(passphrase, values.password);
       const bindedPassphrase = await encryptWithDevice(passphrase);
       await setSecretAppData({
         device: bindedPassphrase,
@@ -148,9 +139,7 @@ export default function SetupGoogleBinderPassword({ navigation }: Props) {
                 showError={touched.confirmPassword}
                 touchHandler={() => setFieldTouched('confirmPassword')}
                 onChangeText={handleChange('confirmPassword')}
-                onSubmitEditing={
-                  isValid && dirty ? handleSubmit : () => Keyboard.dismiss()
-                }
+                onSubmitEditing={isValid && dirty ? handleSubmit : () => Keyboard.dismiss()}
                 blurOnSubmit={true}
               />
             </View>
@@ -169,10 +158,8 @@ export default function SetupGoogleBinderPassword({ navigation }: Props) {
               <AppCheckbox
                 value={values.checkboxPassword}
                 style={styles.checkbox}
-                onPress={() =>
-                  setFieldValue('checkboxPassword', !values.checkboxPassword)
-                }>
-                {t('auth:checkboxPassword', { brand: BRAND_NAME })}
+                onPress={() => setFieldValue('checkboxPassword', !values.checkboxPassword)}>
+                {t('auth:checkboxPassword', { brand: COMMUNITY_IDENTIFIER })}
               </AppCheckbox>
             </View>
           </>

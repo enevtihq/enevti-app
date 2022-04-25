@@ -3,10 +3,7 @@ import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import { Edge, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 
-import {
-  hideSnackbar,
-  selectSnackBarState,
-} from 'enevti-app/store/slices/ui/global/snackbar';
+import { hideSnackbar, selectSnackBarState } from 'enevti-app/store/slices/ui/global/snackbar';
 import AppSnackbar from 'enevti-app/components/atoms/snackbar/AppSnackbar';
 import { SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
 import AppKeyboardDismissOnClickView from './AppKeyboardDismissOnClickView';
@@ -64,11 +61,7 @@ export default function AppView({
               {withPayment ? <AppPaymentModal /> : null}
             </BottomSheetModalProvider>
           ) : (
-            <AppContainer
-              header={header}
-              headerOffset={headerOffset}
-              darken={darken}
-              edges={edges}>
+            <AppContainer header={header} headerOffset={headerOffset} darken={darken} edges={edges}>
               {children}
             </AppContainer>
           )}

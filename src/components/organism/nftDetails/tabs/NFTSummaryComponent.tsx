@@ -1,12 +1,5 @@
-import {
-  Platform,
-  Pressable,
-  RefreshControl,
-  StyleSheet,
-  View,
-} from 'react-native';
+import { Platform, Pressable, RefreshControl, StyleSheet, View } from 'react-native';
 import React from 'react';
-import { NFT } from 'enevti-app/types/core/chain/nft';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { Divider, useTheme } from 'react-native-paper';
@@ -30,6 +23,7 @@ import AppAccordion from 'enevti-app/components/atoms/accordion/AppAccordion';
 import AppTextBody3 from 'enevti-app/components/atoms/text/AppTextBody3';
 import Color from 'color';
 import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
+import { NFT } from 'enevti-app/types/core/chain/nft';
 
 interface NFTSummaryComponentProps {
   nft: NFT;
@@ -141,9 +135,7 @@ function Component(
             </AppTextHeading2>
 
             <View style={styles.summary}>
-              <AppTextBody4 style={{ color: theme.colors.placeholder }}>
-                {nft.name}
-              </AppTextBody4>
+              <AppTextBody4 style={{ color: theme.colors.placeholder }}>{nft.name}</AppTextBody4>
             </View>
           </View>
         </View>
@@ -188,8 +180,7 @@ function Component(
       <View style={{ paddingHorizontal: wp('5%') }}>
         <Divider />
         <View style={styles.createdOwnedBy}>
-          <AppTextBody4
-            style={{ color: theme.colors.placeholder, width: wp('20%') }}>
+          <AppTextBody4 style={{ color: theme.colors.placeholder, width: wp('20%') }}>
             {t('nftDetails:createdBy')}{' '}
           </AppTextBody4>
           <AppAvatarRenderer
@@ -205,8 +196,7 @@ function Component(
         </View>
         <Divider />
         <View style={styles.createdOwnedBy}>
-          <AppTextBody4
-            style={{ color: theme.colors.placeholder, width: wp('20%') }}>
+          <AppTextBody4 style={{ color: theme.colors.placeholder, width: wp('20%') }}>
             {t('nftDetails:ownedBy')}{' '}
           </AppTextBody4>
           <AppAvatarRenderer
@@ -225,9 +215,7 @@ function Component(
       <View style={styles.accordionContainer}>
         <View style={styles.accordionBox}>
           <AppAccordion
-            title={
-              <AppTextBody3>{t('nftDetails:collectionDetail')}</AppTextBody3>
-            }
+            title={<AppTextBody3>{t('nftDetails:collectionDetail')}</AppTextBody3>}
             titleStyle={styles.accordionTitle}>
             <View style={styles.accordionItem}>
               <Pressable
@@ -259,8 +247,7 @@ const makeStyles = (
 ) =>
   StyleSheet.create({
     contentContainerStyle: {
-      paddingTop:
-        hp(NFT_DETAILS_TOP_TABBAR_HEIGHT_PERCENTAGE) + collectionHeaderHeight,
+      paddingTop: hp(NFT_DETAILS_TOP_TABBAR_HEIGHT_PERCENTAGE) + collectionHeaderHeight,
       minHeight:
         hp(100) +
         collectionHeaderHeight -

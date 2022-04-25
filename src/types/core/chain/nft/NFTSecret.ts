@@ -4,3 +4,10 @@ export type NFTSecret = {
   sender: string;
   recipient: string;
 };
+
+export type NFTSecretAsset = {
+  cipher: string;
+  signature: string;
+  sender: Buffer;
+  recipient: Buffer;
+};

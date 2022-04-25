@@ -16,8 +16,7 @@ function AppFormTextInput(props: AppFormTextInputProps, ref: any) {
   const theme = useTheme();
   const styles = React.useMemo(() => makeStyles(theme), [theme]);
   const height = props.numberOfLines ? props.numberOfLines * 25 : undefined;
-  const paddingBottom =
-    props.maxLength && !props.hideMaxLengthIndicator ? 10 : undefined;
+  const paddingBottom = props.maxLength && !props.hideMaxLengthIndicator ? 10 : undefined;
   const initialLength = props.value
     ? props.value.toString().length
     : props.defaultValue
@@ -68,9 +67,7 @@ function AppFormTextInput(props: AppFormTextInputProps, ref: any) {
           onBlur={onBlur}
           onChangeText={onChangeText}
         />
-        {props.endComponent ? (
-          <View style={styles.endComponent}>{props.endComponent}</View>
-        ) : null}
+        {props.endComponent ? <View style={styles.endComponent}>{props.endComponent}</View> : null}
         {maxLengthShow && props.maxLength && !props.hideMaxLengthIndicator ? (
           <AppTextBody5 style={styles.maxLength}>
             {textLength} / {props.maxLength}

@@ -54,10 +54,7 @@ export default React.memo(
     );
   },
   (props, nextProps) => {
-    if (
-      props.nft.utility === nextProps.nft.utility &&
-      props.args === nextProps.args
-    ) {
+    if (props.nft.utility === nextProps.nft.utility && props.args === nextProps.args) {
       return true;
     } else {
       return false;

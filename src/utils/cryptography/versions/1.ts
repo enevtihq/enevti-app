@@ -40,9 +40,7 @@ export async function decryptText_v1(
   password: string,
 ): Promise<DecryptedData> {
   await sleep(1);
-  const fromBase64 = JSON.parse(
-    base64.decode(encryptedBase64),
-  ) as EncryptedBase;
+  const fromBase64 = JSON.parse(base64.decode(encryptedBase64)) as EncryptedBase;
   const decrypted = await RNEncryptionModule.decryptText(
     fromBase64.cipherText,
     password,
@@ -68,14 +66,11 @@ export async function encryptFile_v1(
   password: string,
 ): Promise<EncryptedFile> {
   await sleep(1);
-  const ret = await RNEncryptionModule.encryptFile(
-    inputFile,
-    outputFile,
-    password,
-  );
+  const ret = await RNEncryptionModule.encryptFile(inputFile, outputFile, password);
   if (ret.status === 'success') {
     return {
       status: 'success',
+      output: outputFile,
       iv: ret.iv,
       salt: ret.salt,
       version: VERSION,
@@ -83,6 +78,7 @@ export async function encryptFile_v1(
   } else {
     return {
       status: 'error',
+      output: '',
       iv: '',
       salt: '',
       version: VERSION,
@@ -98,13 +94,7 @@ export async function decryptFile_v1(
   salt: string,
 ): Promise<DecryptedFile> {
   await sleep(1);
-  const ret = await RNEncryptionModule.decryptFile(
-    inputFile,
-    outputFile,
-    password,
-    iv,
-    salt,
-  );
+  const ret = await RNEncryptionModule.decryptFile(inputFile, outputFile, password, iv, salt);
   if (ret.status === 'success') {
     return {
       status: 'success',

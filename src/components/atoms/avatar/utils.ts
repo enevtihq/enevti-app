@@ -79,19 +79,10 @@ const computePentagon = (props: any) => ({
     .join(' '),
 });
 
-export const getShape = (
-  chunk: any,
-  size: number,
-  gradient: any,
-  sizeScale = 1,
-) => {
-  const sizes = [1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0, 2.1].map(
-    x => x * size * sizeScale,
-  );
+export const getShape = (chunk: any, size: number, gradient: any, sizeScale = 1) => {
+  const sizes = [1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0, 2.1].map(x => x * size * sizeScale);
 
-  const coordinates = [5, 6, 7, 8, 9, 10, 11, 12, 13, 14].map(
-    x => x * (size / 40),
-  );
+  const coordinates = [5, 6, 7, 8, 9, 10, 11, 12, 13, 14].map(x => x * (size / 40));
 
   const shapes = {
     circle: {
@@ -141,8 +132,7 @@ export const getShape = (
   const shapeNames: (keyof typeof shapes)[] = ['circle', 'triangle', 'square'];
 
   return {
-    component:
-      shapes[shapeNames[chunk.substr(0, 2) % shapeNames.length]].component,
+    component: shapes[shapeNames[chunk.substr(0, 2) % shapeNames.length]].component,
     props: {
       ...shapes[shapeNames[chunk.substr(0, 2) % shapeNames.length]].props,
       fill: gradient.url,
@@ -165,26 +155,19 @@ export const getBackgroundCircle = (size: number, gradient: any) => ({
 export const pickTwo = (chunk: any, options: any) => [
   options[chunk.substr(0, 2) % options.length],
   options[
-    (chunk.substr(0, 2) - 0 + 1 + (chunk.substr(2, 2) % (options.length - 1))) %
-      options.length
+    (chunk.substr(0, 2) - 0 + 1 + (chunk.substr(2, 2) % (options.length - 1))) % options.length
   ],
 ];
 
 export const getHashChunks = (address: string) => {
   const hash = crypto.createHash('sha256');
-  const addressHash = new BigNumber(`0x${hash.update(address).digest('hex')}`)
-    .toString()
-    .substr(3);
+  const addressHash = new BigNumber(`0x${hash.update(address).digest('hex')}`).toString().substr(3);
   return addressHash.match(/\d{5}/g);
 };
 
-export const randomId = () =>
-  `avatar-${[1, 2, 3, 4].map(() => Math.random() * 100).join('')}`;
+export const randomId = () => `avatar-${[1, 2, 3, 4].map(() => Math.random() * 100).join('')}`;
 
-export const replaceUrlByHashOnScheme = (
-  uniqueSvgUrlHash: any,
-  gradientScheme: any,
-) => ({
+export const replaceUrlByHashOnScheme = (uniqueSvgUrlHash: any, gradientScheme: any) => ({
   ...gradientScheme,
   url: gradientScheme.url.replace(/\)/g, `-${uniqueSvgUrlHash})`),
   id: `${gradientScheme.id}-${uniqueSvgUrlHash}`,

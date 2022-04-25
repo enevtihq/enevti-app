@@ -31,10 +31,7 @@ export default React.memo(
     );
   },
   (props, nextProps) => {
-    if (
-      props.nft.name === nextProps.nft.name &&
-      props.args === nextProps.args
-    ) {
+    if (props.nft.name === nextProps.nft.name && props.args === nextProps.args) {
       return true;
     } else {
       return false;

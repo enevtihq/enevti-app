@@ -18,9 +18,7 @@ export default function StakePool({ navigation, route }: Props) {
       withLoader
       withPayment
       edges={['left', 'bottom', 'right']}
-      header={
-        <AppHeader back navigation={navigation} title={t('stake:stakePool')} />
-      }>
+      header={<AppHeader back navigation={navigation} title={t('stake:stakePool')} />}>
       <AppStakePool route={route} />
     </AppView>
   );

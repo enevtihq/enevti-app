@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
-import { COIN_NAME } from 'enevti-app/components/atoms/brand/AppBrandConstant';
+import { COIN_NAME } from 'enevti-app/utils/constant/identifier';
 import { NFTTemplateAsset } from 'enevti-app/types/core/chain/nft/NFTTemplate';
 import {
   OneKindContractForm,
@@ -42,7 +42,7 @@ export const createNFTOneKindQueueInitialState: CreateNFTOneKind = {
     contentType: '',
     contentExtension: '',
     contentUri: '',
-    recurring: '',
+    recurring: 'anytime',
     timeDay: -1,
     timeDate: -1,
     timeMonth: -1,
@@ -66,28 +66,16 @@ const createNFTOneKindQueueSlice = createSlice({
   name: 'onekind',
   initialState: createNFTOneKindQueueInitialState,
   reducers: {
-    setCreateNFTOneKindData: (
-      onekind,
-      action: PayloadAction<CreateNFTOneKind['data']>,
-    ) => {
+    setCreateNFTOneKindData: (onekind, action: PayloadAction<CreateNFTOneKind['data']>) => {
       Object.assign(onekind.data, action.payload);
     },
-    setCreateNFTOneKindChosenTemplate: (
-      onekind,
-      action: PayloadAction<NFTTemplateAsset>,
-    ) => {
+    setCreateNFTOneKindChosenTemplate: (onekind, action: PayloadAction<NFTTemplateAsset>) => {
       Object.assign(onekind.choosenTemplate, action.payload);
     },
-    setCreateNFTOneKindState: (
-      onekind,
-      action: PayloadAction<OneKindContractForm>,
-    ) => {
+    setCreateNFTOneKindState: (onekind, action: PayloadAction<OneKindContractForm>) => {
       Object.assign(onekind.state, action.payload);
     },
-    setCreateNFTOneKindStatus: (
-      onekind,
-      action: PayloadAction<OneKindContractStatusForm>,
-    ) => {
+    setCreateNFTOneKindStatus: (onekind, action: PayloadAction<OneKindContractStatusForm>) => {
       Object.assign(onekind.status, action.payload);
     },
     clearCreateNFTOneKindQueue: () => {

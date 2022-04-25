@@ -21,18 +21,12 @@ const stakePoolViewSlice = createSlice({
   name: 'stakePoolView',
   initialState,
   reducers: {
-    setStakePoolView: (
-      stakePool,
-      action: PayloadAction<{ key: string; value: StakePoolData }>,
-    ) => {
+    setStakePoolView: (stakePool, action: PayloadAction<{ key: string; value: StakePoolData }>) => {
       Object.assign(stakePool, {
         [action.payload.key]: action.payload.value,
       });
     },
-    setStakePoolLoaded: (
-      stakePool,
-      action: PayloadAction<{ key: string; value: boolean }>,
-    ) => {
+    setStakePoolLoaded: (stakePool, action: PayloadAction<{ key: string; value: boolean }>) => {
       stakePool[action.payload.key].loaded = action.payload.value;
     },
     clearStakePoolByKey: (stakePool, action: PayloadAction<string>) => {
@@ -57,30 +51,19 @@ export const {
 export default stakePoolViewSlice.reducer;
 
 export const selectStakePoolOwnerView = createSelector(
-  [
-    (state: RootState) => state.ui.view.stakePool,
-    (state: RootState, key: string) => key,
-  ],
+  [(state: RootState) => state.ui.view.stakePool, (state: RootState, key: string) => key],
   (stakePool: StakePoolViewStore, key: string) =>
-    stakePool.hasOwnProperty(key)
-      ? stakePool[key].owner
-      : initialStateItem.owner,
+    stakePool.hasOwnProperty(key) ? stakePool[key].owner : initialStateItem.owner,
 );
 
 export const selectStakePoolView = createSelector(
-  [
-    (state: RootState) => state.ui.view.stakePool,
-    (state: RootState, key: string) => key,
-  ],
+  [(state: RootState) => state.ui.view.stakePool, (state: RootState, key: string) => key],
   (stakePool: StakePoolViewStore, key: string) =>
     stakePool.hasOwnProperty(key) ? stakePool[key] : initialStateItem,
 );
 
 export const isStakePoolUndefined = createSelector(
-  [
-    (state: RootState) => state.ui.view.stakePool,
-    (state: RootState, key: string) => key,
-  ],
+  [(state: RootState) => state.ui.view.stakePool, (state: RootState, key: string) => key],
   (stakePool: StakePoolViewStore, key: string) =>
     stakePool.hasOwnProperty(key) ? !stakePool[key].loaded : true,
 );

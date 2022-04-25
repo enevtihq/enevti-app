@@ -24,10 +24,7 @@ export const loadFeeds = createAsyncThunk<void, loadFeedsArgs, AsyncThunkAPI>(
       const now = Date.now();
       dispatch(setFeedView(selectFeedItemsCache(getState())));
 
-      if (
-        reload ||
-        now - selectLastFetchFeedCache(getState()) > lastFetchTimeout.feed
-      ) {
+      if (reload || now - selectLastFetchFeedCache(getState()) > lastFetchTimeout.feed) {
         const feeds = await getFeeds(signal);
         if (feeds !== undefined) {
           dispatch(setFeedView(feeds));

@@ -1,10 +1,8 @@
 export default {
   chooseNFTTypeTitle: 'Choose Collection Type',
-  chooseNFTTypeDescription:
-    'Every single NFT is unique! How you will turn your creation into NFT?',
+  chooseNFTTypeDescription: 'Every single NFT is unique! How you will turn your creation into NFT?',
   oneKindTitle: 'One of a Kind',
-  oneKindDescription:
-    'Create NFT based on one image, highlight your masterpiece!',
+  oneKindDescription: 'Create NFT based on one image, highlight your masterpiece!',
   packTitle: 'Bundle',
   packDescription: 'Create NFT based on many image with gamification option',
   openCamera: 'Open Camera',
@@ -16,8 +14,7 @@ export default {
   chooseNFTTemplateDescription:
     'Template are a new way to present your NFT, while preserving its original data!',
   createTemplate: 'Create Your Own!',
-  createTemplateDescription:
-    'Your template can be reused by everyone, COMING SOON!',
+  createTemplateDescription: 'Your template can be reused by everyone, COMING SOON!',
   createTemplateButton: 'Create New Template',
   chooseNFTTemplateContinue: 'Choose This Template',
   setupContract: 'Setup Contract',
@@ -43,8 +40,7 @@ export default {
   mintingPeriodLimitForever: 'No Limit',
   mintingPeriodLimitForeverDescription: 'This NFT can be minted forever',
   mintingPeriodLimitFixed: 'Fixed Period',
-  mintingPeriodLimitFixedDescription:
-    'Minting is available until period passed',
+  mintingPeriodLimitFixedDescription: 'Minting is available until period passed',
   redeemDay: 'Redeem Day',
   redeemDate: 'Redeem Date',
   redeemMonthAndDate: 'Redeem Month & Date',
@@ -96,8 +92,7 @@ export default {
   selectCoverDescription: 'The default is your NFT image',
   nftPreview: 'Preview',
   previewUnavailable: 'Preview Not Available',
-  previewUnavailableMessage:
-    'Please setup name, symbol, and utility to enable preview',
+  previewUnavailableMessage: 'Please setup name, symbol, and utility to enable preview',
   changeImage: 'Change Image',
   changeTemplate: 'Change Template',
   saveSession: 'Save Session?',

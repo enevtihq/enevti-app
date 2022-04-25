@@ -1,5 +1,5 @@
-import i18n from 'enevti-app/translations/i18n';
 import { NFT } from 'enevti-app/types/core/chain/nft';
+import i18n from 'enevti-app/translations/i18n';
 import { dateOfNearestDay } from './calendar';
 
 type RedeemTimeOffset = {
@@ -18,7 +18,7 @@ export function getRedeemTime(nft: NFT, offset?: RedeemTimeOffset) {
   const date = now.getDate();
   const nftTime = { ...nft.redeem.schedule.time, ...nft.redeem.schedule.from };
 
-  if (nft.redeem.schedule.recurring === 'instant') {
+  if (nft.redeem.schedule.recurring === 'anytime') {
     throw Error(i18n.t('error:invalidRecurring'));
   }
 
@@ -36,8 +36,7 @@ export function getRedeemTime(nft: NFT, offset?: RedeemTimeOffset) {
       time = new Date(
         year + (offset && offset.year ? offset.year : 0),
         month + (offset && offset.month ? offset.month : 0),
-        dateOfNearestDay(now, nftTime.day).getDate() +
-          (offset && offset.date ? offset.date : 0),
+        dateOfNearestDay(now, nftTime.day).getDate() + (offset && offset.date ? offset.date : 0),
         nftTime.hour + (offset && offset.hour ? offset.hour : 0),
         nftTime.minute + (offset && offset.minute ? offset.minute : 0),
       ).getTime();
@@ -84,7 +83,7 @@ export function getRedeemTimeUTC(nft: NFT, offset?: RedeemTimeOffset) {
   const date = now.getUTCDate();
   const nftTime = { ...nft.redeem.schedule.time, ...nft.redeem.schedule.from };
 
-  if (nft.redeem.schedule.recurring === 'instant') {
+  if (nft.redeem.schedule.recurring === 'anytime') {
     throw Error(i18n.t('error:invalidRecurring'));
   }
 
@@ -102,8 +101,7 @@ export function getRedeemTimeUTC(nft: NFT, offset?: RedeemTimeOffset) {
       time = Date.UTC(
         year + (offset && offset.year ? offset.year : 0),
         month + (offset && offset.month ? offset.month : 0),
-        dateOfNearestDay(now, nftTime.day).getDate() +
-          (offset && offset.date ? offset.date : 0),
+        dateOfNearestDay(now, nftTime.day).getDate() + (offset && offset.date ? offset.date : 0),
         nftTime.hour + (offset && offset.hour ? offset.hour : 0),
         nftTime.minute + (offset && offset.minute ? offset.minute : 0),
       );
@@ -151,10 +149,7 @@ export function getRedeemDateUTC(nft: NFT) {
 }
 
 export function isRedeemTime(nft: NFT) {
-  if (
-    nft.redeem.schedule.recurring === 'instant' ||
-    nft.utility === 'content'
-  ) {
+  if (nft.redeem.schedule.recurring === 'anytime' || nft.utility === 'content') {
     return true;
   }
 
@@ -165,10 +160,7 @@ export function isRedeemTime(nft: NFT) {
 }
 
 export function isRedeemTimeUTC(nft: NFT) {
-  if (
-    nft.redeem.schedule.recurring === 'instant' ||
-    nft.utility === 'content'
-  ) {
+  if (nft.redeem.schedule.recurring === 'anytime' || nft.utility === 'content') {
     return true;
   }
 

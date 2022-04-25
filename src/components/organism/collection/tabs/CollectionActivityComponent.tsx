@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  Platform,
-  RefreshControl,
-  StyleSheet,
-  FlatList,
-  View,
-} from 'react-native';
+import { Platform, RefreshControl, StyleSheet, FlatList, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import Animated from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -73,17 +67,11 @@ function Component(
     [refreshing, scrollEnabled],
   );
   const itemHeight = React.useMemo(
-    () =>
-      wp(
-        COLLECTION_ACTIVITY_ITEM_HEIGHT + LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE,
-      ),
+    () => wp(COLLECTION_ACTIVITY_ITEM_HEIGHT + LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE),
     [wp],
   );
   const progressViewOffset = React.useMemo(
-    () =>
-      Platform.OS === 'ios'
-        ? 0
-        : hp(TOP_TABBAR_HEIGHT_PERCENTAGE) + collectionHeaderHeight,
+    () => (Platform.OS === 'ios' ? 0 : hp(TOP_TABBAR_HEIGHT_PERCENTAGE) + collectionHeaderHeight),
     [collectionHeaderHeight, hp],
   );
 
@@ -116,36 +104,25 @@ function Component(
       <AppListItem
         style={styles.collectionItem}
         leftContent={
-          <AppNFTRenderer
-            nft={item.nft}
-            width={wp('13%')}
-            style={styles.nftRenderer}
-          />
+          <AppNFTRenderer nft={item.nfts[0]} width={wp('13%')} style={styles.nftRenderer} />
         }
         rightContent={
           <View style={styles.collectionRightContent}>
-            <AppTextHeading4
-              numberOfLines={1}
-              style={styles.collectionRightText}>
+            <AppTextHeading4 numberOfLines={1} style={styles.collectionRightText}>
               {`${parseAmount(item.value.amount, true, 2)} `}
               <AppTextHeading5>{`$${item.value.currency}`}</AppTextHeading5>
             </AppTextHeading4>
             <AppTextBody5
-              style={[
-                styles.collectionRightText,
-                { color: theme.colors.placeholder },
-              ]}
+              style={[styles.collectionRightText, { color: theme.colors.placeholder }]}
               numberOfLines={1}>
               {moment(item.date).fromNow()}
             </AppTextBody5>
           </View>
         }>
         <AppTextHeading3 numberOfLines={1}>
-          {item.nft.symbol}#{item.nft.serial}
+          {item.nfts[0].symbol}#{item.nfts[0].serial}
         </AppTextHeading3>
-        <AppTextBody4
-          style={{ color: theme.colors.placeholder }}
-          numberOfLines={1}>
+        <AppTextBody4 style={{ color: theme.colors.placeholder }} numberOfLines={1}>
           {t('collection:activityName', {
             name: item.name,
             address: parsePersonaLabel(item.to),
@@ -164,10 +141,7 @@ function Component(
     ],
   );
 
-  const keyExtractor = React.useCallback(
-    (item: Collection['activity'][0]) => item.nft.id,
-    [],
-  );
+  const keyExtractor = React.useCallback((item: Collection['activity'][0]) => item.nfts[0].id, []);
 
   const getItemLayout = React.useCallback(
     (_, index) => ({
@@ -179,10 +153,7 @@ function Component(
   );
 
   const listFooter = React.useMemo(
-    () =>
-      mintingAvailable ? (
-        <View style={{ height: hp(MINT_BUTTON_HEIGHT) }} />
-      ) : undefined,
+    () => (mintingAvailable ? <View style={{ height: hp(MINT_BUTTON_HEIGHT) }} /> : undefined),
     [hp, mintingAvailable],
   );
 

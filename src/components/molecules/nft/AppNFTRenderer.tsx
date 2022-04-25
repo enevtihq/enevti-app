@@ -1,10 +1,4 @@
-import {
-  Dimensions,
-  StyleProp,
-  StyleSheet,
-  View,
-  ViewStyle,
-} from 'react-native';
+import { Dimensions, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import React from 'react';
 import { NFTBase } from 'enevti-app/types/core/chain/nft';
 import UtilityBackground from 'enevti-app/components/atoms/nft/utility/UtilityBackground';
@@ -35,19 +29,10 @@ interface AppNFTRendererProps {
 const THUMBNAIL_TRESHOLD = 0.33;
 
 export default React.memo(
-  function AppNFTRenderer({
-    nft,
-    width,
-    style,
-    dataUri,
-    navigation,
-  }: AppNFTRendererProps) {
+  function AppNFTRenderer({ nft, width, style, dataUri, navigation }: AppNFTRendererProps) {
     const styles = React.useMemo(() => makeStyles(), []);
     const onNavigate = React.useCallback(
-      () =>
-        navigation
-          ? navigation.push('NFTDetails', { arg: nft.id, mode: 'id' })
-          : undefined,
+      () => (navigation ? navigation.push('NFTDetails', { arg: nft.id, mode: 'id' }) : undefined),
       [navigation, nft.id],
     );
 
@@ -63,46 +48,20 @@ export default React.memo(
 
         switch (templateItem.type) {
           case 'utility-background':
-            return (
-              <UtilityBackground
-                key={key}
-                nft={nftObject}
-                args={templateItem.args}
-              />
-            );
+            return <UtilityBackground key={key} nft={nftObject} args={templateItem.args} />;
           case 'data':
-            return (
-              <NFTData
-                key={key}
-                nft={nftObject}
-                args={templateItem.args}
-                dataUri={data}
-              />
-            );
+            return <NFTData key={key} nft={nftObject} args={templateItem.args} dataUri={data} />;
           case 'data-box':
             return (
-              <NFTData
-                box
-                key={key}
-                nft={nftObject}
-                args={templateItem.args}
-                dataUri={data}
-              />
+              <NFTData box key={key} nft={nftObject} args={templateItem.args} dataUri={data} />
             );
           case 'box':
             return <Box key={key} args={templateItem.args} />;
           case 'rarity-icon':
-            return (
-              <RarityIcon key={key} nft={nftObject} args={templateItem.args} />
-            );
+            return <RarityIcon key={key} nft={nftObject} args={templateItem.args} />;
           case 'rarity-rank':
             return (
-              <RarityRank
-                key={key}
-                nft={nftObject}
-                args={templateItem.args}
-                width={canvasWidth}
-              />
+              <RarityRank key={key} nft={nftObject} args={templateItem.args} width={canvasWidth} />
             );
           case 'rarity-percent':
             return (
@@ -114,22 +73,10 @@ export default React.memo(
               />
             );
           case 'name':
-            return (
-              <Name
-                key={key}
-                nft={nftObject}
-                args={templateItem.args}
-                width={canvasWidth}
-              />
-            );
+            return <Name key={key} nft={nftObject} args={templateItem.args} width={canvasWidth} />;
           case 'serial':
             return (
-              <Serial
-                key={key}
-                nft={nftObject}
-                args={templateItem.args}
-                width={canvasWidth}
-              />
+              <Serial key={key} nft={nftObject} args={templateItem.args} width={canvasWidth} />
             );
           case 'partition-icon':
             return (
@@ -151,12 +98,7 @@ export default React.memo(
             );
           case 'utility-icon':
             return (
-              <UtilityIcon
-                key={key}
-                nft={nftObject}
-                args={templateItem.args}
-                width={canvasWidth}
-              />
+              <UtilityIcon key={key} nft={nftObject} args={templateItem.args} width={canvasWidth} />
             );
           case 'utility-label':
             return (
@@ -193,9 +135,7 @@ export default React.memo(
     );
   },
   (prevProps, nextProps) => {
-    return (
-      prevProps.nft === nextProps.nft && prevProps.dataUri === nextProps.dataUri
-    );
+    return prevProps.nft === nextProps.nft && prevProps.dataUri === nextProps.dataUri;
   },
 );
 

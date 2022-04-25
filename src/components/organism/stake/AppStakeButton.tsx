@@ -19,7 +19,7 @@ import { useTheme } from 'react-native-paper';
 import i18n from 'enevti-app/translations/i18n';
 import { StakeForm } from 'enevti-app/types/ui/store/StakeForm';
 import { payAddStake } from 'enevti-app/store/middleware/thunk/payment/creator/payAddStake';
-import { COIN_NAME } from 'enevti-app/components/atoms/brand/AppBrandConstant';
+import { COIN_NAME } from 'enevti-app/utils/constant/identifier';
 import { completeTokenUnit } from 'enevti-app/utils/format/amount';
 import usePaymentCallback from 'enevti-app/utils/hook/usePaymentCallback';
 

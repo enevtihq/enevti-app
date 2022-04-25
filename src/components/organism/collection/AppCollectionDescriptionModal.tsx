@@ -1,7 +1,6 @@
 import { View, StyleSheet } from 'react-native';
 import React from 'react';
 import AppMenuContainer from 'enevti-app/components/atoms/menu/AppMenuContainer';
-import { Collection } from 'enevti-app/types/core/chain/collection';
 import AppTextHeading2 from 'enevti-app/components/atoms/text/AppTextHeading2';
 import { useTheme } from 'react-native-paper';
 import { Theme } from 'enevti-app/theme/default';
@@ -14,6 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { numberKMB, parseAmount } from 'enevti-app/utils/format/amount';
 import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
 import AppCurrencyIcon from 'enevti-app/components/atoms/icon/AppCurrencyIcon';
+import { Collection } from 'enevti-app/types/core/chain/collection';
 
 interface AppCollectionDescriptionModalProps {
   collection: Collection;
@@ -29,10 +29,7 @@ export default function AppCollectionDescriptionModal({
   const { t } = useTranslation();
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
-  const styles = React.useMemo(
-    () => makeStyles(theme, insets),
-    [theme, insets],
-  );
+  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
   const snapPoints = React.useMemo(() => ['75%'], []);
   return (
     <AppMenuContainer
@@ -58,20 +55,14 @@ export default function AppCollectionDescriptionModal({
             <AppTextHeading3 numberOfLines={1}>
               {numberKMB(collection.stat.minted, 2)}
             </AppTextHeading3>
-            <AppTextBody4
-              numberOfLines={1}
-              style={{ color: theme.colors.placeholder }}>
+            <AppTextBody4 numberOfLines={1} style={{ color: theme.colors.placeholder }}>
               {t('collection:statItem')}
             </AppTextBody4>
           </View>
           <View style={styles.collectionStatsDivider} />
           <View style={styles.collectionStatsItem}>
-            <AppTextHeading3 numberOfLines={1}>
-              {collection.stat.owner}
-            </AppTextHeading3>
-            <AppTextBody4
-              numberOfLines={1}
-              style={{ color: theme.colors.placeholder }}>
+            <AppTextHeading3 numberOfLines={1}>{collection.stat.owner}</AppTextHeading3>
+            <AppTextBody4 numberOfLines={1} style={{ color: theme.colors.placeholder }}>
               {t('collection:statOwners')}
             </AppTextBody4>
           </View>
@@ -87,20 +78,14 @@ export default function AppCollectionDescriptionModal({
                 {parseAmount(collection.stat.floor.amount, true, 2)}
               </AppTextHeading3>
             </View>
-            <AppTextBody4
-              numberOfLines={1}
-              style={{ color: theme.colors.placeholder }}>
+            <AppTextBody4 numberOfLines={1} style={{ color: theme.colors.placeholder }}>
               {t('collection:statFloorPrice')}
             </AppTextBody4>
           </View>
           <View style={styles.collectionStatsDivider} />
           <View style={styles.collectionStatsItem}>
-            <AppTextHeading3 numberOfLines={1}>
-              {collection.stat.redeemed}
-            </AppTextHeading3>
-            <AppTextBody4
-              numberOfLines={1}
-              style={{ color: theme.colors.placeholder }}>
+            <AppTextHeading3 numberOfLines={1}>{collection.stat.redeemed}</AppTextHeading3>
+            <AppTextBody4 numberOfLines={1} style={{ color: theme.colors.placeholder }}>
               {t('collection:statRedeemed')}
             </AppTextBody4>
           </View>

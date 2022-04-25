@@ -24,10 +24,7 @@ export default function ConfirmPassphrase({ route, navigation }: Props) {
   const dispatch = useDispatch();
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
-  const styles = React.useMemo(
-    () => makeStyles(theme, insets),
-    [theme, insets],
-  );
+  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
   const { t } = useTranslation();
   const [checked, setChecked] = React.useState<boolean>(false);
 
@@ -53,10 +50,7 @@ export default function ConfirmPassphrase({ route, navigation }: Props) {
       />
 
       <View style={styles.passphraseView}>
-        <AppPassphraseBox
-          passphrase={passphrase}
-          style={styles.passphraseBox}
-        />
+        <AppPassphraseBox passphrase={passphrase} style={styles.passphraseBox} />
       </View>
 
       <View style={styles.actionContainer}>
@@ -69,10 +63,7 @@ export default function ConfirmPassphrase({ route, navigation }: Props) {
           {t('auth:continue')}
         </AppPrimaryButton>
 
-        <AppCheckbox
-          value={checked}
-          style={styles.checkbox}
-          onPress={() => setChecked(!checked)}>
+        <AppCheckbox value={checked} style={styles.checkbox} onPress={() => setChecked(!checked)}>
           {t('auth:confirmPassphraseCheck')}
         </AppCheckbox>
       </View>

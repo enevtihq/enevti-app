@@ -12,8 +12,7 @@ export default function AppStatusBar() {
   const statusbarState = useSelector(selectStatusBarState);
   const barStyle = React.useMemo(
     () =>
-      (statusbarState.tint === 'system' && theme.dark === true) ||
-      statusbarState.tint === 'light'
+      (statusbarState.tint === 'system' && theme.dark === true) || statusbarState.tint === 'light'
         ? 'light-content'
         : (statusbarState.tint === 'system' && theme.dark === false) ||
           statusbarState.tint === 'dark'
@@ -36,11 +35,6 @@ export default function AppStatusBar() {
   );
 
   return (
-    <StatusBar
-      animated
-      translucent={true}
-      barStyle={barStyle}
-      backgroundColor={backgroundColor}
-    />
+    <StatusBar animated translucent={true} barStyle={barStyle} backgroundColor={backgroundColor} />
   );
 }

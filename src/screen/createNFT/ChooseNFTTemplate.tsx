@@ -49,10 +49,7 @@ export default function ChooseNFTTemplate({ navigation, route }: Props) {
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
-  const styles = React.useMemo(
-    () => makeStyles(theme, insets),
-    [theme, insets],
-  );
+  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
   const dispatch = useDispatch();
 
   const [dataUri, setDataUri] = React.useState<string>('');
@@ -78,11 +75,7 @@ export default function ChooseNFTTemplate({ navigation, route }: Props) {
   const renderItem = React.useCallback(
     ({ item }: { index?: number; item: NFTTemplateAsset }) =>
       item.id === 'create' ? (
-        <DropShadow
-          style={[
-            styles.templateItem,
-            { width: itemWidth, height: itemWidth },
-          ]}>
+        <DropShadow style={[styles.templateItem, { width: itemWidth, height: itemWidth }]}>
           <View
             style={[
               styles.comingSoonBox,
@@ -184,14 +177,10 @@ export default function ChooseNFTTemplate({ navigation, route }: Props) {
               />
             ) : null
           }>
-          <AppTextHeading3
-            numberOfLines={1}
-            style={{ width: wp('50%', insets) }}>
+          <AppTextHeading3 numberOfLines={1} style={{ width: wp('50%', insets) }}>
             {template[activeIndex].name}
           </AppTextHeading3>
-          <AppTextBody4
-            numberOfLines={2}
-            style={{ color: theme.colors.placeholder }}>
+          <AppTextBody4 numberOfLines={2} style={{ color: theme.colors.placeholder }}>
             {template[activeIndex].description}
           </AppTextBody4>
         </AppListItem>

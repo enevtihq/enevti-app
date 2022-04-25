@@ -12,26 +12,17 @@ interface RarityPercentProps {
   width: number;
 }
 
-export default function RarityPercent({
-  nft,
-  args,
-  width,
-}: RarityPercentProps) {
+export default function RarityPercent({ nft, args, width }: RarityPercentProps) {
   const theme = useTheme();
   const styles = React.useMemo(() => makeStyles(args, theme), [args, theme]);
-  const text =
-    nft.NFTType === 'onekind'
-      ? '☆☆☆'
-      : `${nft.rarity.stat.percent.toString()}%`;
+  const text = nft.NFTType === 'onekind' ? '☆☆☆' : `${nft.rarity.stat.percent.toString()}%`;
 
   const w = (parseFloat(args.width) * width) / 100.0;
   const h = (parseFloat(args.height) * width) / 100.0;
   const fontSize = Math.sqrt((w * h) / text.length) / 2;
 
   return (
-    <Text
-      numberOfLines={1}
-      style={[styles.rarityPercentContainer, { fontSize: fontSize }]}>
+    <Text numberOfLines={1} style={[styles.rarityPercentContainer, { fontSize: fontSize }]}>
       {text}
     </Text>
   );

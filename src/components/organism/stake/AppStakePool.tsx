@@ -1,10 +1,4 @@
-import {
-  View,
-  FlatListProps,
-  FlatList,
-  RefreshControl,
-  StyleSheet,
-} from 'react-native';
+import { View, FlatListProps, FlatList, RefreshControl, StyleSheet } from 'react-native';
 import React from 'react';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from 'enevti-app/navigation';
@@ -34,16 +28,12 @@ import AppStakerItem, {
 import AppStakeButton from 'enevti-app/components/organism/stake/AppStakeButton';
 import { LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE } from 'enevti-app/components/molecules/list/AppListItem';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
-import {
-  hideModalLoader,
-  showModalLoader,
-} from 'enevti-app/store/slices/ui/global/modalLoader';
+import { hideModalLoader, showModalLoader } from 'enevti-app/store/slices/ui/global/modalLoader';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 import usePaymentCallback from 'enevti-app/utils/hook/usePaymentCallback';
 import { useTranslation } from 'react-i18next';
 
-const AnimatedFlatList =
-  Animated.createAnimatedComponent<FlatListProps<StakerItem>>(FlatList);
+const AnimatedFlatList = Animated.createAnimatedComponent<FlatListProps<StakerItem>>(FlatList);
 
 interface AppStakePoolProps {
   route: RouteProp<RootStackParamList, 'StakePool'>;
@@ -60,9 +50,7 @@ export default function AppStakePool({ route }: AppStakePoolProps) {
   const [extended, setExtended] = React.useState(true);
   const UIExtended = useSharedValue(true);
 
-  const stakePool = useSelector((state: RootState) =>
-    selectStakePoolView(state, route.params.arg),
-  );
+  const stakePool = useSelector((state: RootState) => selectStakePoolView(state, route.params.arg));
 
   const stakePoolUndefined = useSelector((state: RootState) =>
     isStakePoolUndefined(state, route.params.arg),
@@ -100,10 +88,7 @@ export default function AppStakePool({ route }: AppStakePoolProps) {
     dispatch(showSnackbar({ mode: 'info', text: t('payment:success') }));
   }, [dispatch, t]);
 
-  const paymentErrorCallback = React.useCallback(
-    () => dispatch(hideModalLoader()),
-    [dispatch],
-  );
+  const paymentErrorCallback = React.useCallback(() => dispatch(hideModalLoader()), [dispatch]);
 
   usePaymentCallback({
     onProcess: paymentProcessCallback,
@@ -139,23 +124,14 @@ export default function AppStakePool({ route }: AppStakePoolProps) {
     setMenuVisible(!menuVisible);
   }, [menuVisible]);
 
-  const renderItem = React.useCallback(
-    ({ item }: any) => <AppStakerItem staker={item} />,
-    [],
-  );
+  const renderItem = React.useCallback(({ item }: any) => <AppStakerItem staker={item} />, []);
 
-  const keyExtractor = React.useCallback(
-    item => item.rank.toString() + item.persona.address,
-    [],
-  );
+  const keyExtractor = React.useCallback(item => item.rank.toString() + item.persona.address, []);
 
   const getItemLayout = React.useCallback(
     (_, index) => ({
-      length:
-        STAKER_ITEM_HEIGHT_PERCENTAGE + LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE,
-      offset:
-        (STAKER_ITEM_HEIGHT_PERCENTAGE + LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE) *
-        index,
+      length: STAKER_ITEM_HEIGHT_PERCENTAGE + LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE,
+      offset: (STAKER_ITEM_HEIGHT_PERCENTAGE + LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE) * index,
       index,
     }),
     [],

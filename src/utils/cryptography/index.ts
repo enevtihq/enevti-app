@@ -87,9 +87,7 @@ export async function encryptFile(
   if (!SUPPORTED_VERSION.includes(version)) {
     throw Error(i18n.t('error:unsupportedCryptoVersion'));
   }
-  const outputPath = outputFile
-    ? outputFile
-    : `${inputFile}.${ENCRYPTED_FILE_EXTENSION}`;
+  const outputPath = outputFile ? outputFile : `${inputFile}.${ENCRYPTED_FILE_EXTENSION}`;
   return await appCrypto[version].encryptFile(inputFile, outputPath, password);
 }
 
@@ -107,27 +105,15 @@ export async function decryptFile(
   const outputPath = outputFile
     ? outputFile
     : `${trimExtension(inputFile, ENCRYPTED_FILE_EXTENSION)}`;
-  return await appCrypto[version].decryptFile(
-    inputFile,
-    outputPath,
-    password,
-    iv,
-    salt,
-  );
+  return await appCrypto[version].decryptFile(inputFile, outputPath, password, iv, salt);
 }
 
 export async function createSignature(data: any): Promise<string> {
   const passphrase = await getMyPassphrase();
-  return Lisk.cryptography
-    .signData(Buffer.from(data, 'hex'), passphrase)
-    .toString('hex');
+  return Lisk.cryptography.signData(Buffer.from(data, 'hex'), passphrase).toString('hex');
 }
 
-export async function verifySignature(
-  data: string,
-  signature: string,
-  signer: string,
-) {
+export async function verifySignature(data: string, signature: string, signer: string) {
   return Lisk.cryptography.verifyData(
     Buffer.from(data, 'hex'),
     Buffer.from(signature, 'hex'),
@@ -135,10 +121,7 @@ export async function verifySignature(
   );
 }
 
-export async function encryptAsymmetric(
-  message: string,
-  recipientPublicKey: string,
-) {
+export async function encryptAsymmetric(message: string, recipientPublicKey: string) {
   const passphrase = await getMyPassphrase();
   const encrypted = Lisk.cryptography.encryptMessageWithPassphrase(
     message,

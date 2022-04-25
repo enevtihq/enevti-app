@@ -45,8 +45,7 @@ export default function AppProfileBody({
             tabStyle={[
               styles.tabBarContainer,
               {
-                top:
-                  hp(PROFILE_HEADER_HEIGHT_PERCENTAGE, insets) + headerHeight,
+                top: hp(PROFILE_HEADER_HEIGHT_PERCENTAGE, insets) + headerHeight,
               },
               animatedTabBarStyle,
             ]}
@@ -63,9 +62,7 @@ export default function AppProfileBody({
         <Tab.Screen
           options={{
             tabBarLabel: ({ color }) => (
-              <AppTextBody4 style={{ color: color }}>
-                {t('profile:owned')} (10)
-              </AppTextBody4>
+              <AppTextBody4 style={{ color: color }}>{t('profile:owned')} (10)</AppTextBody4>
             ),
           }}
           name={t('profile:owned')}
@@ -74,20 +71,16 @@ export default function AppProfileBody({
         <Tab.Screen
           options={{
             tabBarLabel: ({ color }) => (
-              <AppTextBody4 style={{ color: color }}>
-                {t('profile:onsale')} (3)
-              </AppTextBody4>
+              <AppTextBody4 style={{ color: color }}>{t('profile:onSale')} (3)</AppTextBody4>
             ),
           }}
-          name={t('profile:onsale')}
+          name={t('profile:onSale')}
           component={onSaleNFTScreen}
         />
         <Tab.Screen
           options={{
             tabBarLabel: ({ color }) => (
-              <AppTextBody4 style={{ color: color }}>
-                {t('profile:collection')} (2)
-              </AppTextBody4>
+              <AppTextBody4 style={{ color: color }}>{t('profile:collection')} (2)</AppTextBody4>
             ),
           }}
           name={t('profile:collection')}

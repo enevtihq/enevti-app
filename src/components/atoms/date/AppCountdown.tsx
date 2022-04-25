@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  AppState,
-  NativeEventSubscription,
-  StyleProp,
-  StyleSheet,
-  ViewStyle,
-} from 'react-native';
+import { AppState, NativeEventSubscription, StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import ReactNativeCountdownComponent from 'react-native-countdown-component';
 import { useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -17,10 +11,7 @@ class CountDown extends ReactNativeCountdownComponent {
   appState: NativeEventSubscription | undefined = undefined;
 
   componentDidMount() {
-    this.appState = AppState.addEventListener(
-      'change',
-      this._handleAppStateChange,
-    );
+    this.appState = AppState.addEventListener('change', this._handleAppStateChange);
   }
 
   componentWillUnmount() {
@@ -35,18 +26,11 @@ interface AppCountdownProps {
   onFinish?: () => void;
 }
 
-export default function AppCountdown({
-  until,
-  style,
-  onFinish,
-}: AppCountdownProps) {
+export default function AppCountdown({ until, style, onFinish }: AppCountdownProps) {
   const { t } = useTranslation();
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
-  const styles = React.useMemo(
-    () => makeStyles(theme, insets),
-    [theme, insets],
-  );
+  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
   const timeLabels = React.useMemo(
     () => ({
       d: t('date:days'),

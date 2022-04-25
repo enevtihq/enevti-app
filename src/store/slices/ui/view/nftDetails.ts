@@ -95,7 +95,7 @@ const initialStateItem: NFTDetailsViewState = {
     username: '',
     photo: '',
   },
-  chain: '',
+  networkIdentifier: '',
   royalty: {
     creator: -1,
     staker: -1,
@@ -109,16 +109,10 @@ const nftDetailsViewSlice = createSlice({
   name: 'nftDetailsView',
   initialState,
   reducers: {
-    setNFTDetailsView: (
-      nftDetails,
-      action: PayloadAction<{ key: string; value: NFT }>,
-    ) => {
+    setNFTDetailsView: (nftDetails, action: PayloadAction<{ key: string; value: NFT }>) => {
       Object.assign(nftDetails, { [action.payload.key]: action.payload.value });
     },
-    setNFTDetailsLoaded: (
-      nftDetails,
-      action: PayloadAction<{ key: string; value: boolean }>,
-    ) => {
+    setNFTDetailsLoaded: (nftDetails, action: PayloadAction<{ key: string; value: boolean }>) => {
       nftDetails[action.payload.key].loaded = action.payload.value;
     },
     clearNFTDetailsByKey: (nftDetails, action: PayloadAction<string>) => {
@@ -143,19 +137,13 @@ export const {
 export default nftDetailsViewSlice.reducer;
 
 export const selectNFTDetailsView = createSelector(
-  [
-    (state: RootState) => state.ui.view.nftDetails,
-    (state: RootState, key: string) => key,
-  ],
+  [(state: RootState) => state.ui.view.nftDetails, (state: RootState, key: string) => key],
   (nftDetails: NFTDetailsViewStore, key: string) =>
     nftDetails.hasOwnProperty(key) ? nftDetails[key] : initialStateItem,
 );
 
 export const isNFTDetailsUndefined = createSelector(
-  [
-    (state: RootState) => state.ui.view.nftDetails,
-    (state: RootState, key: string) => key,
-  ],
+  [(state: RootState) => state.ui.view.nftDetails, (state: RootState, key: string) => key],
   (nftDetails: NFTDetailsViewStore, key: string) =>
     nftDetails.hasOwnProperty(key) ? !nftDetails[key].loaded : true,
 );

@@ -16,8 +16,7 @@ import AppInfoMessage from 'enevti-app/components/molecules/AppInfoMessage';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import { useTranslation } from 'react-i18next';
 
-const AnimatedFlatGrid =
-  Animated.createAnimatedComponent<FlatGridProps<NFTBase>>(FlatGrid);
+const AnimatedFlatGrid = Animated.createAnimatedComponent<FlatGridProps<NFTBase>>(FlatGrid);
 
 interface MintedItemsComponentProps {
   nfts: NFTBase[];
@@ -61,18 +60,12 @@ function Component(
   const spacing = React.useMemo(() => wp('1%'), [wp]);
   const itemDimension = React.useMemo(() => wp('48%'), [wp]);
   const progressViewOffset = React.useMemo(
-    () =>
-      Platform.OS === 'ios'
-        ? 0
-        : hp(TOP_TABBAR_HEIGHT_PERCENTAGE) + collectionHeaderHeight,
+    () => (Platform.OS === 'ios' ? 0 : hp(TOP_TABBAR_HEIGHT_PERCENTAGE) + collectionHeaderHeight),
     [collectionHeaderHeight, hp],
   );
 
   const listFooter = React.useMemo(
-    () =>
-      mintingAvailable ? (
-        <View style={{ height: hp(MINT_BUTTON_HEIGHT) }} />
-      ) : undefined,
+    () => (mintingAvailable ? <View style={{ height: hp(MINT_BUTTON_HEIGHT) }} /> : undefined),
     [hp, mintingAvailable],
   );
 
@@ -101,9 +94,7 @@ function Component(
   );
 
   const renderItem = React.useCallback(
-    ({ item }) => (
-      <AppNFTCard nft={item} width={itemDimension} navigation={navigation} />
-    ),
+    ({ item }) => <AppNFTCard nft={item} width={itemDimension} navigation={navigation} />,
     [itemDimension, navigation],
   );
 

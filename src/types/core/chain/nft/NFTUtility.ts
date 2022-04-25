@@ -1,8 +1,1 @@
-export type NFTUtility =
-  | 'chat'
-  | 'content'
-  | 'gift'
-  | 'qr'
-  | 'stream'
-  | 'videocall'
-  | '';
+export type NFTUtility = 'chat' | 'content' | 'gift' | 'qr' | 'stream' | 'videocall' | '';

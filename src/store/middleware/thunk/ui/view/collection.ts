@@ -5,38 +5,23 @@ import {
   setCollectionView,
   clearCollectionByKey,
 } from 'enevti-app/store/slices/ui/view/collection';
-import {
-  hideModalLoader,
-  showModalLoader,
-} from 'enevti-app/store/slices/ui/global/modalLoader';
+import { hideModalLoader, showModalLoader } from 'enevti-app/store/slices/ui/global/modalLoader';
 import { AppThunk, AsyncThunkAPI } from 'enevti-app/store/state';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 
-type CollectionRoute = StackScreenProps<
-  RootStackParamList,
-  'Collection'
->['route']['params'];
+type CollectionRoute = StackScreenProps<RootStackParamList, 'Collection'>['route']['params'];
 type LoadCollectionArgs = { routeParam: CollectionRoute; reload: boolean };
 
-export const loadCollection = createAsyncThunk<
-  void,
-  LoadCollectionArgs,
-  AsyncThunkAPI
->(
+export const loadCollection = createAsyncThunk<void, LoadCollectionArgs, AsyncThunkAPI>(
   'collectionView/loadCollection',
   async ({ routeParam, reload = false }, { dispatch, signal }) => {
     try {
       reload && dispatch(showModalLoader());
-      const collectionResponse = await getCollectionByRouteParam(
-        routeParam,
-        signal,
-      );
+      const collectionResponse = await getCollectionByRouteParam(routeParam, signal);
       if (collectionResponse !== undefined) {
-        dispatch(
-          setCollectionView({ key: routeParam.arg, value: collectionResponse }),
-        );
+        dispatch(setCollectionView({ key: routeParam.arg, value: collectionResponse }));
         dispatch(setCollectionViewLoaded({ key: routeParam.arg, value: true }));
       }
     } catch (err: any) {

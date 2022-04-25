@@ -40,12 +40,7 @@ function Component({
   );
 
   return (
-    <AppFormPicker
-      items={redeemLimitItem}
-      label={label}
-      onSelected={onSelected}
-      value={value}
-    />
+    <AppFormPicker items={redeemLimitItem} label={label} onSelected={onSelected} value={value} />
   );
 }
 

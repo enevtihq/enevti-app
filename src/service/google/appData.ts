@@ -58,10 +58,7 @@ async function configurePostOptions(bodyLength: string, isUpdate = false) {
   }
   const headers = new Headers();
   headers.append('Authorization', `Bearer ${apiToken}`);
-  headers.append(
-    'Content-Type',
-    `multipart/related; boundary=${boundaryString}`,
-  );
+  headers.append('Content-Type', `multipart/related; boundary=${boundaryString}`);
   headers.append('Content-Length', bodyLength);
   return {
     method: isUpdate ? 'PATCH' : 'POST',
@@ -160,9 +157,7 @@ export async function setSecretAppData(content: SecretAppData): Promise<void> {
   });
 }
 
-export async function updateSecretAppData(
-  content: SecretAppData,
-): Promise<void> {
+export async function updateSecretAppData(content: SecretAppData): Promise<void> {
   await isInternetReachable();
   const id = await getSecretId();
   if (!id) {

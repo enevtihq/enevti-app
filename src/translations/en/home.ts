@@ -22,6 +22,5 @@ export default {
   startNew: 'Start New',
   restore: 'Restore',
   restoreDialog: 'Restore Previous Session?',
-  restoreDialogDescription:
-    'You have a saved create NFT session. Do you want to recover it?',
+  restoreDialogDescription: 'You have a saved create NFT session. Do you want to recover it?',
 };

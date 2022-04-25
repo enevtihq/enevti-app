@@ -22,10 +22,7 @@ export default React.memo(
   function AppFeedItem({ feed, navigation }: AppFeedItemProps) {
     const insets = useSafeAreaInsets();
     const theme = useTheme() as Theme;
-    const styles = React.useMemo(
-      () => makeStyles(theme, insets),
-      [theme, insets],
-    );
+    const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
 
     const canvasWidth = Dimensions.get('window').width * 0.9;
 

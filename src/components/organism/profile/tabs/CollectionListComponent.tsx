@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  FlatList,
-  FlatListProps,
-  Platform,
-  RefreshControl,
-  StyleSheet,
-  View,
-} from 'react-native';
+import { FlatList, FlatListProps, Platform, RefreshControl, StyleSheet, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { PROFILE_HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/organism/profile/AppProfileHeader';
 import { TOP_TABBAR_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppTopTabBar';
@@ -34,8 +27,7 @@ import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 
 const PROFILE_COLLECTION_ITEM_HEIGHT = 9;
 
-const AnimatedFlatList =
-  Animated.createAnimatedComponent<FlatListProps<CollectionBase>>(FlatList);
+const AnimatedFlatList = Animated.createAnimatedComponent<FlatListProps<CollectionBase>>(FlatList);
 
 interface CollectionListComponentProps {
   navigation: StackNavigationProp<RootStackParamList>;
@@ -81,18 +73,12 @@ function Component(
     () =>
       Platform.OS === 'ios'
         ? headerHeight
-        : hp(
-            PROFILE_HEADER_HEIGHT_PERCENTAGE + TOP_TABBAR_HEIGHT_PERCENTAGE,
-            insets,
-          ) + headerHeight,
+        : hp(PROFILE_HEADER_HEIGHT_PERCENTAGE + TOP_TABBAR_HEIGHT_PERCENTAGE, insets) +
+          headerHeight,
     [headerHeight, insets],
   );
   const itemHeight = React.useMemo(
-    () =>
-      wp(
-        PROFILE_COLLECTION_ITEM_HEIGHT + LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE,
-        insets,
-      ),
+    () => wp(PROFILE_COLLECTION_ITEM_HEIGHT + LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE, insets),
     [insets],
   );
 
@@ -145,25 +131,17 @@ function Component(
         style={styles.collectionItem}
         leftContent={
           <View style={styles.collectionCoverContainer}>
-            <AppNetworkImage
-              url={IPFStoURL(item.cover.cid)}
-              style={styles.collectionCover}
-            />
+            <AppNetworkImage url={IPFStoURL(item.cover.cid)} style={styles.collectionCover} />
           </View>
         }
         rightContent={
           <View style={styles.collectionRightContent}>
-            <AppTextHeading4
-              numberOfLines={1}
-              style={styles.collectionRightText}>
+            <AppTextHeading4 numberOfLines={1} style={styles.collectionRightText}>
               {`${parseAmount(item.stat.floor.amount, true, 2)} `}
               <AppTextHeading5>{`$${item.stat.floor.currency}`}</AppTextHeading5>
             </AppTextHeading4>
             <AppTextBody5
-              style={[
-                styles.collectionRightText,
-                { color: theme.colors.placeholder },
-              ]}
+              style={[styles.collectionRightText, { color: theme.colors.placeholder }]}
               numberOfLines={1}>
               {item.stat.minted} Minted
             </AppTextBody5>
@@ -171,18 +149,13 @@ function Component(
         }>
         <AppTextHeading3 numberOfLines={1}>{item.name}</AppTextHeading3>
         {item.minting.expire <= now || item.minting.available === 0 ? null : (
-          <AppTextBody4
-            style={{ color: theme.colors.placeholder }}
-            numberOfLines={2}>
+          <AppTextBody4 style={{ color: theme.colors.placeholder }} numberOfLines={2}>
             {item.minting.expire
               ? t('collection:mintingClosedIn', {
                   momentFromNow: moment(item.minting.expire).fromNow(),
                 })
               : t('collection:mintingPercent', {
-                  percent: (
-                    (item.stat.minted / item.minting.total) *
-                    100
-                  ).toFixed(2),
+                  percent: ((item.stat.minted / item.minting.total) * 100).toFixed(2),
                 })}
           </AppTextBody4>
         )}
@@ -244,10 +217,7 @@ const makeStyles = (
   StyleSheet.create({
     contentContainerStyle: {
       paddingTop:
-        hp(
-          PROFILE_HEADER_HEIGHT_PERCENTAGE + TOP_TABBAR_HEIGHT_PERCENTAGE,
-          insets,
-        ) + headerHeight,
+        hp(PROFILE_HEADER_HEIGHT_PERCENTAGE + TOP_TABBAR_HEIGHT_PERCENTAGE, insets) + headerHeight,
       minHeight:
         hp(PROFILE_HEADER_HEIGHT_PERCENTAGE + 100, insets) +
         (Platform.OS === 'android' ? insets.top : 0) +

@@ -23,18 +23,13 @@ type Props = StackScreenProps<RootStackParamList, 'CreateAccount'>;
 export default function CreateAccount({ navigation }: Props) {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
-  const styles = React.useMemo(
-    () => makeStyles(theme, insets),
-    [theme, insets],
-  );
+  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
   const { t } = useTranslation();
 
   return (
     <AppView withModal>
       <AppHeaderWizard
-        component={
-          <AppBrandBanner widthPercentage={0.5} style={styles.headerImage} />
-        }
+        component={<AppBrandBanner widthPercentage={0.5} style={styles.headerImage} />}
         title={t('auth:header1')}
         description={t('auth:body1')}
       />

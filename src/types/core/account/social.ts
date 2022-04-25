@@ -6,3 +6,7 @@ type TwitterSocial = {
 export type SocialProfile = {
   twitter: TwitterSocial;
 };
+
+export type SocialProfileAsset = {
+  twitter: string;
+};

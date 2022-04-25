@@ -14,7 +14,7 @@ import { StakerItem } from 'enevti-app/types/core/chain/stake';
 import { useSelector } from 'react-redux';
 import { selectMyPersonaCache } from 'enevti-app/store/slices/entities/cache/myPersona';
 import { parseAmount } from 'enevti-app/utils/format/amount';
-import { getCoinName } from 'enevti-app/components/atoms/brand/AppBrandConstant';
+import { getCoinName } from 'enevti-app/utils/constant/identifier';
 
 export const STAKER_ITEM_HEIGHT_PERCENTAGE = 10;
 
@@ -44,24 +44,15 @@ export default function AppStakerItem({ staker }: AppStakerItemProps) {
       }
       rightContent={
         myPersona.address === staker.persona.address ? (
-          <AppIconButton
-            icon={iconMap.delete}
-            onPress={onDelete}
-            style={styles.deleteIcon}
-          />
+          <AppIconButton icon={iconMap.delete} onPress={onDelete} style={styles.deleteIcon} />
         ) : undefined
       }>
       <AppTextHeading3 numberOfLines={1} style={{ width: wp('50%', insets) }}>
         #{staker.rank.toString()}{' '}
-        {staker.persona.username
-          ? staker.persona.username
-          : staker.persona.address}
+        {staker.persona.username ? staker.persona.username : staker.persona.address}
       </AppTextHeading3>
-      <AppTextBody4
-        style={{ color: theme.colors.placeholder }}
-        numberOfLines={1}>
-        {parseAmount(staker.stake, true, 2)} {getCoinName()} (
-        {(staker.portion * 100).toFixed(2)}%)
+      <AppTextBody4 style={{ color: theme.colors.placeholder }} numberOfLines={1}>
+        {parseAmount(staker.stake, true, 2)} {getCoinName()} ({(staker.portion * 100).toFixed(2)}%)
       </AppTextBody4>
     </AppListItem>
   );

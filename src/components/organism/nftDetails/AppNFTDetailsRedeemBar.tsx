@@ -1,6 +1,5 @@
 import { View, StyleSheet } from 'react-native';
 import React from 'react';
-import { NFT } from 'enevti-app/types/core/chain/nft';
 import { Theme } from 'enevti-app/theme/default';
 import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
 import Color from 'color';
@@ -22,34 +21,29 @@ import nftToRedeemScheduleLabel from 'enevti-app/utils/date/nftToRedeemScheduleL
 import { getMyAddress } from 'enevti-app/service/enevti/persona';
 import { isRedeemTimeUTC } from 'enevti-app/utils/date/redeemDate';
 import AppPoppableIcon from 'enevti-app/components/molecules/menu/AppPoppableIcon';
+import { NFT } from 'enevti-app/types/core/chain/nft';
 
 interface AppNFTDetailsRedeemBarProps {
   nft: NFT;
 }
 
-export default function AppNFTDetailsRedeemBar({
-  nft,
-}: AppNFTDetailsRedeemBarProps) {
+export default function AppNFTDetailsRedeemBar({ nft }: AppNFTDetailsRedeemBarProps) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
-  const styles = React.useMemo(
-    () => makeStyles(theme, insets),
-    [theme, insets],
-  );
+  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
 
   const canAddCalendar = React.useMemo(
     () =>
       nft.utility !== 'content' &&
       nft.redeem.status !== 'limit-exceeded' &&
-      nft.redeem.schedule.recurring !== 'instant',
+      nft.redeem.schedule.recurring !== 'anytime',
     [nft],
   );
 
   const [redeemError, setRedeemError] = React.useState<string>();
-  const [redeemButtonDisabled, setRedeemButtonDisabled] =
-    React.useState<boolean>(false);
+  const [redeemButtonDisabled, setRedeemButtonDisabled] = React.useState<boolean>(false);
 
   const onLoaded = React.useCallback(async () => {
     const addr = await getMyAddress();
@@ -63,9 +57,7 @@ export default function AppNFTDetailsRedeemBar({
     const isPending = nft.redeem.status === 'pending-secret';
     const isNotTime = !isTime;
 
-    isExceeded
-      ? (error += `\n${errorCount++}. ${t('error:redeemExceeded')}`)
-      : {};
+    isExceeded ? (error += `\n${errorCount++}. ${t('error:redeemExceeded')}`) : {};
     isNotOwner ? (error += `\n${errorCount++}. ${t('error:notTheOwner')}`) : {};
     isPending ? (error += `\n${errorCount++}. ${t('error:isPending')}`) : {};
     isNotTime ? (error += `\n${errorCount++}. ${t('error:notTheTime')}`) : {};

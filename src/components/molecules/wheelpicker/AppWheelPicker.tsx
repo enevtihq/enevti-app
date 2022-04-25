@@ -25,10 +25,7 @@ export default function AppWheelPicker({
   const { t } = useTranslation();
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
-  const styles = React.useMemo(
-    () => makeStyles(theme, insets),
-    [theme, insets],
-  );
+  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
 
   return (
     <CommonPicker
@@ -44,10 +41,7 @@ export default function AppWheelPicker({
       }}
       style={{ backgroundColor: theme.colors.background }}
       itemStyle={styles.pickerItem}
-      pickerConfirmBtnTextStyle={[
-        styles.pickerText,
-        { color: theme.colors.primary },
-      ]}
+      pickerConfirmBtnTextStyle={[styles.pickerText, { color: theme.colors.primary }]}
       pickerCancelBtnTextStyle={styles.pickerText}
       onValueChange={onChange}
     />

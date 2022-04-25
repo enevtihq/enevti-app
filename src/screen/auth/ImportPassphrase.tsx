@@ -38,23 +38,15 @@ export default function ImportPassphrase({ navigation }: Props) {
   const paperTheme = useTheme();
   const theme = paperTheme as Theme;
   const insets = useSafeAreaInsets();
-  const styles = React.useMemo(
-    () => makeStyles(theme, insets),
-    [theme, insets],
-  );
+  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
   const { t } = useTranslation();
   const passwordInput = React.useRef<any>();
   const confirmPasswordInput = React.useRef<any>();
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   const handleFormSubmit = async (values: any) => {
-    const encryptedPassphrase = await encryptWithPassword(
-      values.passphrase,
-      values.password,
-    );
-    dispatch(
-      initPassphrase(encryptedPassphrase, values.passphrase, values.password),
-    );
+    const encryptedPassphrase = await encryptWithPassword(values.passphrase, values.password);
+    dispatch(initPassphrase(encryptedPassphrase, values.passphrase, values.password));
     setIsLoading(false);
     navigation.replace('AccountCreated');
   };
@@ -150,9 +142,7 @@ export default function ImportPassphrase({ navigation }: Props) {
                 showError={touched.confirmPassword}
                 touchHandler={() => setFieldTouched('confirmPassword')}
                 onChangeText={handleChange('confirmPassword')}
-                onSubmitEditing={
-                  isValid && dirty ? handleSubmit : () => Keyboard.dismiss()
-                }
+                onSubmitEditing={isValid && dirty ? handleSubmit : () => Keyboard.dismiss()}
               />
             </View>
 

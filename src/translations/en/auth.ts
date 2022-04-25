@@ -16,18 +16,15 @@ export default {
   secretRecoveryPhrase: 'Secret Recovery Phrase',
   invalidPassphrase: 'Invalid Passphrase!',
   import: 'Import',
-  checkboxPassword:
-    'I understand that {{brand}} cannot recover this password for me.',
+  checkboxPassword: 'I understand that {{brand}} cannot recover this password for me.',
   confirmPasspraseHeader: 'Save your Passphrase',
   confirmPassphraseBody:
     'It’s the only way to recover your account if you get locked out of the app or get a new device!',
   confirmPassphraseCheck: 'I have write down these secret recovery phrase',
   continue: 'Continue',
   accountCreated: 'Hoooooraayyy!',
-  accountCreatedBrief:
-    'You’ve successfully setup an account! Please keep in mind:',
-  keepYourPassphraseSafe:
-    'You have responsibility to keep your secret revovery phrase. ',
+  accountCreatedBrief: 'You’ve successfully setup an account! Please keep in mind:',
+  keepYourPassphraseSafe: 'You have responsibility to keep your secret revovery phrase. ',
   keepYourPassphraseSafeBold: '{{brand}} can’t recover your lost phrase!',
   findYourPassphrase: 'You can find your secret recovery phrase in: ',
   findYourPassphraseBold: 'Account > Settings > Security & Privacy',
@@ -43,8 +40,7 @@ export default {
   loginButton: 'Login',
   wrongPassword: 'Wrong password!',
   inputBinderPassword: 'New Device?',
-  inputBinderPasswordBody:
-    'Please input your binding password to continue login using Google',
+  inputBinderPasswordBody: 'Please input your binding password to continue login using Google',
   binderPasswordHeader: 'Setup Binding Password',
   binderPasswordBody:
     'This is required if you use Google to login from different device. This is not your Google password!',

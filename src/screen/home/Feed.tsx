@@ -19,30 +19,17 @@ import { handleError } from 'enevti-app/utils/error/handle';
 import { hp, wp } from 'enevti-app/utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  loadFeeds,
-  unloadFeeds,
-} from 'enevti-app/store/middleware/thunk/ui/view/feed';
-import {
-  loadMoments,
-  unloadMoments,
-} from 'enevti-app/store/middleware/thunk/ui/view/moment';
+import { loadFeeds, unloadFeeds } from 'enevti-app/store/middleware/thunk/ui/view/feed';
+import { loadMoments, unloadMoments } from 'enevti-app/store/middleware/thunk/ui/view/moment';
 import { AppAsyncThunk } from 'enevti-app/types/ui/store/AppAsyncThunk';
-import {
-  isFeedUndefined,
-  selectFeedView,
-} from 'enevti-app/store/slices/ui/view/feed';
-import {
-  isMomentUndefined,
-  selectMomentView,
-} from 'enevti-app/store/slices/ui/view/moment';
+import { isFeedUndefined, selectFeedView } from 'enevti-app/store/slices/ui/view/feed';
+import { isMomentUndefined, selectMomentView } from 'enevti-app/store/slices/ui/view/moment';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
 import AppInfoMessage from 'enevti-app/components/molecules/AppInfoMessage';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import { useTranslation } from 'react-i18next';
 
-const AnimatedFlatList =
-  Animated.createAnimatedComponent<FlatListProps<any>>(FlatList);
+const AnimatedFlatList = Animated.createAnimatedComponent<FlatListProps<any>>(FlatList);
 
 type Props = StackScreenProps<RootStackParamList, 'Feed'>;
 
@@ -51,11 +38,7 @@ interface FeedProps extends Props {
   headerHeight: number;
 }
 
-export default function Feed({
-  navigation,
-  onScroll,
-  headerHeight,
-}: FeedProps) {
+export default function Feed({ navigation, onScroll, headerHeight }: FeedProps) {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const styles = React.useMemo(() => makeStyles(headerHeight), [headerHeight]);
@@ -152,12 +135,7 @@ export default function Feed({
       feeds.length > 0 || moments.length > 0
         ? styles.listContentContainer
         : styles.listContentEmptyContainer,
-    [
-      feeds.length,
-      moments.length,
-      styles.listContentContainer,
-      styles.listContentEmptyContainer,
-    ],
+    [feeds.length, moments.length, styles.listContentContainer, styles.listContentEmptyContainer],
   );
 
   return (

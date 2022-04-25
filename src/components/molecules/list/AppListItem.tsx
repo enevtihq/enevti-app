@@ -30,10 +30,7 @@ export default function AppListItem({
 }: AppListItemProps) {
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
-  const styles = React.useMemo(
-    () => makeStyles(theme, insets),
-    [theme, insets],
-  );
+  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
   const opacity = disabled ? 0.5 : undefined;
 
   return (

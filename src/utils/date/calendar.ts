@@ -1,8 +1,5 @@
-import RNCalendarEvents, {
-  CalendarEventWritable,
-} from 'react-native-calendar-events';
+import RNCalendarEvents, { CalendarEventWritable } from 'react-native-calendar-events';
 import i18n from 'enevti-app/translations/i18n';
-import { NFT } from 'enevti-app/types/core/chain/nft';
 import nftToRedeemCalendarTitle from 'enevti-app/utils/date/nftToRedeemCalendarTitle';
 import { store } from 'enevti-app/store/state';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
@@ -10,29 +7,23 @@ import { getRedeemTimeUTC } from 'enevti-app/utils/date/redeemDate';
 
 import { handleError } from '../error/handle';
 import { getAppLink } from '../linking';
+import { NFT } from 'enevti-app/types/core/chain/nft';
 
 export function dateOfNearestDay(startingDate: Date, nearestDay: number) {
   var nearestTime = new Date(startingDate.getTime());
 
   if (startingDate.getDay() === 6 && nearestDay === 5) {
     nearestTime.setDate(
-      startingDate.getDate() +
-        ((7 + nearestDay - startingDate.getDay()) % 7) -
-        7,
+      startingDate.getDate() + ((7 + nearestDay - startingDate.getDay()) % 7) - 7,
     );
   } else {
-    nearestTime.setDate(
-      startingDate.getDate() + ((7 + nearestDay - startingDate.getDay()) % 7),
-    );
+    nearestTime.setDate(startingDate.getDate() + ((7 + nearestDay - startingDate.getDay()) % 7));
   }
 
   return nearestTime;
 }
 
-export const addCalendarEvent = async (
-  title: string,
-  event: CalendarEventWritable,
-) => {
+export const addCalendarEvent = async (title: string, event: CalendarEventWritable) => {
   let permissions;
   let createdEvent = '';
 
@@ -60,7 +51,7 @@ export const addRedeemCalendarEvent = async (nft: NFT) => {
   let nextTime: string = '';
   const nftTime = { ...nft.redeem.schedule.time, ...nft.redeem.schedule.from };
 
-  if (nft.redeem.schedule.recurring === 'instant') {
+  if (nft.redeem.schedule.recurring === 'anytime') {
     throw Error(i18n.t('error:invalidRecurring'));
   }
 
@@ -103,16 +94,13 @@ export const addRedeemCalendarEvent = async (nft: NFT) => {
   }
 
   const recurrence =
-    nft.redeem.schedule.recurring === 'once'
-      ? undefined
-      : nft.redeem.schedule.recurring;
+    nft.redeem.schedule.recurring === 'once' ? undefined : nft.redeem.schedule.recurring;
 
   const redeemEvent: CalendarEventWritable = {
     url: getAppLink('nft-serial', `${nft.symbol}#${nft.serial}`),
-    description: `${getAppLink(
-      'nft-serial',
-      `${nft.symbol}#${nft.serial}`,
-    )}\n\n${i18n.t('nftDetails:calendarDescription')}`,
+    description: `${getAppLink('nft-serial', `${nft.symbol}#${nft.serial}`)}\n\n${i18n.t(
+      'nftDetails:calendarDescription',
+    )}`,
     notes: i18n.t('nftDetails:calendarDescription'),
     alarms: [{ date: 60 }],
     startDate: new Date(startTime).toISOString(),

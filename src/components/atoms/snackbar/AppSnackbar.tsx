@@ -11,24 +11,15 @@ interface AppSnackbarProps extends Omit<SnackbarProps, 'theme'> {
   mode?: 'info' | 'error';
 }
 
-export default function AppSnackBar({
-  mode = 'info',
-  ...props
-}: AppSnackbarProps) {
+export default function AppSnackBar({ mode = 'info', ...props }: AppSnackbarProps) {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
-  const styles = React.useMemo(
-    () => makeStyles(theme, insets),
-    [theme, insets],
-  );
+  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
 
   if (mode === 'info') {
     return (
       <Portal>
-        <Snackbar
-          {...props}
-          style={[props.style, styles.errorSnack]}
-          theme={theme}>
+        <Snackbar {...props} style={[props.style, styles.errorSnack]} theme={theme}>
           {props.children}
         </Snackbar>
       </Portal>
@@ -38,11 +29,7 @@ export default function AppSnackBar({
       <Portal>
         <Snackbar
           {...props}
-          style={[
-            props.style,
-            styles.errorSnack,
-            { backgroundColor: theme.colors.error },
-          ]}
+          style={[props.style, styles.errorSnack, { backgroundColor: theme.colors.error }]}
           theme={theme}>
           {props.children}
         </Snackbar>

@@ -13,16 +13,10 @@ const statusBarSlice = createSlice({
   name: 'statusbar',
   initialState,
   reducers: {
-    setStatusBarBackground: (
-      statusbar,
-      action: PayloadAction<StatusBarState['background']>,
-    ) => {
+    setStatusBarBackground: (statusbar, action: PayloadAction<StatusBarState['background']>) => {
       statusbar.background = action.payload;
     },
-    setStatusBarTint: (
-      statusbar,
-      action: PayloadAction<StatusBarState['tint']>,
-    ) => {
+    setStatusBarTint: (statusbar, action: PayloadAction<StatusBarState['tint']>) => {
       statusbar.tint = action.payload;
     },
     resetStatusBarState: () => {

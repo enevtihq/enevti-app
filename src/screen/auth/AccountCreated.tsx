@@ -15,17 +15,14 @@ import AppView from 'enevti-app/components/atoms/view/AppView';
 import { hp, wp, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import AppIconBanner from 'enevti-app/components/molecules/AppIconBanner';
-import { BRAND_NAME } from 'enevti-app/components/atoms/brand/AppBrandConstant';
+import { COMMUNITY_IDENTIFIER } from 'enevti-app/utils/constant/identifier';
 
 type Props = StackScreenProps<RootStackParamList, 'AccountCreated'>;
 
 export default function AccountCreated({ navigation }: Props) {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
-  const styles = React.useMemo(
-    () => makeStyles(theme, insets),
-    [theme, insets],
-  );
+  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
   const { t } = useTranslation();
 
   const handleFormSubmit = async () => {
@@ -52,14 +49,14 @@ export default function AccountCreated({ navigation }: Props) {
         <AppIconBanner name={iconMap.passphrase} style={styles.briefItem}>
           {t('auth:keepYourPassphraseSafe')}
           <AppTextBody4 style={styles.boldText}>
-            {t('auth:keepYourPassphraseSafeBold', { brand: BRAND_NAME })}
+            {t('auth:keepYourPassphraseSafeBold', {
+              brand: COMMUNITY_IDENTIFIER,
+            })}
           </AppTextBody4>
         </AppIconBanner>
         <AppIconBanner name={iconMap.accountCircle} style={styles.briefItem}>
           {t('auth:findYourPassphrase')}
-          <AppTextBody4 style={styles.boldText}>
-            {t('auth:findYourPassphraseBold')}
-          </AppTextBody4>
+          <AppTextBody4 style={styles.boldText}>{t('auth:findYourPassphraseBold')}</AppTextBody4>
         </AppIconBanner>
         <AppIconBanner name={iconMap.insideDevice} style={styles.briefItem}>
           {t('auth:passwordNeverLeaveDevice')}
@@ -72,9 +69,7 @@ export default function AccountCreated({ navigation }: Props) {
       <View style={styles.actionContainer}>
         <View style={{ height: hp('3%', insets) }} />
 
-        <AppPrimaryButton
-          onPress={() => handleFormSubmit()}
-          style={styles.createAccount}>
+        <AppPrimaryButton onPress={() => handleFormSubmit()} style={styles.createAccount}>
           {t('auth:createAccountDoneButton')}
         </AppPrimaryButton>
       </View>

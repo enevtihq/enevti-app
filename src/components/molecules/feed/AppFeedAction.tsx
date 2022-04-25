@@ -62,9 +62,7 @@ export default React.memo(
           iconSize={wp('6%', insets)}
           style={styles.button}
           onPress={() => onComment()}>
-          <AppTextBody4 style={styles.actionButtonText}>
-            {feed.comment}
-          </AppTextBody4>
+          <AppTextBody4 style={styles.actionButtonText}>{feed.comment}</AppTextBody4>
         </AppQuaternaryButton>
 
         <View style={styles.divider} />
@@ -80,8 +78,7 @@ export default React.memo(
           }}
           onPress={() => onBuy()}>
           <AppTextHeading4 style={styles.actionButtonText}>
-            {parseAmount(feed.price.amount)}{' '}
-            <AppTextBody5>${feed.price.currency}</AppTextBody5>
+            {parseAmount(feed.price.amount)} <AppTextBody5>${feed.price.currency}</AppTextBody5>
           </AppTextHeading4>
         </AppQuaternaryButton>
       </View>

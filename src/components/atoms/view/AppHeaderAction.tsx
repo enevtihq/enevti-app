@@ -6,13 +6,8 @@ interface AppHeaderActionProps {
   onPress: () => void;
 }
 
-export default function AppHeaderAction({
-  icon,
-  onPress,
-}: AppHeaderActionProps) {
+export default function AppHeaderAction({ icon, onPress }: AppHeaderActionProps) {
   const theme = useTheme();
 
-  return (
-    <Appbar.Action icon={icon} onPress={onPress} color={theme.colors.text} />
-  );
+  return <Appbar.Action icon={icon} onPress={onPress} color={theme.colors.text} />;
 }

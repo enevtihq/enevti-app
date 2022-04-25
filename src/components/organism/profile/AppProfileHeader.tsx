@@ -21,7 +21,7 @@ import AppMenuItem from 'enevti-app/components/atoms/menu/AppMenuItem';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
-import { getCoinName } from 'enevti-app/components/atoms/brand/AppBrandConstant';
+import { getCoinName } from 'enevti-app/utils/constant/identifier';
 import { Profile } from 'enevti-app/types/core/account/profile';
 import { numberKMB, parseAmount } from 'enevti-app/utils/format/amount';
 import { menuItemHeigtPercentage } from 'enevti-app/utils/layout/menuItemHeigtPercentage';
@@ -35,18 +35,11 @@ interface AppProfileHeaderProps {
 
 export const PROFILE_HEADER_HEIGHT_PERCENTAGE = 42;
 
-export default function AppProfileHeader({
-  navigation,
-  persona,
-  profile,
-}: AppProfileHeaderProps) {
+export default function AppProfileHeader({ navigation, persona, profile }: AppProfileHeaderProps) {
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
-  const styles = React.useMemo(
-    () => makeStyles(theme, insets),
-    [theme, insets],
-  );
+  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
 
   const [menuVisible, setMenuVisible] = React.useState<boolean>(false);
 
@@ -85,9 +78,7 @@ export default function AppProfileHeader({
         </View>
         <View style={styles.profileStatsDivider} />
         <View style={styles.profileStatsItem}>
-          <AppTextHeading3>
-            {(profile.serveRate * 100).toFixed(2)}%
-          </AppTextHeading3>
+          <AppTextHeading3>{(profile.serveRate * 100).toFixed(2)}%</AppTextHeading3>
           <AppTextBody4 style={{ color: theme.colors.placeholder }}>
             {t('profile:serveRate')}
           </AppTextBody4>

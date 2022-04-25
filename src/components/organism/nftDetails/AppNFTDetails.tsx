@@ -44,11 +44,7 @@ interface AppNFTDetailsProps {
   route: RouteProp<RootStackParamList, 'NFTDetails'>;
 }
 
-export default function AppNFTDetails({
-  onScrollWorklet,
-  navigation,
-  route,
-}: AppNFTDetailsProps) {
+export default function AppNFTDetails({ onScrollWorklet, navigation, route }: AppNFTDetailsProps) {
   const dispatch = useDispatch();
   const { hp, wp } = useDimension();
   const theme = useTheme();
@@ -63,10 +59,7 @@ export default function AppNFTDetails({
     isNFTDetailsUndefined(state, route.params.arg),
   );
 
-  const totalHeaderHeight = React.useMemo(
-    () => hp(NFT_DETAILS_HEADER_VIEW_HEIGHT),
-    [hp],
-  );
+  const totalHeaderHeight = React.useMemo(() => hp(NFT_DETAILS_HEADER_VIEW_HEIGHT), [hp]);
 
   const [summaryMounted, setSummaryMounted] = React.useState<boolean>(false);
   const [activityMounted, setActivityMounted] = React.useState<boolean>(false);
@@ -79,8 +72,7 @@ export default function AppNFTDetails({
   const tabScroll = useSharedValue(0);
 
   const onNFTDetailsScreenLoaded = React.useCallback(
-    (reload: boolean = false) =>
-      dispatch(loadNFTDetails({ routeParam: route.params, reload })),
+    (reload: boolean = false) => dispatch(loadNFTDetails({ routeParam: route.params, reload })),
     [dispatch, route.params],
   ) as AppAsyncThunk;
 
@@ -101,14 +93,9 @@ export default function AppNFTDetails({
 
   const summaryOnMounted = React.useCallback(() => setSummaryMounted(true), []);
 
-  const activityOnMounted = React.useCallback(
-    () => setActivityMounted(true),
-    [],
-  );
+  const activityOnMounted = React.useCallback(() => setActivityMounted(true), []);
 
-  const useCustomAnimatedScrollHandler = (
-    scrollRefList: React.RefObject<any>[],
-  ) =>
+  const useCustomAnimatedScrollHandler = (scrollRefList: React.RefObject<any>[]) =>
     useAnimatedScrollHandler({
       onScroll: (event, ctx: { prevY: number; current: number }) => {
         rawScrollY.value = event.contentOffset.y;
@@ -245,9 +232,7 @@ export default function AppNFTDetails({
 
   return !nftDetailsUndefined ? (
     <View style={styles.nftDetailsContainer}>
-      <Animated.View
-        pointerEvents={'box-none'}
-        style={[styles.nftDetailsHeader, scrollStyle]}>
+      <Animated.View pointerEvents={'box-none'} style={[styles.nftDetailsHeader, scrollStyle]}>
         <AppNFTDetailsHeader navigation={navigation} nft={nftDetails} />
       </Animated.View>
       <AppNFTDetailsBody
@@ -262,10 +247,7 @@ export default function AppNFTDetails({
       {scrollEnabled ? null : (
         <AppActivityIndicator
           animating={true}
-          style={[
-            styles.mountedIndicator,
-            { display: scrollEnabled ? noDisplay : undefined },
-          ]}
+          style={[styles.mountedIndicator, { display: scrollEnabled ? noDisplay : undefined }]}
           color={theme.colors.primary}
         />
       )}

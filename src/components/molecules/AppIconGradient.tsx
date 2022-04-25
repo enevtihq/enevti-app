@@ -31,12 +31,7 @@ export default function AppIconGradient({
         style={styles.maskedView}
         androidRenderingMode={androidRenderingMode}
         maskElement={
-          <AppIconComponent
-            name={name}
-            size={size}
-            color="white"
-            style={styles.shadow}
-          />
+          <AppIconComponent name={name} size={size} color="white" style={styles.shadow} />
         }>
         <LinearGradient colors={colors} style={styles.gradient} />
       </MaskedView>

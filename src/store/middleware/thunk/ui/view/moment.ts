@@ -17,21 +17,14 @@ import { getMoments, parseMomentCache } from 'enevti-app/service/enevti/moment';
 
 type loadMomentsArgs = { reload: boolean };
 
-export const loadMoments = createAsyncThunk<
-  void,
-  loadMomentsArgs,
-  AsyncThunkAPI
->(
+export const loadMoments = createAsyncThunk<void, loadMomentsArgs, AsyncThunkAPI>(
   'momentView/loadMoments',
   async ({ reload = false }, { dispatch, getState, signal }) => {
     try {
       const now = Date.now();
       dispatch(setMomentView(selectMomentItemsCache(getState())));
 
-      if (
-        reload ||
-        now - selectLastFetchMomentCache(getState()) > lastFetchTimeout.moment
-      ) {
+      if (reload || now - selectLastFetchMomentCache(getState()) > lastFetchTimeout.moment) {
         const moments = await getMoments(signal);
         if (moments !== undefined) {
           dispatch(setMomentView(moments));

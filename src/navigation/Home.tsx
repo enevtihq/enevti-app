@@ -4,9 +4,7 @@ import Feed from 'enevti-app/screen/home/Feed';
 import Statistics from 'enevti-app/screen/home/Statistics';
 import Discover from 'enevti-app/screen/home/Discover';
 import MyProfile from 'enevti-app/screen/home/MyProfile';
-import AppHeader, {
-  HEADER_HEIGHT_PERCENTAGE,
-} from 'enevti-app/components/atoms/view/AppHeader';
+import AppHeader, { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
 import {
   useAnimatedScrollHandler,
   useSharedValue,
@@ -47,7 +45,7 @@ import {
 import AppMenuContainer from 'enevti-app/components/atoms/menu/AppMenuContainer';
 import AppHeaderWizard from 'enevti-app/components/molecules/AppHeaderWizard';
 
-import { getCoinName } from 'enevti-app/components/atoms/brand/AppBrandConstant';
+import { getCoinName } from 'enevti-app/utils/constant/identifier';
 import AppSecondaryButton from 'enevti-app/components/atoms/button/AppSecondaryButton';
 import AppQuaternaryButton from 'enevti-app/components/atoms/button/AppQuaternaryButton';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
@@ -99,19 +97,12 @@ export default function Home({ navigation }: Props) {
     getProfile();
   }, [getProfile]);
 
-  const [uneligibleSheetVisible, setUneligibleSheetVisible] =
-    React.useState<boolean>(false);
-  const [restoreMenuVisible, setRestoreMenuVisible] =
-    React.useState<boolean>(false);
+  const [uneligibleSheetVisible, setUneligibleSheetVisible] = React.useState<boolean>(false);
+  const [restoreMenuVisible, setRestoreMenuVisible] = React.useState<boolean>(false);
   const [activeTab, setActiveTab] = React.useState<number>(0);
   const headerHeight = hp(HEADER_HEIGHT_PERCENTAGE, insets);
   const tabBarHeight = hp(TABBAR_HEIGHT_PERCENTAGE, insets);
-  const tabScrollY = [
-    useSharedValue(0),
-    useSharedValue(0),
-    useSharedValue(0),
-    useSharedValue(0),
-  ];
+  const tabScrollY = [useSharedValue(0), useSharedValue(0), useSharedValue(0), useSharedValue(0)];
 
   const myProfilePrevYSharedValue = useSharedValue(0);
   const myProfileInterpolatedYSharedValue = useSharedValue(0);
@@ -142,11 +133,7 @@ export default function Home({ navigation }: Props) {
         ctx.current = 0;
         tabScrollY[0].value = 0;
       } else {
-        tabScrollY[0].value = diffClamp(
-          ctx.current + diff,
-          0,
-          headerHeight + insets.top,
-        );
+        tabScrollY[0].value = diffClamp(ctx.current + diff, 0, headerHeight + insets.top);
       }
     },
     onBeginDrag: (event, ctx) => {
@@ -222,10 +209,7 @@ export default function Home({ navigation }: Props) {
 
   const myProfileOnEndDragWorklet = React.useCallback((val: number) => {
     'worklet';
-    if (
-      tabScrollY[3].value < (headerHeight + insets.top) / 2 ||
-      val < headerHeight + insets.top
-    ) {
+    if (tabScrollY[3].value < (headerHeight + insets.top) / 2 || val < headerHeight + insets.top) {
       tabScrollY[3].value = withTiming(0, { duration: 200 });
       myProfileInterpolatedYSharedValue.value = 0;
     } else {
@@ -264,10 +248,7 @@ export default function Home({ navigation }: Props) {
     [headerHeight, feedAnimatedScrollHandler],
   );
 
-  const restoreMenuOnDismiss = React.useCallback(
-    () => setRestoreMenuVisible(false),
-    [],
-  );
+  const restoreMenuOnDismiss = React.useCallback(() => setRestoreMenuVisible(false), []);
 
   const createNewCallback = React.useCallback(() => {
     switch (createType) {
@@ -320,8 +301,7 @@ export default function Home({ navigation }: Props) {
             })}
           />
           <View style={{ padding: wp('10%', insets) }}>
-            <AppSecondaryButton
-              onPress={() => setUneligibleSheetVisible(false)}>
+            <AppSecondaryButton onPress={() => setUneligibleSheetVisible(false)}>
               {t('home:notEligibleOKButton')}
             </AppSecondaryButton>
             <View style={{ height: hp('1%', insets) }} />
@@ -366,9 +346,7 @@ export default function Home({ navigation }: Props) {
             </View>
             <View style={styles.restoreMenuActionSpace} />
             <View style={styles.restoreMenuItemAction}>
-              <AppPrimaryButton onPress={restoreCallback}>
-                {t('home:restore')}
-              </AppPrimaryButton>
+              <AppPrimaryButton onPress={restoreCallback}>{t('home:restore')}</AppPrimaryButton>
             </View>
           </View>
         </AppMenuContainer>
@@ -383,10 +361,7 @@ export default function Home({ navigation }: Props) {
             borderTopColor: theme.colors.background,
           },
           tabBarActiveTintColor: theme.colors.text,
-          tabBarInactiveTintColor: Color(theme.colors.text)
-            .alpha(0.5)
-            .rgb()
-            .toString(),
+          tabBarInactiveTintColor: Color(theme.colors.text).alpha(0.5).rgb().toString(),
         }}>
         <Tab.Screen
           name="Feed"
@@ -398,24 +373,14 @@ export default function Home({ navigation }: Props) {
           options={{
             tabBarLabel: t('home:feed'),
             tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons
-                name={iconMap.home}
-                color={color}
-                size={size}
-              />
+              <MaterialCommunityIcons name={iconMap.home} color={color} size={size} />
             ),
             tabBarButton: props => (
-              <TouchableRipple
-                {...props}
-                disabled={props.disabled as boolean | undefined}
-              />
+              <TouchableRipple {...props} disabled={props.disabled as boolean | undefined} />
             ),
             header: () => (
               <AppHeader style={feedStyle} height={headerHeight}>
-                <AppHeaderAction
-                  icon={iconMap.magnify}
-                  onPress={() => console.log('pressed')}
-                />
+                <AppHeaderAction icon={iconMap.magnify} onPress={() => console.log('pressed')} />
                 <AppHeaderAction
                   icon={iconMap.notification}
                   onPress={() => console.log('pressed')}
@@ -435,17 +400,10 @@ export default function Home({ navigation }: Props) {
           options={{
             tabBarLabel: t('home:statistics'),
             tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons
-                name={iconMap.statistics}
-                color={color}
-                size={size}
-              />
+              <MaterialCommunityIcons name={iconMap.statistics} color={color} size={size} />
             ),
             tabBarButton: props => (
-              <TouchableRipple
-                {...props}
-                disabled={props.disabled as boolean | undefined}
-              />
+              <TouchableRipple {...props} disabled={props.disabled as boolean | undefined} />
             ),
           }}
           component={Statistics}
@@ -469,8 +427,7 @@ export default function Home({ navigation }: Props) {
           }}
           options={{
             tabBarLabel: t('home:createNFT'),
-            tabBarBadge:
-              canCreateNFT && !onceEligible ? t('home:eligible') : undefined,
+            tabBarBadge: canCreateNFT && !onceEligible ? t('home:eligible') : undefined,
             tabBarBadgeStyle: { fontSize: hp('1.2%', insets) },
             tabBarIcon: ({ size }) =>
               canCreateNFT ? (
@@ -487,10 +444,7 @@ export default function Home({ navigation }: Props) {
                 />
               ),
             tabBarButton: props => (
-              <TouchableRipple
-                {...props}
-                disabled={props.disabled as boolean | undefined}
-              />
+              <TouchableRipple {...props} disabled={props.disabled as boolean | undefined} />
             ),
           }}
           component={View}
@@ -505,17 +459,10 @@ export default function Home({ navigation }: Props) {
           options={{
             tabBarLabel: t('home:apps'),
             tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons
-                name={iconMap.discover}
-                color={color}
-                size={size}
-              />
+              <MaterialCommunityIcons name={iconMap.discover} color={color} size={size} />
             ),
             tabBarButton: props => (
-              <TouchableRipple
-                {...props}
-                disabled={props.disabled as boolean | undefined}
-              />
+              <TouchableRipple {...props} disabled={props.disabled as boolean | undefined} />
             ),
           }}
           component={Discover}
@@ -530,31 +477,15 @@ export default function Home({ navigation }: Props) {
           options={{
             tabBarLabel: t('home:profile'),
             tabBarIcon: ({ color, size }) => (
-              <AppAvatarRenderer
-                color={color}
-                size={size * 1.1}
-                persona={myPersona}
-              />
+              <AppAvatarRenderer color={color} size={size * 1.1} persona={myPersona} />
             ),
             tabBarButton: props => (
-              <TouchableRipple
-                {...props}
-                disabled={props.disabled as boolean | undefined}
-              />
+              <TouchableRipple {...props} disabled={props.disabled as boolean | undefined} />
             ),
             header: () => (
-              <AppHeader
-                style={myProfileStyle}
-                height={headerHeight}
-                title={t('home:myProfile')}>
-                <AppHeaderAction
-                  icon={iconMap.edit}
-                  onPress={() => console.log('pressed')}
-                />
-                <AppHeaderAction
-                  icon={iconMap.setting}
-                  onPress={() => console.log('pressed')}
-                />
+              <AppHeader style={myProfileStyle} height={headerHeight} title={t('home:myProfile')}>
+                <AppHeaderAction icon={iconMap.edit} onPress={() => console.log('pressed')} />
+                <AppHeaderAction icon={iconMap.setting} onPress={() => console.log('pressed')} />
               </AppHeader>
             ),
           }}>

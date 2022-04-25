@@ -74,7 +74,5 @@ function AppFormSecureTextInput(
   );
 }
 
-const forwardedAppFormSecureTextInput = React.forwardRef(
-  AppFormSecureTextInput,
-);
+const forwardedAppFormSecureTextInput = React.forwardRef(AppFormSecureTextInput);
 export default forwardedAppFormSecureTextInput;

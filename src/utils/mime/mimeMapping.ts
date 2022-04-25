@@ -26,10 +26,7 @@ const typeMapping = {
   ],
 };
 
-function match(
-  mime: string,
-  cond: string | (RegExp | string)[] | RegExp | undefined,
-): boolean {
+function match(mime: string, cond: string | (RegExp | string)[] | RegExp | undefined): boolean {
   if (Array.isArray(cond)) {
     for (let i = 0; i < cond.length; i++) {
       if (match(mime, cond[i])) {
@@ -46,9 +43,7 @@ function match(
   }
 }
 
-export default function mimeMapping(
-  mime: string,
-): keyof typeof typeMapping | 'undefined' {
+export default function mimeMapping(mime: string): keyof typeof typeMapping | 'undefined' {
   for (const [type, condition] of Object.entries(typeMapping)) {
     if (match(mime, condition)) {
       return type as keyof typeof typeMapping;

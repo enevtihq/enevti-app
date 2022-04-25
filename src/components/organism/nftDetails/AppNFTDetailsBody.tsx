@@ -10,8 +10,7 @@ import useDimension from 'enevti-app/utils/hook/useDimension';
 import { BackgroundColorContext } from 'enevti-app/context';
 import { TOP_TABBAR_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppTopTabBar';
 
-export const NFT_DETAILS_TOP_TABBAR_HEIGHT_PERCENTAGE =
-  TOP_TABBAR_HEIGHT_PERCENTAGE;
+export const NFT_DETAILS_TOP_TABBAR_HEIGHT_PERCENTAGE = TOP_TABBAR_HEIGHT_PERCENTAGE;
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -62,9 +61,7 @@ export default function AppNFTDetailsBody({
         <Tab.Screen
           options={{
             tabBarLabel: ({ color }) => (
-              <AppTextBody4 style={{ color: color }}>
-                {t('nftDetails:summary')}
-              </AppTextBody4>
+              <AppTextBody4 style={{ color: color }}>{t('nftDetails:summary')}</AppTextBody4>
             ),
           }}
           name={t('nftDetails:summary')}
@@ -73,9 +70,7 @@ export default function AppNFTDetailsBody({
         <Tab.Screen
           options={{
             tabBarLabel: ({ color }) => (
-              <AppTextBody4 style={{ color: color }}>
-                {t('nftDetails:activity')}
-              </AppTextBody4>
+              <AppTextBody4 style={{ color: color }}>{t('nftDetails:activity')}</AppTextBody4>
             ),
           }}
           name={t('nftDetails:activity')}

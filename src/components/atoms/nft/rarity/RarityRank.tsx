@@ -14,8 +14,7 @@ interface RarityRankProps {
 export default function RarityRank({ nft, args, width }: RarityRankProps) {
   const theme = useTheme();
   const styles = React.useMemo(() => makeStyles(args, theme), [args, theme]);
-  const text =
-    nft.NFTType === 'onekind' ? 'OneKind' : `Rank#${nft.rarity.stat.rank}`;
+  const text = nft.NFTType === 'onekind' ? 'OneKind' : `Rank#${nft.rarity.stat.rank}`;
 
   const w = (parseFloat(args.width) * width) / 100.0;
   const h = (parseFloat(args.height) * width) / 100.0;

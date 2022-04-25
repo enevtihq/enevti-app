@@ -55,16 +55,10 @@ const paymentSlice = createSlice({
       payment.status.type = initialState.status.type;
       payment.status.message = initialState.status.message;
     },
-    setPaymentActionType: (
-      payment,
-      action: PayloadAction<PaymentAction['type']>,
-    ) => {
+    setPaymentActionType: (payment, action: PayloadAction<PaymentAction['type']>) => {
       payment.action.type = action.payload;
     },
-    setPaymentAction: (
-      payment,
-      action: PayloadAction<Omit<PaymentAction, 'loaded'>>,
-    ) => {
+    setPaymentAction: (payment, action: PayloadAction<Omit<PaymentAction, 'loaded'>>) => {
       payment.action.loaded = true;
       payment.action.type = action.payload.type;
       payment.action.icon = action.payload.icon;
@@ -85,10 +79,7 @@ const paymentSlice = createSlice({
       payment.action.currency = initialState.action.currency;
       payment.action.payload = initialState.action.payload;
     },
-    setPaymentFee: (
-      payment,
-      action: PayloadAction<Omit<PaymentFee, 'loaded'>>,
-    ) => {
+    setPaymentFee: (payment, action: PayloadAction<Omit<PaymentFee, 'loaded'>>) => {
       payment.fee.loaded = true;
       payment.fee.gas = action.payload.gas;
       payment.fee.platform = action.payload.platform;

@@ -9,9 +9,7 @@ import {
 } from 'enevti-app/store/slices/ui/global/statusbar';
 import { RootStackParamList } from 'enevti-app/navigation';
 import AppCollection from 'enevti-app/components/organism/collection/AppCollection';
-import AppHeader, {
-  HEADER_HEIGHT_PERCENTAGE,
-} from 'enevti-app/components/atoms/view/AppHeader';
+import AppHeader, { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
 import {
   interpolateColor,
   runOnJS,
@@ -128,11 +126,7 @@ export default function Collection({ navigation, route }: Props) {
           iconStyle={iconStyle}
         />
       }>
-      <AppCollection
-        onScrollWorklet={collectionOnScroll}
-        navigation={navigation}
-        route={route}
-      />
+      <AppCollection onScrollWorklet={collectionOnScroll} navigation={navigation} route={route} />
     </AppView>
   );
 }

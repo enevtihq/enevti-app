@@ -1,9 +1,4 @@
-import {
-  TouchableWithoutFeedback,
-  Keyboard,
-  View,
-  StyleSheet,
-} from 'react-native';
+import { TouchableWithoutFeedback, Keyboard, View, StyleSheet } from 'react-native';
 import React from 'react';
 
 interface AppKeyboardDismissOnClickViewProps {
@@ -17,9 +12,7 @@ export default function AppKeyboardDismissOnClickView({
 }: AppKeyboardDismissOnClickViewProps): JSX.Element {
   const styles = React.useMemo(() => makeStyles(), []);
   return activate ? (
-    <TouchableWithoutFeedback
-      onPress={() => Keyboard.dismiss()}
-      accessible={false}>
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} accessible={false}>
       <View style={styles.childView}>{children}</View>
     </TouchableWithoutFeedback>
   ) : (

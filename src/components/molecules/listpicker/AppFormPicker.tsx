@@ -1,8 +1,6 @@
 import { StyleSheet, View } from 'react-native';
 import React from 'react';
-import AppIconComponent, {
-  iconMap,
-} from 'enevti-app/components/atoms/icon/AppIconComponent';
+import AppIconComponent, { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import AppListPickerMenu from 'enevti-app/components/molecules/listpicker/AppListPickerMenu';
 import { PickerItem } from 'enevti-app/types/ui/screen/PickerItem';
 import AppFormTextInputWithError from 'enevti-app/components/molecules/AppFormTextInputWithError';
@@ -30,10 +28,7 @@ function Component({
 }: AppFormPickerProps) {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
-  const styles = React.useMemo(
-    () => makeStyles(theme, insets),
-    [theme, insets],
-  );
+  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
 
   const [menuVisible, setMenuVisible] = React.useState<boolean>(false);
 
@@ -56,11 +51,7 @@ function Component({
         label={label}
         theme={theme}
         dense={true}
-        value={
-          value && selectedIndex !== undefined
-            ? items[selectedIndex].title
-            : undefined
-        }
+        value={value && selectedIndex !== undefined ? items[selectedIndex].title : undefined}
         style={styles.formInput}
         editable={false}
         pointerEvents={'none'}
@@ -75,9 +66,7 @@ function Component({
       />
 
       <View style={styles.inputRippleContainer}>
-        <TouchableRipple
-          onPress={() => setMenuVisible(!menuVisible)}
-          style={styles.inputRipple}>
+        <TouchableRipple onPress={() => setMenuVisible(!menuVisible)} style={styles.inputRipple}>
           <View />
         </TouchableRipple>
       </View>

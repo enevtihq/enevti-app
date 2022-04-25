@@ -8,10 +8,7 @@ export function getFilename(path: string) {
 
 export function trimExtension(path: string, extension?: string) {
   if (extension) {
-    if (
-      path.substring(path.length - (extension.length + 1), path.length) ===
-      `.${extension}`
-    ) {
+    if (path.substring(path.length - (extension.length + 1), path.length) === `.${extension}`) {
       return path.substring(0, path.length - (extension.length + 1));
     } else {
       return path;

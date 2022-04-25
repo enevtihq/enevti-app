@@ -19,9 +19,7 @@ export const reducePayment = (): AppThunk => (dispatch, getState) => {
       dispatch(reducePayAddStake());
       break;
     case 'cancel':
-      dispatch(
-        showSnackbar({ mode: 'info', text: getState().payment.status.message }),
-      );
+      dispatch(showSnackbar({ mode: 'info', text: getState().payment.status.message }));
       break;
     default:
       handleError({ message: i18n.t('error:unknownPayment') });

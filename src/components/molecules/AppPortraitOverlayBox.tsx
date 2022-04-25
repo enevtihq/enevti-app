@@ -15,18 +15,10 @@ interface AppPortraitOverlayBoxProps {
 }
 
 export default React.memo(
-  function AppPortraitOverlayBox({
-    url,
-    title,
-    style,
-    onPress,
-  }: AppPortraitOverlayBoxProps) {
+  function AppPortraitOverlayBox({ url, title, style, onPress }: AppPortraitOverlayBoxProps) {
     const insets = useSafeAreaInsets();
     const theme = useTheme() as Theme;
-    const styles = React.useMemo(
-      () => makeStyles(theme, insets),
-      [theme, insets],
-    );
+    const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
 
     return (
       <View style={[styles.container, style]}>

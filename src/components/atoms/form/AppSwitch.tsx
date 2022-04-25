@@ -13,13 +13,7 @@ interface AppSwitchProps {
   onPress?: () => void;
 }
 
-export default function AppSwitch({
-  children,
-  value,
-  style,
-  disabled,
-  onPress,
-}: AppSwitchProps) {
+export default function AppSwitch({ children, value, style, disabled, onPress }: AppSwitchProps) {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
   const styles = React.useMemo(() => makeStyles(insets), [insets]);

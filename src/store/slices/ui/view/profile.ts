@@ -22,7 +22,7 @@ const initialStateItem: ProfileViewState = {
   balance: '',
   social: { twitter: { link: '', stat: 0 } },
   owned: [],
-  onsale: [],
+  onSale: [],
   collection: [],
 };
 
@@ -32,18 +32,12 @@ const profileViewSlice = createSlice({
   name: 'profileView',
   initialState,
   reducers: {
-    setProfileView: (
-      profile,
-      action: PayloadAction<{ key: string; value: ProfileView }>,
-    ) => {
+    setProfileView: (profile, action: PayloadAction<{ key: string; value: ProfileView }>) => {
       Object.assign(profile, {
         [action.payload.key]: action.payload.value,
       });
     },
-    setProfileViewLoaded: (
-      profile,
-      action: PayloadAction<{ key: string; value: boolean }>,
-    ) => {
+    setProfileViewLoaded: (profile, action: PayloadAction<{ key: string; value: boolean }>) => {
       profile[action.payload.key].loaded = action.payload.value;
     },
     clearProfileByKey: (profile, action: PayloadAction<string>) => {
@@ -68,19 +62,13 @@ export const {
 export default profileViewSlice.reducer;
 
 export const selectProfileView = createSelector(
-  [
-    (state: RootState) => state.ui.view.profile,
-    (state: RootState, key: string) => key,
-  ],
+  [(state: RootState) => state.ui.view.profile, (state: RootState, key: string) => key],
   (profile: ProfileViewStore, key: string) =>
     profile.hasOwnProperty(key) ? profile[key] : initialStateItem,
 );
 
 export const isProfileUndefined = createSelector(
-  [
-    (state: RootState) => state.ui.view.profile,
-    (state: RootState, key: string) => key,
-  ],
+  [(state: RootState) => state.ui.view.profile, (state: RootState, key: string) => key],
   (profile: ProfileViewStore, key: string) =>
     profile.hasOwnProperty(key) ? !profile[key].loaded : true,
 );

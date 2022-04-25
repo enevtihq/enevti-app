@@ -15,11 +15,7 @@ interface AppNetworkImageProps {
   loaderSize?: number;
 }
 
-export default function AppNetworkImage({
-  url,
-  style,
-  loaderSize = 30,
-}: AppNetworkImageProps) {
+export default function AppNetworkImage({ url, style, loaderSize = 30 }: AppNetworkImageProps) {
   const theme = useTheme() as Theme;
 
   return (

@@ -15,8 +15,7 @@ const lastActiveSlice = createSlice({
   },
 });
 
-export const { setLastScreenActive, resetLastScreenActive } =
-  lastActiveSlice.actions;
+export const { setLastScreenActive, resetLastScreenActive } = lastActiveSlice.actions;
 export default lastActiveSlice.reducer;
 
 export const selectLastActiveState = createSelector(

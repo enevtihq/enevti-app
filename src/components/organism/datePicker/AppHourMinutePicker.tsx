@@ -43,9 +43,7 @@ function Component({
   const valueToString = React.useMemo(
     () =>
       value && value[0] !== -1 && value[1] !== -1
-        ? `${('0' + value[0].toString()).slice(-2)} : ${(
-            '0' + value[1].toString()
-          ).slice(-2)}`
+        ? `${('0' + value[0].toString()).slice(-2)} : ${('0' + value[1].toString()).slice(-2)}`
         : undefined,
     [value],
   );
@@ -60,12 +58,8 @@ function Component({
       items={pickerData}
       value={valueToString}
       pickerValue={pickerValue}
-      onSelected={data =>
-        onSelected && onSelected([parseFloat(data[0]), parseFloat(data[1])])
-      }
-      onCancel={data =>
-        onCancel && onCancel([parseFloat(data[0]), parseFloat(data[1])])
-      }
+      onSelected={data => onSelected && onSelected([parseFloat(data[0]), parseFloat(data[1])])}
+      onCancel={data => onCancel && onCancel([parseFloat(data[0]), parseFloat(data[1])])}
     />
   );
 }

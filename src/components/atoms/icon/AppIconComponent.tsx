@@ -93,12 +93,7 @@ interface AppIconComponentProps {
   style?: StyleProp<ViewStyle>;
 }
 
-export default function AppIconComponent({
-  name,
-  size,
-  color,
-  style,
-}: AppIconComponentProps) {
+export default function AppIconComponent({ name, size, color, style }: AppIconComponentProps) {
   return (
     <View style={style}>
       <Icon name={name} size={size} color={color} />

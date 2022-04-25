@@ -22,8 +22,7 @@ const selectGoogleErrorText = async (code: number) => {
 export const googleInit = () => {
   GoogleSignin.configure({
     scopes: GOOGLE_SCOPES,
-    webClientId:
-      '181526937355-dc3hogvjc61lb2jchffhlstov8pkodd4.apps.googleusercontent.com',
+    webClientId: '181526937355-dc3hogvjc61lb2jchffhlstov8pkodd4.apps.googleusercontent.com',
     offlineAccess: true,
   });
 };

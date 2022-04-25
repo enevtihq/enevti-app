@@ -8,12 +8,7 @@ interface AppTabBarProps extends BottomTabBarProps {
   style?: StyleProp<ViewStyle>;
 }
 
-export default function AppTabBar({
-  state,
-  descriptors,
-  navigation,
-  style,
-}: AppTabBarProps) {
+export default function AppTabBar({ state, descriptors, navigation, style }: AppTabBarProps) {
   const insets = useSafeAreaInsets();
 
   return (

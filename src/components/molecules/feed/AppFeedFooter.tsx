@@ -18,10 +18,7 @@ export default React.memo(
     const { t } = useTranslation();
     const theme = useTheme() as Theme;
     const insets = useSafeAreaInsets();
-    const styles = React.useMemo(
-      () => makeStyles(theme, insets),
-      [theme, insets],
-    );
+    const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
 
     return (
       <View style={styles.footerContainer}>
@@ -37,9 +34,7 @@ export default React.memo(
             {t('home:mintingProgress', { minted: '21', total: '321' })}
           </AppTextBody4>
           <AppTextBody4 style={styles.tag}> | </AppTextBody4>
-          <AppTextBody4 style={styles.tag}>
-            {t('home:daysLeft', { day: '12' })}
-          </AppTextBody4>
+          <AppTextBody4 style={styles.tag}>{t('home:daysLeft', { day: '12' })}</AppTextBody4>
         </Text>
       </View>
     );

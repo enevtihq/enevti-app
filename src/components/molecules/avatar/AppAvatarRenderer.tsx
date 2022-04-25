@@ -18,12 +18,7 @@ interface AppAvatarRendererProps {
   color?: string;
 }
 
-export default function AppAvatarRenderer({
-  size,
-  persona,
-  style,
-  color,
-}: AppAvatarRendererProps) {
+export default function AppAvatarRenderer({ size, persona, style, color }: AppAvatarRendererProps) {
   const theme = useTheme();
   const styles = React.useMemo(() => makeStyles(size, color), [size, color]);
 

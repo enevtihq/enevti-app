@@ -17,10 +17,7 @@ export default React.memo(
     return dataUri ? (
       <Image style={styles.imageContainer} source={{ uri: dataUri }} />
     ) : (
-      <AppNetworkImage
-        url={IPFStoURL(nft.data.cid)}
-        style={styles.imageContainer}
-      />
+      <AppNetworkImage url={IPFStoURL(nft.data.cid)} style={styles.imageContainer} />
     );
   },
   (props, nextProps) => {

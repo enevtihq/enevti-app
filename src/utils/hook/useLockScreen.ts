@@ -2,10 +2,7 @@ import React from 'react';
 import { NativeModules, NativeEventEmitter } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectAuthState } from 'enevti-app/store/slices/auth';
-import {
-  lockScreen,
-  selectLockedState,
-} from 'enevti-app/store/slices/ui/screen/locked';
+import { lockScreen, selectLockedState } from 'enevti-app/store/slices/ui/screen/locked';
 
 export default function useLockScreen() {
   const dispatch = useDispatch();

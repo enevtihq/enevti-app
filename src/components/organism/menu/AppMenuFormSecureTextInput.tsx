@@ -5,10 +5,7 @@ import AppFormSecureTextInput, {
 import { useBottomSheetInternal } from '@gorhom/bottom-sheet';
 import { ModalContext } from 'enevti-app/context';
 
-function AppMenuFormSecureTextInput(
-  props: AppFormSecureTextInputProps,
-  ref: any,
-) {
+function AppMenuFormSecureTextInput(props: AppFormSecureTextInputProps, ref: any) {
   const { shouldHandleKeyboardEvents } = useBottomSheetInternal();
   const withModal = React.useContext(ModalContext);
 
@@ -26,16 +23,9 @@ function AppMenuFormSecureTextInput(
   }, [props, shouldHandleKeyboardEvents, withModal]);
 
   return (
-    <AppFormSecureTextInput
-      {...props}
-      ref={ref}
-      touchHandler={touchHandler}
-      onFocus={onFocus}
-    />
+    <AppFormSecureTextInput {...props} ref={ref} touchHandler={touchHandler} onFocus={onFocus} />
   );
 }
 
-const forwardedAppMenuFormSecureTextInput = React.forwardRef(
-  AppMenuFormSecureTextInput,
-);
+const forwardedAppMenuFormSecureTextInput = React.forwardRef(AppMenuFormSecureTextInput);
 export default forwardedAppMenuFormSecureTextInput;

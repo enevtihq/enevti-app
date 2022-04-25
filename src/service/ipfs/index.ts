@@ -5,10 +5,7 @@ const IPFS_GATEWAY = 'https://cloudflare-ipfs.com/ipfs/';
 
 export const IPFStoURL = (hash: string) => IPFS_GATEWAY + hash;
 
-export async function uploadURItoIPFS(
-  uri: string,
-  signal?: AbortController['signal'],
-) {
+export async function uploadURItoIPFS(uri: string, signal?: AbortController['signal']) {
   await sleep(5000, signal);
   return makeDummyIPFS();
 }

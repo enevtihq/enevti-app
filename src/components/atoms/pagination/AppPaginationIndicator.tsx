@@ -10,10 +10,7 @@ interface AppPaginationIndicatorProps {
 }
 
 export default React.memo(
-  function AppPaginationIndicator({
-    length,
-    active,
-  }: AppPaginationIndicatorProps) {
+  function AppPaginationIndicator({ length, active }: AppPaginationIndicatorProps) {
     const insets = useSafeAreaInsets();
     const theme = useTheme();
     const passiveSize = '1.2%';

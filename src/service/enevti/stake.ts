@@ -8,10 +8,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { getStakePoolStakerData } from './dummy';
 
-type StakePoolRoute = StackScreenProps<
-  RootStackParamList,
-  'StakePool'
->['route']['params'];
+type StakePoolRoute = StackScreenProps<RootStackParamList, 'StakePool'>['route']['params'];
 
 async function fetchStakePool(
   address: string,

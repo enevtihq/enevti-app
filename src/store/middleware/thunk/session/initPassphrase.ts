@@ -7,18 +7,11 @@ import {
 } from 'enevti-app/store/slices/entities/cache/myPersona';
 import { resetMyProfileCache } from 'enevti-app/store/slices/entities/cache/myProfile';
 import { setLocalSessionKey } from 'enevti-app/store/slices/session/local';
-import {
-  passphraseToBase32,
-  passphraseToAddress,
-} from 'enevti-app/service/enevti/persona';
+import { passphraseToBase32, passphraseToAddress } from 'enevti-app/service/enevti/persona';
 import { EncryptedData } from 'enevti-app/types/core/service/cryptography';
 
 export const initPassphrase =
-  (
-    encryptedPassphrase: EncryptedData,
-    plainPassphrase: string,
-    localKey: string,
-  ): AppThunk =>
+  (encryptedPassphrase: EncryptedData, plainPassphrase: string, localKey: string): AppThunk =>
   async dispatch => {
     dispatch(resetMyPersonaCache());
     dispatch(resetMyProfileCache());

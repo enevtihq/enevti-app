@@ -10,10 +10,7 @@ interface AppBrandBannerProps {
   style?: StyleProp<ImageStyle>;
 }
 
-export default function AppBrandBanner({
-  widthPercentage,
-  style,
-}: AppBrandBannerProps) {
+export default function AppBrandBanner({ widthPercentage, style }: AppBrandBannerProps) {
   const theme = useTheme() as Theme;
   return theme.dark ? (
     <AppDarkBrandBanner widthPercentage={widthPercentage} style={style} />

@@ -32,10 +32,7 @@ export default function AppTextBase({
   );
 
   const readMoreActivate = React.useMemo(
-    () =>
-      readMoreLimit &&
-      typeof children === 'string' &&
-      children.length > readMoreLimit,
+    () => readMoreLimit && typeof children === 'string' && children.length > readMoreLimit,
     [children, readMoreLimit],
   );
 
@@ -60,13 +57,9 @@ const makeStyles = (
     text: {
       color: theme.colors.text,
       fontFamily:
-        weight === 'normal'
-          ? theme.fonts.regular.fontFamily
-          : theme.fonts.medium.fontFamily,
+        weight === 'normal' ? theme.fonts.regular.fontFamily : theme.fonts.medium.fontFamily,
       fontWeight:
-        weight === 'normal'
-          ? theme.fonts.regular.fontWeight
-          : theme.fonts.medium.fontWeight,
+        weight === 'normal' ? theme.fonts.regular.fontWeight : theme.fonts.medium.fontWeight,
       fontSize: wp(size, insets),
     },
   });

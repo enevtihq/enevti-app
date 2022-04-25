@@ -6,10 +6,7 @@ import AppFormTextInputWithError, {
 import { useBottomSheetInternal } from '@gorhom/bottom-sheet';
 import { ModalContext } from 'enevti-app/context';
 
-function AppMenuFormTextInputWithError(
-  props: AppFormTextInputWithErrorProps,
-  ref: any,
-) {
+function AppMenuFormTextInputWithError(props: AppFormTextInputWithErrorProps, ref: any) {
   const { shouldHandleKeyboardEvents } = useBottomSheetInternal();
   const withModal = React.useContext(ModalContext);
 
@@ -29,19 +26,10 @@ function AppMenuFormTextInputWithError(
     [props, shouldHandleKeyboardEvents, withModal],
   );
 
-  return (
-    <AppFormTextInputWithError
-      {...props}
-      ref={ref}
-      onBlur={onBlur}
-      onFocus={onFocus}
-    />
-  );
+  return <AppFormTextInputWithError {...props} ref={ref} onBlur={onBlur} onFocus={onFocus} />;
 }
 
-const forwardedAppMenuFormTextInputWithError = React.forwardRef(
-  AppMenuFormTextInputWithError,
-);
+const forwardedAppMenuFormTextInputWithError = React.forwardRef(AppMenuFormTextInputWithError);
 
 const memoizedAppFormTextInputWithError = React.memo(
   forwardedAppMenuFormTextInputWithError,

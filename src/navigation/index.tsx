@@ -1,12 +1,6 @@
 import React from 'react';
-import {
-  NavigationContainer,
-  useNavigationContainerRef,
-} from '@react-navigation/native';
-import {
-  createStackNavigator,
-  CardStyleInterpolators,
-} from '@react-navigation/stack';
+import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
+import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
 import { useSelector } from 'react-redux';
 import { StyleSheet, useColorScheme } from 'react-native';
 
@@ -92,22 +86,14 @@ export default function AppNavigationContainer() {
   );
 
   const auth = useSelector(selectAuthState);
-  const initialRoute = auth.encrypted
-    ? 'Login'
-    : auth.token
-    ? 'Home'
-    : 'CreateAccount';
+  const initialRoute = auth.encrypted ? 'Login' : auth.token ? 'Home' : 'CreateAccount';
   const navLinking = React.useMemo(() => linking(initialRoute), [initialRoute]);
 
   useLockScreen();
   useScreenDisplayed();
 
   React.useEffect(() => {
-    if (
-      auth.encrypted &&
-      locked &&
-      navigationRef.getCurrentRoute()?.name !== 'Login'
-    ) {
+    if (auth.encrypted && locked && navigationRef.getCurrentRoute()?.name !== 'Login') {
       navigationRef.navigate('Login');
     }
   }, [auth.encrypted, locked, navigationRef]);

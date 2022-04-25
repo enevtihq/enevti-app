@@ -26,10 +26,7 @@ function Component({
   const { t } = useTranslation();
   const nothing = React.useCallback(() => {}, []);
 
-  const snapPoints = React.useMemo(
-    () => [`${menuItemHeigtPercentage(2)}%`],
-    [],
-  );
+  const snapPoints = React.useMemo(() => [`${menuItemHeigtPercentage(2)}%`], []);
 
   const pickFromGallery = React.useCallback(() => {
     ImageCropPicker.openPicker(IMAGE_CROP_PICKER_OPTION)
@@ -56,11 +53,7 @@ function Component({
       snapPoints={snapPoints}
       tapEverywhereToDismiss={true}
       onDismiss={onDismiss ? onDismiss : nothing}>
-      <AppMenuItem
-        onPress={openCamera}
-        icon={iconMap.camera}
-        title={t('createNFT:openCamera')}
-      />
+      <AppMenuItem onPress={openCamera} icon={iconMap.camera} title={t('createNFT:openCamera')} />
       <AppMenuItem
         onPress={pickFromGallery}
         icon={iconMap.gallery}

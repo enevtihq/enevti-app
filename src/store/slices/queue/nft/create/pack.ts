@@ -35,22 +35,13 @@ const createNFTPackQueueSlice = createSlice({
   name: 'pack',
   initialState: createNFTPackQueueInitialState,
   reducers: {
-    setCreateNFTPackURI: (
-      pack,
-      action: PayloadAction<CreateNFTPackItemData[]>,
-    ) => {
+    setCreateNFTPackURI: (pack, action: PayloadAction<CreateNFTPackItemData[]>) => {
       pack.data = action.payload.slice();
     },
-    setCreateNFTPackChosenTemplate: (
-      pack,
-      action: PayloadAction<NFTTemplateAsset>,
-    ) => {
+    setCreateNFTPackChosenTemplate: (pack, action: PayloadAction<NFTTemplateAsset>) => {
       Object.assign(pack.choosenTemplate, action.payload);
     },
-    setCreateNFTPackState: (
-      pack,
-      action: PayloadAction<CreateNFTPackState>,
-    ) => {
+    setCreateNFTPackState: (pack, action: PayloadAction<CreateNFTPackState>) => {
       Object.assign(pack.state, action.payload);
     },
     clearCreateNFTPackQueue: () => {

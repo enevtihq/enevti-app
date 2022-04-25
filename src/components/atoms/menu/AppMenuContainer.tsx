@@ -1,14 +1,7 @@
 import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useFocusEffect } from '@react-navigation/native';
 import React from 'react';
-import {
-  BackHandler,
-  StyleProp,
-  View,
-  ViewStyle,
-  Platform,
-  StyleSheet,
-} from 'react-native';
+import { BackHandler, StyleProp, View, ViewStyle, Platform, StyleSheet } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { shallowEqual } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -76,8 +69,7 @@ function Component({
         }
       };
       BackHandler.addEventListener('hardwareBackPress', onBackPress);
-      return () =>
-        BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+      return () => BackHandler.removeEventListener('hardwareBackPress', onBackPress);
     }, [isVisible, backDisabled]),
   );
 

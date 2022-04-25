@@ -18,7 +18,7 @@ const initialState: MyProfileViewState = {
   balance: '',
   social: { twitter: { link: '', stat: 0 } },
   owned: [],
-  onsale: [],
+  onSale: [],
   collection: [],
 };
 

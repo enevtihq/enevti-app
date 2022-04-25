@@ -43,10 +43,7 @@ export default function AppQuaternaryButton({
 }: AppQuaternaryButtonProps): JSX.Element {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
-  const styles = React.useMemo(
-    () => makeStyles(theme, insets, box),
-    [theme, insets, box],
-  );
+  const styles = React.useMemo(() => makeStyles(theme, insets, box), [theme, insets, box]);
 
   const opacity = disabled ? 0.2 : 1;
 
@@ -55,9 +52,7 @@ export default function AppQuaternaryButton({
       <AppActivityIndicator
         animating={true}
         style={[styles.loading, contentStyle]}
-        color={
-          loaderColor ? loaderColor : iconColor ? iconColor : theme.colors.text
-        }
+        color={loaderColor ? loaderColor : iconColor ? iconColor : theme.colors.text}
       />
     </View>
   ) : (

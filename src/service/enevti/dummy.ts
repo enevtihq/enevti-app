@@ -1,8 +1,5 @@
-import {
-  Collection,
-  CollectionBase,
-} from 'enevti-app/types/core/chain/collection';
-import { COIN_NAME } from 'enevti-app/components/atoms/brand/AppBrandConstant';
+import { Collection, CollectionBase } from 'enevti-app/types/core/chain/collection';
+import { COIN_NAME } from 'enevti-app/utils/constant/identifier';
 import enevtiNFTTemplate from 'enevti-app/components/atoms/nft/template/enevtiNFTTemplate';
 import { NFT, NFTBase } from 'enevti-app/types/core/chain/nft/index';
 import { NFTUtility } from 'enevti-app/types/core/chain/nft/NFTUtility';
@@ -99,6 +96,7 @@ export const getDummyCollectionFullData = (): Collection => {
   return {
     id: Math.random().toString(),
     collectionType: 'onekind',
+    promoted: false,
     name: 'Eye Collection',
     description:
       'A lot of eye collection with mind blowing utility that goes beyond arts and collectible, we try to create something remarkable with eyes and your vision. Eyes symbolyze how we see something new on the world, so this collection also emphasize new vision for humanity and NFT world as a whole',
@@ -151,8 +149,8 @@ export const getDummyCollectionFullData = (): Collection => {
     activity: [
       {
         transaction: 'fgagergdfsdf',
-        name: 'mint',
-        nft: getDummyNFTData(),
+        name: 'minted',
+        nfts: [getDummyNFTData()],
         date: 1648256592852,
         to: {
           photo: '',
@@ -167,8 +165,8 @@ export const getDummyCollectionFullData = (): Collection => {
       },
       {
         transaction: 'fgagergdfsdf',
-        name: 'mint',
-        nft: getDummyNFTData(),
+        name: 'minted',
+        nfts: [getDummyNFTData()],
         date: 1648256592852,
         to: {
           photo: '',
@@ -183,8 +181,8 @@ export const getDummyCollectionFullData = (): Collection => {
       },
       {
         transaction: 'fgagergdfsdf',
-        name: 'mint',
-        nft: getDummyNFTData(),
+        name: 'minted',
+        nfts: [getDummyNFTData()],
         date: 1648256592852,
         to: {
           photo: '',
@@ -202,14 +200,7 @@ export const getDummyCollectionFullData = (): Collection => {
 };
 
 export const getDummyNFTData = (): NFTBase => {
-  const utilityOption: NFTUtility[] = [
-    'videocall',
-    'chat',
-    'content',
-    'qr',
-    'stream',
-    'gift',
-  ];
+  const utilityOption: NFTUtility[] = ['videocall', 'chat', 'content', 'qr', 'stream', 'gift'];
 
   return {
     id: Math.random().toString(),
@@ -262,7 +253,7 @@ export const getDummyNFTFullData = (): NFT => {
     like: 10,
     comment: 3,
     createdOn: 1649172800701,
-    chain: COIN_NAME,
+    networkIdentifier: COIN_NAME,
     symbol: 'EYECL',
     serial: '1A',
     name: 'EyeCollection',
@@ -325,10 +316,8 @@ export const getDummyNFTFullData = (): NFT => {
           'eyJub25jZSI6IjJhNzllMjhhZmZmYWQwNTA4OGFiZWQ3NjU2ZGExZTJiZmY1NGNjZTI4ZjMyZjY0ZCIsImVuY3J5cHRlZE1lc3NhZ2UiOiJlY2VkNGQ2ZGU5NjgzY2RjNjI4YWIzODcyOTZjMjNhNTM0YTc1NDlkNmFkNmIwODI1ODNmYTE5MDI1Mjg0MDIwY2Q0ZjMyMmRhOGRkMDg0MWIwMGI4MTI1OWJlZGU3ZDM4NGU5YzhkOGJkYjM4MzczMDI5ZWFkNjlkZjc1OGNhNmVjMTI5YjUyZWEzYmUyOWE4YjI5ZmJjZjg3NmVmYjhmYWZlYzE5NjgwNDA4MWM3MjIxODNmZjFiNjcxMmJjZGYxNTg3NDRmN2U5ZTdmNDM2NzQ3OWY0ZmQ4YzY3MzE4ZmQyZDJmZDA3MDcxN2IwNGJiZTYwZTY1Yzk0NmIwYjU2YzhkZjA1MjU2ZTRjZGQzYmI0MWY0MGNmNTI5OWQxNzc4YjEwY2Q0YjExNzAwMjg5NDI0YzM5NzYzNTUyOTA2MTk1MzQ4MzdlNWVlOGJiNDIxNTM1MTllMzI0Yzg2MzVjNWEwZWU5NzVjNGYyYjAxYTk3YWJhM2I4NjExZDc2ZDMxNTc3YjFiOTYxNGM2ODgxNWVmMzVhMzcxOWM1ZjM1NGIwNzljYjgzY2MwOTgwZDJhODBhNjE0ZDMyYmJjZWYxZDYzYzg2YmI2ODM2OGI4NDU5NTYxMTljZGNhNTQyNGU3NmYwNWIwMDFhOTE1NzUzZGZkYjNlZGFkOGVjZTJhOTU5NWEzNzQxYWU4MGEzZTM5ZGQ4NTQxY2NhYWEwMGRkIn0=',
         signature:
           '6c691c2139f32017e6fbe81ce849e728838dec3ffa24f0417dce617aa8fa66d2fe2f115bb9f11cf321553ce4a60e751157dc941800c473c77feec7a70f8ef805',
-        sender:
-          '44fc724f611d822fbb946e4084d27cc07197bb3ab4d0406a17ade813cd7aee15',
-        recipient:
-          'e177126884d05e6ea1f833c05949cf8af45fdcb6d8017d55f75ab26384b78af9',
+        sender: '44fc724f611d822fbb946e4084d27cc07197bb3ab4d0406a17ade813cd7aee15',
+        recipient: 'e177126884d05e6ea1f833c05949cf8af45fdcb6d8017d55f75ab26384b78af9',
       },
       content: {
         cid: 'QmYanPVeUCBKfxXGcTBCjS8HjYLuf3qscqGV1peF5iszkC',

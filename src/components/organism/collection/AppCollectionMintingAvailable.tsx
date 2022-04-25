@@ -1,7 +1,6 @@
 import { StyleSheet, View } from 'react-native';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Collection } from 'enevti-app/types/core/chain/collection';
 import { ProgressBar, useTheme } from 'react-native-paper';
 import { Theme } from 'enevti-app/theme/default';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -11,6 +10,7 @@ import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import AppCountdown from 'enevti-app/components/atoms/date/AppCountdown';
 import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
+import { Collection } from 'enevti-app/types/core/chain/collection';
 
 export const MINTING_AVAILABLE_VIEW_HEIGHT = 7;
 
@@ -26,10 +26,7 @@ export default function AppCollectionMintingAvailable({
   const { t } = useTranslation();
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
-  const styles = React.useMemo(
-    () => makeStyles(theme, insets),
-    [theme, insets],
-  );
+  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
   const now = React.useMemo(() => Date.now(), []);
 
   const until = React.useMemo(

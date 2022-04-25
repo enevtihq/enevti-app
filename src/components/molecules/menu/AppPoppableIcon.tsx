@@ -3,9 +3,7 @@ import AppPoppable from 'enevti-app/components/atoms/menu/AppPoppable';
 import { hp } from 'enevti-app/utils/imageRatio';
 import { useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import AppIconComponent, {
-  iconMap,
-} from 'enevti-app/components/atoms/icon/AppIconComponent';
+import AppIconComponent, { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import { StyleProp, ViewStyle } from 'react-native';
 
 interface AppPoppableIconProps {
@@ -29,11 +27,7 @@ export default function AppPoppableIcon({
   const insets = useSafeAreaInsets();
 
   return (
-    <AppPoppable
-      position={position}
-      content={content}
-      width={width}
-      style={style}>
+    <AppPoppable position={position} content={content} width={width} style={style}>
       <AppIconComponent
         name={icon}
         color={theme.colors.text}

@@ -108,10 +108,7 @@ declare module 'react-native-countdown-component' {
     wentBackgroundAt: number | null;
   }
 
-  export default class CountDown extends Component<
-    CountDownProps,
-    CountDownState
-  > {
+  export default class CountDown extends Component<CountDownProps, CountDownState> {
     _handleAppStateChange: (currentAppState: string) => void;
     timer: NodeJS.Timeout;
   }

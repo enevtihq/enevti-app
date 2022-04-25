@@ -20,10 +20,7 @@ interface AppInfoMessageProps {
 function Component({ icon, title, message, box, style }: AppInfoMessageProps) {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
-  const styles = React.useMemo(
-    () => makeStyles(theme, insets),
-    [theme, insets],
-  );
+  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
 
   return (
     <View style={[box ? styles.boxed : styles.normal, style]}>
@@ -34,8 +31,7 @@ function Component({ icon, title, message, box, style }: AppInfoMessageProps) {
         style={styles.info}
       />
       {title ? (
-        <AppTextHeading3
-          style={[styles.infoMsg, { marginBottom: hp('1%', insets) }]}>
+        <AppTextHeading3 style={[styles.infoMsg, { marginBottom: hp('1%', insets) }]}>
           {title}
         </AppTextHeading3>
       ) : null}

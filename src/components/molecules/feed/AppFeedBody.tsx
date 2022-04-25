@@ -14,11 +14,7 @@ export default function AppFeedBody({ canvasWidth, feed }: AppFeedBodyProps) {
   const insets = useSafeAreaInsets();
 
   return feed.nft.length > 1 ? (
-    <AppNFTListRenderer
-      nft={feed.nft}
-      width={canvasWidth}
-      itemWidth={canvasWidth}
-    />
+    <AppNFTListRenderer nft={feed.nft} width={canvasWidth} itemWidth={canvasWidth} />
   ) : (
     <AppNFTRenderer
       nft={feed.nft[0]}

@@ -6,10 +6,7 @@ import {
   setMyPersonaBase32Cache,
 } from 'enevti-app/store/slices/entities/cache/myPersona';
 import { resetMyProfileCache } from 'enevti-app/store/slices/entities/cache/myProfile';
-import {
-  passphraseToBase32,
-  passphraseToAddress,
-} from 'enevti-app/service/enevti/persona';
+import { passphraseToBase32, passphraseToAddress } from 'enevti-app/service/enevti/persona';
 import { EncryptedData } from 'enevti-app/types/core/service/cryptography';
 
 export const initPassphraseWithDevice =

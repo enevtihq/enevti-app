@@ -7,9 +7,7 @@ import {
   setStatusBarBackground,
 } from 'enevti-app/store/slices/ui/global/statusbar';
 import { RootStackParamList } from 'enevti-app/navigation';
-import AppHeader, {
-  HEADER_HEIGHT_PERCENTAGE,
-} from 'enevti-app/components/atoms/view/AppHeader';
+import AppHeader, { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
 import {
   interpolateColor,
   runOnJS,
@@ -32,8 +30,7 @@ export default function NFTDetails({ navigation, route }: Props) {
   const theme = useTheme();
   const headerTreshold = React.useMemo(
     () =>
-      hp(HEADER_HEIGHT_PERCENTAGE) +
-      (getStatusBarHeight() / Dimensions.get('window').height) * 100,
+      hp(HEADER_HEIGHT_PERCENTAGE) + (getStatusBarHeight() / Dimensions.get('window').height) * 100,
     [],
   );
 
@@ -111,11 +108,7 @@ export default function NFTDetails({ navigation, route }: Props) {
           textStyle={textStyle}
         />
       }>
-      <AppNFTDetails
-        onScrollWorklet={nftDetailsOnScroll}
-        navigation={navigation}
-        route={route}
-      />
+      <AppNFTDetails onScrollWorklet={nftDetailsOnScroll} navigation={navigation} route={route} />
     </AppView>
   );
 }

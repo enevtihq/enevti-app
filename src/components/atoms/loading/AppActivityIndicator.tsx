@@ -25,10 +25,7 @@ export default function AppActivityIndicator({
   return (
     <View style={style}>
       {mode === 'activity' ? (
-        <ActivityIndicator
-          animating={animating}
-          color={color ? color : loaderColor}
-        />
+        <ActivityIndicator animating={animating} color={color ? color : loaderColor} />
       ) : mode === 'progress' && progress !== undefined ? (
         <View style={styles.progressView}>
           <CircularProgress

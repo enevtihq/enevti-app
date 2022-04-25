@@ -58,9 +58,7 @@ export default function AppCollectionBody({
         <Tab.Screen
           options={{
             tabBarLabel: ({ color }) => (
-              <AppTextBody4 style={{ color: color }}>
-                {t('collection:mintedItems')}
-              </AppTextBody4>
+              <AppTextBody4 style={{ color: color }}>{t('collection:mintedItems')}</AppTextBody4>
             ),
           }}
           name={t('collection:mintedItems')}
@@ -69,9 +67,7 @@ export default function AppCollectionBody({
         <Tab.Screen
           options={{
             tabBarLabel: ({ color }) => (
-              <AppTextBody4 style={{ color: color }}>
-                {t('collection:activity')}
-              </AppTextBody4>
+              <AppTextBody4 style={{ color: color }}>{t('collection:activity')}</AppTextBody4>
             ),
           }}
           name={t('collection:activity')}

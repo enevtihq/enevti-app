@@ -10,14 +10,7 @@ export const makeDummyNFT = (
   template: NFTTemplateData = blankNFTTemplate,
   data: string = makeDummyIPFS(),
 ): NFTBase => {
-  const utilityOption: NFTUtility[] = [
-    'videocall',
-    'chat',
-    'content',
-    'qr',
-    'stream',
-    'gift',
-  ];
+  const utilityOption: NFTUtility[] = ['videocall', 'chat', 'content', 'qr', 'stream', 'gift'];
   const shuffledUtility = shuffleArray(utilityOption);
 
   const typeList = ['onekind', 'pack'];

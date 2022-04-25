@@ -4,9 +4,7 @@ import { useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Theme } from 'enevti-app/theme/default';
 import { SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
-import AppIconComponent, {
-  iconMap,
-} from 'enevti-app/components/atoms/icon/AppIconComponent';
+import AppIconComponent, { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
 import AppIconGradient from 'enevti-app/components/molecules/AppIconGradient';
@@ -68,9 +66,7 @@ export default function AppListPickerItem({
       <AppTextHeading3 numberOfLines={1} style={{ width: wp('50%', insets) }}>
         {title}
       </AppTextHeading3>
-      <AppTextBody4
-        style={{ color: theme.colors.placeholder }}
-        numberOfLines={1}>
+      <AppTextBody4 style={{ color: theme.colors.placeholder }} numberOfLines={1}>
         {description}
       </AppTextBody4>
     </AppListItem>

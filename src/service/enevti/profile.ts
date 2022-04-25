@@ -23,7 +23,7 @@ async function fetchProfile(
   await sleep(1000, signal);
 
   const ownedNFT = [];
-  const onsaleNFT = [];
+  const onSaleNFT = [];
   const collection = [];
 
   for (let i = 0; i < 10; i++) {
@@ -31,7 +31,7 @@ async function fetchProfile(
   }
 
   for (let i = 0; i < 10; i++) {
-    onsaleNFT.push(getDummyNFTData());
+    onSaleNFT.push(getDummyNFTData());
   }
 
   for (let i = 0; i < 2; i++) {
@@ -51,7 +51,7 @@ async function fetchProfile(
       },
     },
     owned: ownedNFT,
-    onsale: onsaleNFT,
+    onSale: onSaleNFT,
     collection: collection,
   };
 }
@@ -90,7 +90,5 @@ export async function getMyProfile(
 }
 
 export function isProfileCanCreateNFT(profile: Profile) {
-  return new BigNumber(profile.stake).gt(
-    completeTokenUnit(MINIMUM_BASIC_UNIT_STAKE_ELIGIBILITY),
-  );
+  return new BigNumber(profile.stake).gt(completeTokenUnit(MINIMUM_BASIC_UNIT_STAKE_ELIGIBILITY));
 }

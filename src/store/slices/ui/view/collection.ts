@@ -2,8 +2,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
 import { Collection } from 'enevti-app/types/core/chain/collection';
 import { RootState } from 'enevti-app/store/state';
+import { NFTType } from 'enevti-app/types/core/chain/nft/NFTType';
 
-type CollectionViewState = Collection & { loaded: boolean };
+type CollectionViewState = Omit<Collection, 'collectionType'> & {
+  collectionType: NFTType | '';
+  loaded: boolean;
+};
 
 type CollectionViewStore = {
   [key: string]: CollectionViewState;
@@ -13,6 +17,7 @@ const initialStateItem: CollectionViewState = {
   loaded: false,
   id: '',
   collectionType: '',
+  promoted: false,
   name: '',
   description: '',
   cover: {
@@ -53,10 +58,7 @@ const collectionViewSlice = createSlice({
   name: 'collectionView',
   initialState,
   reducers: {
-    setCollectionView: (
-      collection,
-      action: PayloadAction<{ key: string; value: Collection }>,
-    ) => {
+    setCollectionView: (collection, action: PayloadAction<{ key: string; value: Collection }>) => {
       Object.assign(collection, { [action.payload.key]: action.payload.value });
     },
     setCollectionViewLoaded: (
@@ -87,19 +89,13 @@ export const {
 export default collectionViewSlice.reducer;
 
 export const selectCollectionView = createSelector(
-  [
-    (state: RootState) => state.ui.view.collection,
-    (state: RootState, key: string) => key,
-  ],
+  [(state: RootState) => state.ui.view.collection, (state: RootState, key: string) => key],
   (collections: CollectionViewStore, key: string) =>
     collections.hasOwnProperty(key) ? collections[key] : initialStateItem,
 );
 
 export const isCollectionUndefined = createSelector(
-  [
-    (state: RootState) => state.ui.view.collection,
-    (state: RootState, key: string) => key,
-  ],
+  [(state: RootState) => state.ui.view.collection, (state: RootState, key: string) => key],
   (collections: CollectionViewStore, key: string) =>
     collections.hasOwnProperty(key) ? !collections[key].loaded : true,
 );

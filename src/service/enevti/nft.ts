@@ -6,10 +6,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { getDummyNFTFullData } from './dummy';
 
-type NFTDetailsRoute = StackScreenProps<
-  RootStackParamList,
-  'NFTDetails'
->['route']['params'];
+type NFTDetailsRoute = StackScreenProps<RootStackParamList, 'NFTDetails'>['route']['params'];
 
 export const NFT_RESOLUTION = 500;
 
@@ -49,7 +46,7 @@ async function fetchNFTbyId(
   return ret;
 }
 
-async function fetchNFTbySymbol(
+async function fetchNFTbySerial(
   symbol: string,
   serial: string,
   signal?: AbortController['signal'],
@@ -78,7 +75,7 @@ export async function getNFTbyRouteParam(
     case 's':
       const symbol = routeParam.arg.split('#')[0];
       const serial = routeParam.arg.split('#')[1];
-      return await fetchNFTbySymbol(symbol, serial, signal);
+      return await fetchNFTbySerial(symbol, serial, signal);
     case 'id':
       return await fetchNFTbyId(routeParam.arg, signal);
     default:

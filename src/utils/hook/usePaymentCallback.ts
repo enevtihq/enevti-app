@@ -1,9 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  resetPaymentState,
-  selectPaymentStatus,
-} from 'enevti-app/store/slices/payment';
+import { resetPaymentState, selectPaymentStatus } from 'enevti-app/store/slices/payment';
 
 interface PaymentCallbackHookProps {
   onIdle?: () => void;
@@ -50,14 +47,5 @@ export default function usePaymentCallback({
       default:
         break;
     }
-  }, [
-    paymentStatus,
-    dispatch,
-    onIdle,
-    onInitiated,
-    onProcess,
-    onSuccess,
-    onError,
-    onCancel,
-  ]);
+  }, [paymentStatus, dispatch, onIdle, onInitiated, onProcess, onSuccess, onError, onCancel]);
 }

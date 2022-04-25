@@ -1,10 +1,6 @@
 import { StyleSheet, View } from 'react-native';
 import React from 'react';
-import {
-  Edge,
-  SafeAreaView,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+import { Edge, SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Theme } from 'enevti-app/theme/default';
 import { useTheme } from 'react-native-paper';
 import AppStatusBar from './AppStatusBar';
@@ -36,10 +32,7 @@ export default function AppContainer({
         .rgb()
         .toString()
     : theme.colors.background;
-  const styles = React.useMemo(
-    () => makeStyles(theme, backgroundColor),
-    [theme, backgroundColor],
-  );
+  const styles = React.useMemo(() => makeStyles(theme, backgroundColor), [theme, backgroundColor]);
 
   return (
     <EdgeContext.Provider value={edges}>

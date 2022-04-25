@@ -9,10 +9,7 @@ import * as Yup from 'yup';
 import YupPassword from 'yup-password';
 import { useDispatch, useSelector } from 'react-redux';
 
-import {
-  decryptWithPassword,
-  encryptWithDevice,
-} from 'enevti-app/utils/cryptography';
+import { decryptWithPassword, encryptWithDevice } from 'enevti-app/utils/cryptography';
 import { Theme } from 'enevti-app/theme/default';
 import AppHeaderWizard from 'enevti-app/components/molecules/AppHeaderWizard';
 import { RootStackParamList } from 'enevti-app/navigation';
@@ -23,15 +20,9 @@ import AppCheckbox from 'enevti-app/components/atoms/form/AppCheckbox';
 import { hp, wp, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
 import AppBrandLogo from 'enevti-app/components/atoms/brand/AppBrandLogo';
 import { setLocalSessionKey } from 'enevti-app/store/slices/session/local';
-import {
-  selectAuthState,
-  setUnencryptedPassphraseAuth,
-} from 'enevti-app/store/slices/auth';
+import { selectAuthState, setUnencryptedPassphraseAuth } from 'enevti-app/store/slices/auth';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
-import {
-  selectLockedState,
-  unlockScreen,
-} from 'enevti-app/store/slices/ui/screen/locked';
+import { selectLockedState, unlockScreen } from 'enevti-app/store/slices/ui/screen/locked';
 import { isValidPassphrase } from 'enevti-app/utils/passphrase';
 
 type Props = StackScreenProps<RootStackParamList, 'Login'>;
@@ -47,10 +38,7 @@ export default function Login({ navigation }: Props) {
   const dispatch = useDispatch();
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
-  const styles = React.useMemo(
-    () => makeStyles(theme, insets),
-    [theme, insets],
-  );
+  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
   const { t } = useTranslation();
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
@@ -98,13 +86,7 @@ export default function Login({ navigation }: Props) {
   return (
     <AppView dismissKeyboard={true}>
       <AppHeaderWizard
-        component={
-          <AppBrandLogo
-            mode={'glow'}
-            widthPercentage={0.4}
-            style={styles.headerImage}
-          />
-        }
+        component={<AppBrandLogo mode={'glow'} widthPercentage={0.4} style={styles.headerImage} />}
         title={t('auth:loginHeader')}
         description={t('auth:loginBody')}
       />

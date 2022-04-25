@@ -8,9 +8,7 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
-import AppProfileHeader, {
-  PROFILE_HEADER_HEIGHT_PERCENTAGE,
-} from './AppProfileHeader';
+import AppProfileHeader, { PROFILE_HEADER_HEIGHT_PERCENTAGE } from './AppProfileHeader';
 import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -22,10 +20,7 @@ import AppProfileBody from './AppProfileBody';
 import { useTheme } from 'react-native-paper';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
 import { useDispatch } from 'react-redux';
-import {
-  loadProfile,
-  unloadProfile,
-} from 'enevti-app/store/middleware/thunk/ui/view/profile';
+import { loadProfile, unloadProfile } from 'enevti-app/store/middleware/thunk/ui/view/profile';
 import { Profile } from 'enevti-app/types/core/account/profile';
 import { Persona } from 'enevti-app/types/core/account/persona';
 import CollectionListComponent from './tabs/CollectionListComponent';
@@ -65,15 +60,11 @@ export default function AppProfile({
   const insets = useSafeAreaInsets();
   const theme = useTheme();
   const persona = profile.persona;
-  const styles = React.useMemo(
-    () => makeStyles(headerHeight, insets),
-    [headerHeight, insets],
-  );
+  const styles = React.useMemo(() => makeStyles(headerHeight, insets), [headerHeight, insets]);
 
   const [ownedMounted, setOwnedMounted] = React.useState<boolean>(false);
   const [onSaleMounted, setOnSaleMounted] = React.useState<boolean>(false);
-  const [collectionMounted, setCollectionMouted] =
-    React.useState<boolean>(false);
+  const [collectionMounted, setCollectionMouted] = React.useState<boolean>(false);
 
   const ownedRef = useAnimatedRef<FlatList>();
   const onSaleRef = useAnimatedRef<FlatList>();
@@ -83,8 +74,7 @@ export default function AppProfile({
   const rawScrollY = useSharedValue(0);
   const tabScroll = useSharedValue(0);
 
-  const totalHeaderHeight =
-    hp(PROFILE_HEADER_HEIGHT_PERCENTAGE, insets) + headerHeight;
+  const totalHeaderHeight = hp(PROFILE_HEADER_HEIGHT_PERCENTAGE, insets) + headerHeight;
 
   const onProfileScreenLoaded = React.useCallback(
     (reload: boolean = false) => {
@@ -101,9 +91,7 @@ export default function AppProfile({
     };
   }, [onProfileScreenLoaded, dispatch, route.params]);
 
-  const useCustomAnimatedScrollHandler = (
-    scrollRefList: React.RefObject<any>[],
-  ) =>
+  const useCustomAnimatedScrollHandler = (scrollRefList: React.RefObject<any>[]) =>
     useAnimatedScrollHandler({
       onScroll: (event, ctx: { prevY: number; current: number }) => {
         rawScrollY.value = event.contentOffset.y;
@@ -144,15 +132,11 @@ export default function AppProfile({
           }
         }
 
-        !disableHeaderAnimation &&
-          onScrollWorklet &&
-          onScrollWorklet(event.contentOffset.y);
+        !disableHeaderAnimation && onScrollWorklet && onScrollWorklet(event.contentOffset.y);
       },
       onBeginDrag: (event, ctx) => {
         ctx.prevY = event.contentOffset.y;
-        !disableHeaderAnimation &&
-          onBeginDragWorklet &&
-          onBeginDragWorklet(event.contentOffset.y);
+        !disableHeaderAnimation && onBeginDragWorklet && onBeginDragWorklet(event.contentOffset.y);
       },
       onEndDrag: (event, ctx) => {
         if (event.contentOffset.y > totalHeaderHeight) {
@@ -174,9 +158,7 @@ export default function AppProfile({
             scrollTo(scrollRefList[i], 0, event.contentOffset.y, false);
           }
         }
-        !disableHeaderAnimation &&
-          onEndDragWorklet &&
-          onEndDragWorklet(event.contentOffset.y);
+        !disableHeaderAnimation && onEndDragWorklet && onEndDragWorklet(event.contentOffset.y);
       },
       onMomentumEnd: (event, ctx) => {
         if (event.contentOffset.y > totalHeaderHeight) {
@@ -204,18 +186,9 @@ export default function AppProfile({
       },
     });
 
-  const ownedScrollHandler = useCustomAnimatedScrollHandler([
-    onSaleRef,
-    collectionRef,
-  ]);
-  const onSaleScrollHandler = useCustomAnimatedScrollHandler([
-    ownedRef,
-    collectionRef,
-  ]);
-  const collectionScrollHandler = useCustomAnimatedScrollHandler([
-    ownedRef,
-    onSaleRef,
-  ]);
+  const ownedScrollHandler = useCustomAnimatedScrollHandler([onSaleRef, collectionRef]);
+  const onSaleScrollHandler = useCustomAnimatedScrollHandler([ownedRef, collectionRef]);
+  const collectionScrollHandler = useCustomAnimatedScrollHandler([ownedRef, onSaleRef]);
 
   const scrollStyle = useAnimatedStyle(() => {
     return {
@@ -262,7 +235,7 @@ export default function AppProfile({
   const ownedOnMounted = React.useCallback(() => setOwnedMounted(true), []);
 
   const onSaleData = React.useMemo(
-    () => (!profileUndefined ? profile.onsale : []),
+    () => (!profileUndefined ? profile.onSale : []),
     [profile, profileUndefined],
   );
 
@@ -273,10 +246,7 @@ export default function AppProfile({
     [profile, profileUndefined],
   );
 
-  const collectionOnMounted = React.useCallback(
-    () => setCollectionMouted(true),
-    [],
-  );
+  const collectionOnMounted = React.useCallback(() => setCollectionMouted(true), []);
 
   const OwnedNFTScreen = React.useCallback(
     () => (
@@ -361,14 +331,8 @@ export default function AppProfile({
 
   return !profileUndefined ? (
     <View style={styles.profileContainer}>
-      <Animated.View
-        pointerEvents={'box-none'}
-        style={[styles.profileHeader, scrollStyle]}>
-        <AppProfileHeader
-          persona={persona}
-          profile={profile}
-          navigation={navigation}
-        />
+      <Animated.View pointerEvents={'box-none'} style={[styles.profileHeader, scrollStyle]}>
+        <AppProfileHeader persona={persona} profile={profile} navigation={navigation} />
       </Animated.View>
       <AppProfileBody
         headerHeight={headerHeight}
