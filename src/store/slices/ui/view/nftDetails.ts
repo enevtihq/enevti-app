@@ -3,7 +3,7 @@ import { createSelector } from 'reselect';
 import { RootState } from 'enevti-app/store/state';
 import { NFT } from 'enevti-app/types/core/chain/nft';
 
-type NFTDetailsViewState = NFT & { loaded: boolean };
+type NFTDetailsViewState = NFT & { reqStatus: number; loaded: boolean };
 
 type NFTDetailsViewStore = {
   [key: string]: NFTDetailsViewState;
@@ -11,6 +11,7 @@ type NFTDetailsViewStore = {
 
 const initialStateItem: NFTDetailsViewState = {
   loaded: false,
+  reqStatus: 0,
   id: '',
   collectionId: '',
   like: -1,
@@ -115,6 +116,9 @@ const nftDetailsViewSlice = createSlice({
     setNFTDetailsLoaded: (nftDetails, action: PayloadAction<{ key: string; value: boolean }>) => {
       nftDetails[action.payload.key].loaded = action.payload.value;
     },
+    setNFTDetailsReqStatus: (nftDetails, action: PayloadAction<{ key: string; value: number }>) => {
+      nftDetails[action.payload.key].reqStatus = action.payload.value;
+    },
     clearNFTDetailsByKey: (nftDetails, action: PayloadAction<string>) => {
       delete nftDetails[action.payload];
     },
@@ -130,6 +134,7 @@ const nftDetailsViewSlice = createSlice({
 export const {
   setNFTDetailsView,
   setNFTDetailsLoaded,
+  setNFTDetailsReqStatus,
   resetNFTDetailsView,
   clearNFTDetailsByKey,
   resetNFTDetailsByKey,

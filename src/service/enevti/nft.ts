@@ -1,10 +1,16 @@
 import ImageCropPicker from 'react-native-image-crop-picker';
-import { handleError } from 'enevti-app/utils/error/handle';
+import { handleError, handleResponseCode, responseError } from 'enevti-app/utils/error/handle';
 import { NFT } from 'enevti-app/types/core/chain/nft';
-import sleep from 'enevti-app/utils/dummy/sleep';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
-import { getDummyNFTFullData } from './dummy';
+import { isInternetReachable } from 'enevti-app/utils/network';
+import {
+  urlGetIsNameExists,
+  urlGetIsSymbolExists,
+  urlGetNFTById,
+  urlGetNFTBySerial,
+} from 'enevti-app/utils/constant/URLCreator';
+import { APIResponse, ResponseJSON } from 'enevti-app/types/core/service/api';
 
 type NFTDetailsRoute = StackScreenProps<RootStackParamList, 'NFTDetails'>['route']['params'];
 
@@ -20,50 +26,79 @@ export async function isNameAvailable(
   name: string,
   signal?: AbortController['signal'],
 ): Promise<boolean> {
-  await sleep(1000, signal);
-  console.log(name);
-  return true;
+  try {
+    await isInternetReachable();
+    const res = await fetch(urlGetIsNameExists(name), { signal });
+    handleResponseCode(res);
+    const ret = (await res.json()) as ResponseJSON<boolean>;
+    return !ret.data;
+  } catch (err) {
+    handleError(err);
+    return false;
+  }
 }
 
 export async function isSymbolAvailable(
-  name: string,
+  symbol: string,
   signal?: AbortController['signal'],
 ): Promise<boolean> {
-  await sleep(1000, signal);
-  console.log(name);
-  return true;
+  try {
+    await isInternetReachable();
+    const res = await fetch(urlGetIsSymbolExists(symbol), { signal });
+    handleResponseCode(res);
+    const ret = (await res.json()) as ResponseJSON<boolean>;
+    return !ret.data;
+  } catch (err) {
+    handleError(err);
+    return false;
+  }
 }
 
 async function fetchNFTbyId(
   id: string,
   signal?: AbortController['signal'],
-): Promise<NFT | undefined> {
-  await sleep(1000, signal);
-
-  const ret = getDummyNFTFullData();
-  ret.id = id;
-
-  return ret;
+): Promise<APIResponse<NFT>> {
+  try {
+    await isInternetReachable();
+    const res = await fetch(urlGetNFTById(id), { signal });
+    handleResponseCode(res);
+    const ret = (await res.json()) as ResponseJSON<NFT>;
+    return {
+      status: res.status,
+      data: ret.data,
+      meta: ret.meta,
+    };
+  } catch (err: any) {
+    handleError(err);
+    return responseError(err.code);
+  }
 }
 
 async function fetchNFTbySerial(
   symbol: string,
   serial: string,
   signal?: AbortController['signal'],
-): Promise<NFT | undefined> {
-  await sleep(1000, signal);
-
-  const ret = getDummyNFTFullData();
-  ret.symbol = symbol;
-  ret.serial = serial;
-
-  return ret;
+): Promise<APIResponse<NFT>> {
+  try {
+    await isInternetReachable();
+    const res = await fetch(urlGetNFTBySerial(`${symbol}#${serial}`), { signal });
+    handleResponseCode(res);
+    const ret = (await res.json()) as ResponseJSON<NFT>;
+    return {
+      status: res.status,
+      data: ret.data,
+      meta: ret.meta,
+    };
+  } catch (err: any) {
+    handleError(err);
+    return responseError(err.code);
+  }
 }
 
 export async function getNFTbyId(
   id: string,
   signal?: AbortController['signal'],
-): Promise<NFT | undefined> {
+): Promise<APIResponse<NFT>> {
   return await fetchNFTbyId(id, signal);
 }
 

@@ -6,10 +6,11 @@ import { RootState } from 'enevti-app/store/state';
 
 type MyProfileView = Profile & { persona: Persona };
 
-type MyProfileViewState = MyProfileView & { loaded: boolean };
+type MyProfileViewState = MyProfileView & { reqStatus: number; loaded: boolean };
 
 const initialState: MyProfileViewState = {
   loaded: false,
+  reqStatus: 0,
   persona: { username: '', photo: '', base32: '', address: '' },
   nftSold: 0,
   treasuryAct: 0,
@@ -32,14 +33,21 @@ const myProfileViewSlice = createSlice({
     setMyProfileViewLoaded: (profile, action: PayloadAction<boolean>) => {
       profile.loaded = action.payload;
     },
+    setMyProfileViewReqStatus: (profile, action: PayloadAction<number>) => {
+      profile.reqStatus = action.payload;
+    },
     resetMyProfileView: () => {
       return initialState;
     },
   },
 });
 
-export const { setMyProfileView, setMyProfileViewLoaded, resetMyProfileView } =
-  myProfileViewSlice.actions;
+export const {
+  setMyProfileView,
+  setMyProfileViewLoaded,
+  setMyProfileViewReqStatus,
+  resetMyProfileView,
+} = myProfileViewSlice.actions;
 export default myProfileViewSlice.reducer;
 
 export const selectMyProfileView = createSelector(

@@ -3,7 +3,6 @@ import { store } from 'enevti-app/store/state';
 import { decryptWithDevice, decryptWithPassword } from 'enevti-app/utils/cryptography';
 import * as Lisk from '@liskhq/lisk-client';
 import { ERRORCODE } from 'enevti-app/utils/error/code';
-import sleep from 'enevti-app/utils/dummy/sleep';
 import { lastFetchTimeout } from 'enevti-app/utils/constant/lastFetch';
 import {
   setMyPersonaCache,
@@ -17,32 +16,56 @@ import { selectLocalSession } from 'enevti-app/store/slices/session/local';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { COIN_NAME } from 'enevti-app/utils/constant/identifier';
+import { isInternetReachable } from 'enevti-app/utils/network';
+import {
+  urlGetPersonaByAddress,
+  urlGetPersonaByUsername,
+} from 'enevti-app/utils/constant/URLCreator';
+import { handleError, handleResponseCode, responseError } from 'enevti-app/utils/error/handle';
+import { APIResponse, ResponseJSON } from 'enevti-app/types/core/service/api';
 
 type ProfileRoute = StackScreenProps<RootStackParamList, 'Profile'>['route']['params'];
 
 const PREFIX = COIN_NAME.toLowerCase();
 
-async function fetchPersona(address: string, signal?: AbortController['signal']): Promise<Persona> {
-  await sleep(1000, signal);
-  return {
-    photo: '',
-    address: address,
-    base32: addressToBase32(address),
-    username: '',
-  };
+async function fetchPersona(
+  address: string,
+  signal?: AbortController['signal'],
+): Promise<APIResponse<Persona>> {
+  try {
+    await isInternetReachable();
+    const res = await fetch(urlGetPersonaByAddress(address), { signal });
+    handleResponseCode(res);
+    const ret = (await res.json()) as ResponseJSON<Persona>;
+    return {
+      status: res.status,
+      data: ret.data,
+      meta: ret.meta,
+    };
+  } catch (err: any) {
+    handleError(err);
+    return responseError(err.code);
+  }
 }
 
 async function fetchPersonaByUsername(
   username: string,
   signal?: AbortController['signal'],
-): Promise<Persona> {
-  await sleep(1000, signal);
-  return {
-    photo: '',
-    address: '3d4a6ef61ba235dc60c7a5fdb2c775138cb00b51',
-    base32: addressToBase32('3d4a6ef61ba235dc60c7a5fdb2c775138cb00b51'),
-    username: username,
-  };
+): Promise<APIResponse<Persona>> {
+  try {
+    await isInternetReachable();
+    const res = await fetch(urlGetPersonaByUsername(username), { signal });
+    handleResponseCode(res);
+    const ret = (await res.json()) as ResponseJSON<Persona>;
+    return {
+      status: res.status,
+      data: ret.data,
+      meta: ret.meta,
+    };
+  } catch (err: any) {
+    handleError(err);
+    return responseError(err.code);
+  }
 }
 
 export function parsePersonaLabel(persona: Persona) {
@@ -136,10 +159,7 @@ export async function getMyBase32AndAddress() {
   };
 }
 
-export async function getBasePersona(
-  address: string,
-  signal?: AbortController['signal'],
-): Promise<Persona> {
+export async function getBasePersona(address: string, signal?: AbortController['signal']) {
   return await fetchPersona(address, signal);
 }
 
@@ -170,17 +190,27 @@ export async function getBasePersonaByRouteParam(
 export async function getMyBasePersona(
   force = false,
   signal?: AbortController['signal'],
-): Promise<Persona> {
+): Promise<APIResponse<Persona>> {
   const now = Date.now();
   const my = await getMyBase32AndAddress();
   const lastFetch = selectMyPersonaCache(store.getState()).lastFetch;
-  let myPersona: Persona = selectMyPersonaCache(store.getState());
+  let response: APIResponse<Persona> = {
+    status: 200,
+    data: selectMyPersonaCache(store.getState()),
+    meta: {},
+  };
 
   if (force || now - lastFetch > lastFetchTimeout.persona) {
-    myPersona = await getBasePersona(my.address, signal);
-    store.dispatch(setLastFetchMyPersonaCache(now));
-    store.dispatch(setMyPersonaCache(myPersona));
+    const res = await getBasePersona(my.address, signal);
+    if (res.status === 200 && res.data) {
+      response.data = res.data;
+      store.dispatch(setLastFetchMyPersonaCache(now));
+      store.dispatch(setMyPersonaCache(res.data));
+    } else {
+      response.status = res.status;
+      response.data = res.data;
+    }
   }
 
-  return myPersona;
+  return response;
 }

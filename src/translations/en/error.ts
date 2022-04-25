@@ -12,4 +12,6 @@ export default {
   unauthorizedCalendar: 'Access calendar not authorized',
   invalidRecurring: 'invalid recurring type',
   noData: 'Nothing here yet!',
+  notFound: 'Not Found',
+  responseError: 'Response Error: {{msg}}',
 };

@@ -2,7 +2,6 @@ import BigNumber from 'bignumber.js';
 import { Profile } from 'enevti-app/types/core/account/profile';
 import { store } from 'enevti-app/store/state';
 import sleep from 'enevti-app/utils/dummy/sleep';
-import { getDummyCollectionBaseDate, getDummyNFTData } from './dummy';
 import {
   selectMyProfileCache,
   setLastFetchMyProfileCache,
@@ -11,49 +10,31 @@ import {
 import { lastFetchTimeout } from 'enevti-app/utils/constant/lastFetch';
 import { getMyAddress } from './persona';
 import { completeTokenUnit } from 'enevti-app/utils/format/amount';
+import { isInternetReachable } from 'enevti-app/utils/network';
+import { urlGetProfile } from 'enevti-app/utils/constant/URLCreator';
+import { handleError, handleResponseCode, responseError } from 'enevti-app/utils/error/handle';
+import { APIResponse, ResponseJSON } from 'enevti-app/types/core/service/api';
 
 export const MINIMUM_BASIC_UNIT_STAKE_ELIGIBILITY = 1000;
 
 async function fetchProfile(
   address: string,
   signal?: AbortController['signal'],
-): Promise<Profile | undefined> {
-  console.log(address);
-
-  await sleep(1000, signal);
-
-  const ownedNFT = [];
-  const onSaleNFT = [];
-  const collection = [];
-
-  for (let i = 0; i < 10; i++) {
-    ownedNFT.push(getDummyNFTData());
+): Promise<APIResponse<Profile>> {
+  try {
+    await isInternetReachable();
+    const res = await fetch(urlGetProfile(address), { signal });
+    handleResponseCode(res);
+    const ret = (await res.json()) as ResponseJSON<Profile>;
+    return {
+      status: res.status,
+      data: ret.data,
+      meta: ret.meta,
+    };
+  } catch (err: any) {
+    handleError(err);
+    return responseError(err.code);
   }
-
-  for (let i = 0; i < 10; i++) {
-    onSaleNFT.push(getDummyNFTData());
-  }
-
-  for (let i = 0; i < 2; i++) {
-    collection.push(getDummyCollectionBaseDate());
-  }
-
-  return {
-    nftSold: 1500,
-    treasuryAct: 54,
-    serveRate: 0.98,
-    stake: '132400000000',
-    balance: '15400000000',
-    social: {
-      twitter: {
-        link: 'https://twitter.com/aldhosutra',
-        stat: 1120,
-      },
-    },
-    owned: ownedNFT,
-    onSale: onSaleNFT,
-    collection: collection,
-  };
 }
 
 function parseProfileCache(profile: Profile) {
@@ -63,30 +44,37 @@ function parseProfileCache(profile: Profile) {
 export async function getProfile(
   address: string,
   signal?: AbortController['signal'],
-): Promise<Profile | undefined> {
+): Promise<APIResponse<Profile>> {
   return await fetchProfile(address, signal);
 }
 
 export async function getMyProfile(
   force: boolean = false,
   signal?: AbortController['signal'],
-): Promise<Profile | undefined> {
+): Promise<APIResponse<Profile>> {
   await sleep(1);
   const now = Date.now();
   const myAddress = await getMyAddress();
   const lastFetch = selectMyProfileCache(store.getState()).lastFetch;
-  let myProfile: Profile = selectMyProfileCache(store.getState());
+  let response: APIResponse<Profile> = {
+    status: 200,
+    data: selectMyProfileCache(store.getState()),
+    meta: {},
+  };
 
   if (force || now - lastFetch > lastFetchTimeout.profile) {
     const profileResponse = await getProfile(myAddress, signal);
-    if (profileResponse) {
-      myProfile = profileResponse;
+    if (profileResponse.status === 200 && profileResponse.data) {
+      response.data = profileResponse.data;
       store.dispatch(setLastFetchMyProfileCache(now));
-      store.dispatch(setMyProfileCache(parseProfileCache(myProfile)));
+      store.dispatch(setMyProfileCache(parseProfileCache(profileResponse.data)));
+    } else {
+      response.status = profileResponse.status;
+      response.data = profileResponse.data;
     }
   }
 
-  return myProfile;
+  return response;
 }
 
 export function isProfileCanCreateNFT(profile: Profile) {

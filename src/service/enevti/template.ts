@@ -1,7 +1,10 @@
-import sleep from 'enevti-app/utils/dummy/sleep';
 import { NFTTemplateAsset } from 'enevti-app/types/core/chain/nft/NFTTemplate';
 import enevtiNFTTemplate from 'enevti-app/components/atoms/nft/template/enevtiNFTTemplate';
 import blankNFTTemplate from 'enevti-app/components/atoms/nft/template/blankNFTTemplate';
+import { isInternetReachable } from 'enevti-app/utils/network';
+import { urlGetAllNFTTemplate } from 'enevti-app/utils/constant/URLCreator';
+import { handleError, handleResponseCode, responseError } from 'enevti-app/utils/error/handle';
+import { APIResponse, ResponseJSON } from 'enevti-app/types/core/service/api';
 
 export function getBuiltInNFTTemplate(): NFTTemplateAsset[] {
   return [
@@ -22,7 +25,19 @@ export function getBuiltInNFTTemplate(): NFTTemplateAsset[] {
 
 export async function getMoreNFTTemplate(
   signal?: AbortController['signal'],
-): Promise<NFTTemplateAsset[]> {
-  await sleep(1000, signal);
-  return [];
+): Promise<APIResponse<NFTTemplateAsset[]>> {
+  try {
+    await isInternetReachable();
+    const res = await fetch(urlGetAllNFTTemplate(), { signal });
+    handleResponseCode(res);
+    const ret = (await res.json()) as ResponseJSON<NFTTemplateAsset[]>;
+    return {
+      status: res.status,
+      data: ret.data,
+      meta: ret.meta,
+    };
+  } catch (err: any) {
+    handleError(err);
+    return responseError(err.code);
+  }
 }

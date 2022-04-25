@@ -3,7 +3,7 @@ import { createSelector } from 'reselect';
 import { RootState } from 'enevti-app/store/state';
 import { StakePoolData } from 'enevti-app/types/core/chain/stake';
 
-type StakePoolViewState = StakePoolData & { loaded: boolean };
+type StakePoolViewState = StakePoolData & { reqStatus: number; loaded: boolean };
 
 type StakePoolViewStore = {
   [key: string]: StakePoolViewState;
@@ -11,6 +11,7 @@ type StakePoolViewStore = {
 
 const initialStateItem: StakePoolViewState = {
   loaded: false,
+  reqStatus: 0,
   owner: { username: '', photo: '', base32: '', address: '' },
   staker: [],
 };
@@ -29,6 +30,9 @@ const stakePoolViewSlice = createSlice({
     setStakePoolLoaded: (stakePool, action: PayloadAction<{ key: string; value: boolean }>) => {
       stakePool[action.payload.key].loaded = action.payload.value;
     },
+    setStakePoolReqStatus: (stakePool, action: PayloadAction<{ key: string; value: number }>) => {
+      stakePool[action.payload.key].reqStatus = action.payload.value;
+    },
     clearStakePoolByKey: (stakePool, action: PayloadAction<string>) => {
       delete stakePool[action.payload];
     },
@@ -44,6 +48,7 @@ const stakePoolViewSlice = createSlice({
 export const {
   setStakePoolView,
   setStakePoolLoaded,
+  setStakePoolReqStatus,
   clearStakePoolByKey,
   resetStakePoolByKey,
   resetStakePoolView,

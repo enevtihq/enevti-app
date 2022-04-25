@@ -7,6 +7,7 @@ import { NFTType } from 'enevti-app/types/core/chain/nft/NFTType';
 type CollectionViewState = Omit<Collection, 'collectionType'> & {
   collectionType: NFTType | '';
   loaded: boolean;
+  reqStatus: number;
 };
 
 type CollectionViewStore = {
@@ -15,6 +16,7 @@ type CollectionViewStore = {
 
 const initialStateItem: CollectionViewState = {
   loaded: false,
+  reqStatus: 0,
   id: '',
   collectionType: '',
   promoted: false,
@@ -67,6 +69,12 @@ const collectionViewSlice = createSlice({
     ) => {
       collection[action.payload.key].loaded = action.payload.value;
     },
+    setCollectionViewReqStatus: (
+      collection,
+      action: PayloadAction<{ key: string; value: number }>,
+    ) => {
+      collection[action.payload.key].reqStatus = action.payload.value;
+    },
     clearCollectionByKey: (collection, action: PayloadAction<string>) => {
       delete collection[action.payload];
     },
@@ -82,6 +90,7 @@ const collectionViewSlice = createSlice({
 export const {
   setCollectionView,
   setCollectionViewLoaded,
+  setCollectionViewReqStatus,
   clearCollectionByKey,
   resetCollectionByKey,
   resetCollectionView,

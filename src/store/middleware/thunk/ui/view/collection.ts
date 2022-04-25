@@ -4,6 +4,7 @@ import {
   setCollectionViewLoaded,
   setCollectionView,
   clearCollectionByKey,
+  setCollectionViewReqStatus,
 } from 'enevti-app/store/slices/ui/view/collection';
 import { hideModalLoader, showModalLoader } from 'enevti-app/store/slices/ui/global/modalLoader';
 import { AppThunk, AsyncThunkAPI } from 'enevti-app/store/state';
@@ -20,10 +21,13 @@ export const loadCollection = createAsyncThunk<void, LoadCollectionArgs, AsyncTh
     try {
       reload && dispatch(showModalLoader());
       const collectionResponse = await getCollectionByRouteParam(routeParam, signal);
-      if (collectionResponse !== undefined) {
-        dispatch(setCollectionView({ key: routeParam.arg, value: collectionResponse }));
-        dispatch(setCollectionViewLoaded({ key: routeParam.arg, value: true }));
+      if (collectionResponse.status === 200 && collectionResponse.data) {
+        dispatch(setCollectionView({ key: routeParam.arg, value: collectionResponse.data }));
       }
+      dispatch(setCollectionViewLoaded({ key: routeParam.arg, value: true }));
+      dispatch(
+        setCollectionViewReqStatus({ key: routeParam.arg, value: collectionResponse.status }),
+      );
     } catch (err: any) {
       handleError(err);
     } finally {

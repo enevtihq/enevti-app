@@ -6,7 +6,7 @@ import { RootState } from 'enevti-app/store/state';
 
 type ProfileView = Profile & { persona: Persona };
 
-type ProfileViewState = ProfileView & { loaded: boolean };
+type ProfileViewState = ProfileView & { reqStatus: number; loaded: boolean };
 
 type ProfileViewStore = {
   [key: string]: ProfileViewState;
@@ -14,6 +14,7 @@ type ProfileViewStore = {
 
 const initialStateItem: ProfileViewState = {
   loaded: false,
+  reqStatus: 0,
   persona: { username: '', photo: '', base32: '', address: '' },
   nftSold: 0,
   treasuryAct: 0,
@@ -40,6 +41,9 @@ const profileViewSlice = createSlice({
     setProfileViewLoaded: (profile, action: PayloadAction<{ key: string; value: boolean }>) => {
       profile[action.payload.key].loaded = action.payload.value;
     },
+    setProfileViewReqStatus: (profile, action: PayloadAction<{ key: string; value: number }>) => {
+      profile[action.payload.key].reqStatus = action.payload.value;
+    },
     clearProfileByKey: (profile, action: PayloadAction<string>) => {
       delete profile[action.payload];
     },
@@ -55,6 +59,7 @@ const profileViewSlice = createSlice({
 export const {
   setProfileView,
   setProfileViewLoaded,
+  setProfileViewReqStatus,
   resetProfileView,
   clearProfileByKey,
   resetProfileByKey,

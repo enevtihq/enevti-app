@@ -1,28 +1,30 @@
+import { APIResponse, ResponseJSON } from 'enevti-app/types/core/service/api';
 import { Feeds } from 'enevti-app/types/core/service/feed';
-import sleep from 'enevti-app/utils/dummy/sleep';
-import { getDummyFeedItem } from './dummy';
+import { urlGetFeeds } from 'enevti-app/utils/constant/URLCreator';
+import { handleError, handleResponseCode, responseError } from 'enevti-app/utils/error/handle';
+import { isInternetReachable } from 'enevti-app/utils/network';
 
-async function fetchFeeds(signal?: AbortController['signal']): Promise<Feeds> {
-  await sleep(1000, signal);
-
-  let randomCount = Math.random() * 10;
-  if (randomCount === 0) {
-    randomCount = 1;
+async function fetchFeeds(signal?: AbortController['signal']): Promise<APIResponse<Feeds>> {
+  try {
+    await isInternetReachable();
+    const res = await fetch(urlGetFeeds(), { signal });
+    handleResponseCode(res);
+    const ret = (await res.json()) as ResponseJSON<Feeds>;
+    return {
+      status: res.status,
+      data: ret.data,
+      meta: ret.meta,
+    };
+  } catch (err: any) {
+    handleError(err);
+    return responseError(err.code);
   }
-  randomCount = 20;
-
-  const randomFeed: Feeds = [];
-  for (let i = 0; i < randomCount; i++) {
-    randomFeed.push(getDummyFeedItem());
-  }
-
-  return randomFeed;
 }
 
 export function parseFeedCache(feeds: Feeds) {
   return feeds.slice(0, 10);
 }
 
-export async function getFeeds(signal?: AbortController['signal']): Promise<Feeds | undefined> {
+export async function getFeeds(signal?: AbortController['signal']): Promise<APIResponse<Feeds>> {
   return await fetchFeeds(signal);
 }

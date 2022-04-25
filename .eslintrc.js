@@ -11,6 +11,7 @@ module.exports = {
     JSX: true,
     AbortController: true,
     Buffer: true,
+    Response: true,
   },
   env: {
     es2020: true,

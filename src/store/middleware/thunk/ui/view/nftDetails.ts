@@ -6,6 +6,7 @@ import { getNFTbyRouteParam } from 'enevti-app/service/enevti/nft';
 import {
   clearNFTDetailsByKey,
   setNFTDetailsLoaded,
+  setNFTDetailsReqStatus,
   setNFTDetailsView,
 } from 'enevti-app/store/slices/ui/view/nftDetails';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -20,10 +21,11 @@ export const loadNFTDetails = createAsyncThunk<void, loadNFTArgs, AsyncThunkAPI>
     try {
       reload && dispatch(showModalLoader());
       const nftResponse = await getNFTbyRouteParam(routeParam, signal);
-      if (nftResponse !== undefined) {
-        dispatch(setNFTDetailsView({ key: routeParam.arg, value: nftResponse }));
-        dispatch(setNFTDetailsLoaded({ key: routeParam.arg, value: true }));
+      if (nftResponse.status === 200 && nftResponse.data) {
+        dispatch(setNFTDetailsView({ key: routeParam.arg, value: nftResponse.data }));
       }
+      dispatch(setNFTDetailsLoaded({ key: routeParam.arg, value: true }));
+      dispatch(setNFTDetailsReqStatus({ key: routeParam.arg, value: nftResponse.status }));
     } catch (err: any) {
       handleError(err);
     } finally {
