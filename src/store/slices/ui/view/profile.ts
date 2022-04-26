@@ -33,7 +33,13 @@ const profileViewSlice = createSlice({
   name: 'profileView',
   initialState,
   reducers: {
-    setProfileView: (profile, action: PayloadAction<{ key: string; value: ProfileView }>) => {
+    initProfileView: (profile, action: PayloadAction<string>) => {
+      Object.assign(profile, { [action.payload]: {} });
+    },
+    setProfileView: (
+      profile,
+      action: PayloadAction<{ key: string; value: Record<string, any> }>,
+    ) => {
       Object.assign(profile, {
         [action.payload.key]: action.payload.value,
       });
@@ -57,6 +63,7 @@ const profileViewSlice = createSlice({
 });
 
 export const {
+  initProfileView,
   setProfileView,
   setProfileViewLoaded,
   setProfileViewReqStatus,

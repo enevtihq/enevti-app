@@ -1,6 +1,6 @@
 import { getBasePersonaByRouteParam, getMyBasePersona } from 'enevti-app/service/enevti/persona';
 import { getMyProfile, getProfile } from 'enevti-app/service/enevti/profile';
-import { handleError } from 'enevti-app/utils/error/handle';
+import { handleError, isErrorResponse } from 'enevti-app/utils/error/handle';
 import { selectMyPersonaCache } from 'enevti-app/store/slices/entities/cache/myPersona';
 import { hideModalLoader, showModalLoader } from 'enevti-app/store/slices/ui/global/modalLoader';
 import {
@@ -11,6 +11,7 @@ import {
 } from 'enevti-app/store/slices/ui/view/myProfile';
 import {
   clearProfileByKey,
+  initProfileView,
   setProfileView,
   setProfileViewLoaded,
   setProfileViewReqStatus,
@@ -20,6 +21,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { Persona } from 'enevti-app/types/core/account/persona';
+import { Profile } from 'enevti-app/types/core/account/profile';
 
 type ProfileRoute = StackScreenProps<RootStackParamList, 'Profile'>['route']['params'];
 type LoadProfileArgs = { routeParam: ProfileRoute; reload: boolean };
@@ -43,21 +45,20 @@ export const loadProfile = createAsyncThunk<void, LoadProfileArgs, AsyncThunkAPI
       if (routeParam.arg === myPersona[argType]) {
         const personaResponse = await getMyBasePersona(reload, signal);
         const profileResponse = await getMyProfile(reload, signal);
-        if (
-          personaResponse.status === 200 &&
-          personaResponse.data !== undefined &&
-          profileResponse.status === 200 &&
-          profileResponse.data !== undefined
-        ) {
-          dispatch(setMyProfileView({ ...profileResponse.data, persona: personaResponse.data }));
-        }
+        dispatch(
+          setMyProfileView({
+            ...(profileResponse.data as Profile),
+            persona: personaResponse.data as Persona,
+          }),
+        );
         dispatch(setMyProfileViewLoaded(true));
         dispatch(setMyProfileViewReqStatus(profileResponse.status));
       } else {
+        dispatch(initProfileView(routeParam.arg));
         const personaBase = await getBasePersonaByRouteParam(routeParam, signal);
-        if (personaBase.status === 200 && personaBase.data) {
+        if (personaBase.status === 200 && !isErrorResponse(personaBase)) {
           const profileResponse = await getProfile(personaBase.data.address, signal);
-          if (profileResponse.status === 200 && profileResponse.data) {
+          if (profileResponse.status === 200 && !isErrorResponse(profileResponse)) {
             dispatch(
               setProfileView({
                 key: routeParam.arg,

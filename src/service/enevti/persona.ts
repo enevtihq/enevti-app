@@ -21,7 +21,12 @@ import {
   urlGetPersonaByAddress,
   urlGetPersonaByUsername,
 } from 'enevti-app/utils/constant/URLCreator';
-import { handleError, handleResponseCode, responseError } from 'enevti-app/utils/error/handle';
+import {
+  handleError,
+  handleResponseCode,
+  isErrorResponse,
+  responseError,
+} from 'enevti-app/utils/error/handle';
 import { APIResponse, ResponseJSON } from 'enevti-app/types/core/service/api';
 
 type ProfileRoute = StackScreenProps<RootStackParamList, 'Profile'>['route']['params'];
@@ -202,10 +207,10 @@ export async function getMyBasePersona(
 
   if (force || now - lastFetch > lastFetchTimeout.persona) {
     const res = await getBasePersona(my.address, signal);
-    if (res.status === 200 && res.data) {
+    if (res.status === 200 && !isErrorResponse(res)) {
       response.data = res.data;
       store.dispatch(setLastFetchMyPersonaCache(now));
-      store.dispatch(setMyPersonaCache(res.data));
+      store.dispatch(setMyPersonaCache(res.data as Persona));
     } else {
       response.status = res.status;
       response.data = res.data;

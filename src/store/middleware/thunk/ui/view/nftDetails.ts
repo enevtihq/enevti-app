@@ -5,6 +5,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { getNFTbyRouteParam } from 'enevti-app/service/enevti/nft';
 import {
   clearNFTDetailsByKey,
+  initNFTDetailsView,
   setNFTDetailsLoaded,
   setNFTDetailsReqStatus,
   setNFTDetailsView,
@@ -21,9 +22,8 @@ export const loadNFTDetails = createAsyncThunk<void, loadNFTArgs, AsyncThunkAPI>
     try {
       reload && dispatch(showModalLoader());
       const nftResponse = await getNFTbyRouteParam(routeParam, signal);
-      if (nftResponse.status === 200 && nftResponse.data) {
-        dispatch(setNFTDetailsView({ key: routeParam.arg, value: nftResponse.data }));
-      }
+      dispatch(initNFTDetailsView(routeParam.arg));
+      dispatch(setNFTDetailsView({ key: routeParam.arg, value: nftResponse.data }));
       dispatch(setNFTDetailsLoaded({ key: routeParam.arg, value: true }));
       dispatch(setNFTDetailsReqStatus({ key: routeParam.arg, value: nftResponse.status }));
     } catch (err: any) {

@@ -10,6 +10,7 @@ import {
   setStakePoolLoaded,
   setStakePoolView,
   setStakePoolReqStatus,
+  initStakePoolView,
 } from 'enevti-app/store/slices/ui/view/stakePool';
 
 type StakePoolRoute = StackScreenProps<RootStackParamList, 'StakePool'>['route']['params'];
@@ -21,9 +22,8 @@ export const loadStakePool = createAsyncThunk<void, loadStakePoolArgs, AsyncThun
     try {
       reload && dispatch(showModalLoader());
       const stakePoolResponse = await getStakePoolDataByRouteParam(routeParam, signal);
-      if (stakePoolResponse.status === 200 && stakePoolResponse.data) {
-        dispatch(setStakePoolView({ key: routeParam.arg, value: stakePoolResponse.data }));
-      }
+      dispatch(initStakePoolView(routeParam.arg));
+      dispatch(setStakePoolView({ key: routeParam.arg, value: stakePoolResponse.data }));
       dispatch(setStakePoolLoaded({ key: routeParam.arg, value: true }));
       dispatch(setStakePoolReqStatus({ key: routeParam.arg, value: stakePoolResponse.status }));
     } catch (err: any) {

@@ -60,7 +60,13 @@ const collectionViewSlice = createSlice({
   name: 'collectionView',
   initialState,
   reducers: {
-    setCollectionView: (collection, action: PayloadAction<{ key: string; value: Collection }>) => {
+    initCollectionView: (collection, action: PayloadAction<string>) => {
+      Object.assign(collection, { [action.payload]: {} });
+    },
+    setCollectionView: (
+      collection,
+      action: PayloadAction<{ key: string; value: Record<string, any> }>,
+    ) => {
       Object.assign(collection, { [action.payload.key]: action.payload.value });
     },
     setCollectionViewLoaded: (
@@ -88,6 +94,7 @@ const collectionViewSlice = createSlice({
 });
 
 export const {
+  initCollectionView,
   setCollectionView,
   setCollectionViewLoaded,
   setCollectionViewReqStatus,

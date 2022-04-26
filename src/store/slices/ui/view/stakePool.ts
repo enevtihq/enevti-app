@@ -22,7 +22,13 @@ const stakePoolViewSlice = createSlice({
   name: 'stakePoolView',
   initialState,
   reducers: {
-    setStakePoolView: (stakePool, action: PayloadAction<{ key: string; value: StakePoolData }>) => {
+    initStakePoolView: (stakePool, action: PayloadAction<string>) => {
+      Object.assign(stakePool, { [action.payload]: {} });
+    },
+    setStakePoolView: (
+      stakePool,
+      action: PayloadAction<{ key: string; value: Record<string, any> }>,
+    ) => {
       Object.assign(stakePool, {
         [action.payload.key]: action.payload.value,
       });
@@ -46,6 +52,7 @@ const stakePoolViewSlice = createSlice({
 });
 
 export const {
+  initStakePoolView,
   setStakePoolView,
   setStakePoolLoaded,
   setStakePoolReqStatus,

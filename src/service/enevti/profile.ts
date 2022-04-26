@@ -12,7 +12,12 @@ import { getMyAddress } from './persona';
 import { completeTokenUnit } from 'enevti-app/utils/format/amount';
 import { isInternetReachable } from 'enevti-app/utils/network';
 import { urlGetProfile } from 'enevti-app/utils/constant/URLCreator';
-import { handleError, handleResponseCode, responseError } from 'enevti-app/utils/error/handle';
+import {
+  handleError,
+  handleResponseCode,
+  isErrorResponse,
+  responseError,
+} from 'enevti-app/utils/error/handle';
 import { APIResponse, ResponseJSON } from 'enevti-app/types/core/service/api';
 
 export const MINIMUM_BASIC_UNIT_STAKE_ELIGIBILITY = 1000;
@@ -64,10 +69,10 @@ export async function getMyProfile(
 
   if (force || now - lastFetch > lastFetchTimeout.profile) {
     const profileResponse = await getProfile(myAddress, signal);
-    if (profileResponse.status === 200 && profileResponse.data) {
+    if (profileResponse.status === 200 && !isErrorResponse(profileResponse)) {
       response.data = profileResponse.data;
       store.dispatch(setLastFetchMyProfileCache(now));
-      store.dispatch(setMyProfileCache(parseProfileCache(profileResponse.data)));
+      store.dispatch(setMyProfileCache(parseProfileCache(profileResponse.data as Profile)));
     } else {
       response.status = profileResponse.status;
       response.data = profileResponse.data;

@@ -3,6 +3,6 @@ export interface APIResponse<T> extends ResponseJSON<T> {
 }
 
 export interface ResponseJSON<T> {
-  data: T | undefined;
+  data: T | Record<string, any>;
   meta: any;
 }

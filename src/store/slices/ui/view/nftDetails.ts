@@ -110,7 +110,13 @@ const nftDetailsViewSlice = createSlice({
   name: 'nftDetailsView',
   initialState,
   reducers: {
-    setNFTDetailsView: (nftDetails, action: PayloadAction<{ key: string; value: NFT }>) => {
+    initNFTDetailsView: (nftDetails, action: PayloadAction<string>) => {
+      Object.assign(nftDetails, { [action.payload]: {} });
+    },
+    setNFTDetailsView: (
+      nftDetails,
+      action: PayloadAction<{ key: string; value: Record<string, any> }>,
+    ) => {
       Object.assign(nftDetails, { [action.payload.key]: action.payload.value });
     },
     setNFTDetailsLoaded: (nftDetails, action: PayloadAction<{ key: string; value: boolean }>) => {
@@ -132,6 +138,7 @@ const nftDetailsViewSlice = createSlice({
 });
 
 export const {
+  initNFTDetailsView,
   setNFTDetailsView,
   setNFTDetailsLoaded,
   setNFTDetailsReqStatus,

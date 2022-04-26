@@ -37,10 +37,14 @@ export function handleResponseCode(res: Response) {
   }
 }
 
-export function responseError(status: number): APIResponse<any> {
+export function responseError(status: number, data: any = {}): APIResponse<Record<string, any>> {
   return {
     status,
-    data: undefined,
+    data,
     meta: {},
   };
+}
+
+export function isErrorResponse(response: APIResponse<any>) {
+  return typeof response.data === 'object' && Object.keys(response.data).length === 0;
 }
