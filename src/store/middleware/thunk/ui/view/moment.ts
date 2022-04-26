@@ -32,10 +32,10 @@ export const loadMoments = createAsyncThunk<void, loadMomentsArgs, AsyncThunkAPI
           dispatch(setMomentItemsCache(parseMomentCache(moments)));
         }
       }
-
-      dispatch(setMomentViewLoaded(true));
     } catch (err: any) {
       handleError(err);
+    } finally {
+      dispatch(setMomentViewLoaded(true));
     }
   },
 );

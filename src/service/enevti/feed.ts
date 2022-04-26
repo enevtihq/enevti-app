@@ -17,7 +17,7 @@ async function fetchFeeds(signal?: AbortController['signal']): Promise<APIRespon
     };
   } catch (err: any) {
     handleError(err);
-    return responseError(err.code);
+    return responseError(err.code, []);
   }
 }
 

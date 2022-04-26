@@ -31,16 +31,16 @@ const defaultArgType = 'address';
 export const loadProfile = createAsyncThunk<void, LoadProfileArgs, AsyncThunkAPI>(
   'profileView/loadProfile',
   async ({ routeParam, reload }, { dispatch, getState, signal }) => {
+    const myPersona = selectMyPersonaCache(getState());
+    const argType: keyof Persona | undefined =
+      routeParam.mode === 'a'
+        ? 'address'
+        : routeParam.mode === 'b'
+        ? 'base32'
+        : routeParam.mode === 'u'
+        ? 'username'
+        : defaultArgType;
     try {
-      const myPersona = selectMyPersonaCache(getState());
-      const argType: keyof Persona | undefined =
-        routeParam.mode === 'a'
-          ? 'address'
-          : routeParam.mode === 'b'
-          ? 'base32'
-          : routeParam.mode === 'u'
-          ? 'username'
-          : defaultArgType;
       reload && dispatch(showModalLoader());
       if (routeParam.arg === myPersona[argType]) {
         const personaResponse = await getMyBasePersona(reload, signal);
@@ -51,7 +51,6 @@ export const loadProfile = createAsyncThunk<void, LoadProfileArgs, AsyncThunkAPI
             persona: personaResponse.data as Persona,
           }),
         );
-        dispatch(setMyProfileViewLoaded(true));
         dispatch(setMyProfileViewReqStatus(profileResponse.status));
       } else {
         dispatch(initProfileView(routeParam.arg));
@@ -67,12 +66,16 @@ export const loadProfile = createAsyncThunk<void, LoadProfileArgs, AsyncThunkAPI
             );
           }
         }
-        dispatch(setProfileViewLoaded({ key: routeParam.arg, value: true }));
         dispatch(setProfileViewReqStatus({ key: routeParam.arg, value: personaBase.status }));
       }
     } catch (err: any) {
       handleError(err);
     } finally {
+      if (routeParam.arg === myPersona[argType]) {
+        dispatch(setMyProfileViewLoaded(true));
+      } else {
+        dispatch(setProfileViewLoaded({ key: routeParam.arg, value: true }));
+      }
       reload && dispatch(hideModalLoader());
     }
   },

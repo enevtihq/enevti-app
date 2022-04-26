@@ -24,11 +24,11 @@ export const loadStakePool = createAsyncThunk<void, loadStakePoolArgs, AsyncThun
       const stakePoolResponse = await getStakePoolDataByRouteParam(routeParam, signal);
       dispatch(initStakePoolView(routeParam.arg));
       dispatch(setStakePoolView({ key: routeParam.arg, value: stakePoolResponse.data }));
-      dispatch(setStakePoolLoaded({ key: routeParam.arg, value: true }));
       dispatch(setStakePoolReqStatus({ key: routeParam.arg, value: stakePoolResponse.status }));
     } catch (err: any) {
       handleError(err);
     } finally {
+      dispatch(setStakePoolLoaded({ key: routeParam.arg, value: true }));
       reload && dispatch(hideModalLoader());
     }
   },

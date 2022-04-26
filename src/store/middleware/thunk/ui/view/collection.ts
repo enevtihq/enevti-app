@@ -24,13 +24,13 @@ export const loadCollection = createAsyncThunk<void, LoadCollectionArgs, AsyncTh
       const collectionResponse = await getCollectionByRouteParam(routeParam, signal);
       dispatch(initCollectionView(routeParam.arg));
       dispatch(setCollectionView({ key: routeParam.arg, value: collectionResponse.data }));
-      dispatch(setCollectionViewLoaded({ key: routeParam.arg, value: true }));
       dispatch(
         setCollectionViewReqStatus({ key: routeParam.arg, value: collectionResponse.status }),
       );
     } catch (err: any) {
       handleError(err);
     } finally {
+      dispatch(setCollectionViewLoaded({ key: routeParam.arg, value: true }));
       reload && dispatch(hideModalLoader());
     }
   },

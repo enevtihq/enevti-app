@@ -33,13 +33,12 @@ export const loadFeeds = createAsyncThunk<void, loadFeedsArgs, AsyncThunkAPI>(
           dispatch(setFeedItemsCache(parseFeedCache(feedResponse.data as Feeds)));
         }
         dispatch(setFeedView(feedResponse.data as Feeds));
-        dispatch(setFeedViewLoaded(true));
         dispatch(setFeedViewReqStatus(feedResponse.status));
       }
-
-      dispatch(setFeedViewLoaded(true));
     } catch (err: any) {
       handleError(err);
+    } finally {
+      dispatch(setFeedViewLoaded(true));
     }
   },
 );

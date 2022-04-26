@@ -35,7 +35,7 @@ export const linking: AppLinking = initialRouteName => {
           path: 'collection/:mode/:arg',
         },
         StakePool: {
-          path: 'stake/pool/:mode/:arg',
+          path: 'stake/:mode/:arg',
         },
         Profile: {
           path: 'profile/:mode/:arg',

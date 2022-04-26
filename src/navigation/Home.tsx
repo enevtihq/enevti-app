@@ -23,7 +23,6 @@ import AppHeaderAction from 'enevti-app/components/atoms/view/AppHeaderAction';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import { TouchableRipple, useTheme } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
-import { getMyBasePersona } from 'enevti-app/service/enevti/persona';
 import AppAvatarRenderer from 'enevti-app/components/molecules/avatar/AppAvatarRenderer';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectMyPersonaCache } from 'enevti-app/store/slices/entities/cache/myPersona';
@@ -34,7 +33,6 @@ import Color from 'color';
 import AppIconGradient from 'enevti-app/components/molecules/AppIconGradient';
 import { Theme } from 'enevti-app/theme/default';
 import {
-  getMyProfile,
   isProfileCanCreateNFT,
   MINIMUM_BASIC_UNIT_STAKE_ELIGIBILITY,
 } from 'enevti-app/service/enevti/profile';
@@ -83,19 +81,6 @@ export default function Home({ navigation }: Props) {
   const createQueue = useSelector(selectCreateNFTRouteQueue);
   const createType = useSelector(selectCreateNFTTypeQueue);
   const canCreateNFT = isProfileCanCreateNFT(myProfile);
-
-  const getPersona = async () => {
-    await getMyBasePersona();
-  };
-
-  const getProfile = React.useCallback(async () => {
-    await getMyProfile();
-  }, []);
-
-  React.useEffect(() => {
-    getPersona();
-    getProfile();
-  }, [getProfile]);
 
   const [uneligibleSheetVisible, setUneligibleSheetVisible] = React.useState<boolean>(false);
   const [restoreMenuVisible, setRestoreMenuVisible] = React.useState<boolean>(false);
