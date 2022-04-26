@@ -33,6 +33,7 @@ import { RootState } from 'enevti-app/store/state';
 import { RouteProp } from '@react-navigation/native';
 import { DimensionFunction } from 'enevti-app/utils/imageRatio';
 import { useTheme } from 'react-native-paper';
+import AppResponseView from '../view/AppResponseView';
 
 const noDisplay = 'none';
 const visible = 1;
@@ -231,7 +232,7 @@ export default function AppNFTDetails({ onScrollWorklet, navigation, route }: Ap
   );
 
   return !nftDetailsUndefined ? (
-    <View style={styles.nftDetailsContainer}>
+    <AppResponseView status={nftDetails.reqStatus} style={styles.nftDetailsContainer}>
       <Animated.View pointerEvents={'box-none'} style={[styles.nftDetailsHeader, scrollStyle]}>
         <AppNFTDetailsHeader navigation={navigation} nft={nftDetails} />
       </Animated.View>
@@ -251,7 +252,7 @@ export default function AppNFTDetails({ onScrollWorklet, navigation, route }: Ap
           color={theme.colors.primary}
         />
       )}
-    </View>
+    </AppResponseView>
   ) : (
     <View style={styles.loaderContainer}>
       <AppActivityIndicator animating />

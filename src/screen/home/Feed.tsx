@@ -25,9 +25,7 @@ import { AppAsyncThunk } from 'enevti-app/types/ui/store/AppAsyncThunk';
 import { isFeedUndefined, selectFeedView } from 'enevti-app/store/slices/ui/view/feed';
 import { isMomentUndefined, selectMomentView } from 'enevti-app/store/slices/ui/view/moment';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
-import AppInfoMessage from 'enevti-app/components/molecules/AppInfoMessage';
-import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
-import { useTranslation } from 'react-i18next';
+import AppMessageEmpty from 'enevti-app/components/molecules/message/AppMessageEmpty';
 
 const AnimatedFlatList = Animated.createAnimatedComponent<FlatListProps<any>>(FlatList);
 
@@ -40,7 +38,6 @@ interface FeedProps extends Props {
 
 export default function Feed({ navigation, onScroll, headerHeight }: FeedProps) {
   const dispatch = useDispatch();
-  const { t } = useTranslation();
   const styles = React.useMemo(() => makeStyles(headerHeight), [headerHeight]);
   const insets = useSafeAreaInsets();
   const feedHeight = hp('24%', insets) + wp('95%', insets);
@@ -125,10 +122,7 @@ export default function Feed({ navigation, onScroll, headerHeight }: FeedProps) 
     [refreshing, handleRefresh, headerHeight],
   );
 
-  const emptyComponent = React.useMemo(
-    () => <AppInfoMessage icon={iconMap.empty} message={t('error:noData')} />,
-    [t],
-  );
+  const emptyComponent = React.useMemo(() => <AppMessageEmpty />, []);
 
   const contentContainerStyle = React.useMemo(
     () =>

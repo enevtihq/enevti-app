@@ -9,10 +9,12 @@ import { useTheme } from 'react-native-paper';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import { useTranslation } from 'react-i18next';
 import { BackgroundColorContext } from 'enevti-app/context';
+import { Profile } from 'enevti-app/types/core/account/profile';
 
 const Tab = createMaterialTopTabNavigator();
 
 interface AppProfileBodyProps {
+  profile: Profile;
   headerHeight: number;
   animatedTabBarStyle: StyleProp<ViewStyle>;
   ownedNFTScreen: ComponentType<any>;
@@ -22,6 +24,7 @@ interface AppProfileBodyProps {
 }
 
 export default function AppProfileBody({
+  profile,
   headerHeight,
   animatedTabBarStyle,
   ownedNFTScreen,
@@ -62,7 +65,9 @@ export default function AppProfileBody({
         <Tab.Screen
           options={{
             tabBarLabel: ({ color }) => (
-              <AppTextBody4 style={{ color: color }}>{t('profile:owned')} (10)</AppTextBody4>
+              <AppTextBody4 style={{ color: color }}>
+                {t('profile:owned')} ({profile.owned.length})
+              </AppTextBody4>
             ),
           }}
           name={t('profile:owned')}
@@ -71,7 +76,9 @@ export default function AppProfileBody({
         <Tab.Screen
           options={{
             tabBarLabel: ({ color }) => (
-              <AppTextBody4 style={{ color: color }}>{t('profile:onSale')} (3)</AppTextBody4>
+              <AppTextBody4 style={{ color: color }}>
+                {t('profile:onSale')} ({profile.onSale.length})
+              </AppTextBody4>
             ),
           }}
           name={t('profile:onSale')}
@@ -80,7 +87,9 @@ export default function AppProfileBody({
         <Tab.Screen
           options={{
             tabBarLabel: ({ color }) => (
-              <AppTextBody4 style={{ color: color }}>{t('profile:collection')} (2)</AppTextBody4>
+              <AppTextBody4 style={{ color: color }}>
+                {t('profile:collection')} ({profile.collection.length})
+              </AppTextBody4>
             ),
           }}
           name={t('profile:collection')}

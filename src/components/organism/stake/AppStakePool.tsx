@@ -32,6 +32,7 @@ import { hideModalLoader, showModalLoader } from 'enevti-app/store/slices/ui/glo
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 import usePaymentCallback from 'enevti-app/utils/hook/usePaymentCallback';
 import { useTranslation } from 'react-i18next';
+import AppResponseView from '../view/AppResponseView';
 
 const AnimatedFlatList = Animated.createAnimatedComponent<FlatListProps<StakerItem>>(FlatList);
 
@@ -143,7 +144,7 @@ export default function AppStakePool({ route }: AppStakePoolProps) {
   );
 
   return !stakePoolUndefined ? (
-    <View style={styles.stakePoolContainer}>
+    <AppResponseView status={stakePool.reqStatus} style={styles.stakePoolContainer}>
       <AnimatedFlatList
         onScroll={onScroll}
         scrollEventThrottle={16}
@@ -166,7 +167,7 @@ export default function AppStakePool({ route }: AppStakePoolProps) {
         onModalDismiss={onStakeButtonDismiss}
         onModalSubmit={onStakeButtonDismiss}
       />
-    </View>
+    </AppResponseView>
   ) : (
     <View style={styles.loaderContainer}>
       <AppActivityIndicator animating />

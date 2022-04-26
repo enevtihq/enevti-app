@@ -5,6 +5,7 @@ export default {
   notTheTime: 'Now is not the time to redeem, check the shcedule!',
   redeemExceeded: "Redeem limit exceeded, this NFT can't be redeemed anymore!",
   unknown: 'Unknown',
+  unknownError: 'Unknown Error',
   unknownPayment: 'unknown payment type',
   unknownUtility: 'unknown utility type',
   unknownRecurring: 'unknown recurring type',

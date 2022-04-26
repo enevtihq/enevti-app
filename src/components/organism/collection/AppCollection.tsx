@@ -39,6 +39,7 @@ import { RootState } from 'enevti-app/store/state';
 import { RouteProp } from '@react-navigation/native';
 import { DimensionFunction } from 'enevti-app/utils/imageRatio';
 import { useTheme } from 'react-native-paper';
+import AppResponseView from '../view/AppResponseView';
 
 const noDisplay = 'none';
 const visible = 1;
@@ -67,8 +68,13 @@ export default function AppCollection({ onScrollWorklet, navigation, route }: Ap
 
   const now = React.useMemo(() => Date.now(), []);
   const mintingAvailable = React.useMemo(
-    () => (collection.minting.expire <= now || collection.minting.available === 0 ? false : true),
-    [collection.minting.expire, collection.minting.available, now],
+    () =>
+      collection.reqStatus === 200
+        ? collection.minting.expire <= now || collection.minting.available === 0
+          ? false
+          : true
+        : false,
+    [collection, now],
   );
   const headerPercentage = React.useMemo(
     () => COLLECTION_HEADER_VIEW_HEIGHT + (mintingAvailable ? MINTING_AVAILABLE_VIEW_HEIGHT : 0),
@@ -271,7 +277,7 @@ export default function AppCollection({ onScrollWorklet, navigation, route }: Ap
   );
 
   return !collectionUndefined ? (
-    <View style={styles.collectionContainer}>
+    <AppResponseView status={collection.reqStatus} style={styles.collectionContainer}>
       <Animated.View pointerEvents={'box-none'} style={[styles.collectionHeader, scrollStyle]}>
         <AppCollectionHeader
           navigation={navigation}
@@ -297,7 +303,7 @@ export default function AppCollection({ onScrollWorklet, navigation, route }: Ap
         />
       )}
       <AppCollectionMintButton collection={collection} mintingAvailable={mintingAvailable} />
-    </View>
+    </AppResponseView>
   ) : (
     <View style={styles.loaderContainer}>
       <AppActivityIndicator animating />

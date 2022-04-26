@@ -19,6 +19,7 @@ async function fetchStakePool(
   try {
     await isInternetReachable();
     const res = await fetch(urlGetStakePoolByAddress(address), { signal });
+    console.log(await res.json());
     handleResponseCode(res);
     const ret = (await res.json()) as ResponseJSON<StakePoolData>;
     return {

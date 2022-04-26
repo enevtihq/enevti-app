@@ -12,9 +12,7 @@ import AppNFTCard from 'enevti-app/components/molecules/nft/AppNFTCard';
 import { MINT_BUTTON_HEIGHT } from 'enevti-app/components/organism/collection/AppCollectionMintButton';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
-import AppInfoMessage from 'enevti-app/components/molecules/AppInfoMessage';
-import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
-import { useTranslation } from 'react-i18next';
+import AppMessageEmpty from 'enevti-app/components/molecules/message/AppMessageEmpty';
 
 const AnimatedFlatGrid = Animated.createAnimatedComponent<FlatGridProps<NFTBase>>(FlatGrid);
 
@@ -42,7 +40,6 @@ function Component(
   }: MintedItemsComponentProps,
   ref: any,
 ) {
-  const { t } = useTranslation();
   const { hp, wp } = useDimension();
   const insets = useSafeAreaInsets();
   const mounted = React.useRef<boolean>(false);
@@ -88,10 +85,7 @@ function Component(
     [handleRefresh, progressViewOffset],
   );
 
-  const emptyComponent = React.useMemo(
-    () => <AppInfoMessage icon={iconMap.empty} message={t('error:noData')} />,
-    [t],
-  );
+  const emptyComponent = React.useMemo(() => <AppMessageEmpty />, []);
 
   const renderItem = React.useCallback(
     ({ item }) => <AppNFTCard nft={item} width={itemDimension} navigation={navigation} />,

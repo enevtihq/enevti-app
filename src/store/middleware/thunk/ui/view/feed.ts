@@ -25,6 +25,7 @@ export const loadFeeds = createAsyncThunk<void, loadFeedsArgs, AsyncThunkAPI>(
     try {
       const now = Date.now();
       dispatch(setFeedView(selectFeedItemsCache(getState())));
+      dispatch(setFeedViewReqStatus(200));
 
       if (reload || now - selectLastFetchFeedCache(getState()) > lastFetchTimeout.feed) {
         const feedResponse = await getFeeds(signal);

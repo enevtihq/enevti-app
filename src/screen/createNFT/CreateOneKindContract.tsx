@@ -46,7 +46,7 @@ import AppAccordion from 'enevti-app/components/atoms/accordion/AppAccordion';
 import { NFTBase } from 'enevti-app/types/core/chain/nft';
 import { makeDummyNFT } from 'enevti-app/utils/dummy/nft';
 import AppNFTRenderer from 'enevti-app/components/molecules/nft/AppNFTRenderer';
-import AppInfoMessage from 'enevti-app/components/molecules/AppInfoMessage';
+import AppInfoMessage from 'enevti-app/components/molecules/message/base/AppInfoMessage';
 import AppQuaternaryButton from 'enevti-app/components/atoms/button/AppQuaternaryButton';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import { ImageOrVideo } from 'react-native-image-crop-picker';

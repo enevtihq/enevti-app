@@ -84,6 +84,8 @@ export const iconMap = {
   stake: 'account-cash',
   notEligibleCreator: 'badge-account-alert',
   empty: 'package-variant',
+  notFound: 'magnify-close',
+  error: 'alert-circle',
 };
 
 interface AppIconComponentProps {

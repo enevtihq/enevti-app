@@ -26,6 +26,7 @@ import { Persona } from 'enevti-app/types/core/account/persona';
 import CollectionListComponent from './tabs/CollectionListComponent';
 import { AppAsyncThunk } from 'enevti-app/types/ui/store/AppAsyncThunk';
 import { RouteProp } from '@react-navigation/native';
+import AppResponseView from '../view/AppResponseView';
 
 const noDisplay = 'none';
 const visible = 1;
@@ -34,7 +35,7 @@ const notVisible = 0;
 interface AppProfileProps {
   navigation: StackNavigationProp<RootStackParamList>;
   route: RouteProp<RootStackParamList, 'Profile'>;
-  profile: Profile & { persona: Persona };
+  profile: Profile & { reqStatus: number; persona: Persona };
   profileUndefined: boolean;
   onScrollWorklet?: (val: number) => void;
   onBeginDragWorklet?: (val: number) => void;
@@ -330,11 +331,12 @@ export default function AppProfile({
   );
 
   return !profileUndefined ? (
-    <View style={styles.profileContainer}>
+    <AppResponseView status={profile.reqStatus} style={styles.profileContainer}>
       <Animated.View pointerEvents={'box-none'} style={[styles.profileHeader, scrollStyle]}>
         <AppProfileHeader persona={persona} profile={profile} navigation={navigation} />
       </Animated.View>
       <AppProfileBody
+        profile={profile}
         headerHeight={headerHeight}
         animatedTabBarStyle={animatedTabBarStyle}
         ownedNFTScreen={OwnedNFTScreen}
@@ -354,7 +356,7 @@ export default function AppProfile({
           color={theme.colors.primary}
         />
       )}
-    </View>
+    </AppResponseView>
   ) : (
     <View style={styles.loaderContainer}>
       <AppActivityIndicator animating />
