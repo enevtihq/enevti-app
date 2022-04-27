@@ -17,5 +17,6 @@ export default {
   responseError: 'Response Error: {{msg}}',
   errorFetchMinFee: 'Failed to get MinFee: {{msg}}',
   requestNonceFailed: 'Request profile nonce failed',
+  timeoutError: 'Timeout! Please try again later',
   transactionPreparationFailed: 'Failed to prepare transaction, please try again later',
 };

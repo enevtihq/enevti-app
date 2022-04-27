@@ -4,7 +4,7 @@ import {
 } from 'enevti-app/store/slices/session/google';
 import { store } from 'enevti-app/store/state';
 import { EncryptedData } from 'enevti-app/types/core/service/cryptography';
-import { isInternetReachable } from 'enevti-app/utils/network';
+import { appFetch, isInternetReachable } from 'enevti-app/utils/network';
 import { getGoogleAccessToken, googleInit, googleSignIn } from './signIn';
 
 const url = 'https://www.googleapis.com/drive/v3';
@@ -96,7 +96,7 @@ async function getSecretId(): Promise<string> {
   const qParams = queryParams();
   const options = await configureGetOptions();
   return new Promise<string>((res, rej) => {
-    fetch(`${url}/files?q=${qParams}&spaces=appDataFolder`, options)
+    appFetch(`${url}/files?q=${qParams}&spaces=appDataFolder`, options)
       .then(parseAndHandleErrors)
       .then(body => {
         if (body && body.files && body.files.length > 0) {
@@ -133,7 +133,7 @@ export async function getSecretAppData(): Promise<SecretAppData> {
   const options = await configureGetOptions();
   const downloadUrl = `${url}/files/${id}?alt=media`;
   return new Promise((res, rej) =>
-    fetch(downloadUrl, options)
+    appFetch(downloadUrl, options)
       .then(parseAndHandleErrors)
       .then(response => {
         res(response);
@@ -147,7 +147,7 @@ export async function setSecretAppData(content: SecretAppData): Promise<void> {
   const body = createMultipartBody(content, false);
   const options = await configurePostOptions(body.length.toString(), false);
   return new Promise<void>((res, rej) => {
-    fetch(`${uploadUrl}/files?uploadType=multipart`, {
+    appFetch(`${uploadUrl}/files?uploadType=multipart`, {
       ...options,
       body,
     })
@@ -167,7 +167,7 @@ export async function updateSecretAppData(content: SecretAppData): Promise<void>
   const body = createMultipartBody(content, true);
   const options = await configurePostOptions(body.length.toString(), true);
   return new Promise<void>((res, rej) => {
-    fetch(`${uploadUrl}/files/${id}?uploadType=multipart`, {
+    appFetch(`${uploadUrl}/files/${id}?uploadType=multipart`, {
       ...options,
       body,
     })

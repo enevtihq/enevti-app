@@ -1,7 +1,7 @@
 import { urlPostTransactionFee } from 'enevti-app/utils/constant/URLCreator';
 import { getMyPassphrase, getMyPublicKey, getMyAddress } from './persona';
 import { getProfileNonce } from './profile';
-import { isInternetReachable } from 'enevti-app/utils/network';
+import { appFetch, isInternetReachable } from 'enevti-app/utils/network';
 import { handleError, handleResponseCode, responseError } from 'enevti-app/utils/error/handle';
 import { APIResponse, ResponseJSON } from 'enevti-app/types/core/service/api';
 import base64 from 'react-native-base64';
@@ -32,7 +32,7 @@ export async function fecthTransactionMinFee(
   try {
     await isInternetReachable();
     const passphrase = await getMyPassphrase();
-    const res = await fetch(urlPostTransactionFee(), {
+    const res = await appFetch(urlPostTransactionFee(), {
       signal,
       method: 'POST',
       headers: new Headers({

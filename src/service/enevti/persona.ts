@@ -16,7 +16,7 @@ import { selectLocalSession } from 'enevti-app/store/slices/session/local';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { COIN_NAME } from 'enevti-app/utils/constant/identifier';
-import { isInternetReachable } from 'enevti-app/utils/network';
+import { appFetch, isInternetReachable } from 'enevti-app/utils/network';
 import {
   urlGetPersonaByAddress,
   urlGetPersonaByUsername,
@@ -39,7 +39,7 @@ async function fetchPersona(
 ): Promise<APIResponse<Persona>> {
   try {
     await isInternetReachable();
-    const res = await fetch(urlGetPersonaByAddress(address), { signal });
+    const res = await appFetch(urlGetPersonaByAddress(address), { signal });
     const ret = (await res.json()) as ResponseJSON<Persona>;
     handleResponseCode(res, ret);
     return {
@@ -59,7 +59,7 @@ async function fetchPersonaByUsername(
 ): Promise<APIResponse<Persona>> {
   try {
     await isInternetReachable();
-    const res = await fetch(urlGetPersonaByUsername(username), { signal });
+    const res = await appFetch(urlGetPersonaByUsername(username), { signal });
     const ret = (await res.json()) as ResponseJSON<Persona>;
     handleResponseCode(res, ret);
     return {

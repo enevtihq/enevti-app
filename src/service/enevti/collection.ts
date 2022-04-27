@@ -6,7 +6,7 @@ import {
   urlGetCollectionBySymbol,
 } from 'enevti-app/utils/constant/URLCreator';
 import { handleError, handleResponseCode, responseError } from 'enevti-app/utils/error/handle';
-import { isInternetReachable } from 'enevti-app/utils/network';
+import { appFetch, isInternetReachable } from 'enevti-app/utils/network';
 import { APIResponse, ResponseJSON } from 'enevti-app/types/core/service/api';
 
 type CollectionRoute = StackScreenProps<RootStackParamList, 'Collection'>['route']['params'];
@@ -17,7 +17,7 @@ async function fetchCollectionById(
 ): Promise<APIResponse<Collection>> {
   try {
     await isInternetReachable();
-    const res = await fetch(urlGetCollectionById(id), { signal });
+    const res = await appFetch(urlGetCollectionById(id), { signal });
     const ret = (await res.json()) as ResponseJSON<Collection>;
     handleResponseCode(res, ret);
     return {
@@ -37,7 +37,7 @@ async function fetchCollectionBySymbol(
 ): Promise<APIResponse<Collection>> {
   try {
     await isInternetReachable();
-    const res = await fetch(urlGetCollectionBySymbol(symbol), { signal });
+    const res = await appFetch(urlGetCollectionBySymbol(symbol), { signal });
     const ret = (await res.json()) as ResponseJSON<Collection>;
     handleResponseCode(res, ret);
     return {

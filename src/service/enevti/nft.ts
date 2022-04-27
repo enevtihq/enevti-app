@@ -3,7 +3,7 @@ import { handleError, handleResponseCode, responseError } from 'enevti-app/utils
 import { NFT } from 'enevti-app/types/core/chain/nft';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
-import { isInternetReachable } from 'enevti-app/utils/network';
+import { appFetch, isInternetReachable } from 'enevti-app/utils/network';
 import {
   urlGetIsNameExists,
   urlGetIsSymbolExists,
@@ -28,7 +28,7 @@ export async function isNameAvailable(
 ): Promise<boolean> {
   try {
     await isInternetReachable();
-    const res = await fetch(urlGetIsNameExists(name), { signal });
+    const res = await appFetch(urlGetIsNameExists(name), { signal });
     const ret = (await res.json()) as ResponseJSON<boolean>;
     handleResponseCode(res, ret);
     return !ret.data;
@@ -44,7 +44,7 @@ export async function isSymbolAvailable(
 ): Promise<boolean> {
   try {
     await isInternetReachable();
-    const res = await fetch(urlGetIsSymbolExists(symbol), { signal });
+    const res = await appFetch(urlGetIsSymbolExists(symbol), { signal });
     const ret = (await res.json()) as ResponseJSON<boolean>;
     handleResponseCode(res, ret);
     return !ret.data;
@@ -60,7 +60,7 @@ async function fetchNFTbyId(
 ): Promise<APIResponse<NFT>> {
   try {
     await isInternetReachable();
-    const res = await fetch(urlGetNFTById(id), { signal });
+    const res = await appFetch(urlGetNFTById(id), { signal });
     const ret = (await res.json()) as ResponseJSON<NFT>;
     handleResponseCode(res, ret);
     return {
@@ -81,7 +81,7 @@ async function fetchNFTbySerial(
 ): Promise<APIResponse<NFT>> {
   try {
     await isInternetReachable();
-    const res = await fetch(urlGetNFTBySerial(`${symbol}#${serial}`), { signal });
+    const res = await appFetch(urlGetNFTBySerial(`${symbol}#${serial}`), { signal });
     const ret = (await res.json()) as ResponseJSON<NFT>;
     handleResponseCode(res, ret);
     return {

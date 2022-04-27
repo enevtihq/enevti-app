@@ -2,12 +2,12 @@ import { APIResponse, ResponseJSON } from 'enevti-app/types/core/service/api';
 import { Feeds } from 'enevti-app/types/core/service/feed';
 import { urlGetFeeds } from 'enevti-app/utils/constant/URLCreator';
 import { handleError, handleResponseCode, responseError } from 'enevti-app/utils/error/handle';
-import { isInternetReachable } from 'enevti-app/utils/network';
+import { appFetch, isInternetReachable } from 'enevti-app/utils/network';
 
 async function fetchFeeds(signal?: AbortController['signal']): Promise<APIResponse<Feeds>> {
   try {
     await isInternetReachable();
-    const res = await fetch(urlGetFeeds(), { signal });
+    const res = await appFetch(urlGetFeeds(), { signal });
     const ret = (await res.json()) as ResponseJSON<Feeds>;
     handleResponseCode(res, ret);
     return {

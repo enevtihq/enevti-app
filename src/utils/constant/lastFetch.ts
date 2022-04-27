@@ -17,4 +17,5 @@ export const lastFetchTimeout = {
   display: parseLastFetch(15, 'minute'),
   feed: defaultTimeout,
   moment: defaultTimeout,
+  request: parseLastFetch(10, 'second'),
 };

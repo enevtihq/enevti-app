@@ -4,7 +4,7 @@ import { ABORT_ERROR_MESSAGE } from './message';
 import i18n from 'enevti-app/translations/i18n';
 import { APIResponse, ResponseJSON } from 'enevti-app/types/core/service/api';
 
-const silentError = [ABORT_ERROR_MESSAGE];
+const silentError = [ABORT_ERROR_MESSAGE, 'Abort'];
 
 const includeSubstring = (message: string) => (item: string) =>
   message.toLowerCase().includes(item.toLowerCase());

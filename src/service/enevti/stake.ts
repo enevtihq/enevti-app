@@ -2,7 +2,7 @@ import { StakePoolData } from 'enevti-app/types/core/chain/stake';
 import { base32ToAddress } from 'enevti-app/service/enevti/persona';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
-import { isInternetReachable } from 'enevti-app/utils/network';
+import { appFetch, isInternetReachable } from 'enevti-app/utils/network';
 import {
   urlGetStakePoolByAddress,
   urlGetStakePoolByUsername,
@@ -18,7 +18,7 @@ async function fetchStakePool(
 ): Promise<APIResponse<StakePoolData>> {
   try {
     await isInternetReachable();
-    const res = await fetch(urlGetStakePoolByAddress(address), { signal });
+    const res = await appFetch(urlGetStakePoolByAddress(address), { signal });
     const ret = (await res.json()) as ResponseJSON<StakePoolData>;
     handleResponseCode(res, ret);
     return {
@@ -38,7 +38,7 @@ async function fetchStakePoolByUsername(
 ): Promise<APIResponse<StakePoolData>> {
   try {
     await isInternetReachable();
-    const res = await fetch(urlGetStakePoolByUsername(username), { signal });
+    const res = await appFetch(urlGetStakePoolByUsername(username), { signal });
     const ret = (await res.json()) as ResponseJSON<StakePoolData>;
     handleResponseCode(res, ret);
     return {

@@ -10,7 +10,7 @@ import {
 import { lastFetchTimeout } from 'enevti-app/utils/constant/lastFetch';
 import { getMyAddress } from './persona';
 import { completeTokenUnit } from 'enevti-app/utils/format/amount';
-import { isInternetReachable } from 'enevti-app/utils/network';
+import { appFetch, isInternetReachable } from 'enevti-app/utils/network';
 import { urlGetProfile, urlGetProfileNonce } from 'enevti-app/utils/constant/URLCreator';
 import {
   handleError,
@@ -28,7 +28,7 @@ async function fetchProfileNonce(
 ): Promise<APIResponse<string>> {
   try {
     await isInternetReachable();
-    const res = await fetch(urlGetProfileNonce(address), { signal });
+    const res = await appFetch(urlGetProfileNonce(address), { signal });
     const ret = (await res.json()) as ResponseJSON<string>;
     handleResponseCode(res, ret);
     return {
@@ -48,7 +48,7 @@ async function fetchProfile(
 ): Promise<APIResponse<Profile>> {
   try {
     await isInternetReachable();
-    const res = await fetch(urlGetProfile(address), { signal });
+    const res = await appFetch(urlGetProfile(address), { signal });
     const ret = (await res.json()) as ResponseJSON<Profile>;
     handleResponseCode(res, ret);
     return {
