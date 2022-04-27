@@ -11,7 +11,7 @@ import { lastFetchTimeout } from 'enevti-app/utils/constant/lastFetch';
 import { getMyAddress } from './persona';
 import { completeTokenUnit } from 'enevti-app/utils/format/amount';
 import { isInternetReachable } from 'enevti-app/utils/network';
-import { urlGetProfile } from 'enevti-app/utils/constant/URLCreator';
+import { urlGetProfile, urlGetProfileNonce } from 'enevti-app/utils/constant/URLCreator';
 import {
   handleError,
   handleResponseCode,
@@ -21,6 +21,26 @@ import {
 import { APIResponse, ResponseJSON } from 'enevti-app/types/core/service/api';
 
 export const MINIMUM_BASIC_UNIT_STAKE_ELIGIBILITY = 1000;
+
+async function fetchProfileNonce(
+  address: string,
+  signal?: AbortController['signal'],
+): Promise<APIResponse<string>> {
+  try {
+    await isInternetReachable();
+    const res = await fetch(urlGetProfileNonce(address), { signal });
+    const ret = (await res.json()) as ResponseJSON<string>;
+    handleResponseCode(res, ret);
+    return {
+      status: res.status,
+      data: ret.data,
+      meta: ret.meta,
+    };
+  } catch (err: any) {
+    handleError(err);
+    return responseError(err.code);
+  }
+}
 
 async function fetchProfile(
   address: string,
@@ -44,6 +64,13 @@ async function fetchProfile(
 
 function parseProfileCache(profile: Profile) {
   return profile;
+}
+
+export async function getProfileNonce(
+  address: string,
+  signal?: AbortController['signal'],
+): Promise<APIResponse<string>> {
+  return await fetchProfileNonce(address, signal);
 }
 
 export async function getProfile(

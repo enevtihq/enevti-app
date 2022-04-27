@@ -37,7 +37,7 @@ export function handleResponseCode(res: Response, ret: ResponseJSON<any>) {
   }
 }
 
-export function responseError(status: number, data: any = {}): APIResponse<Record<string, any>> {
+export function responseError(status: number, data: any = {}): APIResponse<any> {
   return {
     status,
     data,

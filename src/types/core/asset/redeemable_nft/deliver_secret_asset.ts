@@ -3,3 +3,5 @@ export type DeliverSecretProps = {
   cipher: string;
   signature: string;
 };
+
+export type DeliverSecretUI = DeliverSecretProps;

@@ -6,7 +6,6 @@ import { CollectionIdAsset, NFTIdAsset } from '../chain/id';
 export type Profile = {
   balance: string;
   stake: string;
-  nonce: string;
   social: SocialProfile;
   nftSold: number;
   treasuryAct: number;

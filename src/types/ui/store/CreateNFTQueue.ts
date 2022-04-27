@@ -1,4 +1,4 @@
-import { CreateNFTOneKindNFTProps } from 'enevti-app/types/core/asset/redeemable_nft/create_onekind_nft_asset';
+import { CreateOneKindNFTProps } from 'enevti-app/types/core/asset/redeemable_nft/create_onekind_nft_asset';
 import { NFTTemplateAsset } from 'enevti-app/types/core/chain/nft/NFTTemplate';
 import {
   OneKindContractForm,
@@ -22,7 +22,7 @@ export type CreateNFTOneKind = {
   choosenTemplate: NFTTemplateAsset;
   state: OneKindContractForm;
   status: OneKindContractStatusForm;
-  transaction?: CreateNFTOneKindNFTProps;
+  transaction?: CreateOneKindNFTProps;
 };
 
 export type CreateNFTPackItemData = {

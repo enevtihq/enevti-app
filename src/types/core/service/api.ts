@@ -1,8 +1,8 @@
-export interface APIResponse<T> extends ResponseJSON<T> {
+export interface APIResponse<T, S = T> extends ResponseJSON<T, S> {
   status: number;
 }
 
-export interface ResponseJSON<T> {
-  data: T | Record<string, any>;
+export interface ResponseJSON<T, S = T> {
+  data: T | S;
   meta: any;
 }

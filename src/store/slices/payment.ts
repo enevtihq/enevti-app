@@ -23,14 +23,14 @@ const initialState: PaymentState = {
     name: '',
     description: '',
     details: '',
-    amount: BigInt(0),
+    amount: '0',
     currency: '',
     payload: '',
   },
   fee: {
     loaded: false,
-    gas: BigInt(0),
-    platform: BigInt(0),
+    gas: '0',
+    platform: '0',
   },
 };
 

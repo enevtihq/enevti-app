@@ -87,6 +87,10 @@ export function urlGetProfile(address: string, host: string = ENEVTI_DEFAULT_API
   return encodeURI(`${host}/profile/${address}`);
 }
 
+export function urlGetProfileNonce(address: string, host: string = ENEVTI_DEFAULT_API) {
+  return encodeURI(`${host}/profile/${address}/nonce`);
+}
+
 export function urlGetStakePoolByAddress(address: string, host: string = ENEVTI_DEFAULT_API) {
   return encodeURI(`${host}/stake/a/${address}`);
 }

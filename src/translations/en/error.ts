@@ -16,4 +16,6 @@ export default {
   notFound: 'Not Found',
   responseError: 'Response Error: {{msg}}',
   errorFetchMinFee: 'Failed to get MinFee: {{msg}}',
+  requestNonceFailed: 'Request profile nonce failed',
+  transactionPreparationFailed: 'Failed to prepare transaction, please try again later',
 };

@@ -5,15 +5,15 @@ export type PaymentAction = {
   name: string;
   description: string;
   details?: string;
-  amount: bigint;
+  amount: string;
   currency: string;
   payload: string;
 };
 
 export type PaymentFee = {
   loaded: boolean;
-  gas: bigint;
-  platform: bigint;
+  gas: string;
+  platform: string;
 };
 
 export type PaymentStatus = {

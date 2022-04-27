@@ -1,7 +1,7 @@
 import { NFTRecurring } from '../../chain/nft/NFTRedeem';
 import { NFTUtility } from '../../chain/nft/NFTUtility';
 
-export type CreateNFTOneKindNFTProps = {
+export type CreateOneKindNFTProps = {
   name: string;
   description: string;
   symbol: string;
@@ -47,4 +47,8 @@ export type CreateNFTOneKindNFTProps = {
   };
   quantity: number;
   mintingExpire: number;
+};
+
+export type CreateOneKindNFTUI = Omit<CreateOneKindNFTProps, 'price'> & {
+  price: { amount: string; currency: string };
 };

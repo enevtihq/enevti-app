@@ -1,10 +1,10 @@
 export interface AppTransaction<T> {
   moduleID: number;
   assetID: number;
-  fee: bigint;
+  fee: string;
   asset: T;
-  nonce: bigint;
-  senderPublicKey: Buffer;
+  nonce: string;
+  senderPublicKey: string;
 }
 
 export type NodeInfoFeesResponse = {

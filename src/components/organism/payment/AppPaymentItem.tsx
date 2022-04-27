@@ -13,7 +13,7 @@ import AppPoppableIcon from 'enevti-app/components/molecules/menu/AppPoppableIco
 
 interface AppPaymentItemProps {
   title: string;
-  amount: bigint;
+  amount: string;
   currency: string;
   description?: string;
   hideTooltip?: boolean;

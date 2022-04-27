@@ -6,12 +6,14 @@ import {
   showPayment,
 } from 'enevti-app/store/slices/payment';
 import { AsyncThunkAPI } from 'enevti-app/store/state';
-import { calculateGasFee } from 'enevti-app/service/enevti/transaction';
+import { calculateGasFee, createTransaction } from 'enevti-app/service/enevti/transaction';
 import i18n from 'enevti-app/translations/i18n';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { handleError } from 'enevti-app/utils/error/handle';
-import { MintNFTProps } from 'enevti-app/types/core/asset/redeemable_nft/mint_nft_asset';
+import { MintNFTUI } from 'enevti-app/types/core/asset/redeemable_nft/mint_nft_asset';
 import { Collection } from 'enevti-app/types/core/chain/collection';
+import { AppTransaction } from 'enevti-app/types/core/service/transaction';
+import { redeemableNftModule } from 'enevti-app/utils/constant/transaction';
 
 type PayMintCollectionPayload = { collection: Collection; quantity: number };
 
@@ -22,12 +24,22 @@ export const payMintCollection = createAsyncThunk<void, PayMintCollectionPayload
       dispatch(setPaymentStatus({ type: 'initiated', message: '' }));
       dispatch(showPayment());
 
-      const transactionPayload: MintNFTProps = {
-        id: payload.collection.id,
-        quantity: payload.quantity,
-      };
+      const transactionPayload: AppTransaction<MintNFTUI> = await createTransaction(
+        redeemableNftModule.moduleID,
+        redeemableNftModule.mintNft,
+        {
+          id: payload.collection.id,
+          quantity: payload.quantity,
+        },
+        '0',
+        signal,
+      );
       const gasFee = await calculateGasFee(transactionPayload, signal);
-      dispatch(setPaymentFee({ gas: gasFee, platform: BigInt(0) }));
+      if (!gasFee) {
+        throw Error(i18n.t('eror:transactionPreparationFailed'));
+      }
+
+      dispatch(setPaymentFee({ gas: gasFee, platform: '0' }));
       dispatch(
         setPaymentAction({
           type: 'mintCollection',
@@ -52,13 +64,21 @@ export const payMintCollection = createAsyncThunk<void, PayMintCollectionPayload
                 })
               : i18n.t('error:unknown')
           })`,
-          amount: BigInt(payload.collection.minting.price.amount) * BigInt(payload.quantity),
+          amount: (
+            BigInt(payload.collection.minting.price.amount) * BigInt(payload.quantity)
+          ).toString(),
           currency: payload.collection.minting.price.currency,
           payload: JSON.stringify(transactionPayload),
         }),
       );
     } catch (err) {
       handleError(err);
+      dispatch(
+        setPaymentStatus({
+          type: 'error',
+          message: (err as Record<string, any>).message.toString(),
+        }),
+      );
     }
   },
 );
