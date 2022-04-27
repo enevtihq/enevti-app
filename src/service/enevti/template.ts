@@ -29,8 +29,8 @@ export async function getMoreNFTTemplate(
   try {
     await isInternetReachable();
     const res = await fetch(urlGetAllNFTTemplate(), { signal });
-    handleResponseCode(res);
     const ret = (await res.json()) as ResponseJSON<NFTTemplateAsset[]>;
+    handleResponseCode(res, ret);
     return {
       status: res.status,
       data: ret.data,

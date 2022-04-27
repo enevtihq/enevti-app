@@ -29,8 +29,8 @@ async function fetchProfile(
   try {
     await isInternetReachable();
     const res = await fetch(urlGetProfile(address), { signal });
-    handleResponseCode(res);
     const ret = (await res.json()) as ResponseJSON<Profile>;
+    handleResponseCode(res, ret);
     return {
       status: res.status,
       data: ret.data,

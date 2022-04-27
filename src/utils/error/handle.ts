@@ -2,7 +2,7 @@ import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 import { store } from 'enevti-app/store/state';
 import { ABORT_ERROR_MESSAGE } from './message';
 import i18n from 'enevti-app/translations/i18n';
-import { APIResponse } from 'enevti-app/types/core/service/api';
+import { APIResponse, ResponseJSON } from 'enevti-app/types/core/service/api';
 
 const silentError = [ABORT_ERROR_MESSAGE];
 
@@ -23,7 +23,7 @@ export function handleError(err: any) {
   }
 }
 
-export function handleResponseCode(res: Response) {
+export function handleResponseCode(res: Response, ret: ResponseJSON<any>) {
   if (res.status === 404) {
     throw {
       code: 404,
@@ -32,7 +32,7 @@ export function handleResponseCode(res: Response) {
   } else if (res.status !== 200) {
     throw {
       code: res.status,
-      message: i18n.t('error:responseError', { msg: JSON.stringify(res.json()) }),
+      message: i18n.t('error:responseError', { msg: JSON.stringify(ret.data) }),
     };
   }
 }

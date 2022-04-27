@@ -29,8 +29,8 @@ export async function isNameAvailable(
   try {
     await isInternetReachable();
     const res = await fetch(urlGetIsNameExists(name), { signal });
-    handleResponseCode(res);
     const ret = (await res.json()) as ResponseJSON<boolean>;
+    handleResponseCode(res, ret);
     return !ret.data;
   } catch (err) {
     handleError(err);
@@ -45,8 +45,8 @@ export async function isSymbolAvailable(
   try {
     await isInternetReachable();
     const res = await fetch(urlGetIsSymbolExists(symbol), { signal });
-    handleResponseCode(res);
     const ret = (await res.json()) as ResponseJSON<boolean>;
+    handleResponseCode(res, ret);
     return !ret.data;
   } catch (err) {
     handleError(err);
@@ -61,8 +61,8 @@ async function fetchNFTbyId(
   try {
     await isInternetReachable();
     const res = await fetch(urlGetNFTById(id), { signal });
-    handleResponseCode(res);
     const ret = (await res.json()) as ResponseJSON<NFT>;
+    handleResponseCode(res, ret);
     return {
       status: res.status,
       data: ret.data,
@@ -82,8 +82,8 @@ async function fetchNFTbySerial(
   try {
     await isInternetReachable();
     const res = await fetch(urlGetNFTBySerial(`${symbol}#${serial}`), { signal });
-    handleResponseCode(res);
     const ret = (await res.json()) as ResponseJSON<NFT>;
+    handleResponseCode(res, ret);
     return {
       status: res.status,
       data: ret.data,

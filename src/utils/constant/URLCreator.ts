@@ -1,6 +1,11 @@
 export const ENEVTI_DEFAULT_API = 'http://192.168.0.104:8080';
 export const ENEVTI_FAUCET_API = 'http://192.168.0.104:8081';
+export const ENEVTI_CORE_WS = 'ws://192.168.0.104:8082/ws';
 export const IPFS_GATEWAY = 'https://cloudflare-ipfs.com/ipfs/';
+
+export function urlWSCore() {
+  return ENEVTI_CORE_WS;
+}
 
 export function urlGetIPFS(hash: string, gateway: string = IPFS_GATEWAY) {
   return encodeURI(`${gateway}${hash}`);
@@ -104,6 +109,10 @@ export function urlGetIsSerialExists(serial: string, host: string = ENEVTI_DEFAU
 
 export function urlGetIsUsernameExists(username: string, host: string = ENEVTI_DEFAULT_API) {
   return encodeURI(`${host}/registrar/username/${username}`);
+}
+
+export function urlPostTransactionFee(host: string = ENEVTI_DEFAULT_API) {
+  return encodeURI(`${host}/transaction/fee`);
 }
 
 export function urlPostRequestFaucet(host: string = ENEVTI_FAUCET_API) {

@@ -18,8 +18,8 @@ async function fetchCollectionById(
   try {
     await isInternetReachable();
     const res = await fetch(urlGetCollectionById(id), { signal });
-    handleResponseCode(res);
     const ret = (await res.json()) as ResponseJSON<Collection>;
+    handleResponseCode(res, ret);
     return {
       status: res.status,
       data: ret.data,
@@ -38,8 +38,8 @@ async function fetchCollectionBySymbol(
   try {
     await isInternetReachable();
     const res = await fetch(urlGetCollectionBySymbol(symbol), { signal });
-    handleResponseCode(res);
     const ret = (await res.json()) as ResponseJSON<Collection>;
+    handleResponseCode(res, ret);
     return {
       status: res.status,
       data: ret.data,

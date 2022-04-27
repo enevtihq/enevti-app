@@ -40,8 +40,8 @@ async function fetchPersona(
   try {
     await isInternetReachable();
     const res = await fetch(urlGetPersonaByAddress(address), { signal });
-    handleResponseCode(res);
     const ret = (await res.json()) as ResponseJSON<Persona>;
+    handleResponseCode(res, ret);
     return {
       status: res.status,
       data: ret.data,
@@ -60,8 +60,8 @@ async function fetchPersonaByUsername(
   try {
     await isInternetReachable();
     const res = await fetch(urlGetPersonaByUsername(username), { signal });
-    handleResponseCode(res);
     const ret = (await res.json()) as ResponseJSON<Persona>;
+    handleResponseCode(res, ret);
     return {
       status: res.status,
       data: ret.data,

@@ -15,4 +15,5 @@ export default {
   noData: 'Nothing here yet!',
   notFound: 'Not Found',
   responseError: 'Response Error: {{msg}}',
+  errorFetchMinFee: 'Failed to get MinFee: {{msg}}',
 };

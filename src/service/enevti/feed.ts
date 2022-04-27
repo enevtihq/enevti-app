@@ -8,8 +8,8 @@ async function fetchFeeds(signal?: AbortController['signal']): Promise<APIRespon
   try {
     await isInternetReachable();
     const res = await fetch(urlGetFeeds(), { signal });
-    handleResponseCode(res);
     const ret = (await res.json()) as ResponseJSON<Feeds>;
+    handleResponseCode(res, ret);
     return {
       status: res.status,
       data: ret.data,
