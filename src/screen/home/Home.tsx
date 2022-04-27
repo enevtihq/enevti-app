@@ -45,10 +45,8 @@ import AppHeaderWizard from 'enevti-app/components/molecules/AppHeaderWizard';
 
 import { getCoinName } from 'enevti-app/utils/constant/identifier';
 import AppSecondaryButton from 'enevti-app/components/atoms/button/AppSecondaryButton';
-import AppQuaternaryButton from 'enevti-app/components/atoms/button/AppQuaternaryButton';
-import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import { StackScreenProps } from '@react-navigation/stack';
-import { RootStackParamList } from '.';
+import { RootStackParamList } from 'enevti-app/navigation';
 import {
   clearCreateNFTQueueRoute,
   selectCreateNFTRouteQueue,
@@ -61,6 +59,7 @@ import {
 import { clearCreateNFTOneKindQueue } from 'enevti-app/store/slices/queue/nft/create/onekind';
 import { cleanTMPImage } from 'enevti-app/service/enevti/nft';
 import { clearCreateNFTPackQueue } from 'enevti-app/store/slices/queue/nft/create/pack';
+import AppAlertModal from 'enevti-app/components/organism/menu/AppAlertModal';
 
 const Tab = createBottomTabNavigator();
 const TABBAR_HEIGHT_PERCENTAGE = 8;
@@ -270,41 +269,26 @@ export default function Home({ navigation }: Props) {
   return (
     <BottomSheetModalProvider>
       {canCreateNFT ? null : (
-        <AppMenuContainer
+        <AppAlertModal
           visible={uneligibleSheetVisible}
-          snapPoints={['55%']}
-          onDismiss={() => setUneligibleSheetVisible(false)}>
-          <AppHeaderWizard
-            noHeaderSpace
-            mode={'icon'}
-            modeData={'notEligibleCreator'}
-            style={styles.notEligibleContainer}
-            title={t('home:notEligible')}
-            description={t('home:notEligibleDescription', {
-              minimumStake: MINIMUM_BASIC_UNIT_STAKE_ELIGIBILITY,
-              coin: getCoinName(),
-            })}
-          />
-          <View style={{ padding: wp('10%', insets) }}>
-            <AppSecondaryButton onPress={() => setUneligibleSheetVisible(false)}>
-              {t('home:notEligibleOKButton')}
-            </AppSecondaryButton>
-            <View style={{ height: hp('1%', insets) }} />
-            <AppQuaternaryButton
-              contentStyle={styles.notEligibleGoToStakeButton}
-              onPress={() => {
-                setUneligibleSheetVisible(false);
-                navigation.navigate('StakePool', {
-                  arg: myPersona.address,
-                  mode: 'a',
-                });
-              }}>
-              <AppTextBody4 style={{ color: theme.colors.primary }}>
-                {t('home:notEligibleGoToStake')}
-              </AppTextBody4>
-            </AppQuaternaryButton>
-          </View>
-        </AppMenuContainer>
+          iconName={'notEligibleCreator'}
+          onDismiss={() => setUneligibleSheetVisible(false)}
+          title={t('home:notEligible')}
+          description={t('home:notEligibleDescription', {
+            minimumStake: MINIMUM_BASIC_UNIT_STAKE_ELIGIBILITY,
+            coin: getCoinName(),
+          })}
+          secondaryButtonText={t('home:notEligibleOKButton')}
+          secondaryButtonOnPress={() => setUneligibleSheetVisible(false)}
+          tertiaryButtonText={t('home:notEligibleGoToStake')}
+          tertiaryButtonOnPress={() => {
+            setUneligibleSheetVisible(false);
+            navigation.navigate('StakePool', {
+              arg: myPersona.address,
+              mode: 'a',
+            });
+          }}
+        />
       )}
       {createQueue ? (
         <AppMenuContainer
@@ -485,18 +469,6 @@ const makeStyles = (insets: SafeAreaInsets) =>
   StyleSheet.create({
     notEligibleImage: {
       alignSelf: 'center',
-    },
-    notEligibleContainer: {
-      width: wp('90%', insets),
-      marginTop: hp('3%', insets),
-      alignSelf: 'center',
-      flex: 1,
-    },
-    notEligibleGoToStakeButton: {
-      width: '100%',
-      height: '100%',
-      justifyContent: 'center',
-      alignItems: 'center',
     },
     restoreMenuContainer: {
       width: wp('90%', insets),

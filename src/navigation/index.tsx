@@ -10,7 +10,7 @@ import ConfirmPassphrase from 'enevti-app/screen/auth/ConfirmPassphrase';
 import AccountCreated from 'enevti-app/screen/auth/AccountCreated';
 import ImportPassphrase from 'enevti-app/screen/auth/ImportPassphrase';
 import Login from 'enevti-app/screen/auth/Login';
-import Home from './Home';
+import Home from '../screen/home/Home';
 import StakePool from 'enevti-app/screen/stake/StakePool';
 import Profile from 'enevti-app/screen/profile/Profile';
 import ChooseNFTType from 'enevti-app/screen/createNFT/ChooseNFTType';

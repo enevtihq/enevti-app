@@ -94,17 +94,19 @@ export async function getMyProfile(
     meta: {},
   };
 
-  if (force || now - lastFetch > lastFetchTimeout.profile) {
-    const profileResponse = await getProfile(myAddress, signal);
-    if (profileResponse.status === 200 && !isErrorResponse(profileResponse)) {
-      response.data = profileResponse.data;
-      store.dispatch(setLastFetchMyProfileCache(now));
-      store.dispatch(setMyProfileCache(parseProfileCache(profileResponse.data as Profile)));
-    } else {
-      response.status = profileResponse.status;
-      response.data = profileResponse.data;
+  try {
+    if (force || now - lastFetch > lastFetchTimeout.profile) {
+      const profileResponse = await getProfile(myAddress, signal);
+      if (profileResponse.status === 200 && !isErrorResponse(profileResponse)) {
+        response.data = profileResponse.data;
+        store.dispatch(setLastFetchMyProfileCache(now));
+        store.dispatch(setMyProfileCache(parseProfileCache(profileResponse.data as Profile)));
+      } else {
+        response.status = profileResponse.status;
+        response.data = profileResponse.data;
+      }
     }
-  }
+  } catch {}
 
   return response;
 }

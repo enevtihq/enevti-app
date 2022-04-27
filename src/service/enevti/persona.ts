@@ -205,17 +205,19 @@ export async function getMyBasePersona(
     meta: {},
   };
 
-  if (force || now - lastFetch > lastFetchTimeout.persona) {
-    const res = await getBasePersona(my.address, signal);
-    if (res.status === 200 && !isErrorResponse(res)) {
-      response.data = res.data;
-      store.dispatch(setLastFetchMyPersonaCache(now));
-      store.dispatch(setMyPersonaCache(res.data as Persona));
-    } else {
-      response.status = res.status;
-      response.data = res.data;
+  try {
+    if (force || now - lastFetch > lastFetchTimeout.persona) {
+      const res = await getBasePersona(my.address, signal);
+      if (res.status === 200 && !isErrorResponse(res)) {
+        response.data = res.data;
+        store.dispatch(setLastFetchMyPersonaCache(now));
+        store.dispatch(setMyPersonaCache(res.data as Persona));
+      } else {
+        response.status = res.status;
+        response.data = res.data;
+      }
     }
-  }
+  } catch {}
 
   return response;
 }
