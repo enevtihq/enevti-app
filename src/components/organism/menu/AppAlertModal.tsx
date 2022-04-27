@@ -5,10 +5,10 @@ import AppHeaderWizard from 'enevti-app/components/molecules/AppHeaderWizard';
 import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AppSecondaryButton from 'enevti-app/components/atoms/button/AppSecondaryButton';
+import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import { useTheme } from 'react-native-paper';
 import AppQuaternaryButton from 'enevti-app/components/atoms/button/AppQuaternaryButton';
-import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 
 interface AppAlertModalProps {

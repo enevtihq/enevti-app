@@ -17,7 +17,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 import { diffClamp } from 'enevti-app/utils/animation';
 import AppTabBar from 'enevti-app/components/atoms/view/AppTabBar';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
+import { hp } from 'enevti-app/utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AppHeaderAction from 'enevti-app/components/atoms/view/AppHeaderAction';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
@@ -28,7 +28,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectMyPersonaCache } from 'enevti-app/store/slices/entities/cache/myPersona';
 import { selectMyProfileCache } from 'enevti-app/store/slices/entities/cache/myProfile';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import Color from 'color';
 import AppIconGradient from 'enevti-app/components/molecules/AppIconGradient';
 import { Theme } from 'enevti-app/theme/default';
@@ -40,18 +40,14 @@ import {
   selectOnceEligible,
   touchOnceEligible,
 } from 'enevti-app/store/slices/entities/once/eligible';
-import AppMenuContainer from 'enevti-app/components/atoms/menu/AppMenuContainer';
-import AppHeaderWizard from 'enevti-app/components/molecules/AppHeaderWizard';
 
 import { getCoinName } from 'enevti-app/utils/constant/identifier';
-import AppSecondaryButton from 'enevti-app/components/atoms/button/AppSecondaryButton';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import {
   clearCreateNFTQueueRoute,
   selectCreateNFTRouteQueue,
 } from 'enevti-app/store/slices/queue/nft/create/route';
-import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
 import {
   clearCreateNFTQueueType,
   selectCreateNFTTypeQueue,
@@ -60,6 +56,7 @@ import { clearCreateNFTOneKindQueue } from 'enevti-app/store/slices/queue/nft/cr
 import { cleanTMPImage } from 'enevti-app/service/enevti/nft';
 import { clearCreateNFTPackQueue } from 'enevti-app/store/slices/queue/nft/create/pack';
 import AppAlertModal from 'enevti-app/components/organism/menu/AppAlertModal';
+import AppConfirmationModal from 'enevti-app/components/organism/menu/AppConfirmationModal';
 
 const Tab = createBottomTabNavigator();
 const TABBAR_HEIGHT_PERCENTAGE = 8;
@@ -71,8 +68,6 @@ export default function Home({ navigation }: Props) {
   const dispatch = useDispatch();
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
-  const styles = React.useMemo(() => makeStyles(insets), [insets]);
-  const restoreMenuSnapPoints = React.useMemo(() => ['42%'], []);
 
   const myPersona = useSelector(selectMyPersonaCache);
   const myProfile = useSelector(selectMyProfileCache);
@@ -291,34 +286,17 @@ export default function Home({ navigation }: Props) {
         />
       )}
       {createQueue ? (
-        <AppMenuContainer
-          memoKey={['visible']}
-          tapEverywhereToDismiss
-          enablePanDownToClose
-          snapPoints={restoreMenuSnapPoints}
+        <AppConfirmationModal
+          iconName={'restore'}
           visible={restoreMenuVisible}
-          onDismiss={restoreMenuOnDismiss}>
-          <AppHeaderWizard
-            noHeaderSpace
-            mode={'icon'}
-            modeData={'restore'}
-            style={styles.restoreMenuContainer}
-            title={t('home:restoreDialog')}
-            titleStyle={styles.restoreMenuTitle}
-            description={t('home:restoreDialogDescription')}
-          />
-          <View style={styles.restoreMenuAction}>
-            <View style={styles.restoreMenuItemAction}>
-              <AppSecondaryButton onPress={createNewCallback}>
-                {t('home:startNew')}
-              </AppSecondaryButton>
-            </View>
-            <View style={styles.restoreMenuActionSpace} />
-            <View style={styles.restoreMenuItemAction}>
-              <AppPrimaryButton onPress={restoreCallback}>{t('home:restore')}</AppPrimaryButton>
-            </View>
-          </View>
-        </AppMenuContainer>
+          onDismiss={restoreMenuOnDismiss}
+          title={t('home:restoreDialog')}
+          description={t('home:restoreDialogDescription')}
+          cancelText={t('home:startNew')}
+          cancelOnPress={createNewCallback}
+          okText={t('home:restore')}
+          okOnPress={restoreCallback}
+        />
       ) : null}
       <Tab.Navigator
         tabBar={props => <AppTabBar {...props} style={tabBarStyle} />}
@@ -464,29 +442,3 @@ export default function Home({ navigation }: Props) {
     </BottomSheetModalProvider>
   );
 }
-
-const makeStyles = (insets: SafeAreaInsets) =>
-  StyleSheet.create({
-    notEligibleImage: {
-      alignSelf: 'center',
-    },
-    restoreMenuContainer: {
-      width: wp('90%', insets),
-      alignSelf: 'center',
-      flex: 0,
-    },
-    restoreMenuTitle: {
-      marginTop: hp('1%', insets),
-    },
-    restoreMenuAction: {
-      paddingHorizontal: wp('5%', insets),
-      marginTop: hp('3%', insets),
-      flexDirection: 'row',
-    },
-    restoreMenuItemAction: {
-      flex: 1,
-    },
-    restoreMenuActionSpace: {
-      marginHorizontal: wp('1%', insets),
-    },
-  });
