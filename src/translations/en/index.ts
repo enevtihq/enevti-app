@@ -11,6 +11,7 @@ import payment from './payment';
 import collection from './collection';
 import nftDetails from './nftDetails';
 import error from './error';
+import setting from './setting';
 
 export default {
   auth,
@@ -26,4 +27,5 @@ export default {
   collection,
   nftDetails,
   error,
+  setting,
 };

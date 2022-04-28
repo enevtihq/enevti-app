@@ -30,6 +30,7 @@ import {
   setPaymentStatus,
   isPaymentUndefined,
 } from 'enevti-app/store/slices/payment';
+import { selectMyProfileCache } from 'enevti-app/store/slices/entities/cache/myProfile';
 import AppPaymentItem from './AppPaymentItem';
 import { parseAmount } from 'enevti-app/utils/format/amount';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
@@ -43,6 +44,7 @@ export default function AppPaymentModal() {
   const paymentSnapPoints = React.useMemo(() => ['70%'], []);
   const defaultCoin = React.useMemo(() => COIN_NAME, []);
 
+  const myProfile = useSelector(selectMyProfileCache);
   const paymentShowState = useSelector(selectPaymentShowState);
   const paymentMode = useSelector(selectPaymentMode);
   const paymentStatus = useSelector(selectPaymentStatus);
@@ -51,7 +53,14 @@ export default function AppPaymentModal() {
   const paymentUndefined = useSelector(isPaymentUndefined);
 
   const paymentTotalAmountCurrency = defaultCoin;
-  const paymentTotalAmount = paymentAction.amount + paymentFee.gas + paymentFee.platform;
+  const paymentTotalAmount = React.useMemo(
+    () => BigInt(paymentAction.amount) + BigInt(paymentFee.gas) + BigInt(paymentFee.platform),
+    [paymentAction.amount, paymentFee.gas, paymentFee.platform],
+  );
+  const balanceEnough = React.useMemo(
+    () => BigInt(myProfile.balance) > paymentTotalAmount,
+    [myProfile, paymentTotalAmount],
+  );
 
   const paymentDismiss = React.useCallback(() => {
     dispatch(resetPaymentState());
@@ -151,7 +160,7 @@ export default function AppPaymentModal() {
               bold
               hideTooltip
               title={t('payment:total')}
-              amount={paymentTotalAmount}
+              amount={paymentTotalAmount.toString()}
               currency={paymentTotalAmountCurrency}
             />
           </View>
@@ -175,8 +184,11 @@ export default function AppPaymentModal() {
           <Divider />
 
           <View style={styles.payButton}>
-            <AppPrimaryButton loading={paymentStatus.type === 'process'} onPress={payCallback}>
-              {t('payment:pay')}
+            <AppPrimaryButton
+              disabled={!balanceEnough}
+              loading={paymentStatus.type === 'process'}
+              onPress={payCallback}>
+              {balanceEnough ? t('payment:pay') : t('payment:notEnoughtBalance')}
             </AppPrimaryButton>
           </View>
         </View>

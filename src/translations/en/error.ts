@@ -16,7 +16,10 @@ export default {
   notFound: 'Not Found',
   responseError: 'Response Error: {{msg}}',
   errorFetchMinFee: 'Failed to get MinFee: {{msg}}',
+  errorFetchBaseFee: 'Failed to get Base Fee: {{msg}}',
+  errorPostTransaction: 'Failed to post transaction: {{msg}}',
   requestNonceFailed: 'Request profile nonce failed',
   timeoutError: 'Timeout! Please try again later',
   transactionPreparationFailed: 'Failed to prepare transaction, please try again later',
+  transactionPostError: 'Post Transaction Failed: {{msg}}',
 };

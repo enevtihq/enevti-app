@@ -9,15 +9,15 @@ const silentError = [ABORT_ERROR_MESSAGE, 'Abort'];
 const includeSubstring = (message: string) => (item: string) =>
   message.toLowerCase().includes(item.toLowerCase());
 
-export function handleError(err: any) {
-  console.log(err.message);
-  if (silentError.some(includeSubstring(err.message))) {
+export function handleError(err: any, key: string = 'message') {
+  console.log(err[key]);
+  if (silentError.some(includeSubstring(err[key]))) {
     return;
   } else {
     store.dispatch(
       showSnackbar({
         mode: 'error',
-        text: err.message,
+        text: err[key],
       }),
     );
   }

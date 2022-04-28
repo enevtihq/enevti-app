@@ -139,6 +139,11 @@ export const selectPaymentAction = createSelector(
   (state: RootState) => state.payment.action,
 );
 
+export const selectPaymentActionPayload = createSelector(
+  (state: RootState) => state,
+  (state: RootState) => state.payment.action.payload,
+);
+
 export const selectPaymentFee = createSelector(
   (state: RootState) => state,
   (state: RootState) => state.payment.fee,

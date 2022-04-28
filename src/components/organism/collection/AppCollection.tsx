@@ -29,7 +29,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import CollectionActivityComponent from './tabs/CollectionActivityComponent';
 import AppCollectionMintButton from './AppCollectionMintButton';
 import usePaymentCallback from 'enevti-app/utils/hook/usePaymentCallback';
-import { hideModalLoader, showModalLoader } from 'enevti-app/store/slices/ui/global/modalLoader';
+import { hideModalLoader } from 'enevti-app/store/slices/ui/global/modalLoader';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 import { useTranslation } from 'react-i18next';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -120,10 +120,6 @@ export default function AppCollection({ onScrollWorklet, navigation, route }: Ap
 
   const activityOnMounted = React.useCallback(() => setActivityMounted(true), []);
 
-  const paymentProcessCallback = React.useCallback(() => {
-    dispatch(showModalLoader());
-  }, [dispatch]);
-
   const paymentSuccessCallback = React.useCallback(() => {
     dispatch(hideModalLoader());
     dispatch(showSnackbar({ mode: 'info', text: t('payment:success') }));
@@ -132,7 +128,6 @@ export default function AppCollection({ onScrollWorklet, navigation, route }: Ap
   const paymentErrorCallback = React.useCallback(() => dispatch(hideModalLoader()), [dispatch]);
 
   usePaymentCallback({
-    onProcess: paymentProcessCallback,
     onSuccess: paymentSuccessCallback,
     onError: paymentErrorCallback,
   });

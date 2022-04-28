@@ -119,6 +119,18 @@ export function urlPostTransactionFee(host: string = ENEVTI_DEFAULT_API) {
   return encodeURI(`${host}/transaction/fee`);
 }
 
+export function urlPostTransaction(host: string = ENEVTI_DEFAULT_API) {
+  return encodeURI(`${host}/transaction/post`);
+}
+
+export function urlGetTransactionBaseFee(
+  moduleID: number,
+  assetID: number,
+  host: string = ENEVTI_DEFAULT_API,
+) {
+  return encodeURI(`${host}/transaction/basefee/${moduleID}/${assetID}`);
+}
+
 export function urlPostRequestFaucet(host: string = ENEVTI_FAUCET_API) {
   return encodeURI(`${host}/faucet`);
 }

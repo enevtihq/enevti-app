@@ -8,6 +8,7 @@ export default {
     'Get at least {{minimumStake}} {{coin}} stake to proof yourself as a community-driven NFT creator!',
   notEligibleOKButton: 'Got It',
   notEligibleGoToStake: 'Go to my stake pool',
+  notEligibleSetupStake: 'Setup your stake pool',
   apps: 'Apps',
   profile: 'Profile',
   myProfile: 'My Profile',

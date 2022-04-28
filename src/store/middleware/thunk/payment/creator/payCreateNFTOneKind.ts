@@ -142,7 +142,7 @@ export const payCreateNFTOneKind = createAsyncThunk<void, CreateNFTOneKind, Asyn
         );
       const gasFee = await calculateGasFee(transactionPayload, signal);
       if (!gasFee) {
-        throw Error(i18n.t('eror:transactionPreparationFailed'));
+        throw Error(i18n.t('error:transactionPreparationFailed'));
       }
 
       dispatch(setPaymentFee({ gas: gasFee, platform: '0' }));

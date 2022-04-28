@@ -30,6 +30,8 @@ import { linking } from 'enevti-app/utils/linking';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
 import { useTheme } from 'react-native-paper';
 import { Theme } from 'enevti-app/theme/default';
+import SetupUsername from 'enevti-app/screen/setting/SetupUsername';
+import UsernameRegistered from 'enevti-app/screen/setting/UsernameRegistered';
 
 export type RootStackParamList = {
   CreateAccount: undefined;
@@ -47,6 +49,8 @@ export type RootStackParamList = {
   Feed: undefined;
   MyProfile: undefined;
   ChooseNFTType: undefined;
+  SetupUsername: undefined;
+  UsernameRegistered: undefined;
   ChooseNFTTemplate: {
     mode: 'normal' | 'change';
   };
@@ -220,6 +224,22 @@ export default function AppNavigationContainer() {
         <Stack.Screen
           name="NFTDetails"
           component={NFTDetails}
+          options={{
+            headerShown: false,
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          }}
+        />
+        <Stack.Screen
+          name="SetupUsername"
+          component={SetupUsername}
+          options={{
+            headerShown: false,
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          }}
+        />
+        <Stack.Screen
+          name="UsernameRegistered"
+          component={UsernameRegistered}
           options={{
             headerShown: false,
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,

@@ -9,7 +9,11 @@ export default {
   cancel: 'Cancel',
   choose: 'Choose',
   upercase: 'Must be UPPERCASE. No space, symbol or number allowed',
+  lowercase: 'Must be lowercase',
   loading: 'Loading...',
   seeMore: 'see more',
   seeLess: 'see less',
+  minChar: 'Minimum {{count}} characters',
+  maxChar: 'Maximum {{count}} characters',
+  noSpace: 'No space allowed',
 };

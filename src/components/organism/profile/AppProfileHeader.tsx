@@ -26,6 +26,9 @@ import { Profile } from 'enevti-app/types/core/account/profile';
 import { numberKMB, parseAmount } from 'enevti-app/utils/format/amount';
 import { menuItemHeigtPercentage } from 'enevti-app/utils/layout/menuItemHeigtPercentage';
 import AppPersonaLabel from 'enevti-app/components/molecules/avatar/AppPersonaLabel';
+import { useSelector } from 'react-redux';
+import { selectMyPersonaCache } from 'enevti-app/store/slices/entities/cache/myPersona';
+import AppSecondaryButton from 'enevti-app/components/atoms/button/AppSecondaryButton';
 
 interface AppProfileHeaderProps {
   navigation: StackNavigationProp<RootStackParamList>;
@@ -40,6 +43,7 @@ export default function AppProfileHeader({ navigation, persona, profile }: AppPr
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
   const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
+  const myPersona = useSelector(selectMyPersonaCache);
 
   const [menuVisible, setMenuVisible] = React.useState<boolean>(false);
 
@@ -86,23 +90,39 @@ export default function AppProfileHeader({ navigation, persona, profile }: AppPr
       </View>
 
       <View style={styles.profileActionContainer}>
-        <AppTertiaryButton
-          style={styles.profileActionButton}
-          icon={iconMap.pool}
-          onPress={() =>
-            navigation.navigate('StakePool', {
-              arg: persona.address,
-              mode: 'a',
-            })
-          }>
-          {t('profile:stakeAndInsight') + '  '}
-          <AppTextBody5
-            style={{
-              color: Color(theme.colors.text).darken(0.1).rgb().toString(),
-            }}>
-            {parseAmount(profile.stake, true, 2)} {getCoinName()}
-          </AppTextBody5>
-        </AppTertiaryButton>
+        {persona.username ? (
+          <AppTertiaryButton
+            style={styles.profileActionButton}
+            icon={iconMap.pool}
+            onPress={() =>
+              navigation.navigate('StakePool', {
+                arg: persona.address,
+                mode: 'a',
+              })
+            }>
+            {t('profile:stakeAndInsight') + '  '}
+            <AppTextBody5
+              style={{
+                color: Color(theme.colors.text).darken(0.1).rgb().toString(),
+              }}>
+              {parseAmount(profile.stake, true, 2)} {getCoinName()}
+            </AppTextBody5>
+          </AppTertiaryButton>
+        ) : persona.address === myPersona.address ? (
+          <AppSecondaryButton
+            style={styles.profileActionButton}
+            icon={iconMap.setupPool}
+            onPress={() => navigation.navigate('SetupUsername')}>
+            {t('profile:setupStake')}
+          </AppSecondaryButton>
+        ) : (
+          <AppTertiaryButton
+            disabled
+            style={styles.profileActionButton}
+            icon={iconMap.poolNotReady}>
+            {t('profile:stakeNotReady')}
+          </AppTertiaryButton>
+        )}
         <AppMenuContainer
           tapEverywhereToDismiss
           visible={menuVisible}

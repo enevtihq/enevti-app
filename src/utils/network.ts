@@ -46,15 +46,23 @@ export async function appFetch(resource: string, options: Record<string, any> = 
   options.signal ? signalArray.push(options.signal) : {};
   const signal = multipleSignal(signalArray);
 
+  const onAbort = () => clearTimeout(id);
+  abortController.signal.addEventListener('abort', onAbort);
+
   const id = setTimeout(() => {
     abortController.abort();
     handleError({ message: i18n.t('error:timeoutError') });
   }, timeout);
-  const response = await fetch(resource, {
-    ...options,
-    signal,
-  });
 
-  clearTimeout(id);
-  return response;
+  try {
+    const response = await fetch(resource, {
+      ...options,
+      signal,
+    });
+    abortController.abort();
+    return response;
+  } catch {
+    abortController.abort();
+    return new Response();
+  }
 }

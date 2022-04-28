@@ -57,7 +57,7 @@ import AppSecondaryButton from 'enevti-app/components/atoms/button/AppSecondaryB
 import { clearCreateNFTQueueType } from 'enevti-app/store/slices/queue/nft/create/type';
 import { clearCreateNFTQueueRoute } from 'enevti-app/store/slices/queue/nft/create/route';
 import usePaymentCallback from 'enevti-app/utils/hook/usePaymentCallback';
-import { hideModalLoader, showModalLoader } from 'enevti-app/store/slices/ui/global/modalLoader';
+import { hideModalLoader } from 'enevti-app/store/slices/ui/global/modalLoader';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 import { payCreateNFTOneKind } from 'enevti-app/store/middleware/thunk/payment/creator/payCreateNFTOneKind';
 import getFileExtension from 'enevti-app/utils/mime/getFileExtension';
@@ -281,10 +281,6 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
     paymentThunkRef.current?.abort();
   }, []);
 
-  const paymentProcessCallback = React.useCallback(() => {
-    dispatch(showModalLoader());
-  }, [dispatch]);
-
   const paymentSuccessCallback = React.useCallback(() => {
     dispatch(hideModalLoader());
     dispatch(showSnackbar({ mode: 'info', text: t('payment:success') }));
@@ -295,7 +291,6 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
 
   usePaymentCallback({
     onIdle: paymentIdleCallback,
-    onProcess: paymentProcessCallback,
     onSuccess: paymentSuccessCallback,
     onError: paymentErrorCallback,
   });
@@ -1039,7 +1034,13 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
         <AppPrimaryButton
           onPress={formikProps.handleSubmit}
           loading={isLoading}
-          disabled={!(formikProps.isValid && formikProps.dirty)}
+          disabled={
+            !(
+              formikProps.isValid &&
+              formikProps.dirty &&
+              Object.values(formikProps.status).every(value => value === true)
+            )
+          }
           style={styles.actionButton}>
           {t('createNFT:createButton')}
         </AppPrimaryButton>

@@ -227,6 +227,25 @@ export default function Home({ navigation }: Props) {
     [headerHeight, feedAnimatedScrollHandler],
   );
 
+  const notEligibleOnDismiss = React.useCallback(() => setUneligibleSheetVisible(false), []);
+
+  const notEligibleStakeText = React.useMemo(
+    () => (myPersona.username ? t('home:notEligibleGoToStake') : t('home:notEligibleSetupStake')),
+    [myPersona.username, t],
+  );
+
+  const notEligibleStakeAction = React.useCallback(() => {
+    setUneligibleSheetVisible(false);
+    if (myPersona.username) {
+      navigation.navigate('StakePool', {
+        arg: myPersona.address,
+        mode: 'a',
+      });
+    } else {
+      navigation.navigate('SetupUsername');
+    }
+  }, [myPersona.username, myPersona.address, navigation]);
+
   const restoreMenuOnDismiss = React.useCallback(() => setRestoreMenuVisible(false), []);
 
   const createNewCallback = React.useCallback(() => {
@@ -267,22 +286,16 @@ export default function Home({ navigation }: Props) {
         <AppAlertModal
           visible={uneligibleSheetVisible}
           iconName={'notEligibleCreator'}
-          onDismiss={() => setUneligibleSheetVisible(false)}
+          onDismiss={notEligibleOnDismiss}
           title={t('home:notEligible')}
           description={t('home:notEligibleDescription', {
             minimumStake: MINIMUM_BASIC_UNIT_STAKE_ELIGIBILITY,
             coin: getCoinName(),
           })}
           secondaryButtonText={t('home:notEligibleOKButton')}
-          secondaryButtonOnPress={() => setUneligibleSheetVisible(false)}
-          tertiaryButtonText={t('home:notEligibleGoToStake')}
-          tertiaryButtonOnPress={() => {
-            setUneligibleSheetVisible(false);
-            navigation.navigate('StakePool', {
-              arg: myPersona.address,
-              mode: 'a',
-            });
-          }}
+          secondaryButtonOnPress={notEligibleOnDismiss}
+          tertiaryButtonText={notEligibleStakeText}
+          tertiaryButtonOnPress={notEligibleStakeAction}
         />
       )}
       {createQueue ? (

@@ -6,5 +6,7 @@ export default {
   treasuryAct: 'Treasury Act',
   serveRate: 'Serve Rate',
   stakeAndInsight: 'Stake & Insight',
+  setupStake: 'Setup Your Stake Pool',
+  stakeNotReady: 'Stake Pool Not Set',
   copyAddress: 'Copy Address',
 };

@@ -1,4 +1,4 @@
-import { NFTPrice } from '../chain/nft/NFTPrice';
+import { NFTPrice } from '../../chain/nft/NFTPrice';
 
 export type AddStakeProps = {
   address: string;

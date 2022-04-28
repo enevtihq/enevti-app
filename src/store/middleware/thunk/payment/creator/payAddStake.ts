@@ -13,7 +13,7 @@ import { parsePersonaLabel } from 'enevti-app/service/enevti/persona';
 import { Persona } from 'enevti-app/types/core/account/persona';
 import { NFTPrice } from 'enevti-app/types/core/chain/nft/NFTPrice';
 import { handleError } from 'enevti-app/utils/error/handle';
-import { AddStakeUI } from 'enevti-app/types/core/asset/add_stake_asset';
+import { AddStakeUI } from 'enevti-app/types/core/asset/chain/add_stake_asset';
 import { AppTransaction } from 'enevti-app/types/core/service/transaction';
 import { stakingModule } from 'enevti-app/utils/constant/transaction';
 
@@ -38,7 +38,7 @@ export const payAddStake = createAsyncThunk<void, PayAddStakePayload, AsyncThunk
       );
       const gasFee = await calculateGasFee(transactionPayload, signal);
       if (!gasFee) {
-        throw Error(i18n.t('eror:transactionPreparationFailed'));
+        throw Error(i18n.t('error:transactionPreparationFailed'));
       }
 
       dispatch(setPaymentFee({ gas: gasFee, platform: '0' }));

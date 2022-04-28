@@ -62,18 +62,18 @@ export default function AppAlertModal({
       />
       <View style={{ padding: wp('10%', insets) }}>
         {primaryButtonText ? (
-          <AppPrimaryButton
-            style={{ marginBottom: hp('1%', insets) }}
-            onPress={primaryButtonOnPress}>
-            {primaryButtonText}
-          </AppPrimaryButton>
+          <View>
+            <AppPrimaryButton onPress={primaryButtonOnPress}>{primaryButtonText}</AppPrimaryButton>
+            <View style={{ height: hp('1%', insets) }} />
+          </View>
         ) : null}
         {secondaryButtonText ? (
-          <AppSecondaryButton
-            style={{ marginBottom: hp('1%', insets) }}
-            onPress={secondaryButtonOnPress}>
-            {secondaryButtonText}
-          </AppSecondaryButton>
+          <View>
+            <AppSecondaryButton onPress={secondaryButtonOnPress}>
+              {secondaryButtonText}
+            </AppSecondaryButton>
+            <View style={{ height: hp('1%', insets) }} />
+          </View>
         ) : null}
         {tertiaryButtonText ? (
           <AppQuaternaryButton contentStyle={styles.tertiaryAction} onPress={tertiaryButtonOnPress}>
