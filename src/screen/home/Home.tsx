@@ -230,21 +230,17 @@ export default function Home({ navigation }: Props) {
   const notEligibleOnDismiss = React.useCallback(() => setUneligibleSheetVisible(false), []);
 
   const notEligibleStakeText = React.useMemo(
-    () => (myPersona.username ? t('home:notEligibleGoToStake') : t('home:notEligibleSetupStake')),
+    () => (myPersona.username ? t('home:notEligibleGoToStake') : undefined),
     [myPersona.username, t],
   );
 
   const notEligibleStakeAction = React.useCallback(() => {
     setUneligibleSheetVisible(false);
-    if (myPersona.username) {
-      navigation.navigate('StakePool', {
-        arg: myPersona.address,
-        mode: 'a',
-      });
-    } else {
-      navigation.navigate('SetupUsername');
-    }
-  }, [myPersona.username, myPersona.address, navigation]);
+    navigation.navigate('StakePool', {
+      arg: myPersona.address,
+      mode: 'a',
+    });
+  }, [myPersona.address, navigation]);
 
   const restoreMenuOnDismiss = React.useCallback(() => setRestoreMenuVisible(false), []);
 

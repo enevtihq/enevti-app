@@ -3,6 +3,8 @@ import i18n from 'enevti-app/translations/i18n';
 import { lastFetchTimeout } from './constant/lastFetch';
 import { ERRORCODE } from './error/code';
 import { handleError } from './error/handle';
+import io from 'socket.io-client';
+import { urlSocketIO } from './constant/URLCreator';
 
 export async function isInternetReachable(): Promise<boolean> {
   await i18n.loadNamespaces('network');
@@ -65,4 +67,8 @@ export async function appFetch(resource: string, options: Record<string, any> = 
     abortController.abort();
     return new Response();
   }
+}
+
+export function appSocket() {
+  return io(urlSocketIO(), { transports: ['websocket'] });
 }

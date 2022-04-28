@@ -7,6 +7,7 @@ export default {
   unknown: 'Unknown',
   unknownError: 'Unknown Error',
   unknownPayment: 'unknown payment type',
+  unknownSocketEvent: 'unknown event type',
   unknownUtility: 'unknown utility type',
   unknownRecurring: 'unknown recurring type',
   unsupportedCryptoVersion: 'Unsupported App Cryptography Version',

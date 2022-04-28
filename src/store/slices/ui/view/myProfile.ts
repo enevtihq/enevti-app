@@ -27,7 +27,7 @@ const myProfileViewSlice = createSlice({
   name: 'myProfileView',
   initialState,
   reducers: {
-    setMyProfileView: (profile, action: PayloadAction<MyProfileView>) => {
+    setMyProfileView: (profile, action: PayloadAction<Record<string, any>>) => {
       Object.assign(profile, action.payload);
     },
     setMyProfileViewLoaded: (profile, action: PayloadAction<boolean>) => {

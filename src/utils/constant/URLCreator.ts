@@ -1,10 +1,15 @@
 export const ENEVTI_DEFAULT_API = 'http://192.168.0.104:8080';
 export const ENEVTI_FAUCET_API = 'http://192.168.0.104:8081';
+export const ENEVTI_SOCKET_IO = 'ws://192.168.0.104:8082';
 export const ENEVTI_CORE_WS = 'ws://192.168.0.104:8082/ws';
 export const IPFS_GATEWAY = 'https://cloudflare-ipfs.com/ipfs/';
 
 export function urlWSCore() {
   return ENEVTI_CORE_WS;
+}
+
+export function urlSocketIO() {
+  return ENEVTI_SOCKET_IO;
 }
 
 export function urlGetIPFS(hash: string, gateway: string = IPFS_GATEWAY) {
