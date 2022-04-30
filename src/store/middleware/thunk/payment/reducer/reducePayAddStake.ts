@@ -1,19 +1,23 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { setPaymentStatus } from 'enevti-app/store/slices/payment';
+import { selectPaymentActionPayload, setPaymentStatus } from 'enevti-app/store/slices/payment';
 import { AppThunk } from 'enevti-app/store/state';
-import sleep from 'enevti-app/utils/dummy/sleep';
 import { hideModalLoader, showModalLoader } from 'enevti-app/store/slices/ui/global/modalLoader';
-import { AddStakeProps } from 'enevti-app/types/core/asset/chain/add_stake_asset';
+import { AddStakeUI } from 'enevti-app/types/core/asset/chain/add_stake_asset';
+import { AppTransaction } from 'enevti-app/types/core/service/transaction';
+import { postTransaction } from 'enevti-app/service/enevti/transaction';
 
 export const reducePayAddStake = (): AppThunk => async (dispatch, getState) => {
   dispatch(showModalLoader());
   dispatch({ type: 'payment/reducePayAddStake' });
   dispatch(setPaymentStatus({ type: 'process', message: '' }));
 
-  const payload = JSON.parse(getState().payment.action.payload) as AddStakeProps;
-  await sleep(5000);
-  // TODO: use Lisk Client to submit transaction to Blockchain
+  const payload = JSON.parse(selectPaymentActionPayload(getState())) as AppTransaction<AddStakeUI>;
 
-  dispatch(setPaymentStatus({ type: 'success', message: '' }));
+  const response = await postTransaction(payload);
+  if (response.status === 200) {
+    dispatch(setPaymentStatus({ type: 'success', message: '' }));
+  } else {
+    dispatch(setPaymentStatus({ type: 'error', message: response.data }));
+  }
+
   dispatch(hideModalLoader());
 };

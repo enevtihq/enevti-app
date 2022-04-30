@@ -12,10 +12,6 @@ target 'Enevti' do
     :hermes_enabled => false
   )
 
-  pod 'React', :path => '../node_modules/react-native', :subspecs => [
-    'RCTLinkingIOS',
-  ]
-
   target 'EnevtiTests' do
     inherit! :complete
     # Pods for testing

@@ -29,6 +29,11 @@ export function handleResponseCode(res: Response, ret: ResponseJSON<any>) {
       code: 404,
       message: i18n.t('error:notFound'),
     };
+  } else if (res.status === 400) {
+    throw {
+      code: 400,
+      message: i18n.t('error:clientError'),
+    };
   } else if (res.status !== 200) {
     throw {
       code: res.status,

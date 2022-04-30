@@ -6,7 +6,12 @@ import {
   showPayment,
 } from 'enevti-app/store/slices/payment';
 import { AsyncThunkAPI } from 'enevti-app/store/state';
-import { calculateGasFee, createTransaction } from 'enevti-app/service/enevti/transaction';
+import {
+  attachFee,
+  calculateBaseFee,
+  calculateGasFee,
+  createTransaction,
+} from 'enevti-app/service/enevti/transaction';
 import i18n from 'enevti-app/translations/i18n';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { parsePersonaLabel } from 'enevti-app/service/enevti/persona';
@@ -16,6 +21,7 @@ import { handleError } from 'enevti-app/utils/error/handle';
 import { AddStakeUI } from 'enevti-app/types/core/asset/chain/add_stake_asset';
 import { AppTransaction } from 'enevti-app/types/core/service/transaction';
 import { stakingModule } from 'enevti-app/utils/constant/transaction';
+import { getMyProfile } from 'enevti-app/service/enevti/profile';
 
 type PayAddStakePayload = { persona: Persona; stake: NFTPrice };
 
@@ -25,18 +31,20 @@ export const payAddStake = createAsyncThunk<void, PayAddStakePayload, AsyncThunk
     try {
       dispatch(setPaymentStatus({ type: 'initiated', message: '' }));
       dispatch(showPayment());
+      await getMyProfile(true);
 
       const transactionPayload: AppTransaction<AddStakeUI> = await createTransaction<AddStakeUI>(
         stakingModule.moduleID,
         stakingModule.vote,
-        {
-          address: payload.persona.address,
-          amount: payload.stake,
-        },
+        { votes: [{ delegateAddress: payload.persona.address, amount: payload.stake.amount }] },
         '0',
         signal,
       );
-      const gasFee = await calculateGasFee(transactionPayload, signal);
+      const baseFee = await calculateBaseFee(transactionPayload, signal);
+      if (!baseFee) {
+        throw Error(i18n.t('error:transactionPreparationFailed'));
+      }
+      const gasFee = await calculateGasFee(attachFee(transactionPayload, baseFee), signal);
       if (!gasFee) {
         throw Error(i18n.t('error:transactionPreparationFailed'));
       }
@@ -50,9 +58,11 @@ export const payAddStake = createAsyncThunk<void, PayAddStakePayload, AsyncThunk
           description: i18n.t('payment:payAddStakeDescription', {
             account: parsePersonaLabel(payload.persona),
           }),
-          amount: transactionPayload.asset.amount.amount,
-          currency: transactionPayload.asset.amount.currency,
-          payload: JSON.stringify(transactionPayload),
+          amount: (BigInt(transactionPayload.asset.votes[0].amount) + BigInt(baseFee)).toString(),
+          currency: payload.stake.currency,
+          payload: JSON.stringify(
+            attachFee(transactionPayload, (BigInt(gasFee) + BigInt(baseFee)).toString()),
+          ),
         }),
       );
     } catch (err) {

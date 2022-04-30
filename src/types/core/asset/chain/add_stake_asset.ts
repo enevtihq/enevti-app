@@ -1,8 +1,13 @@
-import { NFTPrice } from '../../chain/nft/NFTPrice';
-
 export type AddStakeProps = {
-  address: string;
-  amount: NFTPrice;
+  votes: {
+    delegateAddress: Buffer;
+    amount: bigint;
+  }[];
 };
 
-export type AddStakeUI = AddStakeProps;
+export type AddStakeUI = {
+  votes: {
+    delegateAddress: string;
+    amount: string;
+  }[];
+};

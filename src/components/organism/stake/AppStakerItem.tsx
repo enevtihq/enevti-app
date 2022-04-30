@@ -52,7 +52,7 @@ export default function AppStakerItem({ staker }: AppStakerItemProps) {
         {staker.persona.username ? staker.persona.username : staker.persona.address}
       </AppTextHeading3>
       <AppTextBody4 style={{ color: theme.colors.placeholder }} numberOfLines={1}>
-        {parseAmount(staker.stake, true, 2)} {getCoinName()} ({(staker.portion * 100).toFixed(2)}%)
+        {parseAmount(staker.stake, true, 2)} {getCoinName()} ({(staker.portion / 100).toFixed(2)}%)
       </AppTextBody4>
     </AppListItem>
   );

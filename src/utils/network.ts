@@ -2,7 +2,6 @@ import NetInfo from '@react-native-community/netinfo';
 import i18n from 'enevti-app/translations/i18n';
 import { lastFetchTimeout } from './constant/lastFetch';
 import { ERRORCODE } from './error/code';
-import { handleError } from './error/handle';
 import io from 'socket.io-client';
 import { urlSocketIO } from './constant/URLCreator';
 
@@ -53,7 +52,6 @@ export async function appFetch(resource: string, options: Record<string, any> = 
 
   const id = setTimeout(() => {
     abortController.abort();
-    handleError({ message: i18n.t('error:timeoutError') });
   }, timeout);
 
   try {
@@ -65,7 +63,7 @@ export async function appFetch(resource: string, options: Record<string, any> = 
     return response;
   } catch {
     abortController.abort();
-    return new Response();
+    return new Response('{}', { status: 400 });
   }
 }
 

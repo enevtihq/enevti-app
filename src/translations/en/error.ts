@@ -20,7 +20,7 @@ export default {
   errorFetchBaseFee: 'Failed to get Base Fee: {{msg}}',
   errorPostTransaction: 'Failed to post transaction: {{msg}}',
   requestNonceFailed: 'Request profile nonce failed',
-  timeoutError: 'Timeout! Please try again later',
+  clientError: 'Please try again later',
   transactionPreparationFailed: 'Failed to prepare transaction, please try again later',
   transactionPostError: 'Post Transaction Failed: {{msg}}',
 };

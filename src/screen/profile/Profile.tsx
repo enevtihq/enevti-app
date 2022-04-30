@@ -8,13 +8,16 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AppHeader, { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
 import { hp } from 'enevti-app/utils/imageRatio';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { isProfileUndefined, selectProfileView } from 'enevti-app/store/slices/ui/view/profile';
 import { RootState } from 'enevti-app/store/state';
+import { appSocket } from 'enevti-app/utils/network';
+import { reduceProfileSocket } from 'enevti-app/store/middleware/thunk/socket/profile';
 
 type Props = StackScreenProps<RootStackParamList, 'Profile'>;
 
 export default function Profile({ navigation, route }: Props) {
+  const dispatch = useDispatch();
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const styles = React.useMemo(() => makeStyles(), []);
@@ -24,6 +27,17 @@ export default function Profile({ navigation, route }: Props) {
   const profileUndefined = useSelector((state: RootState) =>
     isProfileUndefined(state, route.params.arg),
   );
+  const socket = React.useRef<any>();
+
+  React.useEffect(() => {
+    socket.current = appSocket();
+    socket.current.on(`profile:${profile.persona.address}`, (event: any) =>
+      dispatch(reduceProfileSocket(event, route.params.arg)),
+    );
+    return function cleanup() {
+      socket.current.disconnect();
+    };
+  }, [profile.persona.address, dispatch, route.params.arg]);
 
   return (
     <AppView

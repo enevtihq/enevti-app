@@ -33,6 +33,7 @@ import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 import usePaymentCallback from 'enevti-app/utils/hook/usePaymentCallback';
 import { useTranslation } from 'react-i18next';
 import AppResponseView from '../view/AppResponseView';
+import AppMessageEmpty from 'enevti-app/components/molecules/message/AppMessageEmpty';
 
 const AnimatedFlatList = Animated.createAnimatedComponent<FlatListProps<StakerItem>>(FlatList);
 
@@ -138,9 +139,19 @@ export default function AppStakePool({ route }: AppStakePoolProps) {
     [],
   );
 
+  const emptyComponent = React.useMemo(() => <AppMessageEmpty />, []);
+
   const refreshControl = React.useMemo(
     () => <RefreshControl refreshing={false} onRefresh={handleRefresh} />,
     [handleRefresh],
+  );
+
+  const contentContainerStyle = React.useMemo(
+    () =>
+      stakePool && stakePool.staker && stakePool.staker.length > 0
+        ? styles.listContentContainer
+        : styles.listContentEmptyContainer,
+    [stakePool, styles.listContentContainer, styles.listContentEmptyContainer],
   );
 
   return !stakePoolUndefined ? (
@@ -158,6 +169,8 @@ export default function AppStakePool({ route }: AppStakePoolProps) {
         windowSize={5}
         getItemLayout={getItemLayout}
         refreshControl={refreshControl}
+        ListEmptyComponent={emptyComponent}
+        contentContainerStyle={contentContainerStyle}
       />
       <AppStakeButton
         persona={owner}
@@ -179,6 +192,13 @@ const makeStyles = () =>
   StyleSheet.create({
     stakePoolContainer: {
       flex: 1,
+    },
+    listContentContainer: {
+      paddingTop: undefined,
+    },
+    listContentEmptyContainer: {
+      flex: 1,
+      justifyContent: 'center',
     },
     loaderContainer: {
       justifyContent: 'center',
