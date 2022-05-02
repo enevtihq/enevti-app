@@ -26,9 +26,11 @@ import { Profile } from 'enevti-app/types/core/account/profile';
 import { numberKMB, parseAmount } from 'enevti-app/utils/format/amount';
 import { menuItemHeigtPercentage } from 'enevti-app/utils/layout/menuItemHeigtPercentage';
 import AppPersonaLabel from 'enevti-app/components/molecules/avatar/AppPersonaLabel';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectMyPersonaCache } from 'enevti-app/store/slices/entities/cache/myPersona';
 import AppSecondaryButton from 'enevti-app/components/atoms/button/AppSecondaryButton';
+import Clipboard from '@react-native-clipboard/clipboard';
+import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 
 interface AppProfileHeaderProps {
   navigation: StackNavigationProp<RootStackParamList>;
@@ -39,6 +41,7 @@ interface AppProfileHeaderProps {
 export const PROFILE_HEADER_HEIGHT_PERCENTAGE = 42;
 
 export default function AppProfileHeader({ navigation, persona, profile }: AppProfileHeaderProps) {
+  const dispatch = useDispatch();
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
@@ -127,7 +130,7 @@ export default function AppProfileHeader({ navigation, persona, profile }: AppPr
           tapEverywhereToDismiss
           visible={menuVisible}
           onDismiss={() => setMenuVisible(false)}
-          snapPoints={[`${menuItemHeigtPercentage(2)}%`]}
+          snapPoints={[`${menuItemHeigtPercentage(3)}%`]}
           anchor={
             <AppQuaternaryButton
               box
@@ -139,7 +142,22 @@ export default function AppProfileHeader({ navigation, persona, profile }: AppPr
             />
           }>
           <AppMenuItem onPress={() => {}} title={t('home:follow')} />
-          <AppMenuItem onPress={() => {}} title={t('profile:copyAddress')} />
+          <AppMenuItem
+            onPress={() => {
+              Clipboard.setString(persona.base32);
+              dispatch(showSnackbar({ mode: 'info', text: t('profile:addressCopied') }));
+              setMenuVisible(false);
+            }}
+            title={t('profile:copyAddress')}
+          />
+          <AppMenuItem
+            onPress={() => {
+              Clipboard.setString(persona.address);
+              dispatch(showSnackbar({ mode: 'info', text: t('profile:addressCopied') }));
+              setMenuVisible(false);
+            }}
+            title={t('profile:copyChainAddress')}
+          />
         </AppMenuContainer>
       </View>
 

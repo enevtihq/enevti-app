@@ -1,3 +1,5 @@
+import { COIN_NAME } from 'enevti-app/utils/constant/identifier';
+
 export default {
   owned: 'Owned',
   onSale: 'On Sale',
@@ -8,5 +10,7 @@ export default {
   stakeAndInsight: 'Stake & Insight',
   setupStake: 'Setup Your Stake Pool',
   stakeNotReady: 'Stake Pool Not Set',
-  copyAddress: 'Copy Address',
+  copyAddress: `Copy ${COIN_NAME} Address`,
+  copyChainAddress: 'Copy Chain Address',
+  addressCopied: 'Address Copied',
 };

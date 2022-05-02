@@ -19,7 +19,6 @@ import { AppTransaction } from 'enevti-app/types/core/service/transaction';
 import { stakingModule } from 'enevti-app/utils/constant/transaction';
 import { RegisterUsernameUI } from 'enevti-app/types/core/asset/chain/register_username';
 import { COIN_NAME } from 'enevti-app/utils/constant/identifier';
-import { getMyProfile } from 'enevti-app/service/enevti/profile';
 
 type PayRegisterUsernamePayload = string;
 
@@ -31,7 +30,6 @@ export const payRegisterUsername = createAsyncThunk<
   try {
     dispatch(setPaymentStatus({ type: 'initiated', message: '' }));
     dispatch(showPayment());
-    await getMyProfile(true);
 
     const transactionPayload: AppTransaction<RegisterUsernameUI> =
       await createTransaction<RegisterUsernameUI>(

@@ -27,6 +27,7 @@ import CollectionListComponent from './tabs/CollectionListComponent';
 import { AppAsyncThunk } from 'enevti-app/types/ui/store/AppAsyncThunk';
 import { RouteProp } from '@react-navigation/native';
 import AppResponseView from '../view/AppResponseView';
+import { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
 
 const noDisplay = 'none';
 const visible = 1;
@@ -330,8 +331,14 @@ export default function AppProfile({
     ],
   );
 
+  const progressViewOffset = React.useMemo(() => hp(HEADER_HEIGHT_PERCENTAGE, insets), [insets]);
+
   return !profileUndefined ? (
-    <AppResponseView status={profile.reqStatus} style={styles.profileContainer}>
+    <AppResponseView
+      onReload={onRefresh}
+      progressViewOffset={progressViewOffset}
+      status={profile.reqStatus}
+      style={styles.profileContainer}>
       <Animated.View pointerEvents={'box-none'} style={[styles.profileHeader, scrollStyle]}>
         <AppProfileHeader persona={persona} profile={profile} navigation={navigation} />
       </Animated.View>

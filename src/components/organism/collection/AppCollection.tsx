@@ -40,6 +40,7 @@ import { RouteProp } from '@react-navigation/native';
 import { DimensionFunction } from 'enevti-app/utils/imageRatio';
 import { useTheme } from 'react-native-paper';
 import AppResponseView from '../view/AppResponseView';
+import { STATUS_BAR_HEIGHT } from 'enevti-app/components/atoms/view/AppStatusBar';
 
 const noDisplay = 'none';
 const visible = 1;
@@ -271,8 +272,17 @@ export default function AppCollection({ onScrollWorklet, navigation, route }: Ap
     ],
   );
 
+  const progressViewOffset = React.useMemo(
+    () => hp(HEADER_HEIGHT_PERCENTAGE + STATUS_BAR_HEIGHT()),
+    [hp],
+  );
+
   return !collectionUndefined ? (
-    <AppResponseView status={collection.reqStatus} style={styles.collectionContainer}>
+    <AppResponseView
+      onReload={onRefresh}
+      progressViewOffset={progressViewOffset}
+      status={collection.reqStatus}
+      style={styles.collectionContainer}>
       <Animated.View pointerEvents={'box-none'} style={[styles.collectionHeader, scrollStyle]}>
         <AppCollectionHeader
           navigation={navigation}

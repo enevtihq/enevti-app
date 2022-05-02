@@ -21,7 +21,6 @@ import { handleError } from 'enevti-app/utils/error/handle';
 import { AddStakeUI } from 'enevti-app/types/core/asset/chain/add_stake_asset';
 import { AppTransaction } from 'enevti-app/types/core/service/transaction';
 import { stakingModule } from 'enevti-app/utils/constant/transaction';
-import { getMyProfile } from 'enevti-app/service/enevti/profile';
 
 type PayAddStakePayload = { persona: Persona; stake: NFTPrice };
 
@@ -31,7 +30,6 @@ export const payAddStake = createAsyncThunk<void, PayAddStakePayload, AsyncThunk
     try {
       dispatch(setPaymentStatus({ type: 'initiated', message: '' }));
       dispatch(showPayment());
-      await getMyProfile(true);
 
       const transactionPayload: AppTransaction<AddStakeUI> = await createTransaction<AddStakeUI>(
         stakingModule.moduleID,

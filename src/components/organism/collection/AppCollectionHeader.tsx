@@ -1,4 +1,4 @@
-import { View, StyleSheet, Dimensions } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -20,11 +20,10 @@ import useDimension from 'enevti-app/utils/hook/useDimension';
 import AppPersonaLabel from 'enevti-app/components/molecules/avatar/AppPersonaLabel';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
-import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { Collection } from 'enevti-app/types/core/chain/collection';
+import { STATUS_BAR_HEIGHT } from 'enevti-app/components/atoms/view/AppStatusBar';
 
-export const COLLECTION_HEADER_VIEW_HEIGHT =
-  53 + (getStatusBarHeight() / Dimensions.get('window').height) * 100;
+export const COLLECTION_HEADER_VIEW_HEIGHT = 53 + STATUS_BAR_HEIGHT();
 
 interface AppCollectionHeaderProps {
   collection: Collection;

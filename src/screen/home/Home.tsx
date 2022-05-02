@@ -57,6 +57,8 @@ import { cleanTMPImage } from 'enevti-app/service/enevti/nft';
 import { clearCreateNFTPackQueue } from 'enevti-app/store/slices/queue/nft/create/pack';
 import AppAlertModal from 'enevti-app/components/organism/menu/AppAlertModal';
 import AppConfirmationModal from 'enevti-app/components/organism/menu/AppConfirmationModal';
+import { appSocket } from 'enevti-app/utils/network';
+import { reduceProfileSocket } from 'enevti-app/store/middleware/thunk/socket/profile';
 
 const Tab = createBottomTabNavigator();
 const TABBAR_HEIGHT_PERCENTAGE = 8;
@@ -85,6 +87,17 @@ export default function Home({ navigation }: Props) {
 
   const myProfilePrevYSharedValue = useSharedValue(0);
   const myProfileInterpolatedYSharedValue = useSharedValue(0);
+  const socket = React.useRef<any>();
+
+  React.useEffect(() => {
+    socket.current = appSocket();
+    socket.current.on(`profile:${myPersona.address}`, (event: any) =>
+      dispatch(reduceProfileSocket(event)),
+    );
+    return function cleanup() {
+      socket.current.disconnect();
+    };
+  }, [myPersona.address, dispatch]);
 
   const feedStyle = useAnimatedStyle(() => {
     return {

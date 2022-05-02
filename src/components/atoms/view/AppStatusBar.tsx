@@ -1,4 +1,4 @@
-import { StatusBar } from 'react-native';
+import { Dimensions, StatusBar } from 'react-native';
 import React from 'react';
 import { useTheme } from 'react-native-paper';
 import { useSelector } from 'react-redux';
@@ -6,6 +6,10 @@ import { Theme } from 'enevti-app/theme/default';
 import { selectStatusBarState } from 'enevti-app/store/slices/ui/global/statusbar';
 import lightTheme from 'enevti-app/theme/default';
 import darkTheme from 'enevti-app/theme/dark';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
+
+export const STATUS_BAR_HEIGHT = () =>
+  (getStatusBarHeight() / Dimensions.get('window').height) * 100;
 
 export default function AppStatusBar() {
   const theme = useTheme() as Theme;

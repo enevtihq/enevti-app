@@ -7,27 +7,26 @@ import {
   setMyProfileCache,
 } from 'enevti-app/store/slices/entities/cache/myProfile';
 
-export const reduceTotalStakeMinus =
+export const reduceBalanceChanged =
   (action: { type: string; target: string; payload: any }, key?: string): AppThunk =>
   (dispatch, getState) => {
     const myPersonaCache = selectMyPersonaCache(getState());
     if (myPersonaCache.address === action.target) {
       const myProfileCache = selectMyProfileCache(getState());
-      const newStake = (BigInt(myProfileCache.stake) - BigInt(action.payload)).toString();
       const newMyProfileCache = Object.assign(myProfileCache, {
-        stake: newStake,
+        balance: action.payload,
       });
       dispatch(setMyProfileCache(newMyProfileCache));
       dispatch(
         setMyProfileView({
-          stake: newStake,
+          balance: action.payload,
         }),
       );
     } else {
       if (key) {
         const profileView = selectProfileView(getState(), key);
         const newProfileView = Object.assign(profileView, {
-          stake: (BigInt(profileView.stake) - BigInt(action.payload)).toString(),
+          balance: action.payload,
         });
         dispatch(setProfileView({ key, value: newProfileView }));
       }

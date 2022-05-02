@@ -155,7 +155,10 @@ export default function AppStakePool({ route }: AppStakePoolProps) {
   );
 
   return !stakePoolUndefined ? (
-    <AppResponseView status={stakePool.reqStatus} style={styles.stakePoolContainer}>
+    <AppResponseView
+      onReload={handleRefresh}
+      status={stakePool.reqStatus}
+      style={styles.stakePoolContainer}>
       <AnimatedFlatList
         onScroll={onScroll}
         scrollEventThrottle={16}

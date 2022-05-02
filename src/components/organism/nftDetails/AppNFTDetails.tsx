@@ -231,8 +231,14 @@ export default function AppNFTDetails({ onScrollWorklet, navigation, route }: Ap
     ],
   );
 
+  const progressViewOffset = React.useMemo(() => hp(HEADER_HEIGHT_PERCENTAGE), [hp]);
+
   return !nftDetailsUndefined ? (
-    <AppResponseView status={nftDetails.reqStatus} style={styles.nftDetailsContainer}>
+    <AppResponseView
+      onReload={onRefresh}
+      progressViewOffset={progressViewOffset}
+      status={nftDetails.reqStatus}
+      style={styles.nftDetailsContainer}>
       <Animated.View pointerEvents={'box-none'} style={[styles.nftDetailsHeader, scrollStyle]}>
         <AppNFTDetailsHeader navigation={navigation} nft={nftDetails} />
       </Animated.View>
