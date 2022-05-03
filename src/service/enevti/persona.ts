@@ -93,6 +93,21 @@ export function passphraseToAddress(passphrase: string) {
   return Lisk.cryptography.getAddressFromPassphrase(passphrase).toString('hex');
 }
 
+export async function usernameToAddress(username: string) {
+  const persona = await fetchPersonaByUsername(username);
+  return persona.data.address;
+}
+
+export async function routeParamToAddress(routeParam: Record<string, any>) {
+  return routeParam.mode === 'a'
+    ? routeParam.arg
+    : routeParam.mode === 'b'
+    ? base32ToAddress(routeParam.arg)
+    : routeParam.mode === 'u'
+    ? await usernameToAddress(routeParam.arg)
+    : routeParam.arg;
+}
+
 export async function getMyPassphrase() {
   const auth = selectAuthState(store.getState());
   let authToken = auth.token;

@@ -14,6 +14,7 @@ import { hp } from 'enevti-app/utils/imageRatio';
 import { RootState } from 'enevti-app/store/state';
 import {
   isStakePoolUndefined,
+  isThereAnyNewStaker,
   selectStakePoolOwnerView,
   selectStakePoolView,
 } from 'enevti-app/store/slices/ui/view/stakePool';
@@ -35,6 +36,9 @@ import { useTranslation } from 'react-i18next';
 import AppResponseView from '../view/AppResponseView';
 import AppMessageEmpty from 'enevti-app/components/molecules/message/AppMessageEmpty';
 import AppFloatingNotifButton from 'enevti-app/components/molecules/button/AppFloatingNotifButton';
+import { appSocket } from 'enevti-app/utils/network';
+import { routeParamToAddress } from 'enevti-app/service/enevti/persona';
+import { reduceStakePoolSocket } from 'enevti-app/store/middleware/thunk/socket/stakePool';
 
 const AnimatedFlatList = Animated.createAnimatedComponent<FlatListProps<StakerItem>>(FlatList);
 
@@ -54,14 +58,29 @@ export default function AppStakePool({ route }: AppStakePoolProps) {
   const UIExtended = useSharedValue(true);
 
   const stakePool = useSelector((state: RootState) => selectStakePoolView(state, route.params.arg));
-
   const stakePoolUndefined = useSelector((state: RootState) =>
     isStakePoolUndefined(state, route.params.arg),
   );
-
+  const newStaker = useSelector((state: RootState) => isThereAnyNewStaker(state, route.params.arg));
   const owner = useSelector((state: RootState) =>
     selectStakePoolOwnerView(state, route.params.arg),
   );
+
+  const socket = React.useRef<any>();
+
+  React.useEffect(() => {
+    const subscribe = async () => {
+      const address = await routeParamToAddress(route.params);
+      socket.current.on(`stake:${address}`, (event: any) =>
+        dispatch(reduceStakePoolSocket(event, route.params.arg)),
+      );
+    };
+    socket.current = appSocket();
+    subscribe();
+    return function cleanup() {
+      socket.current.disconnect();
+    };
+  }, [route.params, dispatch]);
 
   const onStakePoolScreenLoaded = React.useCallback(
     (reload: boolean = false) => {
@@ -160,7 +179,11 @@ export default function AppStakePool({ route }: AppStakePoolProps) {
       onReload={handleRefresh}
       status={stakePool.reqStatus}
       style={styles.stakePoolContainer}>
-      <AppFloatingNotifButton show label={t('stake:newStaker')} onPress={handleRefresh} />
+      <AppFloatingNotifButton
+        show={newStaker}
+        label={t('stake:newStaker')}
+        onPress={handleRefresh}
+      />
       <AnimatedFlatList
         onScroll={onScroll}
         scrollEventThrottle={16}

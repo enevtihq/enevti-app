@@ -112,5 +112,5 @@ export async function getMyProfile(
 }
 
 export function isProfileCanCreateNFT(profile: Profile) {
-  return new BigNumber(profile.stake).gt(completeTokenUnit(MINIMUM_BASIC_UNIT_STAKE_ELIGIBILITY));
+  return new BigNumber(profile.stake).gte(completeTokenUnit(MINIMUM_BASIC_UNIT_STAKE_ELIGIBILITY));
 }

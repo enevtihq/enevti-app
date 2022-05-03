@@ -3,7 +3,12 @@ import { createSelector } from 'reselect';
 import { RootState } from 'enevti-app/store/state';
 import { StakePoolData } from 'enevti-app/types/core/chain/stake';
 
-type StakePoolViewState = StakePoolData & { reqStatus: number; loaded: boolean };
+type StakePoolViewState = StakePoolData & {
+  version: number;
+  fetchedVersion: number;
+  reqStatus: number;
+  loaded: boolean;
+};
 
 type StakePoolViewStore = {
   [key: string]: StakePoolViewState;
@@ -12,6 +17,8 @@ type StakePoolViewStore = {
 const initialStateItem: StakePoolViewState = {
   loaded: false,
   reqStatus: 0,
+  version: 0,
+  fetchedVersion: 0,
   owner: { username: '', photo: '', base32: '', address: '' },
   staker: [],
 };
@@ -32,6 +39,12 @@ const stakePoolViewSlice = createSlice({
       Object.assign(stakePool, {
         [action.payload.key]: action.payload.value,
       });
+    },
+    setStakePoolFetchedVersion: (
+      stakePool,
+      action: PayloadAction<{ key: string; value: number }>,
+    ) => {
+      stakePool[action.payload.key].fetchedVersion = action.payload.value;
     },
     setStakePoolLoaded: (stakePool, action: PayloadAction<{ key: string; value: boolean }>) => {
       stakePool[action.payload.key].loaded = action.payload.value;
@@ -54,6 +67,7 @@ const stakePoolViewSlice = createSlice({
 export const {
   initStakePoolView,
   setStakePoolView,
+  setStakePoolFetchedVersion,
   setStakePoolLoaded,
   setStakePoolReqStatus,
   clearStakePoolByKey,
@@ -72,6 +86,12 @@ export const selectStakePoolView = createSelector(
   [(state: RootState) => state.ui.view.stakePool, (state: RootState, key: string) => key],
   (stakePool: StakePoolViewStore, key: string) =>
     stakePool.hasOwnProperty(key) ? stakePool[key] : initialStateItem,
+);
+
+export const isThereAnyNewStaker = createSelector(
+  [(state: RootState) => state.ui.view.stakePool, (state: RootState, key: string) => key],
+  (stakePool: StakePoolViewStore, key: string) =>
+    stakePool.hasOwnProperty(key) ? stakePool[key].fetchedVersion > stakePool[key].version : false,
 );
 
 export const isStakePoolUndefined = createSelector(
