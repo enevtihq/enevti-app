@@ -13,7 +13,7 @@ export const reduceBalanceChanged =
     const myPersonaCache = selectMyPersonaCache(getState());
     if (myPersonaCache.address === action.target) {
       const myProfileCache = selectMyProfileCache(getState());
-      const newMyProfileCache = Object.assign(myProfileCache, {
+      const newMyProfileCache = Object.assign({}, myProfileCache, {
         balance: action.payload,
       });
       dispatch(setMyProfileCache(newMyProfileCache));
@@ -25,7 +25,7 @@ export const reduceBalanceChanged =
     } else {
       if (key) {
         const profileView = selectProfileView(getState(), key);
-        const newProfileView = Object.assign(profileView, {
+        const newProfileView = Object.assign({}, profileView, {
           balance: action.payload,
         });
         dispatch(setProfileView({ key, value: newProfileView }));

@@ -11,14 +11,14 @@ export const reduceNewUsername =
   (dispatch, getState) => {
     const myPersonaCache = selectMyPersonaCache(getState());
     if (myPersonaCache.address === action.target) {
-      const newMyPersonaCache = Object.assign(myPersonaCache, { username: action.payload });
+      const newMyPersonaCache = Object.assign({}, myPersonaCache, { username: action.payload });
       dispatch(setMyPersonaCache(newMyPersonaCache));
       dispatch(setMyProfileView({ persona: newMyPersonaCache }));
     } else {
       if (key) {
         const profileView = selectProfileView(getState(), key);
-        const newProfileView = Object.assign(profileView, {
-          persona: Object.assign(profileView.persona, { username: action.payload }),
+        const newProfileView = Object.assign({}, profileView, {
+          persona: Object.assign({}, profileView.persona, { username: action.payload }),
         });
         dispatch(setProfileView({ key, value: newProfileView }));
       }

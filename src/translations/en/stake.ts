@@ -5,4 +5,5 @@ export default {
   addStakeTitle: 'Be #1 Fans!',
   addStakeDescription: 'Get rewarded while supporting creators!',
   addStakePlaceholder: 'Enter amount to be staked',
+  newStaker: 'New Staker!',
 };

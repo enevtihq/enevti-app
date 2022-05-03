@@ -34,6 +34,7 @@ import usePaymentCallback from 'enevti-app/utils/hook/usePaymentCallback';
 import { useTranslation } from 'react-i18next';
 import AppResponseView from '../view/AppResponseView';
 import AppMessageEmpty from 'enevti-app/components/molecules/message/AppMessageEmpty';
+import AppFloatingNotifButton from 'enevti-app/components/molecules/button/AppFloatingNotifButton';
 
 const AnimatedFlatList = Animated.createAnimatedComponent<FlatListProps<StakerItem>>(FlatList);
 
@@ -159,6 +160,7 @@ export default function AppStakePool({ route }: AppStakePoolProps) {
       onReload={handleRefresh}
       status={stakePool.reqStatus}
       style={styles.stakePoolContainer}>
+      <AppFloatingNotifButton show label={t('stake:newStaker')} onPress={handleRefresh} />
       <AnimatedFlatList
         onScroll={onScroll}
         scrollEventThrottle={16}
