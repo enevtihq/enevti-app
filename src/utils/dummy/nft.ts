@@ -32,6 +32,7 @@ export const makeDummyNFT = (
       mime: 'image/jpeg',
       extension: 'jpg',
       size: 0,
+      protocol: 'ipfs',
     },
     NFTType: nftType,
     utility: shuffledUtility,

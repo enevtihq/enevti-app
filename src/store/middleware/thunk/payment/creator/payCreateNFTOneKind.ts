@@ -27,11 +27,20 @@ export const payCreateNFTOneKind = createAsyncThunk<void, CreateNFTOneKind, Asyn
       dispatch(setPaymentStatus({ type: 'initiated', message: '' }));
       dispatch(showPayment());
 
-      const data = makeDummyIPFS();
-      const cover = payload.state.coverUri ? makeDummyIPFS() : '';
-      const coverMime = payload.state.coverUri ? payload.state.coverType : '';
-      const coverExtension = payload.state.coverUri ? payload.state.coverExtension : '';
-      const coverSize = payload.state.coverUri ? payload.state.coverSize : -1;
+      let data = '',
+        cover = '',
+        coverMime = '',
+        coverExtension = '',
+        coverSize = 0;
+
+      if (payload.state.storageProtocol === 'ipfs') {
+        data = makeDummyIPFS();
+        cover = payload.state.coverUri ? makeDummyIPFS() : '';
+      }
+
+      coverMime = payload.state.coverUri ? payload.state.coverType : '';
+      coverExtension = payload.state.coverUri ? payload.state.coverExtension : '';
+      coverSize = payload.state.coverUri ? payload.state.coverSize : -1;
 
       let content = '',
         contentMime = '',
@@ -45,17 +54,20 @@ export const payCreateNFTOneKind = createAsyncThunk<void, CreateNFTOneKind, Asyn
       let contentSize: number = -1;
 
       if (payload.state.utility === 'content') {
-        content = makeDummyIPFS();
-        contentMime = payload.state.contentType;
-        contentExtension = payload.state.contentExtension;
-        contentSize = payload.state.contentSize;
-
         const randomKey = await generateRandomKey();
         const myPublicKey = await getMyPublicKey();
+        const encryptedFile = await encryptFile(payload.state.contentUri, randomKey);
+
         cipher = await encryptAsymmetric(randomKey, myPublicKey);
         signature = await createSignature(randomKey);
 
-        const encryptedFile = await encryptFile(payload.state.contentUri, randomKey);
+        if (payload.state.storageProtocol === 'ipfs') {
+          content = makeDummyIPFS();
+        }
+
+        contentMime = payload.state.contentType;
+        contentExtension = payload.state.contentExtension;
+        contentSize = payload.state.contentSize;
         contentIv = encryptedFile.iv;
         contentSalt = encryptedFile.salt;
         contentSecurityVersion = encryptedFile.version;
@@ -90,15 +102,18 @@ export const payCreateNFTOneKind = createAsyncThunk<void, CreateNFTOneKind, Asyn
           {
             name: payload.state.name,
             description: payload.state.description,
+            mintingType: payload.state.mintingType,
             symbol: payload.state.symbol,
             cover: cover,
             coverMime: coverMime,
             coverExtension: coverExtension,
             coverSize: coverSize,
+            coverProtocol: payload.state.storageProtocol,
             data: data,
             dataMime: payload.data.mime,
             dataExtension: payload.data.extension,
             dataSize: payload.data.size,
+            dataProtocol: payload.state.storageProtocol,
             utility: payload.state.utility,
             template: payload.choosenTemplate.id,
             cipher: cipher,
@@ -107,6 +122,7 @@ export const payCreateNFTOneKind = createAsyncThunk<void, CreateNFTOneKind, Asyn
             contentMime: contentMime,
             contentExtension: contentExtension,
             contentSize: contentSize,
+            contentProtocol: payload.state.storageProtocol,
             contentIv: contentIv,
             contentSalt: contentSalt,
             contentSecurityVersion: contentSecurityVersion,

@@ -4,6 +4,8 @@ import { NFTUtility } from 'enevti-app/types/core/chain/nft/NFTUtility';
 export type OneKindContractForm = {
   name: string;
   description: string;
+  mintingType: string;
+  storageProtocol: string;
   symbol: string;
   coverName: string;
   coverSize: number;

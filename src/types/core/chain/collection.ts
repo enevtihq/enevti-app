@@ -50,6 +50,7 @@ export type CollectionBase = {
 
 export interface Collection extends CollectionBase {
   collectionType: NFTType;
+  mintingType: string;
   description: string;
   symbol: string;
   createdOn: number;

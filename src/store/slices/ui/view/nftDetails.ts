@@ -26,6 +26,7 @@ const initialStateItem: NFTDetailsViewState = {
     mime: '',
     extension: '',
     size: -1,
+    protocol: 'ipfs',
   },
   template: {
     main: [],
@@ -65,6 +66,7 @@ const initialStateItem: NFTDetailsViewState = {
       mime: '',
       extension: '',
       size: -1,
+      protocol: 'ipfs',
       iv: '',
       salt: '',
       version: 0,

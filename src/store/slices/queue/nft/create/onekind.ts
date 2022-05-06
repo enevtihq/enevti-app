@@ -25,6 +25,8 @@ export const createNFTOneKindQueueInitialState: CreateNFTOneKind = {
   state: {
     name: '',
     description: '',
+    mintingType: '',
+    storageProtocol: 'ipfs',
     symbol: '',
     coverName: '',
     coverSize: 0,

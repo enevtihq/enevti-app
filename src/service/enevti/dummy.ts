@@ -59,6 +59,7 @@ export const getDummyCollectionBaseDate = (): CollectionBase => {
       extension: 'jpg',
       mime: 'image/jpeg',
       size: 0,
+      protocol: 'ipfs',
     },
     name: 'EyeCollection',
     minting: {
@@ -96,6 +97,7 @@ export const getDummyCollectionFullData = (): Collection => {
   return {
     id: Math.random().toString(),
     collectionType: 'onekind',
+    mintingType: 'coin',
     promoted: false,
     name: 'Eye Collection',
     description:
@@ -105,6 +107,7 @@ export const getDummyCollectionFullData = (): Collection => {
       mime: 'image/jpeg',
       extension: 'jpg',
       size: 0,
+      protocol: 'ipfs',
     },
     createdOn: 1648256392852,
     symbol: 'EYECL',
@@ -218,6 +221,7 @@ export const getDummyNFTData = (): NFTBase => {
       mime: 'image/jpeg',
       extension: 'jpg',
       size: -1,
+      protocol: 'ipfs',
     },
     NFTType: 'onekind',
     utility: utilityOption[Math.floor(Math.random() * utilityOption.length)],
@@ -281,6 +285,7 @@ export const getDummyNFTFullData = (): NFT => {
       mime: 'image/jpeg',
       extension: 'jpg',
       size: -1,
+      protocol: 'ipfs',
     },
     NFTType: 'onekind',
     utility: 'content',
@@ -324,6 +329,7 @@ export const getDummyNFTFullData = (): NFT => {
         mime: 'audio/mpeg',
         extension: 'mp3',
         size: 3548243,
+        protocol: 'ipfs',
         iv: '5899c28e12159a2b65c097054a58c0c3',
         salt: '9136de3e95f38b5207be8ef9d8fd322a',
         version: 1,
