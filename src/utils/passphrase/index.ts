@@ -12,5 +12,5 @@ export function generatePassphrase() {
 }
 
 export default async function generateRandomKey() {
-  return await Aes.randomKey(256);
+  return await Aes.randomKey(128);
 }

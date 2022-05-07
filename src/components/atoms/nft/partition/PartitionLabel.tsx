@@ -17,11 +17,11 @@ export default React.memo(
     const styles = React.useMemo(() => makeStyles(args, theme), [args, theme]);
     let text: string = 'Unknown';
 
-    if (nft.NFTType === 'onekind') {
+    if (nft.nftType === 'onekind') {
       text = 'One Kind';
-    } else if (nft.NFTType === 'packed' && nft.partition.parts.length > 0) {
+    } else if (nft.nftType === 'packed' && nft.partition.parts.length > 0) {
       text = `${nft.partition.parts.length.toString()} Parts`;
-    } else if (nft.NFTType === 'upgradable') {
+    } else if (nft.nftType === 'upgradable') {
       text = `Combine ${nft.partition.upgradeMaterial.toString()}`;
     }
 
@@ -39,7 +39,7 @@ export default React.memo(
     );
   },
   (props, nextProps) => {
-    if (props.nft.NFTType === nextProps.nft.NFTType && props.args === nextProps.args) {
+    if (props.nft.nftType === nextProps.nft.nftType && props.args === nextProps.args) {
       return true;
     } else {
       return false;

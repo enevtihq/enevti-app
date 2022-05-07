@@ -34,7 +34,7 @@ export const makeDummyNFT = (
       size: 0,
       protocol: 'ipfs',
     },
-    NFTType: nftType,
+    nftType: nftType,
     utility: shuffledUtility,
     rarity: {
       stat: {

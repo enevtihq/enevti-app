@@ -32,7 +32,7 @@ const initialStateItem: NFTDetailsViewState = {
     main: [],
     thumbnail: [],
   },
-  NFTType: '',
+  nftType: '',
   utility: '',
   partition: {
     parts: [],

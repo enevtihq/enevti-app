@@ -15,7 +15,7 @@ interface RarityPercentProps {
 export default function RarityPercent({ nft, args, width }: RarityPercentProps) {
   const theme = useTheme();
   const styles = React.useMemo(() => makeStyles(args, theme), [args, theme]);
-  const text = nft.NFTType === 'onekind' ? '☆☆☆' : `${nft.rarity.stat.percent.toString()}%`;
+  const text = nft.nftType === 'onekind' ? '☆☆☆' : `${nft.rarity.stat.percent.toString()}%`;
 
   const w = (parseFloat(args.width) * width) / 100.0;
   const h = (parseFloat(args.height) * width) / 100.0;

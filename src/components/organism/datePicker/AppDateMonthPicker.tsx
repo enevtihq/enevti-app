@@ -2,7 +2,6 @@ import React from 'react';
 import { shallowEqual } from 'react-redux';
 import { monthToString } from 'enevti-app/utils/date/dateToString';
 import getDaysInMonthUTC from 'enevti-app/utils/date/getDaysInMonth';
-import propsEqualityCheck from 'enevti-app/utils/debug/propsEqualityCheck';
 import AppFormWheelPicker from 'enevti-app/components/molecules/wheelpicker/AppFormWheelPicker';
 import { ordinalWithSuffix } from 'enevti-app/utils/format/number';
 
@@ -80,7 +79,6 @@ const AppDateMonthPicker = React.memo(Component, (prevProps, nextProps) => {
     });
     return ret;
   } else {
-    propsEqualityCheck(prevProps, nextProps);
     return shallowEqual(prevProps, nextProps);
   }
 });

@@ -1,8 +1,13 @@
-export const ENEVTI_DEFAULT_API = 'http://192.168.43.113:8880';
-export const ENEVTI_FAUCET_API = 'http://192.168.43.113:8881';
-export const ENEVTI_SOCKET_IO = 'ws://192.168.43.113:8082';
-export const ENEVTI_CORE_WS = 'ws://192.168.43.113:8082/ws';
+export const ENEVTI_DEFAULT_API = 'http://192.168.0.104:8880';
+export const ENEVTI_FAUCET_API = 'http://192.168.0.104:8881';
+export const ENEVTI_SOCKET_IO = 'ws://192.168.0.104:8082';
+export const ENEVTI_CORE_WS = 'ws://192.168.0.104:8082/ws';
 export const IPFS_GATEWAY = 'https://cloudflare-ipfs.com/ipfs/';
+export const NFT_STORAGE_URL = 'https://api.nft.storage/upload';
+
+export function urlNFTStorage() {
+  return NFT_STORAGE_URL;
+}
 
 export function urlWSCore() {
   return ENEVTI_CORE_WS;

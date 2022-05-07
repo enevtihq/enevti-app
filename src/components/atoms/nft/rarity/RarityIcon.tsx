@@ -13,7 +13,7 @@ export default React.memo(
   function RarityIcon({ nft, args }: RarityIconProps) {
     const styles = React.useMemo(() => makeStyles(args), [args]);
     const source =
-      nft.NFTType !== 'onekind'
+      nft.nftType !== 'onekind'
         ? nft.rarity.stat.percent < 50
           ? require('enevti-app/assets/images/enevti-icon.png')
           : require('enevti-app/assets/images/enevti-icon-gs.png')

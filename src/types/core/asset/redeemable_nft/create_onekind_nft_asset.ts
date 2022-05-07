@@ -30,14 +30,14 @@ export type CreateOneKindNFTProps = {
   contentSecurityVersion: number;
   recurring: NFTRecurring;
   time: {
-    day: number;
-    date: number;
-    month: number;
-    year: number;
+    day: string;
+    date: string;
+    month: string;
+    year: string;
   };
   from: {
-    hour: number;
-    minute: number;
+    hour: string;
+    minute: string;
   };
   until: number;
   redeemLimit: number;
@@ -50,9 +50,23 @@ export type CreateOneKindNFTProps = {
     currency: string;
   };
   quantity: number;
-  mintingExpire: number;
+  mintingExpire: string;
 };
 
-export type CreateOneKindNFTUI = Omit<CreateOneKindNFTProps, 'price'> & {
+export type CreateOneKindNFTUI = Omit<
+  CreateOneKindNFTProps,
+  'price' | 'time' | 'from' | 'mintingExpire'
+> & {
   price: { amount: string; currency: string };
+  time: {
+    day: number;
+    date: number;
+    month: number;
+    year: number;
+  };
+  from: {
+    hour: number;
+    minute: number;
+  };
+  mintingExpire: number;
 };

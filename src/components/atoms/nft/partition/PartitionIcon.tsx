@@ -21,11 +21,11 @@ export default React.memo(
 
     let icon: string = 'help-circle-outline';
 
-    if (nft.NFTType === 'onekind') {
+    if (nft.nftType === 'onekind') {
       icon = iconMap.nftOneKind;
-    } else if (nft.NFTType === 'packed' && nft.partition.parts.length > 0) {
+    } else if (nft.nftType === 'packed' && nft.partition.parts.length > 0) {
       icon = iconMap.nftPartitioned;
-    } else if (nft.NFTType === 'upgradable') {
+    } else if (nft.nftType === 'upgradable') {
       icon = iconMap.nftUpgradable;
     }
 
@@ -39,7 +39,7 @@ export default React.memo(
     );
   },
   (props, nextProps) => {
-    if (props.nft.NFTType === nextProps.nft.NFTType && props.args === nextProps.args) {
+    if (props.nft.nftType === nextProps.nft.nftType && props.args === nextProps.args) {
       return true;
     } else {
       return false;

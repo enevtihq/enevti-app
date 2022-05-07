@@ -7,10 +7,12 @@ export type StakerItem = {
   portion: number;
 };
 
-export type StakerItemAsset = Omit<StakerItem, 'persona' | 'stake'> & {
+export type StakerItemUtils = {
   persona: PersonaAsset;
   stake: bigint;
 };
+
+export type StakerItemAsset = Omit<StakerItem, 'persona' | 'stake'> & StakerItemUtils;
 
 export type StakePoolData = {
   owner: Persona;

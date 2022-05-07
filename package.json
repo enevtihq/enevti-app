@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@dhairyasharma/react-native-encryption": "^1.0.0",
+    "@flyerhq/react-native-android-uri-path": "^2.3.0",
     "@gorhom/bottom-sheet": "^4.1.5",
     "@liskhq/lisk-client": "^5.2.1",
     "@react-native-async-storage/async-storage": "^1.15.15",
@@ -107,6 +108,7 @@
     "redux-persist": "^6.0.0",
     "redux-persist-sensitive-storage": "^1.0.0",
     "reselect": "^4.1.5",
+    "rn-fetch-blob": "^0.12.0",
     "rn-nodeify": "^10.3.0",
     "socket.io-client": "^4.5.0",
     "stream-browserify": "^1.0.0",

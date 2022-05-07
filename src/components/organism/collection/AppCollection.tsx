@@ -71,7 +71,9 @@ export default function AppCollection({ onScrollWorklet, navigation, route }: Ap
   const mintingAvailable = React.useMemo(
     () =>
       collection.reqStatus === 200
-        ? collection.minting.expire <= now || collection.minting.available === 0
+        ? collection.minting.expire === -1 && collection.minting.available > 0
+          ? true
+          : collection.minting.expire <= now || collection.minting.available === 0
           ? false
           : true
         : false,

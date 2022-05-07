@@ -8,7 +8,12 @@ import {
 } from 'enevti-app/store/slices/payment';
 import { CreateNFTOneKind } from 'enevti-app/types/ui/store/CreateNFTQueue';
 import { AsyncThunkAPI } from 'enevti-app/store/state';
-import { calculateGasFee, createTransaction } from 'enevti-app/service/enevti/transaction';
+import {
+  attachFee,
+  calculateBaseFee,
+  calculateGasFee,
+  createTransaction,
+} from 'enevti-app/service/enevti/transaction';
 import { makeDummyIPFS } from 'enevti-app/utils/dummy/ipfs';
 import i18n from 'enevti-app/translations/i18n';
 import { createAsyncThunk } from '@reduxjs/toolkit';
@@ -19,6 +24,7 @@ import { encryptAsymmetric, createSignature, encryptFile } from 'enevti-app/util
 import { getMyPublicKey } from 'enevti-app/service/enevti/persona';
 import { AppTransaction } from 'enevti-app/types/core/service/transaction';
 import { redeemableNftModule } from 'enevti-app/utils/constant/transaction';
+import RNFS from 'react-native-fs';
 
 export const payCreateNFTOneKind = createAsyncThunk<void, CreateNFTOneKind, AsyncThunkAPI>(
   'onekind/payCreateNFTOneKind',
@@ -26,6 +32,8 @@ export const payCreateNFTOneKind = createAsyncThunk<void, CreateNFTOneKind, Asyn
     try {
       dispatch(setPaymentStatus({ type: 'initiated', message: '' }));
       dispatch(showPayment());
+
+      const now = new Date();
 
       let data = '',
         cover = '',
@@ -40,7 +48,7 @@ export const payCreateNFTOneKind = createAsyncThunk<void, CreateNFTOneKind, Asyn
 
       coverMime = payload.state.coverUri ? payload.state.coverType : '';
       coverExtension = payload.state.coverUri ? payload.state.coverExtension : '';
-      coverSize = payload.state.coverUri ? payload.state.coverSize : -1;
+      coverSize = payload.state.coverUri ? payload.state.coverSize : 0;
 
       let content = '',
         contentMime = '',
@@ -51,12 +59,15 @@ export const payCreateNFTOneKind = createAsyncThunk<void, CreateNFTOneKind, Asyn
         contentSalt = '',
         contentSecurityVersion = 0,
         contentUri = payload.state.contentUri;
-      let contentSize: number = -1;
+      let contentSize: number = 0;
 
       if (payload.state.utility === 'content') {
         const randomKey = await generateRandomKey();
         const myPublicKey = await getMyPublicKey();
         const encryptedFile = await encryptFile(payload.state.contentUri, randomKey);
+        if (encryptedFile.status === 'error') {
+          throw Error(i18n.t('error:transactionPreparationFailed'));
+        }
 
         cipher = await encryptAsymmetric(randomKey, myPublicKey);
         signature = await createSignature(randomKey);
@@ -67,7 +78,7 @@ export const payCreateNFTOneKind = createAsyncThunk<void, CreateNFTOneKind, Asyn
 
         contentMime = payload.state.contentType;
         contentExtension = payload.state.contentExtension;
-        contentSize = payload.state.contentSize;
+        contentSize = (await RNFS.stat(encryptedFile.output)).size;
         contentIv = encryptedFile.iv;
         contentSalt = encryptedFile.salt;
         contentSecurityVersion = encryptedFile.version;
@@ -76,25 +87,33 @@ export const payCreateNFTOneKind = createAsyncThunk<void, CreateNFTOneKind, Asyn
 
       let until: number;
       if (payload.state.recurring !== 'anytime') {
-        const now = new Date();
-        const dateFrom = Date.UTC(
-          now.getUTCFullYear(),
-          now.getUTCMonth(),
-          now.getUTCDate(),
+        const dateFrom = new Date(
+          now.getFullYear(),
+          now.getMonth(),
+          now.getDate(),
           payload.state.fromHour,
           payload.state.fromMinute,
         );
-        const dateUntil = Date.UTC(
-          now.getUTCFullYear(),
-          now.getUTCMonth(),
-          now.getUTCDate(),
+        const dateUntil = new Date(
+          now.getFullYear(),
+          now.getMonth(),
+          now.getDate(),
           payload.state.untilHour,
           payload.state.untilMinute,
         );
-        until = dateUntil + (dateUntil < dateFrom ? 86400000 : 0) - dateFrom;
+        until =
+          dateUntil.getTime() +
+          (dateUntil.getTime() < dateFrom.getTime() ? 86400000 : 0) -
+          dateFrom.getTime();
       } else {
         until = 0;
       }
+
+      const mintingExpire =
+        payload.state.mintingExpire !== '0'
+          ? now.getTime() + parseInt(payload.state.mintingExpire, 10) * 86400000
+          : -1;
+
       const transactionPayload: AppTransaction<CreateOneKindNFTUI> =
         await createTransaction<CreateOneKindNFTUI>(
           redeemableNftModule.moduleID,
@@ -138,25 +157,29 @@ export const payCreateNFTOneKind = createAsyncThunk<void, CreateNFTOneKind, Asyn
               minute: payload.state.fromMinute,
             },
             until: until,
-            redeemLimit: parseInt(payload.state.redeemLimit, 10),
+            redeemLimit: payload.state.redeemLimit ? parseInt(payload.state.redeemLimit, 10) : 0,
             royalty: {
-              creator: parseInt(
-                payload.state.royaltyCreator ? payload.state.royaltyCreator : '0',
-                10,
-              ),
-              staker: parseInt(payload.state.royaltyStaker ? payload.state.royaltyStaker : '0', 10),
+              creator: payload.state.royaltyCreator
+                ? parseInt(payload.state.royaltyCreator, 10)
+                : 0,
+              staker: payload.state.royaltyStaker ? parseInt(payload.state.royaltyStaker, 10) : 0,
             },
             price: {
               amount: payload.state.priceAmount,
               currency: payload.state.priceCurrency,
             },
-            quantity: parseInt(payload.state.quantity, 10),
-            mintingExpire: parseInt(payload.state.mintingExpire, 10),
+            quantity: payload.state.quantity ? parseInt(payload.state.quantity, 10) : 0,
+            mintingExpire: mintingExpire,
           },
           '0',
           signal,
         );
-      const gasFee = await calculateGasFee(transactionPayload, signal);
+
+      const baseFee = await calculateBaseFee(transactionPayload, signal);
+      if (!baseFee) {
+        throw Error(i18n.t('error:transactionPreparationFailed'));
+      }
+      const gasFee = await calculateGasFee(attachFee(transactionPayload, baseFee), signal);
       if (!gasFee) {
         throw Error(i18n.t('error:transactionPreparationFailed'));
       }
@@ -172,7 +195,10 @@ export const payCreateNFTOneKind = createAsyncThunk<void, CreateNFTOneKind, Asyn
           currency: COIN_NAME,
           payload: JSON.stringify(
             Object.assign(payload, {
-              transaction: transactionPayload,
+              transaction: attachFee(
+                transactionPayload,
+                (BigInt(gasFee) + BigInt(baseFee)).toString(),
+              ),
               state: Object.assign(payload.state, { contentUri }),
             }),
           ),

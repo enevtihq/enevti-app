@@ -10,7 +10,7 @@ import { FeedItem, MomentItem } from 'enevti-app/types/core/service/feed';
 export const getDummyMomentItem = (): MomentItem => {
   return {
     id: Math.random().toString(),
-    photo: 'Qmb3jKA6Vn1azR6aSMnT6geGMkg818uBkfSHNg8ui1a9dy',
+    photo: 'bafybeif42jbs3t3pxjbz4635siv2u5nzxp5h7ffcsrwwvixgsclcn7rgza',
     username: '@aldhosutra',
   };
 };
@@ -55,7 +55,7 @@ export const getDummyCollectionBaseDate = (): CollectionBase => {
   return {
     id: Math.random().toString(),
     cover: {
-      cid: 'Qmb3jKA6Vn1azR6aSMnT6geGMkg818uBkfSHNg8ui1a9dy',
+      cid: 'bafybeif42jbs3t3pxjbz4635siv2u5nzxp5h7ffcsrwwvixgsclcn7rgza',
       extension: 'jpg',
       mime: 'image/jpeg',
       size: 0,
@@ -103,7 +103,7 @@ export const getDummyCollectionFullData = (): Collection => {
     description:
       'A lot of eye collection with mind blowing utility that goes beyond arts and collectible, we try to create something remarkable with eyes and your vision. Eyes symbolyze how we see something new on the world, so this collection also emphasize new vision for humanity and NFT world as a whole',
     cover: {
-      cid: 'Qmb3jKA6Vn1azR6aSMnT6geGMkg818uBkfSHNg8ui1a9dy',
+      cid: 'bafybeif42jbs3t3pxjbz4635siv2u5nzxp5h7ffcsrwwvixgsclcn7rgza',
       mime: 'image/jpeg',
       extension: 'jpg',
       size: 0,
@@ -217,13 +217,13 @@ export const getDummyNFTData = (): NFTBase => {
     },
     onSale: shuffleArray([true, false]),
     data: {
-      cid: 'Qmb3jKA6Vn1azR6aSMnT6geGMkg818uBkfSHNg8ui1a9dy',
+      cid: 'bafybeif42jbs3t3pxjbz4635siv2u5nzxp5h7ffcsrwwvixgsclcn7rgza',
       mime: 'image/jpeg',
       extension: 'jpg',
       size: -1,
       protocol: 'ipfs',
     },
-    NFTType: 'onekind',
+    nftType: 'onekind',
     utility: utilityOption[Math.floor(Math.random() * utilityOption.length)],
     rarity: {
       stat: {
@@ -281,13 +281,13 @@ export const getDummyNFTFullData = (): NFT => {
     },
     onSale: shuffleArray([true, false]),
     data: {
-      cid: 'Qmb3jKA6Vn1azR6aSMnT6geGMkg818uBkfSHNg8ui1a9dy',
+      cid: 'bafybeif42jbs3t3pxjbz4635siv2u5nzxp5h7ffcsrwwvixgsclcn7rgza',
       mime: 'image/jpeg',
       extension: 'jpg',
       size: -1,
       protocol: 'ipfs',
     },
-    NFTType: 'onekind',
+    nftType: 'onekind',
     utility: 'content',
     rarity: {
       stat: {
@@ -409,7 +409,7 @@ export const getStakePoolStakerData = (): StakePoolData['staker'] => {
     },
     {
       persona: {
-        photo: 'Qmb3jKA6Vn1azR6aSMnT6geGMkg818uBkfSHNg8ui1a9dy',
+        photo: 'bafybeif42jbs3t3pxjbz4635siv2u5nzxp5h7ffcsrwwvixgsclcn7rgza',
         base32: 'envt9w9qc6vs4d3qyqh322n69pebc2fdvsy4xsg5c9',
         address: '730917d362b38e434918d4ea1b905f5c159ca053',
         username: 'bayuwahyuadi',

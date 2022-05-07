@@ -23,7 +23,7 @@ export type NFTBase = {
   serial: string;
   data: NFTContent;
   template: NFTTemplateData;
-  NFTType: NFTType;
+  nftType: NFTType;
   utility: NFTUtility;
   partition: NFTPartition;
   rarity: NFTRarity;

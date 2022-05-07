@@ -199,7 +199,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
           then: Yup.string().required(),
         }),
         timeDay: Yup.number().when('recurring', {
-          is: (val: string) => val === 'weekly' || val === 'once',
+          is: (val: string) => val === 'weekly',
           then: Yup.number().min(0, t('form:greaterEqualZero')),
         }),
         timeDate: Yup.number().when('recurring', {
@@ -218,7 +218,15 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
           is: (val: string) => val !== 'content',
           then: Yup.number().min(0, t('form:greaterEqualZero')),
         }),
+        fromMinute: Yup.number().when('utility', {
+          is: (val: string) => val !== 'content',
+          then: Yup.number().min(0, t('form:greaterEqualZero')),
+        }),
         untilHour: Yup.number().when('utility', {
+          is: (val: string) => val !== 'content',
+          then: Yup.number().min(0, t('form:greaterEqualZero')),
+        }),
+        untilMinute: Yup.number().when('utility', {
           is: (val: string) => val !== 'content',
           then: Yup.number().min(0, t('form:greaterEqualZero')),
         }),
@@ -226,7 +234,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
           is: (val: string) => val === 'once' || val === 'anytime',
           otherwise: Yup.string().required(),
         }),
-        redeemLimit: Yup.string().when('redeemLimitOption', {
+        redeemLimit: Yup.number().when('redeemLimitOption', {
           is: 'fixed',
           then: Yup.number()
             .transform(value => (isNaN(value) ? undefined : value))
@@ -332,7 +340,9 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
 
   const onSelectedMintingPeriodPicker = React.useCallback(item => {
     if (item.value === 'no-limit') {
-      formikProps.setFieldValue('mintingExpire', 0, true);
+      formikProps.setFieldValue('mintingExpire', '0', true);
+    } else {
+      formikProps.setFieldValue('mintingExpire', '1', true);
     }
     formikProps.setFieldValue('mintingExpireOption', item.value, true);
     // eslint-disable-next-line react-hooks/exhaustive-deps

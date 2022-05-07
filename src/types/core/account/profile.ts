@@ -28,3 +28,9 @@ export type RedeemableNFTAccountProps = {
     collection: CollectionIdAsset[];
   };
 };
+
+export type CreaFiAccountProps = {
+  creatorFinance: {
+    totalStake: bigint;
+  };
+};

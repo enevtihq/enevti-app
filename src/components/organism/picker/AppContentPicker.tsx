@@ -17,6 +17,7 @@ import { NFT_RESOLUTION } from 'enevti-app/service/enevti/nft';
 import i18n from 'enevti-app/translations/i18n';
 import darkTheme from 'enevti-app/theme/dark';
 import ImageCropPicker from 'react-native-image-crop-picker';
+import getPath from '@flyerhq/react-native-android-uri-path';
 
 export const IMAGE_CROP_PICKER_OPTION = {
   width: NFT_RESOLUTION,
@@ -74,7 +75,7 @@ function Component({
           presentationStyle: 'fullScreen',
           type: type,
         });
-        onSelected && onSelected(response);
+        onSelected && onSelected({ ...response, uri: getPath(response.uri) });
       }
     } catch (err) {
       handleError(err);

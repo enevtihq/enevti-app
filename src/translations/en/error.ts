@@ -23,4 +23,6 @@ export default {
   clientError: 'Please try again later',
   transactionPreparationFailed: 'Failed to prepare transaction, please try again later',
   transactionPostError: 'Post Transaction Failed: {{msg}}',
+  permissionDenied: 'Permission Denied',
+  nftStorageAPIKeyUndefined: 'NFT_STORAGE_API_KEY is not defined in .env',
 };
