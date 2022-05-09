@@ -186,7 +186,7 @@ export default function AppProfileHeader({ navigation, persona, profile }: AppPr
           onPress={() => console.log('Pressed')}>
           <View style={styles.profileHeaderChipsContent}>
             <AppTextBody4 style={{ color: theme.colors.placeholder }}>
-              {parseAmount(profile.balance, true, 2)}
+              {parseAmount(profile.balance, true, 4)}
             </AppTextBody4>
             <AppTextBody5
               style={{

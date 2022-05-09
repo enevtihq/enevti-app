@@ -4,7 +4,7 @@ import { NFTTemplateData } from './NFTTemplate';
 import { NFTUtility } from './NFTUtility';
 import { NFTPrice, NFTPriceAsset } from './NFTPrice';
 import { Persona, PersonaAsset } from '../../account/persona';
-import { NFTPartition } from './NFTPartition';
+import { NFTPartition, NFTPartitionAsset } from './NFTPartition';
 import { NFTRedeem, NFTRedeemAsset } from './NFTRedeem';
 import { NFTRoyalty } from './NFTRoyalty';
 import { NFTActivity } from './NFTActivity';
@@ -47,7 +47,16 @@ export interface NFT extends NFTBase {
 export interface NFTAsset
   extends Omit<
     NFT,
-    'id' | 'collectionId' | 'owner' | 'creator' | 'activity' | 'template' | 'redeem' | 'price'
+    | 'id'
+    | 'collectionId'
+    | 'owner'
+    | 'creator'
+    | 'activity'
+    | 'template'
+    | 'redeem'
+    | 'price'
+    | 'partition'
+    | 'networkIdentifier'
   > {
   id: NFTIdAsset;
   collectionId: CollectionIdAsset;
@@ -56,4 +65,6 @@ export interface NFTAsset
   template: string;
   redeem: NFTRedeemAsset;
   price: NFTPriceAsset;
+  partition: NFTPartitionAsset;
+  networkIdentifier: Buffer;
 }

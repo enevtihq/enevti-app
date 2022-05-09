@@ -15,7 +15,7 @@ export function parseAmount(amount: string, kmb = false, decimal?: number): stri
   if (kmb) {
     return bigNumberKMB(num, decimal);
   } else {
-    return decimal ? num.decimalPlaces(decimal).toString() : num.toString();
+    return decimal ? num.decimalPlaces(decimal, BigNumber.ROUND_DOWN).toString() : num.toString();
   }
 }
 
@@ -24,15 +24,15 @@ export function bigNumberKMB(num: BigNumber, decimal?: number): string {
     return decimal ? num.decimalPlaces(decimal).toString() : num.toString();
   } else if (num.isGreaterThan(999) && num.isLessThan(1000000)) {
     return decimal
-      ? num.div(1000).decimalPlaces(decimal).toString() + 'K'
+      ? num.div(1000).decimalPlaces(decimal, BigNumber.ROUND_DOWN).toString() + 'K'
       : num.div(1000).toString() + 'K';
   } else if (num.isGreaterThan(999999) && num.isLessThan(1000000000)) {
     return decimal
-      ? num.div(1000000).decimalPlaces(decimal).toString() + 'M'
+      ? num.div(1000000).decimalPlaces(decimal, BigNumber.ROUND_DOWN).toString() + 'M'
       : num.div(1000000).toString() + 'M';
   } else if (num.isGreaterThan(999999999)) {
     return decimal
-      ? num.div(1000000000).decimalPlaces(decimal).toString() + 'B'
+      ? num.div(1000000000).decimalPlaces(decimal, BigNumber.ROUND_DOWN).toString() + 'B'
       : num.div(1000000000).toString() + 'B';
   } else {
     return i18n.t('error:unknown');
