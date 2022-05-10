@@ -77,7 +77,7 @@ export default function ImportPassphrase({ navigation }: Props) {
         validationSchema={validationSchema}>
         {({
           handleChange,
-          handleSubmit,
+          submitForm,
           setFieldTouched,
           values,
           errors,
@@ -142,7 +142,7 @@ export default function ImportPassphrase({ navigation }: Props) {
                 showError={touched.confirmPassword}
                 touchHandler={() => setFieldTouched('confirmPassword')}
                 onChangeText={handleChange('confirmPassword')}
-                onSubmitEditing={isValid && dirty ? handleSubmit : () => Keyboard.dismiss()}
+                onSubmitEditing={isValid && dirty ? submitForm : () => Keyboard.dismiss()}
               />
             </View>
 
@@ -150,7 +150,7 @@ export default function ImportPassphrase({ navigation }: Props) {
               <View style={{ height: hp('3%', insets) }} />
 
               <AppPrimaryButton
-                onPress={handleSubmit}
+                onPress={submitForm}
                 loading={isLoading}
                 disabled={!(isValid && dirty)}
                 style={styles.createAccount}>

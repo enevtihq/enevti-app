@@ -183,7 +183,7 @@ export default function AppGoogleSignInButton({
           validationSchema={validationSchema}>
           {({
             handleChange,
-            handleSubmit,
+            submitForm,
             setFieldTouched,
             values,
             errors,
@@ -214,14 +214,14 @@ export default function AppGoogleSignInButton({
                   showError={touched.password}
                   touchHandler={() => setFieldTouched('password')}
                   onChangeText={handleChange('password')}
-                  onSubmitEditing={isValid && dirty ? handleSubmit : () => {}}
+                  onSubmitEditing={isValid && dirty ? submitForm : () => {}}
                   blurOnSubmit={true}
                   returnKeyType={'done'}
                 />
               </View>
               <View style={styles.dialogAction}>
                 <AppPrimaryButton
-                  onPress={handleSubmit}
+                  onPress={submitForm}
                   loading={isDialogButtonLoading}
                   disabled={!(isValid && dirty)}
                   style={styles.dialogButton}>

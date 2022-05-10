@@ -111,7 +111,7 @@ export default function AppStakeButton({
         validationSchema={validationSchema}>
         {({
           handleChange,
-          handleSubmit,
+          submitForm,
           setFieldTouched,
           values,
           errors,
@@ -153,14 +153,14 @@ export default function AppStakeButton({
                 error={touched.stake && !!errors.stake}
                 showError={touched.stake}
                 blurOnSubmit={true}
-                onSubmitEditing={isValid && dirty ? handleSubmit : () => {}}
+                onSubmitEditing={isValid && dirty ? submitForm : () => {}}
                 onFocus={() => setActivePrice(true)}
                 keyboardType={'number-pad'}
               />
             </View>
             <View style={styles.dialogAction}>
               <AppPrimaryButton
-                onPress={handleSubmit}
+                onPress={submitForm}
                 disabled={!(isValid && dirty)}
                 style={styles.dialogButton}>
                 {selfStake ? t('stake:selfStake') : t('stake:addStake')}

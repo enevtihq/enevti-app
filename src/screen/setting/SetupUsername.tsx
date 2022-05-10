@@ -96,7 +96,7 @@ export default function SetupUsername({ navigation }: Props) {
         validationSchema={validationSchema}>
         {({
           handleChange,
-          handleSubmit,
+          submitForm,
           setFieldTouched,
           setStatus,
           setFieldValue,
@@ -133,7 +133,7 @@ export default function SetupUsername({ navigation }: Props) {
                 onChangeText={handleChange('username')}
                 onSubmitEditing={
                   isValid && dirty && status.usernameAvailable
-                    ? handleSubmit
+                    ? submitForm
                     : () => Keyboard.dismiss()
                 }
                 blurOnSubmit={true}
@@ -145,7 +145,7 @@ export default function SetupUsername({ navigation }: Props) {
               <View style={{ height: hp('3%', insets) }} />
 
               <AppPrimaryButton
-                onPress={handleSubmit}
+                onPress={submitForm}
                 loading={isLoading}
                 disabled={!(isValid && dirty && status.usernameAvailable)}
                 style={styles.createAccount}>

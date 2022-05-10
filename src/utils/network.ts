@@ -1,11 +1,11 @@
 import NetInfo from '@react-native-community/netinfo';
 import i18n from 'enevti-app/translations/i18n';
-import { PermissionsAndroid, Platform } from 'react-native';
 import { lastFetchTimeout } from './constant/lastFetch';
 import { ERRORCODE } from './error/code';
 import io from 'socket.io-client';
 import { urlSocketIO } from './constant/URLCreator';
 import ReactNativeBlobUtil, { ReactNativeBlobUtilConfig } from 'react-native-blob-util';
+import { checkPermissionStorage } from './permission';
 
 export async function isInternetReachable(): Promise<boolean> {
   await i18n.loadNamespaces('network');
@@ -83,24 +83,7 @@ export async function appFetchBlob(
     signal?: AbortController['signal'];
   } = {},
 ) {
-  if (Platform.OS === 'android') {
-    if (!(await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE))) {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-      );
-      if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
-        throw Error(i18n.t('error:permissionDenied'));
-      }
-    }
-    if (!(await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE))) {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-      );
-      if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
-        throw Error(i18n.t('error:permissionDenied'));
-      }
-    }
-  }
+  await checkPermissionStorage();
 
   const {
     method,

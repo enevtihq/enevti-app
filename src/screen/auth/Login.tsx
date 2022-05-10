@@ -103,7 +103,7 @@ export default function Login({ navigation }: Props) {
         validationSchema={validationSchema}>
         {({
           handleChange,
-          handleSubmit,
+          submitForm,
           setFieldTouched,
           setFieldValue,
           values,
@@ -148,7 +148,7 @@ export default function Login({ navigation }: Props) {
               <View style={{ height: hp('3%', insets) }} />
 
               <AppPrimaryButton
-                onPress={handleSubmit}
+                onPress={submitForm}
                 loading={isLoading}
                 disabled={!(isValid && dirty)}
                 style={styles.createAccount}>

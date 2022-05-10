@@ -75,7 +75,7 @@ export default function SetupLocalPassword({ navigation }: Props) {
         validationSchema={validationSchema}>
         {({
           handleChange,
-          handleSubmit,
+          submitForm,
           setFieldTouched,
           setFieldValue,
           values,
@@ -119,7 +119,7 @@ export default function SetupLocalPassword({ navigation }: Props) {
                 showError={touched.confirmPassword}
                 touchHandler={() => setFieldTouched('confirmPassword')}
                 onChangeText={handleChange('confirmPassword')}
-                onSubmitEditing={isValid && dirty ? handleSubmit : () => Keyboard.dismiss()}
+                onSubmitEditing={isValid && dirty ? submitForm : () => Keyboard.dismiss()}
                 blurOnSubmit={true}
               />
             </View>
@@ -128,7 +128,7 @@ export default function SetupLocalPassword({ navigation }: Props) {
               <View style={{ height: hp('3%', insets) }} />
 
               <AppPrimaryButton
-                onPress={handleSubmit}
+                onPress={submitForm}
                 loading={isLoading}
                 disabled={!(isValid && dirty)}
                 style={styles.createAccount}>

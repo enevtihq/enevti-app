@@ -1042,7 +1042,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
       <View style={styles.actionContainer}>
         <View style={{ height: hp('2%', insets) }} />
         <AppPrimaryButton
-          onPress={formikProps.handleSubmit}
+          onPress={formikProps.submitForm}
           loading={isLoading}
           disabled={
             !(
