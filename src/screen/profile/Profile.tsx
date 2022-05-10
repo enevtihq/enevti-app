@@ -16,6 +16,7 @@ import { Socket } from 'socket.io-client';
 import { reduceNewUsername } from 'enevti-app/store/middleware/thunk/socket/profile/username/reduceNewUsername';
 import { reduceBalanceChanged } from 'enevti-app/store/middleware/thunk/socket/profile/balance/reduceBalanceChanged';
 import { reduceTotalStakeChanged } from 'enevti-app/store/middleware/thunk/socket/profile/totalStake/reduceTotalStakeChanged';
+import { reduceNewCollection } from 'enevti-app/store/middleware/thunk/socket/profile/collection/reduceNewCollection';
 
 type Props = StackScreenProps<RootStackParamList, 'Profile'>;
 
@@ -31,12 +32,12 @@ export default function Profile({ navigation, route }: Props) {
   const socket = React.useRef<Socket | undefined>();
 
   React.useEffect(() => {
+    const key = route.params.arg;
     socket.current = appSocket(profile.persona.address);
-    socket.current.on('usernameChanged', (payload: any) => dispatch(reduceNewUsername(payload, route.params.arg)));
-    socket.current.on('balanceChanged', (payload: any) => dispatch(reduceBalanceChanged(payload, route.params.arg)));
-    socket.current.on('totalStakeChanged', (payload: any) =>
-      dispatch(reduceTotalStakeChanged(payload, route.params.arg)),
-    );
+    socket.current.on('usernameChanged', (payload: any) => dispatch(reduceNewUsername(payload, key)));
+    socket.current.on('balanceChanged', (payload: any) => dispatch(reduceBalanceChanged(payload, key)));
+    socket.current.on('totalStakeChanged', (payload: any) => dispatch(reduceTotalStakeChanged(payload, key)));
+    socket.current.on('newCollection', (payload: any) => dispatch(reduceNewCollection(payload, key)));
     return function cleanup() {
       socket.current && socket.current.disconnect();
     };

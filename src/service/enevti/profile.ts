@@ -51,8 +51,8 @@ async function fetchProfile(address: string, signal?: AbortController['signal'])
   }
 }
 
-function parseProfileCache(profile: Profile) {
-  return profile;
+export function parseProfileCache(profile: Profile) {
+  return { ...profile };
 }
 
 export async function getProfileNonce(
