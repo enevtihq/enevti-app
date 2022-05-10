@@ -24,4 +24,5 @@ export default {
   restore: 'Restore',
   restoreDialog: 'Restore Previous Session?',
   restoreDialogDescription: 'You have a saved create NFT session. Do you want to recover it?',
+  newFeedUpdate: 'New Updates!',
 };

@@ -51,6 +51,7 @@ import { reduceMyNewUsername } from 'enevti-app/store/middleware/thunk/socket/pr
 import { reduceMyBalanceChanged } from 'enevti-app/store/middleware/thunk/socket/profile/balance/reduceMyBalanceChanged';
 import { reduceMyTotalStakeChanged } from 'enevti-app/store/middleware/thunk/socket/profile/totalStake/reduceMyTotalStakeChanged';
 import { reduceMyNewCollection } from 'enevti-app/store/middleware/thunk/socket/profile/collection/reduceMyNewCollection';
+import { reduceFeedsUpdates } from 'enevti-app/store/middleware/thunk/socket/feeds/reduceFeedsUpdates';
 
 const Tab = createBottomTabNavigator();
 const TABBAR_HEIGHT_PERCENTAGE = 8;
@@ -87,6 +88,7 @@ export default function Home({ navigation }: Props) {
     socket.current.on('balanceChanged', (payload: any) => dispatch(reduceMyBalanceChanged(payload)));
     socket.current.on('totalStakeChanged', (payload: any) => dispatch(reduceMyTotalStakeChanged(payload)));
     socket.current.on('newCollection', (payload: any) => dispatch(reduceMyNewCollection(payload)));
+    socket.current.on('newFeedItem', (payload: any) => dispatch(reduceFeedsUpdates(payload)));
     return function cleanup() {
       socket.current && socket.current.disconnect();
     };

@@ -22,10 +22,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loadFeeds, unloadFeeds } from 'enevti-app/store/middleware/thunk/ui/view/feed';
 import { loadMoments, unloadMoments } from 'enevti-app/store/middleware/thunk/ui/view/moment';
 import { AppAsyncThunk } from 'enevti-app/types/ui/store/AppAsyncThunk';
-import { isFeedUndefined, selectFeedView } from 'enevti-app/store/slices/ui/view/feed';
-import { isMomentUndefined, selectMomentView } from 'enevti-app/store/slices/ui/view/moment';
+import {
+  isFeedUndefined,
+  isThereAnyNewFeedView,
+  selectFeedView,
+  selectFeedViewReqStatus,
+} from 'enevti-app/store/slices/ui/view/feed';
+import { isMomentUndefined, isThereAnyNewMomentView, selectMomentView } from 'enevti-app/store/slices/ui/view/moment';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
 import AppMessageEmpty from 'enevti-app/components/molecules/message/AppMessageEmpty';
+import AppResponseView from 'enevti-app/components/organism/view/AppResponseView';
+import AppFloatingNotifButton from 'enevti-app/components/molecules/button/AppFloatingNotifButton';
+import { useTranslation } from 'react-i18next';
 
 const AnimatedFlatList = Animated.createAnimatedComponent<FlatListProps<any>>(FlatList);
 
@@ -37,6 +45,7 @@ interface FeedProps extends Props {
 }
 
 export default function Feed({ navigation, onScroll, headerHeight }: FeedProps) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const styles = React.useMemo(() => makeStyles(headerHeight), [headerHeight]);
   const insets = useSafeAreaInsets();
@@ -46,8 +55,11 @@ export default function Feed({ navigation, onScroll, headerHeight }: FeedProps) 
 
   const feeds = useSelector(selectFeedView);
   const feedsUndefined = useSelector(isFeedUndefined);
+  const newFeeds = useSelector(isThereAnyNewFeedView);
+  const feedsReqStatus = useSelector(selectFeedViewReqStatus);
   const moments = useSelector(selectMomentView);
   const momentsUndefined = useSelector(isMomentUndefined);
+  const newMoments = useSelector(isThereAnyNewMomentView);
 
   const handleLoadMoment = React.useCallback(
     (reload: boolean = false) => {
@@ -123,29 +135,34 @@ export default function Feed({ navigation, onScroll, headerHeight }: FeedProps) 
     [feeds.length, moments.length, styles.listContentContainer, styles.listContentEmptyContainer],
   );
 
+  const newUpdate = React.useMemo(() => newFeeds || newMoments, [newFeeds, newMoments]);
+
   return (
     <AppView darken withLoader>
       <View style={styles.textContainer}>
         {!feedsUndefined ? (
-          <AnimatedFlatList
-            ref={feedRef}
-            onScroll={onScroll}
-            scrollEventThrottle={16}
-            data={feeds}
-            ListHeaderComponent={ListHeaderComponent}
-            showsVerticalScrollIndicator={false}
-            renderItem={renderItem}
-            keyExtractor={keyExtractor}
-            removeClippedSubviews={true}
-            initialNumToRender={6}
-            maxToRenderPerBatch={10}
-            updateCellsBatchingPeriod={50}
-            windowSize={11}
-            getItemLayout={getItemLayout}
-            contentContainerStyle={contentContainerStyle}
-            ListEmptyComponent={emptyComponent}
-            refreshControl={refreshControl}
-          />
+          <AppResponseView onReload={handleRefresh} status={feedsReqStatus} style={styles.textContainer}>
+            <AppFloatingNotifButton show={newUpdate} label={t('home:newFeedUpdate')} onPress={handleRefresh} />
+            <AnimatedFlatList
+              ref={feedRef}
+              onScroll={onScroll}
+              scrollEventThrottle={16}
+              data={feeds}
+              ListHeaderComponent={ListHeaderComponent}
+              showsVerticalScrollIndicator={false}
+              renderItem={renderItem}
+              keyExtractor={keyExtractor}
+              removeClippedSubviews={true}
+              initialNumToRender={6}
+              maxToRenderPerBatch={10}
+              updateCellsBatchingPeriod={50}
+              windowSize={11}
+              getItemLayout={getItemLayout}
+              contentContainerStyle={contentContainerStyle}
+              ListEmptyComponent={emptyComponent}
+              refreshControl={refreshControl}
+            />
+          </AppResponseView>
         ) : (
           <View style={styles.loaderContainer}>
             <AppActivityIndicator animating />

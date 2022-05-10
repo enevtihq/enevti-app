@@ -12,6 +12,7 @@ import {
   setFeedView,
   setFeedViewLoaded,
   setFeedViewReqStatus,
+  setFeedViewVersion,
 } from 'enevti-app/store/slices/ui/view/feed';
 import { lastFetchTimeout } from 'enevti-app/utils/constant/lastFetch';
 import { getFeeds, parseFeedCache } from 'enevti-app/service/enevti/feed';
@@ -24,6 +25,7 @@ export const loadFeeds = createAsyncThunk<void, loadFeedsArgs, AsyncThunkAPI>(
   async ({ reload = false }, { dispatch, getState, signal }) => {
     try {
       const now = Date.now();
+      dispatch(setFeedViewVersion(now));
       dispatch(setFeedView(selectFeedItemsCache(getState())));
       dispatch(setFeedViewReqStatus(200));
 
