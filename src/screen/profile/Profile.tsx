@@ -12,7 +12,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { isProfileUndefined, selectProfileView } from 'enevti-app/store/slices/ui/view/profile';
 import { RootState } from 'enevti-app/store/state';
 import { appSocket } from 'enevti-app/utils/network';
-import { reduceProfileSocket } from 'enevti-app/store/middleware/thunk/socket/profile';
+import { Socket } from 'socket.io-client';
+import { reduceNewUsername } from 'enevti-app/store/middleware/thunk/socket/profile/username/reduceNewUsername';
+import { reduceBalanceChanged } from 'enevti-app/store/middleware/thunk/socket/profile/balance/reduceBalanceChanged';
+import { reduceTotalStakeChanged } from 'enevti-app/store/middleware/thunk/socket/profile/totalStake/reduceTotalStakeChanged';
 
 type Props = StackScreenProps<RootStackParamList, 'Profile'>;
 
@@ -24,18 +27,18 @@ export default function Profile({ navigation, route }: Props) {
   const headerHeight = hp(HEADER_HEIGHT_PERCENTAGE, insets);
 
   const profile = useSelector((state: RootState) => selectProfileView(state, route.params.arg));
-  const profileUndefined = useSelector((state: RootState) =>
-    isProfileUndefined(state, route.params.arg),
-  );
-  const socket = React.useRef<any>();
+  const profileUndefined = useSelector((state: RootState) => isProfileUndefined(state, route.params.arg));
+  const socket = React.useRef<Socket | undefined>();
 
   React.useEffect(() => {
-    socket.current = appSocket();
-    socket.current.on(`profile:${profile.persona.address}`, (event: any) =>
-      dispatch(reduceProfileSocket(event, route.params.arg)),
+    socket.current = appSocket(profile.persona.address);
+    socket.current.on('usernameChanged', (payload: any) => dispatch(reduceNewUsername(payload, route.params.arg)));
+    socket.current.on('balanceChanged', (payload: any) => dispatch(reduceBalanceChanged(payload, route.params.arg)));
+    socket.current.on('totalStakeChanged', (payload: any) =>
+      dispatch(reduceTotalStakeChanged(payload, route.params.arg)),
     );
     return function cleanup() {
-      socket.current.disconnect();
+      socket.current && socket.current.disconnect();
     };
   }, [profile.persona.address, dispatch, route.params.arg]);
 

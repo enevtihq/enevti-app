@@ -123,11 +123,7 @@ export default function AppProfile({
             if (diff > 0 && event.contentOffset.y < totalHeaderHeight) {
               tabScroll.value = event.contentOffset.y;
             } else {
-              tabScroll.value = diffClamp(
-                ctx.current + diff,
-                totalHeaderHeight - headerHeight,
-                totalHeaderHeight,
-              );
+              tabScroll.value = diffClamp(ctx.current + diff, totalHeaderHeight - headerHeight, totalHeaderHeight);
             }
           } else {
             tabScroll.value = totalHeaderHeight - headerHeight;
@@ -182,9 +178,7 @@ export default function AppProfile({
             scrollTo(scrollRefList[i], 0, event.contentOffset.y, false);
           }
         }
-        !disableHeaderAnimation &&
-          onMomentumEndWorklet &&
-          onMomentumEndWorklet(event.contentOffset.y);
+        !disableHeaderAnimation && onMomentumEndWorklet && onMomentumEndWorklet(event.contentOffset.y);
       },
     });
 
@@ -229,17 +223,11 @@ export default function AppProfile({
     onMomentumEndWorklet,
   ]);
 
-  const ownedData = React.useMemo(
-    () => (!profileUndefined ? profile.owned : []),
-    [profile, profileUndefined],
-  );
+  const ownedData = React.useMemo(() => (!profileUndefined ? profile.owned : []), [profile, profileUndefined]);
 
   const ownedOnMounted = React.useCallback(() => setOwnedMounted(true), []);
 
-  const onSaleData = React.useMemo(
-    () => (!profileUndefined ? profile.onSale : []),
-    [profile, profileUndefined],
-  );
+  const onSaleData = React.useMemo(() => (!profileUndefined ? profile.onSale : []), [profile, profileUndefined]);
 
   const onSaleOnMounted = React.useCallback(() => setOnSaleMounted(true), []);
 
@@ -356,10 +344,7 @@ export default function AppProfile({
       {ownedMounted && onSaleMounted ? null : (
         <AppActivityIndicator
           animating={true}
-          style={[
-            styles.mountedIndicator,
-            { display: ownedMounted && onSaleMounted ? noDisplay : undefined },
-          ]}
+          style={[styles.mountedIndicator, { display: ownedMounted && onSaleMounted ? noDisplay : undefined }]}
           color={theme.colors.primary}
         />
       )}

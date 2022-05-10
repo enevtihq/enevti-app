@@ -109,16 +109,7 @@ export default function AppStakeButton({
           await onStakeSubmit(values);
         }}
         validationSchema={validationSchema}>
-        {({
-          handleChange,
-          submitForm,
-          setFieldTouched,
-          values,
-          errors,
-          isValid,
-          dirty,
-          touched,
-        }) => (
+        {({ handleChange, submitForm, setFieldTouched, values, errors, isValid, dirty, touched }) => (
           <View style={styles.modalBox}>
             <AppHeaderWizard
               noHeaderSpace
@@ -132,12 +123,7 @@ export default function AppStakeButton({
               <AppMenuFormTextInputWithError
                 hideMaxLengthIndicator
                 maxLength={13}
-                rowEndComponent={
-                  <AppCoinChipsPicker
-                    active={activePrice}
-                    error={touched.stake && !!errors.stake}
-                  />
-                }
+                rowEndComponent={<AppCoinChipsPicker active={activePrice} error={touched.stake && !!errors.stake} />}
                 theme={theme}
                 onChangeText={handleChange('stake')}
                 value={values.stake}
@@ -159,10 +145,7 @@ export default function AppStakeButton({
               />
             </View>
             <View style={styles.dialogAction}>
-              <AppPrimaryButton
-                onPress={submitForm}
-                disabled={!(isValid && dirty)}
-                style={styles.dialogButton}>
+              <AppPrimaryButton onPress={submitForm} disabled={!(isValid && dirty)} style={styles.dialogButton}>
                 {selfStake ? t('stake:selfStake') : t('stake:addStake')}
               </AppPrimaryButton>
             </View>

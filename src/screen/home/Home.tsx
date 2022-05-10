@@ -32,33 +32,24 @@ import { View } from 'react-native';
 import Color from 'color';
 import AppIconGradient from 'enevti-app/components/molecules/AppIconGradient';
 import { Theme } from 'enevti-app/theme/default';
-import {
-  isProfileCanCreateNFT,
-  MINIMUM_BASIC_UNIT_STAKE_ELIGIBILITY,
-} from 'enevti-app/service/enevti/profile';
-import {
-  selectOnceEligible,
-  touchOnceEligible,
-} from 'enevti-app/store/slices/entities/once/eligible';
+import { isProfileCanCreateNFT, MINIMUM_BASIC_UNIT_STAKE_ELIGIBILITY } from 'enevti-app/service/enevti/profile';
+import { selectOnceEligible, touchOnceEligible } from 'enevti-app/store/slices/entities/once/eligible';
 
 import { getCoinName } from 'enevti-app/utils/constant/identifier';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
-import {
-  clearCreateNFTQueueRoute,
-  selectCreateNFTRouteQueue,
-} from 'enevti-app/store/slices/queue/nft/create/route';
-import {
-  clearCreateNFTQueueType,
-  selectCreateNFTTypeQueue,
-} from 'enevti-app/store/slices/queue/nft/create/type';
+import { clearCreateNFTQueueRoute, selectCreateNFTRouteQueue } from 'enevti-app/store/slices/queue/nft/create/route';
+import { clearCreateNFTQueueType, selectCreateNFTTypeQueue } from 'enevti-app/store/slices/queue/nft/create/type';
 import { clearCreateNFTOneKindQueue } from 'enevti-app/store/slices/queue/nft/create/onekind';
 import { cleanTMPImage } from 'enevti-app/service/enevti/nft';
 import { clearCreateNFTPackQueue } from 'enevti-app/store/slices/queue/nft/create/pack';
 import AppAlertModal from 'enevti-app/components/organism/menu/AppAlertModal';
 import AppConfirmationModal from 'enevti-app/components/organism/menu/AppConfirmationModal';
 import { appSocket } from 'enevti-app/utils/network';
-import { reduceProfileSocket } from 'enevti-app/store/middleware/thunk/socket/profile';
+import { Socket } from 'socket.io-client';
+import { reduceMyNewUsername } from 'enevti-app/store/middleware/thunk/socket/profile/username/reduceMyNewUsername';
+import { reduceMyBalanceChanged } from 'enevti-app/store/middleware/thunk/socket/profile/balance/reduceMyBalanceChanged';
+import { reduceMyTotalStakeChanged } from 'enevti-app/store/middleware/thunk/socket/profile/totalStake/reduceMyTotalStakeChanged';
 
 const Tab = createBottomTabNavigator();
 const TABBAR_HEIGHT_PERCENTAGE = 8;
@@ -87,15 +78,15 @@ export default function Home({ navigation }: Props) {
 
   const myProfilePrevYSharedValue = useSharedValue(0);
   const myProfileInterpolatedYSharedValue = useSharedValue(0);
-  const socket = React.useRef<any>();
+  const socket = React.useRef<Socket | undefined>();
 
   React.useEffect(() => {
-    socket.current = appSocket();
-    socket.current.on(`profile:${myPersona.address}`, (event: any) =>
-      dispatch(reduceProfileSocket(event)),
-    );
+    socket.current = appSocket(myPersona.address);
+    socket.current.on('usernameChanged', (payload: any) => dispatch(reduceMyNewUsername(payload)));
+    socket.current.on('balanceChanged', (payload: any) => dispatch(reduceMyBalanceChanged(payload)));
+    socket.current.on('totalStakeChanged', (payload: any) => dispatch(reduceMyTotalStakeChanged(payload)));
     return function cleanup() {
-      socket.current.disconnect();
+      socket.current && socket.current.disconnect();
     };
   }, [myPersona.address, dispatch]);
 
@@ -132,10 +123,7 @@ export default function Home({ navigation }: Props) {
       ctx.prevY = event.contentOffset.y;
     },
     onEndDrag: (event, ctx) => {
-      if (
-        tabScrollY[0].value < (headerHeight + insets.top) / 2 ||
-        event.contentOffset.y < headerHeight + insets.top
-      ) {
+      if (tabScrollY[0].value < (headerHeight + insets.top) / 2 || event.contentOffset.y < headerHeight + insets.top) {
         tabScrollY[0].value = withTiming(0, { duration: 200 });
         ctx.current = 0;
       } else {
@@ -146,10 +134,7 @@ export default function Home({ navigation }: Props) {
       }
     },
     onMomentumEnd: (event, ctx) => {
-      if (
-        tabScrollY[0].value < (headerHeight + insets.top) / 2 ||
-        event.contentOffset.y < headerHeight + insets.top
-      ) {
+      if (tabScrollY[0].value < (headerHeight + insets.top) / 2 || event.contentOffset.y < headerHeight + insets.top) {
         tabScrollY[0].value = withTiming(0, { duration: 200 });
         ctx.current = 0;
       } else {
@@ -184,11 +169,7 @@ export default function Home({ navigation }: Props) {
       myProfileInterpolatedYSharedValue.value = 0;
       tabScrollY[3].value = 0;
     } else {
-      tabScrollY[3].value = diffClamp(
-        myProfileInterpolatedYSharedValue.value + diff,
-        0,
-        headerHeight + insets.top,
-      );
+      tabScrollY[3].value = diffClamp(myProfileInterpolatedYSharedValue.value + diff, 0, headerHeight + insets.top);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -341,19 +322,12 @@ export default function Home({ navigation }: Props) {
           }}
           options={{
             tabBarLabel: t('home:feed'),
-            tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons name={iconMap.home} color={color} size={size} />
-            ),
-            tabBarButton: props => (
-              <TouchableRipple {...props} disabled={props.disabled as boolean | undefined} />
-            ),
+            tabBarIcon: ({ color, size }) => <MaterialCommunityIcons name={iconMap.home} color={color} size={size} />,
+            tabBarButton: props => <TouchableRipple {...props} disabled={props.disabled as boolean | undefined} />,
             header: () => (
               <AppHeader style={feedStyle} height={headerHeight}>
                 <AppHeaderAction icon={iconMap.magnify} onPress={() => console.log('pressed')} />
-                <AppHeaderAction
-                  icon={iconMap.notification}
-                  onPress={() => console.log('pressed')}
-                />
+                <AppHeaderAction icon={iconMap.notification} onPress={() => console.log('pressed')} />
               </AppHeader>
             ),
           }}>
@@ -371,9 +345,7 @@ export default function Home({ navigation }: Props) {
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons name={iconMap.statistics} color={color} size={size} />
             ),
-            tabBarButton: props => (
-              <TouchableRipple {...props} disabled={props.disabled as boolean | undefined} />
-            ),
+            tabBarButton: props => <TouchableRipple {...props} disabled={props.disabled as boolean | undefined} />,
           }}
           component={Statistics}
         />
@@ -412,9 +384,7 @@ export default function Home({ navigation }: Props) {
                   size={size * 1.5}
                 />
               ),
-            tabBarButton: props => (
-              <TouchableRipple {...props} disabled={props.disabled as boolean | undefined} />
-            ),
+            tabBarButton: props => <TouchableRipple {...props} disabled={props.disabled as boolean | undefined} />,
           }}
           component={View}
         />
@@ -430,9 +400,7 @@ export default function Home({ navigation }: Props) {
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons name={iconMap.discover} color={color} size={size} />
             ),
-            tabBarButton: props => (
-              <TouchableRipple {...props} disabled={props.disabled as boolean | undefined} />
-            ),
+            tabBarButton: props => <TouchableRipple {...props} disabled={props.disabled as boolean | undefined} />,
           }}
           component={Discover}
         />
@@ -445,12 +413,8 @@ export default function Home({ navigation }: Props) {
           }}
           options={{
             tabBarLabel: t('home:profile'),
-            tabBarIcon: ({ color, size }) => (
-              <AppAvatarRenderer color={color} size={size * 1.1} persona={myPersona} />
-            ),
-            tabBarButton: props => (
-              <TouchableRipple {...props} disabled={props.disabled as boolean | undefined} />
-            ),
+            tabBarIcon: ({ color, size }) => <AppAvatarRenderer color={color} size={size * 1.1} persona={myPersona} />,
+            tabBarButton: props => <TouchableRipple {...props} disabled={props.disabled as boolean | undefined} />,
             header: () => (
               <AppHeader style={myProfileStyle} height={headerHeight} title={t('home:myProfile')}>
                 <AppHeaderAction icon={iconMap.edit} onPress={() => console.log('pressed')} />

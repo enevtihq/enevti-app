@@ -2,11 +2,7 @@ import { View, FlatListProps, FlatList, RefreshControl, StyleSheet } from 'react
 import React from 'react';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from 'enevti-app/navigation';
-import Animated, {
-  runOnJS,
-  useAnimatedScrollHandler,
-  useSharedValue,
-} from 'react-native-reanimated';
+import Animated, { runOnJS, useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated';
 import { StakerItem } from 'enevti-app/types/core/chain/stake';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -18,14 +14,9 @@ import {
   selectStakePoolOwnerView,
   selectStakePoolView,
 } from 'enevti-app/store/slices/ui/view/stakePool';
-import {
-  loadStakePool,
-  unloadStakePool,
-} from 'enevti-app/store/middleware/thunk/ui/view/stakePool';
+import { loadStakePool, unloadStakePool } from 'enevti-app/store/middleware/thunk/ui/view/stakePool';
 import { AppAsyncThunk } from 'enevti-app/types/ui/store/AppAsyncThunk';
-import AppStakerItem, {
-  STAKER_ITEM_HEIGHT_PERCENTAGE,
-} from 'enevti-app/components/organism/stake/AppStakerItem';
+import AppStakerItem, { STAKER_ITEM_HEIGHT_PERCENTAGE } from 'enevti-app/components/organism/stake/AppStakerItem';
 import AppStakeButton from 'enevti-app/components/organism/stake/AppStakeButton';
 import { LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE } from 'enevti-app/components/molecules/list/AppListItem';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
@@ -38,7 +29,8 @@ import AppMessageEmpty from 'enevti-app/components/molecules/message/AppMessageE
 import AppFloatingNotifButton from 'enevti-app/components/molecules/button/AppFloatingNotifButton';
 import { appSocket } from 'enevti-app/utils/network';
 import { routeParamToAddress } from 'enevti-app/service/enevti/persona';
-import { reduceStakePoolSocket } from 'enevti-app/store/middleware/thunk/socket/stakePool';
+import { reduceStakerUpdates } from 'enevti-app/store/middleware/thunk/socket/stakePool/reduceStakerUpdates';
+import { Socket } from 'socket.io-client';
 
 const AnimatedFlatList = Animated.createAnimatedComponent<FlatListProps<StakerItem>>(FlatList);
 
@@ -58,27 +50,21 @@ export default function AppStakePool({ route }: AppStakePoolProps) {
   const UIExtended = useSharedValue(true);
 
   const stakePool = useSelector((state: RootState) => selectStakePoolView(state, route.params.arg));
-  const stakePoolUndefined = useSelector((state: RootState) =>
-    isStakePoolUndefined(state, route.params.arg),
-  );
+  const stakePoolUndefined = useSelector((state: RootState) => isStakePoolUndefined(state, route.params.arg));
   const newStaker = useSelector((state: RootState) => isThereAnyNewStaker(state, route.params.arg));
-  const owner = useSelector((state: RootState) =>
-    selectStakePoolOwnerView(state, route.params.arg),
-  );
+  const owner = useSelector((state: RootState) => selectStakePoolOwnerView(state, route.params.arg));
 
-  const socket = React.useRef<any>();
+  const socket = React.useRef<Socket | undefined>();
 
   React.useEffect(() => {
     const subscribe = async () => {
       const address = await routeParamToAddress(route.params);
-      socket.current.on(`stake:${address}`, (event: any) =>
-        dispatch(reduceStakePoolSocket(event, route.params.arg)),
-      );
+      socket.current = appSocket(address);
+      socket.current.on('stakerUpdates', (payload: any) => dispatch(reduceStakerUpdates(payload, route.params.arg)));
     };
-    socket.current = appSocket();
     subscribe();
     return function cleanup() {
-      socket.current.disconnect();
+      socket.current && socket.current.disconnect();
     };
   }, [route.params, dispatch]);
 
@@ -175,15 +161,8 @@ export default function AppStakePool({ route }: AppStakePoolProps) {
   );
 
   return !stakePoolUndefined ? (
-    <AppResponseView
-      onReload={handleRefresh}
-      status={stakePool.reqStatus}
-      style={styles.stakePoolContainer}>
-      <AppFloatingNotifButton
-        show={newStaker}
-        label={t('stake:newStaker')}
-        onPress={handleRefresh}
-      />
+    <AppResponseView onReload={handleRefresh} status={stakePool.reqStatus} style={styles.stakePoolContainer}>
+      <AppFloatingNotifButton show={newStaker} label={t('stake:newStaker')} onPress={handleRefresh} />
       <AnimatedFlatList
         onScroll={onScroll}
         scrollEventThrottle={16}

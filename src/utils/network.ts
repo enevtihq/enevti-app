@@ -123,6 +123,12 @@ export async function appFetchBlob(
   return ret;
 }
 
-export function appSocket() {
-  return io(urlSocketIO(), { transports: ['websocket'] });
+export function appSocket(room?: string) {
+  const socket = io(urlSocketIO(), { transports: ['websocket'] });
+  if (room) {
+    socket.on('connect', () => {
+      socket.emit('register', room);
+    });
+  }
+  return socket;
 }
