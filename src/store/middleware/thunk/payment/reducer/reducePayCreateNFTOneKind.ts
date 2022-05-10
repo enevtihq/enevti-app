@@ -23,12 +23,18 @@ export const reducePayCreateNFTOneKind = (): AppThunk => async (dispatch, getSta
 
     const transactionPayload: AppTransaction<CreateOneKindNFTUI> = payload.transaction;
 
-    // TODO: check storage protocol
+    let data = payload.data.uri,
+      cover = payload.state.coverUri,
+      content = payload.state.contentUri;
 
-    const data = await uploadURItoIPFS(payload.data.uri);
-    const cover = payload.state.coverUri ? await uploadURItoIPFS(payload.state.coverUri) : '';
-    const content =
-      payload.state.utility === 'content' ? await uploadURItoIPFS(payload.state.contentUri) : payload.state.contentUri;
+    if (payload.state.storageProtocol === 'ipfs') {
+      data = await uploadURItoIPFS(payload.data.uri);
+      cover = payload.state.coverUri ? await uploadURItoIPFS(payload.state.coverUri) : '';
+      content =
+        payload.state.utility === 'content'
+          ? await uploadURItoIPFS(payload.state.contentUri)
+          : payload.state.contentUri;
+    }
 
     transactionPayload.asset.data = data;
     transactionPayload.asset.cover = cover;
