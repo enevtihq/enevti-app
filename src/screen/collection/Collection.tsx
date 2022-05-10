@@ -10,13 +10,7 @@ import {
 import { RootStackParamList } from 'enevti-app/navigation';
 import AppCollection from 'enevti-app/components/organism/collection/AppCollection';
 import AppHeader, { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
-import {
-  interpolateColor,
-  runOnJS,
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from 'react-native-reanimated';
+import { interpolateColor, runOnJS, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { useTheme } from 'react-native-paper';
 import { hp, wp } from 'enevti-app/utils/imageRatio';
 import { useTranslation } from 'react-i18next';
@@ -27,10 +21,7 @@ export default function Collection({ navigation, route }: Props) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const theme = useTheme();
-  const headerTreshold = React.useMemo(
-    () => wp('100%') * 0.5625 - hp(HEADER_HEIGHT_PERCENTAGE),
-    [],
-  );
+  const headerTreshold = React.useMemo(() => wp('100%') * 0.5625 - hp(HEADER_HEIGHT_PERCENTAGE), []);
 
   const collectionScroll = useSharedValue(0);
 
@@ -60,10 +51,7 @@ export default function Collection({ navigation, route }: Props) {
     dispatch(setStatusBarTint('system'));
   }, [dispatch]);
 
-  const onHeaderBelowTreshold = React.useCallback(
-    () => dispatch(setStatusBarTint('light')),
-    [dispatch],
-  );
+  const onHeaderBelowTreshold = React.useCallback(() => dispatch(setStatusBarTint('light')), [dispatch]);
 
   const headerBackgroundStyle = useAnimatedStyle(() => {
     return {
@@ -77,21 +65,13 @@ export default function Collection({ navigation, route }: Props) {
 
   const textStyle = useAnimatedStyle(() => {
     return {
-      color: interpolateColor(
-        collectionScroll.value,
-        [0, 1],
-        ['transparent', theme.colors.text],
-      ) as string,
+      color: interpolateColor(collectionScroll.value, [0, 1], ['transparent', theme.colors.text]) as string,
     };
   });
 
   const iconStyle = useAnimatedStyle(() => {
     return {
-      color: interpolateColor(
-        collectionScroll.value,
-        [0, 1],
-        ['#ffffff', theme.colors.text],
-      ) as string,
+      color: interpolateColor(collectionScroll.value, [0, 1], ['#ffffff', theme.colors.text]) as string,
     };
   });
 

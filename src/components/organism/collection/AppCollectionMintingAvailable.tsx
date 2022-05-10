@@ -19,10 +19,7 @@ interface AppCollectionMintingAvailableProps {
   onFinish?: () => void;
 }
 
-export default function AppCollectionMintingAvailable({
-  collection,
-  onFinish,
-}: AppCollectionMintingAvailableProps) {
+export default function AppCollectionMintingAvailable({ collection, onFinish }: AppCollectionMintingAvailableProps) {
   const { t } = useTranslation();
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
@@ -58,11 +55,7 @@ export default function AppCollectionMintingAvailable({
           <AppCountdown until={until} onFinish={onFinish} />
         ) : (
           <View>
-            <ProgressBar
-              progress={mintingProgress}
-              color={theme.colors.text}
-              style={styles.progressBar}
-            />
+            <ProgressBar progress={mintingProgress} color={theme.colors.text} style={styles.progressBar} />
             <AppTextBody5 style={styles.progressBarLabel}>
               {t('collection:mintingProgress', {
                 minted: collection.stat.minted,

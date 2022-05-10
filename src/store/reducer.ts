@@ -19,7 +19,4 @@ const rootReducer = combineReducers({
   userSetting: persistReducer(asyncStoragePersistConfig('userSetting'), userSettingReducer),
 });
 
-export default persistReducer(
-  asyncStoragePersistConfig('root', ['session', 'ui', 'payment']),
-  rootReducer,
-);
+export default persistReducer(asyncStoragePersistConfig('root', ['session', 'ui', 'payment']), rootReducer);

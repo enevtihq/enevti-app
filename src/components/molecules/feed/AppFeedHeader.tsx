@@ -85,9 +85,7 @@ export default function AppFeedHeader({ feed, navigation }: AppFeedHeaderProps) 
       </View>
 
       <AppQuaternaryButton box style={styles.headerPoolContainer} onPress={() => onStake()}>
-        <AppTextHeading3 style={styles.headerPoolText}>
-          {parseAmount(feed.stake, true, 2)}
-        </AppTextHeading3>
+        <AppTextHeading3 style={styles.headerPoolText}>{parseAmount(feed.stake, true, 2)}</AppTextHeading3>
         <AppTextBody5 style={styles.headerPoolText}>{getCoinName()}</AppTextBody5>
       </AppQuaternaryButton>
 
@@ -106,11 +104,7 @@ export default function AppFeedHeader({ feed, navigation }: AppFeedHeaderProps) 
             />
           }>
           <AppMenuItem onPress={onFollow} title={t('home:follow')} />
-          <AppMenuItem
-            onPress={onReport}
-            titleStyle={{ color: theme.colors.error }}
-            title={t('home:report')}
-          />
+          <AppMenuItem onPress={onReport} titleStyle={{ color: theme.colors.error }} title={t('home:report')} />
           <Divider />
           <AppMenuItem onPress={onPromote} disabled={!feed.delegate} title={t('home:promote')} />
         </AppMenuContainer>

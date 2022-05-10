@@ -56,10 +56,7 @@ export default function ConfirmPassphrase({ route, navigation }: Props) {
       <View style={styles.actionContainer}>
         <View style={{ height: hp('3%', insets) }} />
 
-        <AppPrimaryButton
-          onPress={() => handleContinue()}
-          disabled={!checked}
-          style={styles.createAccount}>
+        <AppPrimaryButton onPress={() => handleContinue()} disabled={!checked} style={styles.createAccount}>
           {t('auth:continue')}
         </AppPrimaryButton>
 

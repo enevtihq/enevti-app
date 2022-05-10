@@ -57,10 +57,7 @@ export default function AppHeader({
     : compact
     ? hp(HEADER_HEIGHT_COMPACT_PERCENTAGE, insets)
     : hp(HEADER_HEIGHT_PERCENTAGE, insets);
-  const styles = React.useMemo(
-    () => makeStyles(theme, headerHeight, insets),
-    [theme, headerHeight, insets],
-  );
+  const styles = React.useMemo(() => makeStyles(theme, headerHeight, insets), [theme, headerHeight, insets]);
 
   return (
     <Animated.View style={[styles.headerContainer, style]}>
@@ -78,9 +75,7 @@ export default function AppHeader({
         {title ? (
           <View style={{ marginLeft: wp('5%', insets) }}>
             <Animated.Text style={[styles.title, textStyle]}>{title}</Animated.Text>
-            {subtitle ? (
-              <Animated.Text style={[styles.subtitle, subtitleStyle]}>{subtitle}</Animated.Text>
-            ) : null}
+            {subtitle ? <Animated.Text style={[styles.subtitle, subtitleStyle]}>{subtitle}</Animated.Text> : null}
           </View>
         ) : (
           <AppBrandBanner widthPercentage={0.35} style={styles.image} />

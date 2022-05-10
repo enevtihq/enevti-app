@@ -1,11 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
 import { NFTTemplateAsset } from 'enevti-app/types/core/chain/nft/NFTTemplate';
-import {
-  CreateNFTPack,
-  CreateNFTPackItemData,
-  CreateNFTPackState,
-} from 'enevti-app/types/ui/store/CreateNFTQueue';
+import { CreateNFTPack, CreateNFTPackItemData, CreateNFTPackState } from 'enevti-app/types/ui/store/CreateNFTQueue';
 import { RootState } from 'enevti-app/store/state';
 
 export const createNFTPackQueueInitialState: CreateNFTPack = {
@@ -50,12 +46,8 @@ const createNFTPackQueueSlice = createSlice({
   },
 });
 
-export const {
-  setCreateNFTPackURI,
-  setCreateNFTPackChosenTemplate,
-  setCreateNFTPackState,
-  clearCreateNFTPackQueue,
-} = createNFTPackQueueSlice.actions;
+export const { setCreateNFTPackURI, setCreateNFTPackChosenTemplate, setCreateNFTPackState, clearCreateNFTPackQueue } =
+  createNFTPackQueueSlice.actions;
 export default createNFTPackQueueSlice.reducer;
 
 export const selectCreateNFTPackQueue = createSelector(

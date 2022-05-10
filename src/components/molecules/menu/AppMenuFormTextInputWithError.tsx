@@ -31,21 +31,18 @@ function AppMenuFormTextInputWithError(props: AppFormTextInputWithErrorProps, re
 
 const forwardedAppMenuFormTextInputWithError = React.forwardRef(AppMenuFormTextInputWithError);
 
-const memoizedAppFormTextInputWithError = React.memo(
-  forwardedAppMenuFormTextInputWithError,
-  (prevProps, nextProps) => {
-    if (prevProps.memoKey) {
-      let ret = true;
-      prevProps.memoKey.forEach(key => {
-        if (prevProps[key] !== nextProps[key]) {
-          ret = false;
-        }
-      });
-      return ret;
-    } else {
-      return shallowEqual(prevProps, nextProps);
-    }
-  },
-);
+const memoizedAppFormTextInputWithError = React.memo(forwardedAppMenuFormTextInputWithError, (prevProps, nextProps) => {
+  if (prevProps.memoKey) {
+    let ret = true;
+    prevProps.memoKey.forEach(key => {
+      if (prevProps[key] !== nextProps[key]) {
+        ret = false;
+      }
+    });
+    return ret;
+  } else {
+    return shallowEqual(prevProps, nextProps);
+  }
+});
 
 export default memoizedAppFormTextInputWithError;

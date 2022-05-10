@@ -32,18 +32,12 @@ const stakePoolViewSlice = createSlice({
     initStakePoolView: (stakePool, action: PayloadAction<string>) => {
       Object.assign(stakePool, { [action.payload]: {} });
     },
-    setStakePoolView: (
-      stakePool,
-      action: PayloadAction<{ key: string; value: Record<string, any> }>,
-    ) => {
+    setStakePoolView: (stakePool, action: PayloadAction<{ key: string; value: Record<string, any> }>) => {
       Object.assign(stakePool, {
         [action.payload.key]: action.payload.value,
       });
     },
-    setStakePoolFetchedVersion: (
-      stakePool,
-      action: PayloadAction<{ key: string; value: number }>,
-    ) => {
+    setStakePoolFetchedVersion: (stakePool, action: PayloadAction<{ key: string; value: number }>) => {
       stakePool[action.payload.key].fetchedVersion = action.payload.value;
     },
     setStakePoolLoaded: (stakePool, action: PayloadAction<{ key: string; value: boolean }>) => {
@@ -84,8 +78,7 @@ export const selectStakePoolOwnerView = createSelector(
 
 export const selectStakePoolView = createSelector(
   [(state: RootState) => state.ui.view.stakePool, (state: RootState, key: string) => key],
-  (stakePool: StakePoolViewStore, key: string) =>
-    stakePool.hasOwnProperty(key) ? stakePool[key] : initialStateItem,
+  (stakePool: StakePoolViewStore, key: string) => (stakePool.hasOwnProperty(key) ? stakePool[key] : initialStateItem),
 );
 
 export const isThereAnyNewStaker = createSelector(
@@ -96,6 +89,5 @@ export const isThereAnyNewStaker = createSelector(
 
 export const isStakePoolUndefined = createSelector(
   [(state: RootState) => state.ui.view.stakePool, (state: RootState, key: string) => key],
-  (stakePool: StakePoolViewStore, key: string) =>
-    stakePool.hasOwnProperty(key) ? !stakePool[key].loaded : true,
+  (stakePool: StakePoolViewStore, key: string) => (stakePool.hasOwnProperty(key) ? !stakePool[key].loaded : true),
 );

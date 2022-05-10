@@ -24,10 +24,7 @@ function Component({
   const dayIndex = React.useMemo(() => Array.from(Array(7).keys()), []);
   const dayStringIndex = React.useMemo(() => dayIndex.map(day => dayToString(day)), [dayIndex]);
 
-  const pickerValue = React.useMemo(
-    () => [value && value[0] !== -1 ? dayToString(value[0])! : ''],
-    [value],
-  );
+  const pickerValue = React.useMemo(() => [value && value[0] !== -1 ? dayToString(value[0])! : ''], [value]);
 
   const valueToString = React.useMemo(
     () => (value && value[0] !== -1 ? `${dayToString(value[0])!}` : undefined),

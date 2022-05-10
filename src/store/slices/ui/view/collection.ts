@@ -65,22 +65,13 @@ const collectionViewSlice = createSlice({
     initCollectionView: (collection, action: PayloadAction<string>) => {
       Object.assign(collection, { [action.payload]: {} });
     },
-    setCollectionView: (
-      collection,
-      action: PayloadAction<{ key: string; value: Record<string, any> }>,
-    ) => {
+    setCollectionView: (collection, action: PayloadAction<{ key: string; value: Record<string, any> }>) => {
       Object.assign(collection, { [action.payload.key]: action.payload.value });
     },
-    setCollectionViewLoaded: (
-      collection,
-      action: PayloadAction<{ key: string; value: boolean }>,
-    ) => {
+    setCollectionViewLoaded: (collection, action: PayloadAction<{ key: string; value: boolean }>) => {
       collection[action.payload.key].loaded = action.payload.value;
     },
-    setCollectionViewReqStatus: (
-      collection,
-      action: PayloadAction<{ key: string; value: number }>,
-    ) => {
+    setCollectionViewReqStatus: (collection, action: PayloadAction<{ key: string; value: number }>) => {
       collection[action.payload.key].reqStatus = action.payload.value;
     },
     clearCollectionByKey: (collection, action: PayloadAction<string>) => {

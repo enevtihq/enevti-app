@@ -133,19 +133,13 @@ export default function AppPaymentModal() {
             </AppTextHeading2>
             <AppPaymentItem
               title={paymentAction.name}
-              description={
-                paymentAction.details ? paymentAction.details : paymentAction.description
-              }
+              description={paymentAction.details ? paymentAction.details : paymentAction.description}
               amount={paymentAction.amount}
               currency={paymentAction.currency}
             />
             <AppPaymentItem
               title={t('payment:platformFee')}
-              description={
-                paymentFee.platform.toString() === '0'
-                  ? t('payment:platformFeeDescription')
-                  : undefined
-              }
+              description={paymentFee.platform.toString() === '0' ? t('payment:platformFeeDescription') : undefined}
               amount={paymentFee.platform}
               currency={defaultCoin}
             />

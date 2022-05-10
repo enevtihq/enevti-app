@@ -10,20 +10,11 @@ interface AppListPickerMenuProps {
   onSelected?: (item: PickerItem) => void;
 }
 
-export default function AppListPickerMenu({
-  items,
-  visible,
-  onDismiss,
-  onSelected,
-}: AppListPickerMenuProps) {
+export default function AppListPickerMenu({ items, visible, onDismiss, onSelected }: AppListPickerMenuProps) {
   const snapPoints = items.length * 8.75 + 3.5;
 
   return (
-    <AppMenuContainer
-      tapEverywhereToDismiss
-      snapPoints={[`${snapPoints}%`]}
-      visible={visible}
-      onDismiss={onDismiss}>
+    <AppMenuContainer tapEverywhereToDismiss snapPoints={[`${snapPoints}%`]} visible={visible} onDismiss={onDismiss}>
       {items.map(item => (
         <AppListPickerItem
           key={item.value}

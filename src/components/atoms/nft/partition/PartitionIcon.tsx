@@ -30,12 +30,7 @@ export default React.memo(
     }
 
     return (
-      <MaterialCommunityIcons
-        name={icon}
-        color={'black'}
-        size={iconSize}
-        style={styles.utilityBackgroundContainer}
-      />
+      <MaterialCommunityIcons name={icon} color={'black'} size={iconSize} style={styles.utilityBackgroundContainer} />
     );
   },
   (props, nextProps) => {

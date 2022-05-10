@@ -23,8 +23,7 @@ const momentCacheSlice = createSlice({
   },
 });
 
-export const { setMomentItemsCache, setLastFetchMomentCache, resetMomentCache } =
-  momentCacheSlice.actions;
+export const { setMomentItemsCache, setLastFetchMomentCache, resetMomentCache } = momentCacheSlice.actions;
 export default momentCacheSlice.reducer;
 
 export const selectMomentItemsCache = createSelector(

@@ -41,8 +41,7 @@ const profileEntitySlice = createSlice({
   },
 });
 
-export const { setMyProfileCache, setLastFetchMyProfileCache, resetMyProfileCache } =
-  profileEntitySlice.actions;
+export const { setMyProfileCache, setLastFetchMyProfileCache, resetMyProfileCache } = profileEntitySlice.actions;
 export default profileEntitySlice.reducer;
 
 export const selectMyProfileCache = createSelector(

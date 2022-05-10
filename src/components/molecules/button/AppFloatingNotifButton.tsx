@@ -13,11 +13,7 @@ interface AppFloatingNotifButtonProps {
   onPress?: () => void;
 }
 
-export default function AppFloatingNotifButton({
-  show,
-  label,
-  onPress,
-}: AppFloatingNotifButtonProps) {
+export default function AppFloatingNotifButton({ show, label, onPress }: AppFloatingNotifButtonProps) {
   const insets = useSafeAreaInsets();
   const theme = useTheme();
   const styles = React.useMemo(() => makeStyles(), []);

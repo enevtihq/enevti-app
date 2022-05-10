@@ -115,9 +115,7 @@ export default function SetupUsername({ navigation }: Props) {
                 label={t('setting:enterUsername')}
                 style={styles.passwordInput}
                 value={values.username}
-                errorText={
-                  !status.usernameAvailable ? t('setting:usernameUnavailable') : errors.username
-                }
+                errorText={!status.usernameAvailable ? t('setting:usernameUnavailable') : errors.username}
                 error={touched.username && status.usernameChecked && !status.usernameAvailable}
                 showError={touched.username && status.usernameChecked}
                 onBlur={async () => {
@@ -131,11 +129,7 @@ export default function SetupUsername({ navigation }: Props) {
                   }
                 }}
                 onChangeText={handleChange('username')}
-                onSubmitEditing={
-                  isValid && dirty && status.usernameAvailable
-                    ? submitForm
-                    : () => Keyboard.dismiss()
-                }
+                onSubmitEditing={isValid && dirty && status.usernameAvailable ? submitForm : () => Keyboard.dismiss()}
                 blurOnSubmit={true}
                 returnKeyType="go"
               />

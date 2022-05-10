@@ -3,10 +3,7 @@ import { base32ToAddress } from 'enevti-app/service/enevti/persona';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { appFetch, isInternetReachable } from 'enevti-app/utils/network';
-import {
-  urlGetStakePoolByAddress,
-  urlGetStakePoolByUsername,
-} from 'enevti-app/utils/constant/URLCreator';
+import { urlGetStakePoolByAddress, urlGetStakePoolByUsername } from 'enevti-app/utils/constant/URLCreator';
 import { handleError, handleResponseCode, responseError } from 'enevti-app/utils/error/handle';
 import { APIResponse, ResponseJSON } from 'enevti-app/types/core/service/api';
 
@@ -66,10 +63,7 @@ export async function getStakePoolDataByUsername(
   return await fetchStakePoolByUsername(username, signal);
 }
 
-export async function getStakePoolDataByRouteParam(
-  routeParam: StakePoolRoute,
-  signal?: AbortController['signal'],
-) {
+export async function getStakePoolDataByRouteParam(routeParam: StakePoolRoute, signal?: AbortController['signal']) {
   switch (routeParam.mode) {
     case 'a':
       return await fetchStakePool(routeParam.arg, signal);

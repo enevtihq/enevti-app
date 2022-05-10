@@ -112,23 +112,14 @@ export default function Feed({ navigation, onScroll, headerHeight }: FeedProps) 
   );
 
   const refreshControl = React.useMemo(
-    () => (
-      <RefreshControl
-        refreshing={refreshing}
-        onRefresh={handleRefresh}
-        progressViewOffset={headerHeight}
-      />
-    ),
+    () => <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} progressViewOffset={headerHeight} />,
     [refreshing, handleRefresh, headerHeight],
   );
 
   const emptyComponent = React.useMemo(() => <AppMessageEmpty />, []);
 
   const contentContainerStyle = React.useMemo(
-    () =>
-      feeds.length > 0 || moments.length > 0
-        ? styles.listContentContainer
-        : styles.listContentEmptyContainer,
+    () => (feeds.length > 0 || moments.length > 0 ? styles.listContentContainer : styles.listContentEmptyContainer),
     [feeds.length, moments.length, styles.listContentContainer, styles.listContentEmptyContainer],
   );
 

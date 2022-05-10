@@ -16,13 +16,7 @@ interface AppPoppableProps {
   style?: StyleProp<ViewStyle>;
 }
 
-export default function AppPoppable({
-  children,
-  content,
-  position,
-  width = 50,
-  style,
-}: AppPoppableProps) {
+export default function AppPoppable({ children, content, position, width = 50, style }: AppPoppableProps) {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
   const styles = React.useMemo(() => makeStyles(theme, insets, width), [theme, insets, width]);

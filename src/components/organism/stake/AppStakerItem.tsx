@@ -35,21 +35,14 @@ export default function AppStakerItem({ staker }: AppStakerItemProps) {
   return (
     <AppListItem
       style={styles.stakerContainer}
-      leftContent={
-        <AppAvatarRenderer
-          persona={staker.persona}
-          size={wp('12%', insets)}
-          style={styles.avatar}
-        />
-      }
+      leftContent={<AppAvatarRenderer persona={staker.persona} size={wp('12%', insets)} style={styles.avatar} />}
       rightContent={
         myPersona.address === staker.persona.address ? (
           <AppIconButton icon={iconMap.delete} onPress={onDelete} style={styles.deleteIcon} />
         ) : undefined
       }>
       <AppTextHeading3 numberOfLines={1} style={{ width: wp('50%', insets) }}>
-        #{staker.rank.toString()}{' '}
-        {staker.persona.username ? staker.persona.username : staker.persona.address}
+        #{staker.rank.toString()} {staker.persona.username ? staker.persona.username : staker.persona.address}
       </AppTextHeading3>
       <AppTextBody4 style={{ color: theme.colors.placeholder }} numberOfLines={1}>
         {parseAmount(staker.stake, true, 2)} {getCoinName()} ({(staker.portion / 100).toFixed(2)}%)

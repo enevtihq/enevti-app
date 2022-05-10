@@ -7,8 +7,7 @@ export default {
   platformFee: 'Platform Fee',
   platformFeeDescription: "We're Decentralized, so we aren't take any fees!",
   total: 'Total',
-  secureNote:
-    'Payement are secured using blockchain, by proceeding you are agree to Terms & Conditions',
+  secureNote: 'Payement are secured using blockchain, by proceeding you are agree to Terms & Conditions',
   pay: 'Pay',
   notEnoughtBalance: 'Not Enough Balance',
   snackPay: "Paying '{{action}}' for {{amount}} ${{currency}} (in 3 seconds)",

@@ -40,11 +40,7 @@ export default function AppCollectionBody({
           <AppTopTabBar
             {...props}
             safeBackgroundBarHeight={headerHeight * 2}
-            tabStyle={[
-              styles.tabBarContainer,
-              { top: collectionHeaderHeight },
-              animatedTabBarStyle,
-            ]}
+            tabStyle={[styles.tabBarContainer, { top: collectionHeaderHeight }, animatedTabBarStyle]}
           />
         )}
         sceneContainerStyle={{ backgroundColor: backgroundColor }}

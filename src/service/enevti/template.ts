@@ -23,9 +23,7 @@ export function getBuiltInNFTTemplate(): NFTTemplateAsset[] {
   ];
 }
 
-export async function getMoreNFTTemplate(
-  signal?: AbortController['signal'],
-): Promise<APIResponse<NFTTemplateAsset[]>> {
+export async function getMoreNFTTemplate(signal?: AbortController['signal']): Promise<APIResponse<NFTTemplateAsset[]>> {
   try {
     await isInternetReachable();
     const res = await appFetch(urlGetAllNFTTemplate(), { signal });

@@ -14,10 +14,7 @@ const snackbarSlice = createSlice({
   name: 'snackbar',
   initialState,
   reducers: {
-    showSnackbar: (
-      snackbar,
-      action: PayloadAction<{ mode: SnackbarState['mode']; text: string }>,
-    ) => {
+    showSnackbar: (snackbar, action: PayloadAction<{ mode: SnackbarState['mode']; text: string }>) => {
       snackbar.mode = action.payload.mode;
       snackbar.show = true;
       snackbar.text = action.payload.text;

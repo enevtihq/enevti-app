@@ -74,11 +74,7 @@ const setMultipleFieldValue = (
 ) => {
   for (let i = 0; i < keys.length; i++) {
     if (initial) {
-      formik.setFieldValue(
-        keys[i],
-        createNFTOneKindQueueInitialState.state[keys[i]],
-        shouldValidate,
-      );
+      formik.setFieldValue(keys[i], createNFTOneKindQueueInitialState.state[keys[i]], shouldValidate);
     } else {
       formik.setFieldValue(keys[i], value, shouldValidate);
     }
@@ -96,9 +92,7 @@ const setMultipleFieldTouched = (
   }
 };
 
-const resetRedeemTimeKeyFields = (
-  formik: FormikProps<OneKindContractForm & { initialDirty: string }>,
-) => {
+const resetRedeemTimeKeyFields = (formik: FormikProps<OneKindContractForm & { initialDirty: string }>) => {
   setMultipleFieldValue(formik, redeemTimeKey, true);
   setMultipleFieldTouched(formik, redeemTimeKey, false);
 };
@@ -124,13 +118,7 @@ const contentKey: (keyof OneKindContractForm)[] = [
   'contentUri',
 ];
 
-const coverKey: (keyof OneKindContractForm)[] = [
-  'coverName',
-  'coverSize',
-  'coverType',
-  'coverExtension',
-  'coverUri',
-];
+const coverKey: (keyof OneKindContractForm)[] = ['coverName', 'coverSize', 'coverType', 'coverExtension', 'coverUri'];
 
 export default function CreateOneKindContract({ navigation, route }: Props) {
   const { t } = useTranslation();
@@ -303,10 +291,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
     onError: paymentErrorCallback,
   });
 
-  const nextRefCallback = React.useCallback(
-    nextref => () => nextref && nextref.current?.focus(),
-    [],
-  );
+  const nextRefCallback = React.useCallback(nextref => () => nextref && nextref.current?.focus(), []);
 
   const commonOnEndEditing = React.useCallback(
     (key, formik) => (e: any) => formik.setFieldValue(key, e.nativeEvent.text, true),
@@ -464,15 +449,9 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
     [formikProps.values.timeMonth, formikProps.values.timeDate],
   );
 
-  const dayPickerValue = React.useMemo(
-    () => [formikProps.values.timeDay],
-    [formikProps.values.timeDay],
-  );
+  const dayPickerValue = React.useMemo(() => [formikProps.values.timeDay], [formikProps.values.timeDay]);
 
-  const datePickerValue = React.useMemo(
-    () => [formikProps.values.timeDate],
-    [formikProps.values.timeDate],
-  );
+  const datePickerValue = React.useMemo(() => [formikProps.values.timeDate], [formikProps.values.timeDate]);
 
   const dateMonthYearPickerValue = React.useMemo(
     () => [formikProps.values.timeYear, formikProps.values.timeMonth, formikProps.values.timeDate],
@@ -607,12 +586,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
   const accordionHeader = React.useCallback(
     (icon: string, text: string) => (
       <View style={styles.accordionListView}>
-        <AppIconComponent
-          name={icon}
-          color={theme.colors.text}
-          size={20}
-          style={styles.accordionIcon}
-        />
+        <AppIconComponent name={icon} color={theme.colors.text} size={20} style={styles.accordionIcon} />
         <AppTextBody3>{text}</AppTextBody3>
       </View>
     ),
@@ -624,57 +598,39 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
     [accordionHeader, t],
   );
 
-  const identityHeaderCallback = React.useCallback(
-    () => setIdentityExpanded(!identityExpanded),
-    [identityExpanded],
-  );
+  const identityHeaderCallback = React.useCallback(() => setIdentityExpanded(!identityExpanded), [identityExpanded]);
 
   const mintingHeader = React.useMemo(
     () => accordionHeader(iconMap.mintingBehaviour, t('createNFT:nftMintingBehaviour')),
     [accordionHeader, t],
   );
 
-  const mintingHeaderCallback = React.useCallback(
-    () => setMintingExpanded(!mintingExpanded),
-    [mintingExpanded],
-  );
+  const mintingHeaderCallback = React.useCallback(() => setMintingExpanded(!mintingExpanded), [mintingExpanded]);
 
   const utilityHeader = React.useMemo(
     () => accordionHeader(iconMap.utility, t('createNFT:nftUtility')),
     [accordionHeader, t],
   );
 
-  const utilityHeaderCallback = React.useCallback(
-    () => setUtilityExpanded(!utilityExpanded),
-    [utilityExpanded],
-  );
+  const utilityHeaderCallback = React.useCallback(() => setUtilityExpanded(!utilityExpanded), [utilityExpanded]);
 
   const royaltyHeader = React.useMemo(
     () => accordionHeader(iconMap.royalty, t('createNFT:nftRoyalty')),
     [accordionHeader, t],
   );
 
-  const royaltyHeaderCallback = React.useCallback(
-    () => setRoyaltyExpanded(!royaltyExpanded),
-    [royaltyExpanded],
-  );
+  const royaltyHeaderCallback = React.useCallback(() => setRoyaltyExpanded(!royaltyExpanded), [royaltyExpanded]);
 
   const previewHeader = React.useMemo(
     () => accordionHeader(iconMap.preview, t('createNFT:nftPreview')),
     [accordionHeader, t],
   );
 
-  const previewHeaderCallback = React.useCallback(
-    () => setPreviewExpanded(!previewExpanded),
-    [previewExpanded],
-  );
+  const previewHeaderCallback = React.useCallback(() => setPreviewExpanded(!previewExpanded), [previewExpanded]);
 
   const previewChangeImageOnDismiss = React.useCallback(() => setOneKindSheetVisible(false), []);
 
-  const previewChangeImageOnPress = React.useCallback(
-    () => setOneKindSheetVisible(old => !old),
-    [],
-  );
+  const previewChangeImageOnPress = React.useCallback(() => setOneKindSheetVisible(old => !old), []);
 
   const previewChangeTemplateOnPress = React.useCallback(
     () =>
@@ -694,14 +650,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
       edges={['bottom', 'left', 'right']}
       headerOffset={insets.top}
       header={
-        <AppHeader
-          compact
-          back
-          backIcon={iconMap.close}
-          backIconSize={23}
-          navigation={navigation}
-          title={' '}
-        />
+        <AppHeader compact back backIcon={iconMap.close} backIconSize={23} navigation={navigation} title={' '} />
       }>
       <ScrollView style={styles.scrollContainer}>
         <AppHeaderWizard
@@ -712,10 +661,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
         />
 
         <View style={styles.formView}>
-          <AppAccordion
-            expanded={identityExpanded}
-            onPress={identityHeaderCallback}
-            title={identityHeader}>
+          <AppAccordion expanded={identityExpanded} onPress={identityHeaderCallback} title={identityHeader}>
             <View style={{ height: hp('1%', insets) }} />
             {commonFormInput(
               formikProps,
@@ -727,12 +673,8 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
                 autoCapitalize: 'words',
                 maxLength: 20,
                 memoKey: ['error', 'showError'],
-                errorText: !formikProps.status.nameAvailable
-                  ? t('createNFT:nameUnavailable')
-                  : formikProps.errors.name,
-                error:
-                  formikProps.touched.name &&
-                  (!formikProps.status.nameAvailable || !!formikProps.errors.name),
+                errorText: !formikProps.status.nameAvailable ? t('createNFT:nameUnavailable') : formikProps.errors.name,
+                error: formikProps.touched.name && (!formikProps.status.nameAvailable || !!formikProps.errors.name),
                 onEndEditing: async e => {
                   const text = e.nativeEvent.text;
                   formikProps.setFieldValue('name', text, true);
@@ -772,8 +714,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
                   ? t('createNFT:symbolUnavailable')
                   : formikProps.errors.symbol,
                 error:
-                  formikProps.touched.symbol &&
-                  (!formikProps.status.symbolAvailable || !!formikProps.errors.symbol),
+                  formikProps.touched.symbol && (!formikProps.status.symbolAvailable || !!formikProps.errors.symbol),
                 onEndEditing: async e => {
                   const text = e.nativeEvent.text;
                   formikProps.setFieldValue('symbol', text, true);
@@ -796,10 +737,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
             />
           </AppAccordion>
 
-          <AppAccordion
-            expanded={mintingExpanded}
-            onPress={mintingHeaderCallback}
-            title={mintingHeader}>
+          <AppAccordion expanded={mintingExpanded} onPress={mintingHeaderCallback} title={mintingHeader}>
             <View style={{ height: hp('1%', insets) }} />
             {commonFormInput(
               formikProps,
@@ -854,15 +792,9 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
               : null}
           </AppAccordion>
 
-          <AppAccordion
-            expanded={utilityExpanded}
-            onPress={utilityHeaderCallback}
-            title={utilityHeader}>
+          <AppAccordion expanded={utilityExpanded} onPress={utilityHeaderCallback} title={utilityHeader}>
             <View style={{ height: hp('1%', insets) }} />
-            <AppUtilityPicker
-              value={formikProps.values.utility}
-              onSelected={onSelectedUtilityPicker}
-            />
+            <AppUtilityPicker value={formikProps.values.utility} onSelected={onSelectedUtilityPicker} />
 
             <View style={{ height: hp('1%', insets) }} />
 
@@ -878,20 +810,13 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
 
             {formikProps.values.utility && formikProps.values.utility !== 'content' ? (
               <>
-                <AppRecurringPicker
-                  value={formikProps.values.recurring}
-                  onSelected={onSelectedRecurringPicker}
-                />
+                <AppRecurringPicker value={formikProps.values.recurring} onSelected={onSelectedRecurringPicker} />
                 <View style={{ height: hp('1%', insets) }} />
               </>
             ) : null}
 
             {formikProps.values.recurring === 'weekly' ? (
-              <AppDayPicker
-                label={t('createNFT:redeemDay')}
-                onSelected={onSelectedDayPicker}
-                value={dayPickerValue}
-              />
+              <AppDayPicker label={t('createNFT:redeemDay')} onSelected={onSelectedDayPicker} value={dayPickerValue} />
             ) : formikProps.values.recurring === 'monthly' ? (
               <AppDatePicker
                 label={t('createNFT:redeemDate')}
@@ -957,10 +882,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
               : null}
           </AppAccordion>
 
-          <AppAccordion
-            expanded={royaltyExpanded}
-            onPress={royaltyHeaderCallback}
-            title={royaltyHeader}>
+          <AppAccordion expanded={royaltyExpanded} onPress={royaltyHeaderCallback} title={royaltyHeader}>
             <View style={{ height: hp('1%', insets) }} />
             {commonFormInput(
               formikProps,
@@ -987,23 +909,13 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
             )}
           </AppAccordion>
 
-          <AppAccordion
-            expanded={previewExpanded}
-            onPress={previewHeaderCallback}
-            title={previewHeader}>
+          <AppAccordion expanded={previewExpanded} onPress={previewHeaderCallback} title={previewHeader}>
             <View style={{ height: hp('1%', insets) }} />
             {formikProps.values.name && formikProps.values.symbol && formikProps.values.utility ? (
               <View style={styles.formInput}>
-                <AppNFTRenderer
-                  nft={dummyNFT}
-                  width={itemWidth}
-                  dataUri={oneKindContractStore.data.uri}
-                />
+                <AppNFTRenderer nft={dummyNFT} width={itemWidth} dataUri={oneKindContractStore.data.uri} />
                 <View style={styles.previewAction}>
-                  <AppQuaternaryButton
-                    box
-                    onPress={previewChangeImageOnPress}
-                    style={styles.previewActionButtonItem}>
+                  <AppQuaternaryButton box onPress={previewChangeImageOnPress} style={styles.previewActionButtonItem}>
                     <AppTextBody4>{t('createNFT:changeImage')}</AppTextBody4>
                   </AppQuaternaryButton>
                   <AppCameraGalleryPicker
@@ -1073,9 +985,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
         />
         <View style={styles.closeMenuAction}>
           <View style={styles.closeMenuItemAction}>
-            <AppSecondaryButton onPress={discardFormState}>
-              {t('createNFT:discard')}
-            </AppSecondaryButton>
+            <AppSecondaryButton onPress={discardFormState}>{t('createNFT:discard')}</AppSecondaryButton>
           </View>
           <View style={styles.closeMenuActionSpace} />
           <View style={styles.closeMenuItemAction}>

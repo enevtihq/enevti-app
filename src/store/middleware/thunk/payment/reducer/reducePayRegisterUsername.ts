@@ -10,9 +10,7 @@ export const reducePayRegisterUsername = (): AppThunk => async (dispatch, getSta
   dispatch({ type: 'payment/reducePayRegisterUsername' });
   dispatch(setPaymentStatus({ type: 'process', message: '' }));
 
-  const payload = JSON.parse(
-    selectPaymentActionPayload(getState()),
-  ) as AppTransaction<RegisterUsernameUI>;
+  const payload = JSON.parse(selectPaymentActionPayload(getState())) as AppTransaction<RegisterUsernameUI>;
 
   const response = await postTransaction(payload);
   if (response.status === 200) {

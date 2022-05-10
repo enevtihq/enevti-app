@@ -1,10 +1,7 @@
 import { CreateOneKindNFTUI } from 'enevti-app/types/core/asset/redeemable_nft/create_onekind_nft_asset';
 import { NFTTemplateAsset } from 'enevti-app/types/core/chain/nft/NFTTemplate';
 import { AppTransaction } from 'enevti-app/types/core/service/transaction';
-import {
-  OneKindContractForm,
-  OneKindContractStatusForm,
-} from 'enevti-app/types/ui/screen/CreateOneKindContract';
+import { OneKindContractForm, OneKindContractStatusForm } from 'enevti-app/types/ui/screen/CreateOneKindContract';
 
 type CreateNFTTrait = {
   key: string;

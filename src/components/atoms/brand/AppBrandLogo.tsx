@@ -8,11 +8,7 @@ interface AppBrandLogoProps {
   style?: StyleProp<ImageStyle>;
 }
 
-export default function AppBrandLogo({
-  widthPercentage,
-  mode = 'default',
-  style,
-}: AppBrandLogoProps): JSX.Element {
+export default function AppBrandLogo({ widthPercentage, mode = 'default', style }: AppBrandLogoProps): JSX.Element {
   const sizeRatio = resizeImageRatio(900, 900, widthPercentage);
 
   if (mode === 'default') {

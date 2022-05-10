@@ -20,8 +20,7 @@ const createNFTRouteQueueSlice = createSlice({
   },
 });
 
-export const { setCreateNFTQueueRoute, clearCreateNFTQueueRoute } =
-  createNFTRouteQueueSlice.actions;
+export const { setCreateNFTQueueRoute, clearCreateNFTQueueRoute } = createNFTRouteQueueSlice.actions;
 export default createNFTRouteQueueSlice.reducer;
 
 export const selectCreateNFTRouteQueue = createSelector(

@@ -7,10 +7,7 @@ interface AppDarkBrandBannerProps {
   style?: StyleProp<ImageStyle>;
 }
 
-export default function AppDarkBrandBanner({
-  widthPercentage,
-  style,
-}: AppDarkBrandBannerProps): JSX.Element {
+export default function AppDarkBrandBanner({ widthPercentage, style }: AppDarkBrandBannerProps): JSX.Element {
   const sizeRatio = resizeImageRatio(1116, 342, widthPercentage);
 
   return (

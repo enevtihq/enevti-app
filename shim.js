@@ -43,8 +43,7 @@ if (global.navigator && global.navigator.product === 'ReactNative') {
     global.navigator.userAgent = 'ReactNative';
   } catch (e) {
     console.log(
-      'Tried to fake useragent, but failed. This is normal on some devices, you may ignore this error: ' +
-        e.message,
+      'Tried to fake useragent, but failed. This is normal on some devices, you may ignore this error: ' + e.message,
     );
   }
 }

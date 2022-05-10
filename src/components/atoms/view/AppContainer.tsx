@@ -17,13 +17,7 @@ interface AppContainerProps {
   edges?: Edge[];
 }
 
-export default function AppContainer({
-  children,
-  header,
-  headerOffset,
-  darken = false,
-  edges,
-}: AppContainerProps) {
+export default function AppContainer({ children, header, headerOffset, darken = false, edges }: AppContainerProps) {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
   const backgroundColor = darken
@@ -44,9 +38,7 @@ export default function AppContainer({
             <View
               style={{
                 marginTop:
-                  typeof headerOffset === 'number'
-                    ? headerOffset
-                    : hp(HEADER_HEIGHT_PERCENTAGE, insets) + insets.top,
+                  typeof headerOffset === 'number' ? headerOffset : hp(HEADER_HEIGHT_PERCENTAGE, insets) + insets.top,
               }}
             />
           ) : null}

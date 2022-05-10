@@ -1,13 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  loadCollection,
-  unloadCollection,
-} from 'enevti-app/store/middleware/thunk/ui/view/collection';
-import {
-  isCollectionUndefined,
-  selectCollectionView,
-} from 'enevti-app/store/slices/ui/view/collection';
+import { loadCollection, unloadCollection } from 'enevti-app/store/middleware/thunk/ui/view/collection';
+import { isCollectionUndefined, selectCollectionView } from 'enevti-app/store/slices/ui/view/collection';
 import { FlatList, StyleSheet, View } from 'react-native';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
 import AppCollectionHeader from 'enevti-app/components/organism/collection/AppCollectionHeader';
@@ -60,12 +54,8 @@ export default function AppCollection({ onScrollWorklet, navigation, route }: Ap
   const insets = useSafeAreaInsets();
   const headerHeight = hp(HEADER_HEIGHT_PERCENTAGE) + insets.top;
 
-  const collection = useSelector((state: RootState) =>
-    selectCollectionView(state, route.params.arg),
-  );
-  const collectionUndefined = useSelector((state: RootState) =>
-    isCollectionUndefined(state, route.params.arg),
-  );
+  const collection = useSelector((state: RootState) => selectCollectionView(state, route.params.arg));
+  const collectionUndefined = useSelector((state: RootState) => isCollectionUndefined(state, route.params.arg));
 
   const now = React.useMemo(() => Date.now(), []);
   const mintingAvailable = React.useMemo(
@@ -84,10 +74,7 @@ export default function AppCollection({ onScrollWorklet, navigation, route }: Ap
     [mintingAvailable],
   );
   const totalHeaderHeight = React.useMemo(() => hp(headerPercentage), [hp, headerPercentage]);
-  const styles = React.useMemo(
-    () => makeStyles(hp, wp, headerPercentage),
-    [hp, wp, headerPercentage],
-  );
+  const styles = React.useMemo(() => makeStyles(hp, wp, headerPercentage), [hp, wp, headerPercentage]);
 
   const [mintedItemsMounted, setMintedItemsMounted] = React.useState<boolean>(false);
   const [activityMounted, setActivityMounted] = React.useState<boolean>(false);
@@ -274,10 +261,7 @@ export default function AppCollection({ onScrollWorklet, navigation, route }: Ap
     ],
   );
 
-  const progressViewOffset = React.useMemo(
-    () => hp(HEADER_HEIGHT_PERCENTAGE + STATUS_BAR_HEIGHT()),
-    [hp],
-  );
+  const progressViewOffset = React.useMemo(() => hp(HEADER_HEIGHT_PERCENTAGE + STATUS_BAR_HEIGHT()), [hp]);
 
   return !collectionUndefined ? (
     <AppResponseView

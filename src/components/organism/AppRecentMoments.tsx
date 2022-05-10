@@ -38,15 +38,9 @@ export default React.memo(
       [insets],
     );
 
-    const listHeaderComponent = React.useCallback(
-      () => <View style={{ width: wp('5%', insets) }} />,
-      [insets],
-    );
+    const listHeaderComponent = React.useCallback(() => <View style={{ width: wp('5%', insets) }} />, [insets]);
 
-    const listFooterComponent = React.useCallback(
-      () => <View style={{ width: wp('3%', insets) }} />,
-      [insets],
-    );
+    const listFooterComponent = React.useCallback(() => <View style={{ width: wp('3%', insets) }} />, [insets]);
 
     const keyExtractor = React.useCallback(item => item.id, []);
 

@@ -8,10 +8,7 @@ import * as Yup from 'yup';
 import YupPassword from 'yup-password';
 
 import { getGoogleAccessToken, googleInit, googleSignIn } from 'enevti-app/service/google/signIn';
-import {
-  selectGoogleAPITokenState,
-  setGoogleAPIToken,
-} from 'enevti-app/store/slices/session/google';
+import { selectGoogleAPITokenState, setGoogleAPIToken } from 'enevti-app/store/slices/session/google';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 import AppMenuFormSecureTextInput from 'enevti-app/components/organism/menu/AppMenuFormSecureTextInput';
 import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
@@ -24,11 +21,7 @@ import {
 import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
 import AppTertiaryButton from 'enevti-app/components/atoms/button/AppTertiaryButton';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
-import {
-  decryptWithDevice,
-  decryptWithPassword,
-  encryptWithDevice,
-} from 'enevti-app/utils/cryptography';
+import { decryptWithDevice, decryptWithPassword, encryptWithDevice } from 'enevti-app/utils/cryptography';
 import { handleError } from 'enevti-app/utils/error/handle';
 import { initPassphraseWithDevice } from 'enevti-app/store/middleware/thunk/session/initPassphraseWithDevice';
 import { isValidPassphrase } from 'enevti-app/utils/passphrase';
@@ -59,10 +52,7 @@ interface AppGoogleSignInButtonProps {
   onExistingAccount: () => void;
 }
 
-export default function AppGoogleSignInButton({
-  onNewAccount,
-  onExistingAccount,
-}: AppGoogleSignInButtonProps) {
+export default function AppGoogleSignInButton({ onNewAccount, onExistingAccount }: AppGoogleSignInButtonProps) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const insets = useSafeAreaInsets();
@@ -181,16 +171,7 @@ export default function AppGoogleSignInButton({
             await handleDialogFormSubmit(values);
           }}
           validationSchema={validationSchema}>
-          {({
-            handleChange,
-            submitForm,
-            setFieldTouched,
-            values,
-            errors,
-            isValid,
-            dirty,
-            touched,
-          }) => (
+          {({ handleChange, submitForm, setFieldTouched, values, errors, isValid, dirty, touched }) => (
             <View style={styles.modalBox}>
               <AppHeaderWizard
                 noHeaderSpace
@@ -205,11 +186,7 @@ export default function AppGoogleSignInButton({
                   label={t('auth:yourBinderPassword')}
                   value={values.password}
                   errorText={
-                    errors.password
-                      ? values.password.length > 0
-                        ? t('form:password')
-                        : t('form:required')
-                      : ''
+                    errors.password ? (values.password.length > 0 ? t('form:password') : t('form:required')) : ''
                   }
                   showError={touched.password}
                   touchHandler={() => setFieldTouched('password')}

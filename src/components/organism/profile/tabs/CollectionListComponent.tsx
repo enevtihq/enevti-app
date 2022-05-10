@@ -6,9 +6,7 @@ import { TOP_TABBAR_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/A
 import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { CollectionBase } from 'enevti-app/types/core/chain/collection';
-import AppListItem, {
-  LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE,
-} from 'enevti-app/components/molecules/list/AppListItem';
+import AppListItem, { LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE } from 'enevti-app/components/molecules/list/AppListItem';
 import AppNetworkImage from 'enevti-app/components/atoms/image/AppNetworkImage';
 import { IPFStoURL } from 'enevti-app/service/ipfs';
 import AppTextHeading4 from 'enevti-app/components/atoms/text/AppTextHeading4';
@@ -64,16 +62,12 @@ function Component(
     () => makeStyles(insets, headerHeight, displayed, disableHeaderAnimation),
     [insets, headerHeight, displayed, disableHeaderAnimation],
   );
-  const isScrollEnabled = React.useMemo(
-    () => (refreshing ? false : scrollEnabled),
-    [refreshing, scrollEnabled],
-  );
+  const isScrollEnabled = React.useMemo(() => (refreshing ? false : scrollEnabled), [refreshing, scrollEnabled]);
   const progressViewOffset = React.useMemo(
     () =>
       Platform.OS === 'ios'
         ? headerHeight
-        : hp(PROFILE_HEADER_HEIGHT_PERCENTAGE + TOP_TABBAR_HEIGHT_PERCENTAGE, insets) +
-          headerHeight,
+        : hp(PROFILE_HEADER_HEIGHT_PERCENTAGE + TOP_TABBAR_HEIGHT_PERCENTAGE, insets) + headerHeight,
     [headerHeight, insets],
   );
   const itemHeight = React.useMemo(
@@ -90,13 +84,7 @@ function Component(
   }, [onRefresh]);
 
   const refreshControl = React.useMemo(
-    () => (
-      <RefreshControl
-        refreshing={false}
-        onRefresh={handleRefresh}
-        progressViewOffset={progressViewOffset}
-      />
-    ),
+    () => <RefreshControl refreshing={false} onRefresh={handleRefresh} progressViewOffset={progressViewOffset} />,
     [handleRefresh, progressViewOffset],
   );
 
@@ -136,9 +124,7 @@ function Component(
               {`${parseAmount(item.stat.floor.amount, true, 2)} `}
               <AppTextHeading5>{`$${item.stat.floor.currency}`}</AppTextHeading5>
             </AppTextHeading4>
-            <AppTextBody5
-              style={[styles.collectionRightText, { color: theme.colors.placeholder }]}
-              numberOfLines={1}>
+            <AppTextBody5 style={[styles.collectionRightText, { color: theme.colors.placeholder }]} numberOfLines={1}>
               {item.stat.minted} Minted
             </AppTextBody5>
           </View>
@@ -212,8 +198,7 @@ const makeStyles = (
 ) =>
   StyleSheet.create({
     contentContainerStyle: {
-      paddingTop:
-        hp(PROFILE_HEADER_HEIGHT_PERCENTAGE + TOP_TABBAR_HEIGHT_PERCENTAGE, insets) + headerHeight,
+      paddingTop: hp(PROFILE_HEADER_HEIGHT_PERCENTAGE + TOP_TABBAR_HEIGHT_PERCENTAGE, insets) + headerHeight,
       minHeight:
         hp(PROFILE_HEADER_HEIGHT_PERCENTAGE + 100, insets) +
         (Platform.OS === 'android' ? insets.top : 0) +

@@ -31,13 +31,7 @@ export default function AppModalLoader() {
         <AppListItem
           style={styles.box}
           containerStyle={{ backgroundColor: theme.colors.background }}
-          leftContent={
-            <AppActivityIndicator
-              style={styles.activityIndicator}
-              mode={mode}
-              progress={progress}
-            />
-          }>
+          leftContent={<AppActivityIndicator style={styles.activityIndicator} mode={mode} progress={progress} />}>
           <AppTextBody4>{message ? message : t('form:loading')}</AppTextBody4>
         </AppListItem>
       </Modal>

@@ -15,13 +15,7 @@ interface AppMenuItemProps {
   titleStyle?: StyleProp<TextStyle>;
 }
 
-export default function AppMenuItem({
-  onPress,
-  title,
-  icon,
-  disabled = false,
-  titleStyle,
-}: AppMenuItemProps) {
+export default function AppMenuItem({ onPress, title, icon, disabled = false, titleStyle }: AppMenuItemProps) {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
   const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);

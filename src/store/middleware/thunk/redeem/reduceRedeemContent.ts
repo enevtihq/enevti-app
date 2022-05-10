@@ -47,10 +47,7 @@ export const reduceRedeemContent =
       const localEncryptedFile = `${STORAGE_PATH_REDEEM}/${nft.symbol}#${nft.serial}.${ENCRYPTED_FILE_EXTENSION}`;
       const localDecryptedFile = `${STORAGE_PATH_REDEEM}/${nft.symbol}#${nft.serial}.${nft.redeem.content.extension}`;
 
-      const decryptedSecret = await decryptAsymmetric(
-        nft.redeem.secret.cipher,
-        nft.redeem.secret.sender,
-      );
+      const decryptedSecret = await decryptAsymmetric(nft.redeem.secret.cipher, nft.redeem.secret.sender);
       if (decryptedSecret.status === 'error') {
         secretDecryptionFailed(nft);
       }

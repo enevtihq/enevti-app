@@ -52,11 +52,7 @@ export default function AppProfileHeader({ navigation, persona, profile }: AppPr
 
   return (
     <View pointerEvents={'box-none'} style={styles.profileHeaderContainer}>
-      <AppAvatarRenderer
-        persona={persona}
-        size={wp('25%', insets)}
-        style={{ marginBottom: hp('2%', insets) }}
-      />
+      <AppAvatarRenderer persona={persona} size={wp('25%', insets)} style={{ marginBottom: hp('2%', insets) }} />
 
       <View style={{ height: hp('3.3%', insets) }}>
         <AppPersonaLabel
@@ -72,23 +68,17 @@ export default function AppProfileHeader({ navigation, persona, profile }: AppPr
       <View style={styles.profileStatsContainer}>
         <View style={styles.profileStatsItem}>
           <AppTextHeading3>{numberKMB(profile.nftSold, 2)}</AppTextHeading3>
-          <AppTextBody4 style={{ color: theme.colors.placeholder }}>
-            {t('profile:nftSold')}
-          </AppTextBody4>
+          <AppTextBody4 style={{ color: theme.colors.placeholder }}>{t('profile:nftSold')}</AppTextBody4>
         </View>
         <View style={styles.profileStatsDivider} />
         <View style={styles.profileStatsItem}>
           <AppTextHeading3>{profile.treasuryAct}</AppTextHeading3>
-          <AppTextBody4 style={{ color: theme.colors.placeholder }}>
-            {t('profile:treasuryAct')}
-          </AppTextBody4>
+          <AppTextBody4 style={{ color: theme.colors.placeholder }}>{t('profile:treasuryAct')}</AppTextBody4>
         </View>
         <View style={styles.profileStatsDivider} />
         <View style={styles.profileStatsItem}>
           <AppTextHeading3>{(profile.serveRate * 100).toFixed(2)}%</AppTextHeading3>
-          <AppTextBody4 style={{ color: theme.colors.placeholder }}>
-            {t('profile:serveRate')}
-          </AppTextBody4>
+          <AppTextBody4 style={{ color: theme.colors.placeholder }}>{t('profile:serveRate')}</AppTextBody4>
         </View>
       </View>
 
@@ -119,10 +109,7 @@ export default function AppProfileHeader({ navigation, persona, profile }: AppPr
             {t('profile:setupStake')}
           </AppSecondaryButton>
         ) : (
-          <AppTertiaryButton
-            disabled
-            style={styles.profileActionButton}
-            icon={iconMap.poolNotReady}>
+          <AppTertiaryButton disabled style={styles.profileActionButton} icon={iconMap.poolNotReady}>
             {t('profile:stakeNotReady')}
           </AppTertiaryButton>
         )}

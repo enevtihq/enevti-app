@@ -4,8 +4,7 @@ import { persistStore } from 'redux-persist';
 
 export const store = configureStore({
   reducer,
-  middleware: getDefaultMiddleware =>
-    getDefaultMiddleware({ serializableCheck: false, immutableCheck: false }),
+  middleware: getDefaultMiddleware => getDefaultMiddleware({ serializableCheck: false, immutableCheck: false }),
 });
 export const persistor = persistStore(store);
 

@@ -39,12 +39,8 @@ const myProfileViewSlice = createSlice({
   },
 });
 
-export const {
-  setMyProfileView,
-  setMyProfileViewLoaded,
-  setMyProfileViewReqStatus,
-  resetMyProfileView,
-} = myProfileViewSlice.actions;
+export const { setMyProfileView, setMyProfileViewLoaded, setMyProfileViewReqStatus, resetMyProfileView } =
+  myProfileViewSlice.actions;
 export default myProfileViewSlice.reducer;
 
 export const selectMyProfileView = createSelector(

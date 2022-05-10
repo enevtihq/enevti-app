@@ -1,9 +1,6 @@
 import { ABORT_ERROR_MESSAGE } from 'enevti-app/utils/error/message';
 
-export async function promiseWithSignal<T>(
-  callback: () => Promise<T>,
-  signal?: AbortController['signal'],
-) {
+export async function promiseWithSignal<T>(callback: () => Promise<T>, signal?: AbortController['signal']) {
   if (signal?.aborted) {
     return Promise.reject(new Error(ABORT_ERROR_MESSAGE));
   }

@@ -71,13 +71,8 @@ export default function AppCollectionHeader({
         height: hp(totalHeight),
       }}>
       <View pointerEvents={'none'}>
-        <AppNetworkImage
-          url={IPFStoURL(collection.cover.cid)}
-          style={{ width: coverWidth, height: coverHeight }}
-        />
-        {mintingAvailable ? (
-          <AppCollectionMintingAvailable collection={collection} onFinish={onFinish} />
-        ) : null}
+        <AppNetworkImage url={IPFStoURL(collection.cover.cid)} style={{ width: coverWidth, height: coverHeight }} />
+        {mintingAvailable ? <AppCollectionMintingAvailable collection={collection} onFinish={onFinish} /> : null}
       </View>
       <View>
         <TouchableRipple onPress={descriptionModalOnPress}>
@@ -90,9 +85,7 @@ export default function AppCollectionHeader({
                   <AppTextBody4 style={{ color: theme.colors.placeholder }}>
                     {`${collection.stat.minted} ${t('collection:statItem')} · ${t(
                       'collection:statFloorPrice',
-                    )}: ${parseAmount(collection.stat.floor.amount, true, 2)} $${
-                      collection.stat.floor.currency
-                    }`}
+                    )}: ${parseAmount(collection.stat.floor.amount, true, 2)} $${collection.stat.floor.currency}`}
                   </AppTextBody4>
                 </View>
               </View>
@@ -124,9 +117,7 @@ export default function AppCollectionHeader({
               height: hp('4%'),
             }}
             onPress={() => console.log('Pressed')}>
-            <AppTextBody4 style={{ color: theme.colors.placeholder }}>
-              {numberKMB(collection.like, 2)}
-            </AppTextBody4>
+            <AppTextBody4 style={{ color: theme.colors.placeholder }}>{numberKMB(collection.like, 2)}</AppTextBody4>
           </AppQuaternaryButton>
           <AppQuaternaryButton
             icon={iconMap.commentFill}
@@ -136,9 +127,7 @@ export default function AppCollectionHeader({
               height: hp('4%'),
             }}
             onPress={() => console.log('Pressed')}>
-            <AppTextBody4 style={{ color: theme.colors.placeholder }}>
-              {numberKMB(collection.comment, 2)}
-            </AppTextBody4>
+            <AppTextBody4 style={{ color: theme.colors.placeholder }}>{numberKMB(collection.comment, 2)}</AppTextBody4>
           </AppQuaternaryButton>
           <AppQuaternaryButton
             icon={iconMap.twitter}
@@ -157,19 +146,9 @@ export default function AppCollectionHeader({
         <View style={{ paddingHorizontal: wp('5%') }}>
           <Divider />
           <View style={styles.createdBy}>
-            <AppTextBody4 style={{ color: theme.colors.placeholder }}>
-              {t('collection:createdBy')}{' '}
-            </AppTextBody4>
-            <AppAvatarRenderer
-              persona={collection.creator}
-              size={wp('5%')}
-              style={{ marginHorizontal: wp('2%') }}
-            />
-            <AppPersonaLabel
-              persona={collection.creator}
-              style={styles.creatorAddress}
-              onPress={onCreatorDetail}
-            />
+            <AppTextBody4 style={{ color: theme.colors.placeholder }}>{t('collection:createdBy')} </AppTextBody4>
+            <AppAvatarRenderer persona={collection.creator} size={wp('5%')} style={{ marginHorizontal: wp('2%') }} />
+            <AppPersonaLabel persona={collection.creator} style={styles.creatorAddress} onPress={onCreatorDetail} />
           </View>
           <Divider />
         </View>

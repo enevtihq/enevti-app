@@ -39,17 +39,13 @@ export default function CreateAccount({ navigation }: Props) {
         <AppTextBody5 style={styles.term}>{t('auth:term')}</AppTextBody5>
         <View style={{ height: hp('6%', insets) }} />
 
-        <AppSecondaryButton
-          onPress={() => navigation.navigate('ImportPassphrase')}
-          style={styles.createAccount}>
+        <AppSecondaryButton onPress={() => navigation.navigate('ImportPassphrase')} style={styles.createAccount}>
           {t('auth:importPassphrase')}
         </AppSecondaryButton>
 
         <View style={{ height: hp('2%', insets) }} />
 
-        <AppPrimaryButton
-          onPress={() => navigation.navigate('SetupLocalPassword')}
-          style={styles.createAccount}>
+        <AppPrimaryButton onPress={() => navigation.navigate('SetupLocalPassword')} style={styles.createAccount}>
           {t('auth:createAccount')}
         </AppPrimaryButton>
 

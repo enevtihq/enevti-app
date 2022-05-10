@@ -39,9 +39,7 @@ function Component({
     [t],
   );
 
-  return (
-    <AppFormPicker items={redeemLimitItem} label={label} onSelected={onSelected} value={value} />
-  );
+  return <AppFormPicker items={redeemLimitItem} label={label} onSelected={onSelected} value={value} />;
 }
 
 const AppMintingPeriodPicker = React.memo(Component, (prevProps, nextProps) => {

@@ -22,10 +22,7 @@ export default React.memo(
     const fontSize = Math.sqrt((w * h) / Math.max(text.length, 12));
 
     return (
-      <Text
-        numberOfLines={1}
-        adjustsFontSizeToFit
-        style={[styles.nameContainer, { fontSize: fontSize }]}>
+      <Text numberOfLines={1} adjustsFontSizeToFit style={[styles.nameContainer, { fontSize: fontSize }]}>
         {text}
       </Text>
     );

@@ -7,11 +7,7 @@ import {
   setMomentItemsCache,
   setLastFetchMomentCache,
 } from 'enevti-app/store/slices/entities/cache/moment';
-import {
-  resetMomentView,
-  setMomentView,
-  setMomentViewLoaded,
-} from 'enevti-app/store/slices/ui/view/moment';
+import { resetMomentView, setMomentView, setMomentViewLoaded } from 'enevti-app/store/slices/ui/view/moment';
 import { lastFetchTimeout } from 'enevti-app/utils/constant/lastFetch';
 import { getMoments, parseMomentCache } from 'enevti-app/service/enevti/moment';
 

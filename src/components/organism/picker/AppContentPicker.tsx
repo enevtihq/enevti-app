@@ -86,14 +86,7 @@ function Component({
     <View>
       {value && value.name && value.size && value.type && value.uri ? (
         <AppListPickerItem
-          right={
-            <AppIconButton
-              icon={iconMap.delete}
-              onPress={onDelete}
-              size={20}
-              style={styles.listDropDown}
-            />
-          }
+          right={<AppIconButton icon={iconMap.delete} onPress={onDelete} size={20} style={styles.listDropDown} />}
           icon={mimeToIcon(value.type)}
           title={value.name}
           description={fileSizeKMG(value.size, 2)}

@@ -42,11 +42,7 @@ export default function AppAlertModal({
   const theme = useTheme();
   const styles = React.useMemo(() => makeStyles(insets), [insets]);
   const snapPoints = React.useMemo(
-    () =>
-      38 +
-      (primaryButtonText ? 8.5 : 0) +
-      (secondaryButtonText ? 8.5 : 0) +
-      (tertiaryButtonText ? 8.5 : 0),
+    () => 38 + (primaryButtonText ? 8.5 : 0) + (secondaryButtonText ? 8.5 : 0) + (tertiaryButtonText ? 8.5 : 0),
     [primaryButtonText, secondaryButtonText, tertiaryButtonText],
   );
 
@@ -69,17 +65,13 @@ export default function AppAlertModal({
         ) : null}
         {secondaryButtonText ? (
           <View>
-            <AppSecondaryButton onPress={secondaryButtonOnPress}>
-              {secondaryButtonText}
-            </AppSecondaryButton>
+            <AppSecondaryButton onPress={secondaryButtonOnPress}>{secondaryButtonText}</AppSecondaryButton>
             <View style={{ height: hp('1%', insets) }} />
           </View>
         ) : null}
         {tertiaryButtonText ? (
           <AppQuaternaryButton contentStyle={styles.tertiaryAction} onPress={tertiaryButtonOnPress}>
-            <AppTextBody4 style={{ color: theme.colors.primary }}>
-              {tertiaryButtonText}
-            </AppTextBody4>
+            <AppTextBody4 style={{ color: theme.colors.primary }}>{tertiaryButtonText}</AppTextBody4>
           </AppQuaternaryButton>
         ) : null}
       </View>

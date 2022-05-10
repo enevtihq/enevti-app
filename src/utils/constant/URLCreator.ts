@@ -21,35 +21,19 @@ export function urlGetIPFS(hash: string, gateway: string = IPFS_GATEWAY) {
   return encodeURI(`${gateway}${hash}`);
 }
 
-export function urlGetAllCollection(
-  offset: number = 0,
-  limit: number = 10,
-  host: string = ENEVTI_DEFAULT_API,
-) {
+export function urlGetAllCollection(offset: number = 0, limit: number = 10, host: string = ENEVTI_DEFAULT_API) {
   return encodeURI(`${host}/collection?offset=${offset}&limit=${limit}`);
 }
 
-export function urlGetAllNFT(
-  offset: number = 0,
-  limit: number = 10,
-  host: string = ENEVTI_DEFAULT_API,
-) {
+export function urlGetAllNFT(offset: number = 0, limit: number = 10, host: string = ENEVTI_DEFAULT_API) {
   return encodeURI(`${host}/nft?offset=${offset}&limit=${limit}`);
 }
 
-export function urlGetAllNFTTemplate(
-  offset: number = 0,
-  limit: number = 10,
-  host: string = ENEVTI_DEFAULT_API,
-) {
+export function urlGetAllNFTTemplate(offset: number = 0, limit: number = 10, host: string = ENEVTI_DEFAULT_API) {
   return encodeURI(`${host}/nft/template?offset=${offset}&limit=${limit}`);
 }
 
-export function urlGetAllNFTTemplateGenesis(
-  offset: number = 0,
-  limit: number = 10,
-  host: string = ENEVTI_DEFAULT_API,
-) {
+export function urlGetAllNFTTemplateGenesis(offset: number = 0, limit: number = 10, host: string = ENEVTI_DEFAULT_API) {
   return encodeURI(`${host}/nft/template/genesis?offset=${offset}&limit=${limit}`);
 }
 
@@ -65,11 +49,7 @@ export function urlGetCollectionBySymbol(symbol: string, host: string = ENEVTI_D
   return encodeURI(`${host}/collection/s/${symbol}`);
 }
 
-export function urlGetFeeds(
-  offset: number = 0,
-  limit: number = 10,
-  host: string = ENEVTI_DEFAULT_API,
-) {
+export function urlGetFeeds(offset: number = 0, limit: number = 10, host: string = ENEVTI_DEFAULT_API) {
   return encodeURI(`${host}/feeds?offset=${offset}&limit=${limit}`);
 }
 
@@ -133,11 +113,7 @@ export function urlPostTransaction(host: string = ENEVTI_DEFAULT_API) {
   return encodeURI(`${host}/transaction/post`);
 }
 
-export function urlGetTransactionBaseFee(
-  moduleID: number,
-  assetID: number,
-  host: string = ENEVTI_DEFAULT_API,
-) {
+export function urlGetTransactionBaseFee(moduleID: number, assetID: number, host: string = ENEVTI_DEFAULT_API) {
   return encodeURI(`${host}/transaction/basefee/${moduleID}/${assetID}`);
 }
 

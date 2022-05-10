@@ -31,12 +31,8 @@ const displaySlice = createSlice({
   },
 });
 
-export const {
-  setDisplayScreenState,
-  setDisplayMaximized,
-  setDisplayMinimized,
-  resetDisplayScreenState,
-} = displaySlice.actions;
+export const { setDisplayScreenState, setDisplayMaximized, setDisplayMinimized, resetDisplayScreenState } =
+  displaySlice.actions;
 export default displaySlice.reducer;
 
 export const selectDisplayState = createSelector(

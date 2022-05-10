@@ -7,10 +7,7 @@ interface AppLightBrandBannerProps {
   style?: StyleProp<ImageStyle>;
 }
 
-export default function AppLightBrandBanner({
-  widthPercentage,
-  style,
-}: AppLightBrandBannerProps): JSX.Element {
+export default function AppLightBrandBanner({ widthPercentage, style }: AppLightBrandBannerProps): JSX.Element {
   const sizeRatio = resizeImageRatio(1116, 342, widthPercentage);
 
   return (

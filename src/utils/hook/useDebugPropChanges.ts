@@ -14,11 +14,7 @@ function logPropDifferences(newProps: any, lastProps: any, identifier?: string) 
   });
   if (remounted) {
     console.log(
-      `${
-        identifier
-          ? '[' + identifier + '] - (warn) no prop change rerender'
-          : '(warn) no prop change rerender'
-      }`,
+      `${identifier ? '[' + identifier + '] - (warn) no prop change rerender' : '(warn) no prop change rerender'}`,
     );
   }
 }

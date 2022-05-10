@@ -6,10 +6,7 @@ import { RootStackParamList } from 'enevti-app/navigation';
 import { useSelector } from 'react-redux';
 import { selectMyPersonaCache } from 'enevti-app/store/slices/entities/cache/myPersona';
 import AppProfile from 'enevti-app/components/organism/profile/AppProfile';
-import {
-  isMyProfileUndefined,
-  selectMyProfileView,
-} from 'enevti-app/store/slices/ui/view/myProfile';
+import { isMyProfileUndefined, selectMyProfileView } from 'enevti-app/store/slices/ui/view/myProfile';
 import { RouteProp } from '@react-navigation/native';
 
 type Props = StackScreenProps<RootStackParamList, 'MyProfile'>;

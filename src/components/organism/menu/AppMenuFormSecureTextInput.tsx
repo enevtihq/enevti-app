@@ -22,9 +22,7 @@ function AppMenuFormSecureTextInput(props: AppFormSecureTextInputProps, ref: any
     props.touchHandler && props.touchHandler();
   }, [props, shouldHandleKeyboardEvents, withModal]);
 
-  return (
-    <AppFormSecureTextInput {...props} ref={ref} touchHandler={touchHandler} onFocus={onFocus} />
-  );
+  return <AppFormSecureTextInput {...props} ref={ref} touchHandler={touchHandler} onFocus={onFocus} />;
 }
 
 const forwardedAppMenuFormSecureTextInput = React.forwardRef(AppMenuFormSecureTextInput);

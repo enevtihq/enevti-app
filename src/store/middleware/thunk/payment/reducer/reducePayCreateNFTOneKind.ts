@@ -28,9 +28,7 @@ export const reducePayCreateNFTOneKind = (): AppThunk => async (dispatch, getSta
     const data = await uploadURItoIPFS(payload.data.uri);
     const cover = payload.state.coverUri ? await uploadURItoIPFS(payload.state.coverUri) : '';
     const content =
-      payload.state.utility === 'content'
-        ? await uploadURItoIPFS(payload.state.contentUri)
-        : payload.state.contentUri;
+      payload.state.utility === 'content' ? await uploadURItoIPFS(payload.state.contentUri) : payload.state.contentUri;
 
     transactionPayload.asset.data = data;
     transactionPayload.asset.cover = cover;
@@ -72,13 +70,7 @@ export function parseTransactionPayloadTime(payload: CreateNFTOneKind) {
 
   switch (payload.transaction.asset.recurring) {
     case 'daily':
-      ret = new Date(
-        year,
-        month,
-        date,
-        payload.transaction.asset.from.hour,
-        payload.transaction.asset.from.minute,
-      );
+      ret = new Date(year, month, date, payload.transaction.asset.from.hour, payload.transaction.asset.from.minute);
       break;
     case 'weekly':
       ret = new Date(

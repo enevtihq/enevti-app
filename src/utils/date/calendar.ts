@@ -13,9 +13,7 @@ export function dateOfNearestDay(startingDate: Date, nearestDay: number) {
   var nearestTime = new Date(startingDate.getTime());
 
   if (startingDate.getDay() === 6 && nearestDay === 5) {
-    nearestTime.setDate(
-      startingDate.getDate() + ((7 + nearestDay - startingDate.getDay()) % 7) - 7,
-    );
+    nearestTime.setDate(startingDate.getDate() + ((7 + nearestDay - startingDate.getDay()) % 7) - 7);
   } else {
     nearestTime.setDate(startingDate.getDate() + ((7 + nearestDay - startingDate.getDay()) % 7));
   }
@@ -93,8 +91,7 @@ export const addRedeemCalendarEvent = async (nft: NFT) => {
       throw new Error(i18n.t('error:unknownRecurring'));
   }
 
-  const recurrence =
-    nft.redeem.schedule.recurring === 'once' ? undefined : nft.redeem.schedule.recurring;
+  const recurrence = nft.redeem.schedule.recurring === 'once' ? undefined : nft.redeem.schedule.recurring;
 
   const redeemEvent: CalendarEventWritable = {
     url: getAppLink('nft-serial', `${nft.symbol}#${nft.serial}`),

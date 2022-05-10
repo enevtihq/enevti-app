@@ -47,10 +47,7 @@ export default function ChooseNFTType({ navigation }: Props) {
     navigation.replace('ChooseNFTTemplate', { mode: 'normal' });
   };
 
-  const onOneKindImagePressed = React.useCallback(
-    () => setOneKindSheetVisible(visible => !visible),
-    [],
-  );
+  const onOneKindImagePressed = React.useCallback(() => setOneKindSheetVisible(visible => !visible), []);
 
   const onOneKindImageDismiss = React.useCallback(() => setOneKindSheetVisible(false), []);
 
@@ -81,9 +78,7 @@ export default function ChooseNFTType({ navigation }: Props) {
         <AppTextHeading3 numberOfLines={1} style={{ width: wp('50%', insets) }}>
           {t('createNFT:oneKindTitle')}
         </AppTextHeading3>
-        <AppTextBody4 style={{ color: theme.colors.placeholder }}>
-          {t('createNFT:oneKindDescription')}
-        </AppTextBody4>
+        <AppTextBody4 style={{ color: theme.colors.placeholder }}>{t('createNFT:oneKindDescription')}</AppTextBody4>
       </AppListItem>
       <AppCameraGalleryPicker
         visible={oneKindSheetVisible}
@@ -105,9 +100,7 @@ export default function ChooseNFTType({ navigation }: Props) {
         <AppTextHeading3 numberOfLines={1} style={{ width: wp('50%', insets) }}>
           {t('createNFT:packTitle')}
         </AppTextHeading3>
-        <AppTextBody4 style={{ color: theme.colors.placeholder }}>
-          {t('createNFT:packDescription')}
-        </AppTextBody4>
+        <AppTextBody4 style={{ color: theme.colors.placeholder }}>{t('createNFT:packDescription')}</AppTextBody4>
       </AppListItem>
     </AppView>
   );

@@ -3,12 +3,7 @@ import base64 from 'react-native-base64';
 import DeviceInfo from 'react-native-device-info';
 import { getMyPassphrase } from 'enevti-app/service/enevti/persona';
 import { trimExtension } from 'enevti-app/utils/format/directory';
-import {
-  DecryptedData,
-  DecryptedFile,
-  EncryptedData,
-  EncryptedFile,
-} from 'enevti-app/types/core/service/cryptography';
+import { DecryptedData, DecryptedFile, EncryptedData, EncryptedFile } from 'enevti-app/types/core/service/cryptography';
 import { appCrypto } from './versions';
 import i18n from 'enevti-app/translations/i18n';
 
@@ -48,10 +43,7 @@ export async function decryptWithPassword(
   }
 }
 
-export async function encryptWithDevice(
-  text: string,
-  version: number = LATEST_VERSION,
-): Promise<EncryptedData> {
+export async function encryptWithDevice(text: string, version: number = LATEST_VERSION): Promise<EncryptedData> {
   if (!SUPPORTED_VERSION.includes(version)) {
     throw Error(i18n.t('error:unsupportedCryptoVersion'));
   }
@@ -59,10 +51,7 @@ export async function encryptWithDevice(
   return await appCrypto[version].encryptText(text, password, PBKDF2_ITERATION);
 }
 
-export async function decryptWithDevice(
-  encryptedBase64: string,
-  version: number,
-): Promise<DecryptedData> {
+export async function decryptWithDevice(encryptedBase64: string, version: number): Promise<DecryptedData> {
   if (!SUPPORTED_VERSION.includes(version)) {
     throw Error(i18n.t('error:unsupportedCryptoVersion'));
   }
@@ -102,9 +91,7 @@ export async function decryptFile(
   if (!SUPPORTED_VERSION.includes(version)) {
     throw Error(i18n.t('error:unsupportedCryptoVersion'));
   }
-  const outputPath = outputFile
-    ? outputFile
-    : `${trimExtension(inputFile, ENCRYPTED_FILE_EXTENSION)}`;
+  const outputPath = outputFile ? outputFile : `${trimExtension(inputFile, ENCRYPTED_FILE_EXTENSION)}`;
   return await appCrypto[version].decryptFile(inputFile, outputPath, password, iv, salt);
 }
 
@@ -131,14 +118,9 @@ export async function encryptAsymmetric(message: string, recipientPublicKey: str
   return base64.encode(JSON.stringify(encrypted));
 }
 
-export async function decryptAsymmetric(
-  encryptedBase64: string,
-  senderPublicKey: string,
-): Promise<DecryptedData> {
+export async function decryptAsymmetric(encryptedBase64: string, senderPublicKey: string): Promise<DecryptedData> {
   try {
-    const fromBase64 = JSON.parse(
-      base64.decode(encryptedBase64),
-    ) as Lisk.cryptography.EncryptedMessageWithNonce;
+    const fromBase64 = JSON.parse(base64.decode(encryptedBase64)) as Lisk.cryptography.EncryptedMessageWithNonce;
     const passphrase = await getMyPassphrase();
     const data = Lisk.cryptography.decryptMessageWithPassphrase(
       fromBase64.encryptedMessage,

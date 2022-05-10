@@ -33,20 +33,12 @@ export async function calculateGasFee(
   signal?: AbortController['signal'],
 ): Promise<string | undefined> {
   try {
-    const transaction = await createTransaction(
-      payload.moduleID,
-      payload.assetID,
-      payload.asset,
-      payload.fee,
-      signal,
-    );
+    const transaction = await createTransaction(payload.moduleID, payload.assetID, payload.asset, payload.fee, signal);
     const minFeeResponse = await fecthTransactionMinFee(transaction, signal);
     if (minFeeResponse.status !== 200) {
       throw Error(i18n.t('error:errorFetchMinFee', { msg: minFeeResponse.data }));
     }
-    return (
-      BigInt(minFeeResponse.data) + BigInt(JSON.stringify(transaction).length * 12)
-    ).toString();
+    return (BigInt(minFeeResponse.data) + BigInt(JSON.stringify(transaction).length * 12)).toString();
   } catch (err) {
     handleError(err);
     return undefined;
@@ -58,11 +50,7 @@ export async function calculateBaseFee(
   signal?: AbortController['signal'],
 ): Promise<string | undefined> {
   try {
-    const baseFeeResponse = await fecthTransactionBaseFee(
-      payload.moduleID,
-      payload.assetID,
-      signal,
-    );
+    const baseFeeResponse = await fecthTransactionBaseFee(payload.moduleID, payload.assetID, signal);
     if (baseFeeResponse.status !== 200) {
       throw Error(i18n.t('error:errorFetchBaseFee', { msg: baseFeeResponse.data }));
     }

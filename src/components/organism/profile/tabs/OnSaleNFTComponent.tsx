@@ -47,18 +47,14 @@ function Component(
     () => makeStyles(insets, headerHeight, displayed, disableHeaderAnimation),
     [insets, headerHeight, displayed, disableHeaderAnimation],
   );
-  const isScrollEnabled = React.useMemo(
-    () => (refreshing ? false : scrollEnabled),
-    [refreshing, scrollEnabled],
-  );
+  const isScrollEnabled = React.useMemo(() => (refreshing ? false : scrollEnabled), [refreshing, scrollEnabled]);
   const spacing = React.useMemo(() => wp('1%', insets), [insets]);
   const itemDimension = React.useMemo(() => wp('48%', insets), [insets]);
   const progressViewOffset = React.useMemo(
     () =>
       Platform.OS === 'ios'
         ? headerHeight
-        : hp(PROFILE_HEADER_HEIGHT_PERCENTAGE + TOP_TABBAR_HEIGHT_PERCENTAGE, insets) +
-          headerHeight,
+        : hp(PROFILE_HEADER_HEIGHT_PERCENTAGE + TOP_TABBAR_HEIGHT_PERCENTAGE, insets) + headerHeight,
     [headerHeight, insets],
   );
 
@@ -71,13 +67,7 @@ function Component(
   }, [onRefresh]);
 
   const refreshControl = React.useMemo(
-    () => (
-      <RefreshControl
-        refreshing={false}
-        onRefresh={handleRefresh}
-        progressViewOffset={progressViewOffset}
-      />
-    ),
+    () => <RefreshControl refreshing={false} onRefresh={handleRefresh} progressViewOffset={progressViewOffset} />,
     [handleRefresh, progressViewOffset],
   );
 
@@ -125,8 +115,7 @@ const makeStyles = (
 ) =>
   StyleSheet.create({
     contentContainerStyle: {
-      paddingTop:
-        hp(PROFILE_HEADER_HEIGHT_PERCENTAGE + TOP_TABBAR_HEIGHT_PERCENTAGE, insets) + headerHeight,
+      paddingTop: hp(PROFILE_HEADER_HEIGHT_PERCENTAGE + TOP_TABBAR_HEIGHT_PERCENTAGE, insets) + headerHeight,
       minHeight:
         hp(PROFILE_HEADER_HEIGHT_PERCENTAGE + 100, insets) +
         (Platform.OS === 'android' ? insets.top : 0) +

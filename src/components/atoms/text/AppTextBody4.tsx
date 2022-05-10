@@ -16,12 +16,7 @@ export default function AppTextBody4({
   readMoreLimit,
 }: AppTextBody4Props): JSX.Element {
   return (
-    <AppTextBase
-      weight={'normal'}
-      size={3.5}
-      numberOfLines={numberOfLines}
-      readMoreLimit={readMoreLimit}
-      style={style}>
+    <AppTextBase weight={'normal'} size={3.5} numberOfLines={numberOfLines} readMoreLimit={readMoreLimit} style={style}>
       {children}
     </AppTextBase>
   );

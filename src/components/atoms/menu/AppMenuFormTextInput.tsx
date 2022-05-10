@@ -1,7 +1,5 @@
 import React from 'react';
-import AppFormTextInput, {
-  AppFormTextInputProps,
-} from 'enevti-app/components/atoms/form/AppFormTextInput';
+import AppFormTextInput, { AppFormTextInputProps } from 'enevti-app/components/atoms/form/AppFormTextInput';
 import { useBottomSheetInternal } from '@gorhom/bottom-sheet';
 import { ModalContext } from 'enevti-app/context';
 

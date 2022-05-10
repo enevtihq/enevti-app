@@ -54,11 +54,7 @@ function Component({
       tapEverywhereToDismiss={true}
       onDismiss={onDismiss ? onDismiss : nothing}>
       <AppMenuItem onPress={openCamera} icon={iconMap.camera} title={t('createNFT:openCamera')} />
-      <AppMenuItem
-        onPress={pickFromGallery}
-        icon={iconMap.gallery}
-        title={t('createNFT:pickFromGallery')}
-      />
+      <AppMenuItem onPress={pickFromGallery} icon={iconMap.gallery} title={t('createNFT:pickFromGallery')} />
     </AppMenuContainer>
   );
 }

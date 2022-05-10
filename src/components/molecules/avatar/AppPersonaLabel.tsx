@@ -39,11 +39,7 @@ export default function AppPersonaLabel({
       ? base32Component
       : DefaultComponent
     : DefaultComponent;
-  const additionalStyle = persona.username
-    ? usernameStyle
-    : persona.base32
-    ? base32Style
-    : undefined;
+  const additionalStyle = persona.username ? usernameStyle : persona.base32 ? base32Style : undefined;
 
   return (
     <LabelView onPress={onPress} style={[style, additionalStyle]}>

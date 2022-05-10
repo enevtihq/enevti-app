@@ -48,11 +48,7 @@ export default React.memo(
           iconColor={like ? theme.colors.primary : theme.colors.text}
           style={styles.button}
           onPress={() => (like ? onLikeDeactivate() : onLikeActivate())}>
-          <AppTextBody4
-            style={[
-              styles.actionButtonText,
-              { color: like ? theme.colors.primary : theme.colors.text },
-            ]}>
+          <AppTextBody4 style={[styles.actionButtonText, { color: like ? theme.colors.primary : theme.colors.text }]}>
             {feed.like + like}
           </AppTextBody4>
         </AppQuaternaryButton>

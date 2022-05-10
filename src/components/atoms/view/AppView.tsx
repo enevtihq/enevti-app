@@ -51,11 +51,7 @@ export default function AppView({
         <View style={[styles.view, style]}>
           {withModal ? (
             <BottomSheetModalProvider>
-              <AppContainer
-                header={header}
-                headerOffset={headerOffset}
-                darken={darken}
-                edges={edges}>
+              <AppContainer header={header} headerOffset={headerOffset} darken={darken} edges={edges}>
                 {children}
               </AppContainer>
               {withPayment ? <AppPaymentModal /> : null}

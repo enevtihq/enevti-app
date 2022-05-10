@@ -45,10 +45,7 @@ export default React.memo(
     const fontSize = Math.sqrt((w * h) / (text.length + 20));
 
     return (
-      <Text
-        numberOfLines={1}
-        adjustsFontSizeToFit
-        style={[styles.rarityRankContainer, { fontSize: fontSize }]}>
+      <Text numberOfLines={1} adjustsFontSizeToFit style={[styles.rarityRankContainer, { fontSize: fontSize }]}>
         {text}
       </Text>
     );

@@ -54,9 +54,7 @@ export default function UsernameRegistered({ navigation }: Props) {
         </AppIconBanner>
         <AppIconBanner name={iconMap.insideDevice} style={styles.briefItem}>
           {t('auth:passwordNeverLeaveDevice')}
-          <AppTextBody4 style={styles.boldText}>
-            {t('auth:passwordNeverLeaveDeviceBold')}
-          </AppTextBody4>
+          <AppTextBody4 style={styles.boldText}>{t('auth:passwordNeverLeaveDeviceBold')}</AppTextBody4>
         </AppIconBanner>
       </View>
 

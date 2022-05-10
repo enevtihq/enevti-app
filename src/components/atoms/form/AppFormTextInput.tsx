@@ -58,11 +58,7 @@ function AppFormTextInput(props: AppFormTextInputProps, ref: any) {
           mode={'outlined'}
           ref={ref}
           outlineColor={styles.appFormTextInput.backgroundColor}
-          style={[
-            styles.appFormTextInput,
-            { minHeight: height, maxHeight: height, paddingBottom },
-            props.style,
-          ]}
+          style={[styles.appFormTextInput, { minHeight: height, maxHeight: height, paddingBottom }, props.style]}
           onFocus={onFocus}
           onBlur={onBlur}
           onChangeText={onChangeText}
@@ -74,9 +70,7 @@ function AppFormTextInput(props: AppFormTextInputProps, ref: any) {
           </AppTextBody5>
         ) : null}
       </View>
-      {props.rowEndComponent ? (
-        <View style={styles.rowEndComponent}>{props.rowEndComponent}</View>
-      ) : null}
+      {props.rowEndComponent ? <View style={styles.rowEndComponent}>{props.rowEndComponent}</View> : null}
     </View>
   );
 }

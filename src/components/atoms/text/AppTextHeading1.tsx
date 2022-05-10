@@ -16,12 +16,7 @@ export default function AppTextHeading1({
   readMoreLimit,
 }: AppTextHeading1Props): JSX.Element {
   return (
-    <AppTextBase
-      weight={'bold'}
-      size={5.8}
-      numberOfLines={numberOfLines}
-      readMoreLimit={readMoreLimit}
-      style={style}>
+    <AppTextBase weight={'bold'} size={5.8} numberOfLines={numberOfLines} readMoreLimit={readMoreLimit} style={style}>
       {children}
     </AppTextBase>
   );

@@ -45,16 +45,12 @@ export default function AppCollectionDescriptionModal({
         }}>
         <AppTextHeading2>
           {collection.name}{' '}
-          <AppTextBody3 style={{ color: theme.colors.placeholder }}>
-            ({collection.symbol})
-          </AppTextBody3>
+          <AppTextBody3 style={{ color: theme.colors.placeholder }}>({collection.symbol})</AppTextBody3>
         </AppTextHeading2>
 
         <View style={styles.collectionStatsContainer}>
           <View style={styles.collectionStatsItem}>
-            <AppTextHeading3 numberOfLines={1}>
-              {numberKMB(collection.stat.minted, 2)}
-            </AppTextHeading3>
+            <AppTextHeading3 numberOfLines={1}>{numberKMB(collection.stat.minted, 2)}</AppTextHeading3>
             <AppTextBody4 numberOfLines={1} style={{ color: theme.colors.placeholder }}>
               {t('collection:statItem')}
             </AppTextBody4>
@@ -74,9 +70,7 @@ export default function AppCollectionDescriptionModal({
                 size={15}
                 style={styles.collectionCurrencyIcon}
               />
-              <AppTextHeading3 numberOfLines={1}>
-                {parseAmount(collection.stat.floor.amount, true, 2)}
-              </AppTextHeading3>
+              <AppTextHeading3 numberOfLines={1}>{parseAmount(collection.stat.floor.amount, true, 2)}</AppTextHeading3>
             </View>
             <AppTextBody4 numberOfLines={1} style={{ color: theme.colors.placeholder }}>
               {t('collection:statFloorPrice')}

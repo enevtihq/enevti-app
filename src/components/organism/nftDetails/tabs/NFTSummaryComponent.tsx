@@ -36,15 +36,7 @@ interface NFTSummaryComponentProps {
 }
 
 function Component(
-  {
-    nft,
-    navigation,
-    onScroll,
-    collectionHeaderHeight,
-    onMounted,
-    onRefresh,
-    scrollEnabled,
-  }: NFTSummaryComponentProps,
+  { nft, navigation, onScroll, collectionHeaderHeight, onMounted, onRefresh, scrollEnabled }: NFTSummaryComponentProps,
   ref: any,
 ) {
   const { t } = useTranslation();
@@ -60,16 +52,10 @@ function Component(
     () => makeStyles(hp, wp, displayed, collectionHeaderHeight, insets, theme),
     [hp, wp, displayed, collectionHeaderHeight, insets, theme],
   );
-  const isScrollEnabled = React.useMemo(
-    () => (refreshing ? false : scrollEnabled),
-    [refreshing, scrollEnabled],
-  );
+  const isScrollEnabled = React.useMemo(() => (refreshing ? false : scrollEnabled), [refreshing, scrollEnabled]);
 
   const progressViewOffset = React.useMemo(
-    () =>
-      Platform.OS === 'ios'
-        ? 0
-        : hp(NFT_DETAILS_TOP_TABBAR_HEIGHT_PERCENTAGE) + collectionHeaderHeight,
+    () => (Platform.OS === 'ios' ? 0 : hp(NFT_DETAILS_TOP_TABBAR_HEIGHT_PERCENTAGE) + collectionHeaderHeight),
     [collectionHeaderHeight, hp],
   );
 
@@ -82,13 +68,7 @@ function Component(
   }, [onRefresh]);
 
   const refreshControl = React.useMemo(
-    () => (
-      <RefreshControl
-        refreshing={false}
-        onRefresh={handleRefresh}
-        progressViewOffset={progressViewOffset}
-      />
-    ),
+    () => <RefreshControl refreshing={false} onRefresh={handleRefresh} progressViewOffset={progressViewOffset} />,
     [handleRefresh, progressViewOffset],
   );
 
@@ -159,9 +139,7 @@ function Component(
             height: hp('4%'),
           }}
           onPress={() => console.log('Pressed')}>
-          <AppTextBody4 style={{ color: theme.colors.placeholder }}>
-            {numberKMB(nft.like, 2)}
-          </AppTextBody4>
+          <AppTextBody4 style={{ color: theme.colors.placeholder }}>{numberKMB(nft.like, 2)}</AppTextBody4>
         </AppQuaternaryButton>
         <AppQuaternaryButton
           icon={iconMap.commentFill}
@@ -171,9 +149,7 @@ function Component(
             height: hp('4%'),
           }}
           onPress={() => console.log('Pressed')}>
-          <AppTextBody4 style={{ color: theme.colors.placeholder }}>
-            {numberKMB(nft.comment, 2)}
-          </AppTextBody4>
+          <AppTextBody4 style={{ color: theme.colors.placeholder }}>{numberKMB(nft.comment, 2)}</AppTextBody4>
         </AppQuaternaryButton>
       </View>
 
@@ -183,32 +159,16 @@ function Component(
           <AppTextBody4 style={{ color: theme.colors.placeholder, width: wp('20%') }}>
             {t('nftDetails:createdBy')}{' '}
           </AppTextBody4>
-          <AppAvatarRenderer
-            persona={nft.creator}
-            size={wp('5%')}
-            style={{ marginHorizontal: wp('2%') }}
-          />
-          <AppPersonaLabel
-            persona={nft.creator}
-            style={styles.creatorOwnerAddress}
-            onPress={onCreatorDetail}
-          />
+          <AppAvatarRenderer persona={nft.creator} size={wp('5%')} style={{ marginHorizontal: wp('2%') }} />
+          <AppPersonaLabel persona={nft.creator} style={styles.creatorOwnerAddress} onPress={onCreatorDetail} />
         </View>
         <Divider />
         <View style={styles.createdOwnedBy}>
           <AppTextBody4 style={{ color: theme.colors.placeholder, width: wp('20%') }}>
             {t('nftDetails:ownedBy')}{' '}
           </AppTextBody4>
-          <AppAvatarRenderer
-            persona={nft.owner}
-            size={wp('5%')}
-            style={{ marginHorizontal: wp('2%') }}
-          />
-          <AppPersonaLabel
-            persona={nft.owner}
-            style={styles.creatorOwnerAddress}
-            onPress={onOwnerDetail}
-          />
+          <AppAvatarRenderer persona={nft.owner} size={wp('5%')} style={{ marginHorizontal: wp('2%') }} />
+          <AppPersonaLabel persona={nft.owner} style={styles.creatorOwnerAddress} onPress={onOwnerDetail} />
         </View>
         <Divider />
       </View>

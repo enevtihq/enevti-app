@@ -23,10 +23,7 @@ function Component({
   const hourIndex = React.useMemo(() => Array.from(Array(24).keys()), []);
   const minuteIndex = React.useMemo(() => Array.from(Array(60).keys()), []);
 
-  const hourStringIndex = React.useMemo(
-    () => hourIndex.map(item => ('0' + item.toString()).slice(-2)),
-    [hourIndex],
-  );
+  const hourStringIndex = React.useMemo(() => hourIndex.map(item => ('0' + item.toString()).slice(-2)), [hourIndex]);
   const minuteStringIndex = React.useMemo(
     () => minuteIndex.map(item => ('0' + item.toString()).slice(-2)),
     [minuteIndex],

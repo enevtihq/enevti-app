@@ -13,12 +13,7 @@ export default function AppTabBar({ state, descriptors, navigation, style }: App
 
   return (
     <Animated.View style={style}>
-      <BottomTabBar
-        state={state}
-        descriptors={descriptors}
-        navigation={navigation}
-        insets={insets}
-      />
+      <BottomTabBar state={state} descriptors={descriptors} navigation={navigation} insets={insets} />
     </Animated.View>
   );
 }

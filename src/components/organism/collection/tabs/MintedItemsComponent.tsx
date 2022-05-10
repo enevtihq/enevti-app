@@ -50,10 +50,7 @@ function Component(
     () => makeStyles(hp, displayed, collectionHeaderHeight, insets),
     [hp, displayed, collectionHeaderHeight, insets],
   );
-  const isScrollEnabled = React.useMemo(
-    () => (refreshing ? false : scrollEnabled),
-    [refreshing, scrollEnabled],
-  );
+  const isScrollEnabled = React.useMemo(() => (refreshing ? false : scrollEnabled), [refreshing, scrollEnabled]);
   const spacing = React.useMemo(() => wp('1%'), [wp]);
   const itemDimension = React.useMemo(() => wp('48%'), [wp]);
   const progressViewOffset = React.useMemo(
@@ -75,13 +72,7 @@ function Component(
   }, [onRefresh]);
 
   const refreshControl = React.useMemo(
-    () => (
-      <RefreshControl
-        refreshing={false}
-        onRefresh={handleRefresh}
-        progressViewOffset={progressViewOffset}
-      />
-    ),
+    () => <RefreshControl refreshing={false} onRefresh={handleRefresh} progressViewOffset={progressViewOffset} />,
     [handleRefresh, progressViewOffset],
   );
 
@@ -132,10 +123,7 @@ const makeStyles = (
     contentContainerStyle: {
       paddingTop: hp(TOP_TABBAR_HEIGHT_PERCENTAGE) + collectionHeaderHeight,
       minHeight:
-        hp(100) +
-        collectionHeaderHeight -
-        hp(HEADER_HEIGHT_PERCENTAGE) -
-        (Platform.OS === 'ios' ? insets.top : 0),
+        hp(100) + collectionHeaderHeight - hp(HEADER_HEIGHT_PERCENTAGE) - (Platform.OS === 'ios' ? insets.top : 0),
       display: displayed ? undefined : 'none',
     },
   });

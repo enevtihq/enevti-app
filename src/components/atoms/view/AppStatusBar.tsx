@@ -8,8 +8,7 @@ import lightTheme from 'enevti-app/theme/default';
 import darkTheme from 'enevti-app/theme/dark';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 
-export const STATUS_BAR_HEIGHT = () =>
-  (getStatusBarHeight() / Dimensions.get('window').height) * 100;
+export const STATUS_BAR_HEIGHT = () => (getStatusBarHeight() / Dimensions.get('window').height) * 100;
 
 export default function AppStatusBar() {
   const theme = useTheme() as Theme;
@@ -18,8 +17,7 @@ export default function AppStatusBar() {
     () =>
       (statusbarState.tint === 'system' && theme.dark === true) || statusbarState.tint === 'light'
         ? 'light-content'
-        : (statusbarState.tint === 'system' && theme.dark === false) ||
-          statusbarState.tint === 'dark'
+        : (statusbarState.tint === 'system' && theme.dark === false) || statusbarState.tint === 'dark'
         ? 'dark-content'
         : undefined,
     [statusbarState.tint, theme.dark],
@@ -38,7 +36,5 @@ export default function AppStatusBar() {
     [statusbarState.background, theme.colors.background],
   );
 
-  return (
-    <StatusBar animated translucent={true} barStyle={barStyle} backgroundColor={backgroundColor} />
-  );
+  return <StatusBar animated translucent={true} barStyle={barStyle} backgroundColor={backgroundColor} />;
 }

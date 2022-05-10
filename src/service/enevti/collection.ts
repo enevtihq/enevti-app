@@ -1,20 +1,14 @@
 import { StackScreenProps } from '@react-navigation/stack';
 import { Collection } from 'enevti-app/types/core/chain/collection';
 import { RootStackParamList } from 'enevti-app/navigation';
-import {
-  urlGetCollectionById,
-  urlGetCollectionBySymbol,
-} from 'enevti-app/utils/constant/URLCreator';
+import { urlGetCollectionById, urlGetCollectionBySymbol } from 'enevti-app/utils/constant/URLCreator';
 import { handleError, handleResponseCode, responseError } from 'enevti-app/utils/error/handle';
 import { appFetch, isInternetReachable } from 'enevti-app/utils/network';
 import { APIResponse, ResponseJSON } from 'enevti-app/types/core/service/api';
 
 type CollectionRoute = StackScreenProps<RootStackParamList, 'Collection'>['route']['params'];
 
-async function fetchCollectionById(
-  id: string,
-  signal?: AbortController['signal'],
-): Promise<APIResponse<Collection>> {
+async function fetchCollectionById(id: string, signal?: AbortController['signal']): Promise<APIResponse<Collection>> {
   try {
     await isInternetReachable();
     const res = await appFetch(urlGetCollectionById(id), { signal });
@@ -58,10 +52,7 @@ export async function getCollectionById(
   return await fetchCollectionById(id, signal);
 }
 
-export async function getCollectionByRouteParam(
-  routeParam: CollectionRoute,
-  signal?: AbortController['signal'],
-) {
+export async function getCollectionByRouteParam(routeParam: CollectionRoute, signal?: AbortController['signal']) {
   switch (routeParam.mode) {
     case 's':
       return await fetchCollectionBySymbol(routeParam.arg, signal);

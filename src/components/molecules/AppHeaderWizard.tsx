@@ -85,12 +85,8 @@ function Component({
       ) : mode === 'component' && component ? (
         component
       ) : null}
-      {title ? (
-        <AppTextHeading1 style={[styles.headerText1, titleStyle]}>{title}</AppTextHeading1>
-      ) : null}
-      {description ? (
-        <AppTextBody4 style={[styles.body1, descriptionStyle]}>{description}</AppTextBody4>
-      ) : null}
+      {title ? <AppTextHeading1 style={[styles.headerText1, titleStyle]}>{title}</AppTextHeading1> : null}
+      {description ? <AppTextBody4 style={[styles.body1, descriptionStyle]}>{description}</AppTextBody4> : null}
     </View>
   );
 }

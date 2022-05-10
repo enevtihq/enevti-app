@@ -33,10 +33,7 @@ const profileViewSlice = createSlice({
     initProfileView: (profile, action: PayloadAction<string>) => {
       Object.assign(profile, { [action.payload]: {} });
     },
-    setProfileView: (
-      profile,
-      action: PayloadAction<{ key: string; value: Record<string, any> }>,
-    ) => {
+    setProfileView: (profile, action: PayloadAction<{ key: string; value: Record<string, any> }>) => {
       Object.assign(profile, {
         [action.payload.key]: action.payload.value,
       });
@@ -72,12 +69,10 @@ export default profileViewSlice.reducer;
 
 export const selectProfileView = createSelector(
   [(state: RootState) => state.ui.view.profile, (state: RootState, key: string) => key],
-  (profile: ProfileViewStore, key: string) =>
-    profile.hasOwnProperty(key) ? profile[key] : initialStateItem,
+  (profile: ProfileViewStore, key: string) => (profile.hasOwnProperty(key) ? profile[key] : initialStateItem),
 );
 
 export const isProfileUndefined = createSelector(
   [(state: RootState) => state.ui.view.profile, (state: RootState, key: string) => key],
-  (profile: ProfileViewStore, key: string) =>
-    profile.hasOwnProperty(key) ? !profile[key].loaded : true,
+  (profile: ProfileViewStore, key: string) => (profile.hasOwnProperty(key) ? !profile[key].loaded : true),
 );

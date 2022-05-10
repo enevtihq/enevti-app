@@ -18,10 +18,7 @@ import Carousel from 'react-native-snap-carousel';
 import AppNFTRenderer from 'enevti-app/components/molecules/nft/AppNFTRenderer';
 import { makeDummyNFT } from 'enevti-app/utils/dummy/nft';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  clearCreateNFTQueueType,
-  selectCreateNFTTypeQueue,
-} from 'enevti-app/store/slices/queue/nft/create/type';
+import { clearCreateNFTQueueType, selectCreateNFTTypeQueue } from 'enevti-app/store/slices/queue/nft/create/type';
 import {
   clearCreateNFTOneKindQueue,
   selectCreateNFTOneKindQueue,

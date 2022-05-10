@@ -37,13 +37,7 @@ export default React.memo(
     );
 
     const handleRenderNFTTemplate = React.useCallback(
-      (
-        templateItem: NFTTemplateItem,
-        nftObject: NFTBase,
-        index: number,
-        canvasWidth: number,
-        data,
-      ) => {
+      (templateItem: NFTTemplateItem, nftObject: NFTBase, index: number, canvasWidth: number, data) => {
         const key = nftObject.id + templateItem.type + '-' + index.toString();
 
         switch (templateItem.type) {
@@ -52,63 +46,27 @@ export default React.memo(
           case 'data':
             return <NFTData key={key} nft={nftObject} args={templateItem.args} dataUri={data} />;
           case 'data-box':
-            return (
-              <NFTData box key={key} nft={nftObject} args={templateItem.args} dataUri={data} />
-            );
+            return <NFTData box key={key} nft={nftObject} args={templateItem.args} dataUri={data} />;
           case 'box':
             return <Box key={key} args={templateItem.args} />;
           case 'rarity-icon':
             return <RarityIcon key={key} nft={nftObject} args={templateItem.args} />;
           case 'rarity-rank':
-            return (
-              <RarityRank key={key} nft={nftObject} args={templateItem.args} width={canvasWidth} />
-            );
+            return <RarityRank key={key} nft={nftObject} args={templateItem.args} width={canvasWidth} />;
           case 'rarity-percent':
-            return (
-              <RarityPercent
-                key={key}
-                nft={nftObject}
-                args={templateItem.args}
-                width={canvasWidth}
-              />
-            );
+            return <RarityPercent key={key} nft={nftObject} args={templateItem.args} width={canvasWidth} />;
           case 'name':
             return <Name key={key} nft={nftObject} args={templateItem.args} width={canvasWidth} />;
           case 'serial':
-            return (
-              <Serial key={key} nft={nftObject} args={templateItem.args} width={canvasWidth} />
-            );
+            return <Serial key={key} nft={nftObject} args={templateItem.args} width={canvasWidth} />;
           case 'partition-icon':
-            return (
-              <PartitionIcon
-                key={key}
-                nft={nftObject}
-                args={templateItem.args}
-                width={canvasWidth}
-              />
-            );
+            return <PartitionIcon key={key} nft={nftObject} args={templateItem.args} width={canvasWidth} />;
           case 'partition-label':
-            return (
-              <PartitionLabel
-                key={key}
-                nft={nftObject}
-                args={templateItem.args}
-                width={canvasWidth}
-              />
-            );
+            return <PartitionLabel key={key} nft={nftObject} args={templateItem.args} width={canvasWidth} />;
           case 'utility-icon':
-            return (
-              <UtilityIcon key={key} nft={nftObject} args={templateItem.args} width={canvasWidth} />
-            );
+            return <UtilityIcon key={key} nft={nftObject} args={templateItem.args} width={canvasWidth} />;
           case 'utility-label':
-            return (
-              <UtilityLabel
-                key={key}
-                nft={nftObject}
-                args={templateItem.args}
-                width={canvasWidth}
-              />
-            );
+            return <UtilityLabel key={key} nft={nftObject} args={templateItem.args} width={canvasWidth} />;
           default:
             return <View key={key} />;
         }
@@ -118,8 +76,7 @@ export default React.memo(
 
     return (
       <View style={[styles.nftContainer, style]}>
-        {width < Dimensions.get('window').width * THUMBNAIL_TRESHOLD &&
-        nft.template.thumbnail.length > 0
+        {width < Dimensions.get('window').width * THUMBNAIL_TRESHOLD && nft.template.thumbnail.length > 0
           ? nft.template.thumbnail.map((templateItem, index) =>
               handleRenderNFTTemplate(templateItem, nft, index, width, dataUri),
             )

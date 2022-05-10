@@ -19,20 +19,10 @@ export default React.memo(
           : require('enevti-app/assets/images/enevti-icon-gs.png')
         : require('enevti-app/assets/images/enevti-icon.png');
 
-    return (
-      <FastImage
-        source={source}
-        resizeMode={FastImage.resizeMode.contain}
-        style={styles.rarityIconContainer}
-      />
-    );
+    return <FastImage source={source} resizeMode={FastImage.resizeMode.contain} style={styles.rarityIconContainer} />;
   },
   (props, nextProps) => {
-    if (
-      props.nft.rarity.stat.percent > 50 &&
-      nextProps.nft.rarity.stat.percent > 50 &&
-      props.args === nextProps.args
-    ) {
+    if (props.nft.rarity.stat.percent > 50 && nextProps.nft.rarity.stat.percent > 50 && props.args === nextProps.args) {
       return true;
     } else {
       return false;

@@ -2,19 +2,10 @@ import React from 'react';
 import { StackScreenProps } from '@react-navigation/stack';
 import { useDispatch } from 'react-redux';
 import AppView from 'enevti-app/components/atoms/view/AppView';
-import {
-  resetStatusBarState,
-  setStatusBarBackground,
-} from 'enevti-app/store/slices/ui/global/statusbar';
+import { resetStatusBarState, setStatusBarBackground } from 'enevti-app/store/slices/ui/global/statusbar';
 import { RootStackParamList } from 'enevti-app/navigation';
 import AppHeader, { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
-import {
-  interpolateColor,
-  runOnJS,
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from 'react-native-reanimated';
+import { interpolateColor, runOnJS, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { useTheme } from 'react-native-paper';
 import { hp } from 'enevti-app/utils/imageRatio';
 import { useTranslation } from 'react-i18next';
@@ -29,8 +20,7 @@ export default function NFTDetails({ navigation, route }: Props) {
   const dispatch = useDispatch();
   const theme = useTheme();
   const headerTreshold = React.useMemo(
-    () =>
-      hp(HEADER_HEIGHT_PERCENTAGE) + (getStatusBarHeight() / Dimensions.get('window').height) * 100,
+    () => hp(HEADER_HEIGHT_PERCENTAGE) + (getStatusBarHeight() / Dimensions.get('window').height) * 100,
     [],
   );
 
@@ -73,11 +63,7 @@ export default function NFTDetails({ navigation, route }: Props) {
 
   const textStyle = useAnimatedStyle(() => {
     return {
-      color: interpolateColor(
-        nftDetailsScroll.value,
-        [0, 1],
-        ['transparent', theme.colors.text],
-      ) as string,
+      color: interpolateColor(nftDetailsScroll.value, [0, 1], ['transparent', theme.colors.text]) as string,
     };
   });
 

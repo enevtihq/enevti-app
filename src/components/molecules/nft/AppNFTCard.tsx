@@ -57,8 +57,7 @@ export default function AppNFTCard({ nft, width, style, navigation }: AppNFTCard
             </AppTextHeading4>
           ) : (
             <AppTextHeading4 numberOfLines={1}>
-              <AppIconComponent name={iconMap.likeInactive} size={10} color={theme.colors.text} />{' '}
-              {nft.like}
+              <AppIconComponent name={iconMap.likeInactive} size={10} color={theme.colors.text} /> {nft.like}
             </AppTextHeading4>
           )}
         </View>

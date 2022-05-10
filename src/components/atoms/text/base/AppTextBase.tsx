@@ -26,10 +26,7 @@ export default function AppTextBase({
 }: AppTextBaseProps): JSX.Element {
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
-  const styles = React.useMemo(
-    () => makeStyles(theme, insets, weight, size),
-    [theme, insets, weight, size],
-  );
+  const styles = React.useMemo(() => makeStyles(theme, insets, weight, size), [theme, insets, weight, size]);
 
   const readMoreActivate = React.useMemo(
     () => readMoreLimit && typeof children === 'string' && children.length > readMoreLimit,
@@ -47,19 +44,12 @@ export default function AppTextBase({
   );
 }
 
-const makeStyles = (
-  theme: Theme,
-  insets: SafeAreaInsets,
-  weight: 'bold' | 'normal',
-  size: number,
-) =>
+const makeStyles = (theme: Theme, insets: SafeAreaInsets, weight: 'bold' | 'normal', size: number) =>
   StyleSheet.create({
     text: {
       color: theme.colors.text,
-      fontFamily:
-        weight === 'normal' ? theme.fonts.regular.fontFamily : theme.fonts.medium.fontFamily,
-      fontWeight:
-        weight === 'normal' ? theme.fonts.regular.fontWeight : theme.fonts.medium.fontWeight,
+      fontFamily: weight === 'normal' ? theme.fonts.regular.fontFamily : theme.fonts.medium.fontFamily,
+      fontWeight: weight === 'normal' ? theme.fonts.regular.fontWeight : theme.fonts.medium.fontWeight,
       fontSize: wp(size, insets),
     },
   });

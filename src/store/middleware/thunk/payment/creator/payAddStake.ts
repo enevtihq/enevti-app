@@ -1,17 +1,7 @@
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
-import {
-  setPaymentFee,
-  setPaymentStatus,
-  setPaymentAction,
-  showPayment,
-} from 'enevti-app/store/slices/payment';
+import { setPaymentFee, setPaymentStatus, setPaymentAction, showPayment } from 'enevti-app/store/slices/payment';
 import { AsyncThunkAPI } from 'enevti-app/store/state';
-import {
-  attachFee,
-  calculateBaseFee,
-  calculateGasFee,
-  createTransaction,
-} from 'enevti-app/service/enevti/transaction';
+import { attachFee, calculateBaseFee, calculateGasFee, createTransaction } from 'enevti-app/service/enevti/transaction';
 import i18n from 'enevti-app/translations/i18n';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { parsePersonaLabel } from 'enevti-app/service/enevti/persona';
@@ -58,9 +48,7 @@ export const payAddStake = createAsyncThunk<void, PayAddStakePayload, AsyncThunk
           }),
           amount: (BigInt(transactionPayload.asset.votes[0].amount) + BigInt(baseFee)).toString(),
           currency: payload.stake.currency,
-          payload: JSON.stringify(
-            attachFee(transactionPayload, (BigInt(gasFee) + BigInt(baseFee)).toString()),
-          ),
+          payload: JSON.stringify(attachFee(transactionPayload, (BigInt(gasFee) + BigInt(baseFee)).toString())),
         }),
       );
     } catch (err) {

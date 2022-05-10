@@ -46,12 +46,7 @@ export default function AppTopTabBar({
           ]}
         />
       ) : null}
-      <MaterialTopTabBar
-        state={state}
-        descriptors={descriptors}
-        navigation={navigation}
-        {...props}
-      />
+      <MaterialTopTabBar state={state} descriptors={descriptors} navigation={navigation} {...props} />
     </Animated.View>
   );
 }

@@ -30,9 +30,7 @@ export default React.memo(
         <Text>
           <AppTextHeading4 style={styles.tag}>{t('home:pack')}</AppTextHeading4>
           <AppTextBody4 style={styles.tag}> | </AppTextBody4>
-          <AppTextBody4 style={styles.tag}>
-            {t('home:mintingProgress', { minted: '21', total: '321' })}
-          </AppTextBody4>
+          <AppTextBody4 style={styles.tag}>{t('home:mintingProgress', { minted: '21', total: '321' })}</AppTextBody4>
           <AppTextBody4 style={styles.tag}> | </AppTextBody4>
           <AppTextBody4 style={styles.tag}>{t('home:daysLeft', { day: '12' })}</AppTextBody4>
         </Text>

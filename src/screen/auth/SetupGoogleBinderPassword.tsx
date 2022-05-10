@@ -93,17 +93,7 @@ export default function SetupGoogleBinderPassword({ navigation }: Props) {
           await handleFormSubmit(values);
         }}
         validationSchema={validationSchema}>
-        {({
-          handleChange,
-          submitForm,
-          setFieldTouched,
-          setFieldValue,
-          values,
-          errors,
-          isValid,
-          dirty,
-          touched,
-        }) => (
+        {({ handleChange, submitForm, setFieldTouched, setFieldValue, values, errors, isValid, dirty, touched }) => (
           <>
             <View style={styles.passwordView}>
               <AppFormSecureTextInput
@@ -111,11 +101,7 @@ export default function SetupGoogleBinderPassword({ navigation }: Props) {
                 style={styles.passwordInput}
                 value={values.password}
                 errorText={
-                  errors.password
-                    ? values.password.length > 0
-                      ? t('form:password')
-                      : t('form:required')
-                    : ''
+                  errors.password ? (values.password.length > 0 ? t('form:password') : t('form:required')) : ''
                 }
                 showError={touched.password}
                 touchHandler={() => setFieldTouched('password')}

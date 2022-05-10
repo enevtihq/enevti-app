@@ -11,15 +11,13 @@ export default {
   cancelEdit: 'Cancel',
   continue: 'Continue',
   chooseNFTTemplateTitle: 'Choose Template',
-  chooseNFTTemplateDescription:
-    'Template are a new way to present your NFT, while preserving its original data!',
+  chooseNFTTemplateDescription: 'Template are a new way to present your NFT, while preserving its original data!',
   createTemplate: 'Create Your Own!',
   createTemplateDescription: 'Your template can be reused by everyone, COMING SOON!',
   createTemplateButton: 'Create New Template',
   chooseNFTTemplateContinue: 'Choose This Template',
   setupContract: 'Setup Contract',
-  setupContractDescription:
-    'Finally! Set how your NFT will brings value in decentralized ecosystem!',
+  setupContractDescription: 'Finally! Set how your NFT will brings value in decentralized ecosystem!',
   nameUnavailable: 'Name is taken, choose another name!',
   symbolUnavailable: 'Symbol is taken, choose another symbol',
   nftIdentity: 'NFT Identity',
@@ -96,8 +94,7 @@ export default {
   changeImage: 'Change Image',
   changeTemplate: 'Change Template',
   saveSession: 'Save Session?',
-  saveSessionDescription:
-    'You have unsaved changes. Do you want to recover this form session later?',
+  saveSessionDescription: 'You have unsaved changes. Do you want to recover this form session later?',
   save: 'Save',
   discard: 'Discard',
   createButton: 'Create NFT',

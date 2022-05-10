@@ -8,9 +8,7 @@ export default function useSafeEdgeInsets(): SafeAreaInsets {
   const edges = React.useContext(EdgeContext);
   if (edges !== undefined) {
     const ret = JSON.parse(JSON.stringify(insets));
-    (['bottom', 'top', 'left', 'right'] as Edge[])
-      .filter(x => !edges.includes(x))
-      .forEach(x => (ret[x] = 0));
+    (['bottom', 'top', 'left', 'right'] as Edge[]).filter(x => !edges.includes(x)).forEach(x => (ret[x] = 0));
     return ret;
   } else {
     console.warn(

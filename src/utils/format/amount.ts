@@ -45,13 +45,9 @@ export function numberKMB(num: number, decimal?: number): string {
   } else if (num > 999 && num < 1000000) {
     return decimal ? (num / 1000).toFixed(decimal).toString() + 'K' : (num / 1000).toString() + 'K';
   } else if (num > 999999 && num < 1000000000) {
-    return decimal
-      ? (num / 1000000).toFixed(decimal).toString() + 'M'
-      : (num / 1000000).toString() + 'M';
+    return decimal ? (num / 1000000).toFixed(decimal).toString() + 'M' : (num / 1000000).toString() + 'M';
   } else if (num > 999999999) {
-    return decimal
-      ? (num / 1000000000).toFixed(decimal).toString() + 'B'
-      : (num / 1000000000).toString() + 'B';
+    return decimal ? (num / 1000000000).toFixed(decimal).toString() + 'B' : (num / 1000000000).toString() + 'B';
   } else {
     return i18n.t('error:unknown');
   }

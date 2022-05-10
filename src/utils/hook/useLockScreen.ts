@@ -13,14 +13,11 @@ export default function useLockScreen() {
     const { RNLockDetection } = NativeModules;
     RNLockDetection.registerDeviceLockListener();
     const LockDetectionEmitter = new NativeEventEmitter(RNLockDetection);
-    const lockDetectionSuscription = LockDetectionEmitter.addListener(
-      'LockStatusChange',
-      ({ status }) => {
-        if (!locked && auth.type && status === 'LOCKED') {
-          dispatch(lockScreen());
-        }
-      },
-    );
+    const lockDetectionSuscription = LockDetectionEmitter.addListener('LockStatusChange', ({ status }) => {
+      if (!locked && auth.type && status === 'LOCKED') {
+        dispatch(lockScreen());
+      }
+    });
     return function cleanup() {
       lockDetectionSuscription.remove();
     };

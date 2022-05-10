@@ -7,9 +7,7 @@ import { TOP_TABBAR_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/A
 import { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
 import { DimensionFunction, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
 import useDimension from 'enevti-app/utils/hook/useDimension';
-import AppListItem, {
-  LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE,
-} from 'enevti-app/components/molecules/list/AppListItem';
+import AppListItem, { LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE } from 'enevti-app/components/molecules/list/AppListItem';
 import AppNFTRenderer from 'enevti-app/components/molecules/nft/AppNFTRenderer';
 import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
@@ -61,10 +59,7 @@ function Component(
     () => makeStyles(hp, wp, displayed, collectionHeaderHeight, insets),
     [hp, wp, displayed, collectionHeaderHeight, insets],
   );
-  const isScrollEnabled = React.useMemo(
-    () => (refreshing ? false : scrollEnabled),
-    [refreshing, scrollEnabled],
-  );
+  const isScrollEnabled = React.useMemo(() => (refreshing ? false : scrollEnabled), [refreshing, scrollEnabled]);
   const itemHeight = React.useMemo(
     () => wp(COLLECTION_ACTIVITY_ITEM_HEIGHT + LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE),
     [wp],
@@ -83,13 +78,7 @@ function Component(
   }, [onRefresh]);
 
   const refreshControl = React.useMemo(
-    () => (
-      <RefreshControl
-        refreshing={false}
-        onRefresh={handleRefresh}
-        progressViewOffset={progressViewOffset}
-      />
-    ),
+    () => <RefreshControl refreshing={false} onRefresh={handleRefresh} progressViewOffset={progressViewOffset} />,
     [handleRefresh, progressViewOffset],
   );
 
@@ -99,18 +88,14 @@ function Component(
     ({ item }: { item: Collection['activity'][0] }) => (
       <AppListItem
         style={styles.collectionItem}
-        leftContent={
-          <AppNFTRenderer nft={item.nfts[0]} width={wp('13%')} style={styles.nftRenderer} />
-        }
+        leftContent={<AppNFTRenderer nft={item.nfts[0]} width={wp('13%')} style={styles.nftRenderer} />}
         rightContent={
           <View style={styles.collectionRightContent}>
             <AppTextHeading4 numberOfLines={1} style={styles.collectionRightText}>
               {`${parseAmount(item.value.amount, true, 2)} `}
               <AppTextHeading5>{`$${item.value.currency}`}</AppTextHeading5>
             </AppTextHeading4>
-            <AppTextBody5
-              style={[styles.collectionRightText, { color: theme.colors.placeholder }]}
-              numberOfLines={1}>
+            <AppTextBody5 style={[styles.collectionRightText, { color: theme.colors.placeholder }]} numberOfLines={1}>
               {moment(item.date).fromNow()}
             </AppTextBody5>
           </View>
@@ -199,10 +184,7 @@ const makeStyles = (
     contentContainerStyle: {
       paddingTop: hp(TOP_TABBAR_HEIGHT_PERCENTAGE) + collectionHeaderHeight,
       minHeight:
-        hp(100) +
-        collectionHeaderHeight -
-        hp(HEADER_HEIGHT_PERCENTAGE) -
-        (Platform.OS === 'ios' ? insets.top : 0),
+        hp(100) + collectionHeaderHeight - hp(HEADER_HEIGHT_PERCENTAGE) - (Platform.OS === 'ios' ? insets.top : 0),
       display: displayed ? undefined : 'none',
     },
     collectionItem: {

@@ -24,16 +24,9 @@ function Component({ icon, title, message, box, style }: AppInfoMessageProps) {
 
   return (
     <View style={[box ? styles.boxed : styles.normal, style]}>
-      <AppIconComponent
-        name={icon}
-        size={wp('15%', insets)}
-        color={theme.colors.placeholder}
-        style={styles.info}
-      />
+      <AppIconComponent name={icon} size={wp('15%', insets)} color={theme.colors.placeholder} style={styles.info} />
       {title ? (
-        <AppTextHeading3 style={[styles.infoMsg, { marginBottom: hp('1%', insets) }]}>
-          {title}
-        </AppTextHeading3>
+        <AppTextHeading3 style={[styles.infoMsg, { marginBottom: hp('1%', insets) }]}>{title}</AppTextHeading3>
       ) : null}
       <AppTextBody4 style={styles.infoMsg} numberOfLines={2}>
         {message}

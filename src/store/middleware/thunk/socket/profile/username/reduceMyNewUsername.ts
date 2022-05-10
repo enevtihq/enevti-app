@@ -1,8 +1,5 @@
 import { AppThunk } from 'enevti-app/store/state';
-import {
-  selectMyPersonaCache,
-  setMyPersonaCache,
-} from 'enevti-app/store/slices/entities/cache/myPersona';
+import { selectMyPersonaCache, setMyPersonaCache } from 'enevti-app/store/slices/entities/cache/myPersona';
 import { setMyProfileView } from 'enevti-app/store/slices/ui/view/myProfile';
 
 export const reduceMyNewUsername =

@@ -27,10 +27,7 @@ function Component({
     return arr;
   }, []);
 
-  const pickerValue = React.useMemo(
-    () => [value && value[0] !== -1 ? value[0].toString() : ''],
-    [value],
-  );
+  const pickerValue = React.useMemo(() => [value && value[0] !== -1 ? value[0].toString() : ''], [value]);
 
   const valueToString = React.useMemo(
     () => (value && value[0] !== -1 ? `${ordinalWithSuffix(value[0])}` : undefined),

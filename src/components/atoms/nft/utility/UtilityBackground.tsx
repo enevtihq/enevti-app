@@ -39,11 +39,7 @@ export default React.memo(
     }
 
     return (
-      <FastImage
-        source={source}
-        resizeMode={FastImage.resizeMode.cover}
-        style={styles.utilityBackgroundContainer}
-      />
+      <FastImage source={source} resizeMode={FastImage.resizeMode.cover} style={styles.utilityBackgroundContainer} />
     );
   },
   (props, nextProps) => {

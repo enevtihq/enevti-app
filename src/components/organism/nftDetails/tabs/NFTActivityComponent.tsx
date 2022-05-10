@@ -4,9 +4,7 @@ import { useTheme } from 'react-native-paper';
 import Animated from 'react-native-reanimated';
 import { DimensionFunction, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
 import useDimension from 'enevti-app/utils/hook/useDimension';
-import AppListItem, {
-  LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE,
-} from 'enevti-app/components/molecules/list/AppListItem';
+import AppListItem, { LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE } from 'enevti-app/components/molecules/list/AppListItem';
 import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import { parseAmount } from 'enevti-app/utils/format/amount';
@@ -36,14 +34,7 @@ interface NFTActivityComponentProps {
 }
 
 function Component(
-  {
-    activities,
-    onScroll,
-    collectionHeaderHeight,
-    onMounted,
-    onRefresh,
-    scrollEnabled,
-  }: NFTActivityComponentProps,
+  { activities, onScroll, collectionHeaderHeight, onMounted, onRefresh, scrollEnabled }: NFTActivityComponentProps,
   ref: any,
 ) {
   const { hp, wp } = useDimension();
@@ -58,19 +49,13 @@ function Component(
     () => makeStyles(hp, wp, displayed, collectionHeaderHeight, insets),
     [hp, wp, displayed, collectionHeaderHeight, insets],
   );
-  const isScrollEnabled = React.useMemo(
-    () => (refreshing ? false : scrollEnabled),
-    [refreshing, scrollEnabled],
-  );
+  const isScrollEnabled = React.useMemo(() => (refreshing ? false : scrollEnabled), [refreshing, scrollEnabled]);
   const itemHeight = React.useMemo(
     () => wp(COLLECTION_ACTIVITY_ITEM_HEIGHT + LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE),
     [wp],
   );
   const progressViewOffset = React.useMemo(
-    () =>
-      Platform.OS === 'ios'
-        ? 0
-        : hp(NFT_DETAILS_TOP_TABBAR_HEIGHT_PERCENTAGE) + collectionHeaderHeight,
+    () => (Platform.OS === 'ios' ? 0 : hp(NFT_DETAILS_TOP_TABBAR_HEIGHT_PERCENTAGE) + collectionHeaderHeight),
     [collectionHeaderHeight, hp],
   );
 
@@ -83,13 +68,7 @@ function Component(
   }, [onRefresh]);
 
   const refreshControl = React.useMemo(
-    () => (
-      <RefreshControl
-        refreshing={false}
-        onRefresh={handleRefresh}
-        progressViewOffset={progressViewOffset}
-      />
-    ),
+    () => <RefreshControl refreshing={false} onRefresh={handleRefresh} progressViewOffset={progressViewOffset} />,
     [handleRefresh, progressViewOffset],
   );
 
@@ -106,9 +85,7 @@ function Component(
               {`${parseAmount(item.value.amount, true, 2)} `}
               <AppTextHeading5>{`$${item.value.currency}`}</AppTextHeading5>
             </AppTextHeading4>
-            <AppTextBody5
-              style={[styles.collectionRightText, { color: theme.colors.placeholder }]}
-              numberOfLines={1}>
+            <AppTextBody5 style={[styles.collectionRightText, { color: theme.colors.placeholder }]} numberOfLines={1}>
               {moment(item.date).fromNow()}
             </AppTextBody5>
           </View>
@@ -122,13 +99,7 @@ function Component(
         </AppTextBody4>
       </AppListItem>
     ),
-    [
-      styles.collectionItem,
-      styles.collectionRightContent,
-      styles.collectionRightText,
-      theme.colors.placeholder,
-      t,
-    ],
+    [styles.collectionItem, styles.collectionRightContent, styles.collectionRightText, theme.colors.placeholder, t],
   );
 
   const keyExtractor = React.useCallback((item: NFT['activity'][0]) => item.transaction, []);

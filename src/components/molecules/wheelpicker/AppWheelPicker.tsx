@@ -15,13 +15,7 @@ interface AppWheelPickerProps {
   value?: any;
 }
 
-export default function AppWheelPicker({
-  onSelected,
-  onCancel,
-  onChange,
-  items,
-  value,
-}: AppWheelPickerProps) {
+export default function AppWheelPicker({ onSelected, onCancel, onChange, items, value }: AppWheelPickerProps) {
   const { t } = useTranslation();
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();

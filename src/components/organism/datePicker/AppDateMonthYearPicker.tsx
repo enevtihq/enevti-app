@@ -32,10 +32,7 @@ function Component({
     [currentDate],
   );
 
-  const monthStringIndex = React.useMemo(
-    () => Array.from(Array(12).keys()).map(month => monthToString(month)!),
-    [],
-  );
+  const monthStringIndex = React.useMemo(() => Array.from(Array(12).keys()).map(month => monthToString(month)!), []);
 
   const valueToString = React.useMemo(
     () =>
@@ -59,9 +56,7 @@ function Component({
           }
         } else {
           if (data[0] === currentDate.getUTCFullYear()) {
-            setMonthData(
-              [...Array(12 - currentMonth).keys()].map(x => monthToString(x + currentMonth)!),
-            );
+            setMonthData([...Array(12 - currentMonth).keys()].map(x => monthToString(x + currentMonth)!));
             setDateData([...Array(currentDayInMonth - currentDay).keys()].map(x => x + currentDay));
           } else {
             setMonthData(monthStringIndex);
@@ -80,9 +75,7 @@ function Component({
     const currentDayInMonth = getDaysInMonthUTC(currentMonth).length + 1;
     if (value && value[0] !== -1 && value[1] !== -1 && value[2] !== -1) {
       if (value[0] === currentDate.getUTCFullYear() && value[1] === currentMonth) {
-        setMonthData(
-          [...Array(12 - currentMonth).keys()].map(x => monthToString(x + currentMonth)!),
-        );
+        setMonthData([...Array(12 - currentMonth).keys()].map(x => monthToString(x + currentMonth)!));
         setDateData([...Array(currentDayInMonth - currentDay).keys()].map(x => x + currentDay));
       } else {
         setMonthData(monthStringIndex);
@@ -107,12 +100,10 @@ function Component({
       pickerValue={pickerValue}
       onChange={onChange}
       onSelected={data =>
-        onSelected &&
-        onSelected([parseFloat(data[0]), monthStringIndex.indexOf(data[1]), parseFloat(data[2])])
+        onSelected && onSelected([parseFloat(data[0]), monthStringIndex.indexOf(data[1]), parseFloat(data[2])])
       }
       onCancel={data =>
-        onCancel &&
-        onCancel([parseFloat(data[0]), monthStringIndex.indexOf(data[1]), parseFloat(data[2])])
+        onCancel && onCancel([parseFloat(data[0]), monthStringIndex.indexOf(data[1]), parseFloat(data[2])])
       }
     />
   );

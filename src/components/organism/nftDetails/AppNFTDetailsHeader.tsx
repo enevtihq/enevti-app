@@ -13,8 +13,7 @@ import { BlurView } from '@react-native-community/blur';
 import NFTData from 'enevti-app/components/atoms/nft/data/NFTData';
 import { NFT } from 'enevti-app/types/core/chain/nft';
 
-export const NFT_DETAILS_HEADER_VIEW_HEIGHT =
-  53 + (getStatusBarHeight() / Dimensions.get('window').height) * 100;
+export const NFT_DETAILS_HEADER_VIEW_HEIGHT = 53 + (getStatusBarHeight() / Dimensions.get('window').height) * 100;
 
 interface AppNFTDetailsHeaderProps {
   nft: NFT;
@@ -27,10 +26,7 @@ export default function AppNFTDetailsHeader({ nft }: AppNFTDetailsHeaderProps) {
   const theme = useTheme() as Theme;
   const styles = React.useMemo(() => makeStyles(), []);
 
-  const nftContainerPaddingTop = React.useMemo(
-    () => insets.top + hp(HEADER_HEIGHT_PERCENTAGE),
-    [insets.top, hp],
-  );
+  const nftContainerPaddingTop = React.useMemo(() => insets.top + hp(HEADER_HEIGHT_PERCENTAGE), [insets.top, hp]);
   const nftWidth = React.useMemo(() => wp('80%'), [wp]);
   const nftContainerWidth = React.useMemo(() => wp('100%'), [wp]);
   const totalHeight = React.useMemo(() => NFT_DETAILS_HEADER_VIEW_HEIGHT, []);

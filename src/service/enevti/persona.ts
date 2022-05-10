@@ -17,26 +17,15 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { COIN_NAME } from 'enevti-app/utils/constant/identifier';
 import { appFetch, isInternetReachable } from 'enevti-app/utils/network';
-import {
-  urlGetPersonaByAddress,
-  urlGetPersonaByUsername,
-} from 'enevti-app/utils/constant/URLCreator';
-import {
-  handleError,
-  handleResponseCode,
-  isErrorResponse,
-  responseError,
-} from 'enevti-app/utils/error/handle';
+import { urlGetPersonaByAddress, urlGetPersonaByUsername } from 'enevti-app/utils/constant/URLCreator';
+import { handleError, handleResponseCode, isErrorResponse, responseError } from 'enevti-app/utils/error/handle';
 import { APIResponse, ResponseJSON } from 'enevti-app/types/core/service/api';
 
 type ProfileRoute = StackScreenProps<RootStackParamList, 'Profile'>['route']['params'];
 
 const PREFIX = COIN_NAME.toLowerCase();
 
-async function fetchPersona(
-  address: string,
-  signal?: AbortController['signal'],
-): Promise<APIResponse<Persona>> {
+async function fetchPersona(address: string, signal?: AbortController['signal']): Promise<APIResponse<Persona>> {
   try {
     await isInternetReachable();
     const res = await appFetch(urlGetPersonaByAddress(address), { signal });
@@ -137,9 +126,7 @@ export async function getMyPassphrase() {
 
 export async function getMyPublicKey() {
   const passphrase = await getMyPassphrase();
-  return Lisk.cryptography
-    .getAddressAndPublicKeyFromPassphrase(passphrase)
-    .publicKey.toString('hex');
+  return Lisk.cryptography.getAddressAndPublicKeyFromPassphrase(passphrase).publicKey.toString('hex');
 }
 
 export async function getMyBase32() {
@@ -183,17 +170,11 @@ export async function getBasePersona(address: string, signal?: AbortController['
   return await fetchPersona(address, signal);
 }
 
-export async function getBasePersonaByUsername(
-  username: string,
-  signal?: AbortController['signal'],
-) {
+export async function getBasePersonaByUsername(username: string, signal?: AbortController['signal']) {
   return await fetchPersonaByUsername(username, signal);
 }
 
-export async function getBasePersonaByRouteParam(
-  routeParam: ProfileRoute,
-  signal?: AbortController['signal'],
-) {
+export async function getBasePersonaByRouteParam(routeParam: ProfileRoute, signal?: AbortController['signal']) {
   switch (routeParam.mode) {
     case 'a':
       return await fetchPersona(routeParam.arg, signal);

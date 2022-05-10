@@ -21,10 +21,7 @@ export default function RarityRank({ nft, args, width }: RarityRankProps) {
   const fontSize = Math.sqrt((w * h) / text.length);
 
   return (
-    <Text
-      numberOfLines={1}
-      adjustsFontSizeToFit
-      style={[styles.rarityRankContainer, { fontSize: fontSize }]}>
+    <Text numberOfLines={1} adjustsFontSizeToFit style={[styles.rarityRankContainer, { fontSize: fontSize }]}>
       {text}
     </Text>
   );

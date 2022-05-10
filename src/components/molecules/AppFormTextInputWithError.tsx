@@ -19,14 +19,7 @@ export interface AppFormTextInputWithErrorProps extends TextInputProps {
 }
 
 function AppFormTextInputWithError(
-  {
-    theme,
-    errorText,
-    showError,
-    endComponent,
-    hideMaxLengthIndicator,
-    ...props
-  }: AppFormTextInputWithErrorProps,
+  { theme, errorText, showError, endComponent, hideMaxLengthIndicator, ...props }: AppFormTextInputWithErrorProps,
   ref: any,
 ) {
   const insets = useSafeAreaInsets();
@@ -42,9 +35,7 @@ function AppFormTextInputWithError(
         endComponent={endComponent}
         hideMaxLengthIndicator={hideMaxLengthIndicator}
       />
-      {showError && errorText ? (
-        <AppTextBody4 style={styles.errorText}>{errorText}</AppTextBody4>
-      ) : null}
+      {showError && errorText ? <AppTextBody4 style={styles.errorText}>{errorText}</AppTextBody4> : null}
     </View>
   );
 }
@@ -61,21 +52,18 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
 
 const forwardedAppFormTextInputWithError = React.forwardRef(AppFormTextInputWithError);
 
-const memoizedAppFormTextInputWithError = React.memo(
-  forwardedAppFormTextInputWithError,
-  (prevProps, nextProps) => {
-    if (prevProps.memoKey) {
-      let ret = true;
-      prevProps.memoKey.forEach(key => {
-        if (prevProps[key] !== nextProps[key]) {
-          ret = false;
-        }
-      });
-      return ret;
-    } else {
-      return shallowEqual(prevProps, nextProps);
-    }
-  },
-);
+const memoizedAppFormTextInputWithError = React.memo(forwardedAppFormTextInputWithError, (prevProps, nextProps) => {
+  if (prevProps.memoKey) {
+    let ret = true;
+    prevProps.memoKey.forEach(key => {
+      if (prevProps[key] !== nextProps[key]) {
+        ret = false;
+      }
+    });
+    return ret;
+  } else {
+    return shallowEqual(prevProps, nextProps);
+  }
+});
 
 export default memoizedAppFormTextInputWithError;

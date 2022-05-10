@@ -24,10 +24,7 @@ function Component({
   const [pickerData, setPickerData] = React.useState<any>();
 
   const monthIndex = React.useMemo(() => Array.from(Array(12).keys()), []);
-  const monthStringIndex = React.useMemo(
-    () => monthIndex.map(month => monthToString(month)),
-    [monthIndex],
-  );
+  const monthStringIndex = React.useMemo(() => monthIndex.map(month => monthToString(month)), [monthIndex]);
 
   const pickerValue: string[] = React.useMemo(
     () => [
@@ -59,12 +56,8 @@ function Component({
       items={pickerData}
       value={valueToString}
       pickerValue={pickerValue}
-      onSelected={data =>
-        onSelected && onSelected([monthStringIndex.indexOf(data[0]), parseFloat(data[1])])
-      }
-      onCancel={data =>
-        onCancel && onCancel([monthStringIndex.indexOf(data[0]), parseFloat(data[1])])
-      }
+      onSelected={data => onSelected && onSelected([monthStringIndex.indexOf(data[0]), parseFloat(data[1])])}
+      onCancel={data => onCancel && onCancel([monthStringIndex.indexOf(data[0]), parseFloat(data[1])])}
     />
   );
 }

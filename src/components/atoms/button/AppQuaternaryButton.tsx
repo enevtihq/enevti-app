@@ -57,9 +57,7 @@ export default function AppQuaternaryButton({
     </View>
   ) : (
     <View style={[styles.buttonContainer, style, { opacity: opacity }]}>
-      <TouchableRipple
-        style={[styles.quaternaryButton, style]}
-        onPress={disabled ? undefined : onPress}>
+      <TouchableRipple style={[styles.quaternaryButton, style]} onPress={disabled ? undefined : onPress}>
         <View style={[styles.contentContainer, contentContainerStyle]}>
           {icon && (
             <MaterialCommunityIcons

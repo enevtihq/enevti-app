@@ -101,12 +101,7 @@ export async function appFetchBlob(
   const pConfig = progressConfig ?? { count: 10 };
 
   const response = ReactNativeBlobUtil.config(config)
-    .fetch(
-      method ?? 'GET',
-      resource,
-      headers,
-      filePath ? ReactNativeBlobUtil.wrap(filePath) : undefined,
-    )
+    .fetch(method ?? 'GET', resource, headers, filePath ? ReactNativeBlobUtil.wrap(filePath) : undefined)
     .uploadProgress(pConfig, onUploadProgress ? onUploadProgress : () => {})
     .progress(pConfig, onDownloadProgress ? onDownloadProgress : () => {});
 

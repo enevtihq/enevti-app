@@ -90,26 +90,14 @@ export default function AppNFTDetailsRedeemBar({ nft }: AppNFTDetailsRedeemBarPr
           style={styles.redeemRowIcon}
         />
         <View style={styles.redeemBarUtilityContainer}>
-          <AppTextBody5 style={styles.redeemBarUtilityText}>
-            {t('createNFT:nftUtility')}
-          </AppTextBody5>
+          <AppTextBody5 style={styles.redeemBarUtilityText}>{t('createNFT:nftUtility')}</AppTextBody5>
           <AppTextHeading3>{utilityToLabel(nft.utility)}</AppTextHeading3>
         </View>
-        <AppPrimaryButton
-          disabled={redeemButtonDisabled}
-          style={styles.redeemBarButton}
-          onPress={onRedeem}>
-          <AppTextHeading4 style={styles.redeemBarButtonText}>
-            {t('nftDetails:redeem')}
-          </AppTextHeading4>
+        <AppPrimaryButton disabled={redeemButtonDisabled} style={styles.redeemBarButton} onPress={onRedeem}>
+          <AppTextHeading4 style={styles.redeemBarButtonText}>{t('nftDetails:redeem')}</AppTextHeading4>
         </AppPrimaryButton>
         {redeemButtonDisabled && redeemError ? (
-          <AppPoppableIcon
-            position={'left'}
-            content={redeemError}
-            width={75}
-            iconStyle={styles.popableInfoIcon}
-          />
+          <AppPoppableIcon position={'left'} content={redeemError} width={75} iconStyle={styles.popableInfoIcon} />
         ) : null}
       </View>
       <Divider style={styles.divider} />
@@ -117,9 +105,7 @@ export default function AppNFTDetailsRedeemBar({ nft }: AppNFTDetailsRedeemBarPr
         <AppTextBody4 style={styles.calendarLabelText}>
           {`${nftToRedeemScheduleLabel(nft)} `}
           {canAddCalendar ? (
-            <AppTextBody5 style={styles.calendarActionText}>
-              ({t('nftDetails:addToCalendar')})
-            </AppTextBody5>
+            <AppTextBody5 style={styles.calendarActionText}>({t('nftDetails:addToCalendar')})</AppTextBody5>
           ) : null}
         </AppTextBody4>
       </RedeemScheduleView>

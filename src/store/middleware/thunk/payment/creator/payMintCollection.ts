@@ -1,10 +1,5 @@
 import { iconMap, UNDEFINED_ICON } from 'enevti-app/components/atoms/icon/AppIconComponent';
-import {
-  setPaymentFee,
-  setPaymentStatus,
-  setPaymentAction,
-  showPayment,
-} from 'enevti-app/store/slices/payment';
+import { setPaymentFee, setPaymentStatus, setPaymentAction, showPayment } from 'enevti-app/store/slices/payment';
 import { AsyncThunkAPI } from 'enevti-app/store/state';
 import { calculateGasFee, createTransaction } from 'enevti-app/service/enevti/transaction';
 import i18n from 'enevti-app/translations/i18n';
@@ -64,9 +59,7 @@ export const payMintCollection = createAsyncThunk<void, PayMintCollectionPayload
                 })
               : i18n.t('error:unknown')
           })`,
-          amount: (
-            BigInt(payload.collection.minting.price.amount) * BigInt(payload.quantity)
-          ).toString(),
+          amount: (BigInt(payload.collection.minting.price.amount) * BigInt(payload.quantity)).toString(),
           currency: payload.collection.minting.price.currency,
           payload: JSON.stringify(transactionPayload),
         }),

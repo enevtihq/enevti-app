@@ -43,11 +43,7 @@ export default function AppNFTDetailsBody({
           <AppTopTabBar
             {...props}
             safeBackgroundBarHeight={headerHeight * 2}
-            tabStyle={[
-              styles.tabBarContainer,
-              { top: collectionHeaderHeight },
-              animatedTabBarStyle,
-            ]}
+            tabStyle={[styles.tabBarContainer, { top: collectionHeaderHeight }, animatedTabBarStyle]}
           />
         )}
         sceneContainerStyle={{ backgroundColor: backgroundColor }}
@@ -60,9 +56,7 @@ export default function AppNFTDetailsBody({
         }}>
         <Tab.Screen
           options={{
-            tabBarLabel: ({ color }) => (
-              <AppTextBody4 style={{ color: color }}>{t('nftDetails:summary')}</AppTextBody4>
-            ),
+            tabBarLabel: ({ color }) => <AppTextBody4 style={{ color: color }}>{t('nftDetails:summary')}</AppTextBody4>,
           }}
           name={t('nftDetails:summary')}
           component={summaryScreen}

@@ -20,14 +20,7 @@ interface AppPaymentItemProps {
   bold?: boolean;
 }
 
-function Component({
-  title,
-  amount,
-  currency,
-  description,
-  hideTooltip,
-  bold,
-}: AppPaymentItemProps) {
+function Component({ title, amount, currency, description, hideTooltip, bold }: AppPaymentItemProps) {
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
   const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
@@ -38,9 +31,7 @@ function Component({
     <View style={styles.paymentItemView}>
       <View style={styles.titleContainer}>
         <AppText>{title} </AppText>
-        {description && !hideTooltip ? (
-          <AppPoppableIcon position={'right'} content={description} />
-        ) : null}
+        {description && !hideTooltip ? <AppPoppableIcon position={'right'} content={description} /> : null}
       </View>
       <View style={styles.currencyContainer}>
         <AppText>{parseAmount(amount.toString())} </AppText>

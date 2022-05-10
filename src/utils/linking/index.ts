@@ -2,9 +2,7 @@ import { LinkingOptions } from '@react-navigation/native';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { Linking } from 'react-native';
 
-type AppLinking = (
-  initialRouteName: keyof RootStackParamList,
-) => LinkingOptions<RootStackParamList>;
+type AppLinking = (initialRouteName: keyof RootStackParamList) => LinkingOptions<RootStackParamList>;
 
 type AppLinkNamespace =
   | 'nft-serial'
@@ -48,11 +46,7 @@ export const linking: AppLinking = initialRouteName => {
   };
 };
 
-export function getAppLink(
-  namespace: AppLinkNamespace,
-  arg: string,
-  prefix: string = `${UNIVERSAL_LINK_HTTPS}/`,
-) {
+export function getAppLink(namespace: AppLinkNamespace, arg: string, prefix: string = `${UNIVERSAL_LINK_HTTPS}/`) {
   let ret: string = prefix;
   switch (namespace) {
     case 'nft-serial':

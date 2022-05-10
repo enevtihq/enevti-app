@@ -25,10 +25,7 @@ interface AppCollectionMintButtonProps {
   mintingAvailable: boolean;
 }
 
-export default function AppCollectionMintButton({
-  collection,
-  mintingAvailable,
-}: AppCollectionMintButtonProps) {
+export default function AppCollectionMintButton({ collection, mintingAvailable }: AppCollectionMintButtonProps) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { hp, wp } = useDimension();
@@ -56,9 +53,7 @@ export default function AppCollectionMintButton({
     <View style={styles.actionContainer}>
       <View style={{ height: hp('2%') }} />
       <DropShadow style={styles.actionButton}>
-        <LinearGradient
-          colors={[theme.colors.primary, theme.colors.secondary]}
-          style={styles.actionButtonGradient}>
+        <LinearGradient colors={[theme.colors.primary, theme.colors.secondary]} style={styles.actionButtonGradient}>
           <AppQuaternaryButton
             box
             loading={loading}
@@ -98,9 +93,7 @@ export default function AppCollectionMintButton({
                 <AppTextHeading3 style={styles.whiteText}>
                   {`${parseAmount(collection.minting.price.amount, true, 2)} `}
                 </AppTextHeading3>
-                <AppTextHeading5 style={styles.whiteText}>
-                  ${collection.minting.price.currency}
-                </AppTextHeading5>
+                <AppTextHeading5 style={styles.whiteText}>${collection.minting.price.currency}</AppTextHeading5>
               </View>
             </View>
           </AppQuaternaryButton>

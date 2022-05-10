@@ -2,10 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
 import { COIN_NAME } from 'enevti-app/utils/constant/identifier';
 import { NFTTemplateAsset } from 'enevti-app/types/core/chain/nft/NFTTemplate';
-import {
-  OneKindContractForm,
-  OneKindContractStatusForm,
-} from 'enevti-app/types/ui/screen/CreateOneKindContract';
+import { OneKindContractForm, OneKindContractStatusForm } from 'enevti-app/types/ui/screen/CreateOneKindContract';
 import { CreateNFTOneKind } from 'enevti-app/types/ui/store/CreateNFTQueue';
 import { RootState } from 'enevti-app/store/state';
 

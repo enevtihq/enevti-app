@@ -12,20 +12,12 @@ import { getMyAddress } from './persona';
 import { completeTokenUnit } from 'enevti-app/utils/format/amount';
 import { appFetch, isInternetReachable } from 'enevti-app/utils/network';
 import { urlGetProfile, urlGetProfileNonce } from 'enevti-app/utils/constant/URLCreator';
-import {
-  handleError,
-  handleResponseCode,
-  isErrorResponse,
-  responseError,
-} from 'enevti-app/utils/error/handle';
+import { handleError, handleResponseCode, isErrorResponse, responseError } from 'enevti-app/utils/error/handle';
 import { APIResponse, ResponseJSON } from 'enevti-app/types/core/service/api';
 
 export const MINIMUM_BASIC_UNIT_STAKE_ELIGIBILITY = 1000;
 
-async function fetchProfileNonce(
-  address: string,
-  signal?: AbortController['signal'],
-): Promise<APIResponse<string>> {
+async function fetchProfileNonce(address: string, signal?: AbortController['signal']): Promise<APIResponse<string>> {
   try {
     await isInternetReachable();
     const res = await appFetch(urlGetProfileNonce(address), { signal });
@@ -42,10 +34,7 @@ async function fetchProfileNonce(
   }
 }
 
-async function fetchProfile(
-  address: string,
-  signal?: AbortController['signal'],
-): Promise<APIResponse<Profile>> {
+async function fetchProfile(address: string, signal?: AbortController['signal']): Promise<APIResponse<Profile>> {
   try {
     await isInternetReachable();
     const res = await appFetch(urlGetProfile(address), { signal });
@@ -73,10 +62,7 @@ export async function getProfileNonce(
   return await fetchProfileNonce(address, signal);
 }
 
-export async function getProfile(
-  address: string,
-  signal?: AbortController['signal'],
-): Promise<APIResponse<Profile>> {
+export async function getProfile(address: string, signal?: AbortController['signal']): Promise<APIResponse<Profile>> {
   return await fetchProfile(address, signal);
 }
 

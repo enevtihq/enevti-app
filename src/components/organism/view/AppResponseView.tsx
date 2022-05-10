@@ -23,11 +23,7 @@ export default function AppResponseView({
   const refreshControl = React.useMemo(
     () =>
       onReload ? (
-        <RefreshControl
-          refreshing={false}
-          onRefresh={onReload}
-          progressViewOffset={progressViewOffset}
-        />
+        <RefreshControl refreshing={false} onRefresh={onReload} progressViewOffset={progressViewOffset} />
       ) : undefined,
     [onReload, progressViewOffset],
   );
@@ -35,15 +31,11 @@ export default function AppResponseView({
   return status === 200 ? (
     <View style={style}>{children}</View>
   ) : status === 404 ? (
-    <ScrollView
-      refreshControl={refreshControl}
-      contentContainerStyle={[style, styles.responseView]}>
+    <ScrollView refreshControl={refreshControl} contentContainerStyle={[style, styles.responseView]}>
       <AppMessageNotFound />
     </ScrollView>
   ) : (
-    <ScrollView
-      refreshControl={refreshControl}
-      contentContainerStyle={[style, styles.responseView]}>
+    <ScrollView refreshControl={refreshControl} contentContainerStyle={[style, styles.responseView]}>
       <AppMessageError />
     </ScrollView>
   );

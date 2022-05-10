@@ -25,15 +25,13 @@ export function resizeImageRatio(initialWidth: number, initialHeight: number, ra
 }
 
 export function wp(widthPercent: string | number, insets?: SafeAreaInsets) {
-  const insetsSize =
-    ignoreOnPlatform.includes(Platform.OS) || !insets ? 0 : insets.left + insets.right;
+  const insetsSize = ignoreOnPlatform.includes(Platform.OS) || !insets ? 0 : insets.left + insets.right;
   const elemWidth = typeof widthPercent === 'number' ? widthPercent : parseFloat(widthPercent);
   return PixelRatio.roundToNearestPixel(((screenWidth - insetsSize) * elemWidth) / 100);
 }
 
 export function hp(heightPercent: string | number, insets?: SafeAreaInsets) {
-  const insetsSize =
-    ignoreOnPlatform.includes(Platform.OS) || !insets ? 0 : insets.top + insets.bottom;
+  const insetsSize = ignoreOnPlatform.includes(Platform.OS) || !insets ? 0 : insets.top + insets.bottom;
   const elemHeight = typeof heightPercent === 'number' ? heightPercent : parseFloat(heightPercent);
   return PixelRatio.roundToNearestPixel(((screenHeight - insetsSize) * elemHeight) / 100);
 }

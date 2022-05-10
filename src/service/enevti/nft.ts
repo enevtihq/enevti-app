@@ -22,10 +22,7 @@ export function cleanTMPImage() {
   });
 }
 
-export async function isNameAvailable(
-  name: string,
-  signal?: AbortController['signal'],
-): Promise<boolean> {
+export async function isNameAvailable(name: string, signal?: AbortController['signal']): Promise<boolean> {
   try {
     await isInternetReachable();
     const res = await appFetch(urlGetIsNameExists(name), { signal });
@@ -38,10 +35,7 @@ export async function isNameAvailable(
   }
 }
 
-export async function isSymbolAvailable(
-  symbol: string,
-  signal?: AbortController['signal'],
-): Promise<boolean> {
+export async function isSymbolAvailable(symbol: string, signal?: AbortController['signal']): Promise<boolean> {
   try {
     await isInternetReachable();
     const res = await appFetch(urlGetIsSymbolExists(symbol), { signal });
@@ -54,10 +48,7 @@ export async function isSymbolAvailable(
   }
 }
 
-async function fetchNFTbyId(
-  id: string,
-  signal?: AbortController['signal'],
-): Promise<APIResponse<NFT>> {
+async function fetchNFTbyId(id: string, signal?: AbortController['signal']): Promise<APIResponse<NFT>> {
   try {
     await isInternetReachable();
     const res = await appFetch(urlGetNFTById(id), { signal });
@@ -95,17 +86,11 @@ async function fetchNFTbySerial(
   }
 }
 
-export async function getNFTbyId(
-  id: string,
-  signal?: AbortController['signal'],
-): Promise<APIResponse<NFT>> {
+export async function getNFTbyId(id: string, signal?: AbortController['signal']): Promise<APIResponse<NFT>> {
   return await fetchNFTbyId(id, signal);
 }
 
-export async function getNFTbyRouteParam(
-  routeParam: NFTDetailsRoute,
-  signal?: AbortController['signal'],
-) {
+export async function getNFTbyRouteParam(routeParam: NFTDetailsRoute, signal?: AbortController['signal']) {
   switch (routeParam.mode) {
     case 's':
       const symbol = routeParam.arg.split('#')[0];

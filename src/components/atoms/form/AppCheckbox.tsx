@@ -14,14 +14,7 @@ interface AppCheckboxProps {
   uncheckedColor?: string;
 }
 
-export default function AppCheckbox({
-  children,
-  value,
-  style,
-  disabled,
-  onPress,
-  uncheckedColor,
-}: AppCheckboxProps) {
+export default function AppCheckbox({ children, value, style, disabled, onPress, uncheckedColor }: AppCheckboxProps) {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
   const styles = React.useMemo(() => makeStyles(insets), [insets]);

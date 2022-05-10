@@ -30,8 +30,7 @@ const momentViewSlice = createSlice({
   },
 });
 
-export const { setMomentView, setMomentViewLoaded, setMomentViewReqStatus, resetMomentView } =
-  momentViewSlice.actions;
+export const { setMomentView, setMomentViewLoaded, setMomentViewReqStatus, resetMomentView } = momentViewSlice.actions;
 export default momentViewSlice.reducer;
 
 export const selectMomentView = createSelector(

@@ -18,15 +18,9 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { AppAsyncThunk } from 'enevti-app/types/ui/store/AppAsyncThunk';
-import {
-  isNFTDetailsUndefined,
-  selectNFTDetailsView,
-} from 'enevti-app/store/slices/ui/view/nftDetails';
+import { isNFTDetailsUndefined, selectNFTDetailsView } from 'enevti-app/store/slices/ui/view/nftDetails';
 import NFTActivityComponent from './tabs/NFTActivityComponent';
-import {
-  loadNFTDetails,
-  unloadNFTDetails,
-} from 'enevti-app/store/middleware/thunk/ui/view/nftDetails';
+import { loadNFTDetails, unloadNFTDetails } from 'enevti-app/store/middleware/thunk/ui/view/nftDetails';
 import AppNFTDetailsBody from './AppNFTDetailsBody';
 import NFTSummaryComponent from './tabs/NFTSummaryComponent';
 import { RootState } from 'enevti-app/store/state';
@@ -53,12 +47,8 @@ export default function AppNFTDetails({ onScrollWorklet, navigation, route }: Ap
   const headerHeight = hp(HEADER_HEIGHT_PERCENTAGE) + insets.top;
   const styles = React.useMemo(() => makeStyles(hp, wp), [hp, wp]);
 
-  const nftDetails = useSelector((state: RootState) =>
-    selectNFTDetailsView(state, route.params.arg),
-  );
-  const nftDetailsUndefined = useSelector((state: RootState) =>
-    isNFTDetailsUndefined(state, route.params.arg),
-  );
+  const nftDetails = useSelector((state: RootState) => selectNFTDetailsView(state, route.params.arg));
+  const nftDetailsUndefined = useSelector((state: RootState) => isNFTDetailsUndefined(state, route.params.arg));
 
   const totalHeaderHeight = React.useMemo(() => hp(NFT_DETAILS_HEADER_VIEW_HEIGHT), [hp]);
 

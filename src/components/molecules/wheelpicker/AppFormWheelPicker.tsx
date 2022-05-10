@@ -65,10 +65,7 @@ function Component({
         </TouchableRipple>
       </View>
 
-      <AppMenuContainer
-        snapPoints={['45%']}
-        visible={menuVisible}
-        onDismiss={() => setMenuVisible(false)}>
+      <AppMenuContainer snapPoints={['45%']} visible={menuVisible} onDismiss={() => setMenuVisible(false)}>
         <AppWheelPicker
           onSelected={data => {
             onSelected && onSelected(data);

@@ -1,19 +1,9 @@
 import { COIN_NAME } from 'enevti-app/utils/constant/identifier';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
-import {
-  setPaymentFee,
-  setPaymentStatus,
-  setPaymentAction,
-  showPayment,
-} from 'enevti-app/store/slices/payment';
+import { setPaymentFee, setPaymentStatus, setPaymentAction, showPayment } from 'enevti-app/store/slices/payment';
 import { CreateNFTOneKind } from 'enevti-app/types/ui/store/CreateNFTQueue';
 import { AsyncThunkAPI } from 'enevti-app/store/state';
-import {
-  attachFee,
-  calculateBaseFee,
-  calculateGasFee,
-  createTransaction,
-} from 'enevti-app/service/enevti/transaction';
+import { attachFee, calculateBaseFee, calculateGasFee, createTransaction } from 'enevti-app/service/enevti/transaction';
 import { makeDummyIPFS } from 'enevti-app/utils/dummy/ipfs';
 import i18n from 'enevti-app/translations/i18n';
 import { createAsyncThunk } from '@reduxjs/toolkit';
@@ -101,79 +91,71 @@ export const payCreateNFTOneKind = createAsyncThunk<void, CreateNFTOneKind, Asyn
           payload.state.untilHour,
           payload.state.untilMinute,
         );
-        until =
-          dateUntil.getTime() +
-          (dateUntil.getTime() < dateFrom.getTime() ? 86400000 : 0) -
-          dateFrom.getTime();
+        until = dateUntil.getTime() + (dateUntil.getTime() < dateFrom.getTime() ? 86400000 : 0) - dateFrom.getTime();
       } else {
         until = 0;
       }
 
       const mintingExpire =
-        payload.state.mintingExpire !== '0'
-          ? now.getTime() + parseInt(payload.state.mintingExpire, 10) * 86400000
-          : -1;
+        payload.state.mintingExpire !== '0' ? now.getTime() + parseInt(payload.state.mintingExpire, 10) * 86400000 : -1;
 
-      const transactionPayload: AppTransaction<CreateOneKindNFTUI> =
-        await createTransaction<CreateOneKindNFTUI>(
-          redeemableNftModule.moduleID,
-          redeemableNftModule.createOnekindNft,
-          {
-            name: payload.state.name,
-            description: payload.state.description,
-            mintingType: payload.state.mintingType,
-            symbol: payload.state.symbol,
-            cover: cover,
-            coverMime: coverMime,
-            coverExtension: coverExtension,
-            coverSize: coverSize,
-            coverProtocol: payload.state.storageProtocol,
-            data: data,
-            dataMime: payload.data.mime,
-            dataExtension: payload.data.extension,
-            dataSize: payload.data.size,
-            dataProtocol: payload.state.storageProtocol,
-            utility: payload.state.utility,
-            template: payload.choosenTemplate.id,
-            cipher: cipher,
-            signature: signature,
-            content: content,
-            contentMime: contentMime,
-            contentExtension: contentExtension,
-            contentSize: contentSize,
-            contentProtocol: payload.state.storageProtocol,
-            contentIv: contentIv,
-            contentSalt: contentSalt,
-            contentSecurityVersion: contentSecurityVersion,
-            recurring: payload.state.recurring,
-            time: {
-              day: payload.state.timeDay,
-              date: payload.state.timeDate,
-              month: payload.state.timeMonth,
-              year: payload.state.timeYear,
-            },
-            from: {
-              hour: payload.state.fromHour,
-              minute: payload.state.fromMinute,
-            },
-            until: until,
-            redeemLimit: payload.state.redeemLimit ? parseInt(payload.state.redeemLimit, 10) : 0,
-            royalty: {
-              creator: payload.state.royaltyCreator
-                ? parseInt(payload.state.royaltyCreator, 10)
-                : 0,
-              staker: payload.state.royaltyStaker ? parseInt(payload.state.royaltyStaker, 10) : 0,
-            },
-            price: {
-              amount: payload.state.priceAmount,
-              currency: payload.state.priceCurrency,
-            },
-            quantity: payload.state.quantity ? parseInt(payload.state.quantity, 10) : 0,
-            mintingExpire: mintingExpire,
+      const transactionPayload: AppTransaction<CreateOneKindNFTUI> = await createTransaction<CreateOneKindNFTUI>(
+        redeemableNftModule.moduleID,
+        redeemableNftModule.createOnekindNft,
+        {
+          name: payload.state.name,
+          description: payload.state.description,
+          mintingType: payload.state.mintingType,
+          symbol: payload.state.symbol,
+          cover: cover,
+          coverMime: coverMime,
+          coverExtension: coverExtension,
+          coverSize: coverSize,
+          coverProtocol: payload.state.storageProtocol,
+          data: data,
+          dataMime: payload.data.mime,
+          dataExtension: payload.data.extension,
+          dataSize: payload.data.size,
+          dataProtocol: payload.state.storageProtocol,
+          utility: payload.state.utility,
+          template: payload.choosenTemplate.id,
+          cipher: cipher,
+          signature: signature,
+          content: content,
+          contentMime: contentMime,
+          contentExtension: contentExtension,
+          contentSize: contentSize,
+          contentProtocol: payload.state.storageProtocol,
+          contentIv: contentIv,
+          contentSalt: contentSalt,
+          contentSecurityVersion: contentSecurityVersion,
+          recurring: payload.state.recurring,
+          time: {
+            day: payload.state.timeDay,
+            date: payload.state.timeDate,
+            month: payload.state.timeMonth,
+            year: payload.state.timeYear,
           },
-          '0',
-          signal,
-        );
+          from: {
+            hour: payload.state.fromHour,
+            minute: payload.state.fromMinute,
+          },
+          until: until,
+          redeemLimit: payload.state.redeemLimit ? parseInt(payload.state.redeemLimit, 10) : 0,
+          royalty: {
+            creator: payload.state.royaltyCreator ? parseInt(payload.state.royaltyCreator, 10) : 0,
+            staker: payload.state.royaltyStaker ? parseInt(payload.state.royaltyStaker, 10) : 0,
+          },
+          price: {
+            amount: payload.state.priceAmount,
+            currency: payload.state.priceCurrency,
+          },
+          quantity: payload.state.quantity ? parseInt(payload.state.quantity, 10) : 0,
+          mintingExpire: mintingExpire,
+        },
+        '0',
+        signal,
+      );
 
       const baseFee = await calculateBaseFee(transactionPayload, signal);
       if (!baseFee) {
@@ -195,10 +177,7 @@ export const payCreateNFTOneKind = createAsyncThunk<void, CreateNFTOneKind, Asyn
           currency: COIN_NAME,
           payload: JSON.stringify(
             Object.assign(payload, {
-              transaction: attachFee(
-                transactionPayload,
-                (BigInt(gasFee) + BigInt(baseFee)).toString(),
-              ),
+              transaction: attachFee(transactionPayload, (BigInt(gasFee) + BigInt(baseFee)).toString()),
               state: Object.assign(payload.state, { contentUri }),
             }),
           ),

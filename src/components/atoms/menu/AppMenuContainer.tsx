@@ -43,10 +43,7 @@ function Component({
 
   const bottomSheetRef = React.useRef<BottomSheetModal>(null);
   const defaultSnapPoints = React.useMemo(() => ['50%'], []);
-  const snapInsets = React.useMemo(
-    () => (Platform.OS === 'android' && insets.top ? 0.95 : 1),
-    [insets.top],
-  );
+  const snapInsets = React.useMemo(() => (Platform.OS === 'android' && insets.top ? 0.95 : 1), [insets.top]);
   const isVisible = React.useRef(false);
   const MenuContainer = dismissKeyboard ? AppKeyboardDismissOnClickView : View;
 

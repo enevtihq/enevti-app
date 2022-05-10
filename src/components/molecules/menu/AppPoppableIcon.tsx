@@ -28,12 +28,7 @@ export default function AppPoppableIcon({
 
   return (
     <AppPoppable position={position} content={content} width={width} style={style}>
-      <AppIconComponent
-        name={icon}
-        color={theme.colors.text}
-        size={hp('2%', insets)}
-        style={iconStyle}
-      />
+      <AppIconComponent name={icon} color={theme.colors.text} size={hp('2%', insets)} style={iconStyle} />
     </AppPoppable>
   );
 }

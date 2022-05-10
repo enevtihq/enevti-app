@@ -30,10 +30,7 @@ export default React.memo(
     const fontSize = Math.sqrt((w * h) / (text.length + 10));
 
     return (
-      <Text
-        numberOfLines={1}
-        adjustsFontSizeToFit
-        style={[styles.partitionLabel, { fontSize: fontSize }]}>
+      <Text numberOfLines={1} adjustsFontSizeToFit style={[styles.partitionLabel, { fontSize: fontSize }]}>
         {text}
       </Text>
     );

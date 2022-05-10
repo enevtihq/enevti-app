@@ -35,10 +35,7 @@ export async function encryptText_v1(
   };
 }
 
-export async function decryptText_v1(
-  encryptedBase64: string,
-  password: string,
-): Promise<DecryptedData> {
+export async function decryptText_v1(encryptedBase64: string, password: string): Promise<DecryptedData> {
   await sleep(1);
   const fromBase64 = JSON.parse(base64.decode(encryptedBase64)) as EncryptedBase;
   const decrypted = await RNEncryptionModule.decryptText(
@@ -60,11 +57,7 @@ export async function decryptText_v1(
   }
 }
 
-export async function encryptFile_v1(
-  inputFile: string,
-  outputFile: string,
-  password: string,
-): Promise<EncryptedFile> {
+export async function encryptFile_v1(inputFile: string, outputFile: string, password: string): Promise<EncryptedFile> {
   await sleep(1);
   const ret = await RNEncryptionModule.encryptFile(inputFile, outputFile, password);
   if (ret.status === 'success') {
