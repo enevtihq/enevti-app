@@ -1,0 +1,16 @@
+diff --git a/node_modules/isomorphic-webcrypto/src/react-native.js b/node_modules/isomorphic-webcrypto/src/react-native.js
+index f97a242..cb7d1c2 100644
+--- a/node_modules/isomorphic-webcrypto/src/react-native.js
++++ b/node_modules/isomorphic-webcrypto/src/react-native.js
+@@ -2,11 +2,8 @@ let generateSecureRandom;
+ if (require.getModules) {
+   const NativeModules = require('react-native').NativeModules;
+   const RNSecureRandom = NativeModules.RNSecureRandom;
+-  const NativeUnimoduleProxy = NativeModules.NativeUnimoduleProxy;
+   if (RNSecureRandom && RNSecureRandom.generateSecureRandomAsBase64) {
+     generateSecureRandom = require('react-native-securerandom').generateSecureRandom;
+-  } else if (NativeUnimoduleProxy && NativeUnimoduleProxy.exportedMethods.ExpoRandom) {
+-    generateSecureRandom = require('expo-random').getRandomBytesAsync;
+   }
+ }
+ 

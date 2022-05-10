@@ -3,6 +3,7 @@
 /* eslint-disable curly */
 import BackgroundTimer from 'react-native-background-timer';
 import { Buffer } from 'buffer';
+import 'text-encoding-polyfill';
 
 global.setTimeout = BackgroundTimer.setTimeout.bind(BackgroundTimer);
 global.setInterval = BackgroundTimer.setInterval.bind(BackgroundTimer);
@@ -51,3 +52,6 @@ if (global.navigator && global.navigator.product === 'ReactNative') {
 // If using the crypto shim, uncomment the following line to ensure
 // crypto is loaded first, so it can populate global.crypto
 require('crypto');
+
+const isomorphicWebcrypto = require('isomorphic-webcrypto');
+global.crypto.subtle = isomorphicWebcrypto.subtle;

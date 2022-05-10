@@ -5,7 +5,7 @@ import { lastFetchTimeout } from './constant/lastFetch';
 import { ERRORCODE } from './error/code';
 import io from 'socket.io-client';
 import { urlSocketIO } from './constant/URLCreator';
-import RNFetchBlob, { RNFetchBlobConfig } from 'rn-fetch-blob';
+import ReactNativeBlobUtil, { ReactNativeBlobUtilConfig } from 'react-native-blob-util';
 
 export async function isInternetReachable(): Promise<boolean> {
   await i18n.loadNamespaces('network');
@@ -71,7 +71,7 @@ export async function appFetch(resource: string, options: Record<string, any> = 
 
 export async function appFetchBlob(
   resource: string,
-  options: RNFetchBlobConfig & {
+  options: ReactNativeBlobUtilConfig & {
     method?: 'GET' | 'POST' | 'PUT';
     headers?: Record<string, any>;
     filePath?: string;
@@ -117,8 +117,13 @@ export async function appFetchBlob(
 
   const pConfig = progressConfig ?? { count: 10 };
 
-  const response = RNFetchBlob.config(config)
-    .fetch(method ?? 'GET', resource, headers, filePath ? RNFetchBlob.wrap(filePath) : undefined)
+  const response = ReactNativeBlobUtil.config(config)
+    .fetch(
+      method ?? 'GET',
+      resource,
+      headers,
+      filePath ? ReactNativeBlobUtil.wrap(filePath) : undefined,
+    )
     .uploadProgress(pConfig, onUploadProgress ? onUploadProgress : () => {})
     .progress(pConfig, onDownloadProgress ? onDownloadProgress : () => {});
 
