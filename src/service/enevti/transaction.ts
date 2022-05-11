@@ -38,7 +38,7 @@ export async function calculateGasFee(
     if (minFeeResponse.status !== 200) {
       throw Error(i18n.t('error:errorFetchMinFee', { msg: minFeeResponse.data }));
     }
-    return (BigInt(minFeeResponse.data) + BigInt(JSON.stringify(transaction).length * 12)).toString();
+    return BigInt(minFeeResponse.data).toString();
   } catch (err) {
     handleError(err);
     return undefined;

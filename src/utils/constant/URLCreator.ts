@@ -106,7 +106,7 @@ export function urlGetIsUsernameExists(username: string, host: string = ENEVTI_D
 }
 
 export function urlPostTransactionFee(host: string = ENEVTI_DEFAULT_API) {
-  return encodeURI(`${host}/transaction/fee`);
+  return encodeURI(`${host}/transaction/dynamicBaseFee`);
 }
 
 export function urlPostTransaction(host: string = ENEVTI_DEFAULT_API) {
