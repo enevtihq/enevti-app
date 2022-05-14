@@ -53,6 +53,7 @@ import { reduceMyTotalStakeChanged } from 'enevti-app/store/middleware/thunk/soc
 import { reduceMyNewCollection } from 'enevti-app/store/middleware/thunk/socket/profile/collection/reduceMyNewCollection';
 import { reduceFeedsUpdates } from 'enevti-app/store/middleware/thunk/socket/feeds/reduceFeedsUpdates';
 import { payDeliverSecret } from 'enevti-app/store/middleware/thunk/payment/creator/payDeliverSecret';
+import { syncTransactionNonce } from 'enevti-app/store/middleware/thunk/ui/cache/syncTransactionNonce';
 
 const Tab = createBottomTabNavigator();
 const TABBAR_HEIGHT_PERCENTAGE = 8;
@@ -82,6 +83,10 @@ export default function Home({ navigation }: Props) {
   const myProfilePrevYSharedValue = useSharedValue(0);
   const myProfileInterpolatedYSharedValue = useSharedValue(0);
   const socket = React.useRef<Socket | undefined>();
+
+  React.useEffect(() => {
+    dispatch(syncTransactionNonce());
+  }, [dispatch]);
 
   React.useEffect(() => {
     socket.current = appSocket(myPersona.address);

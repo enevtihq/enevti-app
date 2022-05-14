@@ -20,7 +20,7 @@ export default {
   payMintPackedName: 'Mint Bundle',
   payMintPackedDescription: '{{packSize}} NFT / bundle',
   payAddStakeName: 'Add Stake',
-  payAddStakeDescription: 'Stake to {{account}}',
+  payAddStakeDescription: 'Stake to @{{account}}',
   payRegisterUsernameName: 'Register Username',
   payRegisterUsernameDescription: 'Register @{{username}}',
   payDeliverSecretName: 'Deliver Secret',

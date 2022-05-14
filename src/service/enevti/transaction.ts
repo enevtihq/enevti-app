@@ -3,14 +3,22 @@ import {
   urlPostTransaction,
   urlPostTransactionFee,
 } from 'enevti-app/utils/constant/URLCreator';
-import { getMyPassphrase, getMyPublicKey, getMyAddress } from './persona';
-import { getProfileNonce } from './profile';
+import { getMyAddress, getMyPassphrase, getMyPublicKey } from './persona';
 import { appFetch, isInternetReachable } from 'enevti-app/utils/network';
 import { handleError, handleResponseCode, responseError } from 'enevti-app/utils/error/handle';
 import { APIResponse, ResponseJSON } from 'enevti-app/types/core/service/api';
 import base64 from 'react-native-base64';
 import i18n from 'enevti-app/translations/i18n';
 import { AppTransaction } from 'enevti-app/types/core/service/transaction';
+import { store } from 'enevti-app/store/state';
+import {
+  selectTransactionNonce,
+  addTransactionNonceCache,
+  isTransactionNonceSynced,
+  setTransactionNonceCache,
+  setTransactionNonceCacheSynced,
+} from 'enevti-app/store/slices/entities/cache/transactionNonce';
+import { getProfileNonce } from './profile';
 
 export async function postTransaction<T>(
   payload: AppTransaction<T>,
@@ -21,6 +29,7 @@ export async function postTransaction<T>(
     if (postTransactionResponse.status !== 200) {
       throw postTransactionResponse;
     }
+    store.dispatch(addTransactionNonceCache());
     return postTransactionResponse;
   } catch (err: any) {
     handleError(err, 'data');
@@ -148,17 +157,27 @@ export async function createTransaction<T>(
   signal?: AbortController['signal'],
 ): Promise<AppTransaction<T>> {
   const publicKey = await getMyPublicKey();
-  const myAddress = await getMyAddress();
-  const nonce = await getProfileNonce(myAddress, signal);
-  if (nonce.status !== 200) {
-    throw Error(i18n.t('error:requestNonceFailed'));
+  let nonce = '0';
+  const nonceSynced = isTransactionNonceSynced(store.getState());
+  if (nonceSynced) {
+    nonce = selectTransactionNonce(store.getState()).toString();
+  } else {
+    const myAddress = await getMyAddress();
+    const profileNonce = await getProfileNonce(myAddress, signal);
+    if (profileNonce.status === 200) {
+      nonce = profileNonce.data;
+      store.dispatch(setTransactionNonceCache(Number(nonce)));
+      store.dispatch(setTransactionNonceCacheSynced());
+    } else {
+      throw Error(i18n.t('error:requestNonceFailed'));
+    }
   }
   return {
     moduleID,
     assetID,
     asset,
     fee,
-    nonce: nonce.data,
+    nonce,
     senderPublicKey: publicKey,
   };
 }
