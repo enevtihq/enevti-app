@@ -4,11 +4,13 @@ import { urlGetFeeds } from 'enevti-app/utils/constant/URLCreator';
 import { handleError, handleResponseCode, responseError } from 'enevti-app/utils/error/handle';
 import { appFetch, isInternetReachable } from 'enevti-app/utils/network';
 
-async function fetchFeeds(signal?: AbortController['signal']): Promise<APIResponse<Feeds>> {
+type FeedResponse = { data: Feeds; offset: number };
+
+async function fetchFeeds(signal?: AbortController['signal']): Promise<APIResponse<FeedResponse>> {
   try {
     await isInternetReachable();
     const res = await appFetch(urlGetFeeds(), { signal });
-    const ret = (await res.json()) as ResponseJSON<Feeds>;
+    const ret = (await res.json()) as ResponseJSON<FeedResponse>;
     handleResponseCode(res, ret);
     return {
       status: res.status,
@@ -17,7 +19,7 @@ async function fetchFeeds(signal?: AbortController['signal']): Promise<APIRespon
     };
   } catch (err: any) {
     handleError(err);
-    return responseError(err.code, []);
+    return responseError(err.code, { data: [], offset: 0 });
   }
 }
 
@@ -25,6 +27,6 @@ export function parseFeedCache(feeds: Feeds) {
   return feeds.slice(0, 10);
 }
 
-export async function getFeeds(signal?: AbortController['signal']): Promise<APIResponse<Feeds>> {
+export async function getFeeds(signal?: AbortController['signal']): Promise<APIResponse<FeedResponse>> {
   return await fetchFeeds(signal);
 }

@@ -26,6 +26,7 @@ export type NFTRedeem = {
   };
 };
 
-export type NFTRedeemAsset = Omit<NFTRedeem, 'secret'> & {
+export type NFTRedeemAsset = Omit<NFTRedeem, 'secret' | 'touched'> & {
   secret: NFTSecretAsset;
+  touched: bigint;
 };

@@ -1,6 +1,7 @@
 import { Persona, PersonaAsset } from '../account/persona';
 
 export type StakerItem = {
+  id: string;
   persona: Persona;
   rank: number;
   stake: string;
@@ -8,20 +9,16 @@ export type StakerItem = {
 };
 
 export type StakerItemUtils = {
+  id: Buffer;
   persona: PersonaAsset;
   stake: bigint;
 };
 
-export type StakerItemAsset = Omit<StakerItem, 'persona' | 'stake'> & StakerItemUtils;
+export type StakerItemAsset = Omit<StakerItem, 'id' | 'persona' | 'stake'> & { id: Buffer } & StakerItemUtils;
 
 export type StakePoolData = {
   owner: Persona;
   staker: StakerItem[];
-};
-
-export type StakePoolDataAsset = Omit<StakePoolData, 'owner' | 'staker'> & {
-  owner: PersonaAsset;
-  staker: StakerItemAsset;
 };
 
 export type StakerChain = {

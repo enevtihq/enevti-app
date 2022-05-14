@@ -23,4 +23,6 @@ export default {
   payAddStakeDescription: 'Stake to {{account}}',
   payRegisterUsernameName: 'Register Username',
   payRegisterUsernameDescription: 'Register @{{username}}',
+  payDeliverSecretName: 'Deliver Secret',
+  payDeliverSecretDescription: 'Deliver to {{recipient}}',
 };

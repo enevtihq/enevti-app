@@ -50,7 +50,7 @@ export function urlGetCollectionBySymbol(symbol: string, host: string = ENEVTI_D
 }
 
 export function urlGetFeeds(offset: number = 0, limit: number = 10, host: string = ENEVTI_DEFAULT_API) {
-  return encodeURI(`${host}/feeds?offset=${offset}&limit=${limit}`);
+  return encodeURI(`${host}/feeds/available?offset=${offset}&limit=${limit}`);
 }
 
 export function urlGetNFTById(id: string, host: string = ENEVTI_DEFAULT_API) {

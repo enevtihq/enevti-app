@@ -52,6 +52,7 @@ import { reduceMyBalanceChanged } from 'enevti-app/store/middleware/thunk/socket
 import { reduceMyTotalStakeChanged } from 'enevti-app/store/middleware/thunk/socket/profile/totalStake/reduceMyTotalStakeChanged';
 import { reduceMyNewCollection } from 'enevti-app/store/middleware/thunk/socket/profile/collection/reduceMyNewCollection';
 import { reduceFeedsUpdates } from 'enevti-app/store/middleware/thunk/socket/feeds/reduceFeedsUpdates';
+import { payDeliverSecret } from 'enevti-app/store/middleware/thunk/payment/creator/payDeliverSecret';
 
 const Tab = createBottomTabNavigator();
 const TABBAR_HEIGHT_PERCENTAGE = 8;
@@ -89,8 +90,9 @@ export default function Home({ navigation }: Props) {
     socket.current.on('totalStakeChanged', (payload: any) => dispatch(reduceMyTotalStakeChanged(payload)));
     socket.current.on('newCollection', (payload: any) => dispatch(reduceMyNewCollection(payload)));
     socket.current.on('newFeedItem', (payload: any) => dispatch(reduceFeedsUpdates(payload)));
+    socket.current.on('deliverSecretNotif', (payload: any) => dispatch(payDeliverSecret(payload)));
     return function cleanup() {
-      socket.current && socket.current.disconnect();
+      socket.current?.disconnect();
     };
   }, [myPersona.address, dispatch]);
 

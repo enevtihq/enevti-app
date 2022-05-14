@@ -397,6 +397,7 @@ export const getDummyNFTFullData = (): NFT => {
 export const getStakePoolStakerData = (): StakePoolData['staker'] => {
   return [
     {
+      id: 'sdfuvyb43r68bdfawrfqwfwewaf',
       persona: {
         photo: '',
         base32: 'envt7opy8ksve7npbr32dtqxwpvg5u6aa3vtje5qtd',
@@ -408,6 +409,7 @@ export const getStakePoolStakerData = (): StakePoolData['staker'] => {
       portion: 0.2134,
     },
     {
+      id: 'sdfuvyb43r68bdfawrfqwfwewaf',
       persona: {
         photo: 'bafybeif42jbs3t3pxjbz4635siv2u5nzxp5h7ffcsrwwvixgsclcn7rgza',
         base32: 'envt9w9qc6vs4d3qyqh322n69pebc2fdvsy4xsg5c9',
@@ -419,6 +421,7 @@ export const getStakePoolStakerData = (): StakePoolData['staker'] => {
       portion: 0.234,
     },
     {
+      id: 'sdfuvyb43r68bdfawrfqwfwewaf',
       persona: {
         photo: '',
         base32: 'envt3kocke8xfya6p83cenoxqzx268kyztmfcag92z',

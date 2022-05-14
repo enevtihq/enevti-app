@@ -3,9 +3,17 @@ import { createSelector } from 'reselect';
 import { RootState } from 'enevti-app/store/state';
 import { Feeds } from 'enevti-app/types/core/service/feed';
 
-type FeedViewState = { version: number; fetchedVersion: number; loaded: boolean; reqStatus: number; items: Feeds };
+type FeedViewState = {
+  offset: number;
+  version: number;
+  fetchedVersion: number;
+  loaded: boolean;
+  reqStatus: number;
+  items: Feeds;
+};
 
 const initialState: FeedViewState = {
+  offset: 0,
   version: 0,
   fetchedVersion: 0,
   loaded: false,
@@ -19,6 +27,9 @@ const feedViewSlice = createSlice({
   reducers: {
     setFeedView: (feed, action: PayloadAction<Feeds>) => {
       feed.items = action.payload.slice();
+    },
+    setFeedViewOffset: (feed, action: PayloadAction<number>) => {
+      feed.offset = action.payload;
     },
     setFeedViewVersion: (feed, action: PayloadAction<number>) => {
       feed.version = action.payload;
@@ -40,6 +51,7 @@ const feedViewSlice = createSlice({
 
 export const {
   setFeedView,
+  setFeedViewOffset,
   setFeedViewVersion,
   setFeedViewFetchedVersion,
   setFeedViewLoaded,
@@ -51,6 +63,11 @@ export default feedViewSlice.reducer;
 export const selectFeedView = createSelector(
   (state: RootState) => state.ui.view.feed,
   (feed: FeedViewState) => feed.items,
+);
+
+export const selectFeedViewOffset = createSelector(
+  (state: RootState) => state.ui.view.feed,
+  (feed: FeedViewState) => feed.offset,
 );
 
 export const selectFeedViewReqStatus = createSelector(

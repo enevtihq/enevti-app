@@ -65,11 +65,12 @@ export interface Collection extends CollectionBase {
 }
 
 export interface CollectionAsset
-  extends Omit<Collection, 'creator' | 'id' | 'minted' | 'activity' | 'social' | 'stat' | 'minting'> {
+  extends Omit<Collection, 'creator' | 'id' | 'minted' | 'activity' | 'social' | 'stat' | 'minting' | 'createdOn'> {
   id: CollectionIdAsset;
   creator: PersonaAsset;
   minted: NFTIdAsset[];
   social: SocialProfileAsset;
+  createdOn: bigint;
   stat: {
     minted: number;
     owner: Buffer[];

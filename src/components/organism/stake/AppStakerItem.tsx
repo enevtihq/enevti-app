@@ -38,7 +38,7 @@ export default function AppStakerItem({ staker }: AppStakerItemProps) {
       leftContent={<AppAvatarRenderer persona={staker.persona} size={wp('12%', insets)} style={styles.avatar} />}
       rightContent={
         myPersona.address === staker.persona.address ? (
-          <AppIconButton icon={iconMap.delete} onPress={onDelete} style={styles.deleteIcon} />
+          <AppIconButton size={20} icon={iconMap.delete} onPress={onDelete} style={styles.deleteIcon} />
         ) : undefined
       }>
       <AppTextHeading3 numberOfLines={1} style={{ width: wp('50%', insets) }}>

@@ -57,6 +57,7 @@ export interface NFTAsset
     | 'price'
     | 'partition'
     | 'networkIdentifier'
+    | 'createdOn'
   > {
   id: NFTIdAsset;
   collectionId: CollectionIdAsset;
@@ -67,4 +68,5 @@ export interface NFTAsset
   price: NFTPriceAsset;
   partition: NFTPartitionAsset;
   networkIdentifier: Buffer;
+  createdOn: bigint;
 }

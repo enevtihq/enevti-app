@@ -83,10 +83,6 @@ export function getRedeemTimeUTC(nft: NFT, offset?: RedeemTimeOffset) {
   const date = now.getUTCDate();
   const nftTime = { ...nft.redeem.schedule.time, ...nft.redeem.schedule.from };
 
-  if (nft.redeem.schedule.recurring === 'anytime') {
-    throw Error(i18n.t('error:invalidRecurring'));
-  }
-
   switch (nft.redeem.schedule.recurring) {
     case 'daily':
       time = Date.UTC(

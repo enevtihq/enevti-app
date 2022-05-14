@@ -64,7 +64,7 @@ export default function AppStakePool({ route }: AppStakePoolProps) {
     };
     subscribe();
     return function cleanup() {
-      socket.current && socket.current.disconnect();
+      socket.current?.disconnect();
     };
   }, [route.params, dispatch]);
 

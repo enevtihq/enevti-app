@@ -22,6 +22,7 @@ const initialStateItem: ProfileViewState = {
   owned: [],
   onSale: [],
   collection: [],
+  pending: 0,
 };
 
 const initialState: ProfileViewStore = {};

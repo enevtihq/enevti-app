@@ -39,7 +39,7 @@ export default function Profile({ navigation, route }: Props) {
     socket.current.on('totalStakeChanged', (payload: any) => dispatch(reduceTotalStakeChanged(payload, key)));
     socket.current.on('newCollection', (payload: any) => dispatch(reduceNewCollection(payload, key)));
     return function cleanup() {
-      socket.current && socket.current.disconnect();
+      socket.current?.disconnect();
     };
   }, [profile.persona.address, dispatch, route.params.arg]);
 

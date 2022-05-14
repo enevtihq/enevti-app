@@ -15,6 +15,7 @@ import { getMyPublicKey } from 'enevti-app/service/enevti/persona';
 import { AppTransaction } from 'enevti-app/types/core/service/transaction';
 import { redeemableNftModule } from 'enevti-app/utils/constant/transaction';
 import RNFS from 'react-native-fs';
+import { completeTokenUnit } from 'enevti-app/utils/format/amount';
 
 export const payCreateNFTOneKind = createAsyncThunk<void, CreateNFTOneKind, AsyncThunkAPI>(
   'onekind/payCreateNFTOneKind',
@@ -33,12 +34,12 @@ export const payCreateNFTOneKind = createAsyncThunk<void, CreateNFTOneKind, Asyn
 
       if (payload.state.storageProtocol === 'ipfs') {
         data = makeDummyIPFS();
-        cover = payload.state.coverUri ? makeDummyIPFS() : '';
+        cover = payload.state.coverUri ? makeDummyIPFS() : data;
       }
 
-      coverMime = payload.state.coverUri ? payload.state.coverType : '';
-      coverExtension = payload.state.coverUri ? payload.state.coverExtension : '';
-      coverSize = payload.state.coverUri ? payload.state.coverSize : 0;
+      coverMime = payload.state.coverUri ? payload.state.coverType : payload.data.mime;
+      coverExtension = payload.state.coverUri ? payload.state.coverExtension : payload.data.extension;
+      coverSize = payload.state.coverUri ? payload.state.coverSize : payload.data.size;
 
       let content = '',
         contentMime = '',
@@ -91,13 +92,17 @@ export const payCreateNFTOneKind = createAsyncThunk<void, CreateNFTOneKind, Asyn
           payload.state.untilHour,
           payload.state.untilMinute,
         );
-        until = dateUntil.getTime() + (dateUntil.getTime() < dateFrom.getTime() ? 86400000 : 0) - dateFrom.getTime();
+        until = Math.floor(
+          (dateUntil.getTime() + (dateUntil.getTime() < dateFrom.getTime() ? 86400000 : 0) - dateFrom.getTime()) / 1000,
+        );
       } else {
         until = 0;
       }
 
       const mintingExpire =
-        payload.state.mintingExpire !== '0' ? now.getTime() + parseInt(payload.state.mintingExpire, 10) * 86400000 : -1;
+        payload.state.mintingExpire !== '0'
+          ? Math.floor((now.getTime() + parseInt(payload.state.mintingExpire, 10) * 86400000) / 1000)
+          : 0;
 
       const transactionPayload: AppTransaction<CreateOneKindNFTUI> = await createTransaction<CreateOneKindNFTUI>(
         redeemableNftModule.moduleID,
@@ -147,7 +152,7 @@ export const payCreateNFTOneKind = createAsyncThunk<void, CreateNFTOneKind, Asyn
             staker: payload.state.royaltyStaker ? parseInt(payload.state.royaltyStaker, 10) : 0,
           },
           price: {
-            amount: payload.state.priceAmount,
+            amount: completeTokenUnit(payload.state.priceAmount),
             currency: payload.state.priceCurrency,
           },
           quantity: payload.state.quantity ? parseInt(payload.state.quantity, 10) : 0,

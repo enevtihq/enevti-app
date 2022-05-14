@@ -18,6 +18,7 @@ const initialState: MyProfileViewState = {
   owned: [],
   onSale: [],
   collection: [],
+  pending: 0,
 };
 
 const myProfileViewSlice = createSlice({

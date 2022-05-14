@@ -142,7 +142,12 @@ export default function Feed({ navigation, onScroll, headerHeight }: FeedProps) 
       <View style={styles.textContainer}>
         {!feedsUndefined ? (
           <AppResponseView onReload={handleRefresh} status={feedsReqStatus} style={styles.textContainer}>
-            <AppFloatingNotifButton show={newUpdate} label={t('home:newFeedUpdate')} onPress={handleRefresh} />
+            <AppFloatingNotifButton
+              show={newUpdate}
+              label={t('home:newFeedUpdate')}
+              onPress={handleRefresh}
+              style={{ top: headerHeight + hp('2%', insets) }}
+            />
             <AnimatedFlatList
               ref={feedRef}
               onScroll={onScroll}

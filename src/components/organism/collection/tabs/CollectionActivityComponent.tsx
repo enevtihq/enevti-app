@@ -21,12 +21,13 @@ import AppTextHeading5 from 'enevti-app/components/atoms/text/AppTextHeading5';
 import { parsePersonaLabel } from 'enevti-app/service/enevti/persona';
 import { MINT_BUTTON_HEIGHT } from 'enevti-app/components/organism/collection/AppCollectionMintButton';
 import AppMessageEmpty from 'enevti-app/components/molecules/message/AppMessageEmpty';
+import AppActivityIcon from 'enevti-app/components/molecules/activity/AppActivityIcon';
 
 const COLLECTION_ACTIVITY_ITEM_HEIGHT = 9;
 const AnimatedFlatList = Animated.createAnimatedComponent<any>(FlatList);
 
 interface CollectionActivityComponentProps {
-  activities: Collection['activity'];
+  collection: Collection;
   onScroll?: any;
   collectionHeaderHeight?: any;
   onMounted?: () => void;
@@ -37,7 +38,7 @@ interface CollectionActivityComponentProps {
 
 function Component(
   {
-    activities,
+    collection,
     onScroll,
     collectionHeaderHeight,
     onMounted,
@@ -88,7 +89,13 @@ function Component(
     ({ item }: { item: Collection['activity'][0] }) => (
       <AppListItem
         style={styles.collectionItem}
-        leftContent={<AppNFTRenderer nft={item.nfts[0]} width={wp('13%')} style={styles.nftRenderer} />}
+        leftContent={
+          item.nfts.length ? (
+            <AppNFTRenderer nft={item.nfts[0]} width={wp('13%')} style={styles.nftRenderer} />
+          ) : (
+            <AppActivityIcon activityName={item.name} />
+          )
+        }
         rightContent={
           <View style={styles.collectionRightContent}>
             <AppTextHeading4 numberOfLines={1} style={styles.collectionRightText}>
@@ -101,7 +108,7 @@ function Component(
           </View>
         }>
         <AppTextHeading3 numberOfLines={1}>
-          {item.nfts[0].symbol}#{item.nfts[0].serial}
+          {item.nfts.length ? `${item.nfts[0].symbol}#${item.nfts[0].serial}` : collection.symbol}
         </AppTextHeading3>
         <AppTextBody4 style={{ color: theme.colors.placeholder }} numberOfLines={1}>
           {t('collection:activityName', {
@@ -117,12 +124,13 @@ function Component(
       styles.collectionRightText,
       styles.nftRenderer,
       theme.colors.placeholder,
+      collection.symbol,
       t,
       wp,
     ],
   );
 
-  const keyExtractor = React.useCallback((item: Collection['activity'][0]) => item.nfts[0].id, []);
+  const keyExtractor = React.useCallback((item: Collection['activity'][0]) => item.date, []);
 
   const getItemLayout = React.useCallback(
     (_, index) => ({
@@ -159,7 +167,7 @@ function Component(
       contentContainerStyle={styles.contentContainerStyle}
       showsVerticalScrollIndicator={false}
       getItemLayout={getItemLayout}
-      data={activities}
+      data={collection.activity}
       renderItem={renderItem}
       refreshControl={refreshControl}
       ListEmptyComponent={emptyComponent}

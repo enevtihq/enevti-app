@@ -16,6 +16,7 @@ export type Profile = {
   owned: NFTBase[];
   onSale: NFTBase[];
   collection: CollectionBase[];
+  pending: number;
 };
 
 export type RedeemableNFTAccountProps = {
@@ -26,6 +27,7 @@ export type RedeemableNFTAccountProps = {
     owned: NFTIdAsset[];
     onSale: NFTIdAsset[];
     collection: CollectionIdAsset[];
+    pending: NFTIdAsset[];
   };
 };
 

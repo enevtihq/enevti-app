@@ -11,6 +11,7 @@ import {
   resetFeedView,
   setFeedView,
   setFeedViewLoaded,
+  setFeedViewOffset,
   setFeedViewReqStatus,
   setFeedViewVersion,
 } from 'enevti-app/store/slices/ui/view/feed';
@@ -33,9 +34,10 @@ export const loadFeeds = createAsyncThunk<void, loadFeedsArgs, AsyncThunkAPI>(
         const feedResponse = await getFeeds(signal);
         if (feedResponse.status === 200 && !isErrorResponse(feedResponse)) {
           dispatch(setLastFetchFeedCache(now));
-          dispatch(setFeedItemsCache(parseFeedCache(feedResponse.data as Feeds)));
+          dispatch(setFeedItemsCache(parseFeedCache(feedResponse.data.data as Feeds)));
         }
-        dispatch(setFeedView(feedResponse.data as Feeds));
+        dispatch(setFeedView(feedResponse.data.data as Feeds));
+        dispatch(setFeedViewOffset(feedResponse.data.offset));
         dispatch(setFeedViewReqStatus(feedResponse.status));
       }
     } catch (err: any) {

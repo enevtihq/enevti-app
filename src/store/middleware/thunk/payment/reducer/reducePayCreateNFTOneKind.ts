@@ -23,9 +23,9 @@ export const reducePayCreateNFTOneKind = (): AppThunk => async (dispatch, getSta
 
     const transactionPayload: AppTransaction<CreateOneKindNFTUI> = payload.transaction;
 
-    let data = payload.data.uri,
-      cover = payload.state.coverUri,
-      content = payload.state.contentUri;
+    let data = payload.transaction.asset.data,
+      cover = payload.transaction.asset.cover,
+      content = payload.transaction.asset.content;
 
     if (payload.state.storageProtocol === 'ipfs') {
       data = await uploadURItoIPFS(payload.data.uri);

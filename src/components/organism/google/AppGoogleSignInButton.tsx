@@ -138,12 +138,6 @@ export default function AppGoogleSignInButton({ onNewAccount, onExistingAccount 
     setShowInputGoogleDialog(false);
     setIsDialogButtonLoading(false);
     setSecretData(initialSecretData);
-    dispatch(
-      showSnackbar({
-        mode: 'error',
-        text: t('google:signInCancelled'),
-      }),
-    );
   };
 
   return (

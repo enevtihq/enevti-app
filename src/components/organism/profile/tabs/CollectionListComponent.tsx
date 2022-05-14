@@ -15,7 +15,6 @@ import AppTextHeading5 from 'enevti-app/components/atoms/text/AppTextHeading5';
 import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
 import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
-import moment from 'moment';
 import { useTheme } from 'react-native-paper';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
@@ -130,17 +129,13 @@ function Component(
           </View>
         }>
         <AppTextHeading3 numberOfLines={1}>{item.name}</AppTextHeading3>
-        {item.minting.expire <= now || item.minting.available === 0 ? null : (
+        {(item.minting.expire === 0 && item.minting.available > 0) ||
+        item.minting.expire > now ||
+        item.minting.available > 0 ? (
           <AppTextBody4 style={{ color: theme.colors.placeholder }} numberOfLines={2}>
-            {item.minting.expire
-              ? t('collection:mintingClosedIn', {
-                  momentFromNow: moment(item.minting.expire).fromNow(),
-                })
-              : t('collection:mintingPercent', {
-                  percent: ((item.stat.minted / item.minting.total) * 100).toFixed(2),
-                })}
+            {t('collection:mintingAvailable')}
           </AppTextBody4>
-        )}
+        ) : null}
       </AppListItem>
     ),
     [

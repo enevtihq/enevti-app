@@ -13,10 +13,11 @@ export type NFTActivity = {
 
 export type NFTActivityAsset = Buffer;
 
-export type NFTActivityChainItems = Omit<NFTActivity, 'transaction' | 'to' | 'value'> & {
+export type NFTActivityChainItems = Omit<NFTActivity, 'transaction' | 'to' | 'value' | 'date'> & {
   transaction: Buffer;
   to: PersonaAsset;
   value: NFTPriceAsset;
+  date: bigint;
 };
 
 export type NFTActivityChain = {

@@ -13,6 +13,7 @@ const initialState: Profile & { lastFetch: number } = {
   owned: [],
   onSale: [],
   collection: [],
+  pending: 0,
   lastFetch: 0,
 };
 
