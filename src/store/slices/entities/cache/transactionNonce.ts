@@ -20,6 +20,9 @@ const transactionNonceEntitySlice = createSlice({
     addTransactionNonceCache: transactionNonce => {
       transactionNonce.value += 1;
     },
+    subtractTransactionNonceCache: transactionNonce => {
+      transactionNonce.value -= 1;
+    },
     resetTransactionNonceCache: () => {
       return initialState;
     },
@@ -30,6 +33,7 @@ export const {
   setTransactionNonceCache,
   resetTransactionNonceCache,
   addTransactionNonceCache,
+  subtractTransactionNonceCache,
   setTransactionNonceCacheSynced,
 } = transactionNonceEntitySlice.actions;
 export default transactionNonceEntitySlice.reducer;

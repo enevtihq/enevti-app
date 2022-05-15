@@ -17,6 +17,7 @@ import {
   isTransactionNonceSynced,
   setTransactionNonceCache,
   setTransactionNonceCacheSynced,
+  subtractTransactionNonceCache,
 } from 'enevti-app/store/slices/entities/cache/transactionNonce';
 import { getProfileNonce } from './profile';
 
@@ -37,12 +38,24 @@ export async function postTransaction<T>(
   }
 }
 
+export async function postSilentTransaction<T>(
+  payload: AppTransaction<T>,
+  signal?: AbortController['signal'],
+): Promise<APIResponse<any>> {
+  try {
+    return await postTransaction<T>(payload, signal);
+  } catch (err: any) {
+    store.dispatch(subtractTransactionNonceCache());
+    return err;
+  }
+}
+
 export async function calculateGasFee(
   payload: AppTransaction<any>,
   signal?: AbortController['signal'],
 ): Promise<string | undefined> {
   try {
-    const transaction = await createTransaction(payload.moduleID, payload.assetID, payload.asset, payload.fee, signal);
+    const transaction = payload;
     const minFeeResponse = await fecthTransactionMinFee(transaction, signal);
     if (minFeeResponse.status !== 200) {
       throw Error(i18n.t('error:errorFetchMinFee', { msg: minFeeResponse.data }));
@@ -182,9 +195,28 @@ export async function createTransaction<T>(
   };
 }
 
+export async function createSilentTransaction<T>(
+  moduleID: number,
+  assetID: number,
+  asset: T,
+  fee: string = '0',
+  signal?: AbortController['signal'],
+): Promise<AppTransaction<T>> {
+  const transaction = await createTransaction(moduleID, assetID, asset, fee, signal);
+  store.dispatch(addTransactionNonceCache());
+  return transaction;
+}
+
 export function attachFee(transaction: AppTransaction<any>, fee: string) {
   return {
     ...transaction,
     fee,
+  };
+}
+
+export function attachNonce(transaction: AppTransaction<any>, nonce: string) {
+  return {
+    ...transaction,
+    nonce,
   };
 }

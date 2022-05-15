@@ -1,7 +1,7 @@
 import { UNDEFINED_ICON } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import { setPaymentFee, setPaymentStatus, setPaymentAction } from 'enevti-app/store/slices/payment';
 import { AsyncThunkAPI } from 'enevti-app/store/state';
-import { createTransaction } from 'enevti-app/service/enevti/transaction';
+import { createSilentTransaction } from 'enevti-app/service/enevti/transaction';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { handleError } from 'enevti-app/utils/error/handle';
 import { AppTransaction } from 'enevti-app/types/core/service/transaction';
@@ -12,6 +12,7 @@ import { createSignature, decryptAsymmetric, encryptAsymmetric } from 'enevti-ap
 import { COIN_NAME } from 'enevti-app/utils/constant/identifier';
 import { reducePayment } from 'enevti-app/store/middleware/thunk/payment/reducer';
 import i18n from 'enevti-app/translations/i18n';
+import { subtractTransactionNonceCache } from 'enevti-app/store/slices/entities/cache/transactionNonce';
 
 type PayDeliverSecretPayload = { id: string; secret: NFT['redeem']['secret'] };
 
@@ -27,7 +28,7 @@ export const payDeliverSecret = createAsyncThunk<void, PayDeliverSecretPayload, 
       const signature = await createSignature(key.data);
       console.log('secret for new owner', cipher);
 
-      const transactionPayload: AppTransaction<DeliverSecretUI> = await createTransaction(
+      const transactionPayload: AppTransaction<DeliverSecretUI> = await createSilentTransaction(
         redeemableNftModule.moduleID,
         redeemableNftModule.deliverSecret,
         {
@@ -54,6 +55,7 @@ export const payDeliverSecret = createAsyncThunk<void, PayDeliverSecretPayload, 
       dispatch(reducePayment());
     } catch (err) {
       handleError(err);
+      dispatch(subtractTransactionNonceCache());
       dispatch(
         setPaymentStatus({
           type: 'error',

@@ -130,7 +130,7 @@ function Component(
     ],
   );
 
-  const keyExtractor = React.useCallback((item: Collection['activity'][0]) => item.date, []);
+  const keyExtractor = React.useCallback((item: Collection['activity'][0]) => item.transaction, []);
 
   const getItemLayout = React.useCallback(
     (_, index) => ({
