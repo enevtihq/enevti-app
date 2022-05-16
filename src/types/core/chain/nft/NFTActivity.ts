@@ -1,7 +1,7 @@
 import { Persona, PersonaAsset } from '../../account/persona';
 import { NFTPrice, NFTPriceAsset } from './NFTPrice';
 
-export type NFTActivityName = 'mint' | 'redeem';
+export type NFTActivityName = 'mint' | 'redeem' | 'secretDelivered';
 
 export type NFTActivity = {
   transaction: string;

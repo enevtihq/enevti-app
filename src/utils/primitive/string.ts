@@ -1,3 +1,5 @@
+import * as Lisk from '@liskhq/lisk-client';
+
 export function strByteLength(str: string) {
   var s = str.length;
   for (var i = str.length - 1; i >= 0; i--) {
@@ -12,4 +14,8 @@ export function strByteLength(str: string) {
     }
   }
   return s;
+}
+
+export function stringToBuffer(str: string): Buffer {
+  return Lisk.cryptography.stringToBuffer(str);
 }

@@ -25,7 +25,8 @@ export const payDeliverSecret = createAsyncThunk<void, PayDeliverSecretPayload, 
 
       const key = await decryptAsymmetric(payload.secret.cipher, payload.secret.sender);
       const cipher = await encryptAsymmetric(key.data, payload.secret.recipient);
-      const signature = await createSignature(key.data);
+      const cipherSignature = await createSignature(cipher);
+      const plainSignature = await createSignature(key.data);
       console.log('secret for new owner', cipher);
 
       const transactionPayload: AppTransaction<DeliverSecretUI> = await createSilentTransaction(
@@ -34,7 +35,10 @@ export const payDeliverSecret = createAsyncThunk<void, PayDeliverSecretPayload, 
         {
           id: payload.id,
           cipher,
-          signature,
+          signature: {
+            cipher: cipherSignature,
+            plain: plainSignature,
+          },
         },
         '0',
         signal,

@@ -6,6 +6,7 @@ import { trimExtension } from 'enevti-app/utils/format/directory';
 import { DecryptedData, DecryptedFile, EncryptedData, EncryptedFile } from 'enevti-app/types/core/service/cryptography';
 import { appCrypto } from './versions';
 import i18n from 'enevti-app/translations/i18n';
+import { stringToBuffer } from '../primitive/string';
 
 const LATEST_VERSION = 1;
 const SUPPORTED_VERSION = [1];
@@ -95,17 +96,13 @@ export async function decryptFile(
   return await appCrypto[version].decryptFile(inputFile, outputPath, password, iv, salt);
 }
 
-export async function createSignature(data: any): Promise<string> {
+export async function createSignature(data: string): Promise<string> {
   const passphrase = await getMyPassphrase();
-  return Lisk.cryptography.signData(Buffer.from(data, 'hex'), passphrase).toString('hex');
+  return Lisk.cryptography.signData(stringToBuffer(data), passphrase).toString('hex');
 }
 
 export async function verifySignature(data: string, signature: string, signer: string) {
-  return Lisk.cryptography.verifyData(
-    Buffer.from(data, 'hex'),
-    Buffer.from(signature, 'hex'),
-    Buffer.from(signer, 'hex'),
-  );
+  return Lisk.cryptography.verifyData(stringToBuffer(data), Buffer.from(signature, 'hex'), Buffer.from(signer, 'hex'));
 }
 
 export async function encryptAsymmetric(message: string, recipientPublicKey: string) {

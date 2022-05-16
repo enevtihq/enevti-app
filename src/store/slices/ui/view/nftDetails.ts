@@ -57,7 +57,10 @@ const initialStateItem: NFTDetailsViewState = {
     touched: -1,
     secret: {
       cipher: '',
-      signature: '',
+      signature: {
+        cipher: '',
+        plain: '',
+      },
       sender: '',
       recipient: '',
     },

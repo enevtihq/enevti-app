@@ -45,7 +45,8 @@ export const payCreateNFTOneKind = createAsyncThunk<void, CreateNFTOneKind, Asyn
         contentMime = '',
         contentExtension = '',
         cipher = '',
-        signature = '',
+        plainSignature = '',
+        cipherSignature = '',
         contentIv = '',
         contentSalt = '',
         contentSecurityVersion = 0,
@@ -61,7 +62,8 @@ export const payCreateNFTOneKind = createAsyncThunk<void, CreateNFTOneKind, Asyn
         }
 
         cipher = await encryptAsymmetric(randomKey, myPublicKey);
-        signature = await createSignature(randomKey);
+        cipherSignature = await createSignature(cipher);
+        plainSignature = await createSignature(randomKey);
 
         if (payload.state.storageProtocol === 'ipfs') {
           content = makeDummyIPFS();
@@ -125,7 +127,10 @@ export const payCreateNFTOneKind = createAsyncThunk<void, CreateNFTOneKind, Asyn
           utility: payload.state.utility,
           template: payload.choosenTemplate.id,
           cipher: cipher,
-          signature: signature,
+          signature: {
+            cipher: cipherSignature,
+            plain: plainSignature,
+          },
           content: content,
           contentMime: contentMime,
           contentExtension: contentExtension,

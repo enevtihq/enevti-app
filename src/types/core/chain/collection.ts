@@ -11,7 +11,7 @@ export type AllCollection = {
   items: CollectionIdAsset[];
 };
 
-export type CollectionActivityName = 'created' | 'minted';
+export type CollectionActivityName = 'created' | 'minted' | 'secretDelivered';
 
 export type CollectionActivity = Omit<NFTActivity, 'name'> & {
   name: CollectionActivityName;

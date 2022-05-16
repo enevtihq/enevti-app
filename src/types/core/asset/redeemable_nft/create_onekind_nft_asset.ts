@@ -19,7 +19,10 @@ export type CreateOneKindNFTProps = {
   utility: NFTUtility;
   template: string;
   cipher: string;
-  signature: string;
+  signature: {
+    cipher: string;
+    plain: string;
+  };
   content: string;
   contentMime: string;
   contentExtension: string;

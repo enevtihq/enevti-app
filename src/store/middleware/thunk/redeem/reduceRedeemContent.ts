@@ -21,8 +21,12 @@ function fileDecryptionFailed(nft: NFT) {
   throw Error(`File Decryption Failed: ${nft.id}`);
 }
 
-function invalidSignature(nft: NFT) {
-  throw Error(`Invald Signature: ${nft.id}`);
+function invalidCipherSignature(nft: NFT) {
+  throw Error(`Invald Cipher Signature: ${nft.id}`);
+}
+
+function invalidPlainSignature(nft: NFT) {
+  throw Error(`Invald Plain Signature: ${nft.id}`);
 }
 
 async function redeemDone(nft: NFT) {
@@ -47,18 +51,27 @@ export const reduceRedeemContent =
       const localEncryptedFile = `${STORAGE_PATH_REDEEM}/${nft.symbol}#${nft.serial}.${ENCRYPTED_FILE_EXTENSION}`;
       const localDecryptedFile = `${STORAGE_PATH_REDEEM}/${nft.symbol}#${nft.serial}.${nft.redeem.content.extension}`;
 
+      const isCipherSignatureValid = await verifySignature(
+        nft.redeem.secret.cipher,
+        nft.redeem.secret.signature.cipher,
+        nft.redeem.secret.sender,
+      );
+      if (!isCipherSignatureValid) {
+        invalidCipherSignature(nft);
+      }
+
       const decryptedSecret = await decryptAsymmetric(nft.redeem.secret.cipher, nft.redeem.secret.sender);
       if (decryptedSecret.status === 'error') {
         secretDecryptionFailed(nft);
       }
 
-      const isSignatureValid = await verifySignature(
+      const isPlainSignatureValid = await verifySignature(
         decryptedSecret.data,
-        nft.redeem.secret.signature,
+        nft.redeem.secret.signature.plain,
         nft.redeem.secret.sender,
       );
-      if (!isSignatureValid) {
-        invalidSignature(nft);
+      if (!isPlainSignatureValid) {
+        invalidPlainSignature(nft);
       }
 
       if (!(await RNFS.exists(localEncryptedFile))) {
