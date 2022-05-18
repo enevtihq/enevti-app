@@ -1,4 +1,4 @@
-import { selectPaymentActionPayload, setPaymentStatus } from 'enevti-app/store/slices/payment';
+import { selectPaymentActionPayload } from 'enevti-app/store/slices/payment';
 import { AppThunk } from 'enevti-app/store/state';
 import { AppTransaction } from 'enevti-app/types/core/service/transaction';
 import { postSilentTransaction } from 'enevti-app/service/enevti/transaction';
@@ -10,20 +10,26 @@ export const reducePayDeliverSecret = (): AppThunk => async (dispatch, getState)
   try {
     console.log('deliver secret reducer');
     dispatch({ type: 'payment/reducePayDeliverSecret' });
-    dispatch(setPaymentStatus({ type: 'process', message: '' }));
 
-    const payload = JSON.parse(selectPaymentActionPayload(getState())) as AppTransaction<DeliverSecretUI>;
+    const responseStatusArray = [];
+    const responseErrorSet = new Set<string>();
+    const payload = JSON.parse(selectPaymentActionPayload(getState())) as AppTransaction<DeliverSecretUI>[];
 
-    const response = await postSilentTransaction(payload);
-    if (response.status === 200) {
-      dispatch(setPaymentStatus({ type: 'success', message: '' }));
+    for (const data of payload) {
+      const response = await postSilentTransaction(data);
+      responseStatusArray.push(response.status);
+      if (response.status !== 200) {
+        responseErrorSet.add(response.data);
+      }
+    }
+
+    if (responseStatusArray.every(value => value === 200)) {
       console.log('deliver secret success');
     } else {
-      dispatch(setPaymentStatus({ type: 'error', message: response.data }));
+      throw Error(JSON.stringify([...responseErrorSet]));
     }
   } catch (err: any) {
     handleError(err);
     dispatch(subtractTransactionNonceCache());
-    dispatch(setPaymentStatus({ type: 'error', message: err.message }));
   }
 };

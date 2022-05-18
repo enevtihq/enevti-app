@@ -1,7 +1,6 @@
 import { getBasePersonaByRouteParam, getMyBasePersona } from 'enevti-app/service/enevti/persona';
 import { getMyProfile, getProfile } from 'enevti-app/service/enevti/profile';
 import { handleError, isErrorResponse } from 'enevti-app/utils/error/handle';
-import { selectMyPersonaCache } from 'enevti-app/store/slices/entities/cache/myPersona';
 import { hideModalLoader, showModalLoader } from 'enevti-app/store/slices/ui/global/modalLoader';
 import {
   resetMyProfileView,
@@ -24,25 +23,14 @@ import { Persona } from 'enevti-app/types/core/account/persona';
 import { Profile } from 'enevti-app/types/core/account/profile';
 
 type ProfileRoute = StackScreenProps<RootStackParamList, 'Profile'>['route']['params'];
-type LoadProfileArgs = { routeParam: ProfileRoute; reload: boolean };
-
-const defaultArgType = 'address';
+type LoadProfileArgs = { routeParam: ProfileRoute; reload: boolean; isMyProfile: boolean };
 
 export const loadProfile = createAsyncThunk<void, LoadProfileArgs, AsyncThunkAPI>(
   'profileView/loadProfile',
-  async ({ routeParam, reload }, { dispatch, getState, signal }) => {
-    const myPersona = selectMyPersonaCache(getState());
-    const argType: keyof Persona | undefined =
-      routeParam.mode === 'a'
-        ? 'address'
-        : routeParam.mode === 'b'
-        ? 'base32'
-        : routeParam.mode === 'u'
-        ? 'username'
-        : defaultArgType;
+  async ({ routeParam, reload, isMyProfile }, { dispatch, signal }) => {
     try {
       reload && dispatch(showModalLoader());
-      if (routeParam.arg === myPersona[argType]) {
+      if (isMyProfile) {
         const personaResponse = await getMyBasePersona(reload, signal);
         const profileResponse = await getMyProfile(reload, signal);
         dispatch(
@@ -71,7 +59,7 @@ export const loadProfile = createAsyncThunk<void, LoadProfileArgs, AsyncThunkAPI
     } catch (err: any) {
       handleError(err);
     } finally {
-      if (routeParam.arg === myPersona[argType]) {
+      if (isMyProfile) {
         dispatch(setMyProfileViewLoaded(true));
       } else {
         dispatch(setProfileViewLoaded({ key: routeParam.arg, value: true }));
@@ -82,18 +70,9 @@ export const loadProfile = createAsyncThunk<void, LoadProfileArgs, AsyncThunkAPI
 );
 
 export const unloadProfile =
-  (routeParam: ProfileRoute): AppThunk =>
-  (dispatch, getState) => {
-    const myPersona = selectMyPersonaCache(getState());
-    const argType: keyof Persona | undefined =
-      routeParam.mode === 'a'
-        ? 'address'
-        : routeParam.mode === 'b'
-        ? 'base32'
-        : routeParam.mode === 'u'
-        ? 'username'
-        : defaultArgType;
-    if (routeParam.arg === myPersona[argType]) {
+  (routeParam: ProfileRoute, isMyProfile: boolean): AppThunk =>
+  dispatch => {
+    if (isMyProfile) {
       dispatch(resetMyProfileView());
     } else {
       dispatch(clearProfileByKey(routeParam.arg));

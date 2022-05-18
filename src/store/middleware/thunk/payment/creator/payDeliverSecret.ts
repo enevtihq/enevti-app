@@ -1,5 +1,5 @@
 import { UNDEFINED_ICON } from 'enevti-app/components/atoms/icon/AppIconComponent';
-import { setPaymentFee, setPaymentStatus, setPaymentAction } from 'enevti-app/store/slices/payment';
+import { setPaymentFee, setPaymentAction } from 'enevti-app/store/slices/payment';
 import { AsyncThunkAPI } from 'enevti-app/store/state';
 import { createSilentTransaction } from 'enevti-app/service/enevti/transaction';
 import { createAsyncThunk } from '@reduxjs/toolkit';
@@ -14,35 +14,39 @@ import { reducePayment } from 'enevti-app/store/middleware/thunk/payment/reducer
 import i18n from 'enevti-app/translations/i18n';
 import { subtractTransactionNonceCache } from 'enevti-app/store/slices/entities/cache/transactionNonce';
 
-type PayDeliverSecretPayload = { id: string; secret: NFT['redeem']['secret'] };
+type PayDeliverSecretPayload = { id: string; secret: NFT['redeem']['secret'] }[];
 
 export const payDeliverSecret = createAsyncThunk<void, PayDeliverSecretPayload, AsyncThunkAPI>(
   'collection/payDeliverSecret',
   async (payload, { dispatch, signal }) => {
     try {
       console.log('deliver secret creator');
-      dispatch(setPaymentStatus({ type: 'initiated', message: '' }));
 
-      const key = await decryptAsymmetric(payload.secret.cipher, payload.secret.sender);
-      const cipher = await encryptAsymmetric(key.data, payload.secret.recipient);
-      const cipherSignature = await createSignature(cipher);
-      const plainSignature = await createSignature(key.data);
-      console.log('secret for new owner', cipher);
+      const transactionPayload = [];
+      for (const data of payload) {
+        const key = await decryptAsymmetric(data.secret.cipher, data.secret.sender);
+        const cipher = await encryptAsymmetric(key.data, data.secret.recipient);
+        const cipherSignature = await createSignature(cipher);
+        const plainSignature = await createSignature(key.data);
+        console.log('secret for new owner', cipher);
 
-      const transactionPayload: AppTransaction<DeliverSecretUI> = await createSilentTransaction(
-        redeemableNftModule.moduleID,
-        redeemableNftModule.deliverSecret,
-        {
-          id: payload.id,
-          cipher,
-          signature: {
-            cipher: cipherSignature,
-            plain: plainSignature,
+        const transactionData: AppTransaction<DeliverSecretUI> = await createSilentTransaction(
+          redeemableNftModule.moduleID,
+          redeemableNftModule.deliverSecret,
+          {
+            id: data.id,
+            cipher,
+            signature: {
+              cipher: cipherSignature,
+              plain: plainSignature,
+            },
           },
-        },
-        '0',
-        signal,
-      );
+          '0',
+          signal,
+        );
+
+        transactionPayload.push(transactionData);
+      }
 
       dispatch(setPaymentFee({ gas: '0', platform: '0' }));
       dispatch(
@@ -60,12 +64,6 @@ export const payDeliverSecret = createAsyncThunk<void, PayDeliverSecretPayload, 
     } catch (err) {
       handleError(err);
       dispatch(subtractTransactionNonceCache());
-      dispatch(
-        setPaymentStatus({
-          type: 'error',
-          message: (err as Record<string, any>).message.toString(),
-        }),
-      );
     }
   },
 );

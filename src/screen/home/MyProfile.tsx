@@ -40,6 +40,7 @@ export default function MyProfile({
     <AppView darken withLoader edges={['left', 'right', 'bottom', 'top']}>
       <View style={styles.textContainer}>
         <AppProfile
+          isMyProfile
           navigation={navigation}
           route={myRoute}
           headerHeight={headerHeight}

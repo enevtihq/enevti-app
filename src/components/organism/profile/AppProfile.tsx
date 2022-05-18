@@ -44,6 +44,7 @@ interface AppProfileProps {
   onMomentumEndWorklet?: (val: number) => void;
   headerHeight?: number;
   disableHeaderAnimation?: boolean;
+  isMyProfile?: boolean;
 }
 
 export default function AppProfile({
@@ -57,6 +58,7 @@ export default function AppProfile({
   onMomentumEndWorklet,
   headerHeight = 0,
   disableHeaderAnimation = false,
+  isMyProfile = false,
 }: AppProfileProps) {
   const dispatch = useDispatch();
   const insets = useSafeAreaInsets();
@@ -80,18 +82,18 @@ export default function AppProfile({
 
   const onProfileScreenLoaded = React.useCallback(
     (reload: boolean = false) => {
-      return dispatch(loadProfile({ routeParam: route.params, reload }));
+      return dispatch(loadProfile({ routeParam: route.params, isMyProfile, reload }));
     },
-    [dispatch, route.params],
+    [dispatch, route.params, isMyProfile],
   ) as AppAsyncThunk;
 
   React.useEffect(() => {
     const promise = onProfileScreenLoaded();
     return function cleanup() {
-      dispatch(unloadProfile(route.params));
+      dispatch(unloadProfile(route.params, isMyProfile));
       promise.abort();
     };
-  }, [onProfileScreenLoaded, dispatch, route.params]);
+  }, [onProfileScreenLoaded, dispatch, route.params, isMyProfile]);
 
   const useCustomAnimatedScrollHandler = (scrollRefList: React.RefObject<any>[]) =>
     useAnimatedScrollHandler({

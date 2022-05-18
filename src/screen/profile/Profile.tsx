@@ -32,16 +32,18 @@ export default function Profile({ navigation, route }: Props) {
   const socket = React.useRef<Socket | undefined>();
 
   React.useEffect(() => {
-    const key = route.params.arg;
-    socket.current = appSocket(profile.persona.address);
-    socket.current.on('usernameChanged', (payload: any) => dispatch(reduceNewUsername(payload, key)));
-    socket.current.on('balanceChanged', (payload: any) => dispatch(reduceBalanceChanged(payload, key)));
-    socket.current.on('totalStakeChanged', (payload: any) => dispatch(reduceTotalStakeChanged(payload, key)));
-    socket.current.on('newCollection', (payload: any) => dispatch(reduceNewCollection(payload, key)));
-    return function cleanup() {
-      socket.current?.disconnect();
-    };
-  }, [profile.persona.address, dispatch, route.params.arg]);
+    if (profile.persona && profile.persona.address) {
+      const key = route.params.arg;
+      socket.current = appSocket(profile.persona.address);
+      socket.current.on('usernameChanged', (payload: any) => dispatch(reduceNewUsername(payload, key)));
+      socket.current.on('balanceChanged', (payload: any) => dispatch(reduceBalanceChanged(payload, key)));
+      socket.current.on('totalStakeChanged', (payload: any) => dispatch(reduceTotalStakeChanged(payload, key)));
+      socket.current.on('newCollection', (payload: any) => dispatch(reduceNewCollection(payload, key)));
+      return function cleanup() {
+        socket.current?.disconnect();
+      };
+    }
+  }, [profile.persona, dispatch, route.params.arg]);
 
   return (
     <AppView
