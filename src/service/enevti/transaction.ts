@@ -17,7 +17,6 @@ import {
   isTransactionNonceSynced,
   setTransactionNonceCache,
   setTransactionNonceCacheSynced,
-  subtractTransactionNonceCache,
 } from 'enevti-app/store/slices/entities/cache/transactionNonce';
 import { getProfileNonce } from './profile';
 
@@ -26,14 +25,10 @@ export async function postTransaction<T>(
   signal?: AbortController['signal'],
 ): Promise<APIResponse<any>> {
   try {
-    const postTransactionResponse = await fecthPostTransaction(payload, signal);
-    if (postTransactionResponse.status !== 200) {
-      throw postTransactionResponse;
-    }
+    const response = await processTransaction<T>(payload, signal);
     store.dispatch(addTransactionNonceCache());
-    return postTransactionResponse;
+    return response;
   } catch (err: any) {
-    handleError(err, 'data');
     return err;
   }
 }
@@ -43,9 +38,24 @@ export async function postSilentTransaction<T>(
   signal?: AbortController['signal'],
 ): Promise<APIResponse<any>> {
   try {
-    return await postTransaction<T>(payload, signal);
+    return await processTransaction<T>(payload, signal);
   } catch (err: any) {
-    store.dispatch(subtractTransactionNonceCache());
+    return err;
+  }
+}
+
+export async function processTransaction<T>(
+  payload: AppTransaction<T>,
+  signal?: AbortController['signal'],
+): Promise<APIResponse<any>> {
+  try {
+    const postTransactionResponse = await fecthPostTransaction(payload, signal);
+    if (postTransactionResponse.status !== 200) {
+      throw postTransactionResponse;
+    }
+    return postTransactionResponse;
+  } catch (err: any) {
+    handleError(err, 'data');
     return err;
   }
 }
@@ -175,15 +185,7 @@ export async function createTransaction<T>(
   if (nonceSynced) {
     nonce = selectTransactionNonce(store.getState()).toString();
   } else {
-    const myAddress = await getMyAddress();
-    const profileNonce = await getProfileNonce(myAddress, signal);
-    if (profileNonce.status === 200) {
-      nonce = profileNonce.data;
-      store.dispatch(setTransactionNonceCache(Number(nonce)));
-      store.dispatch(setTransactionNonceCacheSynced());
-    } else {
-      throw Error(i18n.t('error:requestNonceFailed'));
-    }
+    nonce = await updateNonceCache(signal);
   }
   return {
     moduleID,
@@ -203,8 +205,21 @@ export async function createSilentTransaction<T>(
   signal?: AbortController['signal'],
 ): Promise<AppTransaction<T>> {
   const transaction = await createTransaction(moduleID, assetID, asset, fee, signal);
-  store.dispatch(addTransactionNonceCache());
   return transaction;
+}
+
+export async function updateNonceCache(signal?: AbortController['signal']) {
+  let nonce = '0';
+  const myAddress = await getMyAddress();
+  const profileNonce = await getProfileNonce(myAddress, signal);
+  if (profileNonce.status === 200) {
+    nonce = profileNonce.data;
+    store.dispatch(setTransactionNonceCache(Number(profileNonce.data)));
+    store.dispatch(setTransactionNonceCacheSynced());
+  } else {
+    throw Error(i18n.t('error:requestNonceFailed'));
+  }
+  return nonce;
 }
 
 export function attachFee(transaction: AppTransaction<any>, fee: string) {

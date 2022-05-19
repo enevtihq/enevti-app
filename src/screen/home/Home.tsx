@@ -47,13 +47,15 @@ import AppAlertModal from 'enevti-app/components/organism/menu/AppAlertModal';
 import AppConfirmationModal from 'enevti-app/components/organism/menu/AppConfirmationModal';
 import { appSocket } from 'enevti-app/utils/network';
 import { Socket } from 'socket.io-client';
-import { reduceMyNewUsername } from 'enevti-app/store/middleware/thunk/socket/profile/username/reduceMyNewUsername';
-import { reduceMyBalanceChanged } from 'enevti-app/store/middleware/thunk/socket/profile/balance/reduceMyBalanceChanged';
-import { reduceMyTotalStakeChanged } from 'enevti-app/store/middleware/thunk/socket/profile/totalStake/reduceMyTotalStakeChanged';
-import { reduceMyNewCollection } from 'enevti-app/store/middleware/thunk/socket/profile/collection/reduceMyNewCollection';
-import { reduceFeedsUpdates } from 'enevti-app/store/middleware/thunk/socket/feeds/reduceFeedsUpdates';
+import { reduceMyNewUsername } from 'enevti-app/store/middleware/thunk/socket/profile/newUsername';
+import { reduceMyBalanceChanged } from 'enevti-app/store/middleware/thunk/socket/profile/balanceChanged';
+import { reduceMyTotalStakeChanged } from 'enevti-app/store/middleware/thunk/socket/profile/totalStakeChanged';
+import { reduceFeedsUpdates } from 'enevti-app/store/middleware/thunk/socket/feeds/feedsUpdates';
 import { payDeliverSecret } from 'enevti-app/store/middleware/thunk/payment/creator/payDeliverSecret';
 import { syncTransactionNonce } from 'enevti-app/store/middleware/thunk/ui/cache/syncTransactionNonce';
+import { reduceMyTotalNFTSoldChanged } from 'enevti-app/store/middleware/thunk/socket/profile/totalNFTSoldChanged';
+import { reduceMyNewPending } from 'enevti-app/store/middleware/thunk/socket/profile/newPending';
+import { reduceMyNewProfileUpdates } from 'enevti-app/store/middleware/thunk/socket/profile/newProfileUpdates';
 
 const Tab = createBottomTabNavigator();
 const TABBAR_HEIGHT_PERCENTAGE = 8;
@@ -93,7 +95,9 @@ export default function Home({ navigation }: Props) {
     socket.current.on('usernameChanged', (payload: any) => dispatch(reduceMyNewUsername(payload)));
     socket.current.on('balanceChanged', (payload: any) => dispatch(reduceMyBalanceChanged(payload)));
     socket.current.on('totalStakeChanged', (payload: any) => dispatch(reduceMyTotalStakeChanged(payload)));
-    socket.current.on('newCollection', (payload: any) => dispatch(reduceMyNewCollection(payload)));
+    socket.current.on('totalNFTSoldChanged', (payload: any) => dispatch(reduceMyTotalNFTSoldChanged(payload)));
+    socket.current.on('newProfileUpdates', (payload: any) => dispatch(reduceMyNewProfileUpdates(payload)));
+    socket.current.on('newPending', (payload: any) => dispatch(reduceMyNewPending(payload)));
     socket.current.on('newFeedItem', (payload: any) => dispatch(reduceFeedsUpdates(payload)));
     socket.current.on('deliverSecretNotif', (payload: any) => dispatch(payDeliverSecret(payload)));
     return function cleanup() {

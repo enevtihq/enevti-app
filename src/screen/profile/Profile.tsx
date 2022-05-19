@@ -9,14 +9,22 @@ import AppHeader, { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms
 import { hp } from 'enevti-app/utils/imageRatio';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { isProfileUndefined, selectProfileView } from 'enevti-app/store/slices/ui/view/profile';
+import {
+  isProfileUndefined,
+  isThereAnyNewProfileUpdate,
+  selectProfileView,
+  setProfileViewVersion,
+} from 'enevti-app/store/slices/ui/view/profile';
 import { RootState } from 'enevti-app/store/state';
 import { appSocket } from 'enevti-app/utils/network';
 import { Socket } from 'socket.io-client';
-import { reduceNewUsername } from 'enevti-app/store/middleware/thunk/socket/profile/username/reduceNewUsername';
-import { reduceBalanceChanged } from 'enevti-app/store/middleware/thunk/socket/profile/balance/reduceBalanceChanged';
-import { reduceTotalStakeChanged } from 'enevti-app/store/middleware/thunk/socket/profile/totalStake/reduceTotalStakeChanged';
-import { reduceNewCollection } from 'enevti-app/store/middleware/thunk/socket/profile/collection/reduceNewCollection';
+import { reduceNewUsername } from 'enevti-app/store/middleware/thunk/socket/profile/newUsername';
+import { reduceBalanceChanged } from 'enevti-app/store/middleware/thunk/socket/profile/balanceChanged';
+import { reduceTotalStakeChanged } from 'enevti-app/store/middleware/thunk/socket/profile/totalStakeChanged';
+import { reduceNewCollection } from 'enevti-app/store/middleware/thunk/socket/profile/newCollection';
+import { reduceTotalNFTSoldChanged } from 'enevti-app/store/middleware/thunk/socket/profile/totalNFTSoldChanged';
+import { reduceNewOwned } from 'enevti-app/store/middleware/thunk/socket/profile/newOwned';
+import { reduceNewPending } from 'enevti-app/store/middleware/thunk/socket/profile/newPending';
 
 type Props = StackScreenProps<RootStackParamList, 'Profile'>;
 
@@ -29,7 +37,12 @@ export default function Profile({ navigation, route }: Props) {
 
   const profile = useSelector((state: RootState) => selectProfileView(state, route.params.arg));
   const profileUndefined = useSelector((state: RootState) => isProfileUndefined(state, route.params.arg));
+  const newUpdate = useSelector((state: RootState) => isThereAnyNewProfileUpdate(state, route.params.arg));
   const socket = React.useRef<Socket | undefined>();
+
+  const onUpdateClose = React.useCallback(() => {
+    dispatch(setProfileViewVersion({ key: route.params.arg, value: Date.now() }));
+  }, [dispatch, route.params.arg]);
 
   React.useEffect(() => {
     if (profile.persona && profile.persona.address) {
@@ -39,6 +52,9 @@ export default function Profile({ navigation, route }: Props) {
       socket.current.on('balanceChanged', (payload: any) => dispatch(reduceBalanceChanged(payload, key)));
       socket.current.on('totalStakeChanged', (payload: any) => dispatch(reduceTotalStakeChanged(payload, key)));
       socket.current.on('newCollection', (payload: any) => dispatch(reduceNewCollection(payload, key)));
+      socket.current.on('totalNFTSoldChanged', (payload: any) => dispatch(reduceTotalNFTSoldChanged(payload, key)));
+      socket.current.on('newOwned', (payload: any) => dispatch(reduceNewOwned(payload, key)));
+      socket.current.on('newPending', (payload: any) => dispatch(reduceNewPending(payload, key)));
       return function cleanup() {
         socket.current?.disconnect();
       };
@@ -61,6 +77,8 @@ export default function Profile({ navigation, route }: Props) {
           headerHeight={headerHeight}
           profile={profile}
           profileUndefined={profileUndefined}
+          newUpdate={newUpdate}
+          onUpdateClose={onUpdateClose}
         />
       </View>
     </AppView>

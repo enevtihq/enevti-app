@@ -62,8 +62,8 @@ function Component(
   );
   const isScrollEnabled = React.useMemo(() => (refreshing ? false : scrollEnabled), [refreshing, scrollEnabled]);
   const itemHeight = React.useMemo(
-    () => wp(COLLECTION_ACTIVITY_ITEM_HEIGHT + LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE),
-    [wp],
+    () => hp(COLLECTION_ACTIVITY_ITEM_HEIGHT + LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE),
+    [hp],
   );
   const progressViewOffset = React.useMemo(
     () => (Platform.OS === 'ios' ? 0 : hp(TOP_TABBAR_HEIGHT_PERCENTAGE) + collectionHeaderHeight),
@@ -172,10 +172,10 @@ function Component(
       refreshControl={refreshControl}
       ListEmptyComponent={emptyComponent}
       removeClippedSubviews={true}
-      initialNumToRender={2}
-      maxToRenderPerBatch={5}
-      updateCellsBatchingPeriod={100}
-      windowSize={5}
+      initialNumToRender={10}
+      maxToRenderPerBatch={10}
+      updateCellsBatchingPeriod={50}
+      windowSize={21}
       ListFooterComponent={listFooter}
     />
   );

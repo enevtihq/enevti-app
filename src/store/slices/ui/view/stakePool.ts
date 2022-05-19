@@ -40,6 +40,9 @@ const stakePoolViewSlice = createSlice({
     setStakePoolFetchedVersion: (stakePool, action: PayloadAction<{ key: string; value: number }>) => {
       stakePool[action.payload.key].fetchedVersion = action.payload.value;
     },
+    setStakePoolVersion: (stakePool, action: PayloadAction<{ key: string; value: number }>) => {
+      stakePool[action.payload.key].version = action.payload.value;
+    },
     setStakePoolLoaded: (stakePool, action: PayloadAction<{ key: string; value: boolean }>) => {
       stakePool[action.payload.key].loaded = action.payload.value;
     },
@@ -63,6 +66,7 @@ export const {
   setStakePoolView,
   setStakePoolFetchedVersion,
   setStakePoolLoaded,
+  setStakePoolVersion,
   setStakePoolReqStatus,
   clearStakePoolByKey,
   resetStakePoolByKey,

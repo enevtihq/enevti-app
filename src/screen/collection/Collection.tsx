@@ -22,6 +22,7 @@ export default function Collection({ navigation, route }: Props) {
   const dispatch = useDispatch();
   const theme = useTheme();
   const headerTreshold = React.useMemo(() => wp('100%') * 0.5625 - hp(HEADER_HEIGHT_PERCENTAGE), []);
+  const isAboveTreshold = React.useRef<boolean>(false);
 
   const collectionScroll = useSharedValue(0);
 
@@ -30,28 +31,41 @@ export default function Collection({ navigation, route }: Props) {
     dispatch(setStatusBarTint('light'));
   }, [dispatch]);
 
+  const onLoadedAbove = React.useCallback(() => {
+    dispatch(setStatusBarBackground('transparent'));
+    dispatch(setStatusBarTint('system'));
+  }, [dispatch]);
+
   React.useEffect(() => {
     const unsubscribeBlur = navigation.addListener('blur', () => {
       dispatch(resetStatusBarState());
     });
     const unsubscribeFocus = navigation.addListener('focus', () => {
-      onLoaded();
+      if (isAboveTreshold.current) {
+        onLoadedAbove();
+      } else {
+        onLoaded();
+      }
     });
     return () => {
       unsubscribeBlur();
       unsubscribeFocus();
     };
-  }, [navigation, dispatch, onLoaded]);
+  }, [navigation, dispatch, onLoaded, onLoadedAbove]);
 
   React.useEffect(() => {
     onLoaded();
   }, [onLoaded]);
 
   const onHeaderAboveTreshold = React.useCallback(() => {
+    isAboveTreshold.current = true;
     dispatch(setStatusBarTint('system'));
   }, [dispatch]);
 
-  const onHeaderBelowTreshold = React.useCallback(() => dispatch(setStatusBarTint('light')), [dispatch]);
+  const onHeaderBelowTreshold = React.useCallback(() => {
+    isAboveTreshold.current = false;
+    dispatch(setStatusBarTint('light'));
+  }, [dispatch]);
 
   const headerBackgroundStyle = useAnimatedStyle(() => {
     return {

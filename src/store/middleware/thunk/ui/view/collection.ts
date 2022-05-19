@@ -23,7 +23,7 @@ export const loadCollection = createAsyncThunk<void, LoadCollectionArgs, AsyncTh
       reload && dispatch(showModalLoader());
       const collectionResponse = await getCollectionByRouteParam(routeParam, signal);
       dispatch(initCollectionView(routeParam.arg));
-      dispatch(setCollectionView({ key: routeParam.arg, value: collectionResponse.data }));
+      dispatch(setCollectionView({ key: routeParam.arg, value: { ...collectionResponse.data, version: Date.now() } }));
       dispatch(setCollectionViewReqStatus({ key: routeParam.arg, value: collectionResponse.status }));
     } catch (err: any) {
       handleError(err);

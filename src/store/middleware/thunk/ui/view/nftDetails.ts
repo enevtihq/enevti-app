@@ -23,7 +23,7 @@ export const loadNFTDetails = createAsyncThunk<void, loadNFTArgs, AsyncThunkAPI>
       reload && dispatch(showModalLoader());
       const nftResponse = await getNFTbyRouteParam(routeParam, signal);
       dispatch(initNFTDetailsView(routeParam.arg));
-      dispatch(setNFTDetailsView({ key: routeParam.arg, value: nftResponse.data }));
+      dispatch(setNFTDetailsView({ key: routeParam.arg, value: { ...nftResponse.data, version: Date.now() } }));
       dispatch(setNFTDetailsReqStatus({ key: routeParam.arg, value: nftResponse.status }));
     } catch (err: any) {
       handleError(err);

@@ -13,4 +13,5 @@ export default {
   mintingClosedIn: 'Mint ends {{momentFromNow}}',
   mintingPercent: '{{percent}}% minted',
   to: 'To',
+  newUpdates: 'New Updates!',
 };

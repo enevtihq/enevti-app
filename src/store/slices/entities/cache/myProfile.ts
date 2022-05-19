@@ -2,6 +2,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
 import { Profile } from 'enevti-app/types/core/account/profile';
 import { RootState } from 'enevti-app/store/state';
+import { NFTBase } from 'enevti-app/types/core/chain/nft';
+import { CollectionBase } from 'enevti-app/types/core/chain/collection';
 
 const initialState: Profile & { lastFetch: number } = {
   nftSold: 0,
@@ -32,6 +34,19 @@ const profileEntitySlice = createSlice({
       profile.owned = action.payload.owned.slice();
       profile.onSale = action.payload.onSale.slice();
       profile.collection = action.payload.collection.slice();
+      profile.pending = action.payload.pending;
+    },
+    addMyProfileCacheOwnedNFT: (profile, action: PayloadAction<NFTBase[]>) => {
+      profile.owned = action.payload.concat(profile.owned);
+    },
+    addMyProfileCacheOnsaleNFT: (profile, action: PayloadAction<NFTBase[]>) => {
+      profile.onSale = action.payload.concat(profile.onSale);
+    },
+    addMyProfileCacheCollection: (profile, action: PayloadAction<CollectionBase[]>) => {
+      profile.collection = action.payload.concat(profile.collection);
+    },
+    setMyProfileCachePending: (profile, action: PayloadAction<number>) => {
+      profile.pending = action.payload;
     },
     setLastFetchMyProfileCache: (profile, action: PayloadAction<number>) => {
       profile.lastFetch = action.payload;
@@ -42,7 +57,15 @@ const profileEntitySlice = createSlice({
   },
 });
 
-export const { setMyProfileCache, setLastFetchMyProfileCache, resetMyProfileCache } = profileEntitySlice.actions;
+export const {
+  setMyProfileCache,
+  addMyProfileCacheOwnedNFT,
+  addMyProfileCacheOnsaleNFT,
+  setMyProfileCachePending,
+  addMyProfileCacheCollection,
+  setLastFetchMyProfileCache,
+  resetMyProfileCache,
+} = profileEntitySlice.actions;
 export default profileEntitySlice.reducer;
 
 export const selectMyProfileCache = createSelector(

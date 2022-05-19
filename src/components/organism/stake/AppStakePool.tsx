@@ -13,6 +13,7 @@ import {
   isThereAnyNewStaker,
   selectStakePoolOwnerView,
   selectStakePoolView,
+  setStakePoolVersion,
 } from 'enevti-app/store/slices/ui/view/stakePool';
 import { loadStakePool, unloadStakePool } from 'enevti-app/store/middleware/thunk/ui/view/stakePool';
 import { AppAsyncThunk } from 'enevti-app/types/ui/store/AppAsyncThunk';
@@ -29,7 +30,7 @@ import AppMessageEmpty from 'enevti-app/components/molecules/message/AppMessageE
 import AppFloatingNotifButton from 'enevti-app/components/molecules/button/AppFloatingNotifButton';
 import { appSocket } from 'enevti-app/utils/network';
 import { routeParamToAddress } from 'enevti-app/service/enevti/persona';
-import { reduceStakerUpdates } from 'enevti-app/store/middleware/thunk/socket/stakePool/reduceStakerUpdates';
+import { reduceStakerUpdates } from 'enevti-app/store/middleware/thunk/socket/stakePool/stakerUpdates';
 import { Socket } from 'socket.io-client';
 
 const AnimatedFlatList = Animated.createAnimatedComponent<FlatListProps<StakerItem>>(FlatList);
@@ -78,6 +79,10 @@ export default function AppStakePool({ route }: AppStakePoolProps) {
   const handleRefresh = React.useCallback(async () => {
     onStakePoolScreenLoaded(true);
   }, [onStakePoolScreenLoaded]);
+
+  const handleUpdateClose = React.useCallback(() => {
+    dispatch(setStakePoolVersion({ key: route.params.arg, value: Date.now() }));
+  }, [dispatch, route.params.arg]);
 
   React.useEffect(() => {
     const promise = onStakePoolScreenLoaded();
@@ -162,7 +167,12 @@ export default function AppStakePool({ route }: AppStakePoolProps) {
 
   return !stakePoolUndefined ? (
     <AppResponseView onReload={handleRefresh} status={stakePool.reqStatus} style={styles.stakePoolContainer}>
-      <AppFloatingNotifButton show={newStaker} label={t('stake:newStaker')} onPress={handleRefresh} />
+      <AppFloatingNotifButton
+        show={newStaker}
+        label={t('stake:newStaker')}
+        onPress={handleRefresh}
+        onClose={handleUpdateClose}
+      />
       <AnimatedFlatList
         onScroll={onScroll}
         scrollEventThrottle={16}
@@ -171,9 +181,9 @@ export default function AppStakePool({ route }: AppStakePoolProps) {
         keyExtractor={keyExtractor}
         removeClippedSubviews={true}
         initialNumToRender={10}
-        maxToRenderPerBatch={20}
-        updateCellsBatchingPeriod={100}
-        windowSize={5}
+        maxToRenderPerBatch={10}
+        updateCellsBatchingPeriod={50}
+        windowSize={21}
         getItemLayout={getItemLayout}
         refreshControl={refreshControl}
         ListEmptyComponent={emptyComponent}

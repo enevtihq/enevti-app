@@ -37,6 +37,7 @@ export const loadProfile = createAsyncThunk<void, LoadProfileArgs, AsyncThunkAPI
           setMyProfileView({
             ...(profileResponse.data as Profile),
             persona: personaResponse.data as Persona,
+            version: Date.now(),
           }),
         );
         dispatch(setMyProfileViewReqStatus(profileResponse.status));
@@ -49,7 +50,7 @@ export const loadProfile = createAsyncThunk<void, LoadProfileArgs, AsyncThunkAPI
             dispatch(
               setProfileView({
                 key: routeParam.arg,
-                value: { ...profileResponse.data, persona: personaBase.data },
+                value: { ...profileResponse.data, persona: personaBase.data, version: Date.now() },
               }),
             );
           }

@@ -20,4 +20,5 @@ export default {
   onTheDate: 'On the {{date}}',
   contentCalendarLabel:
     'Status: {{status}} · Type: {{extension}} ({{mime}}) · Size: {{size}} · Stored securely on IPFS',
+  newUpdates: 'New Updates!',
 };

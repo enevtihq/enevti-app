@@ -89,6 +89,8 @@ export const iconMap = {
   empty: 'package-variant',
   notFound: 'magnify-close',
   error: 'alert-circle',
+  pendingNFT: 'send-clock',
+  deliveringSecret: 'send-check',
 };
 
 interface AppIconComponentProps {

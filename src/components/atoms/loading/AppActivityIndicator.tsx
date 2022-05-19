@@ -9,6 +9,7 @@ interface AppActivityIndicatorProps {
   style?: StyleProp<ViewStyle>;
   color?: string;
   progress?: number;
+  size?: number;
 }
 
 export default function AppActivityIndicator({
@@ -17,6 +18,7 @@ export default function AppActivityIndicator({
   style,
   color,
   progress,
+  size,
 }: AppActivityIndicatorProps) {
   const theme = useTheme();
   const loaderColor = theme.colors.primary;
@@ -25,7 +27,7 @@ export default function AppActivityIndicator({
   return (
     <View style={style}>
       {mode === 'activity' ? (
-        <ActivityIndicator animating={animating} color={color ? color : loaderColor} />
+        <ActivityIndicator size={size} animating={animating} color={color ? color : loaderColor} />
       ) : mode === 'progress' && progress !== undefined ? (
         <View style={styles.progressView}>
           <CircularProgress

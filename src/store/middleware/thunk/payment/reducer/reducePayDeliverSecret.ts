@@ -7,13 +7,13 @@ import { DeliverSecretUI } from 'enevti-app/types/core/asset/redeemable_nft/deli
 import { subtractTransactionNonceCache } from 'enevti-app/store/slices/entities/cache/transactionNonce';
 
 export const reducePayDeliverSecret = (): AppThunk => async (dispatch, getState) => {
+  const payload = JSON.parse(selectPaymentActionPayload(getState())) as AppTransaction<DeliverSecretUI>[];
   try {
     console.log('deliver secret reducer');
     dispatch({ type: 'payment/reducePayDeliverSecret' });
 
     const responseStatusArray = [];
     const responseErrorSet = new Set<string>();
-    const payload = JSON.parse(selectPaymentActionPayload(getState())) as AppTransaction<DeliverSecretUI>[];
 
     for (const data of payload) {
       const response = await postSilentTransaction(data);
@@ -30,6 +30,6 @@ export const reducePayDeliverSecret = (): AppThunk => async (dispatch, getState)
     }
   } catch (err: any) {
     handleError(err);
-    dispatch(subtractTransactionNonceCache());
+    payload.forEach(() => dispatch(subtractTransactionNonceCache()));
   }
 };

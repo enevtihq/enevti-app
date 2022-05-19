@@ -13,4 +13,15 @@ export default {
   copyAddress: `Copy ${COIN_NAME} Address`,
   copyChainAddress: 'Copy Chain Address',
   addressCopied: 'Address Copied',
+  pending: 'pending',
+  delivering: 'delivering',
+  pendingAlertTitle: 'Delivering the Secret...',
+  pendingAlertDescription: 'Great! Now relax and we will do the rest. You will get the money afterwards!',
+  pendingAlertButton: 'Okay',
+  pendingConfirmationTitle: 'Deliver & Claim your NFT Sales?',
+  pendingConfirmationDescription:
+    'We will try to automatically send the secret, you can manually send the secret below:',
+  pendingConfirmationOkText: 'Deliver',
+  pendingConfirmationCancelText: 'Later',
+  newUpdates: 'New Updates!',
 };

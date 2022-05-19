@@ -28,6 +28,8 @@ import { AppAsyncThunk } from 'enevti-app/types/ui/store/AppAsyncThunk';
 import { RouteProp } from '@react-navigation/native';
 import AppResponseView from '../view/AppResponseView';
 import { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
+import AppFloatingNotifButton from 'enevti-app/components/molecules/button/AppFloatingNotifButton';
+import { useTranslation } from 'react-i18next';
 
 const noDisplay = 'none';
 const visible = 1;
@@ -45,6 +47,8 @@ interface AppProfileProps {
   headerHeight?: number;
   disableHeaderAnimation?: boolean;
   isMyProfile?: boolean;
+  newUpdate?: boolean;
+  onUpdateClose?: () => void;
 }
 
 export default function AppProfile({
@@ -59,8 +63,11 @@ export default function AppProfile({
   headerHeight = 0,
   disableHeaderAnimation = false,
   isMyProfile = false,
+  newUpdate = false,
+  onUpdateClose,
 }: AppProfileProps) {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const theme = useTheme();
   const persona = profile.persona;
@@ -332,6 +339,13 @@ export default function AppProfile({
       <Animated.View pointerEvents={'box-none'} style={[styles.profileHeader, scrollStyle]}>
         <AppProfileHeader persona={persona} profile={profile} navigation={navigation} />
       </Animated.View>
+      <AppFloatingNotifButton
+        show={newUpdate}
+        label={t('profile:newUpdates')}
+        onPress={onRefresh}
+        style={{ top: headerHeight + hp('2%', insets) }}
+        onClose={onUpdateClose}
+      />
       <AppProfileBody
         profile={profile}
         headerHeight={headerHeight}

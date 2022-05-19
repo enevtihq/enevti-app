@@ -81,6 +81,10 @@ export function urlGetProfileNonce(address: string, host: string = ENEVTI_DEFAUL
   return encodeURI(`${host}/profile/${address}/nonce`);
 }
 
+export function urlGetProfilePendingDelivery(address: string, host: string = ENEVTI_DEFAULT_API) {
+  return encodeURI(`${host}/profile/${address}/pending`);
+}
+
 export function urlGetStakePoolByAddress(address: string, host: string = ENEVTI_DEFAULT_API) {
   return encodeURI(`${host}/stake/a/${address}`);
 }

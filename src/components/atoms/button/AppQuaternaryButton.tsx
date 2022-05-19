@@ -19,6 +19,7 @@ interface AppQuaternaryButtonProps {
   icon?: string;
   iconSize?: number;
   iconColor?: string;
+  loaderLeft?: boolean;
   loaderColor?: string;
   style?: StyleProp<ViewStyle>;
   contentStyle?: StyleProp<ViewStyle>;
@@ -36,6 +37,7 @@ export default function AppQuaternaryButton({
   iconSize,
   iconColor,
   loaderColor,
+  loaderLeft,
   iconStyle,
   style,
   contentStyle,
@@ -59,14 +61,23 @@ export default function AppQuaternaryButton({
     <View style={[styles.buttonContainer, style, { opacity: opacity }]}>
       <TouchableRipple style={[styles.quaternaryButton, style]} onPress={disabled ? undefined : onPress}>
         <View style={[styles.contentContainer, contentContainerStyle]}>
-          {icon && (
-            <MaterialCommunityIcons
-              name={icon}
-              size={iconSize}
-              color={iconColor ? iconColor : theme.colors.text}
-              style={[styles.icon, iconStyle]}
-            />
-          )}
+          {icon ? (
+            loaderLeft ? (
+              <AppActivityIndicator
+                animating={true}
+                size={15}
+                style={[styles.icon]}
+                color={loaderColor ? loaderColor : iconColor ? iconColor : theme.colors.text}
+              />
+            ) : (
+              <MaterialCommunityIcons
+                name={icon}
+                size={iconSize}
+                color={iconColor ? iconColor : theme.colors.text}
+                style={[styles.icon, iconStyle]}
+              />
+            )
+          ) : null}
           <View style={contentStyle}>{children}</View>
         </View>
       </TouchableRipple>

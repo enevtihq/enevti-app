@@ -11,9 +11,10 @@ import { lastFetchTimeout } from 'enevti-app/utils/constant/lastFetch';
 import { getMyAddress } from './persona';
 import { completeTokenUnit } from 'enevti-app/utils/format/amount';
 import { appFetch, isInternetReachable } from 'enevti-app/utils/network';
-import { urlGetProfile, urlGetProfileNonce } from 'enevti-app/utils/constant/URLCreator';
+import { urlGetProfile, urlGetProfileNonce, urlGetProfilePendingDelivery } from 'enevti-app/utils/constant/URLCreator';
 import { handleError, handleResponseCode, isErrorResponse, responseError } from 'enevti-app/utils/error/handle';
 import { APIResponse, ResponseJSON } from 'enevti-app/types/core/service/api';
+import { NFTSecret } from 'enevti-app/types/core/chain/nft/NFTSecret';
 
 export const MINIMUM_BASIC_UNIT_STAKE_ELIGIBILITY = 1000;
 
@@ -22,6 +23,26 @@ async function fetchProfileNonce(address: string, signal?: AbortController['sign
     await isInternetReachable();
     const res = await appFetch(urlGetProfileNonce(address), { signal });
     const ret = (await res.json()) as ResponseJSON<string>;
+    handleResponseCode(res, ret);
+    return {
+      status: res.status,
+      data: ret.data,
+      meta: ret.meta,
+    };
+  } catch (err: any) {
+    handleError(err);
+    return responseError(err.code);
+  }
+}
+
+async function fetchProfilePendingDelivery(
+  address: string,
+  signal?: AbortController['signal'],
+): Promise<APIResponse<{ id: string; secret: NFTSecret }[]>> {
+  try {
+    await isInternetReachable();
+    const res = await appFetch(urlGetProfilePendingDelivery(address), { signal });
+    const ret = (await res.json()) as ResponseJSON<{ id: string; secret: NFTSecret }[]>;
     handleResponseCode(res, ret);
     return {
       status: res.status,
@@ -60,6 +81,13 @@ export async function getProfileNonce(
   signal?: AbortController['signal'],
 ): Promise<APIResponse<string>> {
   return await fetchProfileNonce(address, signal);
+}
+
+export async function getProfilePendingDelivery(
+  address: string,
+  signal?: AbortController['signal'],
+): Promise<APIResponse<{ id: string; secret: NFTSecret }[]>> {
+  return await fetchProfilePendingDelivery(address, signal);
 }
 
 export async function getProfile(address: string, signal?: AbortController['signal']): Promise<APIResponse<Profile>> {

@@ -2,14 +2,17 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
 import { RootState } from 'enevti-app/store/state';
 import { NFT } from 'enevti-app/types/core/chain/nft';
+import { NFTActivity } from 'enevti-app/types/core/chain/nft/NFTActivity';
 
-type NFTDetailsViewState = NFT & { reqStatus: number; loaded: boolean };
+type NFTDetailsViewState = NFT & { version: number; fetchedVersion: number; reqStatus: number; loaded: boolean };
 
 type NFTDetailsViewStore = {
   [key: string]: NFTDetailsViewState;
 };
 
 const initialStateItem: NFTDetailsViewState = {
+  fetchedVersion: 0,
+  version: 0,
   loaded: false,
   reqStatus: 0,
   id: '',
@@ -121,6 +124,18 @@ const nftDetailsViewSlice = createSlice({
     setNFTDetailsView: (nftDetails, action: PayloadAction<{ key: string; value: Record<string, any> }>) => {
       Object.assign(nftDetails, { [action.payload.key]: action.payload.value });
     },
+    addNFTDetailsViewActivity: (nftDetails, action: PayloadAction<{ key: string; value: NFTActivity[] }>) => {
+      nftDetails[action.payload.key].activity = nftDetails[action.payload.key].activity.concat(action.payload.value);
+    },
+    setNFTDetailsViewSecret: (nftDetails, action: PayloadAction<{ key: string; value: NFT['redeem']['secret'] }>) => {
+      nftDetails[action.payload.key].redeem.secret = action.payload.value;
+    },
+    setNFTDetailsFetchedVersion: (nftDetails, action: PayloadAction<{ key: string; value: number }>) => {
+      nftDetails[action.payload.key].fetchedVersion = action.payload.value;
+    },
+    setNFTDetailsVersion: (nftDetails, action: PayloadAction<{ key: string; value: number }>) => {
+      nftDetails[action.payload.key].version = action.payload.value;
+    },
     setNFTDetailsLoaded: (nftDetails, action: PayloadAction<{ key: string; value: boolean }>) => {
       nftDetails[action.payload.key].loaded = action.payload.value;
     },
@@ -142,7 +157,11 @@ const nftDetailsViewSlice = createSlice({
 export const {
   initNFTDetailsView,
   setNFTDetailsView,
+  addNFTDetailsViewActivity,
+  setNFTDetailsViewSecret,
   setNFTDetailsLoaded,
+  setNFTDetailsFetchedVersion,
+  setNFTDetailsVersion,
   setNFTDetailsReqStatus,
   resetNFTDetailsView,
   clearNFTDetailsByKey,
@@ -159,4 +178,10 @@ export const selectNFTDetailsView = createSelector(
 export const isNFTDetailsUndefined = createSelector(
   [(state: RootState) => state.ui.view.nftDetails, (state: RootState, key: string) => key],
   (nftDetails: NFTDetailsViewStore, key: string) => (nftDetails.hasOwnProperty(key) ? !nftDetails[key].loaded : true),
+);
+
+export const isThereAnyNewNFTUpdates = createSelector(
+  [(state: RootState) => state.ui.view.nftDetails, (state: RootState, key: string) => key],
+  (nftDetails: NFTDetailsViewStore, key: string) =>
+    nftDetails.hasOwnProperty(key) ? nftDetails[key].fetchedVersion > nftDetails[key].version : false,
 );

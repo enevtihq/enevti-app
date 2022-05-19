@@ -109,6 +109,11 @@ function Component(
       refreshControl={refreshControl}
       ListEmptyComponent={emptyComponent}
       ListFooterComponent={listFooter}
+      removeClippedSubviews={true}
+      initialNumToRender={10}
+      maxToRenderPerBatch={10}
+      updateCellsBatchingPeriod={50}
+      windowSize={21}
     />
   );
 }

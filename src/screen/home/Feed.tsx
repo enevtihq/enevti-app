@@ -27,6 +27,7 @@ import {
   isThereAnyNewFeedView,
   selectFeedView,
   selectFeedViewReqStatus,
+  setFeedViewVersion,
 } from 'enevti-app/store/slices/ui/view/feed';
 import { isMomentUndefined, isThereAnyNewMomentView, selectMomentView } from 'enevti-app/store/slices/ui/view/moment';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
@@ -74,6 +75,10 @@ export default function Feed({ navigation, onScroll, headerHeight }: FeedProps) 
     },
     [dispatch],
   ) as AppAsyncThunk;
+
+  const handleUpdateClosed = React.useCallback(() => {
+    dispatch(setFeedViewVersion(Date.now()));
+  }, [dispatch]);
 
   const onLoaded = React.useCallback(
     async (reload: boolean = false) => {
@@ -147,6 +152,7 @@ export default function Feed({ navigation, onScroll, headerHeight }: FeedProps) 
               label={t('home:newFeedUpdate')}
               onPress={handleRefresh}
               style={{ top: headerHeight + hp('2%', insets) }}
+              onClose={handleUpdateClosed}
             />
             <AnimatedFlatList
               ref={feedRef}

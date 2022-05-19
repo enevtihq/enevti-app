@@ -1,7 +1,12 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { loadCollection, unloadCollection } from 'enevti-app/store/middleware/thunk/ui/view/collection';
-import { isCollectionUndefined, selectCollectionView } from 'enevti-app/store/slices/ui/view/collection';
+import {
+  isCollectionUndefined,
+  isThereAnyNewCollectionUpdates,
+  selectCollectionView,
+  setCollectionViewVersion,
+} from 'enevti-app/store/slices/ui/view/collection';
 import { FlatList, StyleSheet, View } from 'react-native';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
 import AppCollectionHeader from 'enevti-app/components/organism/collection/AppCollectionHeader';
@@ -35,6 +40,11 @@ import { DimensionFunction } from 'enevti-app/utils/imageRatio';
 import { useTheme } from 'react-native-paper';
 import AppResponseView from '../view/AppResponseView';
 import { STATUS_BAR_HEIGHT } from 'enevti-app/components/atoms/view/AppStatusBar';
+import { Socket } from 'socket.io-client';
+import { appSocket } from 'enevti-app/utils/network';
+import { reduceNewNTotalMinted } from 'enevti-app/store/middleware/thunk/socket/collection/newTotalMinted';
+import { reduceNewCollectionUpdates } from 'enevti-app/store/middleware/thunk/socket/collection/newCollectionUpdates';
+import AppFloatingNotifButton from 'enevti-app/components/molecules/button/AppFloatingNotifButton';
 
 const noDisplay = 'none';
 const visible = 1;
@@ -56,6 +66,24 @@ export default function AppCollection({ onScrollWorklet, navigation, route }: Ap
 
   const collection = useSelector((state: RootState) => selectCollectionView(state, route.params.arg));
   const collectionUndefined = useSelector((state: RootState) => isCollectionUndefined(state, route.params.arg));
+  const newUpdate = useSelector((state: RootState) => isThereAnyNewCollectionUpdates(state, route.params.arg));
+  const socket = React.useRef<Socket | undefined>();
+
+  const onUpdateClose = React.useCallback(() => {
+    dispatch(setCollectionViewVersion({ key: route.params.arg, value: Date.now() }));
+  }, [dispatch, route.params.arg]);
+
+  React.useEffect(() => {
+    if (collection.loaded && collection.id) {
+      const key = route.params.arg;
+      socket.current = appSocket(collection.id);
+      socket.current.on('newCollectionUpdates', (payload: any) => dispatch(reduceNewCollectionUpdates(payload, key)));
+      socket.current.on('newTotalMinted', (payload: any) => dispatch(reduceNewNTotalMinted(payload, key)));
+      return function cleanup() {
+        socket.current?.disconnect();
+      };
+    }
+  }, [collection, dispatch, route.params.arg]);
 
   const now = React.useMemo(() => Date.now(), []);
   const mintingAvailable = React.useMemo(
@@ -277,6 +305,13 @@ export default function AppCollection({ onScrollWorklet, navigation, route }: Ap
           onFinish={onRefresh}
         />
       </Animated.View>
+      <AppFloatingNotifButton
+        show={newUpdate}
+        label={t('collection:newUpdates')}
+        onPress={onRefresh}
+        style={{ top: headerHeight + hp('3%') }}
+        onClose={onUpdateClose}
+      />
       <AppCollectionBody
         collectionHeaderHeight={totalHeaderHeight}
         animatedTabBarStyle={animatedTabBarStyle}

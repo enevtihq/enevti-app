@@ -31,6 +31,9 @@ import { selectMyPersonaCache } from 'enevti-app/store/slices/entities/cache/myP
 import AppSecondaryButton from 'enevti-app/components/atoms/button/AppSecondaryButton';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
+import AppConfirmationModal from 'enevti-app/components/organism/menu/AppConfirmationModal';
+import AppAlertModal from '../menu/AppAlertModal';
+import { payManualDeliverSecret } from 'enevti-app/store/middleware/thunk/payment/creator/payDeliverSecret';
 
 interface AppProfileHeaderProps {
   navigation: StackNavigationProp<RootStackParamList>;
@@ -49,6 +52,25 @@ export default function AppProfileHeader({ navigation, persona, profile }: AppPr
   const myPersona = useSelector(selectMyPersonaCache);
 
   const [menuVisible, setMenuVisible] = React.useState<boolean>(false);
+  const [pendingConfirmationVisible, setPendingConfirmationVisible] = React.useState<boolean>(false);
+  const [pendingAlertVisible, setPendingAlertVisible] = React.useState<boolean>(false);
+
+  const onPendingButtonPressed = React.useCallback(() => {
+    profile.pending > 0 ? setPendingConfirmationVisible(old => !old) : setPendingAlertVisible(old => !old);
+  }, [profile.pending]);
+
+  const onPendingConfrimationDismiss = React.useCallback(() => {
+    setPendingConfirmationVisible(false);
+  }, []);
+
+  const onPendingAlertDismiss = React.useCallback(() => {
+    setPendingAlertVisible(false);
+  }, []);
+
+  const onManualSecretDelivery = React.useCallback(() => {
+    dispatch(payManualDeliverSecret());
+    onPendingConfrimationDismiss();
+  }, [dispatch, onPendingConfrimationDismiss]);
 
   return (
     <View pointerEvents={'box-none'} style={styles.profileHeaderContainer}>
@@ -184,6 +206,55 @@ export default function AppProfileHeader({ navigation, persona, profile }: AppPr
             </AppTextBody5>
           </View>
         </AppQuaternaryButton>
+        {profile.pending !== 0 ? (
+          <AppQuaternaryButton
+            icon={iconMap.pendingNFT}
+            loaderLeft={profile.pending === -1}
+            iconSize={hp('3%', insets)}
+            iconColor={theme.colors.placeholder}
+            style={{
+              height: hp('4%', insets),
+            }}
+            onPress={onPendingButtonPressed}>
+            <View style={styles.profileHeaderChipsContent}>
+              <AppTextBody4 style={{ color: theme.colors.placeholder }}>
+                {profile.pending > 0 ? profile.pending : ''}
+              </AppTextBody4>
+              <AppTextBody5
+                style={{
+                  color: theme.colors.placeholder,
+                  marginLeft: wp('1%', insets),
+                }}>
+                {profile.pending > 0 ? t('profile:pending') : t('profile:delivering')}
+              </AppTextBody5>
+            </View>
+          </AppQuaternaryButton>
+        ) : null}
+        {profile.pending !== 0 ? (
+          profile.pending > 0 ? (
+            <AppConfirmationModal
+              iconName={'pendingNFT'}
+              visible={pendingConfirmationVisible}
+              onDismiss={onPendingConfrimationDismiss}
+              title={t('profile:pendingConfirmationTitle')}
+              description={t('profile:pendingConfirmationDescription')}
+              cancelText={t('profile:pendingConfirmationCancelText')}
+              cancelOnPress={onPendingConfrimationDismiss}
+              okText={t('profile:pendingConfirmationOkText')}
+              okOnPress={onManualSecretDelivery}
+            />
+          ) : profile.pending === -1 ? (
+            <AppAlertModal
+              visible={pendingAlertVisible}
+              iconName={'deliveringSecret'}
+              onDismiss={onPendingAlertDismiss}
+              title={t('profile:pendingAlertTitle')}
+              description={t('profile:pendingAlertDescription')}
+              secondaryButtonText={t('profile:pendingAlertButton')}
+              secondaryButtonOnPress={onPendingAlertDismiss}
+            />
+          ) : null
+        ) : null}
       </View>
     </View>
   );

@@ -18,7 +18,12 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { AppAsyncThunk } from 'enevti-app/types/ui/store/AppAsyncThunk';
-import { isNFTDetailsUndefined, selectNFTDetailsView } from 'enevti-app/store/slices/ui/view/nftDetails';
+import {
+  isNFTDetailsUndefined,
+  isThereAnyNewNFTUpdates,
+  selectNFTDetailsView,
+  setNFTDetailsVersion,
+} from 'enevti-app/store/slices/ui/view/nftDetails';
 import NFTActivityComponent from './tabs/NFTActivityComponent';
 import { loadNFTDetails, unloadNFTDetails } from 'enevti-app/store/middleware/thunk/ui/view/nftDetails';
 import AppNFTDetailsBody from './AppNFTDetailsBody';
@@ -28,6 +33,12 @@ import { RouteProp } from '@react-navigation/native';
 import { DimensionFunction } from 'enevti-app/utils/imageRatio';
 import { useTheme } from 'react-native-paper';
 import AppResponseView from '../view/AppResponseView';
+import { Socket } from 'socket.io-client';
+import { appSocket } from 'enevti-app/utils/network';
+import { redudeNFTSecretDelivered } from 'enevti-app/store/middleware/thunk/socket/nftDetails/secretDelivered';
+import { reduceNewNFTUpdates } from 'enevti-app/store/middleware/thunk/socket/nftDetails/newNFTUpdates';
+import { useTranslation } from 'react-i18next';
+import AppFloatingNotifButton from 'enevti-app/components/molecules/button/AppFloatingNotifButton';
 
 const noDisplay = 'none';
 const visible = 1;
@@ -40,6 +51,7 @@ interface AppNFTDetailsProps {
 }
 
 export default function AppNFTDetails({ onScrollWorklet, navigation, route }: AppNFTDetailsProps) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { hp, wp } = useDimension();
   const theme = useTheme();
@@ -49,6 +61,24 @@ export default function AppNFTDetails({ onScrollWorklet, navigation, route }: Ap
 
   const nftDetails = useSelector((state: RootState) => selectNFTDetailsView(state, route.params.arg));
   const nftDetailsUndefined = useSelector((state: RootState) => isNFTDetailsUndefined(state, route.params.arg));
+  const newUpdate = useSelector((state: RootState) => isThereAnyNewNFTUpdates(state, route.params.arg));
+  const socket = React.useRef<Socket | undefined>();
+
+  const onUpdateClose = React.useCallback(() => {
+    dispatch(setNFTDetailsVersion({ key: route.params.arg, value: Date.now() }));
+  }, [dispatch, route.params.arg]);
+
+  React.useEffect(() => {
+    if (nftDetails.loaded && nftDetails.id) {
+      const key = route.params.arg;
+      socket.current = appSocket(nftDetails.id);
+      socket.current.on('newNFTUpdates', (payload: any) => dispatch(reduceNewNFTUpdates(payload, key)));
+      socket.current.on('secretDelivered', (payload: any) => dispatch(redudeNFTSecretDelivered(payload, key)));
+      return function cleanup() {
+        socket.current?.disconnect();
+      };
+    }
+  }, [nftDetails, dispatch, route.params.arg]);
 
   const totalHeaderHeight = React.useMemo(() => hp(NFT_DETAILS_HEADER_VIEW_HEIGHT), [hp]);
 
@@ -232,6 +262,13 @@ export default function AppNFTDetails({ onScrollWorklet, navigation, route }: Ap
       <Animated.View pointerEvents={'box-none'} style={[styles.nftDetailsHeader, scrollStyle]}>
         <AppNFTDetailsHeader navigation={navigation} nft={nftDetails} />
       </Animated.View>
+      <AppFloatingNotifButton
+        show={newUpdate}
+        label={t('nftDetails:newUpdates')}
+        onPress={onRefresh}
+        style={{ top: headerHeight + hp('2%') }}
+        onClose={onUpdateClose}
+      />
       <AppNFTDetailsBody
         collectionHeaderHeight={totalHeaderHeight}
         animatedTabBarStyle={animatedTabBarStyle}

@@ -70,7 +70,7 @@ function Component(
     [headerHeight, insets],
   );
   const itemHeight = React.useMemo(
-    () => wp(PROFILE_COLLECTION_ITEM_HEIGHT + LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE, insets),
+    () => hp(PROFILE_COLLECTION_ITEM_HEIGHT + LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE, insets),
     [insets],
   );
 
@@ -177,10 +177,10 @@ function Component(
       refreshControl={refreshControl}
       ListEmptyComponent={emptyComponent}
       removeClippedSubviews={true}
-      initialNumToRender={5}
+      initialNumToRender={10}
       maxToRenderPerBatch={10}
-      updateCellsBatchingPeriod={100}
-      windowSize={3}
+      updateCellsBatchingPeriod={50}
+      windowSize={21}
     />
   );
 }
