@@ -1,9 +1,10 @@
 import { NFTBase } from '../chain/nft';
 import { NFTPrice } from '../chain/nft/NFTPrice';
 import { Persona } from '../account/persona';
+import { NFTType } from '../chain/nft/NFTType';
 
 export interface FeedItem {
-  type: string;
+  type: NFTType | 'nft';
   id: string;
   like: number;
   comment: number;
@@ -14,6 +15,9 @@ export interface FeedItem {
   owner: Persona;
   stake: string;
   delegate: boolean;
+  total: number;
+  minted: number;
+  expire: number;
   nft: NFTBase[];
 }
 

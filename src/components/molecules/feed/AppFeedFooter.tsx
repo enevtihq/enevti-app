@@ -8,6 +8,9 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
 import { useTranslation } from 'react-i18next';
 import { FeedItem } from 'enevti-app/types/core/service/feed';
+import AppTextHeading5 from 'enevti-app/components/atoms/text/AppTextHeading5';
+import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
+import moment from 'moment';
 
 interface AppFeedFooterProps {
   feed: FeedItem;
@@ -28,11 +31,21 @@ export default React.memo(
           <AppTextBody4>{feed.description}</AppTextBody4>
         </Text>
         <Text>
-          <AppTextHeading4 style={styles.tag}>{t('home:pack')}</AppTextHeading4>
-          <AppTextBody4 style={styles.tag}> | </AppTextBody4>
-          <AppTextBody4 style={styles.tag}>{t('home:mintingProgress', { minted: '21', total: '321' })}</AppTextBody4>
-          <AppTextBody4 style={styles.tag}> | </AppTextBody4>
-          <AppTextBody4 style={styles.tag}>{t('home:daysLeft', { day: '12' })}</AppTextBody4>
+          <AppTextHeading5 style={styles.tag}>
+            {feed.type === 'onekind' ? t('home:oneKind') : feed.type === 'packed' ? t('home:pack') : 'NFT'}
+          </AppTextHeading5>
+          <AppTextBody5 style={styles.tag}> | </AppTextBody5>
+          {feed.type !== 'nft' ? (
+            <Text>
+              <AppTextBody5 style={styles.tag}>
+                {t('home:mintingProgress', { minted: feed.minted, total: feed.total })}
+              </AppTextBody5>
+              <AppTextBody5 style={styles.tag}> | </AppTextBody5>
+              <AppTextBody5 style={styles.tag}>
+                {feed.expire !== 0 ? t('home:expire', { msg: moment(feed.expire).fromNow() }) : t('home:noExpire')}
+              </AppTextBody5>
+            </Text>
+          ) : null}
         </Text>
       </View>
     );

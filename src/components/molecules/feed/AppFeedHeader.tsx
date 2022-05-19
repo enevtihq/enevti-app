@@ -117,6 +117,7 @@ const makeStyles = (insets: SafeAreaInsets) =>
   StyleSheet.create({
     headerAction: {
       flex: 1,
+      justifyContent: 'center',
     },
     headerContainer: {
       flex: 1,

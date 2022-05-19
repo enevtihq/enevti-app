@@ -27,7 +27,7 @@ export const getDummyFeedItem = (): FeedItem => {
   }
 
   return {
-    type: 'container',
+    type: 'onekind',
     id: Math.random().toString(),
     like: 271,
     comment: 32,
@@ -47,6 +47,9 @@ export const getDummyFeedItem = (): FeedItem => {
     },
     stake: '542123',
     delegate: false,
+    minted: 2,
+    total: 12,
+    expire: 0,
     nft: randomNFT,
   };
 };
