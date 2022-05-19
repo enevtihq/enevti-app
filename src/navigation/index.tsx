@@ -50,7 +50,7 @@ export type RootStackParamList = {
   MyProfile: undefined;
   ChooseNFTType: undefined;
   SetupUsername: undefined;
-  UsernameRegistered: undefined;
+  UsernameRegistered: { username: string };
   ChooseNFTTemplate: {
     mode: 'normal' | 'change';
   };

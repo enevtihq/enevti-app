@@ -13,6 +13,8 @@ import AppFeedBody from './AppFeedBody';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 
+const MODE: 'floating' | 'flat' = 'flat';
+
 interface AppFeedItemProps {
   feed: FeedItem;
   navigation: StackNavigationProp<RootStackParamList>;
@@ -27,7 +29,7 @@ export default React.memo(
     const canvasWidth = Dimensions.get('window').width * 0.9;
 
     return (
-      <View style={styles.card}>
+      <View style={styles[MODE]}>
         <AppFeedHeader feed={feed} navigation={navigation} />
         <AppFeedBody canvasWidth={canvasWidth} feed={feed} />
         <AppFeedAction feed={feed} navigation={navigation} />
@@ -46,12 +48,15 @@ export default React.memo(
 
 const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
   StyleSheet.create({
-    card: {
-      marginHorizontal: wp('5%', insets),
+    floating: {
       marginBottom: wp('5%', insets),
       backgroundColor: theme.colors.background,
+      marginHorizontal: wp('5%', insets),
       borderRadius: theme.roundness,
       borderWidth: StyleSheet.hairlineWidth,
       borderColor: Color(theme.colors.text).alpha(0.05).rgb().toString(),
+    },
+    flat: {
+      marginBottom: wp('5%', insets),
     },
   });

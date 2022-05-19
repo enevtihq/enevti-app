@@ -28,8 +28,8 @@ type Props = StackScreenProps<RootStackParamList, 'SetupUsername'>;
 const validationSchema = Yup.object().shape({
   username: Yup.string()
     .matches(/^[\w]*$/, i18n.t('form:noSpace'))
-    .matches(/^[a-z]+$/, i18n.t('form:lowercase'))
-    .min(1, i18n.t('form:minChar', { count: 1 }))
+    .matches(/^[a-z0-9]+$/, i18n.t('form:lowercase'))
+    .min(3, i18n.t('form:minChar', { count: 3 }))
     .max(20, i18n.t('form:maxChar', { count: 20 }))
     .required(i18n.t('form:required')),
   checkbox: Yup.bool().oneOf([true]),
@@ -44,8 +44,10 @@ export default function SetupUsername({ navigation }: Props) {
 
   const paymentThunkRef = React.useRef<any>();
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const username = React.useRef<string>('');
 
   const handleFormSubmit = async (values: any) => {
+    username.current = values.username;
     paymentThunkRef.current = dispatch(payRegisterUsername(values.username));
   };
 
@@ -57,7 +59,7 @@ export default function SetupUsername({ navigation }: Props) {
   const paymentSuccessCallback = React.useCallback(() => {
     dispatch(hideModalLoader());
     dispatch(showSnackbar({ mode: 'info', text: t('payment:success') }));
-    navigation.replace('UsernameRegistered');
+    navigation.replace('UsernameRegistered', { username: username.current });
   }, [navigation, dispatch, t]);
 
   const paymentErrorCallback = React.useCallback(() => dispatch(hideModalLoader()), [dispatch]);
@@ -111,6 +113,7 @@ export default function SetupUsername({ navigation }: Props) {
             <View style={styles.passwordView}>
               <AppFormTextInputWithError
                 theme={theme as any}
+                maxLength={20}
                 autoCapitalize={'none'}
                 label={t('setting:enterUsername')}
                 style={styles.passwordInput}

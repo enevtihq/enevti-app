@@ -92,6 +92,7 @@ export const iconMap = {
   pendingNFT: 'send-clock',
   deliveringSecret: 'send-check',
   noInternet: 'access-point-network-off',
+  cool: 'emoticon-cool-outline',
 };
 
 interface AppIconComponentProps {

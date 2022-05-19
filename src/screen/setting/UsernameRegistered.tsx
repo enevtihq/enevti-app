@@ -12,13 +12,13 @@ import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
 import AppView from 'enevti-app/components/atoms/view/AppView';
 import { hp, wp, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
-import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import AppIconBanner from 'enevti-app/components/molecules/AppIconBanner';
-import { COMMUNITY_IDENTIFIER } from 'enevti-app/utils/constant/identifier';
+import { MINIMUM_BASIC_UNIT_STAKE_ELIGIBILITY } from 'enevti-app/service/enevti/profile';
+import { getCoinName } from 'enevti-app/utils/constant/identifier';
 
 type Props = StackScreenProps<RootStackParamList, 'UsernameRegistered'>;
 
-export default function UsernameRegistered({ navigation }: Props) {
+export default function UsernameRegistered({ navigation, route }: Props) {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
   const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
@@ -33,28 +33,24 @@ export default function UsernameRegistered({ navigation }: Props) {
       <AppHeaderWizard
         navigation={navigation}
         mode={'icon'}
-        modeData={'accountCreated'}
-        title={t('auth:accountCreated')}
-        description={t('auth:accountCreatedBrief')}
+        modeData={'cool'}
+        title={t('setting:usernameRegisteredTitle', { username: route.params.username })}
+        description={t('setting:usernameRegisteredDescription')}
         style={styles.header}
       />
 
       <View style={styles.briefView}>
-        <AppIconBanner name={iconMap.passphrase} style={styles.briefItem}>
-          {t('auth:keepYourPassphraseSafe')}
-          <AppTextBody4 style={styles.boldText}>
-            {t('auth:keepYourPassphraseSafeBold', {
-              brand: COMMUNITY_IDENTIFIER,
-            })}
-          </AppTextBody4>
+        <AppIconBanner name={iconMap.setupPool} style={styles.briefItem}>
+          {t('setting:usernameRegisteredBrief1')}
         </AppIconBanner>
-        <AppIconBanner name={iconMap.accountCircle} style={styles.briefItem}>
-          {t('auth:findYourPassphrase')}
-          <AppTextBody4 style={styles.boldText}>{t('auth:findYourPassphraseBold')}</AppTextBody4>
+        <AppIconBanner name={iconMap.stake} style={styles.briefItem}>
+          {t('setting:usernameRegisteredBrief2', {
+            minStake: MINIMUM_BASIC_UNIT_STAKE_ELIGIBILITY,
+            symbol: getCoinName(),
+          })}
         </AppIconBanner>
-        <AppIconBanner name={iconMap.insideDevice} style={styles.briefItem}>
-          {t('auth:passwordNeverLeaveDevice')}
-          <AppTextBody4 style={styles.boldText}>{t('auth:passwordNeverLeaveDeviceBold')}</AppTextBody4>
+        <AppIconBanner name={iconMap.username} style={styles.briefItem}>
+          {t('setting:usernameRegisteredBrief3')}
         </AppIconBanner>
       </View>
 
