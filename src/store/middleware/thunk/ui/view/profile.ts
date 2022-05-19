@@ -16,11 +16,12 @@ import {
   setProfileViewReqStatus,
 } from 'enevti-app/store/slices/ui/view/profile';
 import { AppThunk, AsyncThunkAPI } from 'enevti-app/store/state';
-import { createAsyncThunk } from '@reduxjs/toolkit';
+import { AnyAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { Persona } from 'enevti-app/types/core/account/persona';
 import { Profile } from 'enevti-app/types/core/account/profile';
+import { payManualDeliverSecret } from 'enevti-app/store/middleware/thunk/payment/creator/payDeliverSecret';
 
 type ProfileRoute = StackScreenProps<RootStackParamList, 'Profile'>['route']['params'];
 type LoadProfileArgs = { routeParam: ProfileRoute; reload: boolean; isMyProfile: boolean };
@@ -66,6 +67,21 @@ export const loadProfile = createAsyncThunk<void, LoadProfileArgs, AsyncThunkAPI
         dispatch(setProfileViewLoaded({ key: routeParam.arg, value: true }));
       }
       reload && dispatch(hideModalLoader());
+    }
+  },
+);
+
+export const initProfile = createAsyncThunk<void, undefined, AsyncThunkAPI>(
+  'home/initProfile',
+  async (_, { dispatch, signal }) => {
+    try {
+      await getMyBasePersona(true, signal);
+      const profileResponse = await getMyProfile(true, signal);
+      if (profileResponse.data.pending > 0) {
+        dispatch(payManualDeliverSecret() as unknown as AnyAction);
+      }
+    } catch (err: any) {
+      handleError(err);
     }
   },
 );

@@ -56,6 +56,7 @@ import { syncTransactionNonce } from 'enevti-app/store/middleware/thunk/ui/cache
 import { reduceMyTotalNFTSoldChanged } from 'enevti-app/store/middleware/thunk/socket/profile/totalNFTSoldChanged';
 import { reduceMyNewPending } from 'enevti-app/store/middleware/thunk/socket/profile/newPending';
 import { reduceMyNewProfileUpdates } from 'enevti-app/store/middleware/thunk/socket/profile/newProfileUpdates';
+import { initProfile } from 'enevti-app/store/middleware/thunk/ui/view/profile';
 
 const Tab = createBottomTabNavigator();
 const TABBAR_HEIGHT_PERCENTAGE = 8;
@@ -88,6 +89,7 @@ export default function Home({ navigation }: Props) {
 
   React.useEffect(() => {
     dispatch(syncTransactionNonce());
+    dispatch(initProfile());
   }, [dispatch]);
 
   React.useEffect(() => {
