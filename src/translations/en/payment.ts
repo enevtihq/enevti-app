@@ -25,4 +25,6 @@ export default {
   payRegisterUsernameDescription: 'Register @{{username}}',
   payDeliverSecretName: 'Deliver Secret',
   payDeliverSecretDescription: 'Deliver to {{recipient}}',
+  uploadingTo: "Uploading '{{file}}' to '{{provider}}'...",
+  postingTransaction: 'Posting transaction...',
 };

@@ -1,6 +1,11 @@
 import { uploadURItoIPFS } from 'enevti-app/service/ipfs';
 import { setPaymentStatus, selectPaymentActionPayload } from 'enevti-app/store/slices/payment';
-import { hideModalLoader, showModalLoader } from 'enevti-app/store/slices/ui/global/modalLoader';
+import {
+  hideModalLoader,
+  resetModalLoaderText,
+  setModalLoaderText,
+  showModalLoader,
+} from 'enevti-app/store/slices/ui/global/modalLoader';
 import { AppThunk } from 'enevti-app/store/state';
 import { CreateNFTOneKind } from 'enevti-app/types/ui/store/CreateNFTQueue';
 import { handleError } from 'enevti-app/utils/error/handle';
@@ -27,14 +32,18 @@ export const reducePayCreateNFTOneKind = (): AppThunk => async (dispatch, getSta
       cover = payload.transaction.asset.cover,
       content = payload.transaction.asset.content;
 
-    // if (payload.state.storageProtocol === 'ipfs') {
-    //   data = await uploadURItoIPFS(payload.data.uri);
-    //   cover = payload.state.coverUri ? await uploadURItoIPFS(payload.state.coverUri) : '';
-    //   content =
-    //     payload.state.utility === 'content'
-    //       ? await uploadURItoIPFS(payload.state.contentUri)
-    //       : payload.state.contentUri;
-    // }
+    if (payload.state.storageProtocol === 'ipfs') {
+      const provider = payload.state.storageProtocol;
+      dispatch(setModalLoaderText(i18n.t('payment:uploadingTo', { file: 'data', provider })));
+      data = await uploadURItoIPFS(payload.data.uri);
+      dispatch(setModalLoaderText(i18n.t('payment:uploadingTo', { file: 'cover', provider })));
+      cover = payload.state.coverUri ? await uploadURItoIPFS(payload.state.coverUri) : '';
+      dispatch(setModalLoaderText(i18n.t('payment:uploadingTo', { file: 'content', provider })));
+      content =
+        payload.state.utility === 'content'
+          ? await uploadURItoIPFS(payload.state.contentUri)
+          : payload.state.contentUri;
+    }
 
     transactionPayload.asset.data = data;
     transactionPayload.asset.cover = cover;
@@ -46,6 +55,7 @@ export const reducePayCreateNFTOneKind = (): AppThunk => async (dispatch, getSta
       transactionPayload.asset.from = from;
     }
 
+    dispatch(setModalLoaderText(i18n.t('payment:postingTransaction')));
     const response = await postTransaction(transactionPayload);
     if (response.status === 200) {
       dispatch(setPaymentStatus({ type: 'success', message: '' }));
@@ -56,6 +66,7 @@ export const reducePayCreateNFTOneKind = (): AppThunk => async (dispatch, getSta
     handleError(err);
     dispatch(setPaymentStatus({ type: 'error', message: err.message }));
   } finally {
+    dispatch(resetModalLoaderText());
     dispatch(hideModalLoader());
   }
 };
