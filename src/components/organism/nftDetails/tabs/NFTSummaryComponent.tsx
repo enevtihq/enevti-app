@@ -24,6 +24,8 @@ import AppTextBody3 from 'enevti-app/components/atoms/text/AppTextBody3';
 import Color from 'color';
 import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
 import { NFT } from 'enevti-app/types/core/chain/nft';
+import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
+import { useDispatch } from 'react-redux';
 
 interface NFTSummaryComponentProps {
   nft: NFT;
@@ -39,6 +41,7 @@ function Component(
   { nft, navigation, onScroll, collectionHeaderHeight, onMounted, onRefresh, scrollEnabled }: NFTSummaryComponentProps,
   ref: any,
 ) {
+  const dispatch = useDispatch();
   const { t } = useTranslation();
   const { hp, wp } = useDimension();
   const insets = useSafeAreaInsets();
@@ -138,7 +141,7 @@ function Component(
           style={{
             height: hp('4%'),
           }}
-          onPress={() => console.log('Pressed')}>
+          onPress={() => dispatch(showSnackbar({ mode: 'info', text: 'Coming Soon!' }))}>
           <AppTextBody4 style={{ color: theme.colors.placeholder }}>{numberKMB(nft.like, 2)}</AppTextBody4>
         </AppQuaternaryButton>
         <AppQuaternaryButton
@@ -148,7 +151,7 @@ function Component(
           style={{
             height: hp('4%'),
           }}
-          onPress={() => console.log('Pressed')}>
+          onPress={() => dispatch(showSnackbar({ mode: 'info', text: 'Coming Soon!' }))}>
           <AppTextBody4 style={{ color: theme.colors.placeholder }}>{numberKMB(nft.comment, 2)}</AppTextBody4>
         </AppQuaternaryButton>
       </View>

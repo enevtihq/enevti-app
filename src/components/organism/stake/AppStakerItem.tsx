@@ -11,10 +11,11 @@ import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import AppListItem from 'enevti-app/components/molecules/list/AppListItem';
 import { StyleSheet } from 'react-native';
 import { StakerItem } from 'enevti-app/types/core/chain/stake';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectMyPersonaCache } from 'enevti-app/store/slices/entities/cache/myPersona';
 import { parseAmount } from 'enevti-app/utils/format/amount';
 import { getCoinName } from 'enevti-app/utils/constant/identifier';
+import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 
 export const STAKER_ITEM_HEIGHT_PERCENTAGE = 10;
 
@@ -23,13 +24,14 @@ interface AppStakerItemProps {
 }
 
 export default function AppStakerItem({ staker }: AppStakerItemProps) {
+  const dispatch = useDispatch();
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
   const styles = React.useMemo(() => makeStyles(insets), [insets]);
   const myPersona = useSelector(selectMyPersonaCache);
 
   const onDelete = () => {
-    console.log('deleted');
+    dispatch(showSnackbar({ mode: 'info', text: 'Coming Soon!' }));
   };
 
   return (

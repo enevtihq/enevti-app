@@ -21,4 +21,7 @@ export default {
   contentCalendarLabel:
     'Status: {{status}} · Type: {{extension}} ({{mime}}) · Size: {{size}} · Stored securely on IPFS',
   newUpdates: 'New Updates!',
+  downloading: 'Downloading content...',
+  verifyingOwnership: 'Verifying ownership...',
+  redeemingSecretContent: 'Opening content...',
 };

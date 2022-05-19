@@ -6,6 +6,33 @@ import { NFTUtility } from 'enevti-app/types/core/chain/nft/NFTUtility';
 import { shuffleArray } from 'enevti-app/utils/primitive/array';
 import { StakePoolData } from 'enevti-app/types/core/chain/stake';
 import { FeedItem, MomentItem } from 'enevti-app/types/core/service/feed';
+import { appFetch, isInternetReachable } from 'enevti-app/utils/network';
+import { urlPostRequestFaucet } from 'enevti-app/utils/constant/URLCreator';
+import { ResponseJSON } from 'enevti-app/types/core/service/api';
+import { handleError, handleResponseCode, responseError } from 'enevti-app/utils/error/handle';
+
+export const requestFaucet = async (address: string) => {
+  try {
+    await isInternetReachable();
+    const res = await appFetch(urlPostRequestFaucet(), {
+      method: 'POST',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+      body: JSON.stringify({ address }),
+    });
+    const ret = (await res.json()) as ResponseJSON<Record<string, any>>;
+    handleResponseCode(res, ret);
+    return {
+      status: res.status,
+      data: ret.data,
+      meta: ret.meta,
+    };
+  } catch (err: any) {
+    handleError(err);
+    return responseError(err.code, err.message.toString());
+  }
+};
 
 export const getDummyMomentItem = (): MomentItem => {
   return {

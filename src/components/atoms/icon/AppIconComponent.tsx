@@ -96,6 +96,7 @@ export const iconMap = {
   think: 'thought-bubble',
   newBox: 'new-box',
   secretDelivered: 'lock-check',
+  welcome: 'emoticon-kiss',
 };
 
 interface AppIconComponentProps {

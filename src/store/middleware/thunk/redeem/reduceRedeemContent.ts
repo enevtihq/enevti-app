@@ -1,4 +1,9 @@
-import { hideModalLoader, showModalLoader } from 'enevti-app/store/slices/ui/global/modalLoader';
+import {
+  hideModalLoader,
+  setModalLoaderText,
+  showModalLoader,
+  resetModalLoaderText,
+} from 'enevti-app/store/slices/ui/global/modalLoader';
 import { AppThunk } from 'enevti-app/store/state';
 import { STORAGE_PATH_REDEEM, IOS_TEMP_FOLDER } from 'enevti-app/utils/constant/storage';
 import { handleError } from 'enevti-app/utils/error/handle';
@@ -12,6 +17,12 @@ import RNFS from 'react-native-fs';
 import { IPFStoURL } from 'enevti-app/service/ipfs';
 import FileViewer from 'react-native-file-viewer';
 import { NFT } from 'enevti-app/types/core/chain/nft';
+import { appFetchBlob } from 'enevti-app/utils/network';
+import i18n from 'enevti-app/translations/i18n';
+
+function downloadError(nft: NFT) {
+  throw Error(`Content Download Failed: ${nft.id}`);
+}
 
 function secretDecryptionFailed(nft: NFT) {
   throw Error(`Secret Decryption Failed: ${nft.id}`);
@@ -51,6 +62,7 @@ export const reduceRedeemContent =
       const localEncryptedFile = `${STORAGE_PATH_REDEEM}/${nft.symbol}#${nft.serial}.${ENCRYPTED_FILE_EXTENSION}`;
       const localDecryptedFile = `${STORAGE_PATH_REDEEM}/${nft.symbol}#${nft.serial}.${nft.redeem.content.extension}`;
 
+      dispatch(setModalLoaderText(i18n.t('nftDetails:verifyingOwnership')));
       const isCipherSignatureValid = await verifySignature(
         nft.redeem.secret.cipher,
         nft.redeem.secret.signature.cipher,
@@ -75,12 +87,16 @@ export const reduceRedeemContent =
       }
 
       if (!(await RNFS.exists(localEncryptedFile))) {
-        await RNFS.downloadFile({
-          fromUrl: IPFStoURL(nft.redeem.content.cid),
-          toFile: localEncryptedFile,
-        }).promise;
+        dispatch(setModalLoaderText(i18n.t('nftDetails:downloading')));
+        await appFetchBlob(IPFStoURL(nft.redeem.content.cid), { path: localEncryptedFile });
+        const contentSize = (await RNFS.stat(localEncryptedFile)).size;
+        if (contentSize !== nft.redeem.content.size) {
+          await RNFS.unlink(localEncryptedFile);
+          downloadError(nft);
+        }
       }
 
+      dispatch(setModalLoaderText(i18n.t('nftDetails:redeemingSecretContent')));
       const decryptedFile = await decryptFile(
         localEncryptedFile,
         decryptedSecret.data,
@@ -102,5 +118,7 @@ export const reduceRedeemContent =
     } catch (err) {
       handleError(err);
       dispatch(hideModalLoader());
+    } finally {
+      dispatch(resetModalLoaderText());
     }
   };

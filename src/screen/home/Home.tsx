@@ -57,6 +57,9 @@ import { reduceMyTotalNFTSoldChanged } from 'enevti-app/store/middleware/thunk/s
 import { reduceMyNewPending } from 'enevti-app/store/middleware/thunk/socket/profile/newPending';
 import { reduceMyNewProfileUpdates } from 'enevti-app/store/middleware/thunk/socket/profile/newProfileUpdates';
 import { initProfile } from 'enevti-app/store/middleware/thunk/ui/view/profile';
+import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
+import { selectOnceWelcome, touchOnceWelcome } from 'enevti-app/store/slices/entities/once/welcome';
+import { requestFaucet } from 'enevti-app/service/enevti/dummy';
 
 const Tab = createBottomTabNavigator();
 const TABBAR_HEIGHT_PERCENTAGE = 8;
@@ -75,6 +78,7 @@ export default function Home({ navigation }: Props) {
   const createQueue = useSelector(selectCreateNFTRouteQueue);
   const createType = useSelector(selectCreateNFTTypeQueue);
   const canCreateNFT = isProfileCanCreateNFT(myProfile);
+  const welcome = useSelector(selectOnceWelcome);
 
   const [uneligibleSheetVisible, setUneligibleSheetVisible] = React.useState<boolean>(false);
   const [restoreMenuVisible, setRestoreMenuVisible] = React.useState<boolean>(false);
@@ -287,8 +291,27 @@ export default function Home({ navigation }: Props) {
     />
   );
 
+  const requestFaucets = React.useCallback(async () => {
+    const res = await requestFaucet(myPersona.address);
+    if (res.status === 200) {
+      dispatch(showSnackbar({ mode: 'info', text: 'Add Funds Success!' }));
+      dispatch(touchOnceWelcome());
+    }
+  }, [myPersona.address, dispatch]);
+
   return (
     <BottomSheetModalProvider>
+      {!welcome ? (
+        <AppAlertModal
+          visible={!welcome}
+          iconName={'welcome'}
+          onDismiss={requestFaucets}
+          title={'Welcome to our Alpha App!'}
+          description={"We'll give you 2K test coin to explore our alphanet, don't forget to give us feedback :)"}
+          secondaryButtonText={"I'm Super Excited!"}
+          secondaryButtonOnPress={() => dispatch(touchOnceWelcome())}
+        />
+      ) : null}
       {canCreateNFT ? null : (
         <AppAlertModal
           visible={uneligibleSheetVisible}
@@ -343,8 +366,14 @@ export default function Home({ navigation }: Props) {
             tabBarButton: props => <TouchableRipple {...props} disabled={props.disabled as boolean | undefined} />,
             header: () => (
               <AppHeader style={feedStyle} height={headerHeight}>
-                <AppHeaderAction icon={iconMap.magnify} onPress={() => console.log('pressed')} />
-                <AppHeaderAction icon={iconMap.notification} onPress={() => console.log('pressed')} />
+                <AppHeaderAction
+                  icon={iconMap.magnify}
+                  onPress={() => dispatch(showSnackbar({ mode: 'info', text: 'Coming Soon!' }))}
+                />
+                <AppHeaderAction
+                  icon={iconMap.notification}
+                  onPress={() => dispatch(showSnackbar({ mode: 'info', text: 'Coming Soon!' }))}
+                />
               </AppHeader>
             ),
           }}>
@@ -363,6 +392,7 @@ export default function Home({ navigation }: Props) {
               <MaterialCommunityIcons name={iconMap.statistics} color={color} size={size} />
             ),
             tabBarButton: props => <TouchableRipple {...props} disabled={props.disabled as boolean | undefined} />,
+            header: () => <AppHeader height={headerHeight} title={'Statistics'} />,
           }}
           component={Statistics}
         />
@@ -418,6 +448,7 @@ export default function Home({ navigation }: Props) {
               <MaterialCommunityIcons name={iconMap.discover} color={color} size={size} />
             ),
             tabBarButton: props => <TouchableRipple {...props} disabled={props.disabled as boolean | undefined} />,
+            header: () => <AppHeader height={headerHeight} title={'Discover'} />,
           }}
           component={Discover}
         />
@@ -434,8 +465,14 @@ export default function Home({ navigation }: Props) {
             tabBarButton: props => <TouchableRipple {...props} disabled={props.disabled as boolean | undefined} />,
             header: () => (
               <AppHeader style={myProfileStyle} height={headerHeight} title={t('home:myProfile')}>
-                <AppHeaderAction icon={iconMap.edit} onPress={() => console.log('pressed')} />
-                <AppHeaderAction icon={iconMap.setting} onPress={() => console.log('pressed')} />
+                <AppHeaderAction
+                  icon={iconMap.edit}
+                  onPress={() => dispatch(showSnackbar({ mode: 'info', text: 'Coming Soon!' }))}
+                />
+                <AppHeaderAction
+                  icon={iconMap.setting}
+                  onPress={() => dispatch(showSnackbar({ mode: 'info', text: 'Coming Soon!' }))}
+                />
               </AppHeader>
             ),
           }}>

@@ -13,6 +13,8 @@ import { FeedItem } from 'enevti-app/types/core/service/feed';
 import { parseAmount } from 'enevti-app/utils/format/amount';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
+import { useDispatch } from 'react-redux';
+import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 
 interface AppFeedActionProps {
   feed: FeedItem;
@@ -21,20 +23,24 @@ interface AppFeedActionProps {
 
 export default React.memo(
   function AppFeedAction({ feed, navigation }: AppFeedActionProps) {
+    const dispatch = useDispatch();
     const insets = useSafeAreaInsets();
     const theme = useTheme() as Theme;
     const styles = React.useMemo(() => makeStyles(insets), [insets]);
     const [like, setLike] = React.useState<1 | 0>(0);
 
     const onLikeActivate = () => {
-      setLike(1);
+      // setLike(1);
+      dispatch(showSnackbar({ mode: 'info', text: 'Coming Soon!' }));
     };
 
     const onLikeDeactivate = () => {
       setLike(0);
     };
 
-    const onComment = () => {};
+    const onComment = () => {
+      dispatch(showSnackbar({ mode: 'info', text: 'Coming Soon!' }));
+    };
 
     const onBuy = React.useCallback(() => {
       navigation.push('Collection', { arg: feed.id, mode: 'id' });

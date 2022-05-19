@@ -22,6 +22,8 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { Collection } from 'enevti-app/types/core/chain/collection';
 import { STATUS_BAR_HEIGHT } from 'enevti-app/components/atoms/view/AppStatusBar';
+import { useDispatch } from 'react-redux';
+import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 
 export const COLLECTION_HEADER_VIEW_HEIGHT = 53 + STATUS_BAR_HEIGHT();
 
@@ -38,6 +40,7 @@ export default function AppCollectionHeader({
   mintingAvailable,
   onFinish,
 }: AppCollectionHeaderProps) {
+  const dispatch = useDispatch();
   const { t } = useTranslation();
   const { hp, wp } = useDimension();
   const insets = useSafeAreaInsets();
@@ -116,7 +119,7 @@ export default function AppCollectionHeader({
             style={{
               height: hp('4%'),
             }}
-            onPress={() => console.log('Pressed')}>
+            onPress={() => dispatch(showSnackbar({ mode: 'info', text: 'Coming Soon!' }))}>
             <AppTextBody4 style={{ color: theme.colors.placeholder }}>{numberKMB(collection.like, 2)}</AppTextBody4>
           </AppQuaternaryButton>
           <AppQuaternaryButton
@@ -126,21 +129,23 @@ export default function AppCollectionHeader({
             style={{
               height: hp('4%'),
             }}
-            onPress={() => console.log('Pressed')}>
+            onPress={() => dispatch(showSnackbar({ mode: 'info', text: 'Coming Soon!' }))}>
             <AppTextBody4 style={{ color: theme.colors.placeholder }}>{numberKMB(collection.comment, 2)}</AppTextBody4>
           </AppQuaternaryButton>
-          <AppQuaternaryButton
-            icon={iconMap.twitter}
-            iconSize={hp('3%')}
-            iconColor={theme.colors.placeholder}
-            style={{
-              height: hp('4%'),
-            }}
-            onPress={() => console.log('Pressed')}>
-            <AppTextBody4 style={{ color: theme.colors.placeholder }}>
-              {numberKMB(collection.social.twitter.stat ? collection.social.twitter.stat : 0, 2)}
-            </AppTextBody4>
-          </AppQuaternaryButton>
+          {collection.social.twitter.link ? (
+            <AppQuaternaryButton
+              icon={iconMap.twitter}
+              iconSize={hp('3%')}
+              iconColor={theme.colors.placeholder}
+              style={{
+                height: hp('4%'),
+              }}
+              onPress={() => dispatch(showSnackbar({ mode: 'info', text: 'Coming Soon!' }))}>
+              <AppTextBody4 style={{ color: theme.colors.placeholder }}>
+                {numberKMB(collection.social.twitter.stat ? collection.social.twitter.stat : 0, 2)}
+              </AppTextBody4>
+            </AppQuaternaryButton>
+          ) : null}
         </View>
 
         <View style={{ paddingHorizontal: wp('5%') }}>

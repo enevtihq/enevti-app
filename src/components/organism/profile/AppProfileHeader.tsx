@@ -159,7 +159,13 @@ export default function AppProfileHeader({ navigation, persona, profile }: AppPr
               onPress={() => setMenuVisible(true)}
             />
           }>
-          <AppMenuItem onPress={() => {}} title={t('home:follow')} />
+          <AppMenuItem
+            onPress={() => {
+              setMenuVisible(false);
+              dispatch(showSnackbar({ mode: 'info', text: 'Coming Soon!' }));
+            }}
+            title={t('home:follow')}
+          />
           <AppMenuItem
             onPress={() => {
               Clipboard.setString(persona.base32);
@@ -188,7 +194,7 @@ export default function AppProfileHeader({ navigation, persona, profile }: AppPr
             style={{
               height: hp('4%', insets),
             }}
-            onPress={() => console.log('Pressed')}>
+            onPress={() => dispatch(showSnackbar({ mode: 'info', text: 'Coming Soon!' }))}>
             <AppTextBody4 style={{ color: theme.colors.placeholder }}>
               {numberKMB(profile.social.twitter.stat, 2)}
             </AppTextBody4>
@@ -201,7 +207,7 @@ export default function AppProfileHeader({ navigation, persona, profile }: AppPr
           style={{
             height: hp('4%', insets),
           }}
-          onPress={() => console.log('Pressed')}>
+          onPress={() => dispatch(showSnackbar({ mode: 'info', text: 'Wallet Coming Soon!' }))}>
           <View style={styles.profileHeaderChipsContent}>
             <AppTextBody4 style={{ color: theme.colors.placeholder }}>
               {parseAmount(profile.balance, true, 4)}

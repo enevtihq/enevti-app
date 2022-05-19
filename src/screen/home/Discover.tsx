@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import { StatusBar, StyleSheet, View } from 'react-native';
 import AppView from 'enevti-app/components/atoms/view/AppView';
@@ -17,7 +18,9 @@ export default function Discover() {
           backgroundColor={theme.colors.background}
         />
         <View style={styles.textContainer}>
-          <AppTextHeading1>Cooming Soon!</AppTextHeading1>
+          <AppTextHeading1 style={{ textAlign: 'center' }}>
+            Lisk Blockchain Ecosystem Apps connected with Enevti.com will accesible from this menu!
+          </AppTextHeading1>
         </View>
       </SafeAreaView>
     </AppView>

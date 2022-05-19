@@ -20,6 +20,8 @@ import { menuItemHeigtPercentage } from 'enevti-app/utils/layout/menuItemHeigtPe
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import AppPersonaLabel from 'enevti-app/components/molecules/avatar/AppPersonaLabel';
+import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
+import { useDispatch } from 'react-redux';
 
 interface AppFeedHeaderProps {
   feed: FeedItem;
@@ -27,6 +29,7 @@ interface AppFeedHeaderProps {
 }
 
 export default function AppFeedHeader({ feed, navigation }: AppFeedHeaderProps) {
+  const dispatch = useDispatch();
   const { t } = useTranslation();
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
@@ -44,24 +47,28 @@ export default function AppFeedHeader({ feed, navigation }: AppFeedHeaderProps) 
     navigation.push('StakePool', { arg: feed.owner.address, mode: 'a' });
   }, [navigation, feed.owner]);
 
-  const onCloseMenu = () => {
-    setMenuVisible(false);
-  };
-
   const onOpenMenu = () => {
     setMenuVisible(true);
   };
 
+  const onCloseMenu = () => {
+    setMenuVisible(false);
+    dispatch(showSnackbar({ mode: 'info', text: 'Coming Soon!' }));
+  };
+
   const onFollow = () => {
     setMenuVisible(false);
+    dispatch(showSnackbar({ mode: 'info', text: 'Coming Soon!' }));
   };
 
   const onReport = () => {
     setMenuVisible(false);
+    dispatch(showSnackbar({ mode: 'info', text: 'Coming Soon!' }));
   };
 
   const onPromote = () => {
     setMenuVisible(false);
+    dispatch(showSnackbar({ mode: 'info', text: 'Coming Soon!' }));
   };
 
   return (

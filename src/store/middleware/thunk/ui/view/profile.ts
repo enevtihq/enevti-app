@@ -22,13 +22,18 @@ import { RootStackParamList } from 'enevti-app/navigation';
 import { Persona } from 'enevti-app/types/core/account/persona';
 import { Profile } from 'enevti-app/types/core/account/profile';
 import { payManualDeliverSecret } from 'enevti-app/store/middleware/thunk/payment/creator/payDeliverSecret';
+import {
+  addProfileUIManager,
+  selectUIManager,
+  subtractProfileUIManager,
+} from 'enevti-app/store/slices/ui/view/manager';
 
 type ProfileRoute = StackScreenProps<RootStackParamList, 'Profile'>['route']['params'];
 type LoadProfileArgs = { routeParam: ProfileRoute; reload: boolean; isMyProfile: boolean };
 
 export const loadProfile = createAsyncThunk<void, LoadProfileArgs, AsyncThunkAPI>(
   'profileView/loadProfile',
-  async ({ routeParam, reload, isMyProfile }, { dispatch, signal }) => {
+  async ({ routeParam, reload, isMyProfile }, { dispatch, getState, signal }) => {
     try {
       reload && dispatch(showModalLoader());
       if (isMyProfile) {
@@ -43,20 +48,23 @@ export const loadProfile = createAsyncThunk<void, LoadProfileArgs, AsyncThunkAPI
         );
         dispatch(setMyProfileViewReqStatus(profileResponse.status));
       } else {
-        dispatch(initProfileView(routeParam.arg));
-        const personaBase = await getBasePersonaByRouteParam(routeParam, signal);
-        if (personaBase.status === 200 && !isErrorResponse(personaBase)) {
-          const profileResponse = await getProfile(personaBase.data.address, signal);
-          if (profileResponse.status === 200 && !isErrorResponse(profileResponse)) {
-            dispatch(
-              setProfileView({
-                key: routeParam.arg,
-                value: { ...profileResponse.data, persona: personaBase.data, version: Date.now() },
-              }),
-            );
+        const uiManager = selectUIManager(getState());
+        if (!uiManager.profile[routeParam.arg]) {
+          dispatch(initProfileView(routeParam.arg));
+          const personaBase = await getBasePersonaByRouteParam(routeParam, signal);
+          if (personaBase.status === 200 && !isErrorResponse(personaBase)) {
+            const profileResponse = await getProfile(personaBase.data.address, signal);
+            if (profileResponse.status === 200 && !isErrorResponse(profileResponse)) {
+              dispatch(
+                setProfileView({
+                  key: routeParam.arg,
+                  value: { ...profileResponse.data, persona: personaBase.data, version: Date.now() },
+                }),
+              );
+            }
           }
+          dispatch(setProfileViewReqStatus({ key: routeParam.arg, value: personaBase.status }));
         }
-        dispatch(setProfileViewReqStatus({ key: routeParam.arg, value: personaBase.status }));
       }
     } catch (err: any) {
       handleError(err);
@@ -65,6 +73,7 @@ export const loadProfile = createAsyncThunk<void, LoadProfileArgs, AsyncThunkAPI
         dispatch(setMyProfileViewLoaded(true));
       } else {
         dispatch(setProfileViewLoaded({ key: routeParam.arg, value: true }));
+        dispatch(addProfileUIManager(routeParam.arg));
       }
       reload && dispatch(hideModalLoader());
     }
@@ -88,10 +97,14 @@ export const initProfile = createAsyncThunk<void, undefined, AsyncThunkAPI>(
 
 export const unloadProfile =
   (routeParam: ProfileRoute, isMyProfile: boolean): AppThunk =>
-  dispatch => {
+  (dispatch, getState) => {
     if (isMyProfile) {
       dispatch(resetMyProfileView());
     } else {
-      dispatch(clearProfileByKey(routeParam.arg));
+      const uiManager = selectUIManager(getState());
+      if (!uiManager.profile[routeParam.arg]) {
+        dispatch(clearProfileByKey(routeParam.arg));
+      }
+      dispatch(subtractProfileUIManager(routeParam.arg));
     }
   };
