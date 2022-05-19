@@ -27,14 +27,14 @@ export const reducePayCreateNFTOneKind = (): AppThunk => async (dispatch, getSta
       cover = payload.transaction.asset.cover,
       content = payload.transaction.asset.content;
 
-    if (payload.state.storageProtocol === 'ipfs') {
-      data = await uploadURItoIPFS(payload.data.uri);
-      cover = payload.state.coverUri ? await uploadURItoIPFS(payload.state.coverUri) : '';
-      content =
-        payload.state.utility === 'content'
-          ? await uploadURItoIPFS(payload.state.contentUri)
-          : payload.state.contentUri;
-    }
+    // if (payload.state.storageProtocol === 'ipfs') {
+    //   data = await uploadURItoIPFS(payload.data.uri);
+    //   cover = payload.state.coverUri ? await uploadURItoIPFS(payload.state.coverUri) : '';
+    //   content =
+    //     payload.state.utility === 'content'
+    //       ? await uploadURItoIPFS(payload.state.contentUri)
+    //       : payload.state.contentUri;
+    // }
 
     transactionPayload.asset.data = data;
     transactionPayload.asset.cover = cover;

@@ -2,7 +2,9 @@ import { View, StyleProp, ViewStyle, StyleSheet, RefreshControl } from 'react-na
 import React from 'react';
 import AppMessageNotFound from 'enevti-app/components/molecules/message/AppMessageNotFound';
 import AppMessageError from 'enevti-app/components/molecules/message/AppMessageError';
+import AppMessageNoInternet from 'enevti-app/components/molecules/message/AppMessageNoInternet';
 import { ScrollView } from 'react-native-gesture-handler';
+import { ERRORCODE } from 'enevti-app/utils/error/code';
 
 interface AppResponseViewProps {
   status: number;
@@ -30,13 +32,15 @@ export default function AppResponseView({
 
   return status === 200 ? (
     <View style={style}>{children}</View>
-  ) : status === 404 ? (
-    <ScrollView refreshControl={refreshControl} contentContainerStyle={[style, styles.responseView]}>
-      <AppMessageNotFound />
-    </ScrollView>
   ) : (
     <ScrollView refreshControl={refreshControl} contentContainerStyle={[style, styles.responseView]}>
-      <AppMessageError />
+      {status === 404 ? (
+        <AppMessageNotFound />
+      ) : status === ERRORCODE.NETWORK_ERROR ? (
+        <AppMessageNoInternet />
+      ) : (
+        <AppMessageError />
+      )}
     </ScrollView>
   );
 }

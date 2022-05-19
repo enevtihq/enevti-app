@@ -91,6 +91,7 @@ export const iconMap = {
   error: 'alert-circle',
   pendingNFT: 'send-clock',
   deliveringSecret: 'send-check',
+  noInternet: 'access-point-network-off',
 };
 
 interface AppIconComponentProps {
