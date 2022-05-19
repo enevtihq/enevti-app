@@ -2,7 +2,7 @@ export const ENEVTI_DEFAULT_API = 'http://192.168.0.104:8880';
 export const ENEVTI_FAUCET_API = 'http://192.168.0.104:8881';
 export const ENEVTI_SOCKET_IO = 'ws://192.168.0.104:8082';
 export const ENEVTI_CORE_WS = 'ws://192.168.0.104:8082/ws';
-export const IPFS_GATEWAY = 'https://cloudflare-ipfs.com/ipfs/';
+export const IPFS_GATEWAY = '.ipfs.nftstorage.link';
 export const NFT_STORAGE_URL = 'https://api.nft.storage/upload';
 
 export function urlNFTStorage() {
@@ -18,7 +18,7 @@ export function urlSocketIO() {
 }
 
 export function urlGetIPFS(hash: string, gateway: string = IPFS_GATEWAY) {
-  return encodeURI(`${gateway}${hash}`);
+  return encodeURI(`https://${hash}${gateway}`);
 }
 
 export function urlGetAllCollection(offset: number = 0, limit: number = 10, host: string = ENEVTI_DEFAULT_API) {

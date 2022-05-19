@@ -2,7 +2,9 @@ import { iconMap, UNDEFINED_ICON } from 'enevti-app/components/atoms/icon/AppIco
 
 const iconMappings = {
   mint: iconMap.mint,
+  created: iconMap.newBox,
   redeem: iconMap.redeem,
+  secretDelivered: iconMap.secretDelivered,
 };
 
 export default function activityToIcon(activity: string) {
