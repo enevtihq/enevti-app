@@ -9,6 +9,7 @@ import {
   urlGetIsSymbolExists,
   urlGetNFTById,
   urlGetNFTBySerial,
+  urlGetSerialToNFTId,
 } from 'enevti-app/utils/constant/URLCreator';
 import { APIResponse, ResponseJSON } from 'enevti-app/types/core/service/api';
 
@@ -83,6 +84,40 @@ async function fetchNFTbySerial(
   } catch (err: any) {
     handleError(err);
     return responseError(err.code);
+  }
+}
+
+async function fetchNFTIdFromSerial(serial: string, signal?: AbortController['signal']): Promise<APIResponse<string>> {
+  try {
+    await isInternetReachable();
+    const res = await appFetch(urlGetSerialToNFTId(serial), { signal });
+    const ret = (await res.json()) as ResponseJSON<string>;
+    handleResponseCode(res, ret);
+    return {
+      status: res.status,
+      data: ret.data,
+      meta: ret.meta,
+    };
+  } catch (err: any) {
+    handleError(err);
+    return responseError(err.code);
+  }
+}
+
+export async function getNFTIdFromSerial(
+  serial: string,
+  signal?: AbortController['signal'],
+): Promise<APIResponse<string>> {
+  return await fetchNFTIdFromSerial(serial, signal);
+}
+
+export async function getNFTIdFromRouteParam(routeParam: NFTDetailsRoute, signal?: AbortController['signal']) {
+  switch (routeParam.mode) {
+    case 'id':
+      return routeParam.arg;
+    case 's':
+      const nftId = await getNFTIdFromSerial(routeParam.arg, signal);
+      return nftId;
   }
 }
 

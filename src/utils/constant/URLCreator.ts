@@ -97,16 +97,32 @@ export function urlGetIsNameExists(name: string, host: string = ENEVTI_DEFAULT_A
   return encodeURI(`${host}/registrar/name/${name}`);
 }
 
+export function urlGetNameToCollectionId(name: string, host: string = ENEVTI_DEFAULT_API) {
+  return encodeURI(`${host}/registrar/name/${name}/id`);
+}
+
 export function urlGetIsSymbolExists(symbol: string, host: string = ENEVTI_DEFAULT_API) {
   return encodeURI(`${host}/registrar/symbol/${symbol}`);
+}
+
+export function urlGetSymbolToCollectionId(symbol: string, host: string = ENEVTI_DEFAULT_API) {
+  return encodeURI(`${host}/registrar/symbol/${symbol}/id`);
 }
 
 export function urlGetIsSerialExists(serial: string, host: string = ENEVTI_DEFAULT_API) {
   return encodeURI(`${host}/registrar/serial/${serial}`);
 }
 
+export function urlGetSerialToNFTId(serial: string, host: string = ENEVTI_DEFAULT_API) {
+  return encodeURI(`${host}/registrar/serial/${serial}/id`);
+}
+
 export function urlGetIsUsernameExists(username: string, host: string = ENEVTI_DEFAULT_API) {
   return encodeURI(`${host}/registrar/username/${username}`);
+}
+
+export function urlGetUsernameToAddress(username: string, host: string = ENEVTI_DEFAULT_API) {
+  return encodeURI(`${host}/registrar/username/${username}/id`);
 }
 
 export function urlPostTransactionFee(host: string = ENEVTI_DEFAULT_API) {

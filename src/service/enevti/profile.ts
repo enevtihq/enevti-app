@@ -8,15 +8,23 @@ import {
   setMyProfileCache,
 } from 'enevti-app/store/slices/entities/cache/myProfile';
 import { lastFetchTimeout } from 'enevti-app/utils/constant/lastFetch';
-import { getMyAddress } from './persona';
+import { base32ToAddress, getMyAddress } from './persona';
 import { completeTokenUnit } from 'enevti-app/utils/format/amount';
 import { appFetch, isInternetReachable } from 'enevti-app/utils/network';
-import { urlGetProfile, urlGetProfileNonce, urlGetProfilePendingDelivery } from 'enevti-app/utils/constant/URLCreator';
+import {
+  urlGetProfile,
+  urlGetProfileNonce,
+  urlGetProfilePendingDelivery,
+  urlGetUsernameToAddress,
+} from 'enevti-app/utils/constant/URLCreator';
 import { handleError, handleResponseCode, isErrorResponse, responseError } from 'enevti-app/utils/error/handle';
 import { APIResponse, ResponseJSON } from 'enevti-app/types/core/service/api';
 import { NFTSecret } from 'enevti-app/types/core/chain/nft/NFTSecret';
+import { RootStackParamList } from 'enevti-app/navigation';
+import { StackScreenProps } from '@react-navigation/stack';
 
 export const MINIMUM_BASIC_UNIT_STAKE_ELIGIBILITY = 1000;
+type ProfileRoute = StackScreenProps<RootStackParamList, 'Profile'>['route']['params'];
 
 async function fetchProfileNonce(address: string, signal?: AbortController['signal']): Promise<APIResponse<string>> {
   try {
@@ -69,6 +77,45 @@ async function fetchProfile(address: string, signal?: AbortController['signal'])
   } catch (err: any) {
     handleError(err);
     return responseError(err.code);
+  }
+}
+
+async function fetchProfileAddressFromUsername(
+  username: string,
+  signal?: AbortController['signal'],
+): Promise<APIResponse<string>> {
+  try {
+    await isInternetReachable();
+    const res = await appFetch(urlGetUsernameToAddress(username), { signal });
+    const ret = (await res.json()) as ResponseJSON<string>;
+    handleResponseCode(res, ret);
+    return {
+      status: res.status,
+      data: ret.data,
+      meta: ret.meta,
+    };
+  } catch (err: any) {
+    handleError(err);
+    return responseError(err.code);
+  }
+}
+
+export async function getProfileAddressFromUsername(
+  username: string,
+  signal?: AbortController['signal'],
+): Promise<APIResponse<string>> {
+  return await fetchProfileAddressFromUsername(username, signal);
+}
+
+export async function getProfileAddressFromRouteParam(routeParam: ProfileRoute, signal?: AbortController['signal']) {
+  switch (routeParam.mode) {
+    case 'a':
+      return routeParam.arg;
+    case 'b':
+      return base32ToAddress(routeParam.arg);
+    case 'u':
+      const address = await getProfileAddressFromUsername(routeParam.arg, signal);
+      return address.data;
   }
 }
 

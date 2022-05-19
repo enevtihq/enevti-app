@@ -1,7 +1,12 @@
 import { StackScreenProps } from '@react-navigation/stack';
 import { Collection } from 'enevti-app/types/core/chain/collection';
 import { RootStackParamList } from 'enevti-app/navigation';
-import { urlGetCollectionById, urlGetCollectionBySymbol } from 'enevti-app/utils/constant/URLCreator';
+import {
+  urlGetCollectionById,
+  urlGetCollectionBySymbol,
+  urlGetNameToCollectionId,
+  urlGetSymbolToCollectionId,
+} from 'enevti-app/utils/constant/URLCreator';
 import { handleError, handleResponseCode, responseError } from 'enevti-app/utils/error/handle';
 import { appFetch, isInternetReachable } from 'enevti-app/utils/network';
 import { APIResponse, ResponseJSON } from 'enevti-app/types/core/service/api';
@@ -42,6 +47,70 @@ async function fetchCollectionBySymbol(
   } catch (err: any) {
     handleError(err);
     return responseError(err.code);
+  }
+}
+
+async function fetchCollectionIdFromSymbol(
+  symbol: string,
+  signal?: AbortController['signal'],
+): Promise<APIResponse<string>> {
+  try {
+    await isInternetReachable();
+    const res = await appFetch(urlGetSymbolToCollectionId(symbol), { signal });
+    const ret = (await res.json()) as ResponseJSON<string>;
+    handleResponseCode(res, ret);
+    return {
+      status: res.status,
+      data: ret.data,
+      meta: ret.meta,
+    };
+  } catch (err: any) {
+    handleError(err);
+    return responseError(err.code);
+  }
+}
+
+async function fetchCollectionIdFromName(
+  name: string,
+  signal?: AbortController['signal'],
+): Promise<APIResponse<string>> {
+  try {
+    await isInternetReachable();
+    const res = await appFetch(urlGetNameToCollectionId(name), { signal });
+    const ret = (await res.json()) as ResponseJSON<string>;
+    handleResponseCode(res, ret);
+    return {
+      status: res.status,
+      data: ret.data,
+      meta: ret.meta,
+    };
+  } catch (err: any) {
+    handleError(err);
+    return responseError(err.code);
+  }
+}
+
+export async function getCollectionIdFromSymbol(
+  symbol: string,
+  signal?: AbortController['signal'],
+): Promise<APIResponse<string>> {
+  return await fetchCollectionIdFromSymbol(symbol, signal);
+}
+
+export async function getCollectionIdFromName(
+  name: string,
+  signal?: AbortController['signal'],
+): Promise<APIResponse<string>> {
+  return await fetchCollectionIdFromName(name, signal);
+}
+
+export async function getCollectionIdFromRouteParam(routeParam: CollectionRoute, signal?: AbortController['signal']) {
+  switch (routeParam.mode) {
+    case 'id':
+      return routeParam.arg;
+    case 's':
+      const collectionId = await getCollectionIdFromSymbol(routeParam.arg, signal);
+      return collectionId;
   }
 }
 

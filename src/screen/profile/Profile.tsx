@@ -25,6 +25,7 @@ import { reduceNewCollection } from 'enevti-app/store/middleware/thunk/socket/pr
 import { reduceTotalNFTSoldChanged } from 'enevti-app/store/middleware/thunk/socket/profile/totalNFTSoldChanged';
 import { reduceNewOwned } from 'enevti-app/store/middleware/thunk/socket/profile/newOwned';
 import { reduceNewPending } from 'enevti-app/store/middleware/thunk/socket/profile/newPending';
+import { routeParamToAddress } from 'enevti-app/service/enevti/persona';
 
 type Props = StackScreenProps<RootStackParamList, 'Profile'>;
 
@@ -45,21 +46,26 @@ export default function Profile({ navigation, route }: Props) {
   }, [dispatch, route.params.arg]);
 
   React.useEffect(() => {
-    if (profile.persona && profile.persona.address) {
-      const key = route.params.arg;
-      socket.current = appSocket(profile.persona.address);
-      socket.current.on('usernameChanged', (payload: any) => dispatch(reduceNewUsername(payload, key)));
-      socket.current.on('balanceChanged', (payload: any) => dispatch(reduceBalanceChanged(payload, key)));
-      socket.current.on('totalStakeChanged', (payload: any) => dispatch(reduceTotalStakeChanged(payload, key)));
-      socket.current.on('newCollection', (payload: any) => dispatch(reduceNewCollection(payload, key)));
-      socket.current.on('totalNFTSoldChanged', (payload: any) => dispatch(reduceTotalNFTSoldChanged(payload, key)));
-      socket.current.on('newOwned', (payload: any) => dispatch(reduceNewOwned(payload, key)));
-      socket.current.on('newPending', (payload: any) => dispatch(reduceNewPending(payload, key)));
-      return function cleanup() {
-        socket.current?.disconnect();
-      };
-    }
-  }, [profile.persona, dispatch, route.params.arg]);
+    const run = async () => {
+      if (profile.persona && profile.persona.address) {
+        const key = route.params.arg;
+        const address = await routeParamToAddress(route.params);
+        socket.current = appSocket(address);
+        socket.current.on('usernameChanged', (payload: any) => dispatch(reduceNewUsername(payload, key)));
+        socket.current.on('balanceChanged', (payload: any) => dispatch(reduceBalanceChanged(payload, key)));
+        socket.current.on('totalStakeChanged', (payload: any) => dispatch(reduceTotalStakeChanged(payload, key)));
+        socket.current.on('newCollection', (payload: any) => dispatch(reduceNewCollection(payload, key)));
+        socket.current.on('totalNFTSoldChanged', (payload: any) => dispatch(reduceTotalNFTSoldChanged(payload, key)));
+        socket.current.on('newOwned', (payload: any) => dispatch(reduceNewOwned(payload, key)));
+        socket.current.on('newPending', (payload: any) => dispatch(reduceNewPending(payload, key)));
+        return function cleanup() {
+          socket.current?.disconnect();
+        };
+      }
+    };
+
+    run();
+  }, [profile.persona, dispatch, route.params]);
 
   return (
     <AppView
