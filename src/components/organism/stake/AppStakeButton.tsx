@@ -22,9 +22,12 @@ import { payAddStake } from 'enevti-app/store/middleware/thunk/payment/creator/p
 import { COIN_NAME } from 'enevti-app/utils/constant/identifier';
 import { completeTokenUnit } from 'enevti-app/utils/format/amount';
 import usePaymentCallback from 'enevti-app/utils/hook/usePaymentCallback';
+import YupMultipleOf10 from 'enevti-app/utils/yup/number/multipleOf10';
+
+YupMultipleOf10(Yup);
 
 const validationSchema = Yup.object().shape({
-  stake: Yup.string().required(i18n.t('form:required')),
+  stake: Yup.number().multipleOf10().required(i18n.t('form:required')),
 });
 
 const initialValues: StakeForm = {

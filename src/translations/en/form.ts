@@ -15,4 +15,5 @@ export default {
   minChar: 'Minimum {{count}} characters',
   maxChar: 'Maximum {{count}} characters',
   noSpace: 'No space allowed',
+  multipleOf10: 'Must be multiple of 10',
 };
