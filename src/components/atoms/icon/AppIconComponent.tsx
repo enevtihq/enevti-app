@@ -93,6 +93,7 @@ export const iconMap = {
   deliveringSecret: 'send-check',
   noInternet: 'access-point-network-off',
   cool: 'emoticon-cool-outline',
+  think: 'thought-bubble',
 };
 
 interface AppIconComponentProps {

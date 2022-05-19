@@ -24,4 +24,7 @@ export default {
   pendingConfirmationOkText: 'Deliver',
   pendingConfirmationCancelText: 'Later',
   newUpdates: 'New Updates!',
+  pendingForViewerTitle: 'Well...',
+  pendingForViewerDescription: 'Looks like this creator have utility that has not been delivered yet',
+  pendingForViewerButton: 'Hmmmm...',
 };

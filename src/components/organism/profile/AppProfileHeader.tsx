@@ -54,10 +54,15 @@ export default function AppProfileHeader({ navigation, persona, profile }: AppPr
   const [menuVisible, setMenuVisible] = React.useState<boolean>(false);
   const [pendingConfirmationVisible, setPendingConfirmationVisible] = React.useState<boolean>(false);
   const [pendingAlertVisible, setPendingAlertVisible] = React.useState<boolean>(false);
+  const [viewerPendingAlertVisible, setViewerPendingAlertVisible] = React.useState<boolean>(false);
 
   const onPendingButtonPressed = React.useCallback(() => {
-    profile.pending > 0 ? setPendingConfirmationVisible(old => !old) : setPendingAlertVisible(old => !old);
-  }, [profile.pending]);
+    profile.pending > 0
+      ? persona.address === myPersona.address
+        ? setPendingConfirmationVisible(old => !old)
+        : setViewerPendingAlertVisible(old => !old)
+      : setPendingAlertVisible(old => !old);
+  }, [profile.pending, myPersona.address, persona.address]);
 
   const onPendingConfrimationDismiss = React.useCallback(() => {
     setPendingConfirmationVisible(false);
@@ -65,6 +70,10 @@ export default function AppProfileHeader({ navigation, persona, profile }: AppPr
 
   const onPendingAlertDismiss = React.useCallback(() => {
     setPendingAlertVisible(false);
+  }, []);
+
+  const onViewerPendingAlertDismiss = React.useCallback(() => {
+    setViewerPendingAlertVisible(false);
   }, []);
 
   const onManualSecretDelivery = React.useCallback(() => {
@@ -232,17 +241,29 @@ export default function AppProfileHeader({ navigation, persona, profile }: AppPr
         ) : null}
         {profile.pending !== 0 ? (
           profile.pending > 0 ? (
-            <AppConfirmationModal
-              iconName={'pendingNFT'}
-              visible={pendingConfirmationVisible}
-              onDismiss={onPendingConfrimationDismiss}
-              title={t('profile:pendingConfirmationTitle')}
-              description={t('profile:pendingConfirmationDescription')}
-              cancelText={t('profile:pendingConfirmationCancelText')}
-              cancelOnPress={onPendingConfrimationDismiss}
-              okText={t('profile:pendingConfirmationOkText')}
-              okOnPress={onManualSecretDelivery}
-            />
+            persona.address === myPersona.address ? (
+              <AppConfirmationModal
+                iconName={'pendingNFT'}
+                visible={pendingConfirmationVisible}
+                onDismiss={onPendingConfrimationDismiss}
+                title={t('profile:pendingConfirmationTitle')}
+                description={t('profile:pendingConfirmationDescription')}
+                cancelText={t('profile:pendingConfirmationCancelText')}
+                cancelOnPress={onPendingConfrimationDismiss}
+                okText={t('profile:pendingConfirmationOkText')}
+                okOnPress={onManualSecretDelivery}
+              />
+            ) : (
+              <AppAlertModal
+                visible={viewerPendingAlertVisible}
+                iconName={'think'}
+                onDismiss={onViewerPendingAlertDismiss}
+                title={t('profile:pendingForViewerTitle')}
+                description={t('profile:pendingForViewerDescription')}
+                secondaryButtonText={t('profile:pendingForViewerButton')}
+                secondaryButtonOnPress={onViewerPendingAlertDismiss}
+              />
+            )
           ) : profile.pending === -1 ? (
             <AppAlertModal
               visible={pendingAlertVisible}
