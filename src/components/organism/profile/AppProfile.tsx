@@ -19,10 +19,8 @@ import OnSaleNFTComponent from './tabs/OnSaleNFTComponent';
 import AppProfileBody from './AppProfileBody';
 import { useTheme } from 'react-native-paper';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { loadProfile, unloadProfile } from 'enevti-app/store/middleware/thunk/ui/view/profile';
-import { Profile } from 'enevti-app/types/core/account/profile';
-import { Persona } from 'enevti-app/types/core/account/persona';
 import CollectionListComponent from './tabs/CollectionListComponent';
 import { AppAsyncThunk } from 'enevti-app/types/ui/store/AppAsyncThunk';
 import { RouteProp } from '@react-navigation/native';
@@ -30,6 +28,19 @@ import AppResponseView from '../view/AppResponseView';
 import { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
 import AppFloatingNotifButton from 'enevti-app/components/molecules/button/AppFloatingNotifButton';
 import { useTranslation } from 'react-i18next';
+import { RootState } from 'enevti-app/store/state';
+import {
+  selectProfileView,
+  isProfileUndefined,
+  setProfileViewVersion,
+  isThereAnyNewProfileUpdate,
+} from 'enevti-app/store/slices/ui/view/profile';
+import {
+  selectMyProfileView,
+  isMyProfileUndefined,
+  setMyProfileViewVersion,
+  isThereAnyNewMyProfileUpdates,
+} from 'enevti-app/store/slices/ui/view/myProfile';
 
 const noDisplay = 'none';
 const visible = 1;
@@ -38,8 +49,6 @@ const notVisible = 0;
 interface AppProfileProps {
   navigation: StackNavigationProp<RootStackParamList>;
   route: RouteProp<RootStackParamList, 'Profile'>;
-  profile: Profile & { reqStatus: number; persona: Persona };
-  profileUndefined: boolean;
   onScrollWorklet?: (val: number) => void;
   onBeginDragWorklet?: (val: number) => void;
   onEndDragWorklet?: (val: number) => void;
@@ -47,15 +56,11 @@ interface AppProfileProps {
   headerHeight?: number;
   disableHeaderAnimation?: boolean;
   isMyProfile?: boolean;
-  newUpdate?: boolean;
-  onUpdateClose?: () => void;
 }
 
 export default function AppProfile({
   navigation,
   route,
-  profile,
-  profileUndefined,
   onScrollWorklet,
   onBeginDragWorklet,
   onEndDragWorklet,
@@ -63,13 +68,22 @@ export default function AppProfile({
   headerHeight = 0,
   disableHeaderAnimation = false,
   isMyProfile = false,
-  newUpdate = false,
-  onUpdateClose,
 }: AppProfileProps) {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const theme = useTheme();
+
+  const profile = useSelector((state: RootState) =>
+    isMyProfile ? selectMyProfileView(state) : selectProfileView(state, route.params.arg),
+  );
+  const profileUndefined = useSelector((state: RootState) =>
+    isMyProfile ? isMyProfileUndefined(state) : isProfileUndefined(state, route.params.arg),
+  );
+  const newUpdate = useSelector((state: RootState) =>
+    isMyProfile ? isThereAnyNewMyProfileUpdates(state) : isThereAnyNewProfileUpdate(state, route.params.arg),
+  );
+
   const persona = profile.persona;
   const styles = React.useMemo(() => makeStyles(headerHeight, insets), [headerHeight, insets]);
 
@@ -86,6 +100,14 @@ export default function AppProfile({
   const tabScroll = useSharedValue(0);
 
   const totalHeaderHeight = hp(PROFILE_HEADER_HEIGHT_PERCENTAGE, insets) + headerHeight;
+
+  const onUpdateClose = React.useCallback(() => {
+    if (isMyProfile) {
+      dispatch(setMyProfileViewVersion(Date.now()));
+    } else {
+      dispatch(setProfileViewVersion({ key: route.params.arg, value: Date.now() }));
+    }
+  }, [dispatch, route.params.arg, isMyProfile]);
 
   const onProfileScreenLoaded = React.useCallback(
     (reload: boolean = false) => {
@@ -232,19 +254,10 @@ export default function AppProfile({
     onMomentumEndWorklet,
   ]);
 
-  const ownedData = React.useMemo(() => (!profileUndefined ? profile.owned : []), [profile, profileUndefined]);
-
-  const ownedOnMounted = React.useCallback(() => setOwnedMounted(true), []);
-
   const onSaleData = React.useMemo(() => (!profileUndefined ? profile.onSale : []), [profile, profileUndefined]);
 
+  const ownedOnMounted = React.useCallback(() => setOwnedMounted(true), []);
   const onSaleOnMounted = React.useCallback(() => setOnSaleMounted(true), []);
-
-  const collectionData = React.useMemo(
-    () => (!profileUndefined ? profile.collection : []),
-    [profile, profileUndefined],
-  );
-
   const collectionOnMounted = React.useCallback(() => setCollectionMouted(true), []);
 
   const OwnedNFTScreen = React.useCallback(
@@ -252,25 +265,27 @@ export default function AppProfile({
       <OwnedNFTComponent
         ref={ownedRef}
         navigation={navigation}
+        route={route}
         onScroll={ownedScrollHandler}
         scrollEnabled={scrollEnabled}
         headerHeight={headerHeight}
-        data={ownedData}
         onMounted={ownedOnMounted}
         onRefresh={onRefresh}
         disableHeaderAnimation={disableHeaderAnimation}
+        isMyProfile={isMyProfile}
       />
     ),
     [
       ownedRef,
       navigation,
       headerHeight,
-      ownedData,
       ownedScrollHandler,
       scrollEnabled,
       ownedOnMounted,
       onRefresh,
       disableHeaderAnimation,
+      route,
+      isMyProfile,
     ],
   );
 
@@ -306,25 +321,27 @@ export default function AppProfile({
       <CollectionListComponent
         ref={collectionRef}
         navigation={navigation}
+        route={route}
         onScroll={collectionScrollHandler}
         scrollEnabled={scrollEnabled}
         headerHeight={headerHeight}
-        data={collectionData}
         onMounted={collectionOnMounted}
         onRefresh={onRefresh}
         disableHeaderAnimation={disableHeaderAnimation}
+        isMyProfile={isMyProfile}
       />
     ),
     [
       collectionRef,
       navigation,
       headerHeight,
-      collectionData,
+      route,
       collectionScrollHandler,
       scrollEnabled,
       collectionOnMounted,
       onRefresh,
       disableHeaderAnimation,
+      isMyProfile,
     ],
   );
 
@@ -347,7 +364,8 @@ export default function AppProfile({
         onClose={onUpdateClose}
       />
       <AppProfileBody
-        profile={profile}
+        route={route}
+        isMyProfile={isMyProfile}
         headerHeight={headerHeight}
         animatedTabBarStyle={animatedTabBarStyle}
         ownedNFTScreen={OwnedNFTScreen}

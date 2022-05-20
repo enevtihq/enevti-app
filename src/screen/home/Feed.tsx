@@ -19,7 +19,7 @@ import { handleError } from 'enevti-app/utils/error/handle';
 import { hp, wp } from 'enevti-app/utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
-import { loadFeeds, unloadFeeds } from 'enevti-app/store/middleware/thunk/ui/view/feed';
+import { loadFeeds, unloadFeeds, loadMoreFeeds } from 'enevti-app/store/middleware/thunk/ui/view/feed';
 import { loadMoments, unloadMoments } from 'enevti-app/store/middleware/thunk/ui/view/moment';
 import { AppAsyncThunk } from 'enevti-app/types/ui/store/AppAsyncThunk';
 import {
@@ -99,6 +99,10 @@ export default function Feed({ navigation, onScroll, headerHeight }: FeedProps) 
     }
   }, [onLoaded]);
 
+  const handleLoadMore = React.useCallback(() => {
+    dispatch(loadMoreFeeds());
+  }, [dispatch]);
+
   React.useEffect(() => {
     onLoaded();
     return function cleanup() {
@@ -172,6 +176,8 @@ export default function Feed({ navigation, onScroll, headerHeight }: FeedProps) 
               contentContainerStyle={contentContainerStyle}
               ListEmptyComponent={emptyComponent}
               refreshControl={refreshControl}
+              onEndReachedThreshold={0.1}
+              onEndReached={handleLoadMore}
             />
           </AppResponseView>
         ) : (

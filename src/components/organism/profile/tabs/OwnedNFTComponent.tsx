@@ -11,37 +11,56 @@ import AppNFTRenderer from 'enevti-app/components/molecules/nft/AppNFTRenderer';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import AppMessageEmpty from 'enevti-app/components/molecules/message/AppMessageEmpty';
+import { loadMoreOwned } from 'enevti-app/store/middleware/thunk/ui/view/profile';
+import { useDispatch, useSelector } from 'react-redux';
+import { RouteProp } from '@react-navigation/native';
+import { RootState } from 'enevti-app/store/state';
+import { selectMyProfileView, selectMyProfileViewOwned } from 'enevti-app/store/slices/ui/view/myProfile';
+import { selectProfileView, selectProfileViewOwned } from 'enevti-app/store/slices/ui/view/profile';
+import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
 
 const AnimatedFlatGrid = Animated.createAnimatedComponent<FlatGridProps<NFTBase>>(FlatGrid);
 
 interface OwnedNFTComponentProps {
   navigation: StackNavigationProp<RootStackParamList>;
-  data?: any;
+  route: RouteProp<RootStackParamList, 'Profile'>;
   onScroll?: any;
   headerHeight?: any;
   onMounted?: () => void;
   onRefresh?: () => void;
   scrollEnabled?: boolean;
   disableHeaderAnimation?: boolean;
+  isMyProfile?: boolean;
 }
 
 function Component(
   {
     navigation,
-    data,
+    route,
     onScroll,
     headerHeight,
     onMounted,
     onRefresh,
     scrollEnabled,
     disableHeaderAnimation = false,
+    isMyProfile = false,
   }: OwnedNFTComponentProps,
   ref: any,
 ) {
+  const dispatch = useDispatch();
   const insets = useSafeAreaInsets();
   const mounted = React.useRef<boolean>(false);
   const [displayed, setDisplayed] = React.useState<boolean>(false);
   const [refreshing, setRefreshing] = React.useState<boolean>(false);
+
+  const total = useSelector((state: RootState) =>
+    isMyProfile
+      ? selectMyProfileView(state).ownedPagination.version
+      : selectProfileView(state, route.params.arg).ownedPagination.version,
+  );
+  const data = useSelector((state: RootState) =>
+    isMyProfile ? selectMyProfileViewOwned(state) : selectProfileViewOwned(state, route.params.arg),
+  );
 
   const styles = React.useMemo(
     () => makeStyles(insets, headerHeight, displayed, disableHeaderAnimation),
@@ -89,6 +108,16 @@ function Component(
     };
   }, [ref, onMounted, refreshing]);
 
+  const handleLoadMore = React.useCallback(() => {
+    dispatch(loadMoreOwned({ routeParam: route.params, isMyProfile, reload: true }));
+  }, [dispatch, route.params, isMyProfile]);
+
+  const footerComponent = React.useMemo(
+    () =>
+      total !== data.length && data.length !== 0 ? <AppActivityIndicator style={{ marginVertical: hp('3%') }} /> : null,
+    [total, data.length],
+  );
+
   return (
     <AnimatedFlatGrid
       ref={ref}
@@ -103,6 +132,9 @@ function Component(
       renderItem={renderItem}
       refreshControl={refreshControl}
       ListEmptyComponent={emptyComponent}
+      ListFooterComponent={footerComponent}
+      onEndReachedThreshold={0.1}
+      onEndReached={handleLoadMore}
     />
   );
 }

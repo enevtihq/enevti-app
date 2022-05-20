@@ -41,6 +41,26 @@ export function urlGetCollectionById(id: string, host: string = ENEVTI_DEFAULT_A
   return encodeURI(`${host}/collection/id/${id}`);
 }
 
+export function urlGetCollectionMintedNFTById(
+  id: string,
+  offset: number = 0,
+  limit: number = 10,
+  version: number = 0,
+  host: string = ENEVTI_DEFAULT_API,
+) {
+  return encodeURI(`${host}/collection/id/${id}/minted?offset=${offset}&limit=${limit}&version=${version}`);
+}
+
+export function urlGetCollectionActivityById(
+  id: string,
+  offset: number = 0,
+  limit: number = 10,
+  version: number = 0,
+  host: string = ENEVTI_DEFAULT_API,
+) {
+  return encodeURI(`${host}/collection/id/${id}/activity?offset=${offset}&limit=${limit}&version=${version}`);
+}
+
 export function urlGetCollectionByName(name: string, host: string = ENEVTI_DEFAULT_API) {
   return encodeURI(`${host}/collection/n/${name}`);
 }
@@ -49,12 +69,27 @@ export function urlGetCollectionBySymbol(symbol: string, host: string = ENEVTI_D
   return encodeURI(`${host}/collection/s/${symbol}`);
 }
 
-export function urlGetFeeds(offset: number = 0, limit: number = 10, host: string = ENEVTI_DEFAULT_API) {
-  return encodeURI(`${host}/feeds/available?offset=${offset}&limit=${limit}`);
+export function urlGetFeeds(
+  offset: number = 0,
+  limit: number = 10,
+  version: number = 0,
+  host: string = ENEVTI_DEFAULT_API,
+) {
+  return encodeURI(`${host}/feeds/available?offset=${offset}&limit=${limit}&version=${version}`);
 }
 
 export function urlGetNFTById(id: string, host: string = ENEVTI_DEFAULT_API) {
   return encodeURI(`${host}/nft/id/${id}`);
+}
+
+export function urlGetNFTActivityById(
+  id: string,
+  offset: number = 0,
+  limit: number = 10,
+  version: number = 0,
+  host: string = ENEVTI_DEFAULT_API,
+) {
+  return encodeURI(`${host}/nft/id/${id}/activity?offset=${offset}&limit=${limit}&version=${version}`);
 }
 
 export function urlGetNFTBySerial(serial: string, host: string = ENEVTI_DEFAULT_API) {
@@ -77,6 +112,26 @@ export function urlGetProfile(address: string, host: string = ENEVTI_DEFAULT_API
   return encodeURI(`${host}/profile/${address}`);
 }
 
+export function urlGetProfileOwned(
+  address: string,
+  offset: number = 0,
+  limit: number = 10,
+  version: number = 0,
+  host: string = ENEVTI_DEFAULT_API,
+) {
+  return encodeURI(`${host}/profile/${address}/owned?offset=${offset}&limit=${limit}&version=${version}`);
+}
+
+export function urlGetProfileCollection(
+  address: string,
+  offset: number = 0,
+  limit: number = 10,
+  version: number = 0,
+  host: string = ENEVTI_DEFAULT_API,
+) {
+  return encodeURI(`${host}/profile/${address}/collection?offset=${offset}&limit=${limit}&version=${version}`);
+}
+
 export function urlGetProfileNonce(address: string, host: string = ENEVTI_DEFAULT_API) {
   return encodeURI(`${host}/profile/${address}/nonce`);
 }
@@ -87,6 +142,16 @@ export function urlGetProfilePendingDelivery(address: string, host: string = ENE
 
 export function urlGetStakePoolByAddress(address: string, host: string = ENEVTI_DEFAULT_API) {
   return encodeURI(`${host}/stake/a/${address}`);
+}
+
+export function urlGetStaker(
+  address: string,
+  offset: number = 0,
+  limit: number = 10,
+  version: number = 0,
+  host: string = ENEVTI_DEFAULT_API,
+) {
+  return encodeURI(`${host}/stake/a/${address}/staker?offset=${offset}&limit=${limit}&version=${version}`);
 }
 
 export function urlGetStakePoolByUsername(username: string, host: string = ENEVTI_DEFAULT_API) {

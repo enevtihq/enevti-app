@@ -4,10 +4,31 @@ import { ProfileView } from 'enevti-app/types/core/account/profile';
 import { RootState } from 'enevti-app/store/state';
 import { NFTBase } from 'enevti-app/types/core/chain/nft';
 import { CollectionBase } from 'enevti-app/types/core/chain/collection';
+import { PaginationStore } from 'enevti-app/types/ui/store/PaginationStore';
 
-type MyProfileViewState = ProfileView & { version: number; fetchedVersion: number; reqStatus: number; loaded: boolean };
+export type MyProfileViewState = ProfileView & {
+  ownedPagination: PaginationStore;
+  onSalePagination: PaginationStore;
+  collectionPagination: PaginationStore;
+  version: number;
+  fetchedVersion: number;
+  reqStatus: number;
+  loaded: boolean;
+};
 
 const initialState: MyProfileViewState = {
+  ownedPagination: {
+    version: 0,
+    checkpoint: 0,
+  },
+  onSalePagination: {
+    version: 0,
+    checkpoint: 0,
+  },
+  collectionPagination: {
+    version: 0,
+    checkpoint: 0,
+  },
   version: 0,
   fetchedVersion: 0,
   loaded: false,
@@ -32,14 +53,32 @@ const myProfileViewSlice = createSlice({
     setMyProfileView: (profile, action: PayloadAction<Record<string, any>>) => {
       Object.assign(profile, action.payload);
     },
-    addMyProfileViewOwnedNFT: (profile, action: PayloadAction<NFTBase[]>) => {
+    unshiftMyProfileViewOwnedNFT: (profile, action: PayloadAction<NFTBase[]>) => {
       profile.owned = action.payload.concat(profile.owned);
     },
-    addMyProfileViewOnsaleNFT: (profile, action: PayloadAction<NFTBase[]>) => {
+    unshiftMyProfileViewOnsaleNFT: (profile, action: PayloadAction<NFTBase[]>) => {
       profile.onSale = action.payload.concat(profile.onSale);
     },
-    addMyProfileViewCollection: (profile, action: PayloadAction<CollectionBase[]>) => {
+    unshiftMyProfileViewCollection: (profile, action: PayloadAction<CollectionBase[]>) => {
       profile.collection = action.payload.concat(profile.collection);
+    },
+    pushMyProfileViewOwnedNFT: (profile, action: PayloadAction<NFTBase[]>) => {
+      profile.owned = profile.owned.concat(action.payload);
+    },
+    pushMyProfileViewOnsaleNFT: (profile, action: PayloadAction<NFTBase[]>) => {
+      profile.onSale = profile.onSale.concat(action.payload);
+    },
+    pushMyProfileViewCollection: (profile, action: PayloadAction<CollectionBase[]>) => {
+      profile.collection = profile.collection.concat(action.payload);
+    },
+    setMyProfileViewOwnedPagination: (profile, action: PayloadAction<PaginationStore>) => {
+      profile.ownedPagination = { ...action.payload };
+    },
+    setMyProfileViewOnsalePagination: (profile, action: PayloadAction<PaginationStore>) => {
+      profile.onSalePagination = { ...action.payload };
+    },
+    setMyProfileViewCollectionPagination: (profile, action: PayloadAction<PaginationStore>) => {
+      profile.collectionPagination = { ...action.payload };
     },
     setMyProfileViewFetchedVersion: (profile, action: PayloadAction<number>) => {
       profile.fetchedVersion = action.payload;
@@ -64,10 +103,16 @@ const myProfileViewSlice = createSlice({
 
 export const {
   setMyProfileView,
-  addMyProfileViewOwnedNFT,
-  addMyProfileViewOnsaleNFT,
+  unshiftMyProfileViewOwnedNFT,
+  unshiftMyProfileViewOnsaleNFT,
+  unshiftMyProfileViewCollection,
+  pushMyProfileViewOwnedNFT,
+  pushMyProfileViewOnsaleNFT,
+  pushMyProfileViewCollection,
+  setMyProfileViewOwnedPagination,
+  setMyProfileViewOnsalePagination,
+  setMyProfileViewCollectionPagination,
   setMyProfileViewPending,
-  addMyProfileViewCollection,
   setMyProfileViewFetchedVersion,
   setMyProfileViewVersion,
   setMyProfileViewLoaded,
@@ -79,6 +124,21 @@ export default myProfileViewSlice.reducer;
 export const selectMyProfileView = createSelector(
   (state: RootState) => state.ui.view.myProfile,
   (profile: MyProfileViewState) => profile,
+);
+
+export const selectMyProfileViewOwned = createSelector(
+  (state: RootState) => state.ui.view.myProfile,
+  (profile: MyProfileViewState) => profile.owned,
+);
+
+export const selectMyProfileViewOnsale = createSelector(
+  (state: RootState) => state.ui.view.myProfile,
+  (profile: MyProfileViewState) => profile.onSale,
+);
+
+export const selectMyProfileViewCollection = createSelector(
+  (state: RootState) => state.ui.view.myProfile,
+  (profile: MyProfileViewState) => profile.collection,
 );
 
 export const isMyProfileUndefined = createSelector(

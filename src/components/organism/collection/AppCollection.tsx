@@ -241,7 +241,7 @@ export default function AppCollection({ onScrollWorklet, navigation, route }: Ap
     () => (
       <MintedItemsComponent
         ref={mintedRef}
-        nfts={collection.minted}
+        route={route}
         collectionHeaderHeight={totalHeaderHeight}
         scrollEnabled={scrollEnabled}
         onScroll={mintedItemsScrollHandler}
@@ -252,7 +252,7 @@ export default function AppCollection({ onScrollWorklet, navigation, route }: Ap
       />
     ),
     [
-      collection.minted,
+      route,
       totalHeaderHeight,
       mintedItemsOnMounted,
       mintedItemsScrollHandler,
@@ -268,7 +268,7 @@ export default function AppCollection({ onScrollWorklet, navigation, route }: Ap
     () => (
       <CollectionActivityComponent
         ref={activityRef}
-        collection={collection}
+        route={route}
         collectionHeaderHeight={totalHeaderHeight}
         scrollEnabled={scrollEnabled}
         onScroll={collectionActivityScrollHandler}
@@ -280,7 +280,7 @@ export default function AppCollection({ onScrollWorklet, navigation, route }: Ap
     [
       activityOnMounted,
       activityRef,
-      collection,
+      route,
       collectionActivityScrollHandler,
       onRefresh,
       scrollEnabled,

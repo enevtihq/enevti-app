@@ -13,7 +13,8 @@ import AppFeedBody from './AppFeedBody';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 
-const MODE: 'floating' | 'flat' = 'flat';
+type FeedMode = 'floating' | 'flat';
+const MODE: FeedMode = 'flat';
 
 interface AppFeedItemProps {
   feed: FeedItem;
@@ -26,7 +27,7 @@ export default React.memo(
     const theme = useTheme() as Theme;
     const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
 
-    const canvasWidth = Dimensions.get('window').width * 0.9;
+    const canvasWidth = Dimensions.get('window').width * (MODE === 'flat' ? 1 : MODE === 'floating' ? 0.9 : 1);
 
     return (
       <View style={styles[MODE]}>

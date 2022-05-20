@@ -22,12 +22,19 @@ import { parsePersonaLabel } from 'enevti-app/service/enevti/persona';
 import { MINT_BUTTON_HEIGHT } from 'enevti-app/components/organism/collection/AppCollectionMintButton';
 import AppMessageEmpty from 'enevti-app/components/molecules/message/AppMessageEmpty';
 import AppActivityIcon from 'enevti-app/components/molecules/activity/AppActivityIcon';
+import { loadMoreActivity } from 'enevti-app/store/middleware/thunk/ui/view/collection';
+import { RouteProp } from '@react-navigation/native';
+import { RootStackParamList } from 'enevti-app/navigation';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from 'enevti-app/store/state';
+import { selectCollectionView } from 'enevti-app/store/slices/ui/view/collection';
+import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
 
 const COLLECTION_ACTIVITY_ITEM_HEIGHT = 9;
 const AnimatedFlatList = Animated.createAnimatedComponent<any>(FlatList);
 
 interface CollectionActivityComponentProps {
-  collection: Collection;
+  route: RouteProp<RootStackParamList, 'Collection'>;
   onScroll?: any;
   collectionHeaderHeight?: any;
   onMounted?: () => void;
@@ -38,7 +45,7 @@ interface CollectionActivityComponentProps {
 
 function Component(
   {
-    collection,
+    route,
     onScroll,
     collectionHeaderHeight,
     onMounted,
@@ -48,6 +55,7 @@ function Component(
   }: CollectionActivityComponentProps,
   ref: any,
 ) {
+  const dispatch = useDispatch();
   const { hp, wp } = useDimension();
   const { t } = useTranslation();
   const theme = useTheme();
@@ -55,6 +63,8 @@ function Component(
   const mounted = React.useRef<boolean>(false);
   const [displayed, setDisplayed] = React.useState<boolean>(false);
   const [refreshing, setRefreshing] = React.useState<boolean>(false);
+
+  const collection = useSelector((state: RootState) => selectCollectionView(state, route.params.arg));
 
   const styles = React.useMemo(
     () => makeStyles(hp, wp, displayed, collectionHeaderHeight, insets),
@@ -142,8 +152,18 @@ function Component(
   );
 
   const listFooter = React.useMemo(
-    () => (mintingAvailable ? <View style={{ height: hp(MINT_BUTTON_HEIGHT) }} /> : undefined),
-    [hp, mintingAvailable],
+    () =>
+      mintingAvailable ? (
+        <View>
+          {collection.activityPagination &&
+          collection.activityPagination.version !== collection.activity.length &&
+          collection.activity.length !== 0 ? (
+            <AppActivityIndicator style={{ marginVertical: hp('3%') }} />
+          ) : null}
+          <View style={{ height: hp(MINT_BUTTON_HEIGHT) }} />
+        </View>
+      ) : undefined,
+    [hp, mintingAvailable, collection.activityPagination, collection.activity.length],
   );
 
   React.useEffect(() => {
@@ -156,6 +176,10 @@ function Component(
       mounted.current = false;
     };
   }, [ref, onMounted, refreshing]);
+
+  const handleLoadMore = React.useCallback(() => {
+    dispatch(loadMoreActivity({ routeParam: route.params, reload: true }));
+  }, [dispatch, route.params]);
 
   return (
     <AnimatedFlatList
@@ -177,6 +201,8 @@ function Component(
       updateCellsBatchingPeriod={50}
       windowSize={21}
       ListFooterComponent={listFooter}
+      onEndReachedThreshold={0.1}
+      onEndReached={handleLoadMore}
     />
   );
 }

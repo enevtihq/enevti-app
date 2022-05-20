@@ -3,14 +3,25 @@ import { createSelector } from 'reselect';
 import { RootState } from 'enevti-app/store/state';
 import { NFT } from 'enevti-app/types/core/chain/nft';
 import { NFTActivity } from 'enevti-app/types/core/chain/nft/NFTActivity';
+import { PaginationStore } from 'enevti-app/types/ui/store/PaginationStore';
 
-type NFTDetailsViewState = NFT & { version: number; fetchedVersion: number; reqStatus: number; loaded: boolean };
+type NFTDetailsViewState = NFT & {
+  activityPagination: PaginationStore;
+  version: number;
+  fetchedVersion: number;
+  reqStatus: number;
+  loaded: boolean;
+};
 
 type NFTDetailsViewStore = {
   [key: string]: NFTDetailsViewState;
 };
 
 const initialStateItem: NFTDetailsViewState = {
+  activityPagination: {
+    checkpoint: 0,
+    version: 0,
+  },
   fetchedVersion: 0,
   version: 0,
   loaded: false,
@@ -124,11 +135,20 @@ const nftDetailsViewSlice = createSlice({
     setNFTDetailsView: (nftDetails, action: PayloadAction<{ key: string; value: Record<string, any> }>) => {
       Object.assign(nftDetails, { [action.payload.key]: action.payload.value });
     },
-    addNFTDetailsViewActivity: (nftDetails, action: PayloadAction<{ key: string; value: NFTActivity[] }>) => {
+    unshiftNFTDetailsViewActivity: (nftDetails, action: PayloadAction<{ key: string; value: NFTActivity[] }>) => {
       nftDetails[action.payload.key].activity = nftDetails[action.payload.key].activity.concat(action.payload.value);
     },
+    pushNFTDetailsViewActivity: (nftDetails, action: PayloadAction<{ key: string; value: NFTActivity[] }>) => {
+      nftDetails[action.payload.key].activity = action.payload.value.concat(nftDetails[action.payload.key].activity);
+    },
+    setNFTDetailsViewActivityPagination: (
+      nftDetails,
+      action: PayloadAction<{ key: string; value: PaginationStore }>,
+    ) => {
+      nftDetails[action.payload.key].activityPagination = { ...action.payload.value };
+    },
     setNFTDetailsViewSecret: (nftDetails, action: PayloadAction<{ key: string; value: NFT['redeem']['secret'] }>) => {
-      nftDetails[action.payload.key].redeem.secret = action.payload.value;
+      nftDetails[action.payload.key].redeem.secret = { ...action.payload.value };
     },
     setNFTDetailsFetchedVersion: (nftDetails, action: PayloadAction<{ key: string; value: number }>) => {
       nftDetails[action.payload.key].fetchedVersion = action.payload.value;
@@ -157,7 +177,8 @@ const nftDetailsViewSlice = createSlice({
 export const {
   initNFTDetailsView,
   setNFTDetailsView,
-  addNFTDetailsViewActivity,
+  unshiftNFTDetailsViewActivity,
+  setNFTDetailsViewActivityPagination,
   setNFTDetailsViewSecret,
   setNFTDetailsLoaded,
   setNFTDetailsFetchedVersion,
@@ -173,6 +194,11 @@ export const selectNFTDetailsView = createSelector(
   [(state: RootState) => state.ui.view.nftDetails, (state: RootState, key: string) => key],
   (nftDetails: NFTDetailsViewStore, key: string) =>
     nftDetails.hasOwnProperty(key) ? nftDetails[key] : initialStateItem,
+);
+
+export const selectNFTDetailsViewActivity = createSelector(
+  [(state: RootState) => state.ui.view.nftDetails, (state: RootState, key: string) => key],
+  (nftDetails: NFTDetailsViewStore, key: string) => (nftDetails.hasOwnProperty(key) ? nftDetails[key].activity : []),
 );
 
 export const isNFTDetailsUndefined = createSelector(

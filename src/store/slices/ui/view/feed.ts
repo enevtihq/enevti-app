@@ -4,20 +4,22 @@ import { RootState } from 'enevti-app/store/state';
 import { Feeds } from 'enevti-app/types/core/service/feed';
 
 type FeedViewState = {
-  offset: number;
+  checkpoint: number;
   version: number;
   fetchedVersion: number;
   loaded: boolean;
   reqStatus: number;
+  reqVersion: number;
   items: Feeds;
 };
 
 const initialState: FeedViewState = {
-  offset: 0,
+  checkpoint: 0,
   version: 0,
   fetchedVersion: 0,
   loaded: false,
   reqStatus: 0,
+  reqVersion: 0,
   items: [],
 };
 
@@ -28,8 +30,11 @@ const feedViewSlice = createSlice({
     setFeedView: (feed, action: PayloadAction<Feeds>) => {
       feed.items = action.payload.slice();
     },
-    setFeedViewOffset: (feed, action: PayloadAction<number>) => {
-      feed.offset = action.payload;
+    addFeedView: (feed, action: PayloadAction<Feeds>) => {
+      feed.items.concat(action.payload);
+    },
+    setFeedViewCheckpoint: (feed, action: PayloadAction<number>) => {
+      feed.checkpoint = action.payload;
     },
     setFeedViewVersion: (feed, action: PayloadAction<number>) => {
       feed.version = action.payload;
@@ -43,6 +48,9 @@ const feedViewSlice = createSlice({
     setFeedViewReqStatus: (feed, action: PayloadAction<number>) => {
       feed.reqStatus = action.payload;
     },
+    setFeedViewReqVersion: (feed, action: PayloadAction<number>) => {
+      feed.reqVersion = action.payload;
+    },
     resetFeedView: () => {
       return initialState;
     },
@@ -51,11 +59,13 @@ const feedViewSlice = createSlice({
 
 export const {
   setFeedView,
-  setFeedViewOffset,
+  addFeedView,
+  setFeedViewCheckpoint,
   setFeedViewVersion,
   setFeedViewFetchedVersion,
   setFeedViewLoaded,
   setFeedViewReqStatus,
+  setFeedViewReqVersion,
   resetFeedView,
 } = feedViewSlice.actions;
 export default feedViewSlice.reducer;
@@ -65,9 +75,14 @@ export const selectFeedView = createSelector(
   (feed: FeedViewState) => feed.items,
 );
 
-export const selectFeedViewOffset = createSelector(
+export const selectFeedViewCheckpoint = createSelector(
   (state: RootState) => state.ui.view.feed,
-  (feed: FeedViewState) => feed.offset,
+  (feed: FeedViewState) => feed.checkpoint,
+);
+
+export const selectFeedViewReqVersion = createSelector(
+  (state: RootState) => state.ui.view.feed,
+  (feed: FeedViewState) => feed.reqVersion,
 );
 
 export const selectFeedViewReqStatus = createSelector(

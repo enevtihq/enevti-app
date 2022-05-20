@@ -4,8 +4,26 @@ import { Profile } from 'enevti-app/types/core/account/profile';
 import { RootState } from 'enevti-app/store/state';
 import { NFTBase } from 'enevti-app/types/core/chain/nft';
 import { CollectionBase } from 'enevti-app/types/core/chain/collection';
+import { PaginationStore } from 'enevti-app/types/ui/store/PaginationStore';
 
-const initialState: Profile & { lastFetch: number } = {
+const initialState: Profile & {
+  ownedPagination: PaginationStore;
+  onSalePagination: PaginationStore;
+  collectionPagination: PaginationStore;
+  lastFetch: number;
+} = {
+  ownedPagination: {
+    version: 0,
+    checkpoint: 0,
+  },
+  onSalePagination: {
+    version: 0,
+    checkpoint: 0,
+  },
+  collectionPagination: {
+    version: 0,
+    checkpoint: 0,
+  },
   nftSold: 0,
   treasuryAct: 0,
   serveRate: 0,
@@ -36,14 +54,32 @@ const profileEntitySlice = createSlice({
       profile.collection = action.payload.collection.slice();
       profile.pending = action.payload.pending;
     },
-    addMyProfileCacheOwnedNFT: (profile, action: PayloadAction<NFTBase[]>) => {
+    unshiftMyProfileCacheOwnedNFT: (profile, action: PayloadAction<NFTBase[]>) => {
       profile.owned = action.payload.concat(profile.owned);
     },
-    addMyProfileCacheOnsaleNFT: (profile, action: PayloadAction<NFTBase[]>) => {
+    unshiftMyProfileCacheOnsaleNFT: (profile, action: PayloadAction<NFTBase[]>) => {
       profile.onSale = action.payload.concat(profile.onSale);
     },
-    addMyProfileCacheCollection: (profile, action: PayloadAction<CollectionBase[]>) => {
+    unshiftMyProfileCacheCollection: (profile, action: PayloadAction<CollectionBase[]>) => {
       profile.collection = action.payload.concat(profile.collection);
+    },
+    pushMyProfileCacheOwnedNFT: (profile, action: PayloadAction<NFTBase[]>) => {
+      profile.owned = profile.owned.concat(action.payload);
+    },
+    pushMyProfileCacheOnsaleNFT: (profile, action: PayloadAction<NFTBase[]>) => {
+      profile.onSale = profile.onSale.concat(action.payload);
+    },
+    pushMyProfileCacheCollection: (profile, action: PayloadAction<CollectionBase[]>) => {
+      profile.collection = profile.collection.concat(action.payload);
+    },
+    setMyProfileCacheOwnedPagination: (profile, action: PayloadAction<PaginationStore>) => {
+      profile.ownedPagination = { ...action.payload };
+    },
+    setMyProfileCacheOnsalePagination: (profile, action: PayloadAction<PaginationStore>) => {
+      profile.onSalePagination = { ...action.payload };
+    },
+    setMyProfileCacheCollectionPagination: (profile, action: PayloadAction<PaginationStore>) => {
+      profile.collectionPagination = { ...action.payload };
     },
     setMyProfileCachePending: (profile, action: PayloadAction<number>) => {
       profile.pending = action.payload;
@@ -59,10 +95,16 @@ const profileEntitySlice = createSlice({
 
 export const {
   setMyProfileCache,
-  addMyProfileCacheOwnedNFT,
-  addMyProfileCacheOnsaleNFT,
+  unshiftMyProfileCacheOwnedNFT,
+  unshiftMyProfileCacheOnsaleNFT,
+  unshiftMyProfileCacheCollection,
+  pushMyProfileCacheOwnedNFT,
+  pushMyProfileCacheOnsaleNFT,
+  pushMyProfileCacheCollection,
+  setMyProfileCacheCollectionPagination,
+  setMyProfileCacheOnsalePagination,
+  setMyProfileCacheOwnedPagination,
   setMyProfileCachePending,
-  addMyProfileCacheCollection,
   setLastFetchMyProfileCache,
   resetMyProfileCache,
 } = profileEntitySlice.actions;

@@ -15,7 +15,7 @@ import {
   selectStakePoolView,
   setStakePoolVersion,
 } from 'enevti-app/store/slices/ui/view/stakePool';
-import { loadStakePool, unloadStakePool } from 'enevti-app/store/middleware/thunk/ui/view/stakePool';
+import { loadMoreStaker, loadStakePool, unloadStakePool } from 'enevti-app/store/middleware/thunk/ui/view/stakePool';
 import { AppAsyncThunk } from 'enevti-app/types/ui/store/AppAsyncThunk';
 import AppStakerItem, { STAKER_ITEM_HEIGHT_PERCENTAGE } from 'enevti-app/components/organism/stake/AppStakerItem';
 import AppStakeButton from 'enevti-app/components/organism/stake/AppStakeButton';
@@ -165,6 +165,21 @@ export default function AppStakePool({ route }: AppStakePoolProps) {
     [stakePool, styles.listContentContainer, styles.listContentEmptyContainer],
   );
 
+  const handleLoadMore = React.useCallback(() => {
+    dispatch(loadMoreStaker({ routeParam: route.params, reload: true }));
+  }, [dispatch, route.params]);
+
+  const footerComponent = React.useMemo(
+    () =>
+      stakePool.stakerPagination &&
+      stakePool.staker &&
+      stakePool.stakerPagination.version !== stakePool.staker.length &&
+      stakePool.staker.length !== 0 ? (
+        <AppActivityIndicator style={{ marginVertical: hp('3%') }} />
+      ) : null,
+    [stakePool],
+  );
+
   return !stakePoolUndefined ? (
     <AppResponseView onReload={handleRefresh} status={stakePool.reqStatus} style={styles.stakePoolContainer}>
       <AppFloatingNotifButton
@@ -187,7 +202,10 @@ export default function AppStakePool({ route }: AppStakePoolProps) {
         getItemLayout={getItemLayout}
         refreshControl={refreshControl}
         ListEmptyComponent={emptyComponent}
+        ListFooterComponent={footerComponent}
         contentContainerStyle={contentContainerStyle}
+        onEndReachedThreshold={0.1}
+        onEndReached={handleLoadMore}
       />
       <AppStakeButton
         persona={owner}

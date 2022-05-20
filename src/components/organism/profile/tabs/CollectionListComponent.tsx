@@ -20,6 +20,13 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { useTranslation } from 'react-i18next';
 import AppMessageEmpty from 'enevti-app/components/molecules/message/AppMessageEmpty';
+import { loadMoreCollection } from 'enevti-app/store/middleware/thunk/ui/view/profile';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectMyProfileView, selectMyProfileViewCollection } from 'enevti-app/store/slices/ui/view/myProfile';
+import { selectProfileView, selectProfileViewCollection } from 'enevti-app/store/slices/ui/view/profile';
+import { RouteProp } from '@react-navigation/native';
+import { RootState } from 'enevti-app/store/state';
+import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
 
 const PROFILE_COLLECTION_ITEM_HEIGHT = 9;
 
@@ -27,28 +34,31 @@ const AnimatedFlatList = Animated.createAnimatedComponent<FlatListProps<Collecti
 
 interface CollectionListComponentProps {
   navigation: StackNavigationProp<RootStackParamList>;
-  data?: CollectionBase[];
+  route: RouteProp<RootStackParamList, 'Profile'>;
   onScroll?: any;
   headerHeight?: any;
   onMounted?: () => void;
   onRefresh?: () => void;
   scrollEnabled?: boolean;
   disableHeaderAnimation?: boolean;
+  isMyProfile?: boolean;
 }
 
 function Component(
   {
     navigation,
-    data,
+    route,
     onScroll,
     headerHeight,
     onMounted,
     onRefresh,
     scrollEnabled,
     disableHeaderAnimation = false,
+    isMyProfile = false,
   }: CollectionListComponentProps,
   ref: any,
 ) {
+  const dispatch = useDispatch();
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const theme = useTheme();
@@ -56,6 +66,15 @@ function Component(
   const [displayed, setDisplayed] = React.useState<boolean>(false);
   const [refreshing, setRefreshing] = React.useState<boolean>(false);
   const now = React.useMemo(() => Date.now(), []);
+
+  const total = useSelector((state: RootState) =>
+    isMyProfile
+      ? selectMyProfileView(state).collectionPagination.version
+      : selectProfileView(state, route.params.arg).collectionPagination.version,
+  );
+  const data = useSelector((state: RootState) =>
+    isMyProfile ? selectMyProfileViewCollection(state) : selectProfileViewCollection(state, route.params.arg),
+  );
 
   const styles = React.useMemo(
     () => makeStyles(insets, headerHeight, displayed, disableHeaderAnimation),
@@ -105,6 +124,16 @@ function Component(
       navigation.push('Collection', { arg: id, mode: 'id' });
     },
     [navigation],
+  );
+
+  const handleLoadMore = React.useCallback(() => {
+    dispatch(loadMoreCollection({ routeParam: route.params, isMyProfile, reload: true }));
+  }, [dispatch, route.params, isMyProfile]);
+
+  const footerComponent = React.useMemo(
+    () =>
+      total !== data.length && data.length !== 0 ? <AppActivityIndicator style={{ marginVertical: hp('3%') }} /> : null,
+    [total, data.length],
   );
 
   const renderItem = React.useCallback(
@@ -176,11 +205,14 @@ function Component(
       renderItem={renderItem}
       refreshControl={refreshControl}
       ListEmptyComponent={emptyComponent}
+      ListFooterComponent={footerComponent}
       removeClippedSubviews={true}
       initialNumToRender={10}
       maxToRenderPerBatch={10}
       updateCellsBatchingPeriod={50}
       windowSize={21}
+      onEndReachedThreshold={0.1}
+      onEndReached={handleLoadMore}
     />
   );
 }

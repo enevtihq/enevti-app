@@ -9,34 +9,45 @@ import { useTheme } from 'react-native-paper';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import { useTranslation } from 'react-i18next';
 import { BackgroundColorContext } from 'enevti-app/context';
-import { Profile } from 'enevti-app/types/core/account/profile';
+import { useSelector } from 'react-redux';
+import { RouteProp } from '@react-navigation/native';
+import { RootStackParamList } from 'enevti-app/navigation';
+import { RootState } from 'enevti-app/store/state';
+import { selectProfileView } from 'enevti-app/store/slices/ui/view/profile';
+import { selectMyProfileView } from 'enevti-app/store/slices/ui/view/myProfile';
 
 const Tab = createMaterialTopTabNavigator();
 
 interface AppProfileBodyProps {
-  profile: Profile;
+  route: RouteProp<RootStackParamList, 'Profile'>;
   headerHeight: number;
   animatedTabBarStyle: StyleProp<ViewStyle>;
   ownedNFTScreen: ComponentType<any>;
   onSaleNFTScreen: ComponentType<any>;
   collectionScreen: ComponentType<any>;
   style?: StyleProp<ViewStyle>;
+  isMyProfile?: boolean;
 }
 
 export default function AppProfileBody({
-  profile,
+  route,
   headerHeight,
   animatedTabBarStyle,
   ownedNFTScreen,
   onSaleNFTScreen,
   collectionScreen,
   style,
+  isMyProfile = false,
 }: AppProfileBodyProps) {
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const theme = useTheme();
   const backgroundColor = React.useContext(BackgroundColorContext);
   const styles = React.useMemo(() => makeStyles(), []);
+
+  const profile = useSelector((state: RootState) =>
+    isMyProfile ? selectMyProfileView(state) : selectProfileView(state, route.params.arg),
+  );
 
   return (
     <View style={[styles.profileBody, style]}>
@@ -66,7 +77,7 @@ export default function AppProfileBody({
           options={{
             tabBarLabel: ({ color }) => (
               <AppTextBody4 style={{ color: color }}>
-                {t('profile:owned')} ({profile.owned.length})
+                {t('profile:owned')} ({profile.ownedPagination ? profile.ownedPagination.version : 0})
               </AppTextBody4>
             ),
           }}
@@ -77,7 +88,7 @@ export default function AppProfileBody({
           options={{
             tabBarLabel: ({ color }) => (
               <AppTextBody4 style={{ color: color }}>
-                {t('profile:onSale')} ({profile.onSale.length})
+                {t('profile:onSale')} ({profile.onSalePagination ? profile.onSalePagination.version : 0})
               </AppTextBody4>
             ),
           }}
@@ -88,7 +99,7 @@ export default function AppProfileBody({
           options={{
             tabBarLabel: ({ color }) => (
               <AppTextBody4 style={{ color: color }}>
-                {t('profile:collection')} ({profile.collection.length})
+                {t('profile:collection')} ({profile.collectionPagination ? profile.collectionPagination.version : 0})
               </AppTextBody4>
             ),
           }}

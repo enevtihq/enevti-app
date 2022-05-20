@@ -13,11 +13,17 @@ import { MINT_BUTTON_HEIGHT } from 'enevti-app/components/organism/collection/Ap
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import AppMessageEmpty from 'enevti-app/components/molecules/message/AppMessageEmpty';
+import { loadMoreMinted } from 'enevti-app/store/middleware/thunk/ui/view/collection';
+import { RouteProp } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from 'enevti-app/store/state';
+import { selectCollectionView, selectCollectionViewMinted } from 'enevti-app/store/slices/ui/view/collection';
+import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
 
 const AnimatedFlatGrid = Animated.createAnimatedComponent<FlatGridProps<NFTBase>>(FlatGrid);
 
 interface MintedItemsComponentProps {
-  nfts: NFTBase[];
+  route: RouteProp<RootStackParamList, 'Collection'>;
   onScroll?: any;
   collectionHeaderHeight?: any;
   onMounted?: () => void;
@@ -29,7 +35,7 @@ interface MintedItemsComponentProps {
 
 function Component(
   {
-    nfts,
+    route,
     onScroll,
     collectionHeaderHeight,
     onMounted,
@@ -40,11 +46,15 @@ function Component(
   }: MintedItemsComponentProps,
   ref: any,
 ) {
+  const dispatch = useDispatch();
   const { hp, wp } = useDimension();
   const insets = useSafeAreaInsets();
   const mounted = React.useRef<boolean>(false);
   const [displayed, setDisplayed] = React.useState<boolean>(false);
   const [refreshing, setRefreshing] = React.useState<boolean>(false);
+
+  const collection = useSelector((state: RootState) => selectCollectionView(state, route.params.arg));
+  const nfts = useSelector((state: RootState) => selectCollectionViewMinted(state, route.params.arg));
 
   const styles = React.useMemo(
     () => makeStyles(hp, displayed, collectionHeaderHeight, insets),
@@ -59,8 +69,16 @@ function Component(
   );
 
   const listFooter = React.useMemo(
-    () => (mintingAvailable ? <View style={{ height: hp(MINT_BUTTON_HEIGHT) }} /> : undefined),
-    [hp, mintingAvailable],
+    () =>
+      mintingAvailable ? (
+        <View>
+          {collection.mintedPagination && collection.mintedPagination.version !== nfts.length && nfts.length !== 0 ? (
+            <AppActivityIndicator style={{ marginVertical: hp('3%') }} />
+          ) : null}
+          <View style={{ height: hp(MINT_BUTTON_HEIGHT) }} />
+        </View>
+      ) : undefined,
+    [hp, mintingAvailable, collection.mintedPagination, nfts.length],
   );
 
   const handleRefresh = React.useCallback(() => {
@@ -94,6 +112,10 @@ function Component(
     };
   }, [ref, onMounted, refreshing]);
 
+  const handleLoadMore = React.useCallback(() => {
+    dispatch(loadMoreMinted({ routeParam: route.params, reload: true }));
+  }, [dispatch, route.params]);
+
   return (
     <AnimatedFlatGrid
       ref={ref}
@@ -114,6 +136,8 @@ function Component(
       maxToRenderPerBatch={10}
       updateCellsBatchingPeriod={50}
       windowSize={21}
+      onEndReachedThreshold={0.1}
+      onEndReached={handleLoadMore}
     />
   );
 }

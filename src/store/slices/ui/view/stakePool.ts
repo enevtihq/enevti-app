@@ -1,9 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
 import { RootState } from 'enevti-app/store/state';
-import { StakePoolData } from 'enevti-app/types/core/chain/stake';
+import { StakePoolData, StakerItem } from 'enevti-app/types/core/chain/stake';
+import { PaginationStore } from 'enevti-app/types/ui/store/PaginationStore';
 
 type StakePoolViewState = StakePoolData & {
+  stakerPagination: PaginationStore;
   version: number;
   fetchedVersion: number;
   reqStatus: number;
@@ -15,6 +17,10 @@ type StakePoolViewStore = {
 };
 
 const initialStateItem: StakePoolViewState = {
+  stakerPagination: {
+    checkpoint: 0,
+    version: 0,
+  },
   loaded: false,
   reqStatus: 0,
   version: 0,
@@ -39,6 +45,12 @@ const stakePoolViewSlice = createSlice({
     },
     setStakePoolFetchedVersion: (stakePool, action: PayloadAction<{ key: string; value: number }>) => {
       stakePool[action.payload.key].fetchedVersion = action.payload.value;
+    },
+    pushStakePoolStaker: (stakePool, action: PayloadAction<{ key: string; value: StakerItem[] }>) => {
+      stakePool[action.payload.key].staker = stakePool[action.payload.key].staker.concat(action.payload.value);
+    },
+    setStakePoolStakerPagination: (stakePool, action: PayloadAction<{ key: string; value: PaginationStore }>) => {
+      stakePool[action.payload.key].stakerPagination = { ...action.payload.value };
     },
     setStakePoolVersion: (stakePool, action: PayloadAction<{ key: string; value: number }>) => {
       stakePool[action.payload.key].version = action.payload.value;
@@ -68,6 +80,8 @@ export const {
   setStakePoolLoaded,
   setStakePoolVersion,
   setStakePoolReqStatus,
+  pushStakePoolStaker,
+  setStakePoolStakerPagination,
   clearStakePoolByKey,
   resetStakePoolByKey,
   resetStakePoolView,
@@ -83,6 +97,11 @@ export const selectStakePoolOwnerView = createSelector(
 export const selectStakePoolView = createSelector(
   [(state: RootState) => state.ui.view.stakePool, (state: RootState, key: string) => key],
   (stakePool: StakePoolViewStore, key: string) => (stakePool.hasOwnProperty(key) ? stakePool[key] : initialStateItem),
+);
+
+export const selectStakePoolViewStaker = createSelector(
+  [(state: RootState) => state.ui.view.stakePool, (state: RootState, key: string) => key],
+  (stakePool: StakePoolViewStore, key: string) => (stakePool.hasOwnProperty(key) ? stakePool[key].staker : []),
 );
 
 export const isThereAnyNewStaker = createSelector(

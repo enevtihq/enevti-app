@@ -9,12 +9,7 @@ import AppHeader, { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms
 import { hp } from 'enevti-app/utils/imageRatio';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  isProfileUndefined,
-  isThereAnyNewProfileUpdate,
-  selectProfileView,
-  setProfileViewVersion,
-} from 'enevti-app/store/slices/ui/view/profile';
+import { selectProfileView } from 'enevti-app/store/slices/ui/view/profile';
 import { RootState } from 'enevti-app/store/state';
 import { appSocket } from 'enevti-app/utils/network';
 import { Socket } from 'socket.io-client';
@@ -37,13 +32,7 @@ export default function Profile({ navigation, route }: Props) {
   const headerHeight = hp(HEADER_HEIGHT_PERCENTAGE, insets);
 
   const profile = useSelector((state: RootState) => selectProfileView(state, route.params.arg));
-  const profileUndefined = useSelector((state: RootState) => isProfileUndefined(state, route.params.arg));
-  const newUpdate = useSelector((state: RootState) => isThereAnyNewProfileUpdate(state, route.params.arg));
   const socket = React.useRef<Socket | undefined>();
-
-  const onUpdateClose = React.useCallback(() => {
-    dispatch(setProfileViewVersion({ key: route.params.arg, value: Date.now() }));
-  }, [dispatch, route.params.arg]);
 
   React.useEffect(() => {
     const run = async () => {
@@ -76,16 +65,7 @@ export default function Profile({ navigation, route }: Props) {
       headerOffset={insets.top}
       header={<AppHeader back navigation={navigation} title={t('home:profile')} />}>
       <View style={styles.textContainer}>
-        <AppProfile
-          disableHeaderAnimation
-          navigation={navigation}
-          route={route}
-          headerHeight={headerHeight}
-          profile={profile}
-          profileUndefined={profileUndefined}
-          newUpdate={newUpdate}
-          onUpdateClose={onUpdateClose}
-        />
+        <AppProfile disableHeaderAnimation navigation={navigation} route={route} headerHeight={headerHeight} />
       </View>
     </AppView>
   );

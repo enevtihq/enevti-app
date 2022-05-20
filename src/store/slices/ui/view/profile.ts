@@ -4,14 +4,35 @@ import { ProfileView } from 'enevti-app/types/core/account/profile';
 import { RootState } from 'enevti-app/store/state';
 import { NFTBase } from 'enevti-app/types/core/chain/nft';
 import { CollectionBase } from 'enevti-app/types/core/chain/collection';
+import { PaginationStore } from 'enevti-app/types/ui/store/PaginationStore';
 
-type ProfileViewState = ProfileView & { version: number; fetchedVersion: number; reqStatus: number; loaded: boolean };
+export type ProfileViewState = ProfileView & {
+  ownedPagination: PaginationStore;
+  onSalePagination: PaginationStore;
+  collectionPagination: PaginationStore;
+  version: number;
+  fetchedVersion: number;
+  reqStatus: number;
+  loaded: boolean;
+};
 
 type ProfileViewStore = {
   [key: string]: ProfileViewState;
 };
 
 const initialStateItem: ProfileViewState = {
+  ownedPagination: {
+    version: 0,
+    checkpoint: 0,
+  },
+  onSalePagination: {
+    version: 0,
+    checkpoint: 0,
+  },
+  collectionPagination: {
+    version: 0,
+    checkpoint: 0,
+  },
   version: 0,
   fetchedVersion: 0,
   loaded: false,
@@ -43,14 +64,32 @@ const profileViewSlice = createSlice({
         [action.payload.key]: action.payload.value,
       });
     },
-    addProfileViewOwnedNFT: (profile, action: PayloadAction<{ key: string; value: NFTBase[] }>) => {
+    unshiftProfileViewOwnedNFT: (profile, action: PayloadAction<{ key: string; value: NFTBase[] }>) => {
       profile[action.payload.key].owned = action.payload.value.concat(profile[action.payload.key].owned);
     },
-    addProfileViewOnsaleNFT: (profile, action: PayloadAction<{ key: string; value: NFTBase[] }>) => {
+    unshiftProfileViewOnsaleNFT: (profile, action: PayloadAction<{ key: string; value: NFTBase[] }>) => {
       profile[action.payload.key].onSale = action.payload.value.concat(profile[action.payload.key].onSale);
     },
-    addProfileViewCollection: (profile, action: PayloadAction<{ key: string; value: CollectionBase[] }>) => {
+    unshiftProfileViewCollection: (profile, action: PayloadAction<{ key: string; value: CollectionBase[] }>) => {
       profile[action.payload.key].collection = action.payload.value.concat(profile[action.payload.key].collection);
+    },
+    pushProfileViewOwnedNFT: (profile, action: PayloadAction<{ key: string; value: NFTBase[] }>) => {
+      profile[action.payload.key].owned = profile[action.payload.key].owned.concat(action.payload.value);
+    },
+    pushProfileViewOnsaleNFT: (profile, action: PayloadAction<{ key: string; value: NFTBase[] }>) => {
+      profile[action.payload.key].onSale = profile[action.payload.key].onSale.concat(action.payload.value);
+    },
+    pushProfileViewCollection: (profile, action: PayloadAction<{ key: string; value: CollectionBase[] }>) => {
+      profile[action.payload.key].collection = profile[action.payload.key].collection.concat(action.payload.value);
+    },
+    setProfileViewOwnedPagination: (profile, action: PayloadAction<{ key: string; value: PaginationStore }>) => {
+      profile[action.payload.key].ownedPagination = { ...action.payload.value };
+    },
+    setProfileViewOnsalePagination: (profile, action: PayloadAction<{ key: string; value: PaginationStore }>) => {
+      profile[action.payload.key].onSalePagination = { ...action.payload.value };
+    },
+    setProfileViewCollectionPagination: (profile, action: PayloadAction<{ key: string; value: PaginationStore }>) => {
+      profile[action.payload.key].collectionPagination = { ...action.payload.value };
     },
     setProfileViewFetchedVersion: (profile, action: PayloadAction<{ key: string; value: number }>) => {
       profile[action.payload.key].fetchedVersion = action.payload.value;
@@ -82,9 +121,15 @@ const profileViewSlice = createSlice({
 export const {
   initProfileView,
   setProfileView,
-  addProfileViewOwnedNFT,
-  addProfileViewOnsaleNFT,
-  addProfileViewCollection,
+  unshiftProfileViewOwnedNFT,
+  unshiftProfileViewOnsaleNFT,
+  unshiftProfileViewCollection,
+  pushProfileViewOwnedNFT,
+  pushProfileViewOnsaleNFT,
+  pushProfileViewCollection,
+  setProfileViewOwnedPagination,
+  setProfileViewOnsalePagination,
+  setProfileViewCollectionPagination,
   setProfileViewFetchedVersion,
   setProfileViewVersion,
   setProfileViewPending,
@@ -99,6 +144,21 @@ export default profileViewSlice.reducer;
 export const selectProfileView = createSelector(
   [(state: RootState) => state.ui.view.profile, (state: RootState, key: string) => key],
   (profile: ProfileViewStore, key: string) => (profile.hasOwnProperty(key) ? profile[key] : initialStateItem),
+);
+
+export const selectProfileViewOwned = createSelector(
+  [(state: RootState) => state.ui.view.profile, (state: RootState, key: string) => key],
+  (profile: ProfileViewStore, key: string) => (profile.hasOwnProperty(key) ? profile[key].owned : []),
+);
+
+export const selectProfileViewOnsale = createSelector(
+  [(state: RootState) => state.ui.view.profile, (state: RootState, key: string) => key],
+  (profile: ProfileViewStore, key: string) => (profile.hasOwnProperty(key) ? profile[key].onSale : []),
+);
+
+export const selectProfileViewCollection = createSelector(
+  [(state: RootState) => state.ui.view.profile, (state: RootState, key: string) => key],
+  (profile: ProfileViewStore, key: string) => (profile.hasOwnProperty(key) ? profile[key].collection : []),
 );
 
 export const isProfileUndefined = createSelector(
