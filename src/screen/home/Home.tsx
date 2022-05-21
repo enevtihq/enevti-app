@@ -60,6 +60,8 @@ import { initProfile } from 'enevti-app/store/middleware/thunk/ui/view/profile';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 import { selectOnceWelcome, touchOnceWelcome } from 'enevti-app/store/slices/entities/once/welcome';
 import { requestFaucet } from 'enevti-app/service/enevti/dummy';
+import { isThereAnyNewMyProfileUpdates } from 'enevti-app/store/slices/ui/view/myProfile';
+import { isThereAnyNewFeedView } from 'enevti-app/store/slices/ui/view/feed';
 
 const Tab = createBottomTabNavigator();
 const TABBAR_HEIGHT_PERCENTAGE = 8;
@@ -79,6 +81,8 @@ export default function Home({ navigation }: Props) {
   const createType = useSelector(selectCreateNFTTypeQueue);
   const canCreateNFT = isProfileCanCreateNFT(myProfile);
   const welcome = useSelector(selectOnceWelcome);
+  const newProfileUpdate = useSelector(isThereAnyNewMyProfileUpdates);
+  const newFeedUpdate = useSelector(isThereAnyNewFeedView);
 
   const [uneligibleSheetVisible, setUneligibleSheetVisible] = React.useState<boolean>(false);
   const [restoreMenuVisible, setRestoreMenuVisible] = React.useState<boolean>(false);
@@ -362,6 +366,7 @@ export default function Home({ navigation }: Props) {
           }}
           options={{
             tabBarLabel: t('home:feed'),
+            tabBarBadge: newFeedUpdate ? '' : undefined,
             tabBarIcon: ({ color, size }) => <MaterialCommunityIcons name={iconMap.home} color={color} size={size} />,
             tabBarButton: props => <TouchableRipple {...props} disabled={props.disabled as boolean | undefined} />,
             header: () => (
@@ -461,6 +466,7 @@ export default function Home({ navigation }: Props) {
           }}
           options={{
             tabBarLabel: t('home:profile'),
+            tabBarBadge: newProfileUpdate ? '' : undefined,
             tabBarIcon: ({ color, size }) => <AppAvatarRenderer color={color} size={size * 1.1} persona={myPersona} />,
             tabBarButton: props => <TouchableRipple {...props} disabled={props.disabled as boolean | undefined} />,
             header: () => (

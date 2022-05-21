@@ -137,6 +137,9 @@ android {
         versionCode 1
         versionName "1.0"
         vectorDrawables.useSupportLibrary = true
+        configurations.all {
+            resolutionStrategy { force 'androidx.sqlite:sqlite-framework:2.1.0' }
+        }
     }
     splits {
         abi {

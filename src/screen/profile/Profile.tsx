@@ -21,6 +21,7 @@ import { reduceTotalNFTSoldChanged } from 'enevti-app/store/middleware/thunk/soc
 import { reduceNewOwned } from 'enevti-app/store/middleware/thunk/socket/profile/newOwned';
 import { reduceNewPending } from 'enevti-app/store/middleware/thunk/socket/profile/newPending';
 import { routeParamToAddress } from 'enevti-app/service/enevti/persona';
+import { RouteProp } from '@react-navigation/native';
 
 type Props = StackScreenProps<RootStackParamList, 'Profile'>;
 
@@ -30,6 +31,10 @@ export default function Profile({ navigation, route }: Props) {
   const insets = useSafeAreaInsets();
   const styles = React.useMemo(() => makeStyles(), []);
   const headerHeight = hp(HEADER_HEIGHT_PERCENTAGE, insets);
+  const screenRoute = React.useMemo(() => ({ params: route.params }), [route.params]) as RouteProp<
+    RootStackParamList,
+    'Profile'
+  >;
 
   const profile = useSelector((state: RootState) => selectProfileView(state, route.params.arg));
   const socket = React.useRef<Socket | undefined>();
@@ -65,7 +70,7 @@ export default function Profile({ navigation, route }: Props) {
       headerOffset={insets.top}
       header={<AppHeader back navigation={navigation} title={t('home:profile')} />}>
       <View style={styles.textContainer}>
-        <AppProfile disableHeaderAnimation navigation={navigation} route={route} headerHeight={headerHeight} />
+        <AppProfile disableHeaderAnimation navigation={navigation} route={screenRoute} headerHeight={headerHeight} />
       </View>
     </AppView>
   );

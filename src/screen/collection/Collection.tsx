@@ -14,6 +14,7 @@ import { interpolateColor, runOnJS, useAnimatedStyle, useSharedValue, withTiming
 import { useTheme } from 'react-native-paper';
 import { hp, wp } from 'enevti-app/utils/imageRatio';
 import { useTranslation } from 'react-i18next';
+import { RouteProp } from '@react-navigation/native';
 
 type Props = StackScreenProps<RootStackParamList, 'Collection'>;
 
@@ -23,6 +24,10 @@ export default function Collection({ navigation, route }: Props) {
   const theme = useTheme();
   const headerTreshold = React.useMemo(() => wp('100%') * 0.5625 - hp(HEADER_HEIGHT_PERCENTAGE), []);
   const isAboveTreshold = React.useRef<boolean>(false);
+  const screenRoute = React.useMemo(() => ({ params: route.params }), [route.params]) as RouteProp<
+    RootStackParamList,
+    'Collection'
+  >;
 
   const collectionScroll = useSharedValue(0);
 
@@ -120,7 +125,7 @@ export default function Collection({ navigation, route }: Props) {
           iconStyle={iconStyle}
         />
       }>
-      <AppCollection onScrollWorklet={collectionOnScroll} navigation={navigation} route={route} />
+      <AppCollection onScrollWorklet={collectionOnScroll} navigation={navigation} route={screenRoute} />
     </AppView>
   );
 }

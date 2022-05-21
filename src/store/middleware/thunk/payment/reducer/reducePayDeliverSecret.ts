@@ -37,6 +37,6 @@ export const reducePayDeliverSecret = (): AppThunk => async (dispatch, getState)
     payload.forEach(() => dispatch(subtractTransactionNonceCache()));
   } finally {
     dispatch(setDeliverSecretProcessing(false));
-    setTimeout(() => dispatch(initProfile() as unknown as AnyAction), BLOCK_TIME);
+    setTimeout(() => dispatch(initProfile() as unknown as AnyAction), await BLOCK_TIME());
   }
 };

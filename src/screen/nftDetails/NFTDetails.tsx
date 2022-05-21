@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next';
 import AppNFTDetails from 'enevti-app/components/organism/nftDetails/AppNFTDetails';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { Dimensions } from 'react-native';
+import { RouteProp } from '@react-navigation/native';
 
 type Props = StackScreenProps<RootStackParamList, 'NFTDetails'>;
 
@@ -23,6 +24,10 @@ export default function NFTDetails({ navigation, route }: Props) {
     () => hp(HEADER_HEIGHT_PERCENTAGE) + (getStatusBarHeight() / Dimensions.get('window').height) * 100,
     [],
   );
+  const screenRoute = React.useMemo(() => ({ params: route.params }), [route.params]) as RouteProp<
+    RootStackParamList,
+    'NFTDetails'
+  >;
 
   const nftDetailsScroll = useSharedValue(0);
 
@@ -94,7 +99,7 @@ export default function NFTDetails({ navigation, route }: Props) {
           textStyle={textStyle}
         />
       }>
-      <AppNFTDetails onScrollWorklet={nftDetailsOnScroll} navigation={navigation} route={route} />
+      <AppNFTDetails onScrollWorklet={nftDetailsOnScroll} navigation={navigation} route={screenRoute} />
     </AppView>
   );
 }

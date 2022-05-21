@@ -99,7 +99,14 @@ export default function AppProfile({
   const rawScrollY = useSharedValue(0);
   const tabScroll = useSharedValue(0);
 
-  const totalHeaderHeight = hp(PROFILE_HEADER_HEIGHT_PERCENTAGE, insets) + headerHeight;
+  const totalHeaderHeight = React.useMemo(
+    () => hp(PROFILE_HEADER_HEIGHT_PERCENTAGE, insets) + headerHeight,
+    [headerHeight, insets],
+  );
+  const varHeaderHeight = React.useMemo(
+    () => (disableHeaderAnimation ? headerHeight : 0),
+    [disableHeaderAnimation, headerHeight],
+  );
 
   const onUpdateClose = React.useCallback(() => {
     if (isMyProfile) {
@@ -129,18 +136,18 @@ export default function AppProfile({
       onScroll: (event, ctx: { prevY: number; current: number }) => {
         rawScrollY.value = event.contentOffset.y;
 
-        if (event.contentOffset.y < totalHeaderHeight) {
+        if (event.contentOffset.y < totalHeaderHeight - varHeaderHeight) {
           if (!headerCollapsed.value) {
             headerCollapsed.value = true;
             for (let i = 0; i < scrollRefList.length; i++) {
-              scrollTo(scrollRefList[i], 0, totalHeaderHeight, false);
+              scrollTo(scrollRefList[i], 0, totalHeaderHeight - varHeaderHeight, false);
             }
           }
         } else {
           if (headerCollapsed.value) {
             headerCollapsed.value = false;
             for (let i = 0; i < scrollRefList.length; i++) {
-              scrollTo(scrollRefList[i], 0, totalHeaderHeight, false);
+              scrollTo(scrollRefList[i], 0, totalHeaderHeight - varHeaderHeight, false);
             }
           }
         }
