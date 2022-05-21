@@ -27,6 +27,7 @@ import { initPassphraseWithDevice } from 'enevti-app/store/middleware/thunk/sess
 import { isValidPassphrase } from 'enevti-app/utils/passphrase';
 import AppMenuContainer from 'enevti-app/components/atoms/menu/AppMenuContainer';
 import AppHeaderWizard from 'enevti-app/components/molecules/AppHeaderWizard';
+import AppAlertModal from '../menu/AppAlertModal';
 
 YupPassword(Yup);
 
@@ -63,6 +64,7 @@ export default function AppGoogleSignInButton({ onNewAccount, onExistingAccount 
   const [isLoadingGoogle, setIsLoadingGoogle] = React.useState<boolean>(false);
   const [showInputGoogleDialog, setShowInputGoogleDialog] = React.useState<boolean>(false);
   const [isDialogButtonLoading, setIsDialogButtonLoading] = React.useState<boolean>(false);
+  const [alertShow, setAlertShow] = React.useState<boolean>(false);
   const [secretData, setSecretData] = React.useState<SecretAppData>(initialSecretData);
 
   React.useEffect(() => {
@@ -143,12 +145,24 @@ export default function AppGoogleSignInButton({ onNewAccount, onExistingAccount 
   return (
     <View>
       <AppTertiaryButton
-        onPress={handleOnPress}
+        onPress={() => setAlertShow(old => !old)}
         loading={isLoadingGoogle}
         icon={iconMap.google}
         style={styles.googleSignInButton}>
         {t('auth:socialLogin')}
       </AppTertiaryButton>
+      <AppAlertModal
+        visible={alertShow}
+        height={50}
+        onDismiss={() => {}}
+        iconName={'announcement'}
+        title={'Heads Up!'}
+        description={
+          'To try google login (testing mode), you must inform your gmail account to Enevti.com team, otherwise login will failed'
+        }
+        secondaryButtonText={'Got it!'}
+        secondaryButtonOnPress={handleOnPress}
+      />
       <AppMenuContainer
         backDisabled
         dismissKeyboard

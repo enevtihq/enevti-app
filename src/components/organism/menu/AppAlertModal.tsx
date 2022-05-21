@@ -23,6 +23,7 @@ interface AppAlertModalProps {
   secondaryButtonOnPress?: () => void;
   tertiaryButtonText?: string;
   tertiaryButtonOnPress?: () => void;
+  height?: number;
 }
 
 export default function AppAlertModal({
@@ -37,13 +38,15 @@ export default function AppAlertModal({
   secondaryButtonOnPress,
   tertiaryButtonText,
   tertiaryButtonOnPress,
+  height,
 }: AppAlertModalProps) {
   const insets = useSafeAreaInsets();
   const theme = useTheme();
   const styles = React.useMemo(() => makeStyles(insets), [insets]);
   const snapPoints = React.useMemo(
-    () => 38 + (primaryButtonText ? 8.5 : 0) + (secondaryButtonText ? 8.5 : 0) + (tertiaryButtonText ? 8.5 : 0),
-    [primaryButtonText, secondaryButtonText, tertiaryButtonText],
+    () =>
+      height ?? 38 + (primaryButtonText ? 8.5 : 0) + (secondaryButtonText ? 8.5 : 0) + (tertiaryButtonText ? 8.5 : 0),
+    [primaryButtonText, secondaryButtonText, tertiaryButtonText, height],
   );
 
   return (

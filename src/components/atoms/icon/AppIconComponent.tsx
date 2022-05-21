@@ -97,6 +97,8 @@ export const iconMap = {
   newBox: 'new-box',
   secretDelivered: 'lock-check',
   welcome: 'emoticon-kiss',
+  survey: 'message',
+  announcement: 'bullhorn',
 };
 
 interface AppIconComponentProps {

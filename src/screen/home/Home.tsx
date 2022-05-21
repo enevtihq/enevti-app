@@ -28,7 +28,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectMyPersonaCache } from 'enevti-app/store/slices/entities/cache/myPersona';
 import { selectMyProfileCache } from 'enevti-app/store/slices/entities/cache/myProfile';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import { View } from 'react-native';
+import { Linking, View } from 'react-native';
 import Color from 'color';
 import AppIconGradient from 'enevti-app/components/molecules/AppIconGradient';
 import { Theme } from 'enevti-app/theme/default';
@@ -62,6 +62,7 @@ import { selectOnceWelcome, touchOnceWelcome } from 'enevti-app/store/slices/ent
 import { requestFaucet } from 'enevti-app/service/enevti/dummy';
 import { isThereAnyNewMyProfileUpdates } from 'enevti-app/store/slices/ui/view/myProfile';
 import { isThereAnyNewFeedView } from 'enevti-app/store/slices/ui/view/feed';
+import { addAppOpenCounter, selectAppOpenCounter } from 'enevti-app/store/slices/entities/appOpenCounter';
 
 const Tab = createBottomTabNavigator();
 const TABBAR_HEIGHT_PERCENTAGE = 8;
@@ -83,6 +84,7 @@ export default function Home({ navigation }: Props) {
   const welcome = useSelector(selectOnceWelcome);
   const newProfileUpdate = useSelector(isThereAnyNewMyProfileUpdates);
   const newFeedUpdate = useSelector(isThereAnyNewFeedView);
+  const appOpenCounter = useSelector(selectAppOpenCounter);
 
   const [uneligibleSheetVisible, setUneligibleSheetVisible] = React.useState<boolean>(false);
   const [restoreMenuVisible, setRestoreMenuVisible] = React.useState<boolean>(false);
@@ -98,6 +100,7 @@ export default function Home({ navigation }: Props) {
   React.useEffect(() => {
     dispatch(syncTransactionNonce());
     dispatch(initProfile());
+    dispatch(addAppOpenCounter());
   }, [dispatch]);
 
   React.useEffect(() => {
@@ -314,6 +317,19 @@ export default function Home({ navigation }: Props) {
           description={"We'll give you 2K test coin to explore our alphanet, don't forget to give us feedback :)"}
           secondaryButtonText={"I'm Super Excited!"}
           secondaryButtonOnPress={() => dispatch(touchOnceWelcome())}
+        />
+      ) : null}
+      {appOpenCounter === 3 ? (
+        <AppAlertModal
+          visible={appOpenCounter === 3}
+          iconName={'survey'}
+          onDismiss={() => dispatch(addAppOpenCounter())}
+          title={'We Need Feedback!'}
+          description={'Would you mind filling out a quick survey for our MVP feedback? Only 1 minute'}
+          secondaryButtonText={'Of Course!'}
+          secondaryButtonOnPress={() => {
+            Linking.openURL('https://link.enevti.com/mvp-feedback-en');
+          }}
         />
       ) : null}
       {canCreateNFT ? null : (
