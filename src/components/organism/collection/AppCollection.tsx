@@ -155,7 +155,6 @@ export default function AppCollection({ onScrollWorklet, navigation, route }: Ap
       onScroll: (event, ctx: { prevY: number; current: number }) => {
         rawScrollY.value = event.contentOffset.y;
 
-        console.log(event.contentOffset.y);
         if (event.contentOffset.y < totalHeaderHeight - headerHeight) {
           if (!headerCollapsed.value) {
             headerCollapsed.value = true;
