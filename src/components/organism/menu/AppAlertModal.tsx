@@ -19,10 +19,13 @@ interface AppAlertModalProps {
   description: string;
   primaryButtonText?: string;
   primaryButtonOnPress?: () => void;
+  primaryButtonIsLoading?: boolean;
   secondaryButtonText?: string;
   secondaryButtonOnPress?: () => void;
+  secondaryButtonIsLoading?: boolean;
   tertiaryButtonText?: string;
   tertiaryButtonOnPress?: () => void;
+  tertiaryButtonIsLoading?: boolean;
   height?: number;
 }
 
@@ -34,10 +37,13 @@ export default function AppAlertModal({
   onDismiss,
   primaryButtonText,
   primaryButtonOnPress,
+  primaryButtonIsLoading,
   secondaryButtonText,
   secondaryButtonOnPress,
+  secondaryButtonIsLoading,
   tertiaryButtonText,
   tertiaryButtonOnPress,
+  tertiaryButtonIsLoading,
   height,
 }: AppAlertModalProps) {
   const insets = useSafeAreaInsets();
@@ -62,18 +68,25 @@ export default function AppAlertModal({
       <View style={{ padding: wp('10%', insets) }}>
         {primaryButtonText ? (
           <View>
-            <AppPrimaryButton onPress={primaryButtonOnPress}>{primaryButtonText}</AppPrimaryButton>
+            <AppPrimaryButton loading={primaryButtonIsLoading} onPress={primaryButtonOnPress}>
+              {primaryButtonText}
+            </AppPrimaryButton>
             <View style={{ height: hp('1%', insets) }} />
           </View>
         ) : null}
         {secondaryButtonText ? (
           <View>
-            <AppSecondaryButton onPress={secondaryButtonOnPress}>{secondaryButtonText}</AppSecondaryButton>
+            <AppSecondaryButton loading={secondaryButtonIsLoading} onPress={secondaryButtonOnPress}>
+              {secondaryButtonText}
+            </AppSecondaryButton>
             <View style={{ height: hp('1%', insets) }} />
           </View>
         ) : null}
         {tertiaryButtonText ? (
-          <AppQuaternaryButton contentStyle={styles.tertiaryAction} onPress={tertiaryButtonOnPress}>
+          <AppQuaternaryButton
+            loading={tertiaryButtonIsLoading}
+            contentStyle={styles.tertiaryAction}
+            onPress={tertiaryButtonOnPress}>
             <AppTextBody4 style={{ color: theme.colors.primary }}>{tertiaryButtonText}</AppTextBody4>
           </AppQuaternaryButton>
         ) : null}

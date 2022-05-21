@@ -13,7 +13,8 @@
     <uses-feature android:name="android.hardware.camera.front" android:required="false" />
 
     <application
-      android:requestLegacyExternalStorage="true" 
+      android:requestLegacyExternalStorage="true"
+      android:usesCleartextTraffic="true"
       android:name=".MainApplication"
       android:label="@string/app_name"
       android:icon="@mipmap/ic_launcher"

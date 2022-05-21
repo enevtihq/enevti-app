@@ -154,13 +154,14 @@ export default function AppGoogleSignInButton({ onNewAccount, onExistingAccount 
       <AppAlertModal
         visible={alertShow}
         height={50}
-        onDismiss={() => {}}
+        onDismiss={() => setAlertShow(false)}
         iconName={'announcement'}
         title={'Heads Up!'}
         description={
           'To try google login (testing mode), you must inform your gmail account to Enevti.com team, otherwise login will failed'
         }
         secondaryButtonText={'Got it!'}
+        secondaryButtonIsLoading={isLoadingGoogle}
         secondaryButtonOnPress={handleOnPress}
       />
       <AppMenuContainer
