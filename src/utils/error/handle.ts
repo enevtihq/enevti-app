@@ -8,16 +8,18 @@ const silentError = [ABORT_ERROR_MESSAGE, 'Abort'];
 
 const includeSubstring = (message: string) => (item: string) => message.toLowerCase().includes(item.toLowerCase());
 
-export function handleError(err: any, key: string = 'message') {
+export function handleError(err: any, key: string = 'message', silent: boolean = false) {
   if (silentError.some(includeSubstring(err[key]))) {
     return;
   } else {
-    store.dispatch(
-      showSnackbar({
-        mode: 'error',
-        text: err[key],
-      }),
-    );
+    if (!silent) {
+      store.dispatch(
+        showSnackbar({
+          mode: 'error',
+          text: err[key],
+        }),
+      );
+    }
   }
 }
 

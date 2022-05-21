@@ -20,6 +20,10 @@ import { getProfilePendingDelivery } from 'enevti-app/service/enevti/profile';
 import { getMyAddress } from 'enevti-app/service/enevti/persona';
 import { setMyProfileViewPending } from 'enevti-app/store/slices/ui/view/myProfile';
 import { selectMyProfileCache } from 'enevti-app/store/slices/entities/cache/myProfile';
+import {
+  selectDeliverSecretProcessing,
+  setDeliverSecretProcessing,
+} from 'enevti-app/store/slices/session/transaction/processing';
 
 type PayDeliverSecretPayload = { id: string; secret: NFT['redeem']['secret'] }[];
 type PayManualDeliverSecret = undefined;
@@ -31,6 +35,12 @@ export const payDeliverSecret = createAsyncThunk<void, PayDeliverSecretPayload, 
     try {
       console.log('deliver secret creator');
 
+      const isDeliverSecretProcessing = selectDeliverSecretProcessing(getState());
+      if (isDeliverSecretProcessing) {
+        return;
+      }
+
+      dispatch(setDeliverSecretProcessing(true));
       dispatch(setMyProfileViewPending(-1));
       for (const data of payload) {
         const key = await decryptAsymmetric(data.secret.cipher, data.secret.sender);
@@ -74,7 +84,8 @@ export const payDeliverSecret = createAsyncThunk<void, PayDeliverSecretPayload, 
     } catch (err) {
       const profileCache = selectMyProfileCache(getState());
       dispatch(setMyProfileViewPending(profileCache.pending));
-      handleError(err);
+      dispatch(setDeliverSecretProcessing(false));
+      handleError(err, 'message', true);
       transactionPayload.forEach(() => dispatch(subtractTransactionNonceCache()));
     }
   },
