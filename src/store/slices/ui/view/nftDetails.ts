@@ -178,6 +178,7 @@ export const {
   initNFTDetailsView,
   setNFTDetailsView,
   unshiftNFTDetailsViewActivity,
+  pushNFTDetailsViewActivity,
   setNFTDetailsViewActivityPagination,
   setNFTDetailsViewSecret,
   setNFTDetailsLoaded,

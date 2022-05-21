@@ -10,8 +10,11 @@ import {
   urlGetNFTById,
   urlGetNFTBySerial,
   urlGetSerialToNFTId,
+  urlGetNFTActivityById,
 } from 'enevti-app/utils/constant/URLCreator';
-import { APIResponse, ResponseJSON } from 'enevti-app/types/core/service/api';
+import { APIResponse, APIResponseVersioned, ResponseJSON, ResponseVersioned } from 'enevti-app/types/core/service/api';
+import { NFTActivity } from 'enevti-app/types/core/chain/nft/NFTActivity';
+import { NFT_ACTIVITY_INITIAL_LENGTH } from 'enevti-app/utils/constant/limit';
 
 type NFTDetailsRoute = StackScreenProps<RootStackParamList, 'NFTDetails'>['route']['params'];
 
@@ -102,6 +105,46 @@ async function fetchNFTIdFromSerial(serial: string, signal?: AbortController['si
     handleError(err);
     return responseError(err.code);
   }
+}
+
+async function fetchNFTActivity(
+  id: string,
+  offset: number,
+  limit: number,
+  version: number,
+  signal?: AbortController['signal'],
+): Promise<APIResponseVersioned<NFTActivity[]>> {
+  try {
+    await isInternetReachable();
+    const res = await appFetch(urlGetNFTActivityById(id, offset, limit, version), { signal });
+    const ret = (await res.json()) as ResponseJSON<ResponseVersioned<NFTActivity[]>>;
+    handleResponseCode(res, ret);
+    return {
+      status: res.status,
+      data: ret.data,
+      meta: ret.meta,
+    };
+  } catch (err: any) {
+    handleError(err);
+    return responseError(err.code);
+  }
+}
+
+export async function getNFTActivity(
+  id: string,
+  offset: number,
+  limit: number,
+  version: number,
+  signal?: AbortController['signal'],
+): Promise<APIResponseVersioned<NFTActivity[]>> {
+  return await fetchNFTActivity(id, offset, limit, version, signal);
+}
+
+export async function getNFTInitialActivity(
+  id: string,
+  signal?: AbortController['signal'],
+): Promise<APIResponseVersioned<NFTActivity[]>> {
+  return await fetchNFTActivity(id, 0, NFT_ACTIVITY_INITIAL_LENGTH, 0, signal);
 }
 
 export async function getNFTIdFromSerial(

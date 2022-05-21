@@ -20,12 +20,19 @@ import { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHe
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { parsePersonaLabel } from 'enevti-app/service/enevti/persona';
 import AppMessageEmpty from 'enevti-app/components/molecules/message/AppMessageEmpty';
+import { RouteProp } from '@react-navigation/native';
+import { RootStackParamList } from 'enevti-app/navigation';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectNFTDetailsView, selectNFTDetailsViewActivity } from 'enevti-app/store/slices/ui/view/nftDetails';
+import { RootState } from 'enevti-app/store/state';
+import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
+import { loadMoreActivity } from 'enevti-app/store/middleware/thunk/ui/view/nftDetails';
 
 const COLLECTION_ACTIVITY_ITEM_HEIGHT = 9;
 const AnimatedFlatList = Animated.createAnimatedComponent<any>(FlatList);
 
 interface NFTActivityComponentProps {
-  activities: NFT['activity'];
+  route: RouteProp<RootStackParamList, 'NFTDetails'>;
   onScroll?: any;
   collectionHeaderHeight?: any;
   onMounted?: () => void;
@@ -34,9 +41,10 @@ interface NFTActivityComponentProps {
 }
 
 function Component(
-  { activities, onScroll, collectionHeaderHeight, onMounted, onRefresh, scrollEnabled }: NFTActivityComponentProps,
+  { route, onScroll, collectionHeaderHeight, onMounted, onRefresh, scrollEnabled }: NFTActivityComponentProps,
   ref: any,
 ) {
+  const dispatch = useDispatch();
   const { hp, wp } = useDimension();
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
@@ -44,6 +52,9 @@ function Component(
   const mounted = React.useRef<boolean>(false);
   const [displayed, setDisplayed] = React.useState<boolean>(false);
   const [refreshing, setRefreshing] = React.useState<boolean>(false);
+
+  const nftDetails = useSelector((state: RootState) => selectNFTDetailsView(state, route.params.arg));
+  const activities = useSelector((state: RootState) => selectNFTDetailsViewActivity(state, route.params.arg));
 
   const styles = React.useMemo(
     () => makeStyles(hp, wp, displayed, collectionHeaderHeight, insets),
@@ -113,7 +124,19 @@ function Component(
     [itemHeight],
   );
 
-  const listFooter = React.useMemo(() => <View style={{ height: hp(5) }} />, [hp]);
+  const listFooter = React.useMemo(
+    () => (
+      <View>
+        {nftDetails.activityPagination &&
+        nftDetails.activityPagination.version !== nftDetails.activity.length &&
+        nftDetails.activity.length !== 0 ? (
+          <AppActivityIndicator style={{ marginVertical: hp('3%') }} />
+        ) : null}
+        <View style={{ height: hp(5) }} />
+      </View>
+    ),
+    [hp, nftDetails.activityPagination, nftDetails.activity.length],
+  );
 
   React.useEffect(() => {
     if (ref && ref.current) {
@@ -125,6 +148,10 @@ function Component(
       mounted.current = false;
     };
   }, [ref, onMounted, refreshing]);
+
+  const handleLoadMore = React.useCallback(() => {
+    dispatch(loadMoreActivity({ routeParam: route.params, reload: true }));
+  }, [dispatch, route.params]);
 
   return (
     <AnimatedFlatList
@@ -146,6 +173,8 @@ function Component(
       updateCellsBatchingPeriod={50}
       windowSize={21}
       ListFooterComponent={listFooter}
+      onEndReachedThreshold={0.1}
+      onEndReached={handleLoadMore}
     />
   );
 }

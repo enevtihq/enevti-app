@@ -23,12 +23,14 @@ import AppAccordion from 'enevti-app/components/atoms/accordion/AppAccordion';
 import AppTextBody3 from 'enevti-app/components/atoms/text/AppTextBody3';
 import Color from 'color';
 import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
-import { NFT } from 'enevti-app/types/core/chain/nft';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { RouteProp } from '@react-navigation/native';
+import { RootState } from 'enevti-app/store/state';
+import { selectNFTDetailsView } from 'enevti-app/store/slices/ui/view/nftDetails';
 
 interface NFTSummaryComponentProps {
-  nft: NFT;
+  route: RouteProp<RootStackParamList, 'NFTDetails'>;
   navigation: StackNavigationProp<RootStackParamList>;
   onScroll?: any;
   collectionHeaderHeight?: any;
@@ -38,7 +40,15 @@ interface NFTSummaryComponentProps {
 }
 
 function Component(
-  { nft, navigation, onScroll, collectionHeaderHeight, onMounted, onRefresh, scrollEnabled }: NFTSummaryComponentProps,
+  {
+    route,
+    navigation,
+    onScroll,
+    collectionHeaderHeight,
+    onMounted,
+    onRefresh,
+    scrollEnabled,
+  }: NFTSummaryComponentProps,
   ref: any,
 ) {
   const dispatch = useDispatch();
@@ -50,6 +60,8 @@ function Component(
   const mounted = React.useRef<boolean>(false);
   const [displayed, setDisplayed] = React.useState<boolean>(false);
   const [refreshing, setRefreshing] = React.useState<boolean>(false);
+
+  const nft = useSelector((state: RootState) => selectNFTDetailsView(state, route.params.arg));
 
   const styles = React.useMemo(
     () => makeStyles(hp, wp, displayed, collectionHeaderHeight, insets, theme),
