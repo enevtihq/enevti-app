@@ -22,6 +22,7 @@ import {
   setMyProfileViewCollectionPagination,
   setMyProfileViewLoaded,
   setMyProfileViewOwnedPagination,
+  setMyProfileViewPending,
   setMyProfileViewReqStatus,
 } from 'enevti-app/store/slices/ui/view/myProfile';
 import {
@@ -281,6 +282,7 @@ export const initProfile = createAsyncThunk<void, undefined, AsyncThunkAPI>(
     try {
       await getMyBasePersona(true, signal);
       const profileResponse = await getMyProfile(true, signal);
+      dispatch(setMyProfileViewPending(profileResponse.data.pending));
       if (profileResponse.data.pending > 0) {
         dispatch(payManualDeliverSecret() as unknown as AnyAction);
       }

@@ -53,7 +53,6 @@ export default function AppFeedHeader({ feed, navigation }: AppFeedHeaderProps) 
 
   const onCloseMenu = () => {
     setMenuVisible(false);
-    dispatch(showSnackbar({ mode: 'info', text: 'Coming Soon!' }));
   };
 
   const onFollow = () => {

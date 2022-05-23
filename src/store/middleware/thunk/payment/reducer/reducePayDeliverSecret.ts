@@ -9,6 +9,7 @@ import { setDeliverSecretProcessing } from 'enevti-app/store/slices/session/tran
 import { initProfile } from '../../ui/view/profile';
 import { BLOCK_TIME } from 'enevti-app/utils/constant/identifier';
 import { AnyAction } from '@reduxjs/toolkit';
+import { setMyProfileViewPending } from 'enevti-app/store/slices/ui/view/myProfile';
 
 export const reducePayDeliverSecret = (): AppThunk => async (dispatch, getState) => {
   const payload = JSON.parse(selectPaymentActionPayload(getState())) as AppTransaction<DeliverSecretUI>[];
@@ -29,6 +30,7 @@ export const reducePayDeliverSecret = (): AppThunk => async (dispatch, getState)
 
     if (responseStatusArray.every(value => value === 200)) {
       console.log('deliver secret success');
+      dispatch(setMyProfileViewPending(0));
     } else {
       throw Error(JSON.stringify([...responseErrorSet]));
     }
