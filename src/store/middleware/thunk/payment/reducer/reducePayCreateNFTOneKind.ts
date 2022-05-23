@@ -37,12 +37,9 @@ export const reducePayCreateNFTOneKind = (): AppThunk => async (dispatch, getSta
       dispatch(setModalLoaderText(i18n.t('payment:uploadingTo', { file: 'data', provider })));
       data = await uploadURItoIPFS(payload.data.uri);
       dispatch(setModalLoaderText(i18n.t('payment:uploadingTo', { file: 'cover', provider })));
-      cover = payload.state.coverUri ? await uploadURItoIPFS(payload.state.coverUri) : '';
+      cover = payload.state.coverUri ? await uploadURItoIPFS(payload.state.coverUri) : data;
       dispatch(setModalLoaderText(i18n.t('payment:uploadingTo', { file: 'content', provider })));
-      content =
-        payload.state.utility === 'content'
-          ? await uploadURItoIPFS(payload.state.contentUri)
-          : payload.state.contentUri;
+      content = payload.state.utility === 'content' ? await uploadURItoIPFS(payload.state.contentUri) : '';
     }
 
     transactionPayload.asset.data = data;

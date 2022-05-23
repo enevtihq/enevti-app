@@ -1,5 +1,5 @@
 import { AppThunk } from 'enevti-app/store/state';
-import { setMyProfileViewPending } from 'enevti-app/store/slices/ui/view/myProfile';
+import { setMyProfileViewPending, selectMyProfileView } from 'enevti-app/store/slices/ui/view/myProfile';
 import { setProfileViewPending } from 'enevti-app/store/slices/ui/view/profile';
 import { setMyProfileCachePending } from 'enevti-app/store/slices/entities/cache/myProfile';
 
@@ -11,7 +11,10 @@ export const reduceNewPending =
 
 export const reduceMyNewPending =
   (payload: any): AppThunk =>
-  dispatch => {
+  (dispatch, getState) => {
     dispatch(setMyProfileCachePending(payload));
-    dispatch(setMyProfileViewPending(payload));
+    const profileView = selectMyProfileView(getState());
+    if (profileView.pending !== -1) {
+      dispatch(setMyProfileViewPending(payload));
+    }
   };

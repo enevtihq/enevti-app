@@ -1,4 +1,4 @@
-import { selectPaymentActionPayload } from 'enevti-app/store/slices/payment';
+import { resetPaymentState, selectPaymentActionPayload } from 'enevti-app/store/slices/payment';
 import { AppThunk } from 'enevti-app/store/state';
 import { AppTransaction } from 'enevti-app/types/core/service/transaction';
 import { postSilentTransaction } from 'enevti-app/service/enevti/transaction';
@@ -37,6 +37,7 @@ export const reducePayDeliverSecret = (): AppThunk => async (dispatch, getState)
     payload.forEach(() => dispatch(subtractTransactionNonceCache()));
   } finally {
     dispatch(setDeliverSecretProcessing(false));
+    dispatch(resetPaymentState());
     setTimeout(() => dispatch(initProfile() as unknown as AnyAction), await BLOCK_TIME());
   }
 };
