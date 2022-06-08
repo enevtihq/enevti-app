@@ -3,6 +3,7 @@
  */
 
 import './shim';
+import 'react-native-reanimated';
 import React from 'react';
 import { AppRegistry } from 'react-native';
 

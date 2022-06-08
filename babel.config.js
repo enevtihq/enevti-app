@@ -3,7 +3,7 @@ module.exports = {
   plugins: [
     '@babel/plugin-proposal-async-generator-functions',
     '@babel/plugin-syntax-bigint',
-    'react-native-reanimated/plugin',
+    'jest-hoist',
     [
       require.resolve('babel-plugin-module-resolver'),
       {
@@ -14,7 +14,12 @@ module.exports = {
         },
       },
     ],
-    'jest-hoist',
+    [
+      'react-native-reanimated/plugin',
+      {
+        globals: ['__scanCodes'],
+      },
+    ],
   ],
   env: {
     production: {
