@@ -52,8 +52,6 @@ import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import { ImageOrVideo } from 'react-native-image-crop-picker';
 import AppCameraGalleryPicker from 'enevti-app/components/organism/picker/AppCameraGalleryPicker';
 import AppHeader from 'enevti-app/components/atoms/view/AppHeader';
-import AppMenuContainer from 'enevti-app/components/atoms/menu/AppMenuContainer';
-import AppSecondaryButton from 'enevti-app/components/atoms/button/AppSecondaryButton';
 import { clearCreateNFTQueueType } from 'enevti-app/store/slices/queue/nft/create/type';
 import { clearCreateNFTQueueRoute } from 'enevti-app/store/slices/queue/nft/create/route';
 import usePaymentCallback from 'enevti-app/utils/hook/usePaymentCallback';
@@ -62,6 +60,7 @@ import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 import { payCreateNFTOneKind } from 'enevti-app/store/middleware/thunk/payment/creator/payCreateNFTOneKind';
 import getFileExtension from 'enevti-app/utils/mime/getFileExtension';
 import timezoneOffsetLabel from 'enevti-app/utils/date/timezoneOffsetLabel';
+import AppConfirmationModal from 'enevti-app/components/organism/menu/AppConfirmationModal';
 
 type Props = StackScreenProps<RootStackParamList, 'CreateOneKindContract'>;
 
@@ -130,7 +129,6 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
   const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
   const timezoneOffset = React.useMemo(() => new Date().getTimezoneOffset(), []);
   const itemWidth = React.useMemo(() => wp('90%', insets), [insets]);
-  const closeMenuSnapPoints = React.useMemo(() => ['42%'], []);
   const paymentThunkRef = React.useRef<any>();
 
   const nameInput = React.useRef<TextInput>();
@@ -967,32 +965,17 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
           {t('createNFT:createButton')}
         </AppPrimaryButton>
       </View>
-      <AppMenuContainer
-        memoKey={['visible']}
-        tapEverywhereToDismiss
-        enablePanDownToClose
-        snapPoints={closeMenuSnapPoints}
+      <AppConfirmationModal
+        iconName={'question'}
         visible={closeMenuVisible}
-        onDismiss={closeMenuOnDismiss}>
-        <AppHeaderWizard
-          noHeaderSpace
-          mode={'icon'}
-          modeData={'question'}
-          style={styles.closeMenuContainer}
-          title={t('createNFT:saveSession')}
-          titleStyle={styles.closeMenuTitle}
-          description={t('createNFT:saveSessionDescription')}
-        />
-        <View style={styles.closeMenuAction}>
-          <View style={styles.closeMenuItemAction}>
-            <AppSecondaryButton onPress={discardFormState}>{t('createNFT:discard')}</AppSecondaryButton>
-          </View>
-          <View style={styles.closeMenuActionSpace} />
-          <View style={styles.closeMenuItemAction}>
-            <AppPrimaryButton onPress={saveFormState}>{t('createNFT:save')}</AppPrimaryButton>
-          </View>
-        </View>
-      </AppMenuContainer>
+        onDismiss={closeMenuOnDismiss}
+        title={t('createNFT:saveSession')}
+        description={t('createNFT:saveSessionDescription')}
+        cancelText={t('createNFT:discard')}
+        cancelOnPress={discardFormState}
+        okText={t('createNFT:save')}
+        okOnPress={saveFormState}
+      />
     </AppView>
   );
 }

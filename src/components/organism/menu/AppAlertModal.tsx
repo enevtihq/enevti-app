@@ -51,7 +51,7 @@ export default function AppAlertModal({
   const styles = React.useMemo(() => makeStyles(insets), [insets]);
   const snapPoints = React.useMemo(
     () =>
-      height ?? 38 + (primaryButtonText ? 8.5 : 0) + (secondaryButtonText ? 8.5 : 0) + (tertiaryButtonText ? 8.5 : 0),
+      height ?? 43 + (primaryButtonText ? 8.5 : 0) + (secondaryButtonText ? 8.5 : 0) + (tertiaryButtonText ? 8.5 : 0),
     [primaryButtonText, secondaryButtonText, tertiaryButtonText, height],
   );
 

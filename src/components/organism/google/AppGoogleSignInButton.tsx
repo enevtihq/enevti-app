@@ -153,7 +153,7 @@ export default function AppGoogleSignInButton({ onNewAccount, onExistingAccount 
       </AppTertiaryButton>
       <AppAlertModal
         visible={alertShow}
-        height={50}
+        height={55}
         onDismiss={() => setAlertShow(false)}
         iconName={'announcement'}
         title={'Heads Up!'}

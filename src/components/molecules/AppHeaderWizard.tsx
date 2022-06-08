@@ -78,7 +78,7 @@ function Component({
       {mode === 'icon' && modeData ? (
         <AppIconGradient
           name={iconMap[modeData]}
-          size={wp('25%', insets)}
+          size={hp('12%', insets)}
           colors={[theme.colors.primary, theme.colors.secondary]}
           style={styles.headerImage}
         />

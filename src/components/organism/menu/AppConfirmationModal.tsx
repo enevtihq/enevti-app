@@ -33,7 +33,7 @@ export default function AppConfirmationModal({
 }: AppConfirmationModalProps) {
   const insets = useSafeAreaInsets();
   const styles = React.useMemo(() => makeStyles(insets), [insets]);
-  const snapPoints = React.useMemo(() => ['42%'], []);
+  const snapPoints = React.useMemo(() => ['47%'], []);
   return (
     <AppMenuContainer
       tapEverywhereToDismiss
@@ -68,13 +68,14 @@ const makeStyles = (insets: SafeAreaInsets) =>
     container: {
       width: wp('90%', insets),
       alignSelf: 'center',
-      flex: 0,
+      flex: 1,
     },
     titleStyle: {
       marginTop: hp('1%', insets),
     },
     buttonContainer: {
       paddingHorizontal: wp('5%', insets),
+      paddingBottom: wp('10%', insets),
       marginTop: hp('3%', insets),
       flexDirection: 'row',
     },
