@@ -108,7 +108,7 @@ export default function AppNavigationContainer() {
       linking={navLinking}
       fallback={LinkingFallback}
       theme={getTheme(colorScheme!.toString())}>
-      <Stack.Navigator initialRouteName={initialRoute}>
+      <Stack.Navigator initialRouteName={initialRoute} screenOptions={{ gestureEnabled: false }}>
         <Stack.Screen
           name="CreateAccount"
           component={CreateAccount}
