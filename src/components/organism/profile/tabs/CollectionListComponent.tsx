@@ -27,6 +27,7 @@ import { selectProfileView, selectProfileViewCollection } from 'enevti-app/store
 import { RouteProp } from '@react-navigation/native';
 import { RootState } from 'enevti-app/store/state';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
+import { isMintingAvailable } from 'enevti-app/utils/collection';
 
 const PROFILE_COLLECTION_ITEM_HEIGHT = 9;
 
@@ -65,7 +66,6 @@ function Component(
   const mounted = React.useRef<boolean>(false);
   const [displayed, setDisplayed] = React.useState<boolean>(false);
   const [refreshing, setRefreshing] = React.useState<boolean>(false);
-  const now = React.useMemo(() => Date.now(), []);
 
   const total = useSelector((state: RootState) =>
     isMyProfile
@@ -158,9 +158,7 @@ function Component(
           </View>
         }>
         <AppTextHeading3 numberOfLines={1}>{item.name}</AppTextHeading3>
-        {(item.minting.expire === 0 && item.minting.available > 0) ||
-        item.minting.expire > now ||
-        item.minting.available > 0 ? (
+        {isMintingAvailable(item) ? (
           <AppTextBody4 style={{ color: theme.colors.placeholder }} numberOfLines={2}>
             {t('collection:mintingAvailable')}
           </AppTextBody4>
@@ -174,7 +172,6 @@ function Component(
       styles.collectionRightContent,
       styles.collectionRightText,
       theme.colors.placeholder,
-      now,
       onCollectionClick,
       t,
     ],

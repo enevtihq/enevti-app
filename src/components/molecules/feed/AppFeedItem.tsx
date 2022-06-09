@@ -32,8 +32,8 @@ export default React.memo(
     return (
       <View style={styles[MODE]}>
         <AppFeedHeader feed={feed} navigation={navigation} />
-        <AppFeedBody canvasWidth={canvasWidth} feed={feed} />
-        <AppFeedAction feed={feed} navigation={navigation} />
+        <AppFeedBody canvasWidth={canvasWidth} feed={feed} navigation={navigation} />
+        <AppFeedAction feed={feed} />
         <AppFeedFooter feed={feed} />
       </View>
     );

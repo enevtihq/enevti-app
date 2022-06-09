@@ -277,10 +277,11 @@ export async function getMyProfileInitialOwned(
   };
 
   try {
-    if (force || now - lastFetch > 0) {
+    if (force || now - lastFetch > lastFetchTimeout.profile) {
       const ownedResponse = await getProfileInitialOwned(myAddress, signal);
       if (ownedResponse.status === 200 && !isErrorResponse(ownedResponse)) {
         response.data = ownedResponse.data;
+        console.log(ownedResponse.data);
         store.dispatch(setLastFetchMyProfileCache(now));
         store.dispatch(
           setMyProfileCacheOwnedPagination({ checkpoint: response.data.checkpoint, version: response.data.version }),
@@ -291,9 +292,6 @@ export async function getMyProfileInitialOwned(
       } else {
         response.status = ownedResponse.status;
         response.data = ownedResponse.data;
-        console.log('hit');
-        console.log(isErrorResponse(ownedResponse));
-        console.log(JSON.stringify(ownedResponse));
       }
     }
   } catch {}

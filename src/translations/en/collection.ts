@@ -14,4 +14,5 @@ export default {
   mintingPercent: '{{percent}}% minted',
   to: 'To',
   newUpdates: 'New Updates!',
+  mintingUnavailable: 'Cannot be minted anymore!',
 };

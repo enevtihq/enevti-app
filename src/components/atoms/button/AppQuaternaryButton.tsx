@@ -15,6 +15,8 @@ interface AppQuaternaryButtonProps {
   box?: boolean;
   onPress?: () => void;
   loading?: boolean;
+  loadingStyle?: StyleProp<ViewStyle>;
+  loadingSize?: number;
   disabled?: boolean;
   icon?: string;
   iconSize?: number;
@@ -32,6 +34,8 @@ export default function AppQuaternaryButton({
   box = false,
   onPress,
   loading = false,
+  loadingStyle,
+  loadingSize,
   disabled = false,
   icon,
   iconSize,
@@ -53,7 +57,8 @@ export default function AppQuaternaryButton({
     <View style={[styles.quaternaryButton, style]}>
       <AppActivityIndicator
         animating={true}
-        style={[styles.loading, contentStyle]}
+        style={[styles.loading, loadingStyle]}
+        size={loadingSize}
         color={loaderColor ? loaderColor : iconColor ? iconColor : theme.colors.text}
       />
     </View>

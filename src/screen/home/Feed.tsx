@@ -147,7 +147,7 @@ export default function Feed({ navigation, onScroll, headerHeight }: FeedProps) 
   const newUpdate = React.useMemo(() => newFeeds || newMoments, [newFeeds, newMoments]);
 
   return (
-    <AppView darken withLoader>
+    <AppView darken withLoader withPaymentOnly>
       <View style={styles.textContainer}>
         {!feedsUndefined ? (
           <AppResponseView onReload={handleRefresh} status={feedsReqStatus} style={styles.textContainer}>

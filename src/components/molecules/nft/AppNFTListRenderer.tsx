@@ -5,15 +5,19 @@ import AppPaginationIndicator from 'enevti-app/components/atoms/pagination/AppPa
 import { hp } from 'enevti-app/utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { NFTBase } from 'enevti-app/types/core/chain/nft';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from 'enevti-app/navigation';
 
 interface AppNFTListRedererProps {
   nft: NFTBase[];
   width: number;
   itemWidth: number;
+  navigation?: StackNavigationProp<RootStackParamList>;
+  onPress?: () => void;
 }
 
 export default React.memo(
-  function AppNFTListRenderer({ nft, width, itemWidth }: AppNFTListRedererProps) {
+  function AppNFTListRenderer({ nft, width, navigation, onPress, itemWidth }: AppNFTListRedererProps) {
     const insets = useSafeAreaInsets();
     const [currentPage, setCurrentPage] = React.useState<number>(0);
 
@@ -27,10 +31,10 @@ export default React.memo(
     const renderItem = React.useCallback(
       ({ item }: any) => (
         <View style={{ width: width }}>
-          <AppNFTRenderer nft={item} width={width} />
+          <AppNFTRenderer nft={item} width={width} navigation={navigation} onPress={onPress} />
         </View>
       ),
-      [width],
+      [width, navigation, onPress],
     );
 
     const keyExtractor = React.useCallback(item => item.id, []);

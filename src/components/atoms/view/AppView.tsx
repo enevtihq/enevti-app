@@ -23,6 +23,7 @@ interface AppViewProps {
   withModal?: boolean;
   withSnackbar?: boolean;
   withPayment?: boolean;
+  withPaymentOnly?: boolean;
   withLoader?: boolean;
   edges?: Edge[];
 }
@@ -36,6 +37,7 @@ export default function AppView({
   withModal = false,
   withSnackbar = true,
   withPayment = false,
+  withPaymentOnly = false,
   withLoader = false,
   darken = false,
   dismissKeyboard = false,
@@ -61,6 +63,7 @@ export default function AppView({
               {children}
             </AppContainer>
           )}
+          {withPaymentOnly ? <AppPaymentModal /> : null}
           {withLoader || withPayment ? <AppModalLoader /> : null}
           {withSnackbar ? (
             <AppSnackbar

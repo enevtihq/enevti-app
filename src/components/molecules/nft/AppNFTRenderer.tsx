@@ -24,16 +24,17 @@ interface AppNFTRendererProps {
   style?: StyleProp<ViewStyle>;
   dataUri?: string;
   navigation?: StackNavigationProp<RootStackParamList>;
+  onPress?: () => void;
 }
 
 const THUMBNAIL_TRESHOLD = 0.33;
 
 export default React.memo(
-  function AppNFTRenderer({ nft, width, style, dataUri, navigation }: AppNFTRendererProps) {
+  function AppNFTRenderer({ nft, width, style, dataUri, navigation, onPress }: AppNFTRendererProps) {
     const styles = React.useMemo(() => makeStyles(), []);
     const onNavigate = React.useCallback(
-      () => (navigation ? navigation.push('NFTDetails', { arg: nft.id, mode: 'id' }) : undefined),
-      [navigation, nft.id],
+      () => (onPress ? onPress() : navigation ? navigation.push('NFTDetails', { arg: nft.id, mode: 'id' }) : undefined),
+      [navigation, nft.id, onPress],
     );
 
     const handleRenderNFTTemplate = React.useCallback(
@@ -83,7 +84,7 @@ export default React.memo(
           : nft.template.main.map((templateItem, index) =>
               handleRenderNFTTemplate(templateItem, nft, index, width, dataUri),
             )}
-        {navigation ? (
+        {navigation || onPress ? (
           <TouchableRipple style={styles.rippleOverlay} onPress={onNavigate}>
             <View />
           </TouchableRipple>

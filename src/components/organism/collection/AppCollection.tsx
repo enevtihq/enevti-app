@@ -45,6 +45,7 @@ import { appSocket } from 'enevti-app/utils/network';
 import { reduceNewNTotalMinted } from 'enevti-app/store/middleware/thunk/socket/collection/newTotalMinted';
 import { reduceNewCollectionUpdates } from 'enevti-app/store/middleware/thunk/socket/collection/newCollectionUpdates';
 import AppFloatingNotifButton from 'enevti-app/components/molecules/button/AppFloatingNotifButton';
+import { isMintingAvailable } from 'enevti-app/utils/collection';
 
 const noDisplay = 'none';
 const visible = 1;
@@ -85,17 +86,9 @@ export default function AppCollection({ onScrollWorklet, navigation, route }: Ap
     }
   }, [collection, dispatch, route.params.arg]);
 
-  const now = React.useMemo(() => Date.now(), []);
   const mintingAvailable = React.useMemo(
-    () =>
-      collection.reqStatus === 200
-        ? (collection.minting.expire === 0 && collection.minting.available > 0) ||
-          collection.minting.expire > now ||
-          collection.minting.available > 0
-          ? true
-          : false
-        : false,
-    [collection, now],
+    () => (collection.reqStatus === 200 ? (isMintingAvailable(collection) ? true : false) : false),
+    [collection],
   );
   const headerPercentage = React.useMemo(
     () => COLLECTION_HEADER_VIEW_HEIGHT + (mintingAvailable ? MINTING_AVAILABLE_VIEW_HEIGHT : 0),
