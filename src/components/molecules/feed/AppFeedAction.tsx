@@ -52,8 +52,13 @@ export default React.memo(
       paymentThunkRef.current?.abort();
     }, []);
 
+    const paymentSuccessCallback = React.useCallback(() => {
+      dispatch(showSnackbar({ mode: 'info', text: t('payment:success') }));
+    }, [dispatch, t]);
+
     usePaymentCallback({
       onIdle: paymentIdleCallback,
+      onSuccess: paymentSuccessCallback,
     });
 
     const onBuy = React.useCallback(async () => {
