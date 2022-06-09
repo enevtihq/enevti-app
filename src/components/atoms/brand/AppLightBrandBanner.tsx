@@ -1,14 +1,23 @@
 import React from 'react';
 import { Image, ImageStyle, StyleProp } from 'react-native';
-import { resizeImageRatio } from 'enevti-app/utils/imageRatio';
+import { resizeImageRatio, resizeImageRatioHeight } from 'enevti-app/utils/imageRatio';
 
 interface AppLightBrandBannerProps {
-  widthPercentage: number;
+  widthPercentage?: number;
+  heightPercentage?: number;
   style?: StyleProp<ImageStyle>;
 }
 
-export default function AppLightBrandBanner({ widthPercentage, style }: AppLightBrandBannerProps): JSX.Element {
-  const sizeRatio = resizeImageRatio(1116, 342, widthPercentage);
+export default function AppLightBrandBanner({
+  widthPercentage,
+  heightPercentage,
+  style,
+}: AppLightBrandBannerProps): JSX.Element {
+  const sizeRatio = widthPercentage
+    ? resizeImageRatio(1116, 342, widthPercentage)
+    : heightPercentage
+    ? resizeImageRatioHeight(1116, 342, heightPercentage)
+    : { width: 1116, height: 342 };
 
   return (
     <Image

@@ -6,15 +6,16 @@ import AppDarkBrandBanner from 'enevti-app/components/atoms/brand/AppDarkBrandBa
 import AppLightBrandBanner from 'enevti-app/components/atoms/brand/AppLightBrandBanner';
 
 interface AppBrandBannerProps {
-  widthPercentage: number;
+  widthPercentage?: number;
+  heightPercentage?: number;
   style?: StyleProp<ImageStyle>;
 }
 
-export default function AppBrandBanner({ widthPercentage, style }: AppBrandBannerProps) {
+export default function AppBrandBanner({ widthPercentage, heightPercentage, style }: AppBrandBannerProps) {
   const theme = useTheme() as Theme;
   return theme.dark ? (
-    <AppDarkBrandBanner widthPercentage={widthPercentage} style={style} />
+    <AppDarkBrandBanner widthPercentage={widthPercentage} heightPercentage={heightPercentage} style={style} />
   ) : (
-    <AppLightBrandBanner widthPercentage={widthPercentage} style={style} />
+    <AppLightBrandBanner widthPercentage={widthPercentage} heightPercentage={heightPercentage} style={style} />
   );
 }

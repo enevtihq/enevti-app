@@ -24,6 +24,17 @@ export function resizeImageRatio(initialWidth: number, initialHeight: number, ra
   };
 }
 
+export function resizeImageRatioHeight(initialWidth: number, initialHeight: number, ratio: number) {
+  const win = Dimensions.get('window');
+  const ratioHeight = win.height * ratio;
+  const ratioWidth = (initialWidth * ratioHeight) / initialHeight;
+
+  return {
+    width: ratioWidth,
+    height: ratioHeight,
+  };
+}
+
 export function wp(widthPercent: string | number, insets?: SafeAreaInsets) {
   const insetsSize = ignoreOnPlatform.includes(Platform.OS) || !insets ? 0 : insets.left + insets.right;
   const elemWidth = typeof widthPercent === 'number' ? widthPercent : parseFloat(widthPercent);

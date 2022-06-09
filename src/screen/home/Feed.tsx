@@ -41,8 +41,8 @@ const AnimatedFlatList = Animated.createAnimatedComponent<FlatListProps<any>>(Fl
 type Props = StackScreenProps<RootStackParamList, 'Feed'>;
 
 interface FeedProps extends Props {
-  onScroll: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
   headerHeight: number;
+  onScroll?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
 }
 
 export default function Feed({ navigation, onScroll, headerHeight }: FeedProps) {

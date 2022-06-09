@@ -5,17 +5,8 @@ import Statistics from 'enevti-app/screen/home/Statistics';
 import Discover from 'enevti-app/screen/home/Discover';
 import MyProfile from 'enevti-app/screen/home/MyProfile';
 import AppHeader, { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
-import {
-  useAnimatedScrollHandler,
-  useSharedValue,
-  useAnimatedStyle,
-  interpolate,
-  Extrapolate,
-  withTiming,
-} from 'react-native-reanimated';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { diffClamp } from 'enevti-app/utils/animation';
 import AppTabBar from 'enevti-app/components/atoms/view/AppTabBar';
 import { hp } from 'enevti-app/utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -88,13 +79,9 @@ export default function Home({ navigation }: Props) {
 
   const [uneligibleSheetVisible, setUneligibleSheetVisible] = React.useState<boolean>(false);
   const [restoreMenuVisible, setRestoreMenuVisible] = React.useState<boolean>(false);
-  const [activeTab, setActiveTab] = React.useState<number>(0);
   const headerHeight = hp(HEADER_HEIGHT_PERCENTAGE, insets);
   const tabBarHeight = hp(TABBAR_HEIGHT_PERCENTAGE, insets);
-  const tabScrollY = [useSharedValue(0), useSharedValue(0), useSharedValue(0), useSharedValue(0)];
 
-  const myProfilePrevYSharedValue = useSharedValue(0);
-  const myProfileInterpolatedYSharedValue = useSharedValue(0);
   const socket = React.useRef<Socket | undefined>();
 
   React.useEffect(() => {
@@ -118,135 +105,9 @@ export default function Home({ navigation }: Props) {
     };
   }, [myPersona.address, dispatch]);
 
-  const feedStyle = useAnimatedStyle(() => {
-    return {
-      transform: [
-        {
-          translateY: interpolate(
-            tabScrollY[0].value,
-            [0, headerHeight + insets.top],
-            [0, -(headerHeight + insets.top)],
-            Extrapolate.CLAMP,
-          ),
-        },
-      ],
-    };
-  });
-
-  const feedAnimatedScrollHandler = useAnimatedScrollHandler({
-    onScroll: (event, ctx: { prevY: number; current: number }) => {
-      const diff = event.contentOffset.y - ctx.prevY;
-      if (ctx.current === undefined) {
-        ctx.current = 0;
-      }
-      if (event.contentOffset.y === 0) {
-        ctx.prevY = 0;
-        ctx.current = 0;
-        tabScrollY[0].value = 0;
-      } else {
-        tabScrollY[0].value = diffClamp(ctx.current + diff, 0, headerHeight + insets.top);
-      }
-    },
-    onBeginDrag: (event, ctx) => {
-      ctx.prevY = event.contentOffset.y;
-    },
-    onEndDrag: (event, ctx) => {
-      if (tabScrollY[0].value < (headerHeight + insets.top) / 2 || event.contentOffset.y < headerHeight + insets.top) {
-        tabScrollY[0].value = withTiming(0, { duration: 200 });
-        ctx.current = 0;
-      } else {
-        tabScrollY[0].value = withTiming(headerHeight + insets.top, {
-          duration: 200,
-        });
-        ctx.current = headerHeight + insets.top;
-      }
-    },
-    onMomentumEnd: (event, ctx) => {
-      if (tabScrollY[0].value < (headerHeight + insets.top) / 2 || event.contentOffset.y < headerHeight + insets.top) {
-        tabScrollY[0].value = withTiming(0, { duration: 200 });
-        ctx.current = 0;
-      } else {
-        tabScrollY[0].value = withTiming(headerHeight + insets.top, {
-          duration: 200,
-        });
-        ctx.current = headerHeight + insets.top;
-      }
-    },
-  });
-
-  const myProfileStyle = useAnimatedStyle(() => {
-    return {
-      transform: [
-        {
-          translateY: interpolate(
-            tabScrollY[3].value,
-            [0, headerHeight + insets.top],
-            [0, -(headerHeight + insets.top)],
-            Extrapolate.CLAMP,
-          ),
-        },
-      ],
-    };
-  });
-
-  const myProfileOnScrollWorklet = React.useCallback((val: number) => {
-    'worklet';
-    const diff = val - myProfilePrevYSharedValue.value;
-    if (val === 0) {
-      myProfilePrevYSharedValue.value = 0;
-      myProfileInterpolatedYSharedValue.value = 0;
-      tabScrollY[3].value = 0;
-    } else {
-      tabScrollY[3].value = diffClamp(myProfileInterpolatedYSharedValue.value + diff, 0, headerHeight + insets.top);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const myProfileOnBeginDragWorklet = React.useCallback((val: number) => {
-    'worklet';
-    myProfilePrevYSharedValue.value = val;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const myProfileOnEndDragWorklet = React.useCallback((val: number) => {
-    'worklet';
-    if (tabScrollY[3].value < (headerHeight + insets.top) / 2 || val < headerHeight + insets.top) {
-      tabScrollY[3].value = withTiming(0, { duration: 200 });
-      myProfileInterpolatedYSharedValue.value = 0;
-    } else {
-      tabScrollY[3].value = withTiming(headerHeight + insets.top, {
-        duration: 200,
-      });
-      myProfileInterpolatedYSharedValue.value = headerHeight + insets.top;
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const tabBarStyle = useAnimatedStyle(() => {
-    return {
-      transform: [
-        {
-          translateY: interpolate(
-            tabScrollY[activeTab].value,
-            [0, tabBarHeight + insets.bottom],
-            [0, tabBarHeight + insets.bottom],
-            Extrapolate.CLAMP,
-          ),
-        },
-      ],
-    };
-  });
-
   const FeedComponent = React.useCallback(
-    props => (
-      <Feed
-        navigation={props.navigation}
-        route={props.route as any}
-        onScroll={feedAnimatedScrollHandler}
-        headerHeight={headerHeight}
-      />
-    ),
-    [headerHeight, feedAnimatedScrollHandler],
+    props => <Feed navigation={props.navigation} route={props.route as any} headerHeight={headerHeight} />,
+    [headerHeight],
   );
 
   const notEligibleOnDismiss = React.useCallback(() => setUneligibleSheetVisible(false), []);
@@ -287,15 +148,7 @@ export default function Home({ navigation }: Props) {
   }, [createQueue, navigation]);
 
   const MyProfileComponent = (props: any) => (
-    <MyProfile
-      navigation={props.navigation}
-      route={props.route as any}
-      headerHeight={headerHeight}
-      onScrollWorklet={myProfileOnScrollWorklet}
-      onBeginDragWorklet={myProfileOnBeginDragWorklet}
-      onEndDragWorklet={myProfileOnEndDragWorklet}
-      onMomentumEndWorklet={myProfileOnEndDragWorklet}
-    />
+    <MyProfile navigation={props.navigation} route={props.route as any} headerHeight={headerHeight} />
   );
 
   const requestFaucets = React.useCallback(async () => {
@@ -362,7 +215,7 @@ export default function Home({ navigation }: Props) {
         />
       ) : null}
       <Tab.Navigator
-        tabBar={props => <AppTabBar {...props} style={tabBarStyle} />}
+        tabBar={props => <AppTabBar {...props} />}
         screenOptions={{
           tabBarStyle: {
             position: 'absolute',
@@ -375,18 +228,13 @@ export default function Home({ navigation }: Props) {
         }}>
         <Tab.Screen
           name="Feed"
-          listeners={{
-            tabPress: () => {
-              setActiveTab(0);
-            },
-          }}
           options={{
             tabBarLabel: t('home:feed'),
             tabBarBadge: newFeedUpdate ? '' : undefined,
             tabBarIcon: ({ color, size }) => <MaterialCommunityIcons name={iconMap.home} color={color} size={size} />,
             tabBarButton: props => <TouchableRipple {...props} disabled={props.disabled as boolean | undefined} />,
             header: () => (
-              <AppHeader style={feedStyle} height={headerHeight}>
+              <AppHeader height={headerHeight}>
                 <AppHeaderAction
                   icon={iconMap.magnify}
                   onPress={() => dispatch(showSnackbar({ mode: 'info', text: 'Coming Soon!' }))}
@@ -402,11 +250,6 @@ export default function Home({ navigation }: Props) {
         </Tab.Screen>
         <Tab.Screen
           name="Statistics"
-          listeners={{
-            tabPress: () => {
-              setActiveTab(1);
-            },
-          }}
           options={{
             tabBarLabel: t('home:statistics'),
             tabBarIcon: ({ color, size }) => (
@@ -458,11 +301,6 @@ export default function Home({ navigation }: Props) {
         />
         <Tab.Screen
           name="Discover"
-          listeners={{
-            tabPress: () => {
-              setActiveTab(2);
-            },
-          }}
           options={{
             tabBarLabel: t('home:apps'),
             tabBarIcon: ({ color, size }) => (
@@ -475,18 +313,13 @@ export default function Home({ navigation }: Props) {
         />
         <Tab.Screen
           name="MyProfile"
-          listeners={{
-            tabPress: () => {
-              setActiveTab(3);
-            },
-          }}
           options={{
             tabBarLabel: t('home:profile'),
             tabBarBadge: newProfileUpdate ? '' : undefined,
             tabBarIcon: ({ color, size }) => <AppAvatarRenderer color={color} size={size * 1.1} persona={myPersona} />,
             tabBarButton: props => <TouchableRipple {...props} disabled={props.disabled as boolean | undefined} />,
             header: () => (
-              <AppHeader style={myProfileStyle} height={headerHeight} title={t('home:myProfile')}>
+              <AppHeader height={headerHeight} title={t('home:myProfile')}>
                 <AppHeaderAction
                   icon={iconMap.edit}
                   onPress={() => dispatch(showSnackbar({ mode: 'info', text: 'Coming Soon!' }))}

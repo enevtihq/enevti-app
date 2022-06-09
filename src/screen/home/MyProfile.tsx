@@ -11,10 +11,10 @@ import { RouteProp } from '@react-navigation/native';
 type Props = StackScreenProps<RootStackParamList, 'MyProfile'>;
 
 interface MyProfileProps extends Props {
-  onScrollWorklet: (val: number) => void;
-  onBeginDragWorklet: (val: number) => void;
-  onEndDragWorklet: (val: number) => void;
-  onMomentumEndWorklet: (val: number) => void;
+  onScrollWorklet?: (val: number) => void;
+  onBeginDragWorklet?: (val: number) => void;
+  onEndDragWorklet?: (val: number) => void;
+  onMomentumEndWorklet?: (val: number) => void;
   headerHeight?: number;
 }
 
@@ -38,6 +38,7 @@ export default function MyProfile({
       <View style={styles.textContainer}>
         <AppProfile
           isMyProfile
+          disableHeaderAnimation
           navigation={navigation}
           route={myRoute}
           headerHeight={headerHeight}

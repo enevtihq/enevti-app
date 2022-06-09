@@ -128,6 +128,7 @@ function Component(
     () => (
       <View>
         {nftDetails.activityPagination &&
+        nftDetails.activity &&
         nftDetails.activityPagination.version !== nftDetails.activity.length &&
         nftDetails.activity.length !== 0 ? (
           <AppActivityIndicator style={{ marginVertical: hp('3%') }} />
@@ -135,7 +136,7 @@ function Component(
         <View style={{ height: hp(5) }} />
       </View>
     ),
-    [hp, nftDetails.activityPagination, nftDetails.activity.length],
+    [hp, nftDetails.activityPagination, nftDetails.activity],
   );
 
   React.useEffect(() => {

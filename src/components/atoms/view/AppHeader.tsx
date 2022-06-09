@@ -78,7 +78,7 @@ export default function AppHeader({
             {subtitle ? <Animated.Text style={[styles.subtitle, subtitleStyle]}>{subtitle}</Animated.Text> : null}
           </View>
         ) : (
-          <AppBrandBanner widthPercentage={0.35} style={styles.image} />
+          <AppBrandBanner heightPercentage={0.05} style={styles.image} />
         )}
         <View style={styles.divider} />
         {children ? children : <View />}

@@ -277,7 +277,7 @@ export async function getMyProfileInitialOwned(
   };
 
   try {
-    if (force || now - lastFetch > lastFetchTimeout.profile) {
+    if (force || now - lastFetch > 0) {
       const ownedResponse = await getProfileInitialOwned(myAddress, signal);
       if (ownedResponse.status === 200 && !isErrorResponse(ownedResponse)) {
         response.data = ownedResponse.data;
@@ -291,6 +291,9 @@ export async function getMyProfileInitialOwned(
       } else {
         response.status = ownedResponse.status;
         response.data = ownedResponse.data;
+        console.log('hit');
+        console.log(isErrorResponse(ownedResponse));
+        console.log(JSON.stringify(ownedResponse));
       }
     }
   } catch {}
