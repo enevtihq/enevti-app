@@ -4,6 +4,7 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint'],
   rules: {
+    'no-console': ['error', { allow: ['warn', 'error'] }],
     'no-shadow': 'off',
     '@typescript-eslint/no-shadow': ['error'],
   },

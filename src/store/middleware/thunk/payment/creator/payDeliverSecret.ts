@@ -33,8 +33,6 @@ export const payDeliverSecret = createAsyncThunk<void, PayDeliverSecretPayload, 
   async (payload, { dispatch, getState, signal }) => {
     const transactionPayload = [];
     try {
-      console.log('deliver secret creator');
-
       const isDeliverSecretProcessing = selectDeliverSecretProcessing(getState());
       if (isDeliverSecretProcessing) {
         return;
@@ -47,7 +45,6 @@ export const payDeliverSecret = createAsyncThunk<void, PayDeliverSecretPayload, 
         const cipher = await encryptAsymmetric(key.data, data.secret.recipient);
         const cipherSignature = await createSignature(cipher);
         const plainSignature = await createSignature(key.data);
-        console.log('secret for new owner', cipher);
 
         const transactionData: AppTransaction<DeliverSecretUI> = await createSilentTransaction(
           redeemableNftModule.moduleID,

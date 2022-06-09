@@ -14,7 +14,6 @@ import { setMyProfileViewPending } from 'enevti-app/store/slices/ui/view/myProfi
 export const reducePayDeliverSecret = (): AppThunk => async (dispatch, getState) => {
   const payload = JSON.parse(selectPaymentActionPayload(getState())) as AppTransaction<DeliverSecretUI>[];
   try {
-    console.log('deliver secret reducer');
     dispatch({ type: 'payment/reducePayDeliverSecret' });
 
     const responseStatusArray = [];
@@ -29,7 +28,6 @@ export const reducePayDeliverSecret = (): AppThunk => async (dispatch, getState)
     }
 
     if (responseStatusArray.every(value => value === 200)) {
-      console.log('deliver secret success');
       dispatch(setMyProfileViewPending(0));
     } else {
       throw Error(JSON.stringify([...responseErrorSet]));

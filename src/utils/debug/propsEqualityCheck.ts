@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 export default function propsEqualityCheck(object1: any, object2: any, additionalMessage?: string) {
   const keys1 = Object.keys(object1);
   const keys2 = Object.keys(object2);

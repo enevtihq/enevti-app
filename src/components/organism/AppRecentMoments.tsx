@@ -22,9 +22,7 @@ export default React.memo(
     const insets = useSafeAreaInsets();
     const { t } = useTranslation();
 
-    const onMomentsPress = (id: string) => {
-      console.log(id);
-    };
+    const onMomentsPress = (_id: string) => {};
 
     const renderItem = React.useCallback(
       ({ item }: any) => (

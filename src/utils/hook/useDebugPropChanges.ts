@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React from 'react';
 
 function logPropDifferences(newProps: any, lastProps: any, identifier?: string) {
