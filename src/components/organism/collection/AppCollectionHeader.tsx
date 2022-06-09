@@ -1,4 +1,4 @@
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Dimensions } from 'react-native';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -25,7 +25,8 @@ import { STATUS_BAR_HEIGHT } from 'enevti-app/components/atoms/view/AppStatusBar
 import { useDispatch } from 'react-redux';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 
-export const COLLECTION_HEADER_VIEW_HEIGHT = 53 + STATUS_BAR_HEIGHT();
+export const COLLECTION_HEADER_VIEW_HEIGHT =
+  27 + (Dimensions.get('window').width * 0.5625 * 100) / Dimensions.get('window').height + STATUS_BAR_HEIGHT();
 
 interface AppCollectionHeaderProps {
   collection: Collection;
@@ -152,7 +153,7 @@ export default function AppCollectionHeader({
           <Divider />
           <View style={styles.createdBy}>
             <AppTextBody4 style={{ color: theme.colors.placeholder }}>{t('collection:createdBy')} </AppTextBody4>
-            <AppAvatarRenderer persona={collection.creator} size={wp('5%')} style={{ marginHorizontal: wp('2%') }} />
+            <AppAvatarRenderer persona={collection.creator} size={hp('2.25%')} style={{ marginHorizontal: wp('2%') }} />
             <AppPersonaLabel persona={collection.creator} style={styles.creatorAddress} onPress={onCreatorDetail} />
           </View>
           <Divider />
@@ -171,7 +172,7 @@ const makeStyles = (hp: DimensionFunction, wp: DimensionFunction) =>
   StyleSheet.create({
     collectionName: {
       flexDirection: 'row',
-      paddingTop: wp('4%'),
+      paddingTop: hp('2%'),
       paddingHorizontal: wp('5%'),
     },
     collectionNameItem: {

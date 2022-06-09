@@ -6,18 +6,19 @@ import { Theme } from 'enevti-app/theme/default';
 import useDimension from 'enevti-app/utils/hook/useDimension';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
-import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
 import AppNFTRenderer from 'enevti-app/components/molecules/nft/AppNFTRenderer';
 import { BlurView } from '@react-native-community/blur';
 import NFTData from 'enevti-app/components/atoms/nft/data/NFTData';
 import { NFT } from 'enevti-app/types/core/chain/nft';
+import { STATUS_BAR_HEIGHT } from 'enevti-app/components/atoms/view/AppStatusBar';
 
 const NFT_WIDTH = Dimensions.get('window').width * 0.8;
 export const NFT_DETAILS_HEADER_VIEW_HEIGHT =
   HEADER_HEIGHT_PERCENTAGE +
   0.5 +
-  ((getStatusBarHeight() + NFT_WIDTH + Dimensions.get('window').width * 0.125) / Dimensions.get('window').height) * 100;
+  STATUS_BAR_HEIGHT() +
+  ((NFT_WIDTH + Dimensions.get('window').width * 0.125) / Dimensions.get('window').height) * 100;
 
 interface AppNFTDetailsHeaderProps {
   nft: NFT;

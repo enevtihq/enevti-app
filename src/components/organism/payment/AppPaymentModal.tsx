@@ -125,7 +125,6 @@ export default function AppPaymentModal() {
           </AppListItem>
 
           <View style={styles.dividerView} />
-          <Divider style={styles.divider} />
 
           <View style={styles.transactionItem}>
             <AppTextHeading2 style={styles.transactionDetailsHeading}>
@@ -235,7 +234,7 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
       width: wp('50%', insets),
     },
     dividerView: {
-      height: hp('2%', insets),
+      height: hp('1%', insets),
     },
     divider: {
       height: 20,
