@@ -67,11 +67,9 @@ export const loadProfile = createAsyncThunk<void, LoadProfileArgs, AsyncThunkAPI
         const profileResponse = await getMyProfile(reload, signal);
         const ownedResponse = await getMyProfileInitialOwned(reload, signal);
         const collectionResponse = await getMyProfileInitialCollection(reload, signal);
-        const pending = selectMyProfileView(getState()).pending === -1 ? -1 : profileResponse.data.pending;
         dispatch(
           setMyProfileView({
             ...(profileResponse.data as Profile),
-            pending,
             persona: personaResponse.data as Persona,
             owned: ownedResponse.data.data,
             collection: collectionResponse.data.data,

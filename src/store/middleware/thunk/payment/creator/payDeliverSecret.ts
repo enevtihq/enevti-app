@@ -18,8 +18,6 @@ import {
 } from 'enevti-app/store/slices/entities/cache/transactionNonce';
 import { getProfilePendingDelivery } from 'enevti-app/service/enevti/profile';
 import { getMyAddress } from 'enevti-app/service/enevti/persona';
-import { setMyProfileViewPending } from 'enevti-app/store/slices/ui/view/myProfile';
-import { selectMyProfileCache } from 'enevti-app/store/slices/entities/cache/myProfile';
 import {
   selectDeliverSecretProcessing,
   setDeliverSecretProcessing,
@@ -39,7 +37,7 @@ export const payDeliverSecret = createAsyncThunk<void, PayDeliverSecretPayload, 
       }
 
       dispatch(setDeliverSecretProcessing(true));
-      dispatch(setMyProfileViewPending(-1));
+
       for (const data of payload) {
         const key = await decryptAsymmetric(data.secret.cipher, data.secret.sender);
         const cipher = await encryptAsymmetric(key.data, data.secret.recipient);
@@ -79,8 +77,6 @@ export const payDeliverSecret = createAsyncThunk<void, PayDeliverSecretPayload, 
       );
       dispatch(reducePayment());
     } catch (err) {
-      const profileCache = selectMyProfileCache(getState());
-      dispatch(setMyProfileViewPending(profileCache.pending));
       dispatch(setDeliverSecretProcessing(false));
       handleError(err, 'message', true);
       transactionPayload.forEach(() => dispatch(subtractTransactionNonceCache()));

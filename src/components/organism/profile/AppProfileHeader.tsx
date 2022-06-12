@@ -34,6 +34,7 @@ import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 import AppConfirmationModal from 'enevti-app/components/organism/menu/AppConfirmationModal';
 import AppAlertModal from '../menu/AppAlertModal';
 import { payManualDeliverSecret } from 'enevti-app/store/middleware/thunk/payment/creator/payDeliverSecret';
+import { selectDeliverSecretProcessing } from 'enevti-app/store/slices/session/transaction/processing';
 
 interface AppProfileHeaderProps {
   navigation: StackNavigationProp<RootStackParamList>;
@@ -50,6 +51,11 @@ export default function AppProfileHeader({ navigation, persona, profile }: AppPr
   const theme = useTheme() as Theme;
   const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
   const myPersona = useSelector(selectMyPersonaCache);
+  const isDeliverSecretProcessing = useSelector(selectDeliverSecretProcessing);
+  const iAmDelivering = React.useMemo(
+    () => persona.address === myPersona.address && isDeliverSecretProcessing,
+    [isDeliverSecretProcessing, myPersona.address, persona.address],
+  );
 
   const [menuVisible, setMenuVisible] = React.useState<boolean>(false);
   const [pendingConfirmationVisible, setPendingConfirmationVisible] = React.useState<boolean>(false);
@@ -59,10 +65,12 @@ export default function AppProfileHeader({ navigation, persona, profile }: AppPr
   const onPendingButtonPressed = React.useCallback(() => {
     profile.pending > 0
       ? persona.address === myPersona.address
-        ? setPendingConfirmationVisible(old => !old)
+        ? iAmDelivering
+          ? setPendingAlertVisible(old => !old)
+          : setPendingConfirmationVisible(old => !old)
         : setViewerPendingAlertVisible(old => !old)
-      : setPendingAlertVisible(old => !old);
-  }, [profile.pending, myPersona.address, persona.address]);
+      : undefined;
+  }, [profile.pending, iAmDelivering, persona.address, myPersona.address]);
 
   const onPendingConfrimationDismiss = React.useCallback(() => {
     setPendingConfirmationVisible(false);
@@ -221,10 +229,10 @@ export default function AppProfileHeader({ navigation, persona, profile }: AppPr
             </AppTextBody5>
           </View>
         </AppQuaternaryButton>
-        {profile.pending !== 0 ? (
+        {profile.pending > 0 ? (
           <AppQuaternaryButton
             icon={iconMap.pendingNFT}
-            loaderLeft={profile.pending === -1}
+            loaderLeft={iAmDelivering}
             iconSize={hp('3%', insets)}
             iconColor={theme.colors.placeholder}
             style={{
@@ -233,21 +241,31 @@ export default function AppProfileHeader({ navigation, persona, profile }: AppPr
             onPress={onPendingButtonPressed}>
             <View style={styles.profileHeaderChipsContent}>
               <AppTextBody4 style={{ color: theme.colors.placeholder }}>
-                {profile.pending > 0 ? profile.pending : ''}
+                {iAmDelivering ? '' : profile.pending}
               </AppTextBody4>
               <AppTextBody5
                 style={{
                   color: theme.colors.placeholder,
                   marginLeft: wp('1%', insets),
                 }}>
-                {profile.pending > 0 ? t('profile:pending') : t('profile:delivering')}
+                {iAmDelivering ? t('profile:delivering') : t('profile:pending')}
               </AppTextBody5>
             </View>
           </AppQuaternaryButton>
         ) : null}
-        {profile.pending !== 0 ? (
-          profile.pending > 0 ? (
-            persona.address === myPersona.address ? (
+        {profile.pending > 0 ? (
+          persona.address === myPersona.address ? (
+            iAmDelivering ? (
+              <AppAlertModal
+                visible={pendingAlertVisible}
+                iconName={'deliveringSecret'}
+                onDismiss={onPendingAlertDismiss}
+                title={t('profile:pendingAlertTitle')}
+                description={t('profile:pendingAlertDescription')}
+                secondaryButtonText={t('profile:pendingAlertButton')}
+                secondaryButtonOnPress={onPendingAlertDismiss}
+              />
+            ) : (
               <AppConfirmationModal
                 iconName={'pendingNFT'}
                 visible={pendingConfirmationVisible}
@@ -259,28 +277,18 @@ export default function AppProfileHeader({ navigation, persona, profile }: AppPr
                 okText={t('profile:pendingConfirmationOkText')}
                 okOnPress={onManualSecretDelivery}
               />
-            ) : (
-              <AppAlertModal
-                visible={viewerPendingAlertVisible}
-                iconName={'think'}
-                onDismiss={onViewerPendingAlertDismiss}
-                title={t('profile:pendingForViewerTitle')}
-                description={t('profile:pendingForViewerDescription')}
-                secondaryButtonText={t('profile:pendingForViewerButton')}
-                secondaryButtonOnPress={onViewerPendingAlertDismiss}
-              />
             )
-          ) : profile.pending === -1 ? (
+          ) : (
             <AppAlertModal
-              visible={pendingAlertVisible}
-              iconName={'deliveringSecret'}
-              onDismiss={onPendingAlertDismiss}
-              title={t('profile:pendingAlertTitle')}
-              description={t('profile:pendingAlertDescription')}
-              secondaryButtonText={t('profile:pendingAlertButton')}
-              secondaryButtonOnPress={onPendingAlertDismiss}
+              visible={viewerPendingAlertVisible}
+              iconName={'think'}
+              onDismiss={onViewerPendingAlertDismiss}
+              title={t('profile:pendingForViewerTitle')}
+              description={t('profile:pendingForViewerDescription')}
+              secondaryButtonText={t('profile:pendingForViewerButton')}
+              secondaryButtonOnPress={onViewerPendingAlertDismiss}
             />
-          ) : null
+          )
         ) : null}
       </View>
     </View>
