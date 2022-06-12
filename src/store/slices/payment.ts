@@ -26,6 +26,7 @@ const initialState: PaymentState = {
     loaded: false,
     gas: '0',
     platform: '0',
+    priority: 'custom',
   },
 };
 
@@ -74,10 +75,16 @@ const paymentSlice = createSlice({
       payment.action.currency = initialState.action.currency;
       payment.action.payload = initialState.action.payload;
     },
-    setPaymentFee: (payment, action: PayloadAction<Omit<PaymentFee, 'loaded'>>) => {
+    setPaymentFee: (payment, action: PayloadAction<Omit<PaymentFee, 'loaded' | 'priority'>>) => {
       payment.fee.loaded = true;
       payment.fee.gas = action.payload.gas;
       payment.fee.platform = action.payload.platform;
+    },
+    setPaymentFeeLoaded: (payment, action: PayloadAction<boolean>) => {
+      payment.fee.loaded = action.payload;
+    },
+    setPaymentPriority: (payment, action: PayloadAction<PaymentFee['priority']>) => {
+      payment.fee.priority = action.payload;
     },
     resetPaymentFee: payment => {
       payment.fee.loaded = false;
@@ -103,6 +110,8 @@ export const {
   setPaymentAction,
   resetPaymentAction,
   setPaymentFee,
+  setPaymentFeeLoaded,
+  setPaymentPriority,
   resetPaymentFee,
   setPaymentState,
   resetPaymentState,
@@ -142,6 +151,11 @@ export const selectPaymentActionPayload = createSelector(
 export const selectPaymentFee = createSelector(
   (state: RootState) => state,
   (state: RootState) => state.payment.fee,
+);
+
+export const selectPaymentFeePriority = createSelector(
+  (state: RootState) => state,
+  (state: RootState) => state.payment.fee.priority,
 );
 
 export const isPaymentUndefined = createSelector(

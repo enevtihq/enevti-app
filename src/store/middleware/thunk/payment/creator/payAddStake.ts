@@ -1,5 +1,11 @@
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
-import { setPaymentFee, setPaymentStatus, setPaymentAction, showPayment } from 'enevti-app/store/slices/payment';
+import {
+  setPaymentFee,
+  setPaymentStatus,
+  setPaymentAction,
+  showPayment,
+  setPaymentPriority,
+} from 'enevti-app/store/slices/payment';
 import { AsyncThunkAPI } from 'enevti-app/store/state';
 import { attachFee, calculateBaseFee, calculateGasFee, createTransaction } from 'enevti-app/service/enevti/transaction';
 import i18n from 'enevti-app/translations/i18n';
@@ -38,6 +44,7 @@ export const payAddStake = createAsyncThunk<void, PayAddStakePayload, AsyncThunk
       }
 
       dispatch(setPaymentFee({ gas: gasFee, platform: '0' }));
+      dispatch(setPaymentPriority('normal'));
       dispatch(
         setPaymentAction({
           type: 'addStake',

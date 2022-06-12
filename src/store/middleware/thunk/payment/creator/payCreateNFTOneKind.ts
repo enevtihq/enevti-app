@@ -1,6 +1,12 @@
 import { COIN_NAME } from 'enevti-app/utils/constant/identifier';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
-import { setPaymentFee, setPaymentStatus, setPaymentAction, showPayment } from 'enevti-app/store/slices/payment';
+import {
+  setPaymentFee,
+  setPaymentStatus,
+  setPaymentAction,
+  showPayment,
+  setPaymentPriority,
+} from 'enevti-app/store/slices/payment';
 import { CreateNFTOneKind } from 'enevti-app/types/ui/store/CreateNFTQueue';
 import { AsyncThunkAPI } from 'enevti-app/store/state';
 import { attachFee, calculateBaseFee, calculateGasFee, createTransaction } from 'enevti-app/service/enevti/transaction';
@@ -177,6 +183,7 @@ export const payCreateNFTOneKind = createAsyncThunk<void, CreateNFTOneKind, Asyn
       }
 
       dispatch(setPaymentFee({ gas: gasFee, platform: '0' }));
+      dispatch(setPaymentPriority('normal'));
       dispatch(
         setPaymentAction({
           type: 'createNFTOneKind',

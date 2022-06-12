@@ -1,5 +1,5 @@
 import { UNDEFINED_ICON } from 'enevti-app/components/atoms/icon/AppIconComponent';
-import { setPaymentFee, setPaymentAction } from 'enevti-app/store/slices/payment';
+import { setPaymentFee, setPaymentAction, setPaymentPriority } from 'enevti-app/store/slices/payment';
 import { AsyncThunkAPI } from 'enevti-app/store/state';
 import { createSilentTransaction, updateNonceCache } from 'enevti-app/service/enevti/transaction';
 import { createAsyncThunk, AnyAction } from '@reduxjs/toolkit';
@@ -64,6 +64,7 @@ export const payDeliverSecret = createAsyncThunk<void, PayDeliverSecretPayload, 
       }
 
       dispatch(setPaymentFee({ gas: '0', platform: '0' }));
+      dispatch(setPaymentPriority('normal'));
       dispatch(
         setPaymentAction({
           type: 'deliverSecret',

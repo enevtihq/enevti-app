@@ -16,7 +16,7 @@ import AppIconGradient from 'enevti-app/components/molecules/AppIconGradient';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import { COIN_NAME } from 'enevti-app/utils/constant/identifier';
 import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
-import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
+import AppIconComponent, { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
 import { reducePayment } from 'enevti-app/store/middleware/thunk/payment/reducer';
 import {
@@ -29,11 +29,15 @@ import {
   setPaymentActionType,
   setPaymentStatus,
   isPaymentUndefined,
+  selectPaymentFeePriority,
 } from 'enevti-app/store/slices/payment';
 import { selectMyProfileCache } from 'enevti-app/store/slices/entities/cache/myProfile';
 import AppPaymentItem from './AppPaymentItem';
 import { parseAmount } from 'enevti-app/utils/format/amount';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
+import AppQuaternaryButton from 'enevti-app/components/atoms/button/AppQuaternaryButton';
+import AppPaymentGasFeePicker from './AppPaymentGasFeePicker';
+import { capitalizeFirstLetter } from 'enevti-app/utils/primitive/string';
 
 export default function AppPaymentModal() {
   const { t } = useTranslation();
@@ -43,6 +47,7 @@ export default function AppPaymentModal() {
   const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
   const paymentSnapPoints = React.useMemo(() => ['70%'], []);
   const defaultCoin = React.useMemo(() => COIN_NAME, []);
+  const [gasFeePickerDialogShow, setGasFeePickerDialogShow] = React.useState<boolean>(false);
 
   const myProfile = useSelector(selectMyProfileCache);
   const paymentShowState = useSelector(selectPaymentShowState);
@@ -50,6 +55,7 @@ export default function AppPaymentModal() {
   const paymentStatus = useSelector(selectPaymentStatus);
   const paymentAction = useSelector(selectPaymentAction);
   const paymentFee = useSelector(selectPaymentFee);
+  const paymentPriority = useSelector(selectPaymentFeePriority);
   const paymentUndefined = useSelector(isPaymentUndefined);
 
   const paymentTotalAmountCurrency = defaultCoin;
@@ -62,9 +68,40 @@ export default function AppPaymentModal() {
     [myProfile, paymentTotalAmount],
   );
 
+  const onGasPriorityPress = React.useCallback(() => {
+    setGasFeePickerDialogShow(old => !old);
+  }, []);
+
+  const onGasPriorityDismiss = React.useCallback(() => {
+    setGasFeePickerDialogShow(false);
+  }, []);
+
+  const gasPriorityButton = React.useMemo(
+    () => (
+      <View style={styles.gasPickerButtonContainer}>
+        <AppQuaternaryButton box onPress={onGasPriorityPress} style={styles.gasPickerButton}>
+          <View style={styles.gasPickerButtonDropdown}>
+            <AppTextBody5>{capitalizeFirstLetter(paymentPriority)}</AppTextBody5>
+            <AppIconComponent name={iconMap.dropDown} size={15} color={theme.colors.text} />
+          </View>
+        </AppQuaternaryButton>
+      </View>
+    ),
+    [
+      styles.gasPickerButtonDropdown,
+      theme.colors.text,
+      onGasPriorityPress,
+      styles.gasPickerButton,
+      styles.gasPickerButtonContainer,
+      paymentPriority,
+    ],
+  );
+
   const paymentDismiss = React.useCallback(() => {
-    dispatch(resetPaymentState());
-  }, [dispatch]);
+    if (!gasFeePickerDialogShow) {
+      dispatch(resetPaymentState());
+    }
+  }, [dispatch, gasFeePickerDialogShow]);
 
   const payCallback = React.useCallback(() => dispatch(reducePayment()), [dispatch]);
 
@@ -147,6 +184,7 @@ export default function AppPaymentModal() {
               description={t('payment:gasFeeDescription')}
               amount={paymentFee.gas}
               currency={defaultCoin}
+              trailingComponent={gasPriorityButton}
             />
             <Divider style={styles.bottomDivider} />
             <AppPaymentItem
@@ -184,6 +222,8 @@ export default function AppPaymentModal() {
               {balanceEnough ? t('payment:pay') : t('payment:notEnoughtBalance')}
             </AppPrimaryButton>
           </View>
+
+          {gasFeePickerDialogShow ? <AppPaymentGasFeePicker visible={true} onDismiss={onGasPriorityDismiss} /> : null}
         </View>
       ) : (
         <View style={styles.loaderContainer}>
@@ -235,6 +275,18 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
     },
     dividerView: {
       height: hp('1%', insets),
+    },
+    gasPickerButtonContainer: {
+      marginHorizontal: wp(1),
+      height: hp(3),
+    },
+    gasPickerButton: {
+      height: '100%',
+    },
+    gasPickerButtonDropdown: {
+      flexDirection: 'row',
+      flex: 1,
+      alignItems: 'center',
     },
     divider: {
       height: 20,

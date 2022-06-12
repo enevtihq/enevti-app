@@ -60,7 +60,7 @@ export async function processTransaction<T>(
   }
 }
 
-export async function calculateGasFee(
+export async function calculateMinGasFee(
   payload: AppTransaction<any>,
   signal?: AbortController['signal'],
 ): Promise<string | undefined> {
@@ -71,6 +71,45 @@ export async function calculateGasFee(
       throw Error(i18n.t('error:errorFetchMinFee', { msg: minFeeResponse.data }));
     }
     return BigInt(minFeeResponse.data).toString();
+  } catch (err) {
+    handleError(err);
+    return undefined;
+  }
+}
+
+export async function calculateGasFee(
+  payload: AppTransaction<any>,
+  signal?: AbortController['signal'],
+): Promise<string | undefined> {
+  try {
+    const minFee = await calculateMinGasFee(payload, signal);
+    return minFee ? (BigInt(minFee) * BigInt(2)).toString() : undefined;
+  } catch (err) {
+    handleError(err);
+    return undefined;
+  }
+}
+
+export async function calculateGasFeeLow(
+  payload: AppTransaction<any>,
+  signal?: AbortController['signal'],
+): Promise<string | undefined> {
+  try {
+    const minFee = await calculateMinGasFee(payload, signal);
+    return minFee ? BigInt(minFee).toString() : undefined;
+  } catch (err) {
+    handleError(err);
+    return undefined;
+  }
+}
+
+export async function calculateGasFeeHigh(
+  payload: AppTransaction<any>,
+  signal?: AbortController['signal'],
+): Promise<string | undefined> {
+  try {
+    const minFee = await calculateMinGasFee(payload, signal);
+    return minFee ? (BigInt(minFee) * BigInt(3)).toString() : undefined;
   } catch (err) {
     handleError(err);
     return undefined;

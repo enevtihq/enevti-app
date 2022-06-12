@@ -12,6 +12,7 @@ export type PaymentAction = {
 
 export type PaymentFee = {
   loaded: boolean;
+  priority: 'low' | 'normal' | 'high' | 'custom';
   gas: string;
   platform: string;
 };

@@ -46,7 +46,7 @@ export default function AppPrimaryButton({
           color="white"
           icon={icon}
           uppercase={false}
-          contentStyle={styles.content}>
+          contentStyle={[styles.content, style]}>
           {children}
         </Button>
       )}

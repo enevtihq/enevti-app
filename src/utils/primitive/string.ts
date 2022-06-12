@@ -19,3 +19,7 @@ export function strByteLength(str: string) {
 export function stringToBuffer(str: string): Buffer {
   return Lisk.cryptography.stringToBuffer(str);
 }
+
+export function capitalizeFirstLetter(str: string) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
