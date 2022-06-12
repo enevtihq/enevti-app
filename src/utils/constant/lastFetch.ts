@@ -14,6 +14,8 @@ const defaultTimeout = parseLastFetch(10, 'minute');
 export const lastFetchTimeout = {
   persona: defaultTimeout,
   profile: defaultTimeout,
+  profileOwned: defaultTimeout,
+  profileCollection: defaultTimeout,
   display: parseLastFetch(15, 'minute'),
   feed: defaultTimeout,
   moment: defaultTimeout,

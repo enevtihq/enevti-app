@@ -5,6 +5,8 @@ import sleep from 'enevti-app/utils/dummy/sleep';
 import {
   selectMyProfileCache,
   setLastFetchMyProfileCache,
+  setLastFetchMyProfileCollectionCache,
+  setLastFetchMyProfileOwnedCache,
   setMyProfileCache,
   setMyProfileCacheCollectionPagination,
   setMyProfileCacheOwnedPagination,
@@ -234,7 +236,7 @@ export async function getMyProfile(
   await sleep(1);
   const now = Date.now();
   const myAddress = await getMyAddress();
-  const lastFetch = selectMyProfileCache(store.getState()).lastFetch;
+  const lastFetch = selectMyProfileCache(store.getState()).lastFetch.profile ?? 0;
   let response: APIResponse<Profile> = {
     status: 200,
     data: selectMyProfileCache(store.getState()),
@@ -265,7 +267,7 @@ export async function getMyProfileInitialOwned(
   await sleep(1);
   const now = Date.now();
   const myAddress = await getMyAddress();
-  const lastFetch = selectMyProfileCache(store.getState()).lastFetch;
+  const lastFetch = selectMyProfileCache(store.getState()).lastFetch.owned ?? 0;
   let response: APIResponseVersioned<Profile['owned']> = {
     status: 200,
     data: {
@@ -277,12 +279,11 @@ export async function getMyProfileInitialOwned(
   };
 
   try {
-    if (force || now - lastFetch > lastFetchTimeout.profile) {
+    if (force || now - lastFetch > lastFetchTimeout.profileOwned) {
       const ownedResponse = await getProfileInitialOwned(myAddress, signal);
       if (ownedResponse.status === 200 && !isErrorResponse(ownedResponse)) {
         response.data = ownedResponse.data;
-        console.log(ownedResponse.data);
-        store.dispatch(setLastFetchMyProfileCache(now));
+        store.dispatch(setLastFetchMyProfileOwnedCache(now));
         store.dispatch(
           setMyProfileCacheOwnedPagination({ checkpoint: response.data.checkpoint, version: response.data.version }),
         );
@@ -306,7 +307,7 @@ export async function getMyProfileInitialCollection(
   await sleep(1);
   const now = Date.now();
   const myAddress = await getMyAddress();
-  const lastFetch = selectMyProfileCache(store.getState()).lastFetch;
+  const lastFetch = selectMyProfileCache(store.getState()).lastFetch.collection ?? 0;
   let response: APIResponseVersioned<Profile['collection']> = {
     status: 200,
     data: {
@@ -318,11 +319,11 @@ export async function getMyProfileInitialCollection(
   };
 
   try {
-    if (force || now - lastFetch > lastFetchTimeout.profile) {
+    if (force || now - lastFetch > lastFetchTimeout.profileCollection) {
       const collectionResponse = await getProfileInitialCollection(myAddress, signal);
       if (collectionResponse.status === 200 && !isErrorResponse(collectionResponse)) {
         response.data = collectionResponse.data;
-        store.dispatch(setLastFetchMyProfileCache(now));
+        store.dispatch(setLastFetchMyProfileCollectionCache(now));
         store.dispatch(
           setMyProfileCacheCollectionPagination({
             checkpoint: response.data.checkpoint,

@@ -10,7 +10,12 @@ const initialState: Profile & {
   ownedPagination: PaginationStore;
   onSalePagination: PaginationStore;
   collectionPagination: PaginationStore;
-  lastFetch: number;
+  lastFetch: {
+    profile: number;
+    owned: number;
+    onSale: number;
+    collection: number;
+  };
 } = {
   ownedPagination: {
     version: 0,
@@ -34,7 +39,7 @@ const initialState: Profile & {
   onSale: [],
   collection: [],
   pending: 0,
-  lastFetch: 0,
+  lastFetch: { profile: 0, owned: 0, onSale: 0, collection: 0 },
 };
 
 const profileEntitySlice = createSlice({
@@ -42,17 +47,7 @@ const profileEntitySlice = createSlice({
   initialState,
   reducers: {
     setMyProfileCache: (profile, action: PayloadAction<Profile>) => {
-      profile.nftSold = action.payload.nftSold;
-      profile.treasuryAct = action.payload.treasuryAct;
-      profile.serveRate = action.payload.serveRate;
-      profile.stake = action.payload.stake;
-      profile.balance = action.payload.balance;
-      profile.social.twitter.link = action.payload.social.twitter.link;
-      profile.social.twitter.stat = action.payload.social.twitter.stat;
-      profile.owned = action.payload.owned.slice();
-      profile.onSale = action.payload.onSale.slice();
-      profile.collection = action.payload.collection.slice();
-      profile.pending = action.payload.pending;
+      Object.assign(profile, action.payload);
     },
     unshiftMyProfileCacheOwnedNFT: (profile, action: PayloadAction<NFTBase[]>) => {
       profile.owned = action.payload.concat(profile.owned);
@@ -85,7 +80,16 @@ const profileEntitySlice = createSlice({
       profile.pending = action.payload;
     },
     setLastFetchMyProfileCache: (profile, action: PayloadAction<number>) => {
-      profile.lastFetch = action.payload;
+      Object.assign(profile, { lastFetch: { ...profile.lastFetch, profile: action.payload } });
+    },
+    setLastFetchMyProfileOwnedCache: (profile, action: PayloadAction<number>) => {
+      Object.assign(profile, { lastFetch: { ...profile.lastFetch, owned: action.payload } });
+    },
+    setLastFetchMyProfileOnSaleCache: (profile, action: PayloadAction<number>) => {
+      Object.assign(profile, { lastFetch: { ...profile.lastFetch, onSale: action.payload } });
+    },
+    setLastFetchMyProfileCollectionCache: (profile, action: PayloadAction<number>) => {
+      Object.assign(profile, { lastFetch: { ...profile.lastFetch, collection: action.payload } });
     },
     resetMyProfileCache: () => {
       return initialState;
@@ -106,6 +110,9 @@ export const {
   setMyProfileCacheOwnedPagination,
   setMyProfileCachePending,
   setLastFetchMyProfileCache,
+  setLastFetchMyProfileOwnedCache,
+  setLastFetchMyProfileOnSaleCache,
+  setLastFetchMyProfileCollectionCache,
   resetMyProfileCache,
 } = profileEntitySlice.actions;
 export default profileEntitySlice.reducer;
