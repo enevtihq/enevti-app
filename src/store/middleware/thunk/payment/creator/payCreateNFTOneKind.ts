@@ -7,7 +7,7 @@ import {
   showPayment,
   setPaymentPriority,
 } from 'enevti-app/store/slices/payment';
-import { CreateNFTOneKind } from 'enevti-app/types/ui/store/CreateNFTQueue';
+import { CreateNFTOneKindMeta } from 'enevti-app/types/ui/store/CreateNFTQueue';
 import { AsyncThunkAPI } from 'enevti-app/store/state';
 import { attachFee, calculateBaseFee, calculateGasFee, createTransaction } from 'enevti-app/service/enevti/transaction';
 import { makeDummyIPFS } from 'enevti-app/utils/dummy/ipfs';
@@ -23,7 +23,7 @@ import { redeemableNftModule } from 'enevti-app/utils/constant/transaction';
 import RNFS from 'react-native-fs';
 import { completeTokenUnit } from 'enevti-app/utils/format/amount';
 
-export const payCreateNFTOneKind = createAsyncThunk<void, CreateNFTOneKind, AsyncThunkAPI>(
+export const payCreateNFTOneKind = createAsyncThunk<void, CreateNFTOneKindMeta, AsyncThunkAPI>(
   'onekind/payCreateNFTOneKind',
   async (payload, { dispatch, signal }) => {
     try {
@@ -182,7 +182,7 @@ export const payCreateNFTOneKind = createAsyncThunk<void, CreateNFTOneKind, Asyn
         throw Error(i18n.t('error:transactionPreparationFailed'));
       }
 
-      dispatch(setPaymentFee({ gas: gasFee, platform: '0' }));
+      dispatch(setPaymentFee({ gas: gasFee, base: baseFee, platform: '0' }));
       dispatch(setPaymentPriority('normal'));
       dispatch(
         setPaymentAction({
@@ -192,12 +192,8 @@ export const payCreateNFTOneKind = createAsyncThunk<void, CreateNFTOneKind, Asyn
           description: i18n.t('payment:payCreateNFTOneKindDescription'),
           amount: '0',
           currency: COIN_NAME,
-          payload: JSON.stringify(
-            Object.assign(payload, {
-              transaction: attachFee(transactionPayload, (BigInt(gasFee) + BigInt(baseFee)).toString()),
-              state: Object.assign(payload.state, { contentUri }),
-            }),
-          ),
+          payload: JSON.stringify(attachFee(transactionPayload, (BigInt(gasFee) + BigInt(baseFee)).toString())),
+          meta: JSON.stringify(Object.assign(payload, { state: Object.assign(payload.state, { contentUri }) })),
         }),
       );
     } catch (err) {

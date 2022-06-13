@@ -41,7 +41,7 @@ export const payRegisterUsername = createAsyncThunk<void, PayRegisterUsernamePay
         throw Error(i18n.t('error:transactionPreparationFailed'));
       }
 
-      dispatch(setPaymentFee({ gas: gasFee, platform: '0' }));
+      dispatch(setPaymentFee({ gas: gasFee, base: baseFee, platform: '0' }));
       dispatch(setPaymentPriority('normal'));
       dispatch(
         setPaymentAction({
@@ -54,6 +54,7 @@ export const payRegisterUsername = createAsyncThunk<void, PayRegisterUsernamePay
           amount: BigInt(baseFee).toString(),
           currency: COIN_NAME,
           payload: JSON.stringify(attachFee(transactionPayload, (BigInt(gasFee) + BigInt(baseFee)).toString())),
+          meta: '',
         }),
       );
     } catch (err) {

@@ -44,7 +44,7 @@ export const payMintCollection = createAsyncThunk<void, PayMintCollectionPayload
         throw Error(i18n.t('error:transactionPreparationFailed'));
       }
 
-      dispatch(setPaymentFee({ gas: gasFee, platform: '0' }));
+      dispatch(setPaymentFee({ gas: gasFee, base: baseFee, platform: '0' }));
       dispatch(setPaymentPriority('normal'));
       dispatch(
         setPaymentAction({
@@ -73,6 +73,7 @@ export const payMintCollection = createAsyncThunk<void, PayMintCollectionPayload
           amount: (BigInt(payload.collection.minting.price.amount) * BigInt(payload.quantity)).toString(),
           currency: payload.collection.minting.price.currency,
           payload: JSON.stringify(attachFee(transactionPayload, (BigInt(gasFee) + BigInt(baseFee)).toString())),
+          meta: '',
         }),
       );
     } catch (err) {

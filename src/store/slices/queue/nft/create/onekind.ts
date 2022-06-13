@@ -3,10 +3,10 @@ import { createSelector } from 'reselect';
 import { COIN_NAME } from 'enevti-app/utils/constant/identifier';
 import { NFTTemplateAsset } from 'enevti-app/types/core/chain/nft/NFTTemplate';
 import { OneKindContractForm, OneKindContractStatusForm } from 'enevti-app/types/ui/screen/CreateOneKindContract';
-import { CreateNFTOneKind } from 'enevti-app/types/ui/store/CreateNFTQueue';
+import { CreateNFTOneKindMeta } from 'enevti-app/types/ui/store/CreateNFTQueue';
 import { RootState } from 'enevti-app/store/state';
 
-export const createNFTOneKindQueueInitialState: CreateNFTOneKind = {
+export const createNFTOneKindQueueInitialState: CreateNFTOneKindMeta = {
   data: {
     uri: '',
     mime: '',
@@ -65,7 +65,7 @@ const createNFTOneKindQueueSlice = createSlice({
   name: 'onekind',
   initialState: createNFTOneKindQueueInitialState,
   reducers: {
-    setCreateNFTOneKindData: (onekind, action: PayloadAction<CreateNFTOneKind['data']>) => {
+    setCreateNFTOneKindData: (onekind, action: PayloadAction<CreateNFTOneKindMeta['data']>) => {
       Object.assign(onekind.data, action.payload);
     },
     setCreateNFTOneKindChosenTemplate: (onekind, action: PayloadAction<NFTTemplateAsset>) => {

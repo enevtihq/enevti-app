@@ -63,7 +63,7 @@ export const payDeliverSecret = createAsyncThunk<void, PayDeliverSecretPayload, 
         dispatch(addTransactionNonceCache());
       }
 
-      dispatch(setPaymentFee({ gas: '0', platform: '0' }));
+      dispatch(setPaymentFee({ gas: '0', base: '0', platform: '0' }));
       dispatch(setPaymentPriority('normal'));
       dispatch(
         setPaymentAction({
@@ -74,6 +74,7 @@ export const payDeliverSecret = createAsyncThunk<void, PayDeliverSecretPayload, 
           amount: '0',
           currency: COIN_NAME,
           payload: JSON.stringify(transactionPayload),
+          meta: '',
         }),
       );
       dispatch(reducePayment());

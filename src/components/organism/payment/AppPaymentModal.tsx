@@ -30,6 +30,7 @@ import {
   setPaymentStatus,
   isPaymentUndefined,
   selectPaymentFeePriority,
+  setPaymentAction,
 } from 'enevti-app/store/slices/payment';
 import { selectMyProfileCache } from 'enevti-app/store/slices/entities/cache/myProfile';
 import AppPaymentItem from './AppPaymentItem';
@@ -37,7 +38,7 @@ import { parseAmount } from 'enevti-app/utils/format/amount';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
 import AppQuaternaryButton from 'enevti-app/components/atoms/button/AppQuaternaryButton';
 import AppPaymentGasFeePicker from './AppPaymentGasFeePicker';
-import { capitalizeFirstLetter } from 'enevti-app/utils/primitive/string';
+import { attachFee } from 'enevti-app/service/enevti/transaction';
 
 export default function AppPaymentModal() {
   const { t } = useTranslation();
@@ -81,7 +82,15 @@ export default function AppPaymentModal() {
       <View style={styles.gasPickerButtonContainer}>
         <AppQuaternaryButton box onPress={onGasPriorityPress} style={styles.gasPickerButton}>
           <View style={styles.gasPickerButtonDropdown}>
-            <AppTextBody5>{capitalizeFirstLetter(paymentPriority)}</AppTextBody5>
+            <AppTextBody5>
+              {paymentPriority === 'low'
+                ? t('payment:gasFeePriorityLow')
+                : paymentPriority === 'normal'
+                ? t('payment:gasFeePriorityNormal')
+                : paymentPriority === 'high'
+                ? t('payment:gasFeePriorityHigh')
+                : t('payment:gasFeePriorityCustom')}
+            </AppTextBody5>
             <AppIconComponent name={iconMap.dropDown} size={15} color={theme.colors.text} />
           </View>
         </AppQuaternaryButton>
@@ -94,6 +103,7 @@ export default function AppPaymentModal() {
       styles.gasPickerButton,
       styles.gasPickerButtonContainer,
       paymentPriority,
+      t,
     ],
   );
 
@@ -103,7 +113,17 @@ export default function AppPaymentModal() {
     }
   }, [dispatch, gasFeePickerDialogShow]);
 
-  const payCallback = React.useCallback(() => dispatch(reducePayment()), [dispatch]);
+  const payCallback = React.useCallback(() => {
+    dispatch(
+      setPaymentAction({
+        ...paymentAction,
+        payload: JSON.stringify(
+          attachFee(JSON.parse(paymentAction.payload), (BigInt(paymentFee.gas) + BigInt(paymentFee.base)).toString()),
+        ),
+      }),
+    );
+    dispatch(reducePayment());
+  }, [dispatch, paymentAction, paymentFee.gas, paymentFee.base]);
 
   const onSnackDismiss = React.useCallback(() => {
     payCallback();
@@ -223,7 +243,9 @@ export default function AppPaymentModal() {
             </AppPrimaryButton>
           </View>
 
-          {gasFeePickerDialogShow ? <AppPaymentGasFeePicker visible={true} onDismiss={onGasPriorityDismiss} /> : null}
+          {gasFeePickerDialogShow ? (
+            <AppPaymentGasFeePicker visible={true} onDismiss={onGasPriorityDismiss} onSave={onGasPriorityDismiss} />
+          ) : null}
         </View>
       ) : (
         <View style={styles.loaderContainer}>

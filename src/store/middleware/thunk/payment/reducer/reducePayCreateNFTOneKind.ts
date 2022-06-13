@@ -1,5 +1,5 @@
 import { uploadURItoIPFS } from 'enevti-app/service/ipfs';
-import { setPaymentStatus, selectPaymentActionPayload } from 'enevti-app/store/slices/payment';
+import { setPaymentStatus, selectPaymentActionPayload, selectPaymentActionMeta } from 'enevti-app/store/slices/payment';
 import {
   hideModalLoader,
   resetModalLoaderText,
@@ -7,7 +7,7 @@ import {
   showModalLoader,
 } from 'enevti-app/store/slices/ui/global/modalLoader';
 import { AppThunk } from 'enevti-app/store/state';
-import { CreateNFTOneKind } from 'enevti-app/types/ui/store/CreateNFTQueue';
+import { CreateNFTOneKindMeta, CreateNFTOneKindTransaction } from 'enevti-app/types/ui/store/CreateNFTQueue';
 import { handleError } from 'enevti-app/utils/error/handle';
 import { dateOfNearestDay } from 'enevti-app/utils/date/calendar';
 import i18n from 'enevti-app/translations/i18n';
@@ -21,25 +21,23 @@ export const reducePayCreateNFTOneKind = (): AppThunk => async (dispatch, getSta
     dispatch({ type: 'payment/reducePayCreateNFTOneKind' });
     dispatch(setPaymentStatus({ type: 'process', message: '' }));
 
-    const payload = JSON.parse(selectPaymentActionPayload(getState())) as CreateNFTOneKind;
-    if (!payload.transaction) {
-      throw Error(i18n.t('error:unknownError'));
-    }
+    const payload = JSON.parse(selectPaymentActionPayload(getState())) as CreateNFTOneKindTransaction;
+    const meta = JSON.parse(selectPaymentActionMeta(getState())) as CreateNFTOneKindMeta;
 
-    const transactionPayload: AppTransaction<CreateOneKindNFTUI> = payload.transaction;
+    const transactionPayload: AppTransaction<CreateOneKindNFTUI> = payload;
 
-    let data = payload.transaction.asset.data,
-      cover = payload.transaction.asset.cover,
-      content = payload.transaction.asset.content;
+    let data = payload.asset.data,
+      cover = payload.asset.cover,
+      content = payload.asset.content;
 
-    // if (payload.state.storageProtocol === 'ipfs') {
-    //   const provider = payload.state.storageProtocol;
+    // if (meta.state.storageProtocol === 'ipfs') {
+    //   const provider = meta.state.storageProtocol;
     //   dispatch(setModalLoaderText(i18n.t('payment:uploadingTo', { file: 'data', provider })));
-    //   data = await uploadURItoIPFS(payload.data.uri);
+    //   data = await uploadURItoIPFS(meta.data.uri);
     //   dispatch(setModalLoaderText(i18n.t('payment:uploadingTo', { file: 'cover', provider })));
-    //   cover = payload.state.coverUri ? await uploadURItoIPFS(payload.state.coverUri) : data;
+    //   cover = meta.state.coverUri ? await uploadURItoIPFS(meta.state.coverUri) : data;
     //   dispatch(setModalLoaderText(i18n.t('payment:uploadingTo', { file: 'content', provider })));
-    //   content = payload.state.utility === 'content' ? await uploadURItoIPFS(payload.state.contentUri) : '';
+    //   content = meta.state.utility === 'content' ? await uploadURItoIPFS(meta.state.contentUri) : '';
     // }
 
     transactionPayload.asset.data = data;
@@ -68,41 +66,35 @@ export const reducePayCreateNFTOneKind = (): AppThunk => async (dispatch, getSta
   }
 };
 
-export function parseTransactionPayloadTime(payload: CreateNFTOneKind) {
-  if (!payload.transaction) {
+export function parseTransactionPayloadTime(payload: CreateNFTOneKindTransaction) {
+  if (!payload) {
     throw Error(i18n.t('error:unknownError'));
   }
 
   let ret: Date = new Date();
-  let time = payload.transaction.asset.time;
-  let from = payload.transaction.asset.from;
+  let time = payload.asset.time;
+  let from = payload.asset.from;
 
   const now = new Date();
   const year = now.getFullYear();
   const month = now.getMonth();
   const date = now.getDate();
 
-  switch (payload.transaction.asset.recurring) {
+  switch (payload.asset.recurring) {
     case 'daily':
-      ret = new Date(year, month, date, payload.transaction.asset.from.hour, payload.transaction.asset.from.minute);
+      ret = new Date(year, month, date, payload.asset.from.hour, payload.asset.from.minute);
       break;
     case 'weekly':
       ret = new Date(
         year,
         month,
-        dateOfNearestDay(now, payload.transaction.asset.time.day).getDate(),
-        payload.transaction.asset.from.hour,
-        payload.transaction.asset.from.minute,
+        dateOfNearestDay(now, payload.asset.time.day).getDate(),
+        payload.asset.from.hour,
+        payload.asset.from.minute,
       );
       break;
     case 'monthly':
-      ret = new Date(
-        year,
-        month,
-        payload.transaction.asset.time.date,
-        payload.transaction.asset.from.hour,
-        payload.transaction.asset.from.minute,
-      );
+      ret = new Date(year, month, payload.asset.time.date, payload.asset.from.hour, payload.asset.from.minute);
       time = {
         ...time,
         date: ret.getDate(),
@@ -111,10 +103,10 @@ export function parseTransactionPayloadTime(payload: CreateNFTOneKind) {
     case 'yearly':
       ret = new Date(
         year,
-        payload.transaction.asset.time.month,
-        payload.transaction.asset.time.date,
-        payload.transaction.asset.from.hour,
-        payload.transaction.asset.from.minute,
+        payload.asset.time.month,
+        payload.asset.time.date,
+        payload.asset.from.hour,
+        payload.asset.from.minute,
       );
       time = {
         ...time,
@@ -124,11 +116,11 @@ export function parseTransactionPayloadTime(payload: CreateNFTOneKind) {
       break;
     case 'once':
       ret = new Date(
-        payload.transaction.asset.time.year,
-        payload.transaction.asset.time.month,
-        payload.transaction.asset.time.date,
-        payload.transaction.asset.from.hour,
-        payload.transaction.asset.from.minute,
+        payload.asset.time.year,
+        payload.asset.time.month,
+        payload.asset.time.date,
+        payload.asset.from.hour,
+        payload.asset.from.minute,
       );
       time = {
         ...time,

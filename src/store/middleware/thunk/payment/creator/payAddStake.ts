@@ -43,7 +43,7 @@ export const payAddStake = createAsyncThunk<void, PayAddStakePayload, AsyncThunk
         throw Error(i18n.t('error:transactionPreparationFailed'));
       }
 
-      dispatch(setPaymentFee({ gas: gasFee, platform: '0' }));
+      dispatch(setPaymentFee({ gas: gasFee, base: baseFee, platform: '0' }));
       dispatch(setPaymentPriority('normal'));
       dispatch(
         setPaymentAction({
@@ -56,6 +56,7 @@ export const payAddStake = createAsyncThunk<void, PayAddStakePayload, AsyncThunk
           amount: (BigInt(transactionPayload.asset.votes[0].amount) + BigInt(baseFee)).toString(),
           currency: payload.stake.currency,
           payload: JSON.stringify(attachFee(transactionPayload, (BigInt(gasFee) + BigInt(baseFee)).toString())),
+          meta: '',
         }),
       );
     } catch (err) {

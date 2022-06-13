@@ -8,12 +8,14 @@ export type PaymentAction = {
   amount: string;
   currency: string;
   payload: string;
+  meta: string;
 };
 
 export type PaymentFee = {
   loaded: boolean;
   priority: 'low' | 'normal' | 'high' | 'custom';
   gas: string;
+  base: string;
   platform: string;
 };
 

@@ -21,11 +21,13 @@ const initialState: PaymentState = {
     amount: '0',
     currency: '',
     payload: '',
+    meta: '',
   },
   fee: {
     loaded: false,
     gas: '0',
     platform: '0',
+    base: '0',
     priority: 'custom',
   },
 };
@@ -55,30 +57,17 @@ const paymentSlice = createSlice({
       payment.action.type = action.payload;
     },
     setPaymentAction: (payment, action: PayloadAction<Omit<PaymentAction, 'loaded'>>) => {
+      Object.assign(payment.action, action.payload);
       payment.action.loaded = true;
-      payment.action.type = action.payload.type;
-      payment.action.icon = action.payload.icon;
-      payment.action.name = action.payload.name;
-      payment.action.description = action.payload.description;
-      payment.action.details = action.payload.details;
-      payment.action.amount = action.payload.amount;
-      payment.action.currency = action.payload.currency;
-      payment.action.payload = action.payload.payload;
     },
     resetPaymentAction: payment => {
-      payment.action.loaded = false;
-      payment.action.type = initialState.action.type;
-      payment.action.icon = initialState.action.icon;
-      payment.action.name = initialState.action.name;
-      payment.action.description = initialState.action.description;
-      payment.action.amount = initialState.action.amount;
-      payment.action.currency = initialState.action.currency;
-      payment.action.payload = initialState.action.payload;
+      Object.assign(payment.action, initialState.action);
     },
     setPaymentFee: (payment, action: PayloadAction<Omit<PaymentFee, 'loaded' | 'priority'>>) => {
       payment.fee.loaded = true;
       payment.fee.gas = action.payload.gas;
       payment.fee.platform = action.payload.platform;
+      payment.fee.base = action.payload.base;
     },
     setPaymentFeeLoaded: (payment, action: PayloadAction<boolean>) => {
       payment.fee.loaded = action.payload;
@@ -90,6 +79,7 @@ const paymentSlice = createSlice({
       payment.fee.loaded = false;
       payment.fee.gas = initialState.fee.gas;
       payment.fee.platform = initialState.fee.platform;
+      payment.fee.base = initialState.fee.base;
     },
     setPaymentState: (payment, action: PayloadAction<PaymentState>) => {
       Object.assign(payment, action.payload);
@@ -146,6 +136,11 @@ export const selectPaymentAction = createSelector(
 export const selectPaymentActionPayload = createSelector(
   (state: RootState) => state,
   (state: RootState) => state.payment.action.payload,
+);
+
+export const selectPaymentActionMeta = createSelector(
+  (state: RootState) => state,
+  (state: RootState) => state.payment.action.meta,
 );
 
 export const selectPaymentFee = createSelector(

@@ -15,13 +15,14 @@ type CreateNFTData = {
   size: number;
 };
 
-export type CreateNFTOneKind = {
+export type CreateNFTOneKindMeta = {
   data: CreateNFTData;
   choosenTemplate: NFTTemplateAsset;
   state: OneKindContractForm;
   status: OneKindContractStatusForm;
-  transaction?: AppTransaction<CreateOneKindNFTUI>;
 };
+
+export type CreateNFTOneKindTransaction = AppTransaction<CreateOneKindNFTUI>;
 
 export type CreateNFTPackItemData = {
   uri: string;
