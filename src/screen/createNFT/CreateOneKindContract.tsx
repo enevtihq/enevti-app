@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Keyboard, TextInput, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useTheme } from 'react-native-paper';
+import { TextInput as PaperInput, useTheme } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import { StackScreenProps } from '@react-navigation/stack';
 import DocumentPicker from 'react-native-document-picker';
@@ -150,7 +150,6 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
   const [oneKindSheetVisible, setOneKindSheetVisible] = React.useState<boolean>(false);
   const [closeMenuVisible, setCloseMenuVisible] = React.useState<boolean>(false);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
-  const [activePrice, setActivePrice] = React.useState<boolean>(false);
   const [identityExpanded, setIdentityExpanded] = React.useState<boolean>(true);
   const [mintingExpanded, setMintingExpanded] = React.useState<boolean>(true);
   const [utilityExpanded, setUtilityExpanded] = React.useState<boolean>(true);
@@ -314,11 +313,8 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const onFocusPriceInput = React.useCallback(() => setActivePrice(true), []);
-
   const onBlurPriceInput = React.useCallback(() => {
     !formikProps.touched.priceAmount && formikProps.setFieldTouched('priceAmount');
-    setActivePrice(false);
   }, [formikProps]);
 
   const onSelectedMintingPeriodPicker = React.useCallback(item => {
@@ -498,16 +494,8 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
     ],
   );
 
-  const CoinChips = React.useMemo(
-    () => (
-      <AppCoinChipsPicker
-        dense
-        active={activePrice}
-        error={formikProps.touched.priceAmount && !!formikProps.errors.priceAmount}
-      />
-    ),
-    [formikProps.touched.priceAmount, formikProps.errors.priceAmount, activePrice],
-  );
+  const CoinChips = React.useMemo(() => <AppCoinChipsPicker dense />, []);
+  const CoinChipsPlaceholder = React.useMemo(() => <PaperInput.Icon name={iconMap.dropDown} />, []);
 
   React.useEffect(() => {
     setDummyNFT(oldDummyNFT =>
@@ -744,13 +732,13 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
               t('createNFT:collectionPrice'),
               t('createNFT:collectionPricePlaceholder'),
               {
-                onFocus: onFocusPriceInput,
                 onBlur: onBlurPriceInput,
                 keyboardType: 'number-pad',
                 hideMaxLengthIndicator: true,
                 maxLength: 13,
-                rowEndComponent: CoinChips,
-                memoKey: ['error', 'showError', 'rowEndComponent'],
+                endComponent: CoinChips,
+                right: CoinChipsPlaceholder,
+                memoKey: ['error', 'showError', 'endComponent'],
               },
               quantityInput,
             )}

@@ -106,6 +106,7 @@ const makeStyles = (theme: ReturnType<typeof useTheme>) =>
       top: '10%',
       right: 0,
       alignItems: 'center',
+      justifyContent: 'center',
     },
   });
 

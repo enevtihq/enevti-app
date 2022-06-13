@@ -15,7 +15,7 @@ import { Persona } from 'enevti-app/types/core/account/persona';
 import { useTranslation } from 'react-i18next';
 import AppCoinChipsPicker from 'enevti-app/components/organism/AppCoinChipsPicker';
 import AppMenuFormTextInputWithError from 'enevti-app/components/molecules/menu/AppMenuFormTextInputWithError';
-import { useTheme } from 'react-native-paper';
+import { TextInput, useTheme } from 'react-native-paper';
 import i18n from 'enevti-app/translations/i18n';
 import { StakeForm } from 'enevti-app/types/ui/store/StakeForm';
 import { payAddStake } from 'enevti-app/store/middleware/thunk/payment/creator/payAddStake';
@@ -58,7 +58,6 @@ export default function AppStakeButton({
   const styles = React.useMemo(() => makeStyles(insets), [insets]);
   const snapPoints = React.useMemo(() => ['62%'], []);
 
-  const [activePrice, setActivePrice] = React.useState<boolean>(false);
   const paymentThunkRef = React.useRef<any>();
 
   const myPersona = useSelector(selectMyPersonaCache);
@@ -93,7 +92,6 @@ export default function AppStakeButton({
       dismissKeyboard
       visible={visible}
       onDismiss={() => {
-        setActivePrice(false);
         onModalDismiss && onModalDismiss();
       }}
       snapPoints={snapPoints}
@@ -126,7 +124,8 @@ export default function AppStakeButton({
               <AppMenuFormTextInputWithError
                 hideMaxLengthIndicator
                 maxLength={13}
-                rowEndComponent={<AppCoinChipsPicker active={activePrice} error={touched.stake && !!errors.stake} />}
+                endComponent={<AppCoinChipsPicker />}
+                right={<TextInput.Icon name={iconMap.dropDown} />}
                 theme={theme}
                 onChangeText={handleChange('stake')}
                 value={values.stake}
@@ -135,7 +134,6 @@ export default function AppStakeButton({
                 autoCorrect={false}
                 label={t('stake:addStakePlaceholder')}
                 onBlur={() => {
-                  setActivePrice(false);
                   setFieldTouched('stake');
                 }}
                 errorText={errors.stake}
@@ -143,7 +141,6 @@ export default function AppStakeButton({
                 showError={touched.stake}
                 blurOnSubmit={true}
                 onSubmitEditing={isValid && dirty ? submitForm : () => {}}
-                onFocus={() => setActivePrice(true)}
                 keyboardType={'number-pad'}
               />
             </View>

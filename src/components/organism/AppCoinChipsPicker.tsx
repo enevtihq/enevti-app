@@ -1,42 +1,26 @@
 import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AppListItem from 'enevti-app/components/molecules/list/AppListItem';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
+import { SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
 import AppBrandLogo from 'enevti-app/components/atoms/brand/AppBrandLogo';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import { getCoinName } from 'enevti-app/utils/constant/identifier';
 import { StyleSheet, View } from 'react-native';
-import Color from 'color';
-import { Theme } from 'enevti-app/theme/default';
-import { useTheme } from 'react-native-paper';
 
 interface AppCoinChipsPickerProps {
-  active?: boolean;
-  error?: boolean;
   dense?: boolean;
 }
 
-function Component({ active, error, dense = false }: AppCoinChipsPickerProps) {
-  const theme = useTheme() as Theme;
+function Component({ dense }: AppCoinChipsPickerProps) {
   const insets = useSafeAreaInsets();
   const styles = React.useMemo(() => makeStyles(insets), [insets]);
-  const denseHeight = active ? '4.9%' : error ? '5.2%' : '4.9%';
-  const normalHeight = active ? '7.25%' : error ? '7.55%' : '7.25%';
 
-  const height = hp(dense ? denseHeight : normalHeight, insets);
-  const borderWidth = active ? 2 : error ? 1 : 2;
-  const borderColor = error
-    ? theme.colors.error
-    : active
-    ? theme.colors.primary
-    : theme.dark
-    ? Color(theme.colors.background).lighten(0.5).rgb().string()
-    : Color(theme.colors.background).darken(0.05).rgb().string();
+  const height = dense ? '85%' : '95%';
 
   return (
     <AppListItem
-      style={[styles.container, { height }]}
-      containerStyle={[styles.itemContainer, { borderColor, borderWidth }]}
+      style={[styles.container]}
+      containerStyle={[styles.itemContainer, { height }]}
       leftContent={
         <View style={styles.coinLogo}>
           <AppBrandLogo widthPercentage={0.05} />
@@ -55,9 +39,11 @@ const makeStyles = (insets: SafeAreaInsets) =>
     itemContainer: {
       marginHorizontal: 0,
       marginVertical: 0,
+      marginRight: 2,
       borderBottomLeftRadius: 0,
       borderTopLeftRadius: 0,
       borderLeftWidth: 0,
+      justifyContent: 'center',
     },
     coinLogo: {
       marginLeft: -3,
