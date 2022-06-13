@@ -22,7 +22,7 @@ export const createNFTOneKindQueueInitialState: CreateNFTOneKindMeta = {
   state: {
     name: '',
     description: '',
-    mintingType: '',
+    mintingType: 'normal',
     storageProtocol: 'ipfs',
     symbol: '',
     coverName: '',

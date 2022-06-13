@@ -3,6 +3,7 @@ export const redeemableNftModule = {
   createOnekindNft: 0,
   mintNft: 1,
   deliverSecret: 2,
+  mintNftTypeQr: 3,
 };
 
 export const personaModule = {

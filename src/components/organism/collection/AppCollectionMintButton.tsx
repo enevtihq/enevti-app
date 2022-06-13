@@ -12,11 +12,13 @@ import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import AppTextHeading5 from 'enevti-app/components/atoms/text/AppTextHeading5';
 import { useTranslation } from 'react-i18next';
 import { parseAmount } from 'enevti-app/utils/format/amount';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { payMintCollection } from 'enevti-app/store/middleware/thunk/payment/creator/payMintCollection';
 import DropShadow from 'react-native-drop-shadow';
 import usePaymentCallback from 'enevti-app/utils/hook/usePaymentCallback';
 import { Collection } from 'enevti-app/types/core/chain/collection';
+import { selectMyPersonaCache } from 'enevti-app/store/slices/entities/cache/myPersona';
+import AppCollectionMintOptions from './minting/AppCollectionMintOptions';
 
 export const MINT_BUTTON_HEIGHT = 11.5;
 
@@ -32,7 +34,9 @@ export default function AppCollectionMintButton({ collection, mintingAvailable }
   const theme = useTheme() as Theme;
   const styles = React.useMemo(() => makeStyles(hp, wp, theme), [hp, wp, theme]);
 
+  const myPersona = useSelector(selectMyPersonaCache);
   const [loading, setLoading] = React.useState<boolean>(false);
+  const [mintingOptionVisible, setMintingOptionVisible] = React.useState<boolean>(false);
   const paymentThunkRef = React.useRef<any>();
 
   const paymentIdleCallback = React.useCallback(() => {
@@ -45,12 +49,30 @@ export default function AppCollectionMintButton({ collection, mintingAvailable }
   });
 
   const onMintPress = React.useCallback(() => {
-    setLoading(true);
-    paymentThunkRef.current = dispatch(payMintCollection({ collection, quantity: 1 }));
-  }, [dispatch, collection]);
+    if (collection.mintingType === 'qr') {
+      if (collection.creator.address === myPersona.address) {
+        setMintingOptionVisible(old => !old);
+      }
+    } else {
+      setLoading(true);
+      paymentThunkRef.current = dispatch(payMintCollection({ collection, quantity: 1 }));
+    }
+  }, [dispatch, collection, myPersona.address]);
+
+  const onMintOptionDismiss = React.useCallback(() => {
+    setMintingOptionVisible(false);
+  }, []);
 
   return mintingAvailable ? (
     <View style={styles.actionContainer}>
+      {collection.mintingType === 'qr' && collection.creator.address === myPersona.address ? (
+        <AppCollectionMintOptions
+          collectionId={collection.id}
+          collectionType={collection.collectionType}
+          visible={mintingOptionVisible}
+          onDismiss={onMintOptionDismiss}
+        />
+      ) : null}
       <View style={{ height: hp('2%') }} />
       <DropShadow style={styles.actionButton}>
         <LinearGradient colors={[theme.colors.primary, theme.colors.secondary]} style={styles.actionButtonGradient}>
@@ -58,7 +80,11 @@ export default function AppCollectionMintButton({ collection, mintingAvailable }
             box
             loading={loading}
             icon={
-              collection.collectionType === 'onekind'
+              collection.mintingType === 'qr'
+                ? collection.creator.address === myPersona.address
+                  ? iconMap.dropDown
+                  : iconMap.camera
+                : collection.collectionType === 'onekind'
                 ? iconMap.buy
                 : collection.collectionType === 'packed'
                 ? iconMap.random
@@ -72,10 +98,16 @@ export default function AppCollectionMintButton({ collection, mintingAvailable }
             contentStyle={styles.actionButtonContent}>
             <View style={styles.actionButtonLeft}>
               <AppTextHeading3 numberOfLines={1} style={styles.whiteText}>
-                {collection.collectionType === 'onekind'
-                  ? t('payment:payMintOneKindName')
+                {collection.mintingType === 'qr' && collection.creator.address === myPersona.address
+                  ? t('collection:openMintOption')
+                  : collection.collectionType === 'onekind'
+                  ? collection.mintingType === 'qr'
+                    ? t('collection:mintOneKindQRName')
+                    : t('payment:payMintOneKindName')
                   : collection.collectionType === 'packed'
-                  ? t('payment:payMintPackedName')
+                  ? collection.mintingType === 'qr'
+                    ? t('collection:mintPackedQRName')
+                    : t('payment:payMintPackedName')
                   : t('error:unknown')}
               </AppTextHeading3>
               <AppTextBody4 style={styles.whiteText} numberOfLines={1}>

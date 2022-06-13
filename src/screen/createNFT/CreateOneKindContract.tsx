@@ -66,6 +66,7 @@ import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
 import AppListItem from 'enevti-app/components/molecules/list/AppListItem';
 import AppIconGradient from 'enevti-app/components/molecules/AppIconGradient';
 import AppTextHeading5 from 'enevti-app/components/atoms/text/AppTextHeading5';
+import AppMintingTypePicker from 'enevti-app/components/organism/picker/AppMintingTypePicker';
 
 type Props = StackScreenProps<RootStackParamList, 'CreateOneKindContract'>;
 
@@ -341,6 +342,11 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
       setFormStateValue('mintingExpire', '1', true);
     }
     setFormStateValue('mintingExpireOption', item.value, true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const onSelectedMintingTypePicker = React.useCallback(item => {
+    setFormStateValue('mintingType', item.value, true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -742,6 +748,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
 
           <AppAccordion expanded={mintingExpanded} onPress={mintingHeaderCallback} title={mintingHeader}>
             <View style={{ height: hp('1%', insets) }} />
+            <AppMintingTypePicker value={formikProps.values.mintingType} onSelected={onSelectedMintingTypePicker} />
             {commonFormInput(
               formikProps,
               priceInput,
