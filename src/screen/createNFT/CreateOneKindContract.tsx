@@ -13,6 +13,7 @@ import {
   selectCreateNFTOneKindQueue,
   setCreateNFTOneKindData,
   setCreateNFTOneKindState,
+  setCreateNFTOneKindStateItem,
   setCreateNFTOneKindStatus,
 } from 'enevti-app/store/slices/queue/nft/create/onekind';
 import * as Yup from 'yup';
@@ -65,6 +66,7 @@ import AppConfirmationModal from 'enevti-app/components/organism/menu/AppConfirm
 type Props = StackScreenProps<RootStackParamList, 'CreateOneKindContract'>;
 
 const setMultipleFieldValue = (
+  reducer: (key: keyof OneKindContractForm, value: any, shouldValidate?: boolean) => void,
   formik: FormikProps<OneKindContractForm & { initialDirty: string }>,
   keys: (keyof OneKindContractForm)[],
   initial: boolean = false,
@@ -73,9 +75,9 @@ const setMultipleFieldValue = (
 ) => {
   for (let i = 0; i < keys.length; i++) {
     if (initial) {
-      formik.setFieldValue(keys[i], createNFTOneKindQueueInitialState.state[keys[i]], shouldValidate);
+      reducer(keys[i], createNFTOneKindQueueInitialState.state[keys[i]], shouldValidate);
     } else {
-      formik.setFieldValue(keys[i], value, shouldValidate);
+      reducer(keys[i], value, shouldValidate);
     }
   }
 };
@@ -91,8 +93,11 @@ const setMultipleFieldTouched = (
   }
 };
 
-const resetRedeemTimeKeyFields = (formik: FormikProps<OneKindContractForm & { initialDirty: string }>) => {
-  setMultipleFieldValue(formik, redeemTimeKey, true);
+const resetRedeemTimeKeyFields = (
+  reducer: (key: keyof OneKindContractForm, value: any, shouldValidate?: boolean) => void,
+  formik: FormikProps<OneKindContractForm & { initialDirty: string }>,
+) => {
+  setMultipleFieldValue(reducer, formik, redeemTimeKey, true);
   setMultipleFieldTouched(formik, redeemTimeKey, false);
 };
 
@@ -290,25 +295,33 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
 
   const nextRefCallback = React.useCallback(nextref => () => nextref && nextref.current?.focus(), []);
 
+  const setFormStateValue = React.useCallback(
+    (key: keyof OneKindContractForm, value: any, shouldValidate?: boolean) => {
+      formikProps.setFieldValue(key, value, shouldValidate);
+      dispatch(setCreateNFTOneKindStateItem({ key, value }));
+    },
+    [formikProps, dispatch],
+  );
+
   const commonOnEndEditing = React.useCallback(
-    (key, formik) => (e: any) => formik.setFieldValue(key, e.nativeEvent.text, true),
-    [],
+    key => (e: any) => setFormStateValue(key, e.nativeEvent.text, true),
+    [setFormStateValue],
   );
 
   const commonOnBlur = React.useCallback((key, formik) => () => formik.setFieldTouched(key), []);
 
   const onDeleteCoverPicker = React.useCallback(() => {
-    setMultipleFieldValue(formikProps, coverKey, true);
+    setMultipleFieldValue(setFormStateValue, formikProps, coverKey, true);
     setMultipleFieldTouched(formikProps, coverKey, false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onSelectedCoverPicker = React.useCallback(item => {
-    formikProps.setFieldValue('coverName', item.name, false);
-    formikProps.setFieldValue('coverSize', item.size, false);
-    formikProps.setFieldValue('coverType', item.type, false);
-    formikProps.setFieldValue('coverExtension', getFileExtension(item.name), false);
-    formikProps.setFieldValue('coverUri', item.uri, false);
+    setFormStateValue('coverName', item.name, false);
+    setFormStateValue('coverSize', item.size, false);
+    setFormStateValue('coverType', item.type, false);
+    setFormStateValue('coverExtension', getFileExtension(item.name), false);
+    setFormStateValue('coverUri', item.uri, false);
     setMultipleFieldTouched(formikProps, coverKey, true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -319,97 +332,97 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
 
   const onSelectedMintingPeriodPicker = React.useCallback(item => {
     if (item.value === 'no-limit') {
-      formikProps.setFieldValue('mintingExpire', '0', true);
+      setFormStateValue('mintingExpire', '0', true);
     } else {
-      formikProps.setFieldValue('mintingExpire', '1', true);
+      setFormStateValue('mintingExpire', '1', true);
     }
-    formikProps.setFieldValue('mintingExpireOption', item.value, true);
+    setFormStateValue('mintingExpireOption', item.value, true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onSelectedUtilityPicker = React.useCallback(item => {
     if (item.value === 'content') {
-      formikProps.setFieldValue('recurring', 'anytime', true);
-      resetRedeemTimeKeyFields(formikProps);
+      setFormStateValue('recurring', 'anytime', true);
+      resetRedeemTimeKeyFields(setFormStateValue, formikProps);
     } else {
-      setMultipleFieldValue(formikProps, contentKey, true, true);
+      setMultipleFieldValue(setFormStateValue, formikProps, contentKey, true, true);
       setMultipleFieldTouched(formikProps, contentKey, false);
     }
-    formikProps.setFieldValue('utility', item.value, true);
+    setFormStateValue('utility', item.value, true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onDeleteContentPicker = React.useCallback(() => {
-    setMultipleFieldValue(formikProps, contentKey, true, true);
+    setMultipleFieldValue(setFormStateValue, formikProps, contentKey, true, true);
     setMultipleFieldTouched(formikProps, contentKey, false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onSelectedContentPicker = React.useCallback(item => {
-    formikProps.setFieldValue('contentName', item.name, false);
-    formikProps.setFieldValue('contentSize', item.size, false);
-    formikProps.setFieldValue('contentType', item.type, false);
-    formikProps.setFieldValue('contentExtension', getFileExtension(item.name), false);
-    formikProps.setFieldValue('contentUri', item.uri, true);
+    setFormStateValue('contentName', item.name, false);
+    setFormStateValue('contentSize', item.size, false);
+    setFormStateValue('contentType', item.type, false);
+    setFormStateValue('contentExtension', getFileExtension(item.name), false);
+    setFormStateValue('contentUri', item.uri, true);
     setMultipleFieldTouched(formikProps, contentKey, true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onSelectedRecurringPicker = React.useCallback(item => {
-    resetRedeemTimeKeyFields(formikProps);
+    resetRedeemTimeKeyFields(setFormStateValue, formikProps);
     if (item.value === 'daily') {
       setMultipleFieldTouched(formikProps, ['timeDay', 'timeDate'], true);
     }
-    formikProps.setFieldValue('recurring', item.value, true);
+    setFormStateValue('recurring', item.value, true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onSelectedDayPicker = React.useCallback(value => {
-    formikProps.setFieldValue('timeDay', value[0], true);
+    setFormStateValue('timeDay', value[0], true);
     formikProps.setFieldTouched('timeDay', true, false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onSelectedDatePicker = React.useCallback(value => {
-    formikProps.setFieldValue('timeDate', value[0], true);
+    setFormStateValue('timeDate', value[0], true);
     formikProps.setFieldTouched('timeDate', true, false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onSelectedDateMonthPicker = React.useCallback(value => {
-    formikProps.setFieldValue('timeMonth', value[0], true);
-    formikProps.setFieldValue('timeDate', value[1], true);
+    setFormStateValue('timeMonth', value[0], true);
+    setFormStateValue('timeDate', value[1], true);
     setMultipleFieldTouched(formikProps, ['timeMonth', 'timeDate'], true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onSelectedDateMonthYearPicker = React.useCallback(value => {
-    formikProps.setFieldValue('timeYear', value[0], true);
-    formikProps.setFieldValue('timeMonth', value[1], true);
-    formikProps.setFieldValue('timeDate', value[2], true);
+    setFormStateValue('timeYear', value[0], true);
+    setFormStateValue('timeMonth', value[1], true);
+    setFormStateValue('timeDate', value[2], true);
     setMultipleFieldTouched(formikProps, ['timeYear', 'timeMonth', 'timeDate'], true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onSelectedHourMinutePickerStart = React.useCallback(value => {
-    formikProps.setFieldValue('fromHour', value[0], true);
-    formikProps.setFieldValue('fromMinute', value[1], true);
+    setFormStateValue('fromHour', value[0], true);
+    setFormStateValue('fromMinute', value[1], true);
     setMultipleFieldTouched(formikProps, ['fromHour', 'fromMinute'], true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onSelectedHourMinutePickerEnd = React.useCallback(value => {
-    formikProps.setFieldValue('untilHour', value[0], true);
-    formikProps.setFieldValue('untilMinute', value[1], true);
+    setFormStateValue('untilHour', value[0], true);
+    setFormStateValue('untilMinute', value[1], true);
     setMultipleFieldTouched(formikProps, ['untilHour', 'untilMinute'], true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onSelectedRedeemLimitPicker = React.useCallback(item => {
     if (item.value === 'no-limit') {
-      formikProps.setFieldValue('redeemLimit', 0, true);
+      setFormStateValue('redeemLimit', 0, true);
     }
-    formikProps.setFieldValue('redeemLimitOption', item.value, true);
+    setFormStateValue('redeemLimitOption', item.value, true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -561,7 +574,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
         errorText={formik.errors[key]}
         error={formik.touched[key] && !!formik.errors[key]}
         showError={formik.touched[key]}
-        onEndEditing={commonOnEndEditing(key, formik)}
+        onEndEditing={commonOnEndEditing(key)}
         onSubmitEditing={nextRefCallback(nextref)}
         {...options}
       />
@@ -663,7 +676,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
                 error: formikProps.touched.name && (!formikProps.status.nameAvailable || !!formikProps.errors.name),
                 onEndEditing: async e => {
                   const text = e.nativeEvent.text;
-                  formikProps.setFieldValue('name', text, true);
+                  setFormStateValue('name', text, true);
                   const nameAvailable = await isNameAvailable(text);
                   formikProps.setStatus({
                     ...formikProps.status,
@@ -703,7 +716,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
                   formikProps.touched.symbol && (!formikProps.status.symbolAvailable || !!formikProps.errors.symbol),
                 onEndEditing: async e => {
                   const text = e.nativeEvent.text;
-                  formikProps.setFieldValue('symbol', text, true);
+                  setFormStateValue('symbol', text, true);
                   const symbolAvailable = await isSymbolAvailable(text);
                   formikProps.setStatus({
                     ...formikProps.status,
@@ -824,7 +837,9 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
             ) : null}
 
             {formikProps.values.recurring !== 'anytime' &&
-            (formikProps.touched.timeDay || formikProps.touched.timeDate) ? (
+            (formikProps.touched.timeDay ||
+              formikProps.touched.timeDate ||
+              formikProps.values.initialDirty === 'dirty') ? (
               <AppHourMinutePicker
                 label={labelHourMinutePickerStart}
                 onSelected={onSelectedHourMinutePickerStart}
@@ -833,8 +848,8 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
             ) : null}
 
             {formikProps.values.recurring !== 'anytime' &&
-            formikProps.touched.fromHour &&
-            formikProps.touched.fromMinute ? (
+            ((formikProps.touched.fromHour && formikProps.touched.fromMinute) ||
+              formikProps.values.initialDirty === 'dirty') ? (
               <AppHourMinutePicker
                 label={labelHourMinutePickerEnd}
                 onSelected={onSelectedHourMinutePickerEnd}
@@ -842,8 +857,8 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
               />
             ) : null}
 
-            {formikProps.touched.untilHour &&
-            formikProps.touched.untilMinute &&
+            {((formikProps.touched.untilHour && formikProps.touched.untilMinute) ||
+              formikProps.values.initialDirty === 'dirty') &&
             formikProps.values.recurring !== 'once' &&
             formikProps.values.recurring !== 'anytime' ? (
               <AppRedeemLimitPicker

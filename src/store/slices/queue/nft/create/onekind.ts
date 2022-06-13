@@ -74,6 +74,9 @@ const createNFTOneKindQueueSlice = createSlice({
     setCreateNFTOneKindState: (onekind, action: PayloadAction<OneKindContractForm>) => {
       Object.assign(onekind.state, action.payload);
     },
+    setCreateNFTOneKindStateItem: (onekind, action: PayloadAction<{ key: keyof OneKindContractForm; value: any }>) => {
+      Object.assign(onekind.state, { [action.payload.key]: action.payload.value });
+    },
     setCreateNFTOneKindStatus: (onekind, action: PayloadAction<OneKindContractStatusForm>) => {
       Object.assign(onekind.status, action.payload);
     },
@@ -87,6 +90,7 @@ export const {
   setCreateNFTOneKindData,
   setCreateNFTOneKindChosenTemplate,
   setCreateNFTOneKindState,
+  setCreateNFTOneKindStateItem,
   setCreateNFTOneKindStatus,
   clearCreateNFTOneKindQueue,
 } = createNFTOneKindQueueSlice.actions;
