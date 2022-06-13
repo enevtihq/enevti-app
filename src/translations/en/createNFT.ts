@@ -86,7 +86,7 @@ export default {
   selectUtilityDescription: 'Set intrinsic value of your NFT!',
   selectRecurring: 'Select Recurring',
   selectRecurringDescription: 'Set your NFT redeem frequency!',
-  selectCover: 'Select Optional Cover',
+  selectCover: 'Optional Collection Cover',
   selectCoverDescription: 'The default is your NFT image',
   nftPreview: 'Preview',
   previewUnavailable: 'Preview Not Available',
@@ -98,4 +98,6 @@ export default {
   save: 'Save',
   discard: 'Discard',
   createButton: 'Create NFT',
+  proTip: 'Pro Tip!',
+  proTipDescription: 'Selected utility will affect NFT template appearance!',
 };

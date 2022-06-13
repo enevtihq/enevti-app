@@ -62,6 +62,10 @@ import { payCreateNFTOneKind } from 'enevti-app/store/middleware/thunk/payment/c
 import getFileExtension from 'enevti-app/utils/mime/getFileExtension';
 import timezoneOffsetLabel from 'enevti-app/utils/date/timezoneOffsetLabel';
 import AppConfirmationModal from 'enevti-app/components/organism/menu/AppConfirmationModal';
+import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
+import AppListItem from 'enevti-app/components/molecules/list/AppListItem';
+import AppIconGradient from 'enevti-app/components/molecules/AppIconGradient';
+import AppTextHeading5 from 'enevti-app/components/atoms/text/AppTextHeading5';
 
 type Props = StackScreenProps<RootStackParamList, 'CreateOneKindContract'>;
 
@@ -795,6 +799,25 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
             <View style={{ height: hp('1%', insets) }} />
             <AppUtilityPicker value={formikProps.values.utility} onSelected={onSelectedUtilityPicker} />
 
+            {formikProps.values.utility === '' &&
+            oneKindContractStore.choosenTemplate.data.main.findIndex(x => x.type.includes('utility')) !== -1 ? (
+              <AppListItem
+                containerStyle={styles.utilityTemplateNote}
+                leftContent={
+                  <AppIconGradient
+                    name={iconMap.info}
+                    size={wp('5%', insets)}
+                    androidRenderingMode={'software'}
+                    colors={[theme.colors.primary, theme.colors.secondary]}
+                    style={styles.utilityTemplateIcon}
+                  />
+                }>
+                <AppTextBody5 style={styles.utilityTemplateText} numberOfLines={2}>
+                  <AppTextHeading5>{t('createNFT:proTip')}</AppTextHeading5> {t('createNFT:proTipDescription')}
+                </AppTextBody5>
+              </AppListItem>
+            ) : null}
+
             <View style={{ height: hp('1%', insets) }} />
 
             {formikProps.values.utility && formikProps.values.utility === 'content' ? (
@@ -985,6 +1008,16 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
 
 const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
   StyleSheet.create({
+    utilityTemplateNote: {
+      marginVertical: hp('2%', insets),
+    },
+    utilityTemplateIcon: {
+      marginRight: wp('3%', insets),
+      alignSelf: 'center',
+    },
+    utilityTemplateText: {
+      color: theme.colors.placeholder,
+    },
     scrollContainer: {
       zIndex: -9,
     },
