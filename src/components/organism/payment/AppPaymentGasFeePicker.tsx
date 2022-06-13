@@ -188,7 +188,7 @@ export default function AppPaymentGasFeePicker({ visible, onDismiss, onSave }: A
   }, [advancedSettingTouched, onNormalSelected]);
 
   const AdvancedSetting = React.useMemo(
-    () => accordionHeader(iconMap.identity, t('payment:advancedSetting')),
+    () => accordionHeader(iconMap.setting, t('payment:advancedSetting')),
     [t, accordionHeader],
   );
 
@@ -198,7 +198,7 @@ export default function AppPaymentGasFeePicker({ visible, onDismiss, onSave }: A
         <AppListItem
           leftContent={
             <AppIconGradient
-              name={iconMap.accountCircle}
+              name={iconMap.calculator}
               size={wp('12%', insets)}
               androidRenderingMode={'software'}
               colors={[theme.colors.primary, theme.colors.secondary]}

@@ -99,6 +99,7 @@ export const iconMap = {
   welcome: 'emoticon-kiss',
   survey: 'message',
   announcement: 'bullhorn',
+  calculator: 'calculator-variant',
 };
 
 interface AppIconComponentProps {
