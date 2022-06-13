@@ -193,7 +193,12 @@ export default function AppPaymentGasFeePicker({ visible, onDismiss, onSave }: A
   );
 
   return (
-    <AppMenuContainer enablePanDownToClose visible={visible} snapPoints={paymentSnapPoints} onDismiss={onDismiss}>
+    <AppMenuContainer
+      dismissKeyboard
+      enablePanDownToClose
+      visible={visible}
+      snapPoints={paymentSnapPoints}
+      onDismiss={onDismiss}>
       <View style={styles.menuContainer}>
         <AppListItem
           leftContent={
