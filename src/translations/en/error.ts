@@ -27,4 +27,6 @@ export default {
   nftStorageAPIKeyUndefined: 'NFT_STORAGE_API_KEY is not defined in .env',
   deniedCamera: 'Please grant permission to camera via device setting',
   deniedCameraDecided: 'The app requires access to the camera to use QR code scanning',
+  invalidTransactionPayload: 'Invalid transaction payload',
+  unknownQRFormat: 'Unknown QR Code Format',
 };

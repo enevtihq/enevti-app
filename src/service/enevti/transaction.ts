@@ -26,7 +26,9 @@ export async function postTransaction<T>(
 ): Promise<APIResponse<any>> {
   try {
     const response = await processTransaction<T>(payload, signal);
-    store.dispatch(addTransactionNonceCache());
+    if (response.status === 200) {
+      store.dispatch(addTransactionNonceCache());
+    }
     return response;
   } catch (err: any) {
     return err;

@@ -21,6 +21,8 @@ import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import { useTranslation } from 'react-i18next';
 import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
 import createQRValue from 'enevti-app/utils/qr/createQRValue';
+import AppQuaternaryButton from 'enevti-app/components/atoms/button/AppQuaternaryButton';
+import Color from 'color';
 
 interface AppCollectionMintQRProps {
   collectionId: string;
@@ -31,30 +33,36 @@ export default function AppCollectionMintQR({ collectionId, onDismiss }: AppColl
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
-  const styles = React.useMemo(() => makeStyles(insets), [insets]);
+  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
 
   const snapPoints = React.useMemo(() => ['70%'], []);
   const [value, setValue] = React.useState<string>('');
 
-  React.useEffect(() => {
-    async function run() {
-      const collection = await getCollectionById(collectionId);
-      if (collection.status === 200 && !isErrorResponse(collection)) {
-        const myPublicKey = await getMyPublicKey();
-        const payloadObj: MintNFTByQR = {
-          id: collection.data.id,
-          quantity: 1,
-          nonce: collection.data.minted.length,
-          publicKey: myPublicKey,
-        };
-        const payload = stringToBuffer(JSON.stringify(payloadObj)).toString('hex');
-        const signature = await createSignature(payload);
-        const qr = createQRValue('qrmint', JSON.stringify({ payload, signature }));
-        setValue(qr);
-      }
+  const onLoad = React.useCallback(async () => {
+    const collection = await getCollectionById(collectionId);
+    if (collection.status === 200 && !isErrorResponse(collection)) {
+      const myPublicKey = await getMyPublicKey();
+      const payloadObj: MintNFTByQR = {
+        id: collection.data.id,
+        quantity: 1,
+        nonce: collection.data.stat.minted,
+        publicKey: myPublicKey,
+      };
+      const payload = stringToBuffer(JSON.stringify(payloadObj)).toString('hex');
+      const signature = await createSignature(payload);
+      const qr = createQRValue('qrmint', JSON.stringify({ payload, signature }));
+      setValue(qr);
     }
-    run();
   }, [collectionId]);
+
+  const onRefresh = React.useCallback(() => {
+    setValue('');
+    onLoad();
+  }, [onLoad]);
+
+  React.useEffect(() => {
+    onLoad();
+  }, [onLoad]);
 
   return (
     <AppMenuContainer visible={true} snapPoints={snapPoints} onDismiss={onDismiss}>
@@ -80,7 +88,20 @@ export default function AppCollectionMintQR({ collectionId, onDismiss }: AppColl
           </AppListItem>
 
           <View style={styles.qrContainer}>
-            <QRCode value={value} size={wp(75)} />
+            <View style={styles.qrBox}>
+              <QRCode value={value} size={wp(70)} color={'black'} backgroundColor={'white'} />
+            </View>
+            <View style={{ height: hp(3) }} />
+            <AppQuaternaryButton
+              icon={iconMap.refresh}
+              iconSize={hp('3%', insets)}
+              iconColor={theme.colors.placeholder}
+              style={{
+                height: hp('4%', insets),
+              }}
+              onPress={onRefresh}>
+              <AppTextBody4 style={{ color: theme.colors.placeholder }}>{t('collection:refresh')}</AppTextBody4>
+            </AppQuaternaryButton>
           </View>
 
           <View style={styles.doneButton}>
@@ -96,7 +117,7 @@ export default function AppCollectionMintQR({ collectionId, onDismiss }: AppColl
   );
 }
 
-const makeStyles = (insets: SafeAreaInsets) =>
+const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
   StyleSheet.create({
     container: {
       flex: 1,
@@ -115,6 +136,13 @@ const makeStyles = (insets: SafeAreaInsets) =>
     headerIcon: {
       marginRight: wp('3%', insets),
       alignSelf: 'center',
+    },
+    qrBox: {
+      padding: wp(2.5),
+      backgroundColor: 'white',
+      borderRadius: 15,
+      borderWidth: StyleSheet.hairlineWidth,
+      borderColor: Color(theme.colors.text).alpha(0.2).rgb().toString(),
     },
     qrContainer: {
       flex: 1,

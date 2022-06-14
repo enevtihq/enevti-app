@@ -51,7 +51,7 @@ export type RootStackParamList = {
   MyProfile: undefined;
   ChooseNFTType: undefined;
   SetupUsername: undefined;
-  QRScanner: { eventId: string };
+  QRScanner: { successEvent: string; failedEvent?: string };
   UsernameRegistered: { username: string };
   ChooseNFTTemplate: {
     mode: 'normal' | 'change';

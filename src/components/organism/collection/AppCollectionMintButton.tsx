@@ -21,6 +21,10 @@ import { selectMyPersonaCache } from 'enevti-app/store/slices/entities/cache/myP
 import AppCollectionMintOptions from './minting/AppCollectionMintOptions';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
+import { payMintCollectionByQR } from 'enevti-app/store/middleware/thunk/payment/creator/payMintCollectionByQR';
+import parseQRValue from 'enevti-app/utils/qr/parseQRValue';
+import { openQRScanner } from 'enevti-app/utils/qr/openQRScanner';
+import { handleError } from 'enevti-app/utils/error/handle';
 
 export const MINT_BUTTON_HEIGHT = 11.5;
 
@@ -55,16 +59,43 @@ export default function AppCollectionMintButton({
     onIdle: paymentIdleCallback,
   });
 
+  const onQRSuccess = React.useCallback(
+    (data: string) => {
+      try {
+        const qrValue = parseQRValue(data);
+        if (qrValue.action === 'qrmint') {
+          paymentThunkRef.current = dispatch(payMintCollectionByQR({ collection, payload: qrValue.payload }));
+          return;
+        }
+        throw Error(t('error:unknownQRFormat'));
+      } catch (err: any) {
+        handleError(err);
+        setLoading(false);
+      }
+    },
+    [collection, dispatch, t],
+  );
+
+  const onQRFailed = React.useCallback(() => setLoading(false), []);
+
+  const onScanStart = React.useCallback(
+    () => openQRScanner(navigation, onQRSuccess, onQRFailed),
+    [navigation, onQRSuccess, onQRFailed],
+  );
+
   const onMintPress = React.useCallback(() => {
     if (collection.mintingType === 'qr') {
       if (collection.creator.address === myPersona.address) {
         setMintingOptionVisible(old => !old);
+      } else {
+        setLoading(true);
+        onScanStart();
       }
     } else {
       setLoading(true);
       paymentThunkRef.current = dispatch(payMintCollection({ collection, quantity: 1 }));
     }
-  }, [dispatch, collection, myPersona.address]);
+  }, [dispatch, collection, myPersona.address, onScanStart]);
 
   const onMintOptionDismiss = React.useCallback(() => {
     setMintingOptionVisible(false);
@@ -78,7 +109,7 @@ export default function AppCollectionMintButton({
           collectionType={collection.collectionType}
           visible={mintingOptionVisible}
           onDismiss={onMintOptionDismiss}
-          navigation={navigation}
+          onScanStart={onScanStart}
         />
       ) : null}
       <View style={{ height: hp('2%') }} />

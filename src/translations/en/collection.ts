@@ -22,4 +22,5 @@ export default {
   showThisQR: 'Show this to your fans!',
   showThisQRDescription: 'Remember, Each mint use unique QR!',
   done: 'Done',
+  refresh: 'Refresh',
 };

@@ -7,6 +7,7 @@ import { reducePayDeliverSecret } from './reducePayDeliverSecret';
 import { handleError } from 'enevti-app/utils/error/handle';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 import i18n from 'enevti-app/translations/i18n';
+import { reducePayMintCollectionByQR } from './reducePayMintCollectionByQR';
 
 export const reducePayment = (): AppThunk => (dispatch, getState) => {
   const paymentType = getState().payment.action.type;
@@ -16,6 +17,9 @@ export const reducePayment = (): AppThunk => (dispatch, getState) => {
       break;
     case 'mintCollection':
       dispatch(reducePayMintCollection());
+      break;
+    case 'mintCollectionByQR':
+      dispatch(reducePayMintCollectionByQR());
       break;
     case 'addStake':
       dispatch(reducePayAddStake());

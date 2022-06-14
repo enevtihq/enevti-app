@@ -1,6 +1,14 @@
 export type PaymentAction = {
   loaded: boolean;
-  type: 'createNFTOneKind' | 'mintCollection' | 'addStake' | 'registerUsername' | 'deliverSecret' | 'cancel' | '';
+  type:
+    | 'createNFTOneKind'
+    | 'mintCollection'
+    | 'mintCollectionByQR'
+    | 'addStake'
+    | 'registerUsername'
+    | 'deliverSecret'
+    | 'cancel'
+    | '';
   icon: string;
   name: string;
   description: string;

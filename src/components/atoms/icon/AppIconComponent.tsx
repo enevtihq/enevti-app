@@ -100,6 +100,7 @@ export const iconMap = {
   survey: 'message',
   announcement: 'bullhorn',
   calculator: 'calculator-variant',
+  refresh: 'refresh',
 };
 
 interface AppIconComponentProps {
