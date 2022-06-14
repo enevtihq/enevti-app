@@ -19,15 +19,22 @@ import usePaymentCallback from 'enevti-app/utils/hook/usePaymentCallback';
 import { Collection } from 'enevti-app/types/core/chain/collection';
 import { selectMyPersonaCache } from 'enevti-app/store/slices/entities/cache/myPersona';
 import AppCollectionMintOptions from './minting/AppCollectionMintOptions';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from 'enevti-app/navigation';
 
 export const MINT_BUTTON_HEIGHT = 11.5;
 
 interface AppCollectionMintButtonProps {
   collection: Collection;
   mintingAvailable: boolean;
+  navigation: StackNavigationProp<RootStackParamList>;
 }
 
-export default function AppCollectionMintButton({ collection, mintingAvailable }: AppCollectionMintButtonProps) {
+export default function AppCollectionMintButton({
+  collection,
+  mintingAvailable,
+  navigation,
+}: AppCollectionMintButtonProps) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { hp, wp } = useDimension();
@@ -71,6 +78,7 @@ export default function AppCollectionMintButton({ collection, mintingAvailable }
           collectionType={collection.collectionType}
           visible={mintingOptionVisible}
           onDismiss={onMintOptionDismiss}
+          navigation={navigation}
         />
       ) : null}
       <View style={{ height: hp('2%') }} />

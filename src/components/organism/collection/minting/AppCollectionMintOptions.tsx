@@ -6,15 +6,20 @@ import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import { useTranslation } from 'react-i18next';
 import AppCollectionMintQR from 'enevti-app/components/organism/collection/minting/AppCollectionMintQR';
 import { View } from 'react-native';
+import { openQRScanner } from 'enevti-app/screen/qr/QRScanner';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from 'enevti-app/navigation';
 
 interface AppCollectionMintOptionsProps {
   collectionId: string;
   collectionType: string;
   visible: boolean;
   onDismiss: () => void;
+  navigation: StackNavigationProp<RootStackParamList>;
 }
 
 export default function AppCollectionMintOptions({
+  navigation,
   collectionId,
   collectionType,
   visible,
@@ -43,6 +48,7 @@ export default function AppCollectionMintOptions({
         <AppMenuItem
           icon={iconMap.camera}
           onPress={() => {
+            openQRScanner(navigation, data => console.log('qr code:', data));
             onDismiss();
           }}
           title={

@@ -20,6 +20,7 @@ import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import { useTranslation } from 'react-i18next';
 import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
+import createQRValue from 'enevti-app/utils/qr/createQRValue';
 
 interface AppCollectionMintQRProps {
   collectionId: string;
@@ -48,7 +49,7 @@ export default function AppCollectionMintQR({ collectionId, onDismiss }: AppColl
         };
         const payload = stringToBuffer(JSON.stringify(payloadObj)).toString('hex');
         const signature = await createSignature(payload);
-        const qr = JSON.stringify({ payload, signature });
+        const qr = createQRValue('qrmint', JSON.stringify({ payload, signature }));
         setValue(qr);
       }
     }

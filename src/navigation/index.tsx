@@ -32,6 +32,7 @@ import { useTheme } from 'react-native-paper';
 import { Theme } from 'enevti-app/theme/default';
 import SetupUsername from 'enevti-app/screen/setting/SetupUsername';
 import UsernameRegistered from 'enevti-app/screen/setting/UsernameRegistered';
+import QRScanner from 'enevti-app/screen/qr/QRScanner';
 
 export type RootStackParamList = {
   CreateAccount: undefined;
@@ -50,6 +51,7 @@ export type RootStackParamList = {
   MyProfile: undefined;
   ChooseNFTType: undefined;
   SetupUsername: undefined;
+  QRScanner: { eventId: string };
   UsernameRegistered: { username: string };
   ChooseNFTTemplate: {
     mode: 'normal' | 'change';
@@ -243,6 +245,14 @@ export default function AppNavigationContainer() {
           options={{
             headerShown: false,
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          }}
+        />
+        <Stack.Screen
+          name="QRScanner"
+          component={QRScanner}
+          options={{
+            headerShown: false,
+            cardStyleInterpolator: CardStyleInterpolators.forFadeFromCenter,
           }}
         />
       </Stack.Navigator>

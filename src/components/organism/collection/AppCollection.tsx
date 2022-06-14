@@ -321,7 +321,7 @@ export default function AppCollection({ onScrollWorklet, navigation, route }: Ap
           color={theme.colors.primary}
         />
       )}
-      <AppCollectionMintButton collection={collection} mintingAvailable={mintingAvailable} />
+      <AppCollectionMintButton collection={collection} mintingAvailable={mintingAvailable} navigation={navigation} />
     </AppResponseView>
   ) : (
     <View style={styles.loaderContainer}>
