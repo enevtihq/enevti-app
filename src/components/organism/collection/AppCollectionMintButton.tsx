@@ -79,7 +79,7 @@ export default function AppCollectionMintButton({
   const onQRFailed = React.useCallback(() => setLoading(false), []);
 
   const onScanStart = React.useCallback(
-    () => openQRScanner(navigation, onQRSuccess, onQRFailed),
+    () => openQRScanner({ navigation, onSuccess: onQRSuccess, onFailed: onQRFailed }),
     [navigation, onQRSuccess, onQRFailed],
   );
 

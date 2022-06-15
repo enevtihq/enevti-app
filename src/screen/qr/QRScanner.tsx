@@ -36,16 +36,24 @@ export default function QRScanner({ navigation, route }: Props) {
 
   React.useEffect(() => {
     const unsubscribeBlur = navigation.addListener('blur', () => {
+      route.params.blurEvent && EventRegister.emit('onQRScannerBlur');
       if (!barcodeScannedRef.current) {
-        EventRegister.emit('onQRScannerFailed');
+        route.params.failedEvent && EventRegister.emit('onQRScannerFailed');
       }
+
+      route.params.focusEvent && EventRegister.removeEventListener(route.params.focusEvent);
+      route.params.blurEvent && EventRegister.removeEventListener(route.params.blurEvent);
       route.params.failedEvent && EventRegister.removeEventListener(route.params.failedEvent);
-      dispatch(resetStatusBarState());
+
+      route.params.fullscreen && dispatch(resetStatusBarState());
     });
 
     const unsubscribeFocus = navigation.addListener('focus', () => {
-      dispatch(setStatusBarBackground('transparent'));
-      dispatch(setStatusBarTint('light'));
+      route.params.focusEvent && EventRegister.emit('onQRScannerFocus');
+      if (route.params.fullscreen) {
+        dispatch(setStatusBarBackground('transparent'));
+        dispatch(setStatusBarTint('light'));
+      }
     });
 
     async function init() {
@@ -69,7 +77,16 @@ export default function QRScanner({ navigation, route }: Props) {
       unsubscribeFocus();
       EventRegister.removeEventListener(route.params.successEvent);
     };
-  }, [navigation, dispatch, route.params.successEvent, route.params.failedEvent, t]);
+  }, [
+    navigation,
+    dispatch,
+    route.params.successEvent,
+    route.params.failedEvent,
+    route.params.focusEvent,
+    route.params.blurEvent,
+    route.params.fullscreen,
+    t,
+  ]);
 
   React.useEffect(() => {
     setTimeout(() => setVisible(true), 500);

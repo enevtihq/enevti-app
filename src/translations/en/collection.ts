@@ -20,7 +20,7 @@ export default {
   mintPackedQRName: 'Scan to Mint Bundle',
   showMintQR: 'Show Mint QR',
   showThisQR: 'Show this to your fans!',
-  showThisQRDescription: 'Remember, Each mint use unique QR!',
+  showThisQRDescription: 'Remember, each mint use unique QR!',
   done: 'Done',
   refresh: 'Refresh',
 };

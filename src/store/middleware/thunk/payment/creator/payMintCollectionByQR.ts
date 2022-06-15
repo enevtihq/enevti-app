@@ -15,6 +15,7 @@ import { Collection } from 'enevti-app/types/core/chain/collection';
 import { AppTransaction } from 'enevti-app/types/core/service/transaction';
 import { redeemableNftModule } from 'enevti-app/utils/constant/transaction';
 import { MintNFTByQR, MintNFTByQRUI } from 'enevti-app/types/core/asset/redeemable_nft/mint_nft_type_qr_asset';
+import base64 from 'react-native-base64';
 
 type PayMintCollectionByQRPayload = { collection: Collection; payload: string };
 
@@ -23,7 +24,7 @@ export const payMintCollectionByQR = createAsyncThunk<void, PayMintCollectionByQ
   async (payload, { dispatch, signal }) => {
     try {
       const mintNftByQrUI = JSON.parse(payload.payload) as MintNFTByQRUI;
-      const { id, quantity } = JSON.parse(Buffer.from(mintNftByQrUI.payload, 'hex').toString()) as MintNFTByQR;
+      const { id, quantity } = JSON.parse(base64.decode(mintNftByQrUI.payload)) as MintNFTByQR;
       if (payload.collection.id !== id) {
         throw Error(i18n.t('error:invalidTransactionPayload'));
       }

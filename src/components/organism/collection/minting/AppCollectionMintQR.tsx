@@ -8,7 +8,6 @@ import { createSignature } from 'enevti-app/utils/cryptography';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
 import QRCode from 'react-native-qrcode-svg';
 import { Platform, StyleSheet, View } from 'react-native';
-import { stringToBuffer } from 'enevti-app/utils/primitive/string';
 import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
 import AppListItem from 'enevti-app/components/molecules/list/AppListItem';
 import AppIconGradient from 'enevti-app/components/molecules/AppIconGradient';
@@ -23,6 +22,7 @@ import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButto
 import createQRValue from 'enevti-app/utils/qr/createQRValue';
 import AppQuaternaryButton from 'enevti-app/components/atoms/button/AppQuaternaryButton';
 import Color from 'color';
+import base64 from 'react-native-base64';
 
 interface AppCollectionMintQRProps {
   collectionId: string;
@@ -48,7 +48,7 @@ export default function AppCollectionMintQR({ collectionId, onDismiss }: AppColl
         nonce: collection.data.stat.minted,
         publicKey: myPublicKey,
       };
-      const payload = stringToBuffer(JSON.stringify(payloadObj)).toString('hex');
+      const payload = base64.encode(JSON.stringify(payloadObj));
       const signature = await createSignature(payload);
       const qr = createQRValue('qrmint', JSON.stringify({ payload, signature }));
       setValue(qr);
