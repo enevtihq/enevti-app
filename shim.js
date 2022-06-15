@@ -4,6 +4,7 @@
 import BackgroundTimer from 'react-native-background-timer';
 import { Buffer } from 'buffer';
 import 'text-encoding-polyfill';
+import 'react-native-url-polyfill/auto';
 
 global.setTimeout = BackgroundTimer.setTimeout.bind(BackgroundTimer);
 global.setInterval = BackgroundTimer.setInterval.bind(BackgroundTimer);

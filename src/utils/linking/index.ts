@@ -2,9 +2,10 @@ import { LinkingOptions } from '@react-navigation/native';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { Linking } from 'react-native';
 
-type AppLinking = (initialRouteName: keyof RootStackParamList) => LinkingOptions<RootStackParamList>;
+export type AppLinking = (initialRouteName: keyof RootStackParamList) => LinkingOptions<RootStackParamList>;
 
-type AppLinkNamespace =
+export type AppLinkNamespace =
+  | ''
   | 'nft-serial'
   | 'nft-id'
   | 'collection-serial'
@@ -16,9 +17,33 @@ type AppLinkNamespace =
   | 'profile-address'
   | 'profile-username';
 
-const APP_LINK = 'enevti://';
-const UNIVERSAL_LINK_HTTP = 'http://app.enevti.com';
-const UNIVERSAL_LINK_HTTPS = 'https://app.enevti.com';
+export const APP_LINK = 'enevti://';
+export const UNIVERSAL_LINK_HTTP = 'http://app.enevti.com';
+export const UNIVERSAL_LINK_HTTPS = 'https://app.enevti.com';
+
+const KNOWN_LINK = ['nft', 'collection', 'stake', 'profile'];
+
+export const isAppLink = (link: string) => {
+  try {
+    const url = new URL(link);
+    return `${url.protocol}//` === APP_LINK;
+  } catch (err) {
+    return false;
+  }
+};
+
+export const isRawLink = (link: string) => {
+  try {
+    const url = new URL(link);
+    return url.hostname === '';
+  } catch {
+    return false;
+  }
+};
+
+export const isLinkKnown = (link: string) => {
+  return KNOWN_LINK.includes(link);
+};
 
 export const linking: AppLinking = initialRouteName => {
   return {
@@ -49,6 +74,8 @@ export const linking: AppLinking = initialRouteName => {
 export function getAppLink(namespace: AppLinkNamespace, arg: string, prefix: string = `${UNIVERSAL_LINK_HTTPS}/`) {
   let ret: string = prefix;
   switch (namespace) {
+    case '':
+      return `${APP_LINK}/${arg}`;
     case 'nft-serial':
       ret += `nft/s/${arg}`;
       break;

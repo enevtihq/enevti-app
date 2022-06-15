@@ -63,7 +63,7 @@ export default function AppCollectionMintButton({
     (data: string) => {
       try {
         const qrValue = parseQRValue(data);
-        if (qrValue.action === 'qrmint') {
+        if (qrValue && qrValue.action === 'qrmint') {
           paymentThunkRef.current = dispatch(payMintCollectionByQR({ collection, payload: qrValue.payload }));
           return;
         }

@@ -1,6 +1,12 @@
-import { QRAction, QRValue } from 'enevti-app/types/ui/screen/QRScanner';
+import { QRAction } from 'enevti-app/types/ui/screen/QRScanner';
+import { AppLinkNamespace, APP_LINK, getAppLink } from '../linking';
 
 export default function createQRValue(action: QRAction, payload: string): string {
-  const value: QRValue = { action, payload };
-  return JSON.stringify(value);
+  const url = getAppLink('', `${action}?payload=${payload}`);
+  return url;
+}
+
+export function createQRLink(namespace: AppLinkNamespace, arg: string): string {
+  const url = getAppLink(namespace, arg, APP_LINK);
+  return url;
 }

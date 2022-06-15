@@ -42,15 +42,15 @@ export default function AppCollectionMintQR({ collectionId, onDismiss }: AppColl
     const collection = await getCollectionById(collectionId);
     if (collection.status === 200 && !isErrorResponse(collection)) {
       const myPublicKey = await getMyPublicKey();
-      const payloadObj: MintNFTByQR = {
+      const bodyObj: MintNFTByQR = {
         id: collection.data.id,
         quantity: 1,
         nonce: collection.data.stat.minted,
         publicKey: myPublicKey,
       };
-      const payload = base64.encode(JSON.stringify(payloadObj));
-      const signature = await createSignature(payload);
-      const qr = createQRValue('qrmint', JSON.stringify({ payload, signature }));
+      const body = base64.encode(JSON.stringify(bodyObj));
+      const signature = await createSignature(body);
+      const qr = createQRValue('qrmint', JSON.stringify({ body, signature }));
       setValue(qr);
     }
   }, [collectionId]);

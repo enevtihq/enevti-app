@@ -6,7 +6,7 @@ export type MintNFTByQR = {
 };
 
 export type MintNFTByQRProps = {
-  payload: string;
+  body: string;
   signature: string;
 };
 

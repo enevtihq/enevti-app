@@ -24,7 +24,7 @@ export const payMintCollectionByQR = createAsyncThunk<void, PayMintCollectionByQ
   async (payload, { dispatch, signal }) => {
     try {
       const mintNftByQrUI = JSON.parse(payload.payload) as MintNFTByQRUI;
-      const { id, quantity } = JSON.parse(base64.decode(mintNftByQrUI.payload)) as MintNFTByQR;
+      const { id, quantity } = JSON.parse(base64.decode(mintNftByQrUI.body)) as MintNFTByQR;
       if (payload.collection.id !== id) {
         throw Error(i18n.t('error:invalidTransactionPayload'));
       }
@@ -35,7 +35,7 @@ export const payMintCollectionByQR = createAsyncThunk<void, PayMintCollectionByQ
       const transactionPayload: AppTransaction<MintNFTByQRUI> = await createTransaction(
         redeemableNftModule.moduleID,
         redeemableNftModule.mintNftTypeQr,
-        { payload: mintNftByQrUI.payload, signature: mintNftByQrUI.signature },
+        { body: mintNftByQrUI.body, signature: mintNftByQrUI.signature },
         '0',
         signal,
       );
