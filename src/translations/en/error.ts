@@ -29,4 +29,6 @@ export default {
   deniedCameraDecided: 'The app requires access to the camera to use QR code scanning',
   invalidTransactionPayload: 'Invalid transaction payload',
   unknownQRFormat: 'Unknown QR Code Format',
+  wrongLocalKey: 'Wrong Local Key',
+  unknownErrorGetPassphrase: 'Unknown error while getting passphrase',
 };

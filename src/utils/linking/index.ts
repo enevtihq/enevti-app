@@ -1,8 +1,16 @@
 import { LinkingOptions } from '@react-navigation/native';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { Linking } from 'react-native';
+import { store } from 'enevti-app/store/state';
+import { selectLockedState } from 'enevti-app/store/slices/ui/screen/locked';
+import { selectAuthState } from 'enevti-app/store/slices/auth';
 
-export type AppLinking = (initialRouteName: keyof RootStackParamList) => LinkingOptions<RootStackParamList>;
+export type AppLinking = (
+  initialRouteName: keyof RootStackParamList,
+  currentRoute: string | undefined,
+) => LinkingOptions<RootStackParamList>;
+
+export type HostnameToRoute = (hostname: string) => keyof RootStackParamList | undefined;
 
 export type AppLinkNamespace =
   | ''
@@ -22,6 +30,38 @@ export const UNIVERSAL_LINK_HTTP = 'http://app.enevti.com';
 export const UNIVERSAL_LINK_HTTPS = 'https://app.enevti.com';
 
 const KNOWN_LINK = ['nft', 'collection', 'stake', 'profile'];
+const screens = {
+  NFTDetails: {
+    path: 'nft',
+  },
+  Collection: {
+    path: 'collection',
+  },
+  StakePool: {
+    path: 'stake',
+  },
+  Profile: {
+    path: 'profile',
+  },
+  Login: {
+    path: 'login',
+  },
+  CreateAccount: {
+    path: 'createaccount',
+  },
+};
+
+export const hostnameToRoute: HostnameToRoute = (hostname: string) => {
+  const host = hostname.charAt(0) === '/' ? hostname.substring(1).toLowerCase() : hostname.toLowerCase();
+  let ret = '';
+  for (const [key] of Object.entries(screens)) {
+    if (screens[key as keyof typeof screens].path === host) {
+      ret = key;
+      break;
+    }
+  }
+  return ret !== '' ? (ret as unknown as keyof RootStackParamList) : undefined;
+};
 
 export const isAppLink = (link: string) => {
   try {
@@ -45,28 +85,44 @@ export const isLinkKnown = (link: string) => {
   return KNOWN_LINK.includes(link);
 };
 
-export const linking: AppLinking = initialRouteName => {
+export const linking: AppLinking = (initialRouteName, currentRoute) => {
   return {
     prefixes: [APP_LINK, UNIVERSAL_LINK_HTTP, UNIVERSAL_LINK_HTTPS],
-    config: {
-      initialRouteName,
-      screens: {
-        NFTDetails: {
-          path: 'nft/:mode/:arg',
-        },
-        Collection: {
-          path: 'collection/:mode/:arg',
-        },
-        StakePool: {
-          path: 'stake/:mode/:arg',
-        },
-        Profile: {
-          path: 'profile/:mode/:arg',
-        },
-      },
-    },
+    config: { initialRouteName, screens },
     async getInitialURL() {
-      return Linking.getInitialURL();
+      const auth = selectAuthState(store.getState());
+      const initialRoute = auth.encrypted ? 'Login' : auth.token ? 'Home' : 'CreateAccount';
+
+      if (initialRoute === 'Login') {
+        const url = await Linking.getInitialURL();
+        if (url !== null) {
+          const loginURL = `${APP_LINK}login?path=${encodeURIComponent(url)}`;
+          return loginURL;
+        } else {
+          return `${APP_LINK}login`;
+        }
+      } else if (initialRoute === 'CreateAccount') {
+        return `${APP_LINK}createaccount`;
+      } else {
+        return Linking.getInitialURL();
+      }
+    },
+    subscribe(listener) {
+      const linkingSubscription = Linking.addEventListener('url', ({ url }) => {
+        const locked = selectLockedState(store.getState());
+        const auth = selectAuthState(store.getState());
+
+        if (currentRoute === 'Login' || (auth.encrypted && locked)) {
+          const loginURL = `${APP_LINK}login?path=${encodeURIComponent(url)}`;
+          listener(loginURL);
+        } else {
+          listener(url);
+        }
+      });
+
+      return () => {
+        linkingSubscription.remove();
+      };
     },
   };
 };
@@ -75,36 +131,36 @@ export function getAppLink(namespace: AppLinkNamespace, arg: string, prefix: str
   let ret: string = prefix;
   switch (namespace) {
     case '':
-      return `${APP_LINK}/${arg}`;
+      return `${APP_LINK}/${encodeURIComponent(arg)}`;
     case 'nft-serial':
-      ret += `nft/s/${arg}`;
+      ret += `nft?mode=s&arg=${encodeURIComponent(arg)}`;
       break;
     case 'nft-id':
-      ret += `nft/id/${arg}`;
+      ret += `nft?mode=id&arg=${encodeURIComponent(arg)}`;
       break;
     case 'collection-serial':
-      ret += `collection/s/${arg}`;
+      ret += `collection?mode=s&arg=${encodeURIComponent(arg)}`;
       break;
     case 'collection-id':
-      ret += `collection/id/${arg}`;
+      ret += `collection?mode=id&arg=${encodeURIComponent(arg)}`;
       break;
     case 'stake-pool-base32':
-      ret += `stake/pool/b/${arg}`;
+      ret += `stake?mode=b&arg=${encodeURIComponent(arg)}`;
       break;
     case 'stake-pool-address':
-      ret += `stake/pool/a/${arg}`;
+      ret += `stake?mode=a&arg=${encodeURIComponent(arg)}`;
       break;
     case 'stake-pool-username':
-      ret += `stake/pool/u/${arg}`;
+      ret += `stake?mode=u&arg=${encodeURIComponent(arg)}`;
       break;
     case 'profile-base32':
-      ret += `profile/b/${arg}`;
+      ret += `profile?mode=b&arg=${encodeURIComponent(arg)}`;
       break;
     case 'profile-address':
-      ret += `profile/a/${arg}`;
+      ret += `profile?mode=a&arg=${encodeURIComponent(arg)}`;
       break;
     case 'profile-username':
-      ret += `profile/u/${arg}`;
+      ret += `profile?mode=u&arg=${encodeURIComponent(arg)}`;
       break;
     default:
       break;

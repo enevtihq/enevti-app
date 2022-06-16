@@ -3,6 +3,7 @@ import { NativeModules, NativeEventEmitter } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectAuthState } from 'enevti-app/store/slices/auth';
 import { lockScreen, selectLockedState } from 'enevti-app/store/slices/ui/screen/locked';
+import { resetLocalSessionKey } from 'enevti-app/store/slices/session/local';
 
 export default function useLockScreen() {
   const dispatch = useDispatch();
@@ -16,6 +17,7 @@ export default function useLockScreen() {
     const lockDetectionSuscription = LockDetectionEmitter.addListener('LockStatusChange', ({ status }) => {
       if (!locked && auth.type && status === 'LOCKED') {
         dispatch(lockScreen());
+        dispatch(resetLocalSessionKey());
       }
     });
     return function cleanup() {

@@ -33,6 +33,7 @@ import { Theme } from 'enevti-app/theme/default';
 import SetupUsername from 'enevti-app/screen/setting/SetupUsername';
 import UsernameRegistered from 'enevti-app/screen/setting/UsernameRegistered';
 import QRScanner from 'enevti-app/screen/qr/QRScanner';
+import { selectLocalSession } from 'enevti-app/store/slices/session/local';
 
 export type RootStackParamList = {
   CreateAccount: undefined;
@@ -45,7 +46,7 @@ export type RootStackParamList = {
   };
   AccountCreated: undefined;
   ImportPassphrase: undefined;
-  Login: undefined;
+  Login: { path?: string };
   Home: undefined;
   Feed: undefined;
   MyProfile: undefined;
@@ -89,6 +90,8 @@ export default function AppNavigationContainer() {
   const colorScheme = useColorScheme();
   const navigationRef = useNavigationContainerRef<RootStackParamList>();
   const locked = useSelector(selectLockedState);
+  const localSession = useSelector(selectLocalSession);
+  const currentRoute = navigationRef.isReady() ? navigationRef.getCurrentRoute()?.name : undefined;
 
   const theme = useTheme() as Theme;
   const styles = React.useMemo(() => makeStyles(theme), [theme]);
@@ -99,16 +102,16 @@ export default function AppNavigationContainer() {
 
   const auth = useSelector(selectAuthState);
   const initialRoute = auth.encrypted ? 'Login' : auth.token ? 'Home' : 'CreateAccount';
-  const navLinking = React.useMemo(() => linking(initialRoute), [initialRoute]);
+  const navLinking = React.useMemo(() => linking(initialRoute, currentRoute), [initialRoute, currentRoute]);
 
   useLockScreen();
   useScreenDisplayed();
 
   React.useEffect(() => {
-    if (auth.encrypted && locked && navigationRef.getCurrentRoute()?.name !== 'Login') {
-      navigationRef.navigate('Login');
+    if (auth.encrypted && localSession.key === '' && locked && currentRoute !== 'Login') {
+      navigationRef.navigate('Login', {});
     }
-  }, [auth.encrypted, locked, navigationRef]);
+  }, [auth.encrypted, locked, navigationRef, currentRoute, localSession.key]);
 
   return (
     <NavigationContainer

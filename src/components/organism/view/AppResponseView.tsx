@@ -12,6 +12,7 @@ interface AppResponseViewProps {
   style: StyleProp<ViewStyle>;
   onReload?: () => void;
   progressViewOffset?: number;
+  refreshing?: boolean;
 }
 
 export default function AppResponseView({
@@ -20,14 +21,15 @@ export default function AppResponseView({
   style,
   onReload,
   progressViewOffset = 0,
+  refreshing = false,
 }: AppResponseViewProps) {
   const styles = React.useMemo(() => makeStyles(), []);
   const refreshControl = React.useMemo(
     () =>
       onReload ? (
-        <RefreshControl refreshing={false} onRefresh={onReload} progressViewOffset={progressViewOffset} />
+        <RefreshControl refreshing={refreshing} onRefresh={onReload} progressViewOffset={progressViewOffset} />
       ) : undefined,
-    [onReload, progressViewOffset],
+    [onReload, progressViewOffset, refreshing],
   );
 
   return status === 200 ? (

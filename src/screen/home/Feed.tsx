@@ -152,7 +152,12 @@ export default function Feed({ navigation, onScroll, headerHeight }: FeedProps) 
     <AppView darken withLoader withPaymentOnly>
       <View style={styles.textContainer}>
         {!feedsUndefined ? (
-          <AppResponseView onReload={handleRefresh} status={feedsReqStatus} style={styles.textContainer}>
+          <AppResponseView
+            onReload={handleRefresh}
+            status={feedsReqStatus}
+            refreshing={refreshing}
+            style={styles.textContainer}
+            progressViewOffset={headerHeight}>
             <AppFloatingNotifButton
               show={newUpdate}
               label={t('home:newFeedUpdate')}

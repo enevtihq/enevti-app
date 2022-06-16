@@ -19,11 +19,13 @@ import AppView from 'enevti-app/components/atoms/view/AppView';
 import AppCheckbox from 'enevti-app/components/atoms/form/AppCheckbox';
 import { hp, wp, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
 import AppBrandLogo from 'enevti-app/components/atoms/brand/AppBrandLogo';
-import { setLocalSessionKey } from 'enevti-app/store/slices/session/local';
+import { setLocalSessionKey, selectLocalSession } from 'enevti-app/store/slices/session/local';
 import { selectAuthState, setUnencryptedPassphraseAuth } from 'enevti-app/store/slices/auth';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 import { selectLockedState, unlockScreen } from 'enevti-app/store/slices/ui/screen/locked';
 import { isValidPassphrase } from 'enevti-app/utils/passphrase';
+import { hostnameToRoute } from 'enevti-app/utils/linking';
+import { CommonActions } from '@react-navigation/native';
 
 type Props = StackScreenProps<RootStackParamList, 'Login'>;
 YupPassword(Yup);
@@ -32,14 +34,17 @@ const validationSchema = Yup.object().shape({
   password: Yup.string().password().required(),
 });
 
-export default function Login({ navigation }: Props) {
-  const authState = useSelector(selectAuthState);
-  const locked = useSelector(selectLockedState);
+export default function Login({ navigation, route }: Props) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
   const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
-  const { t } = useTranslation();
+
+  const authState = useSelector(selectAuthState);
+  const localSession = useSelector(selectLocalSession);
+  const locked = useSelector(selectLockedState);
+
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   const handleFormSubmit = async (values: any) => {
@@ -58,26 +63,59 @@ export default function Login({ navigation }: Props) {
     }
 
     setIsLoading(false);
-    if (locked) {
-      dispatch(unlockScreen());
-      navigation.goBack();
+
+    if (route.params && route.params.path) {
+      const url = new URL(decodeURIComponent(route.params.path));
+      const parsedRoute = hostnameToRoute(url.hostname);
+      if (parsedRoute) {
+        const param: Record<string, any> = {};
+        for (const [key, value] of url.searchParams) {
+          param[key] = decodeURIComponent(value);
+        }
+        locked && dispatch(unlockScreen());
+        if (navigation.getState().index === 0) {
+          navigation.dispatch(
+            CommonActions.reset({
+              index: 1,
+              routes: [{ name: 'Home' }, { name: parsedRoute, params: param }],
+            }),
+          );
+        } else {
+          navigation.replace(parsedRoute, param);
+        }
+      }
     } else {
-      navigation.replace('Home');
+      if (locked) {
+        dispatch(unlockScreen());
+        navigation.goBack();
+      } else {
+        navigation.replace('Home');
+      }
     }
   };
 
-  React.useEffect(
-    () =>
-      navigation.addListener('beforeRemove', e => {
-        if (locked) {
-          e.preventDefault();
-          Keyboard.dismiss();
-        } else {
-          navigation.dispatch(e.data.action);
-        }
-      }),
-    [navigation, locked],
-  );
+  React.useEffect(() => {
+    if (!authState.encrypted && authState.token !== '') {
+      navigation.navigate('Home');
+    } else if (!authState.encrypted && authState.token === '') {
+      navigation.replace('CreateAccount');
+    } else if (authState.encrypted && localSession.key !== '') {
+      locked && dispatch(unlockScreen());
+      navigation.goBack();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  React.useEffect(() => {
+    navigation.addListener('beforeRemove', e => {
+      if (locked) {
+        e.preventDefault();
+        Keyboard.dismiss();
+      } else {
+        navigation.dispatch(e.data.action);
+      }
+    });
+  }, [locked, navigation]);
 
   return (
     <AppView dismissKeyboard={true}>

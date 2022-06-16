@@ -20,6 +20,7 @@ import { appFetch, isInternetReachable } from 'enevti-app/utils/network';
 import { urlGetPersonaByAddress, urlGetPersonaByUsername } from 'enevti-app/utils/constant/URLCreator';
 import { handleError, handleResponseCode, isErrorResponse, responseError } from 'enevti-app/utils/error/handle';
 import { APIResponse, ResponseJSON } from 'enevti-app/types/core/service/api';
+import i18n from 'enevti-app/translations/i18n';
 
 type ProfileRoute = StackScreenProps<RootStackParamList, 'Profile'>['route']['params'];
 
@@ -109,7 +110,7 @@ export async function getMyPassphrase() {
       throw {
         name: 'KeyError',
         code: ERRORCODE.WRONG_LOCALKEY,
-        message: 'Wrong Local Key',
+        message: i18n.t('error:wrongLocalKey'),
       };
     }
   } else if (authToken && !auth.encrypted) {
@@ -118,7 +119,7 @@ export async function getMyPassphrase() {
     throw {
       name: 'UnknownError',
       code: ERRORCODE.UNKNOWN,
-      message: 'Unknown Error: persona.ts',
+      message: i18n.t('error:unknownErrorGetPassphrase'),
     };
   }
   return authToken;
