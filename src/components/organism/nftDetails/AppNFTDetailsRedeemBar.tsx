@@ -10,7 +10,7 @@ import utilityToIcon from 'enevti-app/utils/icon/utilityToIcon';
 import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
 import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
 import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
-import AppTextHeading4 from 'enevti-app/components/atoms/text/AppTextHeading4';
+import AppTextHeadingCustom from 'enevti-app/components/atoms/text/AppTextHeadingCustom';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import { useDispatch } from 'react-redux';
 import { reduceRedeem } from 'enevti-app/store/middleware/thunk/redeem';
@@ -94,7 +94,9 @@ export default function AppNFTDetailsRedeemBar({ nft }: AppNFTDetailsRedeemBarPr
           <AppTextHeading3>{utilityToLabel(nft.utility)}</AppTextHeading3>
         </View>
         <AppPrimaryButton disabled={redeemButtonDisabled} style={styles.redeemBarButton} onPress={onRedeem}>
-          <AppTextHeading4 style={styles.redeemBarButtonText}>{t('nftDetails:redeem')}</AppTextHeading4>
+          <AppTextHeadingCustom size={3} style={styles.redeemBarButtonText}>
+            {t('nftDetails:redeem')}
+          </AppTextHeadingCustom>
         </AppPrimaryButton>
         {redeemButtonDisabled && redeemError ? (
           <AppPoppableIcon position={'left'} content={redeemError} width={75} iconStyle={styles.popableInfoIcon} />

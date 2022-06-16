@@ -63,14 +63,23 @@ export default React.memo(
 
     const onBuy = React.useCallback(async () => {
       setBuyLoading(true);
-      const collectionResponse = await getCollectionById(feed.id);
-      if (collectionResponse.status === 200 && isMintingAvailable(collectionResponse.data)) {
-        paymentThunkRef.current = dispatch(payMintCollection({ collection: collectionResponse.data, quantity: 1 }));
+      if (feed.type !== 'nft') {
+        const collectionResponse = await getCollectionById(feed.id);
+        if (collectionResponse.status === 200 && isMintingAvailable(collectionResponse.data)) {
+          if (collectionResponse.data.mintingType === 'normal') {
+            paymentThunkRef.current = dispatch(payMintCollection({ collection: collectionResponse.data, quantity: 1 }));
+          } else {
+            dispatch(showSnackbar({ mode: 'info', text: t('collection:specialMint') }));
+            setBuyLoading(false);
+          }
+        } else {
+          dispatch(showSnackbar({ mode: 'info', text: t('collection:mintingUnavailable') }));
+          setBuyLoading(false);
+        }
       } else {
-        dispatch(showSnackbar({ mode: 'info', text: t('collection:mintingUnavailable') }));
         setBuyLoading(false);
       }
-    }, [feed.id, dispatch, t]);
+    }, [feed.id, feed.type, dispatch, t]);
 
     return (
       <View style={styles.actionContainer}>

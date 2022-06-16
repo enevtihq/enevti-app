@@ -8,7 +8,7 @@ export default function parseQRValue(qrValue: string): QRValue | undefined {
       const action = url.pathname.substring(1);
       const payload = url.searchParams.get('payload');
       if (isValidQRAction(action) && payload) {
-        return { action, payload };
+        return { action, payload: decodeURIComponent(payload) };
       } else {
         return undefined;
       }

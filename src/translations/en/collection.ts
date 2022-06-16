@@ -23,4 +23,6 @@ export default {
   showThisQRDescription: 'Remember, each mint use unique QR!',
   done: 'Done',
   refresh: 'Refresh',
+  invalidQRCode: 'Invalid QR code, please get a new code!',
+  specialMint: 'This collection has special minting method, please mint through Collection page!',
 };

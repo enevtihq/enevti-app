@@ -131,7 +131,7 @@ export function getAppLink(namespace: AppLinkNamespace, arg: string, prefix: str
   let ret: string = prefix;
   switch (namespace) {
     case '':
-      return `${APP_LINK}/${encodeURIComponent(arg)}`;
+      return `${APP_LINK}/${arg}`;
     case 'nft-serial':
       ret += `nft?mode=s&arg=${encodeURIComponent(arg)}`;
       break;
