@@ -19,8 +19,8 @@ import { handleError } from 'enevti-app/utils/error/handle';
 import { hp, wp } from 'enevti-app/utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
-import { loadFeeds, unloadFeeds, loadMoreFeeds } from 'enevti-app/store/middleware/thunk/ui/view/feed';
-import { loadMoments, unloadMoments } from 'enevti-app/store/middleware/thunk/ui/view/moment';
+import { loadFeeds, loadMoreFeeds } from 'enevti-app/store/middleware/thunk/ui/view/feed';
+import { loadMoments } from 'enevti-app/store/middleware/thunk/ui/view/moment';
 import { AppAsyncThunk } from 'enevti-app/types/ui/store/AppAsyncThunk';
 import {
   isFeedUndefined,
@@ -105,10 +105,6 @@ export default function Feed({ navigation, onScroll, headerHeight }: FeedProps) 
 
   React.useEffect(() => {
     onLoaded();
-    return function cleanup() {
-      dispatch(unloadMoments());
-      dispatch(unloadFeeds());
-    };
   }, [onLoaded, dispatch]);
 
   const ListHeaderComponent = React.useCallback(
