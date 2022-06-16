@@ -22,7 +22,6 @@ import {
   setMyProfileViewCollectionPagination,
   setMyProfileViewLoaded,
   setMyProfileViewOwnedPagination,
-  setMyProfileViewPending,
   setMyProfileViewReqStatus,
 } from 'enevti-app/store/slices/ui/view/myProfile';
 import {
@@ -58,32 +57,7 @@ export const loadProfile = createAsyncThunk<void, LoadProfileArgs, AsyncThunkAPI
     try {
       reload && dispatch(showModalLoader());
       if (isMyProfile) {
-        const personaResponse = await getMyBasePersona(reload, signal);
-        const profileResponse = await getMyProfile(reload, signal);
-        const ownedResponse = await getMyProfileInitialOwned(reload, signal);
-        const collectionResponse = await getMyProfileInitialCollection(reload, signal);
-        dispatch(
-          setMyProfileView({
-            ...(profileResponse.data as Profile),
-            persona: personaResponse.data as Persona,
-            owned: ownedResponse.data.data,
-            collection: collectionResponse.data.data,
-            version: Date.now(),
-          }),
-        );
-        dispatch(setMyProfileViewReqStatus(profileResponse.status));
-        dispatch(
-          setMyProfileViewOwnedPagination({
-            checkpoint: ownedResponse.data.checkpoint,
-            version: ownedResponse.data.version,
-          }),
-        );
-        dispatch(
-          setMyProfileViewCollectionPagination({
-            checkpoint: collectionResponse.data.checkpoint,
-            version: collectionResponse.data.version,
-          }),
-        );
+        await loadMyProfile(reload, dispatch, signal);
       } else {
         dispatch(initProfileView(route.key));
         const personaBase = await getBasePersonaByRouteParam(route.params, signal);
@@ -267,16 +241,13 @@ export const loadMoreCollection = createAsyncThunk<void, LoadProfileArgs, AsyncT
 
 export const initProfile = createAsyncThunk<void, undefined, AsyncThunkAPI>(
   'home/initProfile',
-  async (_, { dispatch, signal }) => {
+  async (_, { dispatch, getState, signal }) => {
     try {
-      await getMyBasePersona(true, signal);
-      const profileResponse = await getMyProfile(true, signal);
-      dispatch(setMyProfileViewPending(profileResponse.data.pending));
-      if (profileResponse.data.pending > 0) {
+      await loadMyProfile(true, dispatch, signal);
+      const myProfile = selectMyProfileView(getState());
+      if (myProfile.pending > 0) {
         dispatch(payManualDeliverSecret() as unknown as AnyAction);
       }
-      await getMyProfileInitialOwned(true, signal);
-      await getMyProfileInitialCollection(true, signal);
     } catch (err: any) {
       handleError(err);
     }
@@ -292,3 +263,32 @@ export const unloadProfile =
       dispatch(clearProfileByKey(route.key));
     }
   };
+
+export const loadMyProfile = async (reload: boolean, dispatch: any, signal?: AbortController['signal']) => {
+  const personaResponse = await getMyBasePersona(reload, signal);
+  const profileResponse = await getMyProfile(reload, signal);
+  const ownedResponse = await getMyProfileInitialOwned(reload, signal);
+  const collectionResponse = await getMyProfileInitialCollection(reload, signal);
+  dispatch(
+    setMyProfileView({
+      ...(profileResponse.data as Profile),
+      persona: personaResponse.data as Persona,
+      owned: ownedResponse.data.data,
+      collection: collectionResponse.data.data,
+      version: Date.now(),
+    }),
+  );
+  dispatch(setMyProfileViewReqStatus(profileResponse.status));
+  dispatch(
+    setMyProfileViewOwnedPagination({
+      checkpoint: ownedResponse.data.checkpoint,
+      version: ownedResponse.data.version,
+    }),
+  );
+  dispatch(
+    setMyProfileViewCollectionPagination({
+      checkpoint: collectionResponse.data.checkpoint,
+      version: collectionResponse.data.version,
+    }),
+  );
+};

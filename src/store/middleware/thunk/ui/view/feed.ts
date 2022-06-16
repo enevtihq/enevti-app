@@ -25,6 +25,7 @@ import {
 import { lastFetchTimeout } from 'enevti-app/utils/constant/lastFetch';
 import { getFeeds, getMoreFeeds, parseFeedCache } from 'enevti-app/service/enevti/feed';
 import { Feeds } from 'enevti-app/types/core/service/feed';
+import { loadMyProfile } from './profile';
 
 type loadFeedsArgs = { reload: boolean };
 
@@ -55,6 +56,7 @@ export const loadFeeds = createAsyncThunk<void, loadFeedsArgs, AsyncThunkAPI>(
       handleError(err);
     } finally {
       dispatch(setFeedViewLoaded(true));
+      await loadMyProfile(reload, dispatch, signal);
     }
   },
 );
