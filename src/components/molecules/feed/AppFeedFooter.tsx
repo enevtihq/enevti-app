@@ -16,44 +16,39 @@ interface AppFeedFooterProps {
   feed: FeedItem;
 }
 
-export default React.memo(
-  function AppFeedFooter({ feed }: AppFeedFooterProps) {
-    const { t } = useTranslation();
-    const theme = useTheme() as Theme;
-    const insets = useSafeAreaInsets();
-    const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
+export default function AppFeedFooter({ feed }: AppFeedFooterProps) {
+  const { t } = useTranslation();
+  const theme = useTheme() as Theme;
+  const insets = useSafeAreaInsets();
+  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
 
-    return (
-      <View style={styles.footerContainer}>
-        <Text numberOfLines={2} style={styles.description}>
-          <AppTextHeading4>{feed.name}</AppTextHeading4>
-          <AppTextHeading4> | </AppTextHeading4>
-          <AppTextBody4>{feed.description}</AppTextBody4>
-        </Text>
-        <Text>
-          <AppTextHeading5 style={styles.tag}>
-            {feed.type === 'onekind' ? t('home:oneKind') : feed.type === 'packed' ? t('home:pack') : 'NFT'}
-          </AppTextHeading5>
-          <AppTextBody5 style={styles.tag}> | </AppTextBody5>
-          {feed.type !== 'nft' ? (
-            <Text>
-              <AppTextBody5 style={styles.tag}>
-                {t('home:mintingProgress', { minted: feed.minted, total: feed.total })}
-              </AppTextBody5>
-              <AppTextBody5 style={styles.tag}> | </AppTextBody5>
-              <AppTextBody5 style={styles.tag}>
-                {feed.expire !== 0 ? t('home:expire', { msg: moment(feed.expire).fromNow() }) : t('home:noExpire')}
-              </AppTextBody5>
-            </Text>
-          ) : null}
-        </Text>
-      </View>
-    );
-  },
-  () => {
-    return true;
-  },
-);
+  return (
+    <View style={styles.footerContainer}>
+      <Text numberOfLines={2} style={styles.description}>
+        <AppTextHeading4>{feed.name}</AppTextHeading4>
+        <AppTextHeading4> | </AppTextHeading4>
+        <AppTextBody4>{feed.description}</AppTextBody4>
+      </Text>
+      <Text>
+        <AppTextHeading5 style={styles.tag}>
+          {feed.type === 'onekind' ? t('home:oneKind') : feed.type === 'packed' ? t('home:pack') : 'NFT'}
+        </AppTextHeading5>
+        <AppTextBody5 style={styles.tag}> | </AppTextBody5>
+        {feed.type !== 'nft' ? (
+          <Text>
+            <AppTextBody5 style={styles.tag}>
+              {t('home:mintingProgress', { minted: feed.minted, total: feed.total })}
+            </AppTextBody5>
+            <AppTextBody5 style={styles.tag}> | </AppTextBody5>
+            <AppTextBody5 style={styles.tag}>
+              {feed.expire !== 0 ? t('home:expire', { msg: moment(feed.expire).fromNow() }) : t('home:noExpire')}
+            </AppTextBody5>
+          </Text>
+        ) : null}
+      </Text>
+    </View>
+  );
+}
 
 const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
   StyleSheet.create({

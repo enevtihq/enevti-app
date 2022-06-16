@@ -23,108 +23,99 @@ interface AppFeedActionProps {
   feed: FeedItem;
 }
 
-export default React.memo(
-  function AppFeedAction({ feed }: AppFeedActionProps) {
-    const { t } = useTranslation();
-    const dispatch = useDispatch();
-    const insets = useSafeAreaInsets();
-    const theme = useTheme() as Theme;
-    const styles = React.useMemo(() => makeStyles(insets), [insets]);
-    const [like, setLike] = React.useState<1 | 0>(0);
-    const [buyLoading, setBuyLoading] = React.useState<boolean>(false);
-    const paymentThunkRef = React.useRef<any>();
+export default function AppFeedAction({ feed }: AppFeedActionProps) {
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const insets = useSafeAreaInsets();
+  const theme = useTheme() as Theme;
+  const styles = React.useMemo(() => makeStyles(insets), [insets]);
+  const [like, setLike] = React.useState<1 | 0>(0);
+  const [buyLoading, setBuyLoading] = React.useState<boolean>(false);
+  const paymentThunkRef = React.useRef<any>();
 
-    const onLikeActivate = () => {
-      // setLike(1);
-      dispatch(showSnackbar({ mode: 'info', text: 'Coming Soon!' }));
-    };
+  const onLikeActivate = () => {
+    // setLike(1);
+    dispatch(showSnackbar({ mode: 'info', text: 'Coming Soon!' }));
+  };
 
-    const onLikeDeactivate = () => {
-      setLike(0);
-    };
+  const onLikeDeactivate = () => {
+    setLike(0);
+  };
 
-    const onComment = React.useCallback(() => {
-      dispatch(showSnackbar({ mode: 'info', text: 'Coming Soon!' }));
-    }, [dispatch]);
+  const onComment = React.useCallback(() => {
+    dispatch(showSnackbar({ mode: 'info', text: 'Coming Soon!' }));
+  }, [dispatch]);
 
-    const paymentIdleCallback = React.useCallback(() => {
-      setBuyLoading(false);
-      paymentThunkRef.current?.abort();
-    }, []);
+  const paymentIdleCallback = React.useCallback(() => {
+    setBuyLoading(false);
+    paymentThunkRef.current?.abort();
+  }, []);
 
-    const paymentSuccessCallback = React.useCallback(() => {
-      dispatch(showSnackbar({ mode: 'info', text: t('payment:success') }));
-    }, [dispatch, t]);
+  const paymentSuccessCallback = React.useCallback(() => {
+    dispatch(showSnackbar({ mode: 'info', text: t('payment:success') }));
+  }, [dispatch, t]);
 
-    usePaymentCallback({
-      onIdle: paymentIdleCallback,
-      onSuccess: paymentSuccessCallback,
-    });
+  usePaymentCallback({
+    onIdle: paymentIdleCallback,
+    onSuccess: paymentSuccessCallback,
+  });
 
-    const onBuy = React.useCallback(async () => {
-      setBuyLoading(true);
-      if (feed.type !== 'nft') {
-        const collectionResponse = await getCollectionById(feed.id);
-        if (collectionResponse.status === 200 && isMintingAvailable(collectionResponse.data)) {
-          if (collectionResponse.data.mintingType === 'normal') {
-            paymentThunkRef.current = dispatch(payMintCollection({ collection: collectionResponse.data, quantity: 1 }));
-          } else {
-            dispatch(showSnackbar({ mode: 'info', text: t('collection:specialMint') }));
-            setBuyLoading(false);
-          }
+  const onBuy = React.useCallback(async () => {
+    setBuyLoading(true);
+    if (feed.type !== 'nft') {
+      const collectionResponse = await getCollectionById(feed.id);
+      if (collectionResponse.status === 200 && isMintingAvailable(collectionResponse.data)) {
+        if (collectionResponse.data.mintingType === 'normal') {
+          paymentThunkRef.current = dispatch(payMintCollection({ collection: collectionResponse.data, quantity: 1 }));
         } else {
-          dispatch(showSnackbar({ mode: 'info', text: t('collection:mintingUnavailable') }));
+          dispatch(showSnackbar({ mode: 'info', text: t('collection:specialMint') }));
           setBuyLoading(false);
         }
       } else {
+        dispatch(showSnackbar({ mode: 'info', text: t('collection:mintingUnavailable') }));
         setBuyLoading(false);
       }
-    }, [feed.id, feed.type, dispatch, t]);
+    } else {
+      setBuyLoading(false);
+    }
+  }, [feed.id, feed.type, dispatch, t]);
 
-    return (
-      <View style={styles.actionContainer}>
-        <AppQuaternaryButton
-          icon={like ? iconMap.likeActive : iconMap.likeInactive}
-          iconSize={wp('6%', insets)}
-          iconColor={like ? theme.colors.primary : theme.colors.text}
-          style={styles.button}
-          onPress={like ? onLikeDeactivate : onLikeActivate}>
-          <AppTextBody4 style={[styles.actionButtonText, { color: like ? theme.colors.primary : theme.colors.text }]}>
-            {feed.like + like}
-          </AppTextBody4>
-        </AppQuaternaryButton>
+  return (
+    <View style={styles.actionContainer}>
+      <AppQuaternaryButton
+        icon={like ? iconMap.likeActive : iconMap.likeInactive}
+        iconSize={wp('6%', insets)}
+        iconColor={like ? theme.colors.primary : theme.colors.text}
+        style={styles.button}
+        onPress={like ? onLikeDeactivate : onLikeActivate}>
+        <AppTextBody4 style={[styles.actionButtonText, { color: like ? theme.colors.primary : theme.colors.text }]}>
+          {feed.like + like}
+        </AppTextBody4>
+      </AppQuaternaryButton>
 
-        <AppQuaternaryButton
-          icon={iconMap.comment}
-          iconSize={wp('6%', insets)}
-          style={styles.button}
-          onPress={onComment}>
-          <AppTextBody4 style={styles.actionButtonText}>{feed.comment}</AppTextBody4>
-        </AppQuaternaryButton>
+      <AppQuaternaryButton icon={iconMap.comment} iconSize={wp('6%', insets)} style={styles.button} onPress={onComment}>
+        <AppTextBody4 style={styles.actionButtonText}>{feed.comment}</AppTextBody4>
+      </AppQuaternaryButton>
 
-        <View style={styles.divider} />
+      <View style={styles.divider} />
 
-        <AppQuaternaryButton
-          box
-          loading={buyLoading}
-          icon={iconMap.buy}
-          iconSize={wp('6%', insets)}
-          style={styles.button}
-          contentStyle={styles.buyButtonContentStyle}
-          loadingStyle={styles.buyButtonLoadingStyle}
-          loadingSize={15}
-          onPress={onBuy}>
-          <AppTextHeading4 style={styles.actionButtonText}>
-            {parseAmount(feed.price.amount)} <AppTextBody5>${feed.price.currency}</AppTextBody5>
-          </AppTextHeading4>
-        </AppQuaternaryButton>
-      </View>
-    );
-  },
-  () => {
-    return true;
-  },
-);
+      <AppQuaternaryButton
+        box
+        loading={buyLoading}
+        icon={iconMap.buy}
+        iconSize={wp('6%', insets)}
+        style={styles.button}
+        contentStyle={styles.buyButtonContentStyle}
+        loadingStyle={styles.buyButtonLoadingStyle}
+        loadingSize={15}
+        onPress={onBuy}>
+        <AppTextHeading4 style={styles.actionButtonText}>
+          {parseAmount(feed.price.amount)} <AppTextBody5>${feed.price.currency}</AppTextBody5>
+        </AppTextHeading4>
+      </AppQuaternaryButton>
+    </View>
+  );
+}
 
 const makeStyles = (insets: SafeAreaInsets) =>
   StyleSheet.create({
