@@ -24,10 +24,10 @@ export default function NFTDetails({ navigation, route }: Props) {
     () => hp(HEADER_HEIGHT_PERCENTAGE) + (getStatusBarHeight() / Dimensions.get('window').height) * 100,
     [],
   );
-  const screenRoute = React.useMemo(() => ({ params: route.params }), [route.params]) as RouteProp<
-    RootStackParamList,
-    'NFTDetails'
-  >;
+  const screenRoute = React.useMemo(
+    () => ({ key: route.key, name: route.name, params: route.params, path: route.path }),
+    [route.key, route.params, route.name, route.path],
+  ) as RouteProp<RootStackParamList, 'NFTDetails'>;
 
   const nftDetailsScroll = useSharedValue(0);
 

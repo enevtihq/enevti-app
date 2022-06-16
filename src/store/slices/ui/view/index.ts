@@ -6,7 +6,6 @@ import nftDetailsViewReducer from './nftDetails';
 import stakePoolReducer from './stakePool';
 import feedViewReducer from './feed';
 import momentViewReducer from './moment';
-import uiManagerReducer from './manager';
 
 export default combineReducers({
   profile: profileViewReducer,
@@ -16,5 +15,4 @@ export default combineReducers({
   stakePool: stakePoolReducer,
   feed: feedViewReducer,
   moment: momentViewReducer,
-  uiManager: uiManagerReducer,
 });

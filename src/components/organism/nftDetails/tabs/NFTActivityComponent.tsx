@@ -53,8 +53,8 @@ function Component(
   const [displayed, setDisplayed] = React.useState<boolean>(false);
   const [refreshing, setRefreshing] = React.useState<boolean>(false);
 
-  const nftDetails = useSelector((state: RootState) => selectNFTDetailsView(state, route.params.arg));
-  const activities = useSelector((state: RootState) => selectNFTDetailsViewActivity(state, route.params.arg));
+  const nftDetails = useSelector((state: RootState) => selectNFTDetailsView(state, route.key));
+  const activities = useSelector((state: RootState) => selectNFTDetailsViewActivity(state, route.key));
 
   const styles = React.useMemo(
     () => makeStyles(hp, wp, displayed, collectionHeaderHeight, insets),
@@ -151,8 +151,8 @@ function Component(
   }, [ref, onMounted, refreshing]);
 
   const handleLoadMore = React.useCallback(() => {
-    dispatch(loadMoreActivity({ routeParam: route.params, reload: true }));
-  }, [dispatch, route.params]);
+    dispatch(loadMoreActivity({ route, reload: true }));
+  }, [dispatch, route]);
 
   return (
     <AnimatedFlatList

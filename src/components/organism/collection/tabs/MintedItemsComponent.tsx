@@ -53,8 +53,8 @@ function Component(
   const [displayed, setDisplayed] = React.useState<boolean>(false);
   const [refreshing, setRefreshing] = React.useState<boolean>(false);
 
-  const collection = useSelector((state: RootState) => selectCollectionView(state, route.params.arg));
-  const nfts = useSelector((state: RootState) => selectCollectionViewMinted(state, route.params.arg));
+  const collection = useSelector((state: RootState) => selectCollectionView(state, route.key));
+  const nfts = useSelector((state: RootState) => selectCollectionViewMinted(state, route.key));
 
   const styles = React.useMemo(
     () => makeStyles(hp, displayed, collectionHeaderHeight, insets),
@@ -113,8 +113,8 @@ function Component(
   }, [ref, onMounted, refreshing]);
 
   const handleLoadMore = React.useCallback(() => {
-    dispatch(loadMoreMinted({ routeParam: route.params, reload: true }));
-  }, [dispatch, route.params]);
+    dispatch(loadMoreMinted({ route, reload: true }));
+  }, [dispatch, route]);
 
   return (
     <AnimatedFlatGrid

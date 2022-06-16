@@ -31,18 +31,18 @@ export default function Profile({ navigation, route }: Props) {
   const insets = useSafeAreaInsets();
   const styles = React.useMemo(() => makeStyles(), []);
   const headerHeight = hp(HEADER_HEIGHT_PERCENTAGE, insets);
-  const screenRoute = React.useMemo(() => ({ params: route.params }), [route.params]) as RouteProp<
-    RootStackParamList,
-    'Profile'
-  >;
+  const screenRoute = React.useMemo(
+    () => ({ key: route.key, name: route.name, params: route.params, path: route.path }),
+    [route.key, route.params, route.name, route.path],
+  ) as RouteProp<RootStackParamList, 'Profile'>;
 
-  const profile = useSelector((state: RootState) => selectProfileView(state, route.params.arg));
+  const profile = useSelector((state: RootState) => selectProfileView(state, route.key));
   const socket = React.useRef<Socket | undefined>();
 
   React.useEffect(() => {
     const run = async () => {
       if (profile.persona && profile.persona.address) {
-        const key = route.params.arg;
+        const key = route.key;
         const address = await routeParamToAddress(route.params);
         socket.current = appSocket(address);
         socket.current.on('usernameChanged', (payload: any) => dispatch(reduceNewUsername(payload, key)));
@@ -59,7 +59,7 @@ export default function Profile({ navigation, route }: Props) {
     };
 
     run();
-  }, [profile.persona, dispatch, route.params]);
+  }, [profile.persona, dispatch, route.params, route.key]);
 
   return (
     <AppView

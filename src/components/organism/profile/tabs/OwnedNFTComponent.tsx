@@ -56,10 +56,10 @@ function Component(
   const total = useSelector((state: RootState) =>
     isMyProfile
       ? selectMyProfileView(state).ownedPagination.version
-      : selectProfileView(state, route.params.arg).ownedPagination.version,
+      : selectProfileView(state, route.key).ownedPagination.version,
   );
   const data = useSelector((state: RootState) =>
-    isMyProfile ? selectMyProfileViewOwned(state) : selectProfileViewOwned(state, route.params.arg),
+    isMyProfile ? selectMyProfileViewOwned(state) : selectProfileViewOwned(state, route.key),
   );
 
   const styles = React.useMemo(
@@ -109,8 +109,8 @@ function Component(
   }, [ref, onMounted, refreshing]);
 
   const handleLoadMore = React.useCallback(() => {
-    dispatch(loadMoreOwned({ routeParam: route.params, isMyProfile, reload: true }));
-  }, [dispatch, route.params, isMyProfile]);
+    dispatch(loadMoreOwned({ route, isMyProfile, reload: true }));
+  }, [dispatch, route, isMyProfile]);
 
   const footerComponent = React.useMemo(
     () =>

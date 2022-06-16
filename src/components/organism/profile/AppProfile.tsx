@@ -75,13 +75,13 @@ export default function AppProfile({
   const theme = useTheme();
 
   const profile = useSelector((state: RootState) =>
-    isMyProfile ? selectMyProfileView(state) : selectProfileView(state, route.params.arg),
+    isMyProfile ? selectMyProfileView(state) : selectProfileView(state, route.key),
   );
   const profileUndefined = useSelector((state: RootState) =>
-    isMyProfile ? isMyProfileUndefined(state) : isProfileUndefined(state, route.params.arg),
+    isMyProfile ? isMyProfileUndefined(state) : isProfileUndefined(state, route.key),
   );
   const newUpdate = useSelector((state: RootState) =>
-    isMyProfile ? isThereAnyNewMyProfileUpdates(state) : isThereAnyNewProfileUpdate(state, route.params.arg),
+    isMyProfile ? isThereAnyNewMyProfileUpdates(state) : isThereAnyNewProfileUpdate(state, route.key),
   );
 
   const persona = profile.persona;
@@ -112,24 +112,24 @@ export default function AppProfile({
     if (isMyProfile) {
       dispatch(setMyProfileViewVersion(Date.now()));
     } else {
-      dispatch(setProfileViewVersion({ key: route.params.arg, value: Date.now() }));
+      dispatch(setProfileViewVersion({ key: route.key, value: Date.now() }));
     }
-  }, [dispatch, route.params.arg, isMyProfile]);
+  }, [dispatch, route.key, isMyProfile]);
 
   const onProfileScreenLoaded = React.useCallback(
     (reload: boolean = false) => {
-      return dispatch(loadProfile({ routeParam: route.params, isMyProfile, reload }));
+      return dispatch(loadProfile({ route, isMyProfile, reload }));
     },
-    [dispatch, route.params, isMyProfile],
+    [dispatch, route, isMyProfile],
   ) as AppAsyncThunk;
 
   React.useEffect(() => {
     const promise = onProfileScreenLoaded();
     return function cleanup() {
-      dispatch(unloadProfile(route.params, isMyProfile));
+      dispatch(unloadProfile(route, isMyProfile));
       promise.abort();
     };
-  }, [onProfileScreenLoaded, dispatch, route.params, isMyProfile]);
+  }, [onProfileScreenLoaded, dispatch, route, isMyProfile]);
 
   const useCustomAnimatedScrollHandler = (scrollRefList: React.RefObject<any>[]) =>
     useAnimatedScrollHandler({

@@ -12,10 +12,10 @@ type Props = StackScreenProps<RootStackParamList, 'StakePool'>;
 export default function StakePool({ navigation, route }: Props) {
   const { t } = useTranslation();
 
-  const screenRoute = React.useMemo(() => ({ params: route.params }), [route.params]) as RouteProp<
-    RootStackParamList,
-    'StakePool'
-  >;
+  const screenRoute = React.useMemo(
+    () => ({ key: route.key, name: route.name, params: route.params, path: route.path }),
+    [route.key, route.params, route.name, route.path],
+  ) as RouteProp<RootStackParamList, 'StakePool'>;
 
   return (
     <AppView

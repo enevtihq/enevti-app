@@ -70,10 +70,10 @@ function Component(
   const total = useSelector((state: RootState) =>
     isMyProfile
       ? selectMyProfileView(state).collectionPagination.version
-      : selectProfileView(state, route.params.arg).collectionPagination.version,
+      : selectProfileView(state, route.key).collectionPagination.version,
   );
   const data = useSelector((state: RootState) =>
-    isMyProfile ? selectMyProfileViewCollection(state) : selectProfileViewCollection(state, route.params.arg),
+    isMyProfile ? selectMyProfileViewCollection(state) : selectProfileViewCollection(state, route.key),
   );
 
   const styles = React.useMemo(
@@ -127,8 +127,8 @@ function Component(
   );
 
   const handleLoadMore = React.useCallback(() => {
-    dispatch(loadMoreCollection({ routeParam: route.params, isMyProfile, reload: true }));
-  }, [dispatch, route.params, isMyProfile]);
+    dispatch(loadMoreCollection({ route, isMyProfile, reload: true }));
+  }, [dispatch, route, isMyProfile]);
 
   const footerComponent = React.useMemo(
     () =>

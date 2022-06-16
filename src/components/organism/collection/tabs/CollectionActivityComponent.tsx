@@ -64,7 +64,7 @@ function Component(
   const [displayed, setDisplayed] = React.useState<boolean>(false);
   const [refreshing, setRefreshing] = React.useState<boolean>(false);
 
-  const collection = useSelector((state: RootState) => selectCollectionView(state, route.params.arg));
+  const collection = useSelector((state: RootState) => selectCollectionView(state, route.key));
 
   const styles = React.useMemo(
     () => makeStyles(hp, wp, displayed, collectionHeaderHeight, insets),
@@ -178,8 +178,8 @@ function Component(
   }, [ref, onMounted, refreshing]);
 
   const handleLoadMore = React.useCallback(() => {
-    dispatch(loadMoreActivity({ routeParam: route.params, reload: true }));
-  }, [dispatch, route.params]);
+    dispatch(loadMoreActivity({ route, reload: true }));
+  }, [dispatch, route]);
 
   return (
     <AnimatedFlatList

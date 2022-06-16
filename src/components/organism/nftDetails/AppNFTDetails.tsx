@@ -59,18 +59,18 @@ export default function AppNFTDetails({ onScrollWorklet, navigation, route }: Ap
   const headerHeight = hp(HEADER_HEIGHT_PERCENTAGE) + insets.top;
   const styles = React.useMemo(() => makeStyles(hp, wp), [hp, wp]);
 
-  const nftDetails = useSelector((state: RootState) => selectNFTDetailsView(state, route.params.arg));
-  const nftDetailsUndefined = useSelector((state: RootState) => isNFTDetailsUndefined(state, route.params.arg));
-  const newUpdate = useSelector((state: RootState) => isThereAnyNewNFTUpdates(state, route.params.arg));
+  const nftDetails = useSelector((state: RootState) => selectNFTDetailsView(state, route.key));
+  const nftDetailsUndefined = useSelector((state: RootState) => isNFTDetailsUndefined(state, route.key));
+  const newUpdate = useSelector((state: RootState) => isThereAnyNewNFTUpdates(state, route.key));
   const socket = React.useRef<Socket | undefined>();
 
   const onUpdateClose = React.useCallback(() => {
-    dispatch(setNFTDetailsVersion({ key: route.params.arg, value: Date.now() }));
-  }, [dispatch, route.params.arg]);
+    dispatch(setNFTDetailsVersion({ key: route.key, value: Date.now() }));
+  }, [dispatch, route.key]);
 
   React.useEffect(() => {
     if (nftDetails.loaded && nftDetails.id) {
-      const key = route.params.arg;
+      const key = route.key;
       socket.current = appSocket(nftDetails.id);
       socket.current.on('newNFTUpdates', (payload: any) => dispatch(reduceNewNFTUpdates(payload, key)));
       socket.current.on('secretDelivered', (payload: any) => dispatch(redudeNFTSecretDelivered(payload, key)));
@@ -78,7 +78,7 @@ export default function AppNFTDetails({ onScrollWorklet, navigation, route }: Ap
         socket.current?.disconnect();
       };
     }
-  }, [nftDetails, dispatch, route.params.arg]);
+  }, [nftDetails, dispatch, route.key]);
 
   const totalHeaderHeight = React.useMemo(() => hp(NFT_DETAILS_HEADER_VIEW_HEIGHT), [hp]);
 
@@ -93,8 +93,8 @@ export default function AppNFTDetails({ onScrollWorklet, navigation, route }: Ap
   const tabScroll = useSharedValue(0);
 
   const onNFTDetailsScreenLoaded = React.useCallback(
-    (reload: boolean = false) => dispatch(loadNFTDetails({ routeParam: route.params, reload })),
-    [dispatch, route.params],
+    (reload: boolean = false) => dispatch(loadNFTDetails({ route, reload })),
+    [dispatch, route],
   ) as AppAsyncThunk;
 
   const onRefresh = React.useCallback(() => {
@@ -107,10 +107,10 @@ export default function AppNFTDetails({ onScrollWorklet, navigation, route }: Ap
   React.useEffect(() => {
     const promise = onNFTDetailsScreenLoaded();
     return function cleanup() {
-      dispatch(unloadNFTDetails(route.params.arg));
+      dispatch(unloadNFTDetails(route.key));
       promise.abort();
     };
-  }, [dispatch, onNFTDetailsScreenLoaded, route.params.arg]);
+  }, [dispatch, onNFTDetailsScreenLoaded, route.key]);
 
   const summaryOnMounted = React.useCallback(() => setSummaryMounted(true), []);
 

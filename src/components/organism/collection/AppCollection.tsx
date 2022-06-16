@@ -65,18 +65,18 @@ export default function AppCollection({ onScrollWorklet, navigation, route }: Ap
   const insets = useSafeAreaInsets();
   const headerHeight = hp(HEADER_HEIGHT_PERCENTAGE) + insets.top;
 
-  const collection = useSelector((state: RootState) => selectCollectionView(state, route.params.arg));
-  const collectionUndefined = useSelector((state: RootState) => isCollectionUndefined(state, route.params.arg));
-  const newUpdate = useSelector((state: RootState) => isThereAnyNewCollectionUpdates(state, route.params.arg));
+  const collection = useSelector((state: RootState) => selectCollectionView(state, route.key));
+  const collectionUndefined = useSelector((state: RootState) => isCollectionUndefined(state, route.key));
+  const newUpdate = useSelector((state: RootState) => isThereAnyNewCollectionUpdates(state, route.key));
   const socket = React.useRef<Socket | undefined>();
 
   const onUpdateClose = React.useCallback(() => {
-    dispatch(setCollectionViewVersion({ key: route.params.arg, value: Date.now() }));
-  }, [dispatch, route.params.arg]);
+    dispatch(setCollectionViewVersion({ key: route.key, value: Date.now() }));
+  }, [dispatch, route.key]);
 
   React.useEffect(() => {
     if (collection.loaded && collection.id) {
-      const key = route.params.arg;
+      const key = route.key;
       socket.current = appSocket(collection.id);
       socket.current.on('newCollectionUpdates', (payload: any) => dispatch(reduceNewCollectionUpdates(payload, key)));
       socket.current.on('newTotalMinted', (payload: any) => dispatch(reduceNewNTotalMinted(payload, key)));
@@ -84,7 +84,7 @@ export default function AppCollection({ onScrollWorklet, navigation, route }: Ap
         socket.current?.disconnect();
       };
     }
-  }, [collection, dispatch, route.params.arg]);
+  }, [collection, dispatch, route.key]);
 
   const mintingAvailable = React.useMemo(
     () => (collection.reqStatus === 200 ? (isMintingAvailable(collection) ? true : false) : false),
@@ -108,8 +108,8 @@ export default function AppCollection({ onScrollWorklet, navigation, route }: Ap
   const tabScroll = useSharedValue(0);
 
   const onCollectionScreenLoaded = React.useCallback(
-    (reload: boolean = false) => dispatch(loadCollection({ routeParam: route.params, reload })),
-    [dispatch, route.params],
+    (reload: boolean = false) => dispatch(loadCollection({ route, reload })),
+    [dispatch, route],
   ) as AppAsyncThunk;
 
   const onRefresh = React.useCallback(() => {
@@ -122,10 +122,10 @@ export default function AppCollection({ onScrollWorklet, navigation, route }: Ap
   React.useEffect(() => {
     const promise = onCollectionScreenLoaded();
     return function cleanup() {
-      dispatch(unloadCollection(route.params.arg));
+      dispatch(unloadCollection(route.key));
       promise.abort();
     };
-  }, [dispatch, onCollectionScreenLoaded, route.params.arg]);
+  }, [dispatch, onCollectionScreenLoaded, route.key]);
 
   const mintedItemsOnMounted = React.useCallback(() => setMintedItemsMounted(true), []);
 

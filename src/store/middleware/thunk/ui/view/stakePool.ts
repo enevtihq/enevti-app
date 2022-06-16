@@ -19,56 +19,47 @@ import {
   selectStakePoolView,
   pushStakePoolStaker,
 } from 'enevti-app/store/slices/ui/view/stakePool';
-import {
-  addStakePoolUIManager,
-  selectUIManager,
-  subtractStakePoolUIManager,
-} from 'enevti-app/store/slices/ui/view/manager';
 import { STAKER_RESPONSE_LIMIT } from 'enevti-app/utils/constant/limit';
 
-type StakePoolRoute = StackScreenProps<RootStackParamList, 'StakePool'>['route']['params'];
-type loadStakePoolArgs = { routeParam: StakePoolRoute; reload: boolean };
+type StakePoolRoute = StackScreenProps<RootStackParamList, 'StakePool'>['route'];
+type loadStakePoolArgs = { route: StakePoolRoute; reload: boolean };
 
 export const loadStakePool = createAsyncThunk<void, loadStakePoolArgs, AsyncThunkAPI>(
   'stakePoolView/loadStakePool',
-  async ({ routeParam, reload = false }, { dispatch, getState, signal }) => {
-    const uiManager = selectUIManager(getState());
-    if (!uiManager.stakePool[routeParam.arg]) {
-      try {
-        reload && dispatch(showModalLoader());
-        const now = Date.now();
-        const stakePoolResponse = await getStakePoolDataByRouteParam(routeParam, signal);
-        const staker = await getStakePoolInitialStaker(stakePoolResponse.data.owner.address, signal);
-        dispatch(initStakePoolView(routeParam.arg));
-        dispatch(
-          setStakePoolView({
-            key: routeParam.arg,
-            value: { ...stakePoolResponse.data, staker: staker.data.data, version: now },
-          }),
-        );
-        dispatch(
-          setStakePoolStakerPagination({
-            key: routeParam.arg,
-            value: { checkpoint: staker.data.checkpoint, version: staker.data.version },
-          }),
-        );
-        dispatch(setStakePoolReqStatus({ key: routeParam.arg, value: stakePoolResponse.status }));
-      } catch (err: any) {
-        handleError(err);
-      } finally {
-        dispatch(setStakePoolLoaded({ key: routeParam.arg, value: true }));
-        reload && dispatch(hideModalLoader());
-      }
+  async ({ route, reload = false }, { dispatch, signal }) => {
+    try {
+      reload && dispatch(showModalLoader());
+      const now = Date.now();
+      const stakePoolResponse = await getStakePoolDataByRouteParam(route.params, signal);
+      const staker = await getStakePoolInitialStaker(stakePoolResponse.data.owner.address, signal);
+      dispatch(initStakePoolView(route.key));
+      dispatch(
+        setStakePoolView({
+          key: route.key,
+          value: { ...stakePoolResponse.data, staker: staker.data.data, version: now },
+        }),
+      );
+      dispatch(
+        setStakePoolStakerPagination({
+          key: route.key,
+          value: { checkpoint: staker.data.checkpoint, version: staker.data.version },
+        }),
+      );
+      dispatch(setStakePoolReqStatus({ key: route.key, value: stakePoolResponse.status }));
+    } catch (err: any) {
+      handleError(err);
+    } finally {
+      dispatch(setStakePoolLoaded({ key: route.key, value: true }));
+      reload && dispatch(hideModalLoader());
     }
-    dispatch(addStakePoolUIManager(routeParam.arg));
   },
 );
 
 export const loadMoreStaker = createAsyncThunk<void, loadStakePoolArgs, AsyncThunkAPI>(
   'stakePoolView/loadMoreStaker',
-  async ({ routeParam }, { dispatch, getState, signal }) => {
+  async ({ route }, { dispatch, getState, signal }) => {
     try {
-      const stakePoolView = selectStakePoolView(getState(), routeParam.arg);
+      const stakePoolView = selectStakePoolView(getState(), route.key);
       const offset = stakePoolView.stakerPagination.checkpoint;
       const version = stakePoolView.stakerPagination.version;
       if (stakePoolView.staker.length !== version) {
@@ -79,10 +70,10 @@ export const loadMoreStaker = createAsyncThunk<void, loadStakePoolArgs, AsyncThu
           version,
           signal,
         );
-        dispatch(pushStakePoolStaker({ key: routeParam.arg, value: stakerResponse.data.data }));
+        dispatch(pushStakePoolStaker({ key: route.key, value: stakerResponse.data.data }));
         dispatch(
           setStakePoolStakerPagination({
-            key: routeParam.arg,
+            key: route.key,
             value: { checkpoint: stakerResponse.data.checkpoint, version: stakerResponse.data.version },
           }),
         );
@@ -95,10 +86,6 @@ export const loadMoreStaker = createAsyncThunk<void, loadStakePoolArgs, AsyncThu
 
 export const unloadStakePool =
   (key: string): AppThunk =>
-  (dispatch, getState) => {
-    const uiManager = selectUIManager(getState());
-    if (!uiManager.stakePool[key]) {
-      dispatch(clearStakePoolByKey(key));
-    }
-    dispatch(subtractStakePoolUIManager(key));
+  dispatch => {
+    dispatch(clearStakePoolByKey(key));
   };

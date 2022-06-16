@@ -24,10 +24,10 @@ export default function Collection({ navigation, route }: Props) {
   const theme = useTheme();
   const headerTreshold = React.useMemo(() => wp('100%') * 0.5625 - hp(HEADER_HEIGHT_PERCENTAGE), []);
   const isAboveTreshold = React.useRef<boolean>(false);
-  const screenRoute = React.useMemo(() => ({ params: route.params }), [route.params]) as RouteProp<
-    RootStackParamList,
-    'Collection'
-  >;
+  const screenRoute = React.useMemo(
+    () => ({ key: route.key, name: route.name, params: route.params, path: route.path }),
+    [route.key, route.params, route.name, route.path],
+  ) as RouteProp<RootStackParamList, 'Collection'>;
 
   const collectionScroll = useSharedValue(0);
 

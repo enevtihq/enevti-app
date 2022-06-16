@@ -127,7 +127,7 @@ export default function AppProfileHeader({ navigation, persona, profile }: AppPr
             style={styles.profileActionButton}
             icon={iconMap.pool}
             onPress={() =>
-              navigation.navigate('StakePool', {
+              navigation.push('StakePool', {
                 arg: persona.address,
                 mode: 'a',
               })
@@ -144,7 +144,7 @@ export default function AppProfileHeader({ navigation, persona, profile }: AppPr
           <AppSecondaryButton
             style={styles.profileActionButton}
             icon={iconMap.setupPool}
-            onPress={() => navigation.navigate('SetupUsername')}>
+            onPress={() => navigation.push('SetupUsername')}>
             {t('profile:setupStake')}
           </AppSecondaryButton>
         ) : (

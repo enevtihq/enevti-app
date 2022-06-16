@@ -46,7 +46,7 @@ export default function AppProfileBody({
   const styles = React.useMemo(() => makeStyles(), []);
 
   const profile = useSelector((state: RootState) =>
-    isMyProfile ? selectMyProfileView(state) : selectProfileView(state, route.params.arg),
+    isMyProfile ? selectMyProfileView(state) : selectProfileView(state, route.key),
   );
 
   return (

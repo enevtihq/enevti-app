@@ -50,10 +50,10 @@ export default function AppStakePool({ route }: AppStakePoolProps) {
   const [extended, setExtended] = React.useState(true);
   const UIExtended = useSharedValue(true);
 
-  const stakePool = useSelector((state: RootState) => selectStakePoolView(state, route.params.arg));
-  const stakePoolUndefined = useSelector((state: RootState) => isStakePoolUndefined(state, route.params.arg));
-  const newStaker = useSelector((state: RootState) => isThereAnyNewStaker(state, route.params.arg));
-  const owner = useSelector((state: RootState) => selectStakePoolOwnerView(state, route.params.arg));
+  const stakePool = useSelector((state: RootState) => selectStakePoolView(state, route.key));
+  const stakePoolUndefined = useSelector((state: RootState) => isStakePoolUndefined(state, route.key));
+  const newStaker = useSelector((state: RootState) => isThereAnyNewStaker(state, route.key));
+  const owner = useSelector((state: RootState) => selectStakePoolOwnerView(state, route.key));
 
   const socket = React.useRef<Socket | undefined>();
 
@@ -61,19 +61,19 @@ export default function AppStakePool({ route }: AppStakePoolProps) {
     const subscribe = async () => {
       const address = await routeParamToAddress(route.params);
       socket.current = appSocket(address);
-      socket.current.on('stakerUpdates', (payload: any) => dispatch(reduceStakerUpdates(payload, route.params.arg)));
+      socket.current.on('stakerUpdates', (payload: any) => dispatch(reduceStakerUpdates(payload, route.key)));
     };
     subscribe();
     return function cleanup() {
       socket.current?.disconnect();
     };
-  }, [route.params, dispatch]);
+  }, [route.params, route.key, dispatch]);
 
   const onStakePoolScreenLoaded = React.useCallback(
     (reload: boolean = false) => {
-      return dispatch(loadStakePool({ routeParam: route.params, reload }));
+      return dispatch(loadStakePool({ route, reload }));
     },
-    [dispatch, route.params],
+    [dispatch, route],
   ) as AppAsyncThunk;
 
   const handleRefresh = React.useCallback(async () => {
@@ -81,16 +81,16 @@ export default function AppStakePool({ route }: AppStakePoolProps) {
   }, [onStakePoolScreenLoaded]);
 
   const handleUpdateClose = React.useCallback(() => {
-    dispatch(setStakePoolVersion({ key: route.params.arg, value: Date.now() }));
-  }, [dispatch, route.params.arg]);
+    dispatch(setStakePoolVersion({ key: route.key, value: Date.now() }));
+  }, [dispatch, route.key]);
 
   React.useEffect(() => {
     const promise = onStakePoolScreenLoaded();
     return function cleanup() {
-      dispatch(unloadStakePool(route.params.arg));
+      dispatch(unloadStakePool(route.key));
       promise.abort();
     };
-  }, [onStakePoolScreenLoaded, dispatch, route.params.arg]);
+  }, [onStakePoolScreenLoaded, dispatch, route.key]);
 
   const paymentProcessCallback = React.useCallback(() => {
     dispatch(showModalLoader());
@@ -166,8 +166,8 @@ export default function AppStakePool({ route }: AppStakePoolProps) {
   );
 
   const handleLoadMore = React.useCallback(() => {
-    dispatch(loadMoreStaker({ routeParam: route.params, reload: true }));
-  }, [dispatch, route.params]);
+    dispatch(loadMoreStaker({ route, reload: true }));
+  }, [dispatch, route]);
 
   const footerComponent = React.useMemo(
     () =>

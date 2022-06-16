@@ -61,7 +61,7 @@ function Component(
   const [displayed, setDisplayed] = React.useState<boolean>(false);
   const [refreshing, setRefreshing] = React.useState<boolean>(false);
 
-  const nft = useSelector((state: RootState) => selectNFTDetailsView(state, route.params.arg));
+  const nft = useSelector((state: RootState) => selectNFTDetailsView(state, route.key));
 
   const styles = React.useMemo(
     () => makeStyles(hp, wp, displayed, collectionHeaderHeight, insets, theme),
