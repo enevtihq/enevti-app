@@ -57,17 +57,12 @@ export default function QRScanner({ navigation, route }: Props) {
     });
 
     async function init() {
-      const cameraPermission = await Camera.getCameraPermissionStatus();
-      if (cameraPermission === 'denied') {
-        dispatch(showSnackbar({ mode: 'error', text: t('error:deniedCamera') }));
+      const newCameraPermission = await Camera.requestCameraPermission();
+      if (newCameraPermission === 'denied') {
+        dispatch(showSnackbar({ mode: 'error', text: t('error:deniedCameraDecided') }));
         navigation.goBack();
-      }
-      if (cameraPermission === 'not-determined') {
-        const newCameraPermission = await Camera.requestCameraPermission();
-        if (newCameraPermission === 'denied') {
-          dispatch(showSnackbar({ mode: 'error', text: t('error:deniedCameraDecided') }));
-          navigation.goBack();
-        }
+      } else {
+        setTimeout(() => setVisible(true), 500);
       }
     }
     init();
@@ -87,10 +82,6 @@ export default function QRScanner({ navigation, route }: Props) {
     route.params.fullscreen,
     t,
   ]);
-
-  React.useEffect(() => {
-    setTimeout(() => setVisible(true), 500);
-  }, []);
 
   const onSuccess = React.useCallback(
     (data: string) => {

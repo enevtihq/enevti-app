@@ -65,7 +65,7 @@ export default function AppFeedAction({ feed }: AppFeedActionProps) {
     if (feed.type !== 'nft') {
       const collectionResponse = await getCollectionById(feed.id);
       if (collectionResponse.status === 200 && isMintingAvailable(collectionResponse.data)) {
-        if (collectionResponse.data.mintingType === 'normal') {
+        if (['normal', ''].includes(collectionResponse.data.mintingType)) {
           paymentThunkRef.current = dispatch(payMintCollection({ collection: collectionResponse.data, quantity: 1 }));
         } else {
           dispatch(showSnackbar({ mode: 'info', text: t('collection:specialMint') }));
