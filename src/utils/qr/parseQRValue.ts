@@ -5,9 +5,9 @@ export default function parseQRValue(qrValue: string): QRValue | undefined {
   try {
     if (isAppLink(qrValue) && isRawLink(qrValue)) {
       const url = new URL(qrValue);
-      const action = url.pathname.substring(1);
+      const action = url.searchParams.get('action');
       const payload = url.searchParams.get('payload');
-      if (isValidQRAction(action) && payload) {
+      if (action && isValidQRAction(action) && payload) {
         return { action, payload: decodeURIComponent(payload) };
       } else {
         return undefined;
