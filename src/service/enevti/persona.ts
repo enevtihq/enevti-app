@@ -25,6 +25,7 @@ import i18n from 'enevti-app/translations/i18n';
 type ProfileRoute = StackScreenProps<RootStackParamList, 'Profile'>['route']['params'];
 
 const PREFIX = COIN_NAME.toLowerCase();
+const PREFIX_MAX_LENGTH = 3;
 
 async function fetchPersona(address: string, signal?: AbortController['signal']): Promise<APIResponse<Persona>> {
   try {
@@ -63,6 +64,28 @@ async function fetchPersonaByUsername(
   }
 }
 
+export function convertBase32Prefix(base32: string, oldPrefix: string, newPrefix: string): string {
+  if (base32.substring(0, oldPrefix.length) === oldPrefix) {
+    return `${newPrefix}${base32.substring(oldPrefix.length, base32.length)}`;
+  } else {
+    throw Error(i18n.t('error:invalidBase32Prefix'));
+  }
+}
+
+export function parsePrefix(prefix: string): string {
+  return PREFIX.length > PREFIX_MAX_LENGTH
+    ? prefix.substring(prefix.length - PREFIX_MAX_LENGTH, prefix.length)
+    : prefix;
+}
+
+export function parseBase32(base32: string): string {
+  if (PREFIX.length > PREFIX_MAX_LENGTH && base32.substring(0, PREFIX.length) === PREFIX) {
+    return convertBase32Prefix(base32, PREFIX, parsePrefix(PREFIX));
+  } else {
+    return base32;
+  }
+}
+
 export function parsePersonaLabel(persona: Persona) {
   return persona.username ? persona.username : persona.base32 ? persona.base32 : '???';
 }
@@ -72,7 +95,7 @@ export function addressToBase32(address: string) {
 }
 
 export function base32ToAddress(base32: string) {
-  return Lisk.cryptography.getAddressFromBase32Address(base32, PREFIX).toString('hex');
+  return Lisk.cryptography.getAddressFromBase32Address(parseBase32(base32), parsePrefix(PREFIX)).toString('hex');
 }
 
 export function passphraseToBase32(passphrase: string) {
