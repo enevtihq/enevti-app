@@ -56,6 +56,7 @@ interface AppProfileProps {
   headerHeight?: number;
   disableHeaderAnimation?: boolean;
   isMyProfile?: boolean;
+  withFooterSpace?: boolean;
 }
 
 export default function AppProfile({
@@ -68,6 +69,7 @@ export default function AppProfile({
   headerHeight = 0,
   disableHeaderAnimation = false,
   isMyProfile = false,
+  withFooterSpace = false,
 }: AppProfileProps) {
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -280,6 +282,7 @@ export default function AppProfile({
         onRefresh={onRefresh}
         disableHeaderAnimation={disableHeaderAnimation}
         isMyProfile={isMyProfile}
+        withFooterSpace={withFooterSpace}
       />
     ),
     [
@@ -293,6 +296,7 @@ export default function AppProfile({
       disableHeaderAnimation,
       route,
       isMyProfile,
+      withFooterSpace,
     ],
   );
 
@@ -336,6 +340,7 @@ export default function AppProfile({
         onRefresh={onRefresh}
         disableHeaderAnimation={disableHeaderAnimation}
         isMyProfile={isMyProfile}
+        withFooterSpace={withFooterSpace}
       />
     ),
     [
@@ -349,6 +354,7 @@ export default function AppProfile({
       onRefresh,
       disableHeaderAnimation,
       isMyProfile,
+      withFooterSpace,
     ],
   );
 

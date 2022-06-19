@@ -7,7 +7,7 @@ import MyProfile from 'enevti-app/screen/home/MyProfile';
 import AppHeader, { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import AppTabBar from 'enevti-app/components/atoms/view/AppTabBar';
+import AppTabBar, { TABBAR_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppTabBar';
 import { hp } from 'enevti-app/utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AppHeaderAction from 'enevti-app/components/atoms/view/AppHeaderAction';
@@ -56,7 +56,6 @@ import { isThereAnyNewFeedView } from 'enevti-app/store/slices/ui/view/feed';
 import { addAppOpenCounter, selectAppOpenCounter } from 'enevti-app/store/slices/entities/appOpenCounter';
 
 const Tab = createBottomTabNavigator();
-const TABBAR_HEIGHT_PERCENTAGE = 8;
 
 type Props = StackScreenProps<RootStackParamList, 'Home'>;
 

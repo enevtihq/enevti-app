@@ -38,6 +38,7 @@ export default function MyProfile({
       <View style={styles.textContainer}>
         <AppProfile
           isMyProfile
+          withFooterSpace
           disableHeaderAnimation
           navigation={navigation}
           route={myRoute}

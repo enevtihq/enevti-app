@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, RefreshControl, StyleSheet } from 'react-native';
+import { Platform, RefreshControl, StyleSheet, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { FlatGrid, FlatGridProps } from 'react-native-super-grid';
 import { NFTBase } from 'enevti-app/types/core/chain/nft';
@@ -18,6 +18,7 @@ import { RootState } from 'enevti-app/store/state';
 import { selectMyProfileView, selectMyProfileViewOwned } from 'enevti-app/store/slices/ui/view/myProfile';
 import { selectProfileView, selectProfileViewOwned } from 'enevti-app/store/slices/ui/view/profile';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
+import { TABBAR_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppTabBar';
 
 const AnimatedFlatGrid = Animated.createAnimatedComponent<FlatGridProps<NFTBase>>(FlatGrid);
 
@@ -31,6 +32,7 @@ interface OwnedNFTComponentProps {
   scrollEnabled?: boolean;
   disableHeaderAnimation?: boolean;
   isMyProfile?: boolean;
+  withFooterSpace?: boolean;
 }
 
 function Component(
@@ -44,6 +46,7 @@ function Component(
     scrollEnabled,
     disableHeaderAnimation = false,
     isMyProfile = false,
+    withFooterSpace = false,
   }: OwnedNFTComponentProps,
   ref: any,
 ) {
@@ -113,9 +116,14 @@ function Component(
   }, [dispatch, route, isMyProfile]);
 
   const footerComponent = React.useMemo(
-    () =>
-      total !== data.length && data.length !== 0 ? <AppActivityIndicator style={{ marginVertical: hp('3%') }} /> : null,
-    [total, data.length],
+    () => (
+      <View style={{ marginBottom: withFooterSpace ? hp(TABBAR_HEIGHT_PERCENTAGE) : hp(0) }}>
+        {total !== data.length && data.length !== 0 ? (
+          <AppActivityIndicator style={{ marginVertical: hp('3%') }} />
+        ) : null}
+      </View>
+    ),
+    [total, data.length, withFooterSpace],
   );
 
   return (

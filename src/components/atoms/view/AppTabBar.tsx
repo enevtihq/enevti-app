@@ -4,6 +4,8 @@ import { StyleProp, ViewStyle } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+export const TABBAR_HEIGHT_PERCENTAGE = 8;
+
 interface AppTabBarProps extends BottomTabBarProps {
   style?: StyleProp<ViewStyle>;
 }

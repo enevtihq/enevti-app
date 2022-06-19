@@ -28,6 +28,7 @@ import { RouteProp } from '@react-navigation/native';
 import { RootState } from 'enevti-app/store/state';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
 import { isMintingAvailable } from 'enevti-app/utils/collection';
+import { TABBAR_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppTabBar';
 
 const PROFILE_COLLECTION_ITEM_HEIGHT = 9;
 
@@ -43,6 +44,7 @@ interface CollectionListComponentProps {
   scrollEnabled?: boolean;
   disableHeaderAnimation?: boolean;
   isMyProfile?: boolean;
+  withFooterSpace?: boolean;
 }
 
 function Component(
@@ -56,6 +58,7 @@ function Component(
     scrollEnabled,
     disableHeaderAnimation = false,
     isMyProfile = false,
+    withFooterSpace = false,
   }: CollectionListComponentProps,
   ref: any,
 ) {
@@ -131,9 +134,14 @@ function Component(
   }, [dispatch, route, isMyProfile]);
 
   const footerComponent = React.useMemo(
-    () =>
-      total !== data.length && data.length !== 0 ? <AppActivityIndicator style={{ marginVertical: hp('3%') }} /> : null,
-    [total, data.length],
+    () => (
+      <View style={{ marginBottom: withFooterSpace ? hp(TABBAR_HEIGHT_PERCENTAGE) : hp(0) }}>
+        {total !== data.length && data.length !== 0 ? (
+          <AppActivityIndicator style={{ marginVertical: hp('3%') }} />
+        ) : null}
+      </View>
+    ),
+    [total, data.length, withFooterSpace],
   );
 
   const renderItem = React.useCallback(
