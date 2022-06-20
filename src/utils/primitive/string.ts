@@ -23,3 +23,12 @@ export function stringToBuffer(str: string): Buffer {
 export function capitalizeFirstLetter(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
+
+export function commifyAmount(amount: string) {
+  const n = parseFloat(amount);
+  var parts = n.toString().split('.');
+  const numberPart = parts[0];
+  const decimalPart = parts[1];
+  const thousands = /\B(?=(\d{3})+(?!\d))/g;
+  return numberPart.replace(thousands, ',') + (decimalPart ? '.' + decimalPart : '');
+}

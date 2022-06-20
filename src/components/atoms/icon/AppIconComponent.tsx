@@ -101,6 +101,10 @@ export const iconMap = {
   announcement: 'bullhorn',
   calculator: 'calculator-variant',
   refresh: 'refresh',
+  transfer: 'arrow-top-right',
+  receive: 'arrow-collapse-down',
+  topUp: 'plus',
+  sendHere: 'arrow-top-right',
 };
 
 interface AppIconComponentProps {
