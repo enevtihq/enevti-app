@@ -11,7 +11,7 @@ export default {
   setupStake: 'Setup Your Stake Pool',
   stakeNotReady: 'Stake Pool Not Set',
   copyAddress: `Copy ${COIN_NAME} Address`,
-  copyChainAddress: 'Copy Chain Address',
+  copyChainAddress: 'Copy Hex Address',
   addressCopied: 'Address Copied',
   pending: 'pending',
   delivering: 'delivering',

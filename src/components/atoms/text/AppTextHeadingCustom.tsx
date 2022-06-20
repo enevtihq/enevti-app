@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleProp, TextStyle } from 'react-native';
 import AppTextBase from './base/AppTextBase';
 
-interface AppTextHeading1Props {
+interface AppTextHeadingCustomProps {
   children: React.ReactNode;
   size: number;
   numberOfLines?: number;
@@ -10,13 +10,13 @@ interface AppTextHeading1Props {
   readMoreLimit?: number;
 }
 
-export default function AppTextHeading1({
+export default function AppTextHeadingCustom({
   children,
   numberOfLines,
   style,
   readMoreLimit,
   size,
-}: AppTextHeading1Props): JSX.Element {
+}: AppTextHeadingCustomProps): JSX.Element {
   return (
     <AppTextBase weight={'bold'} size={size} numberOfLines={numberOfLines} readMoreLimit={readMoreLimit} style={style}>
       {children}

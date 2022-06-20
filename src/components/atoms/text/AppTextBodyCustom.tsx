@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleProp, TextStyle } from 'react-native';
 import AppTextBase from './base/AppTextBase';
 
-interface AppTextBody1Props {
+interface AppTextBodyCustomProps {
   children: React.ReactNode;
   size: number;
   numberOfLines?: number;
@@ -10,13 +10,13 @@ interface AppTextBody1Props {
   readMoreLimit?: number;
 }
 
-export default function AppTextBody1({
+export default function AppTextBodyCustom({
   children,
   size,
   numberOfLines,
   style,
   readMoreLimit,
-}: AppTextBody1Props): JSX.Element {
+}: AppTextBodyCustomProps): JSX.Element {
   return (
     <AppTextBase
       weight={'normal'}

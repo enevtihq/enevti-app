@@ -42,11 +42,11 @@ export function handleResponseCode(res: Response, ret: ResponseJSON<any>) {
   }
 }
 
-export function responseError(status: number, data: any = {}): APIResponse<any> {
+export function responseError(status: number, data: any = {}, meta: any = {}): APIResponse<any, any, any> {
   return {
     status,
     data,
-    meta: {},
+    meta,
   };
 }
 

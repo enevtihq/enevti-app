@@ -1,15 +1,25 @@
 import React from 'react';
 import { Image, ImageStyle, StyleProp, View } from 'react-native';
-import { resizeImageRatio } from 'enevti-app/utils/imageRatio';
+import { resizeImageRatio, resizeImageRatioHeight } from 'enevti-app/utils/imageRatio';
 
 interface AppBrandLogoProps {
-  widthPercentage: number;
+  widthPercentage?: number;
+  heightPercentage?: number;
   mode?: 'default' | 'glow';
   style?: StyleProp<ImageStyle>;
 }
 
-export default function AppBrandLogo({ widthPercentage, mode = 'default', style }: AppBrandLogoProps): JSX.Element {
-  const sizeRatio = resizeImageRatio(900, 900, widthPercentage);
+export default function AppBrandLogo({
+  widthPercentage,
+  heightPercentage,
+  mode = 'default',
+  style,
+}: AppBrandLogoProps): JSX.Element {
+  const sizeRatio = widthPercentage
+    ? resizeImageRatio(900, 900, widthPercentage)
+    : heightPercentage
+    ? resizeImageRatioHeight(900, 900, heightPercentage)
+    : { width: 900, height: 900 };
 
   if (mode === 'default') {
     return (

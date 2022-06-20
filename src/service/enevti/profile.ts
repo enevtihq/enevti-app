@@ -12,11 +12,12 @@ import {
   setMyProfileCacheOwnedPagination,
 } from 'enevti-app/store/slices/entities/cache/myProfile';
 import { lastFetchTimeout } from 'enevti-app/utils/constant/lastFetch';
-import { base32ToAddress, getMyAddress } from './persona';
+import { addressToBase32, base32ToAddress, getMyAddress, usernameToAddress } from './persona';
 import { completeTokenUnit } from 'enevti-app/utils/format/amount';
 import { appFetch, isInternetReachable } from 'enevti-app/utils/network';
 import {
   urlGetProfile,
+  urlGetProfileBalance,
   urlGetProfileCollection,
   urlGetProfileNonce,
   urlGetProfileOwned,
@@ -33,6 +34,23 @@ import { NFTBase } from 'enevti-app/types/core/chain/nft';
 
 export const MINIMUM_BASIC_UNIT_STAKE_ELIGIBILITY = 1000;
 type ProfileRoute = StackScreenProps<RootStackParamList, 'Profile'>['route']['params'];
+
+async function fetchProfileBalance(address: string, signal?: AbortController['signal']): Promise<APIResponse<string>> {
+  try {
+    await isInternetReachable();
+    const res = await appFetch(urlGetProfileBalance(address), { signal });
+    const ret = (await res.json()) as ResponseJSON<string>;
+    handleResponseCode(res, ret);
+    return {
+      status: res.status,
+      data: ret.data,
+      meta: ret.meta,
+    };
+  } catch (err: any) {
+    handleError(err);
+    return responseError(err.code);
+  }
+}
 
 async function fetchProfileNonce(address: string, signal?: AbortController['signal']): Promise<APIResponse<string>> {
   try {
@@ -209,6 +227,31 @@ export async function getProfileAddressFromRouteParam(routeParam: ProfileRoute, 
 
 export function parseProfileCache(profile: Profile) {
   return { ...profile };
+}
+
+export async function getProfileBalanceByRouteParam(
+  routeParam: { mode: 'a' | 'b' | 'u'; arg: string },
+  signal?: AbortController['signal'],
+): Promise<APIResponse<string>> {
+  switch (routeParam.mode) {
+    case 'a':
+      return await getProfileBalance(routeParam.arg, signal);
+    case 'b':
+      const base32 = addressToBase32(routeParam.arg);
+      return await getProfileBalance(base32, signal);
+    case 'u':
+      const address = await usernameToAddress(routeParam.arg);
+      return await getProfileBalance(address, signal);
+    default:
+      return await getProfileBalance(routeParam.arg, signal);
+  }
+}
+
+export async function getProfileBalance(
+  address: string,
+  signal?: AbortController['signal'],
+): Promise<APIResponse<string>> {
+  return await fetchProfileBalance(address, signal);
 }
 
 export async function getProfileNonce(

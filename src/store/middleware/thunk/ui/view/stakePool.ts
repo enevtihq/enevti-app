@@ -85,7 +85,7 @@ export const loadMoreStaker = createAsyncThunk<void, loadStakePoolArgs, AsyncThu
 );
 
 export const unloadStakePool =
-  (key: string): AppThunk =>
+  (route: StakePoolRoute): AppThunk =>
   dispatch => {
-    dispatch(clearStakePoolByKey(key));
+    dispatch(clearStakePoolByKey(route.key));
   };

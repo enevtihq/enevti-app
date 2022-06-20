@@ -34,6 +34,7 @@ import SetupUsername from 'enevti-app/screen/setting/SetupUsername';
 import UsernameRegistered from 'enevti-app/screen/setting/UsernameRegistered';
 import QRScanner from 'enevti-app/screen/qr/QRScanner';
 import { selectLocalSession } from 'enevti-app/store/slices/session/local';
+import Wallet from 'enevti-app/screen/wallet/Wallet';
 
 export type RootStackParamList = {
   CreateAccount: undefined;
@@ -71,6 +72,10 @@ export type RootStackParamList = {
     mode: 'a' | 'b' | 'u';
   };
   StakePool: {
+    arg: string;
+    mode: 'a' | 'b' | 'u';
+  };
+  Wallet: {
     arg: string;
     mode: 'a' | 'b' | 'u';
   };
@@ -262,6 +267,14 @@ export default function AppNavigationContainer() {
           options={{
             headerShown: false,
             cardStyleInterpolator: CardStyleInterpolators.forFadeFromCenter,
+          }}
+        />
+        <Stack.Screen
+          name="Wallet"
+          component={Wallet}
+          options={{
+            headerShown: false,
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
           }}
         />
       </Stack.Navigator>

@@ -87,10 +87,10 @@ export default function AppStakePool({ route }: AppStakePoolProps) {
   React.useEffect(() => {
     const promise = onStakePoolScreenLoaded();
     return function cleanup() {
-      dispatch(unloadStakePool(route.key));
+      dispatch(unloadStakePool(route));
       promise.abort();
     };
-  }, [onStakePoolScreenLoaded, dispatch, route.key]);
+  }, [onStakePoolScreenLoaded, dispatch, route]);
 
   const paymentProcessCallback = React.useCallback(() => {
     dispatch(showModalLoader());

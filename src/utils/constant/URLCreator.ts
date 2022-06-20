@@ -1,9 +1,34 @@
 export const ENEVTI_DEFAULT_API = 'http://192.168.0.103:8880';
+export const ENEVTI_SERVICE_API = 'http://192.168.0.103:9901';
 export const ENEVTI_FAUCET_API = 'http://192.168.0.103:8881';
 export const ENEVTI_SOCKET_IO = 'ws://192.168.0.103:8082';
 export const ENEVTI_CORE_WS = 'ws://192.168.0.103:8082/ws';
 export const IPFS_GATEWAY = '.ipfs.nftstorage.link';
 export const NFT_STORAGE_URL = 'https://api.nft.storage/upload';
+
+type UrlGetTransactionsParam = {
+  transactionId?: string;
+  moduleAssetId?: string;
+  moduleAssetName?: string;
+  address?: string;
+  senderAddress?: string;
+  senderPublicKey?: string;
+  senderUsername?: string;
+  recipientAddress?: string;
+  recipientPublicKey?: string;
+  recipientUsername?: string;
+  amount?: string;
+  timestamp?: string;
+  nonce?: string;
+  blockId?: string;
+  height?: string;
+  search?: string;
+  data?: string;
+  limit?: string;
+  offset?: string;
+  includePending?: string;
+  sort?: 'amount:asc' | 'amount:desc' | 'timestamp:asc' | 'timestamp:desc';
+};
 
 export function urlNFTStorage() {
   return NFT_STORAGE_URL;
@@ -19,6 +44,19 @@ export function urlSocketIO() {
 
 export function urlGetIPFS(hash: string, gateway: string = IPFS_GATEWAY) {
   return encodeURI(`https://${hash}${gateway}`);
+}
+
+export function urlGetStakeSent(
+  param: { address?: string; username?: string; publicKey?: string },
+  host: string = ENEVTI_SERVICE_API,
+) {
+  const query = new URLSearchParams(param).toString();
+  return encodeURI(`${host}/api/v2/votes_sent?${query}`);
+}
+
+export function urlGetTransactions(param: UrlGetTransactionsParam, host: string = ENEVTI_SERVICE_API) {
+  const query = new URLSearchParams(param).toString();
+  return encodeURI(`${host}/api/v2/transactions?${query}`);
 }
 
 export function urlGetAllCollection(offset: number = 0, limit: number = 10, host: string = ENEVTI_DEFAULT_API) {
@@ -134,6 +172,10 @@ export function urlGetProfileCollection(
 
 export function urlGetProfileNonce(address: string, host: string = ENEVTI_DEFAULT_API) {
   return encodeURI(`${host}/profile/${address}/nonce`);
+}
+
+export function urlGetProfileBalance(address: string, host: string = ENEVTI_DEFAULT_API) {
+  return encodeURI(`${host}/profile/${address}/balance`);
 }
 
 export function urlGetProfilePendingDelivery(address: string, host: string = ENEVTI_DEFAULT_API) {

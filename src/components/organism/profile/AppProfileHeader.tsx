@@ -215,7 +215,12 @@ export default function AppProfileHeader({ navigation, persona, profile }: AppPr
           style={{
             height: hp('4%', insets),
           }}
-          onPress={() => dispatch(showSnackbar({ mode: 'info', text: 'Wallet Coming Soon!' }))}>
+          onPress={() =>
+            navigation.push('Wallet', {
+              arg: persona.address,
+              mode: 'a',
+            })
+          }>
           <View style={styles.profileHeaderChipsContent}>
             <AppTextBody4 style={{ color: theme.colors.placeholder }}>
               {parseAmount(profile.balance, true, 4)}
