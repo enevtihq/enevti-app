@@ -5,4 +5,6 @@ export default {
   sendHere: 'Send here',
   receive: 'Receive',
   topUp: 'Top-Up',
+  sendToken: 'Send Token',
+  receiveToken: 'Receive Token',
 };

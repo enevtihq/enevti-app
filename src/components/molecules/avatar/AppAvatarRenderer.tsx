@@ -13,21 +13,47 @@ import { Persona } from 'enevti-app/types/core/account/persona';
 
 interface AppAvatarRendererProps {
   size: number;
-  persona: Persona;
+  persona?: Persona;
+  base32?: string;
+  photo?: string;
   style?: StyleProp<ImageStyle>;
   color?: string;
 }
 
-export default function AppAvatarRenderer({ size, persona, style, color }: AppAvatarRendererProps) {
+export default function AppAvatarRenderer({ size, persona, photo, base32, style, color }: AppAvatarRendererProps) {
   const theme = useTheme();
   const styles = React.useMemo(() => makeStyles(size, color), [size, color]);
 
+  const mode = React.useMemo(
+    () =>
+      (persona && persona.photo) || photo ? 'photo' : (persona && persona.base32) || base32 ? 'base32' : undefined,
+    [base32, photo, persona],
+  );
+
+  const value = React.useMemo(
+    () =>
+      mode === 'photo'
+        ? persona && persona.photo
+          ? persona.photo
+          : photo
+          ? photo
+          : undefined
+        : mode === 'base32'
+        ? persona && persona.base32
+          ? persona.base32
+          : base32
+          ? base32
+          : undefined
+        : undefined,
+    [base32, photo, persona, mode],
+  );
+
   return (
     <View style={[styles.container, style]}>
-      {persona.photo ? (
-        <AppNetworkImage style={styles.image} url={IPFStoURL(persona.photo)} />
-      ) : persona.base32 ? (
-        <Avatar address={persona.base32} />
+      {mode === 'photo' && value ? (
+        <AppNetworkImage style={styles.image} url={IPFStoURL(value)} />
+      ) : mode === 'base32' && value ? (
+        <Avatar address={value} />
       ) : (
         <MaterialCommunityIcons
           name={iconMap.accountCircle}

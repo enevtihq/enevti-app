@@ -14,6 +14,7 @@ const darkTheme: Theme = {
     background: '#12122a',
     surface: '#00001c',
     error: '#CF6679',
+    success: '#06d6a0',
     onSurface: '#FFFFFF',
     text: Colors.white.toString(),
     disabled: Color(Colors.white.toString()).alpha(0.38).rgb().string(),

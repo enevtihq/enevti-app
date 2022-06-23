@@ -12,6 +12,7 @@ const defaultTheme = {
     background: '#ffffff',
     surface: '#ffffff',
     error: '#B00020',
+    success: '#38a892',
     text: Colors.black.toString(),
     onSurface: '#000000',
     disabled: Color(Colors.black.toString()).alpha(0.26).rgb().string(),

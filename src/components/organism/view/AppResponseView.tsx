@@ -35,7 +35,10 @@ export default function AppResponseView({
   return status === 200 ? (
     <View style={style}>{children}</View>
   ) : (
-    <ScrollView refreshControl={refreshControl} contentContainerStyle={[style, styles.responseView]}>
+    <ScrollView
+      refreshControl={refreshControl}
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={[style, styles.responseView]}>
       {status === 404 ? (
         <AppMessageNotFound />
       ) : status === ERRORCODE.NETWORK_ERROR ? (

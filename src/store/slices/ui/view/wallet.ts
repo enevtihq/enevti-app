@@ -19,65 +19,12 @@ const initialStateItem: WalletViewState = {
     version: 0,
     checkpoint: 0,
   },
-  loaded: true,
-  reqStatus: 200,
-  balance: '100000074914',
-  staked: [
-    {
-      address: 'envtah8bwbyhdfd4g9xndfa2w5kw9dr5kj6d2nybx6',
-      amount: '20000000000',
-      username: 'aldhosutra',
-    },
-    {
-      address: 'envtdya75taguwvhes4funwajyexntydvmnt459wt5',
-      amount: '20000000000',
-      username: 'enevtihq',
-    },
-  ],
-  history: [
-    {
-      id: '52b666278310259d81254d4ca0256c6ec0189f50c84cc3bcb8ab7f9274ba42a8',
-      moduleAssetId: '2:0',
-      moduleAssetName: 'token:transfer',
-      fee: '10000000',
-      height: 3317,
-      nonce: '0',
-      block: {
-        id: '4aef5f18e3739ce8bf96e008846c6f64b6eb167a69a6d99adfa59e1074d10677',
-        height: 3317,
-        timestamp: 1655616895,
-      },
-      sender: {
-        address: 'envtzv6r64vwmnrvt6fzqde4my9mm5e6wskws9re9q',
-        publicKey: 'd8d6efd7e74727b30efccabb96d94e329b9d9ec3a85e376a76cfdf3e03208b59',
-        username: 'delegate_77',
-      },
-      signatures: [
-        '2831604924a350175901e639239d12b5f90f750aecc04d8ccbd21dbfc614096c53855893d9e779b8a9d83a268958c6e7c737d9ed103766c2f646d6dc15185003',
-      ],
-      asset: {
-        amount: '200000000000',
-        data: '',
-        recipient: {
-          address: 'envtah8bwbyhdfd4g9xndfa2w5kw9dr5kj6d2nybx6',
-        },
-      },
-      isPending: false,
-    },
-  ],
+  loaded: false,
+  reqStatus: 0,
+  balance: '',
+  staked: [],
+  history: [],
 };
-
-// const initialStateItem: WalletViewState = {
-//   historyPagination: {
-//     version: 0,
-//     checkpoint: 0,
-//   },
-//   loaded: false,
-//   reqStatus: 0,
-//   balance: '',
-//   staked: [],
-//   history: [],
-// };
 
 const initialState: WalletViewStore = {};
 

@@ -27,9 +27,9 @@ interface AppWalletHeaderProps {
   route: RouteProp<RootStackParamList, 'Wallet'>;
 }
 
-export const PROFILE_HEADER_HEIGHT_PERCENTAGE = 41;
+export const WALLET_HEADER_HEIGHT_PERCENTAGE = 41;
 
-export default function AppWalletHeader({ navigation, route }: AppWalletHeaderProps) {
+export default function AppWalletHeader({ route }: AppWalletHeaderProps) {
   const { t } = useTranslation();
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
@@ -40,9 +40,11 @@ export default function AppWalletHeader({ navigation, route }: AppWalletHeaderPr
   const wallet = useSelector((state: RootState) => selectWalletView(state, route.key));
   const staked = React.useMemo(
     () =>
-      wallet.staked.reduce((prev, current) => {
-        return (BigInt(prev) + BigInt(current.amount)).toString();
-      }, '0'),
+      wallet.staked
+        ? wallet.staked.reduce((prev, current) => {
+            return (BigInt(prev) + BigInt(current.amount)).toString();
+          }, '0')
+        : '0',
     [wallet.staked],
   );
 
@@ -75,7 +77,10 @@ export default function AppWalletHeader({ navigation, route }: AppWalletHeaderPr
         iconRight={iconMap.arrowRight}
         style={styles.stakedButton}
         contentStyle={styles.stakedButtonContent}>
-        <AppTextBody4>{`${t('wallet:staked', { amount: parseAmount(staked), currency: getCoinName() })}`}</AppTextBody4>
+        <AppTextBody4>{`${t('wallet:staked', {
+          amount: commifyAmount(parseAmount(staked)),
+          currency: getCoinName(),
+        })}`}</AppTextBody4>
       </AppQuaternaryButton>
 
       <View style={styles.separator} />
@@ -154,7 +159,7 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
     walletHeaderContainer: {
       alignItems: 'center',
       paddingVertical: hp('1%', insets),
-      height: hp(PROFILE_HEADER_HEIGHT_PERCENTAGE, insets),
+      height: hp(WALLET_HEADER_HEIGHT_PERCENTAGE, insets),
       width: wp('100%', insets),
       backgroundColor: theme.colors.background,
     },

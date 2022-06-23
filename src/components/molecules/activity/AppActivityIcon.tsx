@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import React from 'react';
 import AppIconComponent from 'enevti-app/components/atoms/icon/AppIconComponent';
 import { useTheme } from 'react-native-paper';
@@ -10,18 +10,20 @@ import Color from 'color';
 
 interface AppActivityIconProps {
   activityName: string;
+  style?: StyleProp<ViewStyle>;
+  size?: number;
 }
 
-export default function AppActivityIcon({ activityName }: AppActivityIconProps) {
+export default function AppActivityIcon({ activityName, style, size = 20 }: AppActivityIconProps) {
   const theme = useTheme() as Theme;
   const { wp } = useDimension();
   const styles = React.useMemo(() => makeStyles(wp, theme), [wp, theme]);
 
   return (
-    <View style={styles.activityIconView}>
+    <View style={[styles.activityIconView, style]}>
       <AppIconComponent
         name={activityToIcon(activityName)}
-        size={20}
+        size={size}
         color={theme.colors.placeholder}
         style={styles.activityIcon}
       />
