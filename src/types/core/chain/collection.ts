@@ -1,11 +1,11 @@
 import { NFTBase } from './nft';
 import { NFTPrice, NFTPriceAsset } from './nft/NFTPrice';
 import { Persona, PersonaAsset } from '../account/persona';
-import { NFTActivity, NFTActivityChainItems } from './nft/NFTActivity';
 import { NFTContent } from './nft/NFTContent';
 import { SocialProfile, SocialProfileAsset } from '../account/social';
 import { CollectionIdAsset, NFTIdAsset } from './id';
 import { NFTType } from './nft/NFTType';
+import { ActivityBase, ActivityChainBase } from './activity';
 
 export type AllCollection = {
   items: CollectionIdAsset[];
@@ -13,14 +13,14 @@ export type AllCollection = {
 
 export type CollectionActivityName = 'created' | 'minted' | 'secretDelivered';
 
-export type CollectionActivity = Omit<NFTActivity, 'name'> & {
+export type CollectionActivity = Omit<ActivityBase, 'name'> & {
   name: CollectionActivityName;
   nfts: NFTBase[];
 };
 
 export type CollectionActivityAsset = Buffer;
 
-export type CollectionActivityChainItems = Omit<NFTActivityChainItems, 'name'> & {
+export type CollectionActivityChainItems = Omit<ActivityChainBase, 'name'> & {
   name: CollectionActivityName;
   nfts: NFTIdAsset[];
 };

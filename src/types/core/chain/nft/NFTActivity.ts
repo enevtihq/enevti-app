@@ -1,23 +1,15 @@
-import { Persona, PersonaAsset } from '../../account/persona';
-import { NFTPrice, NFTPriceAsset } from './NFTPrice';
+import { ActivityBase, ActivityChainBase } from '../activity';
 
 export type NFTActivityName = 'mint' | 'redeem' | 'secretDelivered';
 
-export type NFTActivity = {
-  transaction: string;
+export type NFTActivity = Omit<ActivityBase, 'name'> & {
   name: NFTActivityName;
-  date: number;
-  to: Persona;
-  value: NFTPrice;
 };
 
 export type NFTActivityAsset = Buffer;
 
-export type NFTActivityChainItems = Omit<NFTActivity, 'transaction' | 'to' | 'value' | 'date'> & {
-  transaction: Buffer;
-  to: PersonaAsset;
-  value: NFTPriceAsset;
-  date: bigint;
+export type NFTActivityChainItems = Omit<ActivityChainBase, 'name'> & {
+  name: NFTActivityName;
 };
 
 export type NFTActivityChain = {
