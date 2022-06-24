@@ -11,16 +11,18 @@ import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivit
 import { loadMoreTransactionHistory, loadWallet, unloadWallet } from 'enevti-app/store/middleware/thunk/ui/view/wallet';
 import { AppAsyncThunk } from 'enevti-app/types/ui/store/AppAsyncThunk';
 import Animated from 'react-native-reanimated';
-import { TransactionServiceItem } from 'enevti-app/types/core/service/wallet';
 import { LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE } from 'enevti-app/components/molecules/list/AppListItem';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { hp } from 'enevti-app/utils/imageRatio';
+import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
 import AppMessageEmpty from 'enevti-app/components/molecules/message/AppMessageEmpty';
 import AppWalletTransactionHistoryItem from './AppWalletTransactionHistoryItem';
+import { ProfileActivity } from 'enevti-app/types/core/account/profile';
+import AppTextBody2 from 'enevti-app/components/atoms/text/AppTextBody2';
+import { useTranslation } from 'react-i18next';
 
 const TRANSACTION_HISTORY_ITEM_HEIGHT = 9;
 
-const AnimatedFlatList = Animated.createAnimatedComponent<FlatListProps<TransactionServiceItem>>(FlatList);
+const AnimatedFlatList = Animated.createAnimatedComponent<FlatListProps<ProfileActivity>>(FlatList);
 
 interface AppWalletProps {
   navigation: StackNavigationProp<RootStackParamList>;
@@ -28,9 +30,10 @@ interface AppWalletProps {
 }
 
 export default function AppWallet({ navigation, route }: AppWalletProps) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const insets = useSafeAreaInsets();
-  const styles = React.useMemo(() => makeStyles(), []);
+  const styles = React.useMemo(() => makeStyles(insets), [insets]);
 
   const transactionHistoryRef = React.useRef<any>();
   const itemHeight = React.useMemo(
@@ -56,7 +59,7 @@ export default function AppWallet({ navigation, route }: AppWalletProps) {
     };
   }, [onWalletLoaded, dispatch, route]);
 
-  const keyExtractor = React.useCallback((item: TransactionServiceItem) => item.id, []);
+  const keyExtractor = React.useCallback((item: ProfileActivity) => item.transaction, []);
 
   const getItemLayout = React.useCallback(
     (_, index) => ({
@@ -68,13 +71,18 @@ export default function AppWallet({ navigation, route }: AppWalletProps) {
   );
 
   const renderItem = React.useCallback(
-    ({ item }: { item: TransactionServiceItem }) => <AppWalletTransactionHistoryItem item={item} />,
+    ({ item }: { item: ProfileActivity }) => <AppWalletTransactionHistoryItem item={item} />,
     [],
   );
 
   const ListHeaderComponent = React.useMemo(
-    () => <AppWalletHeader navigation={navigation} route={route} />,
-    [navigation, route],
+    () => (
+      <View>
+        <AppWalletHeader navigation={navigation} route={route} />
+        <AppTextBody2 style={styles.activityLabel}>{t('wallet:activity')}</AppTextBody2>
+      </View>
+    ),
+    [navigation, route, styles.activityLabel, t],
   );
 
   const emptyComponent = React.useMemo(() => <AppMessageEmpty />, []);
@@ -122,7 +130,7 @@ export default function AppWallet({ navigation, route }: AppWalletProps) {
   );
 }
 
-const makeStyles = () =>
+const makeStyles = (insets: SafeAreaInsets) =>
   StyleSheet.create({
     loaderContainer: {
       justifyContent: 'center',
@@ -132,5 +140,9 @@ const makeStyles = () =>
     },
     listContent: {
       minHeight: '100%',
+    },
+    activityLabel: {
+      paddingHorizontal: wp('8%', insets),
+      marginVertical: hp('2%', insets),
     },
   });

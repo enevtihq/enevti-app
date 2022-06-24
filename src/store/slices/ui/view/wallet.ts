@@ -22,7 +22,7 @@ const initialStateItem: WalletViewState = {
   loaded: false,
   reqStatus: 0,
   balance: '',
-  staked: [],
+  staked: '0',
   history: [],
 };
 
@@ -40,11 +40,8 @@ const walletViewSlice = createSlice({
         [action.payload.key]: action.payload.value,
       });
     },
-    unshiftWalletStaked: (wallet, action: PayloadAction<{ key: string; value: WalletView['staked'] }>) => {
-      wallet[action.payload.key].staked = action.payload.value.concat(wallet[action.payload.key].staked);
-    },
-    pushWalletStaked: (wallet, action: PayloadAction<{ key: string; value: WalletView['staked'] }>) => {
-      wallet[action.payload.key].staked = wallet[action.payload.key].staked.concat(action.payload.value);
+    setWalletViewStaked: (wallet, action: PayloadAction<{ key: string; value: string }>) => {
+      wallet[action.payload.key].staked = action.payload.value;
     },
     unshiftWalletHistory: (wallet, action: PayloadAction<{ key: string; value: WalletView['history'] }>) => {
       wallet[action.payload.key].history = action.payload.value.concat(wallet[action.payload.key].history);
@@ -63,11 +60,6 @@ const walletViewSlice = createSlice({
     },
     setWalletViewBalance: (wallet, action: PayloadAction<{ key: string; value: string }>) => {
       wallet[action.payload.key].balance = action.payload.value;
-    },
-    setWalletViewStaked: (wallet, action: PayloadAction<{ key: string; value: WalletView['staked'] }>) => {
-      Object.assign(wallet, {
-        [action.payload.key]: Object.assign(wallet[action.payload.key], { staked: action.payload.value }),
-      });
     },
     setWalletViewHistory: (wallet, action: PayloadAction<{ key: string; value: WalletView['history'] }>) => {
       Object.assign(wallet, {
@@ -89,15 +81,13 @@ const walletViewSlice = createSlice({
 export const {
   initWalletView,
   setWalletView,
-  unshiftWalletStaked,
-  pushWalletStaked,
+  setWalletViewStaked,
   unshiftWalletHistory,
   pushWalletHistory,
   setWalletViewHistoryPagination,
   setWalletViewLoaded,
   setWalletViewReqStatus,
   setWalletViewBalance,
-  setWalletViewStaked,
   setWalletViewHistory,
   clearWalletByKey,
   resetWalletByKey,
@@ -117,7 +107,7 @@ export const selectWalletViewHistory = createSelector(
 
 export const selectWalletViewStaked = createSelector(
   [(state: RootState) => state.ui.view.wallet, (state: RootState, key: string) => key],
-  (wallet: WalletViewStore, key: string) => (wallet.hasOwnProperty(key) ? wallet[key].staked : []),
+  (wallet: WalletViewStore, key: string) => (wallet.hasOwnProperty(key) ? wallet[key].staked : '0'),
 );
 
 export const isWalletUndefined = createSelector(

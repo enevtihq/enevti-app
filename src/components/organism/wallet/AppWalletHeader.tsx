@@ -38,15 +38,6 @@ export default function AppWalletHeader({ route }: AppWalletHeaderProps) {
 
   const myPersona = useSelector(selectMyPersonaCache);
   const wallet = useSelector((state: RootState) => selectWalletView(state, route.key));
-  const staked = React.useMemo(
-    () =>
-      wallet.staked
-        ? wallet.staked.reduce((prev, current) => {
-            return (BigInt(prev) + BigInt(current.amount)).toString();
-          }, '0')
-        : '0',
-    [wallet.staked],
-  );
 
   React.useEffect(() => {
     const run = async () => {
@@ -78,7 +69,7 @@ export default function AppWalletHeader({ route }: AppWalletHeaderProps) {
         style={styles.stakedButton}
         contentStyle={styles.stakedButtonContent}>
         <AppTextBody4>{`${t('wallet:staked', {
-          amount: commifyAmount(parseAmount(staked)),
+          amount: commifyAmount(parseAmount(wallet.staked)),
           currency: getCoinName(),
         })}`}</AppTextBody4>
       </AppQuaternaryButton>

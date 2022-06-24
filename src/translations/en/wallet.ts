@@ -7,4 +7,12 @@ export default {
   topUp: 'Top-Up',
   sendToken: 'Send Token',
   receiveToken: 'Receive Token',
+  activity: 'Activity',
+  NFTSale: 'NFT Sale',
+  deliverSecret: 'Deliver Secret',
+  registerUsername: 'Register Username',
+  addStake: 'Add Stake',
+  selfStake: 'Self Stake',
+  mintNFT: 'Mint NFT',
+  createNFT: 'Create NFT',
 };

@@ -5,11 +5,10 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { WALLET_HISTORY_LIMIT } from 'enevti-app/utils/constant/limit';
-import { getProfileBalanceByRouteParam } from 'enevti-app/service/enevti/profile';
 import {
   getInitialTransactionHistoryByRouteParam,
-  getStakeSentByRouteParam,
   getTransactionHistoryByRouteParam,
+  getWalletByRouteParam,
 } from 'enevti-app/service/enevti/wallet';
 import {
   clearWalletByKey,
@@ -30,10 +29,10 @@ export const loadWallet = createAsyncThunk<void, LoadWalletArgs, AsyncThunkAPI>(
   async ({ route, reload = false }, { dispatch, signal }) => {
     try {
       reload && dispatch(showModalLoader());
-      const balanceResponse = await getProfileBalanceByRouteParam(route.params, signal);
-      const stakedResponse = await getStakeSentByRouteParam(route.params, signal);
+      const walletResponse = await getWalletByRouteParam(route.params, signal);
       const transactionHistoryResponse = await getInitialTransactionHistoryByRouteParam(route.params, signal);
-      const reqStatusesArray = [balanceResponse.status, stakedResponse.status, transactionHistoryResponse.status];
+
+      const reqStatusesArray = [walletResponse.status, transactionHistoryResponse.status];
       let reqStatus = 0;
       if (reqStatusesArray.every(value => value === 200)) {
         reqStatus = 200;
@@ -41,21 +40,22 @@ export const loadWallet = createAsyncThunk<void, LoadWalletArgs, AsyncThunkAPI>(
         const index = reqStatusesArray.findIndex(t => t !== 200);
         reqStatus = reqStatusesArray[index];
       }
+
       dispatch(initWalletView(route.key));
       dispatch(
         setWalletView({
           key: route.key,
-          value: {
-            balance: balanceResponse.data,
-            staked: stakedResponse.data.votes,
-            history: transactionHistoryResponse.data,
-          },
+          value: walletResponse.data,
         }),
       );
+      dispatch(pushWalletHistory({ key: route.key, value: transactionHistoryResponse.data.data }));
       dispatch(
         setWalletViewHistoryPagination({
           key: route.key,
-          value: { checkpoint: transactionHistoryResponse.meta.count, version: transactionHistoryResponse.meta.total },
+          value: {
+            checkpoint: transactionHistoryResponse.data.checkpoint,
+            version: transactionHistoryResponse.data.version,
+          },
         }),
       );
       dispatch(setWalletViewReqStatus({ key: route.key, value: reqStatus }));
@@ -80,15 +80,16 @@ export const loadMoreTransactionHistory = createAsyncThunk<void, LoadWalletArgs,
           route.params,
           offset,
           WALLET_HISTORY_LIMIT,
+          version,
           signal,
         );
-        dispatch(pushWalletHistory({ key: route.key, value: transactionHistoryResponse.data }));
+        dispatch(pushWalletHistory({ key: route.key, value: transactionHistoryResponse.data.data }));
         dispatch(
           setWalletViewHistoryPagination({
             key: route.key,
             value: {
-              checkpoint: transactionHistoryResponse.meta.count,
-              version: transactionHistoryResponse.meta.total,
+              checkpoint: transactionHistoryResponse.data.checkpoint,
+              version: transactionHistoryResponse.data.version,
             },
           }),
         );

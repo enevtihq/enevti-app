@@ -1,11 +1,12 @@
-import { PersonaService } from '../account/persona';
+import { Persona, PersonaService } from '../account/persona';
+import { ProfileActivity } from '../account/profile';
+
+export type WalletStaked = { persona: Persona; amount: string };
 
 export type WalletView = {
   balance: string;
-  staked: (PersonaService & {
-    amount: string;
-  })[];
-  history: TransactionServiceItem[];
+  staked: string;
+  history: ProfileActivity[];
 };
 
 export type StakeSentService = {

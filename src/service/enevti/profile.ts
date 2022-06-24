@@ -12,7 +12,7 @@ import {
   setMyProfileCacheOwnedPagination,
 } from 'enevti-app/store/slices/entities/cache/myProfile';
 import { lastFetchTimeout } from 'enevti-app/utils/constant/lastFetch';
-import { addressToBase32, base32ToAddress, getMyAddress, usernameToAddress } from './persona';
+import { base32ToAddress, getMyAddress, usernameToAddress } from './persona';
 import { completeTokenUnit } from 'enevti-app/utils/format/amount';
 import { appFetch, isInternetReachable } from 'enevti-app/utils/network';
 import {
@@ -237,11 +237,9 @@ export async function getProfileBalanceByRouteParam(
     case 'a':
       return await getProfileBalance(routeParam.arg, signal);
     case 'b':
-      const base32 = addressToBase32(routeParam.arg);
-      return await getProfileBalance(base32, signal);
+      return await getProfileBalance(base32ToAddress(routeParam.arg), signal);
     case 'u':
-      const address = await usernameToAddress(routeParam.arg);
-      return await getProfileBalance(address, signal);
+      return await getProfileBalance(await usernameToAddress(routeParam.arg), signal);
     default:
       return await getProfileBalance(routeParam.arg, signal);
   }

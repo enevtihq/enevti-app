@@ -247,3 +247,17 @@ export function urlGetTransactionBaseFee(moduleID: number, assetID: number, host
 export function urlPostRequestFaucet(host: string = ENEVTI_FAUCET_API) {
   return encodeURI(`${host}/faucet`);
 }
+
+export function urlGetActivityProfile(
+  address: string,
+  offset: number = 0,
+  limit: number = 10,
+  version: number = 0,
+  host: string = ENEVTI_DEFAULT_API,
+) {
+  return encodeURI(`${host}/activity/profile/${address}?offset=${offset}&limit=${limit}&version=${version}`);
+}
+
+export function urlGetWallet(address: string, host: string = ENEVTI_DEFAULT_API) {
+  return encodeURI(`${host}/wallet/${address}`);
+}
