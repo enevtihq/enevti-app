@@ -6,7 +6,11 @@ import { RootStackParamList } from 'enevti-app/navigation';
 import { RouteProp } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'enevti-app/store/state';
-import { isWalletUndefined, selectWalletViewHistory } from 'enevti-app/store/slices/ui/view/wallet';
+import {
+  isWalletUndefined,
+  selectWalletViewHistory,
+  selectWalletViewHistoryPagination,
+} from 'enevti-app/store/slices/ui/view/wallet';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
 import { loadMoreTransactionHistory, loadWallet, unloadWallet } from 'enevti-app/store/middleware/thunk/ui/view/wallet';
 import { AppAsyncThunk } from 'enevti-app/types/ui/store/AppAsyncThunk';
@@ -42,6 +46,9 @@ export default function AppWallet({ navigation, route }: AppWalletProps) {
   );
 
   const transactionHistory = useSelector((state: RootState) => selectWalletViewHistory(state, route.key));
+  const transactionHistoryPagination = useSelector((state: RootState) =>
+    selectWalletViewHistoryPagination(state, route.key),
+  );
   const walletUndefined = useSelector((state: RootState) => isWalletUndefined(state, route.key));
 
   const onWalletLoaded = React.useCallback(
@@ -85,6 +92,14 @@ export default function AppWallet({ navigation, route }: AppWalletProps) {
     [navigation, route, styles.activityLabel, t],
   );
 
+  const ListFooterComponent = React.useMemo(
+    () =>
+      transactionHistoryPagination.version !== transactionHistory.length && transactionHistory.length !== 0 ? (
+        <AppActivityIndicator style={{ marginVertical: hp('3%') }} />
+      ) : null,
+    [transactionHistory.length, transactionHistoryPagination.version],
+  );
+
   const emptyComponent = React.useMemo(() => <AppMessageEmpty />, []);
 
   const handleRefresh = React.useCallback(() => {
@@ -113,6 +128,7 @@ export default function AppWallet({ navigation, route }: AppWalletProps) {
         refreshControl={refreshControl}
         ListEmptyComponent={emptyComponent}
         ListHeaderComponent={ListHeaderComponent}
+        ListFooterComponent={ListFooterComponent}
         removeClippedSubviews={true}
         initialNumToRender={10}
         maxToRenderPerBatch={10}

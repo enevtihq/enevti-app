@@ -29,7 +29,7 @@ interface AppWalletHeaderProps {
 
 export const WALLET_HEADER_HEIGHT_PERCENTAGE = 41;
 
-export default function AppWalletHeader({ route }: AppWalletHeaderProps) {
+export default function AppWalletHeader({ navigation, route }: AppWalletHeaderProps) {
   const { t } = useTranslation();
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
@@ -49,7 +49,9 @@ export default function AppWalletHeader({ route }: AppWalletHeaderProps) {
 
   const onSend = React.useCallback(() => {}, []);
 
-  const onReceive = React.useCallback(() => {}, []);
+  const onReceive = React.useCallback(() => {
+    navigation.push('ReceiveToken');
+  }, [navigation]);
 
   const onTopUp = React.useCallback(() => {}, []);
 

@@ -40,6 +40,11 @@ const walletViewSlice = createSlice({
         [action.payload.key]: action.payload.value,
       });
     },
+    assignWalletView: (wallet, action: PayloadAction<{ key: string; value: Record<string, any> }>) => {
+      Object.assign(wallet, {
+        [action.payload.key]: Object.assign(wallet[action.payload.key], action.payload.value),
+      });
+    },
     setWalletViewStaked: (wallet, action: PayloadAction<{ key: string; value: string }>) => {
       wallet[action.payload.key].staked = action.payload.value;
     },
@@ -81,6 +86,7 @@ const walletViewSlice = createSlice({
 export const {
   initWalletView,
   setWalletView,
+  assignWalletView,
   setWalletViewStaked,
   unshiftWalletHistory,
   pushWalletHistory,
@@ -103,6 +109,12 @@ export const selectWalletView = createSelector(
 export const selectWalletViewHistory = createSelector(
   [(state: RootState) => state.ui.view.wallet, (state: RootState, key: string) => key],
   (wallet: WalletViewStore, key: string) => (wallet.hasOwnProperty(key) ? wallet[key].history : []),
+);
+
+export const selectWalletViewHistoryPagination = createSelector(
+  [(state: RootState) => state.ui.view.wallet, (state: RootState, key: string) => key],
+  (wallet: WalletViewStore, key: string) =>
+    wallet.hasOwnProperty(key) ? wallet[key].historyPagination : initialStateItem.historyPagination,
 );
 
 export const selectWalletViewStaked = createSelector(

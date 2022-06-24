@@ -11,11 +11,11 @@ import {
   getWalletByRouteParam,
 } from 'enevti-app/service/enevti/wallet';
 import {
+  assignWalletView,
   clearWalletByKey,
   initWalletView,
   pushWalletHistory,
   selectWalletView,
-  setWalletView,
   setWalletViewHistoryPagination,
   setWalletViewLoaded,
   setWalletViewReqStatus,
@@ -43,7 +43,7 @@ export const loadWallet = createAsyncThunk<void, LoadWalletArgs, AsyncThunkAPI>(
 
       dispatch(initWalletView(route.key));
       dispatch(
-        setWalletView({
+        assignWalletView({
           key: route.key,
           value: walletResponse.data,
         }),

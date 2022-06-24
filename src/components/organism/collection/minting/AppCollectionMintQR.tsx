@@ -6,7 +6,6 @@ import { isErrorResponse } from 'enevti-app/utils/error/handle';
 import { getMyPublicKey } from 'enevti-app/service/enevti/persona';
 import { createSignature } from 'enevti-app/utils/cryptography';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
-import QRCode from 'react-native-qrcode-svg';
 import { Platform, StyleSheet, View } from 'react-native';
 import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
 import AppListItem from 'enevti-app/components/molecules/list/AppListItem';
@@ -21,8 +20,8 @@ import { useTranslation } from 'react-i18next';
 import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
 import createQRValue from 'enevti-app/utils/qr/createQRValue';
 import AppQuaternaryButton from 'enevti-app/components/atoms/button/AppQuaternaryButton';
-import Color from 'color';
 import base64 from 'react-native-base64';
+import AppQRCode from 'enevti-app/components/atoms/qr/AppQRCode';
 
 interface AppCollectionMintQRProps {
   collectionId: string;
@@ -88,9 +87,7 @@ export default function AppCollectionMintQR({ collectionId, onDismiss }: AppColl
           </AppListItem>
 
           <View style={styles.qrContainer}>
-            <View style={styles.qrBox}>
-              <QRCode value={value} size={wp(70)} color={'black'} backgroundColor={'white'} />
-            </View>
+            <AppQRCode value={value} size={wp(70)} />
             <View style={{ height: hp(3) }} />
             <AppQuaternaryButton
               icon={iconMap.refresh}
@@ -136,13 +133,6 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
     headerIcon: {
       marginRight: wp('3%', insets),
       alignSelf: 'center',
-    },
-    qrBox: {
-      padding: wp(2.5),
-      backgroundColor: 'white',
-      borderRadius: 15,
-      borderWidth: StyleSheet.hairlineWidth,
-      borderColor: Color(theme.colors.text).alpha(0.2).rgb().toString(),
     },
     qrContainer: {
       flex: 1,

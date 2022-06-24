@@ -105,6 +105,8 @@ export const iconMap = {
   receive: 'arrow-collapse-down',
   topUp: 'plus',
   sendHere: 'arrow-top-right',
+  addStake: 'bank-plus',
+  selfStake: 'account-cache',
 };
 
 interface AppIconComponentProps {

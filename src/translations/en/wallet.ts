@@ -15,4 +15,6 @@ export default {
   selfStake: 'Self Stake',
   mintNFT: 'Mint NFT',
   createNFT: 'Create NFT',
+  receiveTokenDescription: 'Get your address code or specify an amount to request payment',
+  copyQrValue: 'Copy QR Value',
 };
