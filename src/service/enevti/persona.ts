@@ -26,6 +26,7 @@ type ProfileRoute = StackScreenProps<RootStackParamList, 'Profile'>['route']['pa
 
 const PREFIX = COIN_NAME.toLowerCase();
 const PREFIX_MAX_LENGTH = 3;
+const ENEVTI_BASE32_VALID_LENGTH = 42;
 
 async function fetchPersona(address: string, signal?: AbortController['signal']): Promise<APIResponse<Persona>> {
   try {
@@ -84,6 +85,24 @@ export function parseBase32(base32: string): string {
   } else {
     return base32;
   }
+}
+
+export function isValidBase32(base32: string): boolean {
+  try {
+    const ret =
+      base32.substring(0, PREFIX.length) === PREFIX &&
+      base32.length === ENEVTI_BASE32_VALID_LENGTH &&
+      Lisk.cryptography.validateBase32Address(parseBase32(base32), parsePrefix(PREFIX));
+    return ret;
+  } catch {
+    return false;
+  }
+}
+
+export function isValidAddress(address: string): boolean {
+  const base32 = addressToBase32(address);
+  const validBase32 = isValidBase32(base32);
+  return validBase32;
 }
 
 export function parsePersonaLabel(persona: Persona) {

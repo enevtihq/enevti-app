@@ -31,4 +31,9 @@ export default {
   recipientDescription: 'Start with @ to use username',
   amount: 'Amount',
   amountDescription: 'Enter amount in {{currency}}',
+  startSearchRecipient: 'Start typing to search recipient',
+  invalidRecipient: 'Recipient format seems incorrect...',
+  usernameNotFound: 'Username not found...',
+  specifyRecipient: 'Set Recipient',
+  specifyRecipientDescription: 'Use {{coin}} address or username!',
 };

@@ -38,5 +38,5 @@ export default {
   uploadingTo: "Uploading '{{file}}' to '{{provider}}'...",
   postingTransaction: 'Posting transaction...',
   payTransferToken: 'Transfer {{coin}}',
-  payTransferTokenDescription: 'Transfer to {{base32}}',
+  payTransferTokenDescription: 'to {{base32}}',
 };

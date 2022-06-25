@@ -20,6 +20,9 @@ import { useDispatch } from 'react-redux';
 import { payTransferToken } from 'enevti-app/store/middleware/thunk/payment/creator/payTransferToken';
 import usePaymentCallback from 'enevti-app/utils/hook/usePaymentCallback';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
+import AppAddressPicker from 'enevti-app/components/organism/wallet/AppAddressPicker';
+import { Persona } from 'enevti-app/types/core/account/persona';
+import { base32ToAddress, getBasePersona } from 'enevti-app/service/enevti/persona';
 
 type Props = StackScreenProps<RootStackParamList, 'SendToken'>;
 
@@ -39,19 +42,27 @@ export default function SendToken({ navigation, route }: Props) {
   const styles = React.useMemo(() => makeStyles(insets), [insets]);
   const paymentThunkRef = React.useRef<any>();
 
+  const [persona, setPersona] = React.useState<Persona>();
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [loadingPersona, setLoadingPersona] = React.useState<boolean>(false);
 
   const onLoad = React.useCallback(
     (
         setFieldValue: (key: string, value: string, shouldValidate: boolean) => void,
         setFieldTouched: (key: string, isTouched: boolean, shouldValidate: boolean) => void,
       ) =>
-      () => {
+      async () => {
         if (route.params.amount) {
           setFieldTouched('amount', true, false);
           setFieldValue('amount', parseAmount(route.params.amount), false);
         }
         if (route.params.base32) {
+          setLoadingPersona(true);
+          const parsedPersona = await getBasePersona(base32ToAddress(route.params.base32));
+          if (parsedPersona.status) {
+            setPersona(parsedPersona.data);
+            setLoadingPersona(false);
+          }
           setFieldTouched('base32', true, false);
           setFieldValue('base32', route.params.base32, false);
         }
@@ -73,6 +84,14 @@ export default function SendToken({ navigation, route }: Props) {
     onIdle: paymentIdleCallback,
     onSuccess: paymentSuccessCallback,
   });
+
+  const onPersonaSelected = React.useCallback(
+    (setFieldValue: (key: string, value: string, shouldValidate: boolean) => void) => (data: Persona) => {
+      setFieldValue('base32', data.base32, true);
+      setPersona(data);
+    },
+    [],
+  );
 
   const handleFormSubmit = React.useCallback(
     (values: { base32: string; amount: string }) => {
@@ -122,22 +141,12 @@ export default function SendToken({ navigation, route }: Props) {
         }) => (
           <>
             <View onLayout={onLoad(setFieldValue, setFieldTouched)} style={styles.inputView}>
-              <AppFormTextInputWithError
-                theme={paperTheme}
-                label={t('wallet:recipient')}
-                placeholder={t('wallet:recipientDescription')}
-                style={styles.formInput}
-                value={values.base32}
-                errorText={errors.base32}
-                showError={touched.base32}
-                onBlur={handleBlur('base32')}
-                onChangeText={handleChange('base32')}
-                onSubmitEditing={() => {}}
-                blurOnSubmit={true}
-                autoComplete={'off'}
-                autoCorrect={false}
-                returnKeyType="go"
+              <AppAddressPicker
+                loading={loadingPersona}
+                value={persona}
+                onSelected={onPersonaSelected(setFieldValue)}
               />
+              <View style={{ height: hp(2, insets) }} />
               <AppFormTextInputWithError
                 theme={paperTheme}
                 label={t('wallet:amount')}
