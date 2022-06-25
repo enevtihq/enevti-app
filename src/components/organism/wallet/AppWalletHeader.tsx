@@ -19,8 +19,11 @@ import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import AppIconComponent, { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import { commifyAmount } from 'enevti-app/utils/primitive/string';
 import { selectMyPersonaCache } from 'enevti-app/store/slices/entities/cache/myPersona';
-import { routeParamToAddress } from 'enevti-app/service/enevti/persona';
+import { addressToBase32, getBasePersonaByRouteParam, routeParamToAddress } from 'enevti-app/service/enevti/persona';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
+import { Persona } from 'enevti-app/types/core/account/persona';
+import AppAvatarRenderer from 'enevti-app/components/molecules/avatar/AppAvatarRenderer';
+import Color from 'color';
 
 interface AppWalletHeaderProps {
   navigation: StackNavigationProp<RootStackParamList>;
@@ -35,6 +38,7 @@ export default function AppWalletHeader({ navigation, route }: AppWalletHeaderPr
   const insets = useSafeAreaInsets();
   const styles = React.useMemo(() => makeStyles(theme, insets), [insets, theme]);
   const [address, setAddress] = React.useState<string>('');
+  const [persona, setPersona] = React.useState<Persona | undefined>(undefined);
 
   const myPersona = useSelector(selectMyPersonaCache);
   const wallet = useSelector((state: RootState) => selectWalletView(state, route.key));
@@ -43,6 +47,11 @@ export default function AppWalletHeader({ navigation, route }: AppWalletHeaderPr
     const run = async () => {
       const parsedAddress = await routeParamToAddress(route.params);
       setAddress(parsedAddress);
+
+      const parsedPersona = await getBasePersonaByRouteParam(route.params);
+      if (parsedPersona.status === 200) {
+        setPersona(parsedPersona.data);
+      }
     };
     run();
   }, [route.params]);
@@ -57,11 +66,22 @@ export default function AppWalletHeader({ navigation, route }: AppWalletHeaderPr
 
   const onTopUp = React.useCallback(() => {}, []);
 
-  const onSendHere = React.useCallback(() => {}, []);
+  const onSendHere = React.useCallback(() => {
+    navigation.push('SendToken', { base32: addressToBase32(address) });
+  }, [address, navigation]);
 
   return (
     <View style={styles.walletHeaderContainer}>
-      <AppBrandLogo mode={'glow'} heightPercentage={0.1} style={styles.headerImage} />
+      <View style={styles.headerImage}>
+        {persona ? (
+          <View>
+            <AppAvatarRenderer persona={persona} base32={addressToBase32(address)} size={hp(8)} style={styles.avatar} />
+            <AppBrandLogo mode={'glow'} heightPercentage={0.03} style={styles.brandLogo} />
+          </View>
+        ) : (
+          <AppActivityIndicator animating />
+        )}
+      </View>
 
       <AppTextBody2 numberOfLines={1} style={styles.amountHeader}>
         {commifyAmount(parseAmount(wallet.balance))} {getCoinName()}
@@ -151,6 +171,9 @@ export default function AppWalletHeader({ navigation, route }: AppWalletHeaderPr
 
 const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
   StyleSheet.create({
+    avatar: {
+      alignSelf: 'center',
+    },
     walletHeaderContainer: {
       alignItems: 'center',
       paddingVertical: hp('1%', insets),
@@ -166,7 +189,19 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
     },
     headerImage: {
       alignSelf: 'center',
+      justifyContent: 'center',
       marginBottom: hp('2%', insets),
+      height: hp(10, insets),
+      width: hp(10, insets),
+    },
+    brandLogo: {
+      position: 'absolute',
+      right: 0,
+      bottom: 0,
+      backgroundColor: 'white',
+      borderWidth: StyleSheet.hairlineWidth,
+      borderColor: Color(theme.colors.placeholder).alpha(0.1).rgb().toString(),
+      borderRadius: 50,
     },
     stakedButton: {
       height: hp('5%', insets),
