@@ -4,6 +4,7 @@ import { Linking } from 'react-native';
 import { store } from 'enevti-app/store/state';
 import { selectLockedState } from 'enevti-app/store/slices/ui/screen/locked';
 import { selectAuthState } from 'enevti-app/store/slices/auth';
+import i18n from 'enevti-app/translations/i18n';
 
 export type AppLinking = (
   initialRouteName: keyof RootStackParamList,
@@ -30,7 +31,7 @@ export const APP_LINK = 'enevti://';
 export const UNIVERSAL_LINK_HTTP = 'http://app.enevti.com';
 export const UNIVERSAL_LINK_HTTPS = 'https://app.enevti.com';
 
-const KNOWN_LINK = ['nft', 'collection', 'stake', 'profile'];
+const KNOWN_LINK = ['nft', 'collection', 'stake', 'profile', 'login', 'createaccount', 'wallet', 'send'];
 const screens = {
   NFTDetails: {
     path: 'nft',
@@ -79,6 +80,15 @@ export const isAppLink = (link: string) => {
   }
 };
 
+export const isUniversalLink = (link: string) => {
+  try {
+    const url = new URL(link);
+    return [UNIVERSAL_LINK_HTTP, UNIVERSAL_LINK_HTTPS].includes(`${url.protocol}//${url.hostname}`);
+  } catch (err) {
+    return false;
+  }
+};
+
 export const isRawLink = (link: string) => {
   try {
     const url = new URL(link);
@@ -89,7 +99,18 @@ export const isRawLink = (link: string) => {
 };
 
 export const isLinkKnown = (link: string) => {
-  return KNOWN_LINK.includes(link);
+  const url = new URL(link);
+  return KNOWN_LINK.includes(url.pathname.substring(1));
+};
+
+export const parseAppLink = (appLink: string) => {
+  if (isUniversalLink(appLink)) {
+    const url = new URL(appLink);
+    return `${APP_LINK}${url.pathname.substring(1)}${url.search}`;
+  } else if (isAppLink(appLink)) {
+    return appLink;
+  }
+  throw Error(i18n.t('error:unknownLink'));
 };
 
 export const linking: AppLinking = (initialRouteName, currentRoute) => {

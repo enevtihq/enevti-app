@@ -1,5 +1,5 @@
 import { isValidQRAction, QRValue } from 'enevti-app/types/ui/screen/QRScanner';
-import { isAppLink, isRawLink, isLinkKnown } from '../linking';
+import { isAppLink, isRawLink, isLinkKnown, isUniversalLink } from '../linking';
 
 export default function parseQRValue(qrValue: string): QRValue | undefined {
   try {
@@ -22,7 +22,7 @@ export default function parseQRValue(qrValue: string): QRValue | undefined {
 
 export function parseQRLink(qrValue: string) {
   try {
-    if (isAppLink(qrValue) && isLinkKnown(qrValue)) {
+    if ((isAppLink(qrValue) || isUniversalLink(qrValue)) && isLinkKnown(qrValue)) {
       return qrValue;
     } else {
       return undefined;

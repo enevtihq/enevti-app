@@ -95,7 +95,7 @@ export default function QRScanner({ navigation, route }: Props) {
   React.useEffect(() => {
     if (barcodes.length > 0 && !barcodeScannedRef.current) {
       barcodeScannedRef.current = true;
-      onSuccess(barcodes[0].content.data.toString());
+      onSuccess(barcodes[0].displayValue ?? barcodes[0].content.data.toString());
     }
   }, [barcodes, onSuccess]);
 

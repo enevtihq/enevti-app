@@ -32,4 +32,5 @@ export default {
   wrongLocalKey: 'Wrong Local Key',
   unknownErrorGetPassphrase: 'Unknown error while getting passphrase',
   invalidBase32Prefix: 'Invalid attempt to convert base32 address prefix',
+  unknownLink: 'Unknown Link Format',
 };
