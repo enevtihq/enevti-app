@@ -93,10 +93,13 @@ export default function AppWallet({ navigation, route }: AppWalletProps) {
   );
 
   const ListFooterComponent = React.useMemo(
-    () =>
-      transactionHistoryPagination.version !== transactionHistory.length && transactionHistory.length !== 0 ? (
-        <AppActivityIndicator style={{ marginVertical: hp('3%') }} />
-      ) : null,
+    () => (
+      <View style={{ marginBottom: hp(18) }}>
+        {transactionHistoryPagination.version !== transactionHistory.length && transactionHistory.length !== 0 ? (
+          <AppActivityIndicator style={{ marginVertical: hp('3%') }} />
+        ) : null}
+      </View>
+    ),
     [transactionHistory.length, transactionHistoryPagination.version],
   );
 

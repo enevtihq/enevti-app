@@ -41,6 +41,24 @@ export default function SendToken({ navigation, route }: Props) {
 
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
+  const onLoad = React.useCallback(
+    (
+        setFieldValue: (key: string, value: string, shouldValidate: boolean) => void,
+        setFieldTouched: (key: string, isTouched: boolean, shouldValidate: boolean) => void,
+      ) =>
+      () => {
+        if (route.params.amount) {
+          setFieldTouched('amount', true, false);
+          setFieldValue('amount', parseAmount(route.params.amount), false);
+        }
+        if (route.params.base32) {
+          setFieldTouched('base32', true, false);
+          setFieldValue('base32', route.params.base32, false);
+        }
+      },
+    [route.params.amount, route.params.base32],
+  );
+
   const paymentIdleCallback = React.useCallback(() => {
     setIsLoading(false);
     paymentThunkRef.current?.abort();
@@ -73,25 +91,37 @@ export default function SendToken({ navigation, route }: Props) {
       header={<AppHeader back navigation={navigation} title={' '} />}>
       <AppHeaderWizard
         noHeaderSpace
+        mode={'icon'}
+        modeData={'transfer'}
         navigation={navigation}
         title={t('wallet:sendCoin', { coin: getCoinName() })}
         description={t('wallet:sendCoinDescription')}
         style={styles.header}
-        titleStyle={styles.headerTitle}
       />
       <Formik
         initialValues={{
-          base32: route.params.base32 ?? '',
-          amount: route.params.amount ? parseAmount(route.params.amount) : '',
+          base32: '',
+          amount: '',
         }}
         onSubmit={async values => {
           setIsLoading(true);
           await handleFormSubmit(values);
         }}
         validationSchema={validationSchema}>
-        {({ handleChange, handleBlur, submitForm, values, errors, isValid, dirty, touched }) => (
+        {({
+          handleChange,
+          handleBlur,
+          setFieldValue,
+          setFieldTouched,
+          submitForm,
+          values,
+          errors,
+          isValid,
+          dirty,
+          touched,
+        }) => (
           <>
-            <View style={styles.inputView}>
+            <View onLayout={onLoad(setFieldValue, setFieldTouched)} style={styles.inputView}>
               <AppFormTextInputWithError
                 theme={paperTheme}
                 label={t('wallet:recipient')}
@@ -147,14 +177,16 @@ export default function SendToken({ navigation, route }: Props) {
 
 const makeStyles = (insets: SafeAreaInsets) =>
   StyleSheet.create({
+    brandLogo: {
+      alignSelf: 'center',
+      justifyContent: 'center',
+      marginBottom: hp('2%', insets),
+    },
     header: {
       flex: 0,
       marginLeft: wp('3%', insets),
       marginRight: wp('3%', insets),
       marginBottom: hp('5%', insets),
-    },
-    headerTitle: {
-      marginTop: 0,
     },
     formInput: {
       marginBottom: hp('2%', insets),

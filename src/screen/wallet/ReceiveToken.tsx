@@ -41,7 +41,7 @@ export default function ReceiveToken({ navigation }: Props) {
   const styles = React.useMemo(() => makeStyles(insets), [insets]);
   const myPersona = useSelector(selectMyPersonaCache);
 
-  const [qrValue, setQrValue] = React.useState<string>(() => myPersona.base32);
+  const [qrValue, setQrValue] = React.useState<string>(() => getAppLink('send', { base32: myPersona.base32 }));
   const [requestAmountError, setRequestAmountError] = React.useState<string>('');
   const [requestAmountTouched, setRequestAmountTouched] = React.useState<boolean>(false);
 
@@ -69,7 +69,8 @@ export default function ReceiveToken({ navigation }: Props) {
   const onRequestAmountChanged = React.useCallback(
     (e: NativeSyntheticEvent<TextInputChangeEventData>) => {
       if (e.nativeEvent.text === '') {
-        setQrValue(myPersona.base32);
+        const qr = getAppLink('send', { base32: myPersona.base32 });
+        setQrValue(qr);
         if (requestAmountError) {
           setRequestAmountError('');
         }
