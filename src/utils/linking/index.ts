@@ -23,7 +23,8 @@ export type AppLinkNamespace =
   | 'stake-pool-username'
   | 'profile-base32'
   | 'profile-address'
-  | 'profile-username';
+  | 'profile-username'
+  | 'send';
 
 export const APP_LINK = 'enevti://';
 export const UNIVERSAL_LINK_HTTP = 'http://app.enevti.com';
@@ -127,40 +128,47 @@ export const linking: AppLinking = (initialRouteName, currentRoute) => {
   };
 };
 
-export function getAppLink(namespace: AppLinkNamespace, arg: string, prefix: string = `${UNIVERSAL_LINK_HTTPS}/`) {
+export function getAppLink(
+  namespace: AppLinkNamespace,
+  arg: string | Record<string, any>,
+  prefix: string = `${UNIVERSAL_LINK_HTTPS}/`,
+) {
   let ret: string = prefix;
   switch (namespace) {
     case '':
       return `${APP_LINK}/${arg}`;
     case 'nft-serial':
-      ret += `nft?mode=s&arg=${encodeURIComponent(arg)}`;
+      ret += `nft?mode=s&arg=${encodeURIComponent(arg.toString())}`;
       break;
     case 'nft-id':
-      ret += `nft?mode=id&arg=${encodeURIComponent(arg)}`;
+      ret += `nft?mode=id&arg=${encodeURIComponent(arg.toString())}`;
       break;
     case 'collection-serial':
-      ret += `collection?mode=s&arg=${encodeURIComponent(arg)}`;
+      ret += `collection?mode=s&arg=${encodeURIComponent(arg.toString())}`;
       break;
     case 'collection-id':
-      ret += `collection?mode=id&arg=${encodeURIComponent(arg)}`;
+      ret += `collection?mode=id&arg=${encodeURIComponent(arg.toString())}`;
       break;
     case 'stake-pool-base32':
-      ret += `stake?mode=b&arg=${encodeURIComponent(arg)}`;
+      ret += `stake?mode=b&arg=${encodeURIComponent(arg.toString())}`;
       break;
     case 'stake-pool-address':
-      ret += `stake?mode=a&arg=${encodeURIComponent(arg)}`;
+      ret += `stake?mode=a&arg=${encodeURIComponent(arg.toString())}`;
       break;
     case 'stake-pool-username':
-      ret += `stake?mode=u&arg=${encodeURIComponent(arg)}`;
+      ret += `stake?mode=u&arg=${encodeURIComponent(arg.toString())}`;
       break;
     case 'profile-base32':
-      ret += `profile?mode=b&arg=${encodeURIComponent(arg)}`;
+      ret += `profile?mode=b&arg=${encodeURIComponent(arg.toString())}`;
       break;
     case 'profile-address':
-      ret += `profile?mode=a&arg=${encodeURIComponent(arg)}`;
+      ret += `profile?mode=a&arg=${encodeURIComponent(arg.toString())}`;
       break;
     case 'profile-username':
-      ret += `profile?mode=u&arg=${encodeURIComponent(arg)}`;
+      ret += `profile?mode=u&arg=${encodeURIComponent(arg.toString())}`;
+      break;
+    case 'send':
+      ret += `send?${new URLSearchParams(arg).toString()}`;
       break;
     default:
       break;

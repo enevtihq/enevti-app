@@ -32,3 +32,10 @@ export function commifyAmount(amount: string) {
   const thousands = /\B(?=(\d{3})+(?!\d))/g;
   return numberPart.replace(thousands, ',') + (decimalPart ? '.' + decimalPart : '');
 }
+
+export function isNumeric(str: string): boolean {
+  if (typeof str !== 'string') {
+    return false;
+  }
+  return !isNaN(str as unknown as number) && !isNaN(parseFloat(str));
+}

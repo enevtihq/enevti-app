@@ -17,4 +17,12 @@ export default {
   createNFT: 'Create NFT',
   receiveTokenDescription: 'Get your address code or specify an amount to request payment',
   copyQrValue: 'Copy QR Value',
+  requestAmount: 'Request Amount',
+  requestAmountPlaceholder: 'Enter requested amount in {{currency}}',
+  receiveCoin: 'Receive {{coin}}',
+  envtCopied: '{{coin}} address copied!',
+  qrCopied: 'QR Code value copied!',
+  share: 'Share',
+  invalidAmount: 'Invalid amount',
+  amountMustBePositive: 'Amount must be positive!',
 };
