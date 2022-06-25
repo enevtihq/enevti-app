@@ -54,7 +54,7 @@ export default function SendToken({ navigation, route }: Props) {
       async () => {
         if (route.params.amount) {
           setFieldTouched('amount', true, false);
-          setFieldValue('amount', parseAmount(route.params.amount), false);
+          setFieldValue('amount', parseAmount(route.params.amount), true);
         }
         if (route.params.base32) {
           setLoadingPersona(true);
@@ -64,7 +64,7 @@ export default function SendToken({ navigation, route }: Props) {
             setLoadingPersona(false);
           }
           setFieldTouched('base32', true, false);
-          setFieldValue('base32', route.params.base32, false);
+          setFieldValue('base32', route.params.base32, true);
         }
       },
     [route.params.amount, route.params.base32],
