@@ -8,6 +8,7 @@ import { handleError } from 'enevti-app/utils/error/handle';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 import i18n from 'enevti-app/translations/i18n';
 import { reducePayMintCollectionByQR } from './reducePayMintCollectionByQR';
+import { reduceTransferToken } from './reduceTransferToken';
 
 export const reducePayment = (): AppThunk => (dispatch, getState) => {
   const paymentType = getState().payment.action.type;
@@ -29,6 +30,9 @@ export const reducePayment = (): AppThunk => (dispatch, getState) => {
       break;
     case 'deliverSecret':
       dispatch(reducePayDeliverSecret());
+      break;
+    case 'transferToken':
+      dispatch(reduceTransferToken());
       break;
     case 'cancel':
       dispatch(showSnackbar({ mode: 'info', text: getState().payment.status.message }));

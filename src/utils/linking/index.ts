@@ -50,6 +50,12 @@ const screens = {
   CreateAccount: {
     path: 'createaccount',
   },
+  Wallet: {
+    path: 'wallet',
+  },
+  SendToken: {
+    path: 'send',
+  },
 };
 
 export const hostnameToRoute: HostnameToRoute = (hostname: string) => {

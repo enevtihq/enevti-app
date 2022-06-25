@@ -7,6 +7,7 @@ export type PaymentAction = {
     | 'addStake'
     | 'registerUsername'
     | 'deliverSecret'
+    | 'transferToken'
     | 'cancel'
     | '';
   icon: string;

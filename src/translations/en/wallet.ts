@@ -25,4 +25,10 @@ export default {
   share: 'Share',
   invalidAmount: 'Invalid amount',
   amountMustBePositive: 'Amount must be positive!',
+  sendCoin: 'Send {{coin}}',
+  sendCoinDescription: 'Securely send your coins!',
+  recipient: 'Recipient',
+  recipientDescription: 'Start with @ to use username',
+  amount: 'Amount',
+  amountDescription: 'Enter amount in {{currency}}',
 };

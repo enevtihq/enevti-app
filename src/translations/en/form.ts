@@ -16,4 +16,5 @@ export default {
   maxChar: 'Maximum {{count}} characters',
   noSpace: 'No space allowed',
   multipleOf10: 'Must be multiple of 10',
+  invalidNumber: 'Must be valid number',
 };

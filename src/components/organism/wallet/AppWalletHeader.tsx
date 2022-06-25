@@ -47,7 +47,9 @@ export default function AppWalletHeader({ navigation, route }: AppWalletHeaderPr
     run();
   }, [route.params]);
 
-  const onSend = React.useCallback(() => {}, []);
+  const onSend = React.useCallback(() => {
+    navigation.push('SendToken', {});
+  }, [navigation]);
 
   const onReceive = React.useCallback(() => {
     navigation.push('ReceiveToken');

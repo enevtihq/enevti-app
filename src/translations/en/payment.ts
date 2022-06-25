@@ -37,4 +37,6 @@ export default {
   payDeliverSecretDescription: 'Deliver to {{recipient}}',
   uploadingTo: "Uploading '{{file}}' to '{{provider}}'...",
   postingTransaction: 'Posting transaction...',
+  payTransferToken: 'Transfer {{coin}}',
+  payTransferTokenDescription: 'Transfer to {{base32}}',
 };

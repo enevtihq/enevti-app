@@ -36,6 +36,7 @@ import QRScanner from 'enevti-app/screen/qr/QRScanner';
 import { selectLocalSession } from 'enevti-app/store/slices/session/local';
 import Wallet from 'enevti-app/screen/wallet/Wallet';
 import ReceiveToken from 'enevti-app/screen/wallet/ReceiveToken';
+import SendToken from 'enevti-app/screen/wallet/SendToken';
 
 export type RootStackParamList = {
   CreateAccount: undefined;
@@ -81,6 +82,10 @@ export type RootStackParamList = {
     mode: 'a' | 'b' | 'u';
   };
   ReceiveToken: undefined;
+  SendToken: {
+    base32?: string;
+    amount?: string;
+  };
   Collection: {
     arg: string;
     mode: 'id' | 's';
@@ -282,6 +287,14 @@ export default function AppNavigationContainer() {
         <Stack.Screen
           name="ReceiveToken"
           component={ReceiveToken}
+          options={{
+            headerShown: false,
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          }}
+        />
+        <Stack.Screen
+          name="SendToken"
+          component={SendToken}
           options={{
             headerShown: false,
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
