@@ -9,6 +9,7 @@ export default {
   choose: 'Choose',
   upercase: 'Must be UPPERCASE. No space, symbol or number allowed',
   lowercase: 'Must be lowercase',
+  lowercaseNoSymbol: 'Must be lowercase, number, or underscore',
   loading: 'Loading...',
   seeMore: 'see more',
   seeLess: 'see less',

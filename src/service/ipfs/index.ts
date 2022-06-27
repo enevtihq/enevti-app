@@ -30,6 +30,6 @@ export async function uploadURItoIPFS(uri: string, signal?: AbortController['sig
   if (resJson.ok) {
     return resJson.value.cid;
   } else {
-    return undefined;
+    throw Error(resJson.error.message);
   }
 }

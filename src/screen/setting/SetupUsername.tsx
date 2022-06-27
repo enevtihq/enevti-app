@@ -27,8 +27,8 @@ type Props = StackScreenProps<RootStackParamList, 'SetupUsername'>;
 
 const validationSchema = Yup.object().shape({
   username: Yup.string()
+    .matches(/^[a-z0-9_]+$/, i18n.t('form:lowercaseNoSymbol'))
     .matches(/^[\w]*$/, i18n.t('form:noSpace'))
-    .matches(/^[a-z0-9]+$/, i18n.t('form:lowercase'))
     .min(3, i18n.t('form:minChar', { count: 3 }))
     .max(20, i18n.t('form:maxChar', { count: 20 }))
     .required(i18n.t('form:required')),
