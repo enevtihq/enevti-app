@@ -126,3 +126,8 @@ export const isWalletUndefined = createSelector(
   [(state: RootState) => state.ui.view.wallet, (state: RootState, key: string) => key],
   (wallet: WalletViewStore, key: string) => (wallet.hasOwnProperty(key) ? !wallet[key].loaded : true),
 );
+
+export const selectWalletViewReqStatus = createSelector(
+  [(state: RootState) => state.ui.view.wallet, (state: RootState, key: string) => key],
+  (wallet: WalletViewStore, key: string) => (wallet.hasOwnProperty(key) ? wallet[key].reqStatus : 500),
+);

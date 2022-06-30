@@ -10,6 +10,7 @@ import {
   isWalletUndefined,
   selectWalletViewHistory,
   selectWalletViewHistoryPagination,
+  selectWalletViewReqStatus,
 } from 'enevti-app/store/slices/ui/view/wallet';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
 import { loadMoreTransactionHistory, loadWallet, unloadWallet } from 'enevti-app/store/middleware/thunk/ui/view/wallet';
@@ -23,6 +24,7 @@ import AppWalletTransactionHistoryItem from './AppWalletTransactionHistoryItem';
 import { ProfileActivity } from 'enevti-app/types/core/account/profile';
 import AppTextBody2 from 'enevti-app/components/atoms/text/AppTextBody2';
 import { useTranslation } from 'react-i18next';
+import AppResponseView from '../view/AppResponseView';
 
 const TRANSACTION_HISTORY_ITEM_HEIGHT = 9;
 
@@ -49,6 +51,7 @@ export default function AppWallet({ navigation, route }: AppWalletProps) {
   const transactionHistoryPagination = useSelector((state: RootState) =>
     selectWalletViewHistoryPagination(state, route.key),
   );
+  const walletReqStatus = useSelector((state: RootState) => selectWalletViewReqStatus(state, route.key));
   const walletUndefined = useSelector((state: RootState) => isWalletUndefined(state, route.key));
 
   const onWalletLoaded = React.useCallback(
@@ -119,7 +122,7 @@ export default function AppWallet({ navigation, route }: AppWalletProps) {
   }, [dispatch, route]);
 
   return !walletUndefined ? (
-    <View>
+    <AppResponseView onReload={handleRefresh} status={walletReqStatus} style={styles.loaderContainer}>
       <AnimatedFlatList
         ref={transactionHistoryRef}
         keyExtractor={keyExtractor}
@@ -141,7 +144,7 @@ export default function AppWallet({ navigation, route }: AppWalletProps) {
         onEndReached={handleLoadMore}
         contentContainerStyle={styles.listContent}
       />
-    </View>
+    </AppResponseView>
   ) : (
     <View style={styles.loaderContainer}>
       <AppActivityIndicator animating />

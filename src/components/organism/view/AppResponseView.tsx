@@ -9,7 +9,7 @@ import { ERRORCODE } from 'enevti-app/utils/error/code';
 interface AppResponseViewProps {
   status: number;
   children: React.ReactNode;
-  style: StyleProp<ViewStyle>;
+  style?: StyleProp<ViewStyle>;
   onReload?: () => void;
   progressViewOffset?: number;
   refreshing?: boolean;
