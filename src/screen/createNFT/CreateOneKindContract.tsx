@@ -219,11 +219,11 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
         }),
         untilHour: Yup.number().when('utility', {
           is: (val: string) => val !== 'content',
-          then: Yup.number().min(0, t('form:greaterEqualZero')),
+          then: Yup.number().min(-1, t('form:positiveNumber')),
         }),
         untilMinute: Yup.number().when('utility', {
           is: (val: string) => val !== 'content',
-          then: Yup.number().min(0, t('form:greaterEqualZero')),
+          then: Yup.number().min(-1, t('form:positiveNumber')),
         }),
         redeemLimitOption: Yup.string().when('recurring', {
           is: (val: string) => val === 'once' || val === 'anytime',
@@ -358,6 +358,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
       setMultipleFieldValue(setFormStateValue, formikProps, contentKey, true, true);
       setMultipleFieldTouched(formikProps, contentKey, false);
     }
+    formikProps.setFieldValue('initialDirty', 'undirty', true);
     setFormStateValue('utility', item.value, true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -383,6 +384,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
     if (item.value === 'daily') {
       setMultipleFieldTouched(formikProps, ['timeDay', 'timeDate'], true);
     }
+    formikProps.setFieldValue('initialDirty', 'undirty', true);
     setFormStateValue('recurring', item.value, true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

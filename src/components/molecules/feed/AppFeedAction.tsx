@@ -64,20 +64,19 @@ export default function AppFeedAction({ feed }: AppFeedActionProps) {
     setBuyLoading(true);
     if (feed.type !== 'nft') {
       const collectionResponse = await getCollectionById(feed.id);
-      if (collectionResponse.status === 200 && isMintingAvailable(collectionResponse.data)) {
-        if (['normal', ''].includes(collectionResponse.data.mintingType)) {
-          paymentThunkRef.current = dispatch(payMintCollection({ collection: collectionResponse.data, quantity: 1 }));
+      if (collectionResponse.status === 200) {
+        if (isMintingAvailable(collectionResponse.data)) {
+          if (['normal', ''].includes(collectionResponse.data.mintingType)) {
+            paymentThunkRef.current = dispatch(payMintCollection({ collection: collectionResponse.data, quantity: 1 }));
+          } else {
+            dispatch(showSnackbar({ mode: 'info', text: t('collection:specialMint') }));
+          }
         } else {
-          dispatch(showSnackbar({ mode: 'info', text: t('collection:specialMint') }));
-          setBuyLoading(false);
+          dispatch(showSnackbar({ mode: 'info', text: t('collection:mintingUnavailable') }));
         }
-      } else {
-        dispatch(showSnackbar({ mode: 'info', text: t('collection:mintingUnavailable') }));
-        setBuyLoading(false);
       }
-    } else {
-      setBuyLoading(false);
     }
+    setBuyLoading(false);
   }, [feed.id, feed.type, dispatch, t]);
 
   return (

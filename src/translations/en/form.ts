@@ -5,6 +5,7 @@ export default {
   passphraseCopied: 'Passphrase Copied!',
   greaterThanZero: 'Must be greater than zero',
   greaterEqualZero: 'Must be greater than or equal to zero',
+  positiveNumber: 'Must be a positive number',
   cancel: 'Cancel',
   choose: 'Choose',
   upercase: 'Must be UPPERCASE. No space, symbol or number allowed',

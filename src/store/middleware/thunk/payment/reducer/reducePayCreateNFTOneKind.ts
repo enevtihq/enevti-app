@@ -76,9 +76,9 @@ export function parseTransactionPayloadTime(payload: CreateNFTOneKindTransaction
   let from = payload.asset.from;
 
   const now = new Date();
-  const year = now.getFullYear();
-  const month = now.getMonth();
-  const date = now.getDate();
+  const year = now.getUTCFullYear();
+  const month = now.getUTCMonth();
+  const date = now.getUTCDate();
 
   switch (payload.asset.recurring) {
     case 'daily':
@@ -97,7 +97,7 @@ export function parseTransactionPayloadTime(payload: CreateNFTOneKindTransaction
       ret = new Date(year, month, payload.asset.time.date, payload.asset.from.hour, payload.asset.from.minute);
       time = {
         ...time,
-        date: ret.getDate(),
+        date: ret.getUTCDate(),
       };
       break;
     case 'yearly':
@@ -110,8 +110,8 @@ export function parseTransactionPayloadTime(payload: CreateNFTOneKindTransaction
       );
       time = {
         ...time,
-        month: ret.getMonth(),
-        date: ret.getDate(),
+        month: ret.getUTCMonth(),
+        date: ret.getUTCDate(),
       };
       break;
     case 'once':
@@ -124,9 +124,9 @@ export function parseTransactionPayloadTime(payload: CreateNFTOneKindTransaction
       );
       time = {
         ...time,
-        year: ret.getFullYear(),
-        month: ret.getMonth(),
-        date: ret.getDate(),
+        year: ret.getUTCFullYear(),
+        month: ret.getUTCMonth(),
+        date: ret.getUTCDate(),
       };
       break;
     default:
@@ -134,8 +134,8 @@ export function parseTransactionPayloadTime(payload: CreateNFTOneKindTransaction
   }
 
   from = {
-    hour: ret.getHours(),
-    minute: ret.getMinutes(),
+    hour: ret.getUTCHours(),
+    minute: ret.getUTCMinutes(),
   };
 
   return { time, from };
