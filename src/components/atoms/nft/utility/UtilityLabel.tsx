@@ -21,9 +21,6 @@ export default React.memo(
       case 'videocall':
         text = 'Video Call';
         break;
-      case 'chat':
-        text = 'Exclusive Chat';
-        break;
       case 'content':
         text = 'Exclusive Content';
         break;
@@ -32,9 +29,6 @@ export default React.memo(
         break;
       case 'qr':
         text = 'QR Code';
-        break;
-      case 'stream':
-        text = 'Live Stream';
         break;
       default:
         break;

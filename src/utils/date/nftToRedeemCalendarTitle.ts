@@ -4,7 +4,7 @@ import { NFTUtility } from 'enevti-app/types/core/chain/nft/NFTUtility';
 import utilityToLabel from '../format/utilityToLabel';
 
 const fromUtility: NFTUtility[] = ['content', 'gift', 'qr'];
-const withUtility: NFTUtility[] = ['chat', 'videocall', 'stream'];
+const withUtility: NFTUtility[] = ['videocall'];
 
 export default function nftToRedeemCalendarTitle(nft: NFT) {
   let ret: string = '';

@@ -1,14 +1,12 @@
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
+import { NFTUtility } from 'enevti-app/types/core/chain/nft/NFTUtility';
 
-export default function utilityToIcon(utility: string) {
+export default function utilityToIcon(utility: NFTUtility) {
   let icon: string = 'help-circle-outline';
 
   switch (utility) {
     case 'videocall':
       icon = iconMap.utilityVideoCall;
-      break;
-    case 'chat':
-      icon = iconMap.utilityChat;
       break;
     case 'content':
       icon = iconMap.utilityContent;
@@ -18,9 +16,6 @@ export default function utilityToIcon(utility: string) {
       break;
     case 'qr':
       icon = iconMap.utilityQR;
-      break;
-    case 'stream':
-      icon = iconMap.utilityStream;
       break;
     default:
       break;

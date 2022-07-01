@@ -18,9 +18,6 @@ export default React.memo(
       case 'videocall':
         source = require('enevti-app/assets/nft-template/background/videocall.jpg');
         break;
-      case 'chat':
-        source = require('enevti-app/assets/nft-template/background/chat.jpg');
-        break;
       case 'content':
         source = require('enevti-app/assets/nft-template/background/content.jpg');
         break;
@@ -29,9 +26,6 @@ export default React.memo(
         break;
       case 'qr':
         source = require('enevti-app/assets/nft-template/background/qr.jpg');
-        break;
-      case 'stream':
-        source = require('enevti-app/assets/nft-template/background/stream.jpg');
         break;
       default:
         source = undefined;

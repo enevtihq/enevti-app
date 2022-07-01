@@ -1,14 +1,12 @@
 import i18n from 'enevti-app/translations/i18n';
+import { NFTUtility } from 'enevti-app/types/core/chain/nft/NFTUtility';
 
-export default function utilityToLabel(utility: string) {
+export default function utilityToLabel(utility: NFTUtility) {
   let text: string = '';
 
   switch (utility) {
     case 'videocall':
       text = i18n.t('createNFT:utilityVideoCall');
-      break;
-    case 'chat':
-      text = i18n.t('createNFT:utilityChat');
       break;
     case 'content':
       text = i18n.t('createNFT:utilityContent');
@@ -18,9 +16,6 @@ export default function utilityToLabel(utility: string) {
       break;
     case 'qr':
       text = i18n.t('createNFT:utilityQR');
-      break;
-    case 'stream':
-      text = i18n.t('createNFT:utilityStream');
       break;
     default:
       text = i18n.t('error:unknown');

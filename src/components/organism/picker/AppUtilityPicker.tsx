@@ -67,20 +67,6 @@ function Component({ value, onSelected, memoKey }: AppUtilityPickerProps) {
         description: t('createNFT:utilityQRDescription'),
         disabled: true,
       },
-      // {
-      //   value: 'chat',
-      //   icon: utilityToIcon('chat'),
-      //   title: t('createNFT:utilityChat'),
-      //   description: t('createNFT:utilityChatDescription'),
-      //   disabled: false,
-      // },
-      // {
-      //   value: 'stream',
-      //   icon: utilityToIcon('stream'),
-      //   title: t('createNFT:utilityStream'),
-      //   description: t('createNFT:utilityStreamDescription'),
-      //   disabled: true,
-      // },
     ],
     [t],
   );

@@ -233,7 +233,7 @@ export const getDummyCollectionFullData = (): Collection => {
 };
 
 export const getDummyNFTData = (): NFTBase => {
-  const utilityOption: NFTUtility[] = ['videocall', 'chat', 'content', 'qr', 'stream', 'gift'];
+  const utilityOption: NFTUtility[] = ['videocall', 'content', 'qr', 'gift'];
 
   return {
     id: Math.random().toString(),
