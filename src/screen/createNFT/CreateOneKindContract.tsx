@@ -687,11 +687,13 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
                 onEndEditing: async e => {
                   const text = e.nativeEvent.text;
                   setFormStateValue('name', text, true);
-                  const nameAvailable = await isNameAvailable(text);
-                  formikProps.setStatus({
-                    ...formikProps.status,
-                    nameAvailable,
-                  });
+                  if (text) {
+                    const nameAvailable = await isNameAvailable(text);
+                    formikProps.setStatus({
+                      ...formikProps.status,
+                      nameAvailable,
+                    });
+                  }
                 },
               },
               descriptionInput,
@@ -727,11 +729,13 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
                 onEndEditing: async e => {
                   const text = e.nativeEvent.text;
                   setFormStateValue('symbol', text, true);
-                  const symbolAvailable = await isSymbolAvailable(text);
-                  formikProps.setStatus({
-                    ...formikProps.status,
-                    symbolAvailable,
-                  });
+                  if (text) {
+                    const symbolAvailable = await isSymbolAvailable(text);
+                    formikProps.setStatus({
+                      ...formikProps.status,
+                      symbolAvailable,
+                    });
+                  }
                 },
               },
             )}
