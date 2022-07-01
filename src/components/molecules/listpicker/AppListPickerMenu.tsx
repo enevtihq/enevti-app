@@ -8,9 +8,10 @@ interface AppListPickerMenuProps {
   visible: boolean;
   onDismiss: () => void;
   onSelected?: (item: PickerItem) => void;
+  left?: (item: PickerItem) => React.ReactNode;
 }
 
-export default function AppListPickerMenu({ items, visible, onDismiss, onSelected }: AppListPickerMenuProps) {
+export default function AppListPickerMenu({ items, left, visible, onDismiss, onSelected }: AppListPickerMenuProps) {
   const snapPoints = items.length * 8.75 + 3.5;
 
   return (
@@ -22,6 +23,7 @@ export default function AppListPickerMenu({ items, visible, onDismiss, onSelecte
             onSelected && onSelected(item);
             onDismiss();
           }}
+          left={left ? left(item) : undefined}
           icon={item.icon}
           title={item.title}
           description={item.description}

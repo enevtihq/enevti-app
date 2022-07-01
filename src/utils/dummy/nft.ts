@@ -9,9 +9,10 @@ export const makeDummyNFT = (
   type: 'onekind' | 'pack' | 'random' | string = 'random',
   template: NFTTemplateData = blankNFTTemplate,
   data: string = makeDummyIPFS(),
+  utility?: NFTUtility,
 ): NFTBase => {
   const utilityOption: NFTUtility[] = ['videocall', 'chat', 'content', 'qr', 'stream', 'gift'];
-  const shuffledUtility = shuffleArray(utilityOption);
+  const shuffledUtility = utility ?? shuffleArray(utilityOption);
 
   const typeList = ['onekind', 'pack'];
   const nftType = type === 'random' ? shuffleArray(typeList) : type;

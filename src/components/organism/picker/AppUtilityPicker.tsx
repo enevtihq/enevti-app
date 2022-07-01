@@ -4,6 +4,13 @@ import { useTranslation } from 'react-i18next';
 import AppListPicker from 'enevti-app/components/molecules/listpicker/AppListPicker';
 import { shallowEqual } from 'react-redux';
 import utilityToIcon from 'enevti-app/utils/icon/utilityToIcon';
+import AppIconComponent from 'enevti-app/components/atoms/icon/AppIconComponent';
+import { StyleSheet, View } from 'react-native';
+import { SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import UtilityBackground from 'enevti-app/components/atoms/nft/utility/UtilityBackground';
+import { makeDummyNFT } from 'enevti-app/utils/dummy/nft';
+import { NFTUtility } from 'enevti-app/types/core/chain/nft/NFTUtility';
 
 interface AppUtilityPickerProps {
   value?: string;
@@ -14,6 +21,21 @@ interface AppUtilityPickerProps {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function Component({ value, onSelected, memoKey }: AppUtilityPickerProps) {
   const { t } = useTranslation();
+  const insets = useSafeAreaInsets();
+  const styles = React.useMemo(() => makeStyles(insets), [insets]);
+
+  const LeftComponent = React.useCallback(
+    (item: PickerItem) => (
+      <View style={styles.listIconContainer}>
+        <UtilityBackground
+          nft={makeDummyNFT(undefined, undefined, undefined, item.value as NFTUtility)}
+          args={{ height: '100%', width: '100%', x: '0%', y: '0%', rotate: '0deg' }}
+        />
+        <AppIconComponent name={item.icon} size={25} color={'white'} />
+      </View>
+    ),
+    [styles.listIconContainer],
+  );
 
   const utilityItem: PickerItem[] = React.useMemo(
     () => [
@@ -29,13 +51,6 @@ function Component({ value, onSelected, memoKey }: AppUtilityPickerProps) {
         icon: utilityToIcon('videocall'),
         title: t('createNFT:utilityVideoCall'),
         description: t('createNFT:utilityVideoCallDescription'),
-        disabled: false,
-      },
-      {
-        value: 'chat',
-        icon: utilityToIcon('chat'),
-        title: t('createNFT:utilityChat'),
-        description: t('createNFT:utilityChatDescription'),
         disabled: true,
       },
       {
@@ -52,13 +67,20 @@ function Component({ value, onSelected, memoKey }: AppUtilityPickerProps) {
         description: t('createNFT:utilityQRDescription'),
         disabled: true,
       },
-      {
-        value: 'stream',
-        icon: utilityToIcon('stream'),
-        title: t('createNFT:utilityStream'),
-        description: t('createNFT:utilityStreamDescription'),
-        disabled: true,
-      },
+      // {
+      //   value: 'chat',
+      //   icon: utilityToIcon('chat'),
+      //   title: t('createNFT:utilityChat'),
+      //   description: t('createNFT:utilityChatDescription'),
+      //   disabled: false,
+      // },
+      // {
+      //   value: 'stream',
+      //   icon: utilityToIcon('stream'),
+      //   title: t('createNFT:utilityStream'),
+      //   description: t('createNFT:utilityStreamDescription'),
+      //   disabled: true,
+      // },
     ],
     [t],
   );
@@ -66,6 +88,7 @@ function Component({ value, onSelected, memoKey }: AppUtilityPickerProps) {
   return (
     <AppListPicker
       items={utilityItem}
+      left={LeftComponent}
       label={t('createNFT:selectUtility')}
       subLabel={t('createNFT:selectUtilityDescription')}
       onSelected={onSelected}
@@ -88,3 +111,17 @@ const AppUtilityPicker = React.memo(Component, (prevProps, nextProps) => {
   }
 });
 export default AppUtilityPicker;
+
+const makeStyles = (insets: SafeAreaInsets) =>
+  StyleSheet.create({
+    listIconContainer: {
+      marginRight: wp('3%', insets),
+      alignSelf: 'center',
+      width: wp('10%', insets),
+      height: wp('10%', insets),
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderRadius: wp('10%', insets),
+      overflow: 'hidden',
+    },
+  });

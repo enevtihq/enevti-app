@@ -15,6 +15,7 @@ interface AppListPickerProps {
   subLabel: string;
   value?: string;
   onSelected?: (item: PickerItem) => void;
+  left?: (item: PickerItem) => React.ReactNode;
   memoKey?: (keyof AppListPickerProps)[];
 }
 
@@ -24,6 +25,7 @@ function Component({
   subLabel,
   value,
   onSelected,
+  left,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   memoKey,
 }: AppListPickerProps) {
@@ -50,6 +52,7 @@ function Component({
           showDropDown
           onPress={() => setMenuVisible(!menuVisible)}
           icon={items[selectedIndex].icon}
+          left={left ? left(items[selectedIndex]) : undefined}
           title={items[selectedIndex].title}
           description={items[selectedIndex].description}
           style={styles.pickerItem}
@@ -67,6 +70,7 @@ function Component({
 
       <AppListPickerMenu
         items={items}
+        left={left}
         visible={menuVisible}
         onDismiss={() => setMenuVisible(false)}
         onSelected={item => {
