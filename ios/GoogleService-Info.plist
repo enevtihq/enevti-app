@@ -6,9 +6,31 @@
 	<string>181526937355-825qpcsrnnrqve15fvu1pou49pll4pc3.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
 	<string>com.googleusercontent.apps.181526937355-825qpcsrnnrqve15fvu1pou49pll4pc3</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>181526937355-r8dn0b3s5hs150agntjpbnm4489qcd92.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCvmO94vvjvdz8UwiuR2EmDg8G4Mae-eTc</string>
+	<key>GCM_SENDER_ID</key>
+	<string>181526937355</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.enevti.app</string>
+	<key>PROJECT_ID</key>
+	<string>enevti-app</string>
+	<key>STORAGE_BUCKET</key>
+	<string>enevti-app.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:181526937355:ios:680b268411995dec212c0e</string>
 </dict>
 </plist>

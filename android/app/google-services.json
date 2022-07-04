@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "181526937355",
+    "project_id": "enevti-app",
+    "storage_bucket": "enevti-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:181526937355:android:bcb802207d533341212c0e",
+        "android_client_info": {
+          "package_name": "com.enevti.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "181526937355-r8dn0b3s5hs150agntjpbnm4489qcd92.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.enevti.app",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "181526937355-c4kglc1vu0j8kjmdq4mg5kfou2rra60a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZ5Dic0SmhMXXaNIRuRm5_LdqW7MaSBhU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "181526937355-c4kglc1vu0j8kjmdq4mg5kfou2rra60a.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "181526937355-825qpcsrnnrqve15fvu1pou49pll4pc3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.enevti.app"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
