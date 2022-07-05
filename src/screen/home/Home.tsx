@@ -25,6 +25,7 @@ import AppIconGradient from 'enevti-app/components/molecules/AppIconGradient';
 import { Theme } from 'enevti-app/theme/default';
 import { isProfileCanCreateNFT, MINIMUM_BASIC_UNIT_STAKE_ELIGIBILITY } from 'enevti-app/service/enevti/profile';
 import { selectOnceEligible, touchOnceEligible } from 'enevti-app/store/slices/entities/once/eligible';
+import messaging from '@react-native-firebase/messaging';
 
 import { getCoinName } from 'enevti-app/utils/constant/identifier';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -88,6 +89,10 @@ export default function Home({ navigation }: Props) {
     dispatch(initProfile());
     dispatch(addAppOpenCounter());
   }, [dispatch]);
+
+  React.useEffect(() => {
+    messaging().subscribeToTopic(myPersona.address);
+  }, [myPersona.address]);
 
   React.useEffect(() => {
     socket.current = appSocket(myPersona.address);

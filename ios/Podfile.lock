@@ -439,8 +439,12 @@ PODS:
     - glog
   - react-native-aes (2.0.0):
     - React-Core
+  - react-native-background-actions (2.6.7):
+    - React-Core
   - react-native-background-timer (2.4.1):
     - React-Core
+  - react-native-bg-thread (1.1.9):
+    - React
   - react-native-blob-util (0.14.0):
     - React-Core
   - react-native-blur (0.8.0):
@@ -452,6 +456,8 @@ PODS:
   - react-native-document-picker (8.0.0):
     - React-Core
   - react-native-encryption (1.0.0):
+    - React
+  - react-native-job-queue (0.4.2):
     - React
   - react-native-netinfo (7.1.7):
     - React-Core
@@ -678,12 +684,15 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - react-native-aes (from `../node_modules/react-native-aes-crypto`)
+  - react-native-background-actions (from `../node_modules/react-native-background-actions`)
   - react-native-background-timer (from `../node_modules/react-native-background-timer`)
+  - react-native-bg-thread (from `../node_modules/react-native-bg-thread`)
   - react-native-blob-util (from `../node_modules/react-native-blob-util`)
   - "react-native-blur (from `../node_modules/@react-native-community/blur`)"
   - react-native-config (from `../node_modules/react-native-config`)
   - react-native-document-picker (from `../node_modules/react-native-document-picker`)
   - "react-native-encryption (from `../node_modules/@dhairyasharma/react-native-encryption`)"
+  - react-native-job-queue (from `../node_modules/react-native-job-queue`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-pager-view (from `../node_modules/react-native-pager-view`)
   - react-native-randombytes (from `../node_modules/react-native-randombytes`)
@@ -812,8 +821,12 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/logger"
   react-native-aes:
     :path: "../node_modules/react-native-aes-crypto"
+  react-native-background-actions:
+    :path: "../node_modules/react-native-background-actions"
   react-native-background-timer:
     :path: "../node_modules/react-native-background-timer"
+  react-native-bg-thread:
+    :path: "../node_modules/react-native-bg-thread"
   react-native-blob-util:
     :path: "../node_modules/react-native-blob-util"
   react-native-blur:
@@ -824,6 +837,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-document-picker"
   react-native-encryption:
     :path: "../node_modules/@dhairyasharma/react-native-encryption"
+  react-native-job-queue:
+    :path: "../node_modules/react-native-job-queue"
   react-native-netinfo:
     :path: "../node_modules/@react-native-community/netinfo"
   react-native-pager-view:
@@ -968,12 +983,15 @@ SPEC CHECKSUMS:
   React-jsinspector: d0374f7509d407d2264168b6d0fad0b54e300b85
   React-logger: 933f80c97c633ee8965d609876848148e3fef438
   react-native-aes: c75c46aa744bef7c2415fdf7f5b2dcb75ca4364d
+  react-native-background-actions: 4099c3d7ce664839a696814acc9fe9b1240d78a2
   react-native-background-timer: 117fffdc9b0d6f144444bb49029f94275a45fdb5
+  react-native-bg-thread: b5daa49e9084baa6de4503b815953bdf4c1d6c4a
   react-native-blob-util: 180714990c4563645fa70e9202cd32e27656a6e6
   react-native-blur: cad4d93b364f91e7b7931b3fa935455487e5c33c
   react-native-config: 6502b1879f97ed5ac570a029961fc35ea606cd14
   react-native-document-picker: 772d04a4bc5c35da9abe27b08ac271420ae3f9ef
   react-native-encryption: bb2ee52d749b4874990b6cf43435524c9f1a5a1a
+  react-native-job-queue: 27bb779b1d65f74aa6fbb90fa156fc33e31f2f09
   react-native-netinfo: 1792d13894f12e8050c6cd7207192c74025e90d1
   react-native-pager-view: fb87ee16641224bfc41e94e6b276f106ce584b74
   react-native-randombytes: 5fc412efe7b5c55b9002c0004d75fe5fabcaa507
