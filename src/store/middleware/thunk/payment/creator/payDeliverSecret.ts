@@ -7,7 +7,6 @@ import { handleError } from 'enevti-app/utils/error/handle';
 import { AppTransaction } from 'enevti-app/types/core/service/transaction';
 import { redeemableNftModule } from 'enevti-app/utils/constant/transaction';
 import { DeliverSecretUI } from 'enevti-app/types/core/asset/redeemable_nft/deliver_secret_asset';
-import { NFT } from 'enevti-app/types/core/chain/nft';
 import { createSignature, decryptAsymmetric, encryptAsymmetric } from 'enevti-app/utils/cryptography';
 import { COIN_NAME } from 'enevti-app/utils/constant/identifier';
 import { reducePayment } from 'enevti-app/store/middleware/thunk/payment/reducer';
@@ -22,8 +21,9 @@ import {
   selectDeliverSecretProcessing,
   setDeliverSecretProcessing,
 } from 'enevti-app/store/slices/session/transaction/processing';
+import { DeliverSecretPayload } from 'enevti-app/types/ui/task/deliverSecret';
 
-type PayDeliverSecretPayload = { id: string; secret: NFT['redeem']['secret'] }[];
+type PayDeliverSecretPayload = DeliverSecretPayload[];
 type PayManualDeliverSecret = undefined;
 
 export const payDeliverSecret = createAsyncThunk<void, PayDeliverSecretPayload, AsyncThunkAPI>(

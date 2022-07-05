@@ -13,6 +13,7 @@ import nftDetails from './nftDetails';
 import error from './error';
 import setting from './setting';
 import wallet from './wallet';
+import notification from './notification';
 
 export default {
   auth,
@@ -30,4 +31,5 @@ export default {
   error,
   setting,
   wallet,
+  notification,
 };

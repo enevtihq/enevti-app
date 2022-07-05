@@ -48,13 +48,13 @@ import { syncTransactionNonce } from 'enevti-app/store/middleware/thunk/ui/cache
 import { reduceMyTotalNFTSoldChanged } from 'enevti-app/store/middleware/thunk/socket/profile/totalNFTSoldChanged';
 import { reduceMyNewPending } from 'enevti-app/store/middleware/thunk/socket/profile/newPending';
 import { reduceMyNewProfileUpdates } from 'enevti-app/store/middleware/thunk/socket/profile/newProfileUpdates';
-import { initProfile } from 'enevti-app/store/middleware/thunk/ui/view/profile';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 import { selectOnceWelcome, touchOnceWelcome } from 'enevti-app/store/slices/entities/once/welcome';
 import { requestFaucet } from 'enevti-app/service/enevti/dummy';
 import { isThereAnyNewMyProfileUpdates } from 'enevti-app/store/slices/ui/view/myProfile';
 import { isThereAnyNewFeedView } from 'enevti-app/store/slices/ui/view/feed';
 import { addAppOpenCounter, selectAppOpenCounter } from 'enevti-app/store/slices/entities/appOpenCounter';
+import handleFCM from 'enevti-app/service/firebase/fcm';
 
 const Tab = createBottomTabNavigator();
 
@@ -86,13 +86,18 @@ export default function Home({ navigation }: Props) {
 
   React.useEffect(() => {
     dispatch(syncTransactionNonce());
-    dispatch(initProfile());
     dispatch(addAppOpenCounter());
   }, [dispatch]);
 
   React.useEffect(() => {
     messaging().subscribeToTopic(myPersona.address);
   }, [myPersona.address]);
+
+  React.useEffect(() => {
+    messaging().onMessage(async remoteMessage => {
+      handleFCM(remoteMessage);
+    });
+  }, []);
 
   React.useEffect(() => {
     socket.current = appSocket(myPersona.address);
