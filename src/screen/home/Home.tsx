@@ -55,6 +55,8 @@ import { isThereAnyNewMyProfileUpdates } from 'enevti-app/store/slices/ui/view/m
 import { isThereAnyNewFeedView } from 'enevti-app/store/slices/ui/view/feed';
 import { addAppOpenCounter, selectAppOpenCounter } from 'enevti-app/store/slices/entities/appOpenCounter';
 import handleFCM from 'enevti-app/service/firebase/fcm';
+import { addCheckDeliverSecretJob } from 'enevti-app/utils/background/worker/deliverSecretWorker';
+import { selectDeliverSecretProcessing } from 'enevti-app/store/slices/session/transaction/processing';
 
 const Tab = createBottomTabNavigator();
 
@@ -76,6 +78,7 @@ export default function Home({ navigation }: Props) {
   const newProfileUpdate = useSelector(isThereAnyNewMyProfileUpdates);
   const newFeedUpdate = useSelector(isThereAnyNewFeedView);
   const appOpenCounter = useSelector(selectAppOpenCounter);
+  const isDeliverSecretProcessing = useSelector(selectDeliverSecretProcessing);
 
   const [uneligibleSheetVisible, setUneligibleSheetVisible] = React.useState<boolean>(false);
   const [restoreMenuVisible, setRestoreMenuVisible] = React.useState<boolean>(false);
@@ -98,6 +101,13 @@ export default function Home({ navigation }: Props) {
       handleFCM(remoteMessage);
     });
   }, []);
+
+  React.useEffect(() => {
+    if (!isDeliverSecretProcessing) {
+      addCheckDeliverSecretJob({ payload: myPersona.address });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [myPersona.address]);
 
   React.useEffect(() => {
     socket.current = appSocket(myPersona.address);

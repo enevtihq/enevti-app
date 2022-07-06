@@ -581,6 +581,11 @@ PODS:
     - TOCropViewController
   - RNLocalize (2.1.7):
     - React-Core
+  - RNNotifee (5.4.1):
+    - React-Core
+    - RNNotifee/NotifeeCore (= 5.4.1)
+  - RNNotifee/NotifeeCore (5.4.1):
+    - React-Core
   - RNOS (1.2.6):
     - React
   - RNReanimated (2.3.1):
@@ -726,6 +731,7 @@ DEPENDENCIES:
   - "RNGoogleSignin (from `../node_modules/@react-native-google-signin/google-signin`)"
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNLocalize (from `../node_modules/react-native-localize`)
+  - "RNNotifee (from `../node_modules/@notifee/react-native`)"
   - RNOS (from `../node_modules/react-native-os`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
@@ -905,6 +911,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-image-crop-picker"
   RNLocalize:
     :path: "../node_modules/react-native-localize"
+  RNNotifee:
+    :path: "../node_modules/@notifee/react-native"
   RNOS:
     :path: "../node_modules/react-native-os"
   RNReanimated:
@@ -1025,6 +1033,7 @@ SPEC CHECKSUMS:
   RNGoogleSignin: aeb29e549e6748da3e5847516fdd1327c85894c5
   RNImageCropPicker: 44e2807bc410741f35d4c45b6586aedfe3da39d2
   RNLocalize: b8980509fc4db6895953aa95b90c8d81cb984603
+  RNNotifee: 8987e7408112281695a32c81b5d15c48e9540745
   RNOS: 6f2f9a70895bbbfbdad7196abd952e7b01d45027
   RNReanimated: da3860204e5660c0dd66739936732197d359d753
   RNScreens: 522705f2e5c9d27efb17f24aceb2bf8335bc7b8e

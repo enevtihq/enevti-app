@@ -23,7 +23,7 @@ import {
 } from 'enevti-app/store/slices/session/transaction/processing';
 import { DeliverSecretPayload } from 'enevti-app/types/ui/task/deliverSecret';
 
-type PayDeliverSecretPayload = DeliverSecretPayload[];
+type PayDeliverSecretPayload = string;
 type PayManualDeliverSecret = undefined;
 
 export const payDeliverSecret = createAsyncThunk<void, PayDeliverSecretPayload, AsyncThunkAPI>(
@@ -38,7 +38,12 @@ export const payDeliverSecret = createAsyncThunk<void, PayDeliverSecretPayload, 
 
       dispatch(setDeliverSecretProcessing(true));
 
-      for (const data of payload) {
+      const deliverPending = await getProfilePendingDelivery(payload);
+      if (deliverPending.status !== 200) {
+        throw Error(i18n.t('error:transactionPreparationFailed'));
+      }
+
+      for (const data of deliverPending.data as DeliverSecretPayload[]) {
         const key = await decryptAsymmetric(data.secret.cipher, data.secret.sender);
         const cipher = await encryptAsymmetric(key.data, data.secret.recipient);
         const cipherSignature = await createSignature(cipher);
@@ -91,9 +96,8 @@ export const payManualDeliverSecret = createAsyncThunk<void, PayManualDeliverSec
   async (_, { dispatch, signal }) => {
     try {
       const myAddress = await getMyAddress();
-      const pendingPayload = await getProfilePendingDelivery(myAddress, signal);
       await updateNonceCache(signal);
-      dispatch(payDeliverSecret(pendingPayload.data) as unknown as AnyAction);
+      dispatch(payDeliverSecret(myAddress) as unknown as AnyAction);
     } catch (err) {
       handleError(err);
     }

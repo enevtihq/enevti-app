@@ -85,7 +85,7 @@ async function fetchProfilePendingDelivery(
     };
   } catch (err: any) {
     handleError(err);
-    return responseError(err.code);
+    return responseError(err.code, err.message);
   }
 }
 

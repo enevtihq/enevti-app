@@ -1,25 +1,26 @@
 import { FirebaseMessagingTypes } from '@react-native-firebase/messaging';
 import BackgroundService from 'react-native-background-actions';
-import { DeliverSecretPayload } from 'enevti-app/types/ui/task/deliverSecret';
-import { addDeliverSecretJob } from 'enevti-app/utils/background/worker/deliverSecretWorker';
+import { addCheckDeliverSecretJob } from 'enevti-app/utils/background/worker/deliverSecretWorker';
 import i18n from 'enevti-app/translations/i18n';
 import sleep from 'enevti-app/utils/dummy/sleep';
+import queue from 'react-native-job-queue';
 
 export default async function deliverSecretNotifFCMHandler(remoteMessage: FirebaseMessagingTypes.RemoteMessage) {
-  if (remoteMessage.data) {
-    await BackgroundService.start(deliverSecretTask, deliverSecretActionOption(remoteMessage.data.payload));
-    await BackgroundService.updateNotification({ taskDesc: i18n.t('notification:deliverSecretTaskDesc') });
+  if (remoteMessage.data && !BackgroundService.isRunning() && !queue.isRunning) {
+    await deliverSecretNotifFCMHandlerStart(remoteMessage);
   }
 }
 
-const deliverSecretTask = async (taskDataArguments: { payload: DeliverSecretPayload[] } | undefined) => {
+export async function deliverSecretNotifFCMHandlerStart(remoteMessage: FirebaseMessagingTypes.RemoteMessage) {
+  await BackgroundService.start(deliverSecretTask, deliverSecretActionOption(remoteMessage.data!.payload));
+}
+
+const deliverSecretTask = async (taskDataArguments: { payload: string } | undefined) => {
   const payload = taskDataArguments ? taskDataArguments.payload : undefined;
   if (payload) {
-    for (const data of payload) {
-      addDeliverSecretJob({ payload: data });
-    }
+    await addCheckDeliverSecretJob({ payload });
   }
-  while (BackgroundService.isRunning()) {
+  while (BackgroundService.isRunning() || queue.isRunning) {
     await sleep(5000);
   }
 };
@@ -35,6 +36,6 @@ export const deliverSecretActionOption = (payload: string) => ({
   color: '#ff00ff',
   linkingURI: 'enevti://',
   parameters: {
-    payload: JSON.parse(payload) as DeliverSecretPayload[],
+    payload,
   },
 });

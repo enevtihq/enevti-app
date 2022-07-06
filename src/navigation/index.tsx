@@ -37,6 +37,8 @@ import { selectLocalSession } from 'enevti-app/store/slices/session/local';
 import Wallet from 'enevti-app/screen/wallet/Wallet';
 import ReceiveToken from 'enevti-app/screen/wallet/ReceiveToken';
 import SendToken from 'enevti-app/screen/wallet/SendToken';
+import { onNotificationForegroundHandler } from 'enevti-app/utils/notification/events';
+import notifee from '@notifee/react-native';
 
 export type RootStackParamList = {
   CreateAccount: undefined;
@@ -124,6 +126,12 @@ export default function AppNavigationContainer() {
       navigationRef.navigate('Login', {});
     }
   }, [auth.encrypted, locked, navigationRef, currentRoute, localSession.key]);
+
+  React.useEffect(() => {
+    return notifee.onForegroundEvent(async ({ type, detail }) => {
+      await onNotificationForegroundHandler(type, detail);
+    });
+  }, []);
 
   return (
     <NavigationContainer

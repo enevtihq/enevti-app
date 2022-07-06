@@ -1,4 +1,5 @@
 export default {
-  deliverSecretTaskTitle: 'Delivering NFT Utility Secret',
-  deliverSecretTaskDesc: 'Yeayy, your NFT is sold! Now relax, and we will take care the secret delivery process!',
+  deliverSecretTask: 'Delivering NFT Utility Secret',
+  deliverSecretTaskTitle: 'Yeayy, your NFT is sold!',
+  deliverSecretTaskDesc: 'We will take care the secret delivery process!',
 };

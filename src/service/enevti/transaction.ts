@@ -23,9 +23,10 @@ import { getProfileNonce } from './profile';
 export async function postTransaction<T>(
   payload: AppTransaction<T>,
   signal?: AbortController['signal'],
+  silent: boolean = false,
 ): Promise<APIResponse<any>> {
   try {
-    const response = await processTransaction<T>(payload, signal);
+    const response = await processTransaction<T>(payload, signal, silent);
     if (response.status === 200) {
       store.dispatch(addTransactionNonceCache());
     }
@@ -42,6 +43,7 @@ export async function postSilentTransaction<T>(
   try {
     return await processTransaction<T>(payload, signal);
   } catch (err: any) {
+    handleError(err, undefined, true);
     return err;
   }
 }
@@ -49,6 +51,7 @@ export async function postSilentTransaction<T>(
 export async function processTransaction<T>(
   payload: AppTransaction<T>,
   signal?: AbortController['signal'],
+  silent: boolean = false,
 ): Promise<APIResponse<any>> {
   try {
     const postTransactionResponse = await fecthPostTransaction(payload, signal);
@@ -57,7 +60,7 @@ export async function processTransaction<T>(
     }
     return postTransactionResponse;
   } catch (err: any) {
-    handleError(err, 'data');
+    handleError(err, 'data', silent);
     return err;
   }
 }

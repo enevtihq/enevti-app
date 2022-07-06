@@ -4,6 +4,7 @@
 
 import './shim';
 import './src/utils/background/initQueue';
+import './src/utils/notification/initNotification';
 import 'react-native-reanimated';
 
 import React from 'react';

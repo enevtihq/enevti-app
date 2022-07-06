@@ -1,10 +1,14 @@
 import RnBgTask from 'react-native-bg-thread';
 
 export default function runInBackground(callback: () => Promise<void>) {
-  return new Promise<void>(resolve => {
+  return new Promise<void>((resolve, reject) => {
     RnBgTask.runInBackground(async () => {
-      await callback();
-      resolve();
+      try {
+        await callback();
+        resolve();
+      } catch {
+        reject();
+      }
     });
   });
 }

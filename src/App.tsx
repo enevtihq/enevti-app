@@ -6,6 +6,8 @@ import { Provider as PaperProvider } from 'react-native-paper';
 import { Provider as StoreProvider } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import NetInfo from '@react-native-community/netinfo';
+import queue from 'react-native-job-queue';
 
 import AppNavigationContainer from './navigation';
 import { persistor, store } from './store/state';
@@ -15,8 +17,21 @@ import './translations/i18n';
 import './utils/debug/suppressWarning';
 
 const App = () => {
-  useEffect(() => SplashScreen.hide(), []);
   const colorScheme = useColorScheme()!;
+  useEffect(() => SplashScreen.hide(), []);
+
+  useEffect(() => {
+    const unsubscribe = NetInfo.addEventListener(async state => {
+      const jobs = await queue.getJobs();
+      if (state.isConnected && jobs.filter(job => job.failed === '').length > 0) {
+        await queue.start();
+      }
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   return (
     <SafeAreaProvider>
