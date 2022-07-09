@@ -28,4 +28,9 @@ export default {
   restoreDialog: 'Restore Previous Session?',
   restoreDialogDescription: 'You have a saved create NFT session. Do you want to recover it?',
   newFeedUpdate: 'New Updates!',
+  cannotLike: 'Like is on-chain, therefore undoable!',
+  likeOnceTitle: 'Beyond Likes!',
+  likeOnceDescription:
+    'At Enevti.com, like are stored on-chain, therefore fee is needed, and undoable! By giving like, you will also participate in collection\'s "Social Raffle"!',
+  likeOnceButton: "That's Cool!",
 };

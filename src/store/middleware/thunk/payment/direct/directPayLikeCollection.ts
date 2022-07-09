@@ -22,7 +22,7 @@ export const directPayLikeCollection = createAsyncThunk<void, PayLikeCollectionP
   'collection/directPayLikeCollection',
   async (payload, { dispatch, signal }) => {
     try {
-      dispatch(setPaymentStatus({ action: 'likeCollection', type: 'initiated', message: '' }));
+      dispatch(setPaymentStatus({ id: payload.id, action: 'likeCollection', type: 'initiated', message: '' }));
 
       const transactionPayload: AppTransaction<LikeCollectionUI> = await createTransaction(
         redeemableNftModule.moduleID,
@@ -57,20 +57,21 @@ export const directPayLikeCollection = createAsyncThunk<void, PayLikeCollectionP
         }),
       );
 
-      dispatch(setPaymentStatus({ action: 'likeCollection', type: 'process', message: '' }));
+      dispatch(setPaymentStatus({ id: payload.id, action: 'likeCollection', type: 'process', message: '' }));
 
       const response = await postTransaction(
         attachFee(transactionPayload, (BigInt(gasFee) + BigInt(baseFee)).toString()),
       );
       if (response.status === 200) {
-        dispatch(setPaymentStatus({ action: 'likeCollection', type: 'success', message: '' }));
+        dispatch(setPaymentStatus({ id: payload.id, action: 'likeCollection', type: 'success', message: '' }));
       } else {
-        dispatch(setPaymentStatus({ action: 'likeCollection', type: 'error', message: response.data }));
+        dispatch(setPaymentStatus({ id: payload.id, action: 'likeCollection', type: 'error', message: response.data }));
       }
     } catch (err) {
       handleError(err);
       dispatch(
         setPaymentStatus({
+          id: payload.id,
           action: 'likeCollection',
           type: 'error',
           message: (err as Record<string, any>).message.toString(),

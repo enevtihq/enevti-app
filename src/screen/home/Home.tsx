@@ -57,6 +57,12 @@ import { addAppOpenCounter, selectAppOpenCounter } from 'enevti-app/store/slices
 import handleFCM from 'enevti-app/service/firebase/fcm';
 import { addCheckDeliverSecretJob } from 'enevti-app/utils/background/worker/deliverSecretWorker';
 import { selectDeliverSecretProcessing } from 'enevti-app/store/slices/session/transaction/processing';
+import {
+  hideOnceLike,
+  selectOnceLike,
+  selectOnceLikeShow,
+  touchOnceLike,
+} from 'enevti-app/store/slices/entities/once/like';
 
 const Tab = createBottomTabNavigator();
 
@@ -71,6 +77,8 @@ export default function Home({ navigation }: Props) {
   const myPersona = useSelector(selectMyPersonaCache);
   const myProfile = useSelector(selectMyProfileCache);
   const onceEligible = useSelector(selectOnceEligible);
+  const onceLike = useSelector(selectOnceLike);
+  const onceLikeShow = useSelector(selectOnceLikeShow);
   const createQueue = useSelector(selectCreateNFTRouteQueue);
   const createType = useSelector(selectCreateNFTTypeQueue);
   const canCreateNFT = isProfileCanCreateNFT(myProfile);
@@ -178,8 +186,24 @@ export default function Home({ navigation }: Props) {
     }
   }, [myPersona.address, dispatch]);
 
+  const onceLikeOnDismiss = React.useCallback(() => {
+    dispatch(touchOnceLike());
+    dispatch(hideOnceLike());
+  }, [dispatch]);
+
   return (
     <BottomSheetModalProvider>
+      {!onceLike ? (
+        <AppAlertModal
+          iconName={'likeActive'}
+          visible={onceLikeShow}
+          onDismiss={onceLikeOnDismiss}
+          title={t('home:likeOnceTitle')}
+          description={t('home:likeOnceDescription')}
+          secondaryButtonText={t('home:likeOnceButton')}
+          secondaryButtonOnPress={onceLikeOnDismiss}
+        />
+      ) : null}
       {!welcome ? (
         <AppAlertModal
           visible={!welcome}

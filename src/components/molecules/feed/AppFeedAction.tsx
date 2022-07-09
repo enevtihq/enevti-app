@@ -11,17 +11,17 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from 'react-native-paper';
 import { FeedItem } from 'enevti-app/types/core/service/feed';
 import { parseAmount } from 'enevti-app/utils/format/amount';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 import { getCollectionById } from 'enevti-app/service/enevti/collection';
 import { isMintingAvailable } from 'enevti-app/utils/collection';
 import usePaymentCallback from 'enevti-app/utils/hook/usePaymentCallback';
 import { payMintCollection } from 'enevti-app/store/middleware/thunk/payment/creator/payMintCollection';
 import { useTranslation } from 'react-i18next';
-import { AppAsyncThunk } from 'enevti-app/types/ui/store/AppAsyncThunk';
 import { PaymentStatus } from 'enevti-app/types/ui/store/Payment';
 import { directPayLikeCollection } from 'enevti-app/store/middleware/thunk/payment/direct/directPayLikeCollection';
 import { addFeedViewLike } from 'enevti-app/store/slices/ui/view/feed';
+import { selectOnceLike, showOnceLike } from 'enevti-app/store/slices/entities/once/like';
 
 interface AppFeedActionProps {
   feed: FeedItem;
@@ -37,19 +37,21 @@ export default function AppFeedAction({ feed, index }: AppFeedActionProps) {
   const [buyLoading, setBuyLoading] = React.useState<boolean>(false);
   const [likeLoading, setLikeLoading] = React.useState<boolean>(false);
   const paymentThunkRef = React.useRef<any>();
-
-  const handleLike = React.useCallback(() => {
-    return dispatch(directPayLikeCollection({ id: feed.id, name: feed.name }));
-  }, [dispatch, feed]) as AppAsyncThunk;
+  const likeThunkRef = React.useRef<any>();
+  const onceLike = useSelector(selectOnceLike);
 
   const onLikeActivate = React.useCallback(async () => {
-    setLikeLoading(true);
-    await handleLike().unwrap();
-  }, [handleLike]);
+    if (onceLike) {
+      setLikeLoading(true);
+      likeThunkRef.current = dispatch(directPayLikeCollection({ id: feed.id, name: feed.name }));
+    } else {
+      dispatch(showOnceLike());
+    }
+  }, [dispatch, feed, onceLike]);
 
-  const onLikeDeactivate = () => {
-    // TODO: implement
-  };
+  const onLikeDeactivate = React.useCallback(() => {
+    dispatch(showSnackbar({ mode: 'info', text: t('home:cannotLike') }));
+  }, [dispatch, t]);
 
   const onComment = React.useCallback(() => {
     dispatch(showSnackbar({ mode: 'info', text: 'Coming Soon!' }));
@@ -61,6 +63,7 @@ export default function AppFeedAction({ feed, index }: AppFeedActionProps) {
       paymentThunkRef.current?.abort();
     } else if (action === 'likeCollection') {
       setLikeLoading(false);
+      likeThunkRef.current?.abort();
     }
   }, []);
 
@@ -76,7 +79,15 @@ export default function AppFeedAction({ feed, index }: AppFeedActionProps) {
     [dispatch, index, t],
   );
 
+  const paymentCondition = React.useCallback(
+    (action: PaymentStatus['action'], id: string) => {
+      return action !== undefined && ['mintCollection', 'likeCollection'].includes(action) && id === feed.id;
+    },
+    [feed.id],
+  );
+
   usePaymentCallback({
+    condition: paymentCondition,
     onIdle: paymentIdleCallback,
     onSuccess: paymentSuccessCallback,
   });
@@ -91,13 +102,14 @@ export default function AppFeedAction({ feed, index }: AppFeedActionProps) {
             paymentThunkRef.current = dispatch(payMintCollection({ collection: collectionResponse.data, quantity: 1 }));
           } else {
             dispatch(showSnackbar({ mode: 'info', text: t('collection:specialMint') }));
+            setBuyLoading(false);
           }
         } else {
           dispatch(showSnackbar({ mode: 'info', text: t('collection:mintingUnavailable') }));
+          setBuyLoading(false);
         }
       }
     }
-    setBuyLoading(false);
   }, [feed.id, feed.type, dispatch, t]);
 
   return (

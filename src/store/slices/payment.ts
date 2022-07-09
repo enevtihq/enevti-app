@@ -8,6 +8,7 @@ const initialState: PaymentState = {
   show: false,
   mode: 'full',
   status: {
+    id: '',
     type: 'idle',
     action: '',
     message: '',
@@ -47,11 +48,17 @@ const paymentSlice = createSlice({
       payment.mode = action.payload;
     },
     setPaymentStatus: (payment, action: PayloadAction<PaymentStatus>) => {
+      payment.status.id = action.payload.id;
       payment.status.type = action.payload.type;
       payment.status.action = action.payload.action;
       payment.status.message = action.payload.message;
     },
+    resetPaymentStatusType: payment => {
+      payment.status.type = initialState.status.type;
+    },
     resetPaymentStatus: payment => {
+      payment.status.id = initialState.status.id;
+      payment.status.action = initialState.status.action;
       payment.status.type = initialState.status.type;
       payment.status.message = initialState.status.message;
     },
@@ -86,7 +93,10 @@ const paymentSlice = createSlice({
     setPaymentState: (payment, action: PayloadAction<PaymentState>) => {
       Object.assign(payment, action.payload);
     },
-    resetPaymentState: () => {
+    resetPaymentState: payment => {
+      return { ...initialState, status: payment.status };
+    },
+    resetAllPaymentState: () => {
       return initialState;
     },
   },
@@ -96,6 +106,7 @@ export const {
   showPayment,
   hidePayment,
   setPaymentMode,
+  resetPaymentStatusType,
   setPaymentStatus,
   resetPaymentStatus,
   setPaymentActionType,
