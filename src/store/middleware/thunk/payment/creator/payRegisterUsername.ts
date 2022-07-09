@@ -22,7 +22,7 @@ export const payRegisterUsername = createAsyncThunk<void, PayRegisterUsernamePay
   'setting/payRegisterUsername',
   async (payload, { dispatch, signal }) => {
     try {
-      dispatch(setPaymentStatus({ type: 'initiated', message: '' }));
+      dispatch(setPaymentStatus({ action: 'registerUsername', type: 'initiated', message: '' }));
       dispatch(showPayment());
 
       const transactionPayload: AppTransaction<RegisterUsernameUI> = await createTransaction<RegisterUsernameUI>(

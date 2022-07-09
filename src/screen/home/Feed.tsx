@@ -115,7 +115,7 @@ export default function Feed({ navigation, onScroll, headerHeight }: FeedProps) 
   const ListFooterComponent = React.useCallback(() => <View style={{ height: hp(10) }} />, []);
 
   const renderItem = React.useCallback(
-    ({ item }: any) => <AppFeedItem feed={item} navigation={navigation} />,
+    ({ item, index }: any) => <AppFeedItem feed={item} navigation={navigation} index={index} />,
     [navigation],
   );
 

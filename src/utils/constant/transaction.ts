@@ -4,6 +4,10 @@ export const redeemableNftModule = {
   mintNft: 1,
   deliverSecret: 2,
   mintNftTypeQr: 3,
+  likeNft: 4,
+  likeCollection: 5,
+  commentNft: 6,
+  commentCollection: 7,
 };
 
 export const personaModule = {

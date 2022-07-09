@@ -10,19 +10,19 @@ export const reducePayRegisterUsername = (): AppThunk => async (dispatch, getSta
   try {
     dispatch(showModalLoader());
     dispatch({ type: 'payment/reducePayRegisterUsername' });
-    dispatch(setPaymentStatus({ type: 'process', message: '' }));
+    dispatch(setPaymentStatus({ action: 'registerUsername', type: 'process', message: '' }));
 
     const payload = JSON.parse(selectPaymentActionPayload(getState())) as AppTransaction<RegisterUsernameUI>;
 
     const response = await postTransaction(payload);
     if (response.status === 200) {
-      dispatch(setPaymentStatus({ type: 'success', message: '' }));
+      dispatch(setPaymentStatus({ action: 'registerUsername', type: 'success', message: '' }));
     } else {
-      dispatch(setPaymentStatus({ type: 'error', message: response.data }));
+      dispatch(setPaymentStatus({ action: 'registerUsername', type: 'error', message: response.data }));
     }
   } catch (err: any) {
     handleError(err);
-    dispatch(setPaymentStatus({ type: 'error', message: err.message }));
+    dispatch(setPaymentStatus({ action: 'registerUsername', type: 'error', message: err.message }));
   } finally {
     dispatch(hideModalLoader());
   }

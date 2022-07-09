@@ -24,7 +24,7 @@ export const payTransferToken = createAsyncThunk<void, PayTransferTokenPayload, 
   'wallet/payTransferToken',
   async (payload, { dispatch, signal }) => {
     try {
-      dispatch(setPaymentStatus({ type: 'initiated', message: '' }));
+      dispatch(setPaymentStatus({ action: 'transferToken', type: 'initiated', message: '' }));
       dispatch(showPayment());
 
       const transactionPayload: AppTransaction<TransferTokenUI> = await createTransaction(

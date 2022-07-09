@@ -24,7 +24,7 @@ export const payAddStake = createAsyncThunk<void, PayAddStakePayload, AsyncThunk
   'stakePool/payAddStake',
   async (payload, { dispatch, signal }) => {
     try {
-      dispatch(setPaymentStatus({ type: 'initiated', message: '' }));
+      dispatch(setPaymentStatus({ action: 'addStake', type: 'initiated', message: '' }));
       dispatch(showPayment());
 
       const transactionPayload: AppTransaction<AddStakeUI> = await createTransaction<AddStakeUI>(

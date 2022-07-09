@@ -5,18 +5,23 @@ import i18n from 'enevti-app/translations/i18n';
 import { APIResponse, ResponseJSON } from 'enevti-app/types/core/service/api';
 
 const silentError = [ABORT_ERROR_MESSAGE, 'Abort', 'NFT status is not pending-secret'];
+const substractErrorString = ['Error: '];
 
 const includeSubstring = (message: string) => (item: string) => message.toLowerCase().includes(item.toLowerCase());
 
 export function handleError(err: any, key: string = 'message', silent: boolean = false) {
-  if (silentError.some(includeSubstring(err[key]))) {
+  let error = err[key] as string;
+  substractErrorString.forEach(t => {
+    error = error.replace(t, '');
+  });
+  if (silentError.some(includeSubstring(error))) {
     return;
   } else {
     if (!silent) {
       store.dispatch(
         showSnackbar({
           mode: 'error',
-          text: err[key],
+          text: error,
         }),
       );
     }

@@ -34,7 +34,7 @@ export const payMintCollectionByQR = createAsyncThunk<void, PayMintCollectionByQ
         throw Error(i18n.t('collection:invalidQRCode'));
       }
 
-      dispatch(setPaymentStatus({ type: 'initiated', message: '' }));
+      dispatch(setPaymentStatus({ action: 'mintCollectionByQR', type: 'initiated', message: '' }));
       dispatch(showPayment());
 
       const transactionPayload: AppTransaction<MintNFTByQRUI> = await createTransaction(

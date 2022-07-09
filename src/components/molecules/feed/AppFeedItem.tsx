@@ -19,10 +19,11 @@ const MODE: FeedMode = 'flat';
 interface AppFeedItemProps {
   feed: FeedItem;
   navigation: StackNavigationProp<RootStackParamList>;
+  index: number;
 }
 
 export default React.memo(
-  function AppFeedItem({ feed, navigation }: AppFeedItemProps) {
+  function AppFeedItem({ feed, navigation, index }: AppFeedItemProps) {
     const insets = useSafeAreaInsets();
     const theme = useTheme() as Theme;
     const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
@@ -33,7 +34,7 @@ export default React.memo(
       <View style={styles[MODE]}>
         <AppFeedHeader feed={feed} navigation={navigation} />
         <AppFeedBody canvasWidth={canvasWidth} feed={feed} navigation={navigation} />
-        <AppFeedAction feed={feed} />
+        <AppFeedAction feed={feed} index={index} />
         <AppFeedFooter feed={feed} />
       </View>
     );

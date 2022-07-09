@@ -9,6 +9,7 @@ const initialState: PaymentState = {
   mode: 'full',
   status: {
     type: 'idle',
+    action: '',
     message: '',
   },
   action: {
@@ -47,6 +48,7 @@ const paymentSlice = createSlice({
     },
     setPaymentStatus: (payment, action: PayloadAction<PaymentStatus>) => {
       payment.status.type = action.payload.type;
+      payment.status.action = action.payload.action;
       payment.status.message = action.payload.message;
     },
     resetPaymentStatus: payment => {

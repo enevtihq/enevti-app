@@ -7,6 +7,7 @@ export interface FeedItem {
   type: NFTType | 'nft';
   id: string;
   like: number;
+  liked: boolean;
   comment: number;
   price: NFTPrice;
   name: string;

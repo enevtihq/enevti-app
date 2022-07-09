@@ -10,19 +10,19 @@ export const reducePayMintCollectionByQR = (): AppThunk => async (dispatch, getS
   try {
     dispatch(showModalLoader());
     dispatch({ type: 'payment/reducePayMintCollectionByQR' });
-    dispatch(setPaymentStatus({ type: 'process', message: '' }));
+    dispatch(setPaymentStatus({ action: 'mintCollectionByQR', type: 'process', message: '' }));
 
     const payload = JSON.parse(selectPaymentActionPayload(getState())) as AppTransaction<MintNFTByQRUI>;
 
     const response = await postTransaction(payload);
     if (response.status === 200) {
-      dispatch(setPaymentStatus({ type: 'success', message: '' }));
+      dispatch(setPaymentStatus({ action: 'mintCollectionByQR', type: 'success', message: '' }));
     } else {
-      dispatch(setPaymentStatus({ type: 'error', message: response.data }));
+      dispatch(setPaymentStatus({ action: 'mintCollectionByQR', type: 'error', message: response.data }));
     }
   } catch (err: any) {
     handleError(err);
-    dispatch(setPaymentStatus({ type: 'error', message: err.message }));
+    dispatch(setPaymentStatus({ action: 'mintCollectionByQR', type: 'error', message: err.message }));
   } finally {
     dispatch(hideModalLoader());
   }

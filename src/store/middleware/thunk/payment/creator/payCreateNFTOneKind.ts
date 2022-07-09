@@ -27,7 +27,7 @@ export const payCreateNFTOneKind = createAsyncThunk<void, CreateNFTOneKindMeta, 
   'onekind/payCreateNFTOneKind',
   async (payload, { dispatch, signal }) => {
     try {
-      dispatch(setPaymentStatus({ type: 'initiated', message: '' }));
+      dispatch(setPaymentStatus({ action: 'createNFTOneKind', type: 'initiated', message: '' }));
       dispatch(showPayment());
 
       const now = new Date();

@@ -30,6 +30,10 @@ const feedViewSlice = createSlice({
     setFeedView: (feed, action: PayloadAction<Feeds>) => {
       feed.items = action.payload.slice();
     },
+    addFeedViewLike: (feed, action: PayloadAction<{ index: number }>) => {
+      feed.items[action.payload.index].liked = true;
+      feed.items[action.payload.index].like++;
+    },
     addFeedView: (feed, action: PayloadAction<Feeds>) => {
       feed.items.concat(action.payload);
     },
@@ -59,6 +63,7 @@ const feedViewSlice = createSlice({
 
 export const {
   setFeedView,
+  addFeedViewLike,
   addFeedView,
   setFeedViewCheckpoint,
   setFeedViewVersion,

@@ -57,6 +57,7 @@ export const getDummyFeedItem = (): FeedItem => {
     type: 'onekind',
     id: Math.random().toString(),
     like: 271,
+    liked: true,
     comment: 32,
     price: {
       amount: '9327',

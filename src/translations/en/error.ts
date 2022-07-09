@@ -15,7 +15,7 @@ export default {
   invalidRecurring: 'invalid recurring type',
   noData: 'Nothing here yet!',
   notFound: 'Not Found',
-  responseError: 'Response Error: {{msg}}',
+  responseError: '{{msg}}',
   errorFetchMinFee: 'Failed to get MinFee: {{msg}}',
   errorFetchBaseFee: 'Failed to get Base Fee: {{msg}}',
   errorPostTransaction: 'Failed to post transaction: {{msg}}',

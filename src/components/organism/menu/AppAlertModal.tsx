@@ -87,7 +87,7 @@ export default function AppAlertModal({
             loading={tertiaryButtonIsLoading}
             contentStyle={styles.tertiaryAction}
             onPress={tertiaryButtonOnPress}>
-            <AppTextBody4 style={{ color: theme.colors.primary }}>{tertiaryButtonText}</AppTextBody4>
+            <AppTextBody4 style={{ color: theme.colors.text }}>{tertiaryButtonText}</AppTextBody4>
           </AppQuaternaryButton>
         ) : null}
       </View>

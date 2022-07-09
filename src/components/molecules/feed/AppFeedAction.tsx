@@ -18,42 +18,63 @@ import { isMintingAvailable } from 'enevti-app/utils/collection';
 import usePaymentCallback from 'enevti-app/utils/hook/usePaymentCallback';
 import { payMintCollection } from 'enevti-app/store/middleware/thunk/payment/creator/payMintCollection';
 import { useTranslation } from 'react-i18next';
+import { AppAsyncThunk } from 'enevti-app/types/ui/store/AppAsyncThunk';
+import { PaymentStatus } from 'enevti-app/types/ui/store/Payment';
+import { directPayLikeCollection } from 'enevti-app/store/middleware/thunk/payment/direct/directPayLikeCollection';
+import { addFeedViewLike } from 'enevti-app/store/slices/ui/view/feed';
 
 interface AppFeedActionProps {
   feed: FeedItem;
+  index: number;
 }
 
-export default function AppFeedAction({ feed }: AppFeedActionProps) {
+export default function AppFeedAction({ feed, index }: AppFeedActionProps) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
   const styles = React.useMemo(() => makeStyles(insets), [insets]);
-  const [like, setLike] = React.useState<1 | 0>(0);
   const [buyLoading, setBuyLoading] = React.useState<boolean>(false);
+  const [likeLoading, setLikeLoading] = React.useState<boolean>(false);
   const paymentThunkRef = React.useRef<any>();
 
-  const onLikeActivate = () => {
-    // setLike(1);
-    dispatch(showSnackbar({ mode: 'info', text: 'Coming Soon!' }));
-  };
+  const handleLike = React.useCallback(() => {
+    return dispatch(directPayLikeCollection({ id: feed.id, name: feed.name }));
+  }, [dispatch, feed]) as AppAsyncThunk;
+
+  const onLikeActivate = React.useCallback(async () => {
+    setLikeLoading(true);
+    await handleLike().unwrap();
+  }, [handleLike]);
 
   const onLikeDeactivate = () => {
-    setLike(0);
+    // TODO: implement
   };
 
   const onComment = React.useCallback(() => {
     dispatch(showSnackbar({ mode: 'info', text: 'Coming Soon!' }));
   }, [dispatch]);
 
-  const paymentIdleCallback = React.useCallback(() => {
-    setBuyLoading(false);
-    paymentThunkRef.current?.abort();
+  const paymentIdleCallback = React.useCallback((action: PaymentStatus['action']) => {
+    if (action === 'mintCollection') {
+      setBuyLoading(false);
+      paymentThunkRef.current?.abort();
+    } else if (action === 'likeCollection') {
+      setLikeLoading(false);
+    }
   }, []);
 
-  const paymentSuccessCallback = React.useCallback(() => {
-    dispatch(showSnackbar({ mode: 'info', text: t('payment:success') }));
-  }, [dispatch, t]);
+  const paymentSuccessCallback = React.useCallback(
+    (action: PaymentStatus['action']) => {
+      if (action === 'mintCollection') {
+        dispatch(showSnackbar({ mode: 'info', text: t('payment:success') }));
+      } else if (action === 'likeCollection') {
+        setLikeLoading(false);
+        dispatch(addFeedViewLike({ index }));
+      }
+    },
+    [dispatch, index, t],
+  );
 
   usePaymentCallback({
     onIdle: paymentIdleCallback,
@@ -82,13 +103,17 @@ export default function AppFeedAction({ feed }: AppFeedActionProps) {
   return (
     <View style={styles.actionContainer}>
       <AppQuaternaryButton
-        icon={like ? iconMap.likeActive : iconMap.likeInactive}
+        loading={likeLoading}
+        loadingSize={15}
+        loadingStyle={styles.likeButtonLoadingStyle}
+        icon={feed.liked ? iconMap.likeActive : iconMap.likeInactive}
         iconSize={wp('6%', insets)}
-        iconColor={like ? theme.colors.primary : theme.colors.text}
+        iconColor={feed.liked ? theme.colors.primary : theme.colors.text}
         style={styles.button}
-        onPress={like ? onLikeDeactivate : onLikeActivate}>
-        <AppTextBody4 style={[styles.actionButtonText, { color: like ? theme.colors.primary : theme.colors.text }]}>
-          {feed.like + like}
+        onPress={feed.liked ? onLikeDeactivate : onLikeActivate}>
+        <AppTextBody4
+          style={[styles.actionButtonText, { color: feed.liked ? theme.colors.primary : theme.colors.text }]}>
+          {feed.like}
         </AppTextBody4>
       </AppQuaternaryButton>
 
@@ -103,7 +128,7 @@ export default function AppFeedAction({ feed }: AppFeedActionProps) {
         loading={buyLoading}
         icon={iconMap.buy}
         iconSize={wp('6%', insets)}
-        style={styles.button}
+        style={styles.buyButton}
         contentStyle={styles.buyButtonContentStyle}
         loadingStyle={styles.buyButtonLoadingStyle}
         loadingSize={15}
@@ -121,12 +146,20 @@ const makeStyles = (insets: SafeAreaInsets) =>
     button: {
       height: '100%',
     },
+    buyButton: {
+      height: '100%',
+    },
     buyButtonContentStyle: {
       paddingVertical: hp('0.5%', insets),
       paddingHorizontal: wp('1%', insets),
     },
     buyButtonLoadingStyle: {
       marginRight: wp('8%', insets),
+      height: '100%',
+    },
+    likeButtonLoadingStyle: {
+      marginRight: wp('2.5%', insets),
+      marginLeft: wp('2.5%', insets),
       height: '100%',
     },
     actionButtonText: {

@@ -8,6 +8,10 @@ export type PaymentAction = {
     | 'registerUsername'
     | 'deliverSecret'
     | 'transferToken'
+    | 'likeNFT'
+    | 'likeCollection'
+    | 'commentNFT'
+    | 'commentCollection'
     | 'cancel'
     | '';
   icon: string;
@@ -30,6 +34,7 @@ export type PaymentFee = {
 
 export type PaymentStatus = {
   type: 'idle' | 'initiated' | 'process' | 'success' | 'error' | 'cancel';
+  action?: PaymentAction['type'];
   message: string;
 };
 

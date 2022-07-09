@@ -111,9 +111,10 @@ export function urlGetFeeds(
   offset: number = 0,
   limit: number = 10,
   version: number = 0,
+  viewer: string,
   host: string = ENEVTI_DEFAULT_API,
 ) {
-  return encodeURI(`${host}/feeds/available?offset=${offset}&limit=${limit}&version=${version}`);
+  return encodeURI(`${host}/feeds/available?offset=${offset}&limit=${limit}&version=${version}&viewer=${viewer}`);
 }
 
 export function urlGetNFTById(id: string, host: string = ENEVTI_DEFAULT_API) {

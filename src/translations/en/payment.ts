@@ -39,4 +39,6 @@ export default {
   postingTransaction: 'Posting transaction...',
   payTransferToken: 'Transfer {{coin}}',
   payTransferTokenDescription: 'to {{base32}}',
+  payLikeCollectionName: 'Like Collection',
+  payLikeCollectonDescription: 'Give like for {{name}}',
 };

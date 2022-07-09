@@ -22,7 +22,7 @@ export const payMintCollection = createAsyncThunk<void, PayMintCollectionPayload
   'collection/payMintCollection',
   async (payload, { dispatch, signal }) => {
     try {
-      dispatch(setPaymentStatus({ type: 'initiated', message: '' }));
+      dispatch(setPaymentStatus({ action: 'mintCollection', type: 'initiated', message: '' }));
       dispatch(showPayment());
 
       const transactionPayload: AppTransaction<MintNFTUI> = await createTransaction(

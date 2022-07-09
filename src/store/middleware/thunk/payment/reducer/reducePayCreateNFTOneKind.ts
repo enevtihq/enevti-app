@@ -19,7 +19,7 @@ export const reducePayCreateNFTOneKind = (): AppThunk => async (dispatch, getSta
   try {
     dispatch(showModalLoader());
     dispatch({ type: 'payment/reducePayCreateNFTOneKind' });
-    dispatch(setPaymentStatus({ type: 'process', message: '' }));
+    dispatch(setPaymentStatus({ action: 'createNFTOneKind', type: 'process', message: '' }));
 
     const payload = JSON.parse(selectPaymentActionPayload(getState())) as CreateNFTOneKindTransaction;
     const meta = JSON.parse(selectPaymentActionMeta(getState())) as CreateNFTOneKindMeta;

@@ -1,14 +1,15 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { resetPaymentState, selectPaymentStatus } from 'enevti-app/store/slices/payment';
+import { PaymentStatus } from 'enevti-app/types/ui/store/Payment';
 
 interface PaymentCallbackHookProps {
-  onIdle?: () => void;
-  onInitiated?: () => void;
-  onProcess?: () => void;
-  onSuccess?: () => void;
-  onError?: () => void;
-  onCancel?: () => void;
+  onIdle?: (action?: PaymentStatus['action']) => void;
+  onInitiated?: (action?: PaymentStatus['action']) => void;
+  onProcess?: (action?: PaymentStatus['action']) => void;
+  onSuccess?: (action?: PaymentStatus['action']) => void;
+  onError?: (action?: PaymentStatus['action']) => void;
+  onCancel?: (action?: PaymentStatus['action']) => void;
 }
 
 export default function usePaymentCallback({
@@ -24,25 +25,25 @@ export default function usePaymentCallback({
   React.useEffect(() => {
     switch (paymentStatus.type) {
       case 'idle':
-        onIdle && onIdle();
+        onIdle && onIdle(paymentStatus.action);
         break;
       case 'initiated':
-        onInitiated && onInitiated();
+        onInitiated && onInitiated(paymentStatus.action);
         break;
       case 'process':
-        onProcess && onProcess();
+        onProcess && onProcess(paymentStatus.action);
         break;
       case 'success':
         dispatch(resetPaymentState());
-        onSuccess && onSuccess();
+        onSuccess && onSuccess(paymentStatus.action);
         break;
       case 'error':
         dispatch(resetPaymentState());
-        onError && onError();
+        onError && onError(paymentStatus.action);
         break;
       case 'cancel':
         dispatch(resetPaymentState());
-        onCancel && onCancel();
+        onCancel && onCancel(paymentStatus.action);
         break;
       default:
         break;
