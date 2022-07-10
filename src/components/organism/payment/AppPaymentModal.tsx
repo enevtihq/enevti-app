@@ -31,6 +31,7 @@ import {
   isPaymentUndefined,
   selectPaymentFeePriority,
   setPaymentAction,
+  resetPaymentStatusType,
 } from 'enevti-app/store/slices/payment';
 import { selectMyProfileCache } from 'enevti-app/store/slices/entities/cache/myProfile';
 import AppPaymentItem from './AppPaymentItem';
@@ -110,6 +111,7 @@ export default function AppPaymentModal() {
   const paymentDismiss = React.useCallback(() => {
     if (!gasFeePickerDialogShow) {
       dispatch(resetPaymentState());
+      dispatch(resetPaymentStatusType());
     }
   }, [dispatch, gasFeePickerDialogShow]);
 
