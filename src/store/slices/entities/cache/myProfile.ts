@@ -121,3 +121,8 @@ export const selectMyProfileCache = createSelector(
   (state: RootState) => state,
   (state: RootState) => state.entities.cache.myProfile,
 );
+
+export const selectMyProfileBalanceCache = createSelector(
+  (state: RootState) => state,
+  (state: RootState) => state.entities.cache.myProfile.balance,
+);

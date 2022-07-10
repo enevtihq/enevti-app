@@ -63,6 +63,8 @@ import {
   selectOnceLikeShow,
   touchOnceLike,
 } from 'enevti-app/store/slices/entities/once/like';
+import BalanceChangedSnack from 'enevti-app/components/molecules/view/BalanceChangedSnack';
+import AppBadge from 'enevti-app/components/atoms/view/AppBadge';
 
 const Tab = createBottomTabNavigator();
 
@@ -273,8 +275,12 @@ export default function Home({ navigation }: Props) {
           name="Feed"
           options={{
             tabBarLabel: t('home:feed'),
-            tabBarBadge: newFeedUpdate ? '' : undefined,
-            tabBarIcon: ({ color, size }) => <MaterialCommunityIcons name={iconMap.home} color={color} size={size} />,
+            tabBarIcon: ({ color, size }) => (
+              <View>
+                <MaterialCommunityIcons name={iconMap.home} color={color} size={size} />
+                {newFeedUpdate ? <AppBadge /> : undefined}
+              </View>
+            ),
             tabBarButton: props => <TouchableRipple {...props} disabled={props.disabled as boolean | undefined} />,
             header: () => (
               <AppHeader height={headerHeight}>
@@ -358,8 +364,13 @@ export default function Home({ navigation }: Props) {
           name="MyProfile"
           options={{
             tabBarLabel: t('home:profile'),
-            tabBarBadge: newProfileUpdate ? '' : undefined,
-            tabBarIcon: ({ color, size }) => <AppAvatarRenderer color={color} size={size * 1.1} persona={myPersona} />,
+            tabBarIcon: ({ color, size }) => (
+              <View>
+                <AppAvatarRenderer color={color} size={size * 1.1} persona={myPersona} />
+                {newProfileUpdate ? <AppBadge /> : undefined}
+                <BalanceChangedSnack />
+              </View>
+            ),
             tabBarButton: props => <TouchableRipple {...props} disabled={props.disabled as boolean | undefined} />,
             header: () => (
               <AppHeader height={headerHeight} title={t('home:myProfile')}>
