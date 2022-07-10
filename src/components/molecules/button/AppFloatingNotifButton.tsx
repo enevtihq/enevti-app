@@ -3,8 +3,7 @@ import AppQuaternaryButton from 'enevti-app/components/atoms/button/AppQuaternar
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { hp } from 'enevti-app/utils/imageRatio';
-import Animated from 'react-native-reanimated';
-import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, View, ViewStyle, Animated } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import AppIconButton from 'enevti-app/components/atoms/icon/AppIconButton';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
@@ -24,8 +23,24 @@ export default function AppFloatingNotifButton({ show, label, onPress, onClose, 
   const theme = useTheme() as Theme;
   const styles = React.useMemo(() => makeStyles(theme), [theme]);
 
-  return show ? (
-    <Animated.View style={[styles.buttonContainer, style]}>
+  const [visible, setVisible] = React.useState<boolean>(() => show);
+  const translateY = React.useRef(new Animated.Value(-100)).current;
+  const opacity = React.useRef(new Animated.Value(0)).current;
+  const display = React.useMemo(() => (visible ? undefined : 'none'), [visible]);
+
+  React.useEffect(() => {
+    if (show) {
+      setVisible(true);
+      Animated.timing(translateY, { toValue: 0, duration: 500, useNativeDriver: true }).start();
+      Animated.timing(opacity, { toValue: 1, duration: 500, useNativeDriver: true }).start();
+    } else {
+      Animated.timing(translateY, { toValue: -100, duration: 500, useNativeDriver: true }).start();
+      Animated.timing(opacity, { toValue: 0, duration: 500, useNativeDriver: true }).start(() => setVisible(false));
+    }
+  }, [show, translateY, opacity]);
+
+  return (
+    <Animated.View style={[styles.buttonContainer, style, { transform: [{ translateY }], opacity, display }]}>
       <DropShadow style={styles.dropShadow}>
         <View style={styles.container}>
           <AppQuaternaryButton
@@ -37,7 +52,7 @@ export default function AppFloatingNotifButton({ show, label, onPress, onClose, 
         </View>
       </DropShadow>
     </Animated.View>
-  ) : null;
+  );
 }
 
 const makeStyles = (theme: Theme) =>
