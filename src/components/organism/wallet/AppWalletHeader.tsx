@@ -24,6 +24,7 @@ import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivit
 import { Persona } from 'enevti-app/types/core/account/persona';
 import AppAvatarRenderer from 'enevti-app/components/molecules/avatar/AppAvatarRenderer';
 import Color from 'color';
+import AppTextHeading2 from 'enevti-app/components/atoms/text/AppTextHeading2';
 
 interface AppWalletHeaderProps {
   navigation: StackNavigationProp<RootStackParamList>;
@@ -42,6 +43,7 @@ export default function AppWalletHeader({ navigation, route }: AppWalletHeaderPr
 
   const myPersona = useSelector(selectMyPersonaCache);
   const wallet = useSelector((state: RootState) => selectWalletView(state, route.key));
+  const balance = React.useMemo(() => commifyAmount(parseAmount(wallet.balance)), [wallet.balance]);
 
   React.useEffect(() => {
     const run = async () => {
@@ -84,7 +86,7 @@ export default function AppWalletHeader({ navigation, route }: AppWalletHeaderPr
       </View>
 
       <AppTextBody2 numberOfLines={1} style={styles.amountHeader}>
-        {commifyAmount(parseAmount(wallet.balance))} {getCoinName()}
+        <AppTextHeading2>{balance.split('.')[0]}</AppTextHeading2>.{balance.split('.')[1]} {getCoinName()}
       </AppTextBody2>
 
       <AppQuaternaryButton

@@ -9,18 +9,24 @@ import AppWallet from 'enevti-app/components/organism/wallet/AppWallet';
 import AppHeaderAction from 'enevti-app/components/atoms/view/AppHeaderAction';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import { selectMyPersonaCache } from 'enevti-app/store/slices/entities/cache/myPersona';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { openQRScanner } from 'enevti-app/utils/qr/openQRScanner';
 import { parseQRLink } from 'enevti-app/utils/qr/parseQRValue';
 import { parseAppLink } from 'enevti-app/utils/linking';
 import { Linking } from 'react-native';
 import { handleError } from 'enevti-app/utils/error/handle';
+import { Socket } from 'socket.io-client';
+import { appSocket } from 'enevti-app/utils/network';
+import { reduceWalletBalanceChanged } from 'enevti-app/store/middleware/thunk/socket/wallet/reduceWalletBalanceChanged';
+import { routeParamToAddress } from 'enevti-app/service/enevti/persona';
 
 type Props = StackScreenProps<RootStackParamList, 'Wallet'>;
 
 export default function Wallet({ navigation, route }: Props) {
+  const dispatch = useDispatch();
   const { t } = useTranslation();
   const myPersona = useSelector(selectMyPersonaCache);
+  const socket = React.useRef<Socket | undefined>();
 
   const screenRoute = React.useMemo(
     () => ({ key: route.key, name: route.name, params: route.params, path: route.path }),
@@ -34,6 +40,18 @@ export default function Wallet({ navigation, route }: Props) {
       (route.params.mode === 'b' && route.params.arg === myPersona.base32),
     [myPersona.address, myPersona.base32, myPersona.username, route.params.arg, route.params.mode],
   );
+
+  React.useEffect(() => {
+    const subscribe = async () => {
+      const address = await routeParamToAddress(route.params);
+      socket.current = appSocket(address);
+      socket.current.on('balanceChanged', (payload: any) => dispatch(reduceWalletBalanceChanged(payload, route.key)));
+    };
+    subscribe();
+    return function cleanup() {
+      socket.current?.disconnect();
+    };
+  }, [myPersona.address, dispatch, route.key, route.params]);
 
   const onQRSuccess = React.useCallback(
     (data: string) => {
