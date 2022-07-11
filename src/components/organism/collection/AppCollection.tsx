@@ -238,6 +238,7 @@ export default function AppCollection({ onScrollWorklet, navigation, route }: Ap
         collectionHeaderHeight={totalHeaderHeight}
         scrollEnabled={scrollEnabled}
         onScroll={mintedItemsScrollHandler}
+        onMomentumScroll={onUpdateClose}
         onMounted={mintedItemsOnMounted}
         onRefresh={onRefresh}
         mintingAvailable={mintingAvailable}
@@ -247,6 +248,7 @@ export default function AppCollection({ onScrollWorklet, navigation, route }: Ap
     [
       route,
       totalHeaderHeight,
+      onUpdateClose,
       mintedItemsOnMounted,
       mintedItemsScrollHandler,
       mintedRef,
@@ -265,6 +267,7 @@ export default function AppCollection({ onScrollWorklet, navigation, route }: Ap
         collectionHeaderHeight={totalHeaderHeight}
         scrollEnabled={scrollEnabled}
         onScroll={collectionActivityScrollHandler}
+        onMomentumScroll={onUpdateClose}
         onMounted={activityOnMounted}
         onRefresh={onRefresh}
         mintingAvailable={mintingAvailable}
@@ -272,6 +275,7 @@ export default function AppCollection({ onScrollWorklet, navigation, route }: Ap
     ),
     [
       activityOnMounted,
+      onUpdateClose,
       activityRef,
       route,
       collectionActivityScrollHandler,

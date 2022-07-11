@@ -38,6 +38,7 @@ interface CollectionListComponentProps {
   navigation: StackNavigationProp<RootStackParamList>;
   route: RouteProp<RootStackParamList, 'Profile'>;
   onScroll?: any;
+  onMomentumScroll?: any;
   headerHeight?: any;
   onMounted?: () => void;
   onRefresh?: () => void;
@@ -52,6 +53,7 @@ function Component(
     navigation,
     route,
     onScroll,
+    onMomentumScroll,
     headerHeight,
     onMounted,
     onRefresh,
@@ -200,6 +202,7 @@ function Component(
     <AnimatedFlatList
       ref={ref}
       onScroll={onScroll}
+      onMomentumScrollBegin={onMomentumScroll}
       keyExtractor={keyExtractor}
       scrollEnabled={isScrollEnabled}
       scrollEventThrottle={16}

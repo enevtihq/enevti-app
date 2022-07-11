@@ -33,6 +33,7 @@ interface NFTSummaryComponentProps {
   route: RouteProp<RootStackParamList, 'NFTDetails'>;
   navigation: StackNavigationProp<RootStackParamList>;
   onScroll?: any;
+  onMomentumScroll?: any;
   collectionHeaderHeight?: any;
   onMounted?: () => void;
   onRefresh?: () => void;
@@ -46,6 +47,7 @@ function Component(
     onScroll,
     collectionHeaderHeight,
     onMounted,
+    onMomentumScroll,
     onRefresh,
     scrollEnabled,
   }: NFTSummaryComponentProps,
@@ -118,6 +120,7 @@ function Component(
       scrollEventThrottle={16}
       showsVerticalScrollIndicator={false}
       onScroll={onScroll}
+      onMomentumScrollBegin={onMomentumScroll}
       onMomentumScrollEnd={() => {}}
       refreshControl={refreshControl}
       contentContainerStyle={styles.contentContainerStyle}

@@ -18,6 +18,7 @@ interface OnSaleNFTComponentProps {
   navigation: StackNavigationProp<RootStackParamList>;
   data?: any;
   onScroll?: any;
+  onMomentumScroll?: any;
   headerHeight?: any;
   onMounted?: () => void;
   onRefresh?: () => void;
@@ -30,6 +31,7 @@ function Component(
     navigation,
     data,
     onScroll,
+    onMomentumScroll,
     headerHeight,
     onMounted,
     onRefresh,
@@ -93,6 +95,7 @@ function Component(
     <AnimatedFlatGrid
       ref={ref}
       onScroll={onScroll}
+      onMomentumScrollBegin={onMomentumScroll}
       scrollEnabled={isScrollEnabled}
       scrollEventThrottle={16}
       contentContainerStyle={styles.contentContainerStyle}

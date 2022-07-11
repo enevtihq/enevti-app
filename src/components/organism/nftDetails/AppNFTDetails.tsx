@@ -212,6 +212,7 @@ export default function AppNFTDetails({ onScrollWorklet, navigation, route }: Ap
         collectionHeaderHeight={totalHeaderHeight}
         scrollEnabled={scrollEnabled}
         onScroll={nftSummaryScrollHandler}
+        onMomentumScroll={onUpdateClose}
         onMounted={summaryOnMounted}
         onRefresh={onRefresh}
       />
@@ -220,6 +221,7 @@ export default function AppNFTDetails({ onScrollWorklet, navigation, route }: Ap
       navigation,
       summaryOnMounted,
       summaryRef,
+      onUpdateClose,
       route,
       nftSummaryScrollHandler,
       onRefresh,
@@ -236,11 +238,21 @@ export default function AppNFTDetails({ onScrollWorklet, navigation, route }: Ap
         collectionHeaderHeight={totalHeaderHeight}
         scrollEnabled={scrollEnabled}
         onScroll={nftActivityScrollHandler}
+        onMomentumScroll={onUpdateClose}
         onMounted={activityOnMounted}
         onRefresh={onRefresh}
       />
     ),
-    [activityOnMounted, activityRef, route, nftActivityScrollHandler, onRefresh, scrollEnabled, totalHeaderHeight],
+    [
+      activityOnMounted,
+      onUpdateClose,
+      activityRef,
+      route,
+      nftActivityScrollHandler,
+      onRefresh,
+      scrollEnabled,
+      totalHeaderHeight,
+    ],
   );
 
   const progressViewOffset = React.useMemo(() => hp(HEADER_HEIGHT_PERCENTAGE), [hp]);

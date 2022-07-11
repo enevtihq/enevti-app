@@ -276,6 +276,7 @@ export default function AppProfile({
         navigation={navigation}
         route={route}
         onScroll={ownedScrollHandler}
+        onMomentumScroll={onUpdateClose}
         scrollEnabled={scrollEnabled}
         headerHeight={headerHeight}
         onMounted={ownedOnMounted}
@@ -290,6 +291,7 @@ export default function AppProfile({
       navigation,
       headerHeight,
       ownedScrollHandler,
+      onUpdateClose,
       scrollEnabled,
       ownedOnMounted,
       onRefresh,
@@ -306,6 +308,7 @@ export default function AppProfile({
         ref={onSaleRef}
         navigation={navigation}
         onScroll={onSaleScrollHandler}
+        onMomentumScroll={onUpdateClose}
         scrollEnabled={scrollEnabled}
         headerHeight={headerHeight}
         data={onSaleData}
@@ -319,6 +322,7 @@ export default function AppProfile({
       navigation,
       headerHeight,
       onSaleData,
+      onUpdateClose,
       onSaleScrollHandler,
       scrollEnabled,
       onSaleOnMounted,
@@ -334,6 +338,7 @@ export default function AppProfile({
         navigation={navigation}
         route={route}
         onScroll={collectionScrollHandler}
+        onMomentumScroll={onUpdateClose}
         scrollEnabled={scrollEnabled}
         headerHeight={headerHeight}
         onMounted={collectionOnMounted}
@@ -349,6 +354,7 @@ export default function AppProfile({
       headerHeight,
       route,
       collectionScrollHandler,
+      onUpdateClose,
       scrollEnabled,
       collectionOnMounted,
       onRefresh,

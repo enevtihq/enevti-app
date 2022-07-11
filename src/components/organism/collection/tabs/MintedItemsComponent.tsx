@@ -25,6 +25,7 @@ const AnimatedFlatGrid = Animated.createAnimatedComponent<FlatGridProps<NFTBase>
 interface MintedItemsComponentProps {
   route: RouteProp<RootStackParamList, 'Collection'>;
   onScroll?: any;
+  onMomentumScroll?: any;
   collectionHeaderHeight?: any;
   onMounted?: () => void;
   onRefresh?: () => void;
@@ -37,6 +38,7 @@ function Component(
   {
     route,
     onScroll,
+    onMomentumScroll,
     collectionHeaderHeight,
     onMounted,
     onRefresh,
@@ -120,6 +122,7 @@ function Component(
     <AnimatedFlatGrid
       ref={ref}
       onScroll={onScroll}
+      onMomentumScrollBegin={onMomentumScroll}
       scrollEnabled={isScrollEnabled}
       scrollEventThrottle={16}
       contentContainerStyle={styles.contentContainerStyle}

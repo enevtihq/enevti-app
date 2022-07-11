@@ -190,6 +190,7 @@ export default function AppStakePool({ route }: AppStakePoolProps) {
       />
       <AnimatedFlatList
         onScroll={onScroll}
+        onMomentumScrollBegin={handleUpdateClose}
         scrollEventThrottle={16}
         data={stakePool?.staker}
         renderItem={renderItem}

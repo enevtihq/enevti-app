@@ -164,6 +164,7 @@ export default function Feed({ navigation, onScroll, headerHeight }: FeedProps) 
             <AnimatedFlatList
               ref={feedRef}
               onScroll={onScroll}
+              onMomentumScrollBegin={handleUpdateClosed}
               scrollEventThrottle={16}
               data={feeds}
               ListHeaderComponent={ListHeaderComponent}

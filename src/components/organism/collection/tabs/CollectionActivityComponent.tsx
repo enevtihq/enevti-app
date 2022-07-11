@@ -36,6 +36,7 @@ const AnimatedFlatList = Animated.createAnimatedComponent<any>(FlatList);
 interface CollectionActivityComponentProps {
   route: RouteProp<RootStackParamList, 'Collection'>;
   onScroll?: any;
+  onMomentumScroll?: any;
   collectionHeaderHeight?: any;
   onMounted?: () => void;
   onRefresh?: () => void;
@@ -47,6 +48,7 @@ function Component(
   {
     route,
     onScroll,
+    onMomentumScroll,
     collectionHeaderHeight,
     onMounted,
     onRefresh,
@@ -185,6 +187,7 @@ function Component(
     <AnimatedFlatList
       ref={ref}
       onScroll={onScroll}
+      onMomentumScrollBegin={onMomentumScroll}
       keyExtractor={keyExtractor}
       scrollEnabled={isScrollEnabled}
       scrollEventThrottle={16}

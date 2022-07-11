@@ -34,6 +34,7 @@ const AnimatedFlatList = Animated.createAnimatedComponent<any>(FlatList);
 interface NFTActivityComponentProps {
   route: RouteProp<RootStackParamList, 'NFTDetails'>;
   onScroll?: any;
+  onMomentumScroll?: any;
   collectionHeaderHeight?: any;
   onMounted?: () => void;
   onRefresh?: () => void;
@@ -41,7 +42,15 @@ interface NFTActivityComponentProps {
 }
 
 function Component(
-  { route, onScroll, collectionHeaderHeight, onMounted, onRefresh, scrollEnabled }: NFTActivityComponentProps,
+  {
+    route,
+    onScroll,
+    onMomentumScroll,
+    collectionHeaderHeight,
+    onMounted,
+    onRefresh,
+    scrollEnabled,
+  }: NFTActivityComponentProps,
   ref: any,
 ) {
   const dispatch = useDispatch();
@@ -158,6 +167,7 @@ function Component(
     <AnimatedFlatList
       ref={ref}
       onScroll={onScroll}
+      onMomentumScrollBegin={onMomentumScroll}
       keyExtractor={keyExtractor}
       scrollEnabled={isScrollEnabled}
       scrollEventThrottle={16}

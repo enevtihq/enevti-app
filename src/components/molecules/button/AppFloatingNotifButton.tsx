@@ -2,14 +2,15 @@ import React from 'react';
 import AppQuaternaryButton from 'enevti-app/components/atoms/button/AppQuaternaryButton';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { hp } from 'enevti-app/utils/imageRatio';
+import { hp, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
 import Animated, { runOnJS, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
-import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import AppIconButton from 'enevti-app/components/atoms/icon/AppIconButton';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import { Theme } from 'enevti-app/theme/default';
 import DropShadow from 'react-native-drop-shadow';
+import LinearGradient from 'react-native-linear-gradient';
 
 interface AppFloatingNotifButtonProps {
   show: boolean;
@@ -22,7 +23,7 @@ interface AppFloatingNotifButtonProps {
 export default function AppFloatingNotifButton({ show, label, onPress, onClose, style }: AppFloatingNotifButtonProps) {
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
-  const styles = React.useMemo(() => makeStyles(theme), [theme]);
+  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
 
   const [visible, setVisible] = React.useState<boolean>(() => show);
   const translateY = useSharedValue(-100);
@@ -50,20 +51,20 @@ export default function AppFloatingNotifButton({ show, label, onPress, onClose, 
   return (
     <Animated.View style={[styles.buttonContainer, style, animatedStyle, { display }]}>
       <DropShadow style={styles.dropShadow}>
-        <View style={styles.container}>
-          <AppQuaternaryButton
-            style={{ height: hp('5%', insets), backgroundColor: theme.colors.background }}
-            onPress={onPress}>
-            <AppTextBody4>{label}</AppTextBody4>
+        <LinearGradient colors={[theme.colors.primary, theme.colors.secondary]} style={styles.container}>
+          <AppQuaternaryButton style={styles.button} onPress={onPress}>
+            <AppTextBody4 style={styles.text}>{label}</AppTextBody4>
           </AppQuaternaryButton>
-          {onClose ? <AppIconButton icon={iconMap.close} size={15} style={styles.closeIcon} onPress={onClose} /> : null}
-        </View>
+          {onClose ? (
+            <AppIconButton color="white" icon={iconMap.close} size={15} style={styles.closeIcon} onPress={onClose} />
+          ) : null}
+        </LinearGradient>
       </DropShadow>
     </Animated.View>
   );
 }
 
-const makeStyles = (theme: Theme) =>
+const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
   StyleSheet.create({
     buttonContainer: {
       position: 'absolute',
@@ -71,10 +72,16 @@ const makeStyles = (theme: Theme) =>
       top: 10,
       zIndex: 999,
     },
+    text: {
+      color: 'white',
+    },
     container: {
       flexDirection: 'row',
-      backgroundColor: theme.colors.background,
       borderRadius: theme.roundness,
+    },
+    button: {
+      height: hp('5%', insets),
+      backgroundColor: 'transparent',
     },
     dropShadow: {
       shadowColor: '#000000',

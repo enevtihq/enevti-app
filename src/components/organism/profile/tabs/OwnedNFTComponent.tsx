@@ -26,6 +26,7 @@ interface OwnedNFTComponentProps {
   navigation: StackNavigationProp<RootStackParamList>;
   route: RouteProp<RootStackParamList, 'Profile'>;
   onScroll?: any;
+  onMomentumScroll?: any;
   headerHeight?: any;
   onMounted?: () => void;
   onRefresh?: () => void;
@@ -40,6 +41,7 @@ function Component(
     navigation,
     route,
     onScroll,
+    onMomentumScroll,
     headerHeight,
     onMounted,
     onRefresh,
@@ -130,6 +132,7 @@ function Component(
     <AnimatedFlatGrid
       ref={ref}
       onScroll={onScroll}
+      onMomentumScrollBegin={onMomentumScroll}
       scrollEnabled={isScrollEnabled}
       scrollEventThrottle={16}
       contentContainerStyle={styles.contentContainerStyle}
