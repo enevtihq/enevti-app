@@ -4,6 +4,8 @@ import { ProfileActivity } from '../account/profile';
 export type WalletStaked = { persona: Persona; amount: string };
 
 export type WalletView = {
+  version: number;
+  fetchedVersion: number;
   balance: string;
   staked: string;
   history: ProfileActivity[];

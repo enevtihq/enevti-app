@@ -22,6 +22,7 @@ import { reduceNewOwned } from 'enevti-app/store/middleware/thunk/socket/profile
 import { reduceNewPending } from 'enevti-app/store/middleware/thunk/socket/profile/newPending';
 import { routeParamToAddress } from 'enevti-app/service/enevti/persona';
 import { RouteProp } from '@react-navigation/native';
+import { reduceNewProfileUpdates } from 'enevti-app/store/middleware/thunk/socket/profile/newProfileUpdates';
 
 type Props = StackScreenProps<RootStackParamList, 'Profile'>;
 
@@ -49,6 +50,7 @@ export default function Profile({ navigation, route }: Props) {
         socket.current.on('balanceChanged', (payload: any) => dispatch(reduceBalanceChanged(payload, key)));
         socket.current.on('totalStakeChanged', (payload: any) => dispatch(reduceTotalStakeChanged(payload, key)));
         socket.current.on('newCollection', (payload: any) => dispatch(reduceNewCollection(payload, key)));
+        socket.current.on('newProfileUpdates', (payload: any) => dispatch(reduceNewProfileUpdates(payload, key)));
         socket.current.on('totalNFTSoldChanged', (payload: any) => dispatch(reduceTotalNFTSoldChanged(payload, key)));
         socket.current.on('newOwned', (payload: any) => dispatch(reduceNewOwned(payload, key)));
         socket.current.on('newPending', (payload: any) => dispatch(reduceNewPending(payload, key)));

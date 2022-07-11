@@ -19,6 +19,7 @@ import {
   setWalletViewHistoryPagination,
   setWalletViewLoaded,
   setWalletViewReqStatus,
+  setWalletViewVersion,
 } from 'enevti-app/store/slices/ui/view/wallet';
 
 type WalletRoute = StackScreenProps<RootStackParamList, 'Wallet'>['route'];
@@ -48,6 +49,7 @@ export const loadWallet = createAsyncThunk<void, LoadWalletArgs, AsyncThunkAPI>(
           value: walletResponse.data,
         }),
       );
+      dispatch(setWalletViewVersion({ key: route.key, value: Date.now() }));
       dispatch(pushWalletHistory({ key: route.key, value: transactionHistoryResponse.data.data }));
       dispatch(
         setWalletViewHistoryPagination({

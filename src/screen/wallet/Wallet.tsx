@@ -17,8 +17,9 @@ import { Linking } from 'react-native';
 import { handleError } from 'enevti-app/utils/error/handle';
 import { Socket } from 'socket.io-client';
 import { appSocket } from 'enevti-app/utils/network';
-import { reduceWalletBalanceChanged } from 'enevti-app/store/middleware/thunk/socket/wallet/reduceWalletBalanceChanged';
+import { reduceWalletBalanceChanged } from 'enevti-app/store/middleware/thunk/socket/wallet/walletBalanceChanged';
 import { routeParamToAddress } from 'enevti-app/service/enevti/persona';
+import { reduceNewWalletUpdates } from 'enevti-app/store/middleware/thunk/socket/wallet/newWalletActivity';
 
 type Props = StackScreenProps<RootStackParamList, 'Wallet'>;
 
@@ -46,6 +47,9 @@ export default function Wallet({ navigation, route }: Props) {
       const address = await routeParamToAddress(route.params);
       socket.current = appSocket(address);
       socket.current.on('balanceChanged', (payload: any) => dispatch(reduceWalletBalanceChanged(payload, route.key)));
+      socket.current.on('newProfileActivityUpdates', (payload: any) =>
+        dispatch(reduceNewWalletUpdates(payload, route.key)),
+      );
     };
     subscribe();
     return function cleanup() {

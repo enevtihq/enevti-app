@@ -36,4 +36,5 @@ export default {
   usernameNotFound: 'Username not found...',
   specifyRecipient: 'Set Recipient',
   specifyRecipientDescription: 'Use {{coin}} address or username!',
+  newActivity: 'New Activity!',
 };

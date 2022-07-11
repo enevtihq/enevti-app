@@ -7,10 +7,12 @@ import { RouteProp } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'enevti-app/store/state';
 import {
+  isThereAnyNewWalletUpdate,
   isWalletUndefined,
   selectWalletViewHistory,
   selectWalletViewHistoryPagination,
   selectWalletViewReqStatus,
+  setWalletViewVersion,
 } from 'enevti-app/store/slices/ui/view/wallet';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
 import { loadMoreTransactionHistory, loadWallet, unloadWallet } from 'enevti-app/store/middleware/thunk/ui/view/wallet';
@@ -25,6 +27,7 @@ import { ProfileActivity } from 'enevti-app/types/core/account/profile';
 import AppTextBody2 from 'enevti-app/components/atoms/text/AppTextBody2';
 import { useTranslation } from 'react-i18next';
 import AppResponseView from '../view/AppResponseView';
+import AppFloatingNotifButton from 'enevti-app/components/molecules/button/AppFloatingNotifButton';
 
 const TRANSACTION_HISTORY_ITEM_HEIGHT = 9;
 
@@ -53,6 +56,7 @@ export default function AppWallet({ navigation, route }: AppWalletProps) {
   );
   const walletReqStatus = useSelector((state: RootState) => selectWalletViewReqStatus(state, route.key));
   const walletUndefined = useSelector((state: RootState) => isWalletUndefined(state, route.key));
+  const newUpdate = useSelector((state: RootState) => isThereAnyNewWalletUpdate(state, route.key));
 
   const onWalletLoaded = React.useCallback(
     (reload: boolean = false) => {
@@ -108,6 +112,10 @@ export default function AppWallet({ navigation, route }: AppWalletProps) {
 
   const emptyComponent = React.useMemo(() => <AppMessageEmpty />, []);
 
+  const onUpdateClose = React.useCallback(() => {
+    dispatch(setWalletViewVersion({ key: route.key, value: Date.now() }));
+  }, [dispatch, route.key]);
+
   const handleRefresh = React.useCallback(() => {
     onWalletLoaded(true);
   }, [onWalletLoaded]);
@@ -123,6 +131,12 @@ export default function AppWallet({ navigation, route }: AppWalletProps) {
 
   return !walletUndefined ? (
     <AppResponseView onReload={handleRefresh} status={walletReqStatus} style={styles.loaderContainer}>
+      <AppFloatingNotifButton
+        show={newUpdate}
+        label={t('wallet:newActivity')}
+        onPress={handleRefresh}
+        onClose={onUpdateClose}
+      />
       <AnimatedFlatList
         ref={transactionHistoryRef}
         keyExtractor={keyExtractor}

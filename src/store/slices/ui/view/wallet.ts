@@ -19,6 +19,8 @@ const initialStateItem: WalletViewState = {
     version: 0,
     checkpoint: 0,
   },
+  version: 0,
+  fetchedVersion: 0,
   loaded: false,
   reqStatus: 0,
   balance: '',
@@ -66,6 +68,12 @@ const walletViewSlice = createSlice({
     setWalletViewBalance: (wallet, action: PayloadAction<{ key: string; value: string }>) => {
       wallet[action.payload.key].balance = action.payload.value;
     },
+    setWalletViewFetchedVersion: (wallet, action: PayloadAction<{ key: string; value: number }>) => {
+      wallet[action.payload.key].fetchedVersion = action.payload.value;
+    },
+    setWalletViewVersion: (wallet, action: PayloadAction<{ key: string; value: number }>) => {
+      wallet[action.payload.key].version = action.payload.value;
+    },
     setWalletViewHistory: (wallet, action: PayloadAction<{ key: string; value: WalletView['history'] }>) => {
       Object.assign(wallet, {
         [action.payload.key]: Object.assign(wallet[action.payload.key], { history: action.payload.value }),
@@ -91,6 +99,8 @@ export const {
   unshiftWalletHistory,
   pushWalletHistory,
   setWalletViewHistoryPagination,
+  setWalletViewFetchedVersion,
+  setWalletViewVersion,
   setWalletViewLoaded,
   setWalletViewReqStatus,
   setWalletViewBalance,
@@ -130,4 +140,10 @@ export const isWalletUndefined = createSelector(
 export const selectWalletViewReqStatus = createSelector(
   [(state: RootState) => state.ui.view.wallet, (state: RootState, key: string) => key],
   (wallet: WalletViewStore, key: string) => (wallet.hasOwnProperty(key) ? wallet[key].reqStatus : 500),
+);
+
+export const isThereAnyNewWalletUpdate = createSelector(
+  [(state: RootState) => state.ui.view.wallet, (state: RootState, key: string) => key],
+  (wallet: WalletViewStore, key: string) =>
+    wallet.hasOwnProperty(key) ? wallet[key].fetchedVersion > wallet[key].version : true,
 );
