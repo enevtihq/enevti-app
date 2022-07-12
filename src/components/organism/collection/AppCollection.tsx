@@ -46,6 +46,13 @@ import { reduceNewNTotalMinted } from 'enevti-app/store/middleware/thunk/socket/
 import { reduceNewCollectionUpdates } from 'enevti-app/store/middleware/thunk/socket/collection/newCollectionUpdates';
 import AppFloatingNotifButton from 'enevti-app/components/molecules/button/AppFloatingNotifButton';
 import { isMintingAvailable } from 'enevti-app/utils/collection';
+import AppAlertModal from '../menu/AppAlertModal';
+import {
+  hideOnceLike,
+  selectOnceLike,
+  selectOnceLikeShow,
+  touchOnceLike,
+} from 'enevti-app/store/slices/entities/once/like';
 
 const noDisplay = 'none';
 const visible = 1;
@@ -65,6 +72,8 @@ export default function AppCollection({ onScrollWorklet, navigation, route }: Ap
   const insets = useSafeAreaInsets();
   const headerHeight = hp(HEADER_HEIGHT_PERCENTAGE) + insets.top;
 
+  const onceLike = useSelector(selectOnceLike);
+  const onceLikeShow = useSelector(selectOnceLikeShow);
   const collection = useSelector((state: RootState) => selectCollectionView(state, route.key));
   const collectionUndefined = useSelector((state: RootState) => isCollectionUndefined(state, route.key));
   const newUpdate = useSelector((state: RootState) => isThereAnyNewCollectionUpdates(state, route.key));
@@ -130,6 +139,11 @@ export default function AppCollection({ onScrollWorklet, navigation, route }: Ap
   const mintedItemsOnMounted = React.useCallback(() => setMintedItemsMounted(true), []);
 
   const activityOnMounted = React.useCallback(() => setActivityMounted(true), []);
+
+  const onceLikeOnDismiss = React.useCallback(() => {
+    dispatch(touchOnceLike());
+    dispatch(hideOnceLike());
+  }, [dispatch]);
 
   const paymentSuccessCallback = React.useCallback(() => {
     dispatch(hideModalLoader());
@@ -294,9 +308,21 @@ export default function AppCollection({ onScrollWorklet, navigation, route }: Ap
       progressViewOffset={progressViewOffset}
       status={collection.reqStatus}
       style={styles.collectionContainer}>
+      {!onceLike ? (
+        <AppAlertModal
+          iconName={'likeActive'}
+          visible={onceLikeShow}
+          onDismiss={onceLikeOnDismiss}
+          title={t('home:likeOnceTitle')}
+          description={t('home:likeOnceDescription')}
+          secondaryButtonText={t('home:likeOnceButton')}
+          secondaryButtonOnPress={onceLikeOnDismiss}
+        />
+      ) : null}
       <Animated.View pointerEvents={'box-none'} style={[styles.collectionHeader, scrollStyle]}>
         <AppCollectionHeader
           navigation={navigation}
+          route={route}
           collection={collection}
           mintingAvailable={mintingAvailable}
           onFinish={onRefresh}

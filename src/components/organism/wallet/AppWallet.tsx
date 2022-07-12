@@ -139,6 +139,7 @@ export default function AppWallet({ navigation, route }: AppWalletProps) {
       />
       <AnimatedFlatList
         ref={transactionHistoryRef}
+        onMomentumScrollBegin={onUpdateClose}
         keyExtractor={keyExtractor}
         scrollEventThrottle={16}
         showsVerticalScrollIndicator={false}

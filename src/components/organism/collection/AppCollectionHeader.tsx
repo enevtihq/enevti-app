@@ -22,21 +22,29 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { Collection } from 'enevti-app/types/core/chain/collection';
 import { STATUS_BAR_HEIGHT } from 'enevti-app/components/atoms/view/AppStatusBar';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
+import { selectOnceLike, showOnceLike } from 'enevti-app/store/slices/entities/once/like';
+import { directPayLikeCollection } from 'enevti-app/store/middleware/thunk/payment/direct/directPayLikeCollection';
+import { PaymentStatus } from 'enevti-app/types/ui/store/Payment';
+import usePaymentCallback from 'enevti-app/utils/hook/usePaymentCallback';
+import { RouteProp } from '@react-navigation/native';
+import { addCollectionViewLike } from 'enevti-app/store/slices/ui/view/collection';
 
 export const COLLECTION_HEADER_VIEW_HEIGHT =
   27 + (Dimensions.get('window').width * 0.5625 * 100) / Dimensions.get('window').height + STATUS_BAR_HEIGHT();
 
 interface AppCollectionHeaderProps {
-  collection: Collection;
+  collection: Collection & { liked: boolean };
   navigation: StackNavigationProp<RootStackParamList>;
+  route: RouteProp<RootStackParamList, 'Collection'>;
   mintingAvailable: boolean;
   onFinish?: () => void;
 }
 
 export default function AppCollectionHeader({
   collection,
+  route,
   navigation,
   mintingAvailable,
   onFinish,
@@ -47,7 +55,11 @@ export default function AppCollectionHeader({
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
   const styles = React.useMemo(() => makeStyles(hp, wp), [hp, wp]);
+
+  const likeThunkRef = React.useRef<any>();
   const [descriptionVisible, setDescriptionVisible] = React.useState<boolean>(false);
+  const [likeLoading, setLikeLoading] = React.useState<boolean>(false);
+  const onceLike = useSelector(selectOnceLike);
 
   const coverWidth = React.useMemo(() => wp('100%'), [wp]);
   const coverHeight = React.useMemo(() => insets.top + coverWidth * 0.5625, [coverWidth, insets]);
@@ -63,9 +75,52 @@ export default function AppCollectionHeader({
     });
   }, [navigation, collection.creator.address]);
 
+  const onLikeActivate = React.useCallback(async () => {
+    if (onceLike) {
+      setLikeLoading(true);
+      likeThunkRef.current = dispatch(directPayLikeCollection({ id: collection.id, name: collection.name }));
+    } else {
+      dispatch(showOnceLike());
+    }
+  }, [dispatch, collection, onceLike]);
+
+  const onLikeDeactivate = React.useCallback(() => {
+    dispatch(showSnackbar({ mode: 'info', text: t('home:cannotLike') }));
+  }, [dispatch, t]);
+
   const descriptionModalOnDismiss = React.useCallback(() => setDescriptionVisible(false), []);
 
   const descriptionModalOnPress = React.useCallback(() => setDescriptionVisible(old => !old), []);
+
+  const paymentIdleCallback = React.useCallback((action: PaymentStatus['action']) => {
+    if (action === 'likeCollection') {
+      setLikeLoading(false);
+      likeThunkRef.current?.abort();
+    }
+  }, []);
+
+  const paymentSuccessCallback = React.useCallback(
+    (action: PaymentStatus['action']) => {
+      if (action === 'likeCollection') {
+        setLikeLoading(false);
+        dispatch(addCollectionViewLike({ key: route.key }));
+      }
+    },
+    [dispatch, route.key],
+  );
+
+  const paymentCondition = React.useCallback(
+    (action: PaymentStatus['action'], id: string) => {
+      return action !== undefined && ['likeCollection'].includes(action) && id === collection.id;
+    },
+    [collection.id],
+  );
+
+  usePaymentCallback({
+    condition: paymentCondition,
+    onIdle: paymentIdleCallback,
+    onSuccess: paymentSuccessCallback,
+  });
 
   return (
     <View
@@ -114,14 +169,19 @@ export default function AppCollectionHeader({
 
         <View style={styles.collectionChipsContainer}>
           <AppQuaternaryButton
-            icon={iconMap.likeActive}
+            loading={likeLoading}
+            loadingSize={15}
+            loadingStyle={styles.likeButtonLoadingStyle}
+            icon={collection.liked ? iconMap.likeActive : iconMap.likeInactive}
             iconSize={hp('3%')}
-            iconColor={theme.colors.placeholder}
+            iconColor={collection.liked ? theme.colors.primary : theme.colors.text}
             style={{
               height: hp('4%'),
             }}
-            onPress={() => dispatch(showSnackbar({ mode: 'info', text: 'Coming Soon!' }))}>
-            <AppTextBody4 style={{ color: theme.colors.placeholder }}>{numberKMB(collection.like, 2)}</AppTextBody4>
+            onPress={collection.liked ? onLikeDeactivate : onLikeActivate}>
+            <AppTextBody4 style={{ color: collection.liked ? theme.colors.primary : theme.colors.text }}>
+              {numberKMB(collection.like, 2)}
+            </AppTextBody4>
           </AppQuaternaryButton>
           <AppQuaternaryButton
             icon={iconMap.commentFill}
@@ -170,6 +230,11 @@ export default function AppCollectionHeader({
 
 const makeStyles = (hp: DimensionFunction, wp: DimensionFunction) =>
   StyleSheet.create({
+    likeButtonLoadingStyle: {
+      marginRight: wp('2.5%'),
+      marginLeft: wp('2.5%'),
+      height: '100%',
+    },
     collectionName: {
       flexDirection: 'row',
       paddingTop: hp('2%'),

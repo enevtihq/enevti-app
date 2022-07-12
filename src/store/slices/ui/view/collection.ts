@@ -14,6 +14,7 @@ type CollectionViewState = Omit<Collection, 'collectionType'> & {
   version: number;
   loaded: boolean;
   reqStatus: number;
+  liked: boolean;
 };
 
 type CollectionViewStore = {
@@ -29,6 +30,7 @@ const initialStateItem: CollectionViewState = {
     checkpoint: 0,
     version: 0,
   },
+  liked: false,
   fetchedVersion: 0,
   version: 0,
   loaded: false,
@@ -84,6 +86,10 @@ const collectionViewSlice = createSlice({
     setCollectionView: (collection, action: PayloadAction<{ key: string; value: Record<string, any> }>) => {
       Object.assign(collection, { [action.payload.key]: action.payload.value });
     },
+    addCollectionViewLike: (collection, action: PayloadAction<{ key: string }>) => {
+      collection[action.payload.key].liked = true;
+      collection[action.payload.key].like++;
+    },
     unshiftCollectionViewMinted: (collection, action: PayloadAction<{ key: string; value: NFTBase[] }>) => {
       collection[action.payload.key].minted = action.payload.value.concat(collection[action.payload.key].minted);
     },
@@ -135,6 +141,7 @@ const collectionViewSlice = createSlice({
 export const {
   initCollectionView,
   setCollectionView,
+  addCollectionViewLike,
   unshiftCollectionViewMinted,
   unshiftCollectionViewActivity,
   pushCollectionViewMinted,

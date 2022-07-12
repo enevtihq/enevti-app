@@ -14,13 +14,15 @@ import { appFetch, isInternetReachable } from 'enevti-app/utils/network';
 import { APIResponse, APIResponseVersioned, ResponseJSON, ResponseVersioned } from 'enevti-app/types/core/service/api';
 import { NFTBase } from 'enevti-app/types/core/chain/nft';
 import { COLLECTION_ACTIVITY_INITIAL_LENGTH, COLLECTION_MINTED_INITIAL_LENGTH } from 'enevti-app/utils/constant/limit';
+import { getMyAddress } from './persona';
 
 type CollectionRoute = StackScreenProps<RootStackParamList, 'Collection'>['route']['params'];
 
 async function fetchCollectionById(id: string, signal?: AbortController['signal']): Promise<APIResponse<Collection>> {
   try {
     await isInternetReachable();
-    const res = await appFetch(urlGetCollectionById(id), { signal });
+    const myAddress = await getMyAddress();
+    const res = await appFetch(urlGetCollectionById(id, myAddress), { signal });
     const ret = (await res.json()) as ResponseJSON<Collection>;
     handleResponseCode(res, ret);
     return {
@@ -40,7 +42,8 @@ async function fetchCollectionBySymbol(
 ): Promise<APIResponse<Collection>> {
   try {
     await isInternetReachable();
-    const res = await appFetch(urlGetCollectionBySymbol(symbol), { signal });
+    const myAddress = await getMyAddress();
+    const res = await appFetch(urlGetCollectionBySymbol(symbol, myAddress), { signal });
     const ret = (await res.json()) as ResponseJSON<Collection>;
     handleResponseCode(res, ret);
     return {

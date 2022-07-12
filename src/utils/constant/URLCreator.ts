@@ -1,8 +1,8 @@
-export const ENEVTI_DEFAULT_API = 'http://192.168.0.103:8880';
-export const ENEVTI_SERVICE_API = 'http://192.168.0.103:9901';
-export const ENEVTI_FAUCET_API = 'http://192.168.0.103:8881';
-export const ENEVTI_SOCKET_IO = 'ws://192.168.0.103:8082';
-export const ENEVTI_CORE_WS = 'ws://192.168.0.103:8082/ws';
+export const ENEVTI_DEFAULT_API = 'http://192.168.0.104:8880';
+export const ENEVTI_SERVICE_API = 'http://192.168.0.104:9901';
+export const ENEVTI_FAUCET_API = 'http://192.168.0.104:8881';
+export const ENEVTI_SOCKET_IO = 'ws://192.168.0.104:8082';
+export const ENEVTI_CORE_WS = 'ws://192.168.0.104:8082/ws';
 export const IPFS_GATEWAY = '.ipfs.nftstorage.link';
 export const NFT_STORAGE_URL = 'https://api.nft.storage/upload';
 
@@ -59,8 +59,13 @@ export function urlGetTransactions(param: UrlGetTransactionsParam, host: string 
   return encodeURI(`${host}/api/v2/transactions?${query}`);
 }
 
-export function urlGetAllCollection(offset: number = 0, limit: number = 10, host: string = ENEVTI_DEFAULT_API) {
-  return encodeURI(`${host}/collection?offset=${offset}&limit=${limit}`);
+export function urlGetAllCollection(
+  offset: number = 0,
+  limit: number = 10,
+  viewer: string,
+  host: string = ENEVTI_DEFAULT_API,
+) {
+  return encodeURI(`${host}/collection?offset=${offset}&limit=${limit}&viewer=${viewer}`);
 }
 
 export function urlGetAllNFT(offset: number = 0, limit: number = 10, host: string = ENEVTI_DEFAULT_API) {
@@ -75,8 +80,8 @@ export function urlGetAllNFTTemplateGenesis(offset: number = 0, limit: number = 
   return encodeURI(`${host}/nft/template/genesis?offset=${offset}&limit=${limit}`);
 }
 
-export function urlGetCollectionById(id: string, host: string = ENEVTI_DEFAULT_API) {
-  return encodeURI(`${host}/collection/id/${id}`);
+export function urlGetCollectionById(id: string, viewer: string, host: string = ENEVTI_DEFAULT_API) {
+  return encodeURI(`${host}/collection/id/${id}?viewer=${viewer}`);
 }
 
 export function urlGetCollectionMintedNFTById(
@@ -99,12 +104,12 @@ export function urlGetCollectionActivityById(
   return encodeURI(`${host}/collection/id/${id}/activity?offset=${offset}&limit=${limit}&version=${version}`);
 }
 
-export function urlGetCollectionByName(name: string, host: string = ENEVTI_DEFAULT_API) {
-  return encodeURI(`${host}/collection/n/${name}`);
+export function urlGetCollectionByName(name: string, viewer: string, host: string = ENEVTI_DEFAULT_API) {
+  return encodeURI(`${host}/collection/n/${name}?viewer=${viewer}`);
 }
 
-export function urlGetCollectionBySymbol(symbol: string, host: string = ENEVTI_DEFAULT_API) {
-  return encodeURI(`${host}/collection/s/${symbol}`);
+export function urlGetCollectionBySymbol(symbol: string, viewer: string, host: string = ENEVTI_DEFAULT_API) {
+  return encodeURI(`${host}/collection/s/${symbol}?viewer=${viewer}`);
 }
 
 export function urlGetFeeds(
