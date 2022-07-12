@@ -68,8 +68,13 @@ export function urlGetAllCollection(
   return encodeURI(`${host}/collection?offset=${offset}&limit=${limit}&viewer=${viewer}`);
 }
 
-export function urlGetAllNFT(offset: number = 0, limit: number = 10, host: string = ENEVTI_DEFAULT_API) {
-  return encodeURI(`${host}/nft?offset=${offset}&limit=${limit}`);
+export function urlGetAllNFT(
+  offset: number = 0,
+  limit: number = 10,
+  viewer: string,
+  host: string = ENEVTI_DEFAULT_API,
+) {
+  return encodeURI(`${host}/nft?offset=${offset}&limit=${limit}&viewer=${viewer}`);
 }
 
 export function urlGetAllNFTTemplate(offset: number = 0, limit: number = 10, host: string = ENEVTI_DEFAULT_API) {
@@ -122,8 +127,8 @@ export function urlGetFeeds(
   return encodeURI(`${host}/feeds/available?offset=${offset}&limit=${limit}&version=${version}&viewer=${viewer}`);
 }
 
-export function urlGetNFTById(id: string, host: string = ENEVTI_DEFAULT_API) {
-  return encodeURI(`${host}/nft/id/${id}`);
+export function urlGetNFTById(id: string, viewer: string, host: string = ENEVTI_DEFAULT_API) {
+  return encodeURI(`${host}/nft/id/${id}?viewer=${viewer}`);
 }
 
 export function urlGetNFTActivityById(
@@ -136,8 +141,8 @@ export function urlGetNFTActivityById(
   return encodeURI(`${host}/nft/id/${id}/activity?offset=${offset}&limit=${limit}&version=${version}`);
 }
 
-export function urlGetNFTBySerial(serial: string, host: string = ENEVTI_DEFAULT_API) {
-  return encodeURI(`${host}/nft/s/${serial}`);
+export function urlGetNFTBySerial(serial: string, viewer: string, host: string = ENEVTI_DEFAULT_API) {
+  return encodeURI(`${host}/nft/s/${serial}?viewer=${viewer}`);
 }
 
 export function urlGetNFTTemplateById(id: string, host: string = ENEVTI_DEFAULT_API) {

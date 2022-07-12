@@ -15,6 +15,7 @@ import {
 import { APIResponse, APIResponseVersioned, ResponseJSON, ResponseVersioned } from 'enevti-app/types/core/service/api';
 import { NFTActivity } from 'enevti-app/types/core/chain/nft/NFTActivity';
 import { NFT_ACTIVITY_INITIAL_LENGTH } from 'enevti-app/utils/constant/limit';
+import { getMyAddress } from './persona';
 
 type NFTDetailsRoute = StackScreenProps<RootStackParamList, 'NFTDetails'>['route']['params'];
 
@@ -55,7 +56,8 @@ export async function isSymbolAvailable(symbol: string, signal?: AbortController
 async function fetchNFTbyId(id: string, signal?: AbortController['signal']): Promise<APIResponse<NFT>> {
   try {
     await isInternetReachable();
-    const res = await appFetch(urlGetNFTById(id), { signal });
+    const myAddress = await getMyAddress();
+    const res = await appFetch(urlGetNFTById(id, myAddress), { signal });
     const ret = (await res.json()) as ResponseJSON<NFT>;
     handleResponseCode(res, ret);
     return {
@@ -76,7 +78,8 @@ async function fetchNFTbySerial(
 ): Promise<APIResponse<NFT>> {
   try {
     await isInternetReachable();
-    const res = await appFetch(urlGetNFTBySerial(`${symbol}#${serial}`), { signal });
+    const myAddress = await getMyAddress();
+    const res = await appFetch(urlGetNFTBySerial(`${symbol}#${serial}`, myAddress), { signal });
     const ret = (await res.json()) as ResponseJSON<NFT>;
     handleResponseCode(res, ret);
     return {

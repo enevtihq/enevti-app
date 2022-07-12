@@ -11,6 +11,7 @@ type NFTDetailsViewState = NFT & {
   fetchedVersion: number;
   reqStatus: number;
   loaded: boolean;
+  liked: boolean;
 };
 
 type NFTDetailsViewStore = {
@@ -28,9 +29,10 @@ const initialStateItem: NFTDetailsViewState = {
   reqStatus: 0,
   id: '',
   collectionId: '',
-  like: -1,
-  comment: -1,
-  createdOn: -1,
+  like: 0,
+  liked: false,
+  comment: 0,
+  createdOn: 0,
   name: '',
   description: '',
   symbol: '',
@@ -135,6 +137,10 @@ const nftDetailsViewSlice = createSlice({
     setNFTDetailsView: (nftDetails, action: PayloadAction<{ key: string; value: Record<string, any> }>) => {
       Object.assign(nftDetails, { [action.payload.key]: action.payload.value });
     },
+    addNFTDetailsViewLike: (nftDetails, action: PayloadAction<{ key: string }>) => {
+      nftDetails[action.payload.key].liked = true;
+      nftDetails[action.payload.key].like++;
+    },
     unshiftNFTDetailsViewActivity: (nftDetails, action: PayloadAction<{ key: string; value: NFTActivity[] }>) => {
       nftDetails[action.payload.key].activity = nftDetails[action.payload.key].activity.concat(action.payload.value);
     },
@@ -177,6 +183,7 @@ const nftDetailsViewSlice = createSlice({
 export const {
   initNFTDetailsView,
   setNFTDetailsView,
+  addNFTDetailsViewLike,
   unshiftNFTDetailsViewActivity,
   pushNFTDetailsViewActivity,
   setNFTDetailsViewActivityPagination,

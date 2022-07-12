@@ -14,19 +14,19 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import i18n from 'enevti-app/translations/i18n';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import { COIN_NAME } from 'enevti-app/utils/constant/identifier';
-import { LikeCollectionUI } from 'enevti-app/types/core/asset/redeemable_nft/like_collection_asset';
+import { LikeNFTUI } from 'enevti-app/types/core/asset/redeemable_nft/like_nft_asset';
 
-type PayLikeCollectionPayload = { id: string; name: string };
+type PayLikeNFTPayload = { id: string; symbol: string; serial: string };
 
-export const directPayLikeCollection = createAsyncThunk<void, PayLikeCollectionPayload, AsyncThunkAPI>(
-  'collection/directPayLikeCollection',
+export const directPayLikeNFT = createAsyncThunk<void, PayLikeNFTPayload, AsyncThunkAPI>(
+  'nftDetails/directPayLikeNFT',
   async (payload, { dispatch, signal }) => {
     try {
-      dispatch(setPaymentStatus({ id: payload.id, action: 'likeCollection', type: 'initiated', message: '' }));
+      dispatch(setPaymentStatus({ id: payload.id, action: 'likeNFT', type: 'initiated', message: '' }));
 
-      const transactionPayload: AppTransaction<LikeCollectionUI> = await createTransaction(
+      const transactionPayload: AppTransaction<LikeNFTUI> = await createTransaction(
         redeemableNftModule.moduleID,
-        redeemableNftModule.likeCollection,
+        redeemableNftModule.likeNft,
         {
           id: payload.id,
         },
@@ -46,10 +46,10 @@ export const directPayLikeCollection = createAsyncThunk<void, PayLikeCollectionP
       dispatch(setPaymentPriority('normal'));
       dispatch(
         setPaymentAction({
-          type: 'likeCollection',
+          type: 'likeNFT',
           icon: iconMap.likeActive,
-          name: i18n.t('payment:payLikeCollectionName'),
-          description: i18n.t('payment:payLikeCollectionDescription', { name: payload.name }),
+          name: i18n.t('payment:payLikeNFTName'),
+          description: i18n.t('payment:payLikeNFTDescription', { symbol: payload.symbol, serial: payload.serial }),
           amount: '0',
           currency: COIN_NAME,
           payload: '',
@@ -57,22 +57,22 @@ export const directPayLikeCollection = createAsyncThunk<void, PayLikeCollectionP
         }),
       );
 
-      dispatch(setPaymentStatus({ id: payload.id, action: 'likeCollection', type: 'process', message: '' }));
+      dispatch(setPaymentStatus({ id: payload.id, action: 'likeNFT', type: 'process', message: '' }));
 
       const response = await postTransaction(
         attachFee(transactionPayload, (BigInt(gasFee) + BigInt(baseFee)).toString()),
       );
       if (response.status === 200) {
-        dispatch(setPaymentStatus({ id: payload.id, action: 'likeCollection', type: 'success', message: '' }));
+        dispatch(setPaymentStatus({ id: payload.id, action: 'likeNFT', type: 'success', message: '' }));
       } else {
-        dispatch(setPaymentStatus({ id: payload.id, action: 'likeCollection', type: 'error', message: response.data }));
+        dispatch(setPaymentStatus({ id: payload.id, action: 'likeNFT', type: 'error', message: response.data }));
       }
     } catch (err) {
       handleError(err);
       dispatch(
         setPaymentStatus({
           id: payload.id,
-          action: 'likeCollection',
+          action: 'likeNFT',
           type: 'error',
           message: (err as Record<string, any>).message.toString(),
         }),

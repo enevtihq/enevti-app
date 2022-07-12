@@ -40,5 +40,7 @@ export default {
   payTransferToken: 'Transfer {{coin}}',
   payTransferTokenDescription: 'to {{base32}}',
   payLikeCollectionName: 'Like Collection',
-  payLikeCollectonDescription: 'Give like for {{name}}',
+  payLikeCollectionDescription: 'Give like for {{name}}',
+  payLikeNFTName: 'Like NFT',
+  payLikeNFTDescription: 'Give like for {{symbol}}#{{serial}}',
 };

@@ -27,7 +27,10 @@ import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 import { useDispatch, useSelector } from 'react-redux';
 import { RouteProp } from '@react-navigation/native';
 import { RootState } from 'enevti-app/store/state';
-import { selectNFTDetailsView } from 'enevti-app/store/slices/ui/view/nftDetails';
+import { addNFTDetailsViewLike, selectNFTDetailsView } from 'enevti-app/store/slices/ui/view/nftDetails';
+import { directPayLikeNFT } from 'enevti-app/store/middleware/thunk/payment/direct/directPayLikeNFT';
+import { PaymentStatus } from 'enevti-app/types/ui/store/Payment';
+import usePaymentCallback from 'enevti-app/utils/hook/usePaymentCallback';
 
 interface NFTSummaryComponentProps {
   route: RouteProp<RootStackParamList, 'NFTDetails'>;
@@ -60,6 +63,8 @@ function Component(
   const theme = useTheme() as Theme;
 
   const mounted = React.useRef<boolean>(false);
+  const likeThunkRef = React.useRef<any>();
+  const [likeLoading, setLikeLoading] = React.useState<boolean>(false);
   const [displayed, setDisplayed] = React.useState<boolean>(false);
   const [refreshing, setRefreshing] = React.useState<boolean>(false);
 
@@ -89,6 +94,15 @@ function Component(
     [handleRefresh, progressViewOffset],
   );
 
+  const onLikeActivate = React.useCallback(async () => {
+    setLikeLoading(true);
+    likeThunkRef.current = dispatch(directPayLikeNFT({ id: nft.id, symbol: nft.symbol, serial: nft.serial }));
+  }, [dispatch, nft.id, nft.symbol, nft.serial]);
+
+  const onLikeDeactivate = React.useCallback(() => {
+    dispatch(showSnackbar({ mode: 'info', text: t('home:cannotLike') }));
+  }, [dispatch, t]);
+
   const onCreatorDetail = React.useCallback(() => {
     navigation.push('Profile', {
       arg: nft.creator.address,
@@ -102,6 +116,36 @@ function Component(
       mode: 'a',
     });
   }, [navigation, nft.owner.address]);
+
+  const paymentIdleCallback = React.useCallback((action: PaymentStatus['action']) => {
+    if (action === 'likeNFT') {
+      setLikeLoading(false);
+      likeThunkRef.current?.abort();
+    }
+  }, []);
+
+  const paymentSuccessCallback = React.useCallback(
+    (action: PaymentStatus['action']) => {
+      if (action === 'likeNFT') {
+        setLikeLoading(false);
+        dispatch(addNFTDetailsViewLike({ key: route.key }));
+      }
+    },
+    [dispatch, route.key],
+  );
+
+  const paymentCondition = React.useCallback(
+    (action: PaymentStatus['action'], id: string) => {
+      return action !== undefined && ['likeNFT'].includes(action) && id === nft.id;
+    },
+    [nft.id],
+  );
+
+  usePaymentCallback({
+    condition: paymentCondition,
+    onIdle: paymentIdleCallback,
+    onSuccess: paymentSuccessCallback,
+  });
 
   React.useEffect(() => {
     if (ref && ref.current) {
@@ -150,14 +194,19 @@ function Component(
 
       <View style={styles.nftDetailsChipsContainer}>
         <AppQuaternaryButton
-          icon={iconMap.likeActive}
+          loading={likeLoading}
+          loadingSize={15}
+          loadingStyle={styles.likeButtonLoadingStyle}
+          icon={nft.liked ? iconMap.likeActive : iconMap.likeInactive}
           iconSize={hp('3%')}
-          iconColor={theme.colors.placeholder}
+          iconColor={nft.liked ? theme.colors.primary : theme.colors.text}
           style={{
             height: hp('4%'),
           }}
-          onPress={() => dispatch(showSnackbar({ mode: 'info', text: 'Coming Soon!' }))}>
-          <AppTextBody4 style={{ color: theme.colors.placeholder }}>{numberKMB(nft.like, 2)}</AppTextBody4>
+          onPress={nft.liked ? onLikeDeactivate : onLikeActivate}>
+          <AppTextBody4 style={{ color: nft.liked ? theme.colors.primary : theme.colors.text }}>
+            {numberKMB(nft.like, 2)}
+          </AppTextBody4>
         </AppQuaternaryButton>
         <AppQuaternaryButton
           icon={iconMap.commentFill}
@@ -224,6 +273,11 @@ const makeStyles = (
   theme: Theme,
 ) =>
   StyleSheet.create({
+    likeButtonLoadingStyle: {
+      marginRight: wp('2.5%'),
+      marginLeft: wp('2.5%'),
+      height: '100%',
+    },
     contentContainerStyle: {
       paddingTop: hp(NFT_DETAILS_TOP_TABBAR_HEIGHT_PERCENTAGE) + collectionHeaderHeight,
       minHeight:
