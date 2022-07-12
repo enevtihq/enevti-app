@@ -137,6 +137,9 @@ const nftDetailsViewSlice = createSlice({
     setNFTDetailsView: (nftDetails, action: PayloadAction<{ key: string; value: Record<string, any> }>) => {
       Object.assign(nftDetails, { [action.payload.key]: action.payload.value });
     },
+    setNFTDetailsViewLike: (nftDetails, action: PayloadAction<{ key: string; value: number }>) => {
+      nftDetails[action.payload.key].like = action.payload.value;
+    },
     addNFTDetailsViewLike: (nftDetails, action: PayloadAction<{ key: string }>) => {
       nftDetails[action.payload.key].liked = true;
       nftDetails[action.payload.key].like++;
@@ -184,6 +187,7 @@ export const {
   initNFTDetailsView,
   setNFTDetailsView,
   addNFTDetailsViewLike,
+  setNFTDetailsViewLike,
   unshiftNFTDetailsViewActivity,
   pushNFTDetailsViewActivity,
   setNFTDetailsViewActivityPagination,

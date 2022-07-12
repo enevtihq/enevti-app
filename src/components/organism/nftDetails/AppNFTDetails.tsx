@@ -39,6 +39,7 @@ import { redudeNFTSecretDelivered } from 'enevti-app/store/middleware/thunk/sock
 import { reduceNewNFTUpdates } from 'enevti-app/store/middleware/thunk/socket/nftDetails/newNFTUpdates';
 import { useTranslation } from 'react-i18next';
 import AppFloatingNotifButton from 'enevti-app/components/molecules/button/AppFloatingNotifButton';
+import { reduceNewNFTLike } from 'enevti-app/store/middleware/thunk/socket/nftDetails/newLike';
 
 const noDisplay = 'none';
 const visible = 1;
@@ -74,6 +75,7 @@ export default function AppNFTDetails({ onScrollWorklet, navigation, route }: Ap
       socket.current = appSocket(nftDetails.id);
       socket.current.on('newNFTUpdates', (payload: any) => dispatch(reduceNewNFTUpdates(payload, key)));
       socket.current.on('secretDelivered', (payload: any) => dispatch(redudeNFTSecretDelivered(payload, key)));
+      socket.current.on('newLike', (payload: any) => dispatch(reduceNewNFTLike(payload, key)));
       return function cleanup() {
         socket.current?.disconnect();
       };

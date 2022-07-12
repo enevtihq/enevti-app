@@ -53,6 +53,7 @@ import {
   selectOnceLikeShow,
   touchOnceLike,
 } from 'enevti-app/store/slices/entities/once/like';
+import { reduceNewCollectionLike } from 'enevti-app/store/middleware/thunk/socket/collection/newLike';
 
 const noDisplay = 'none';
 const visible = 1;
@@ -89,6 +90,7 @@ export default function AppCollection({ onScrollWorklet, navigation, route }: Ap
       socket.current = appSocket(collection.id);
       socket.current.on('newCollectionUpdates', (payload: any) => dispatch(reduceNewCollectionUpdates(payload, key)));
       socket.current.on('newTotalMinted', (payload: any) => dispatch(reduceNewNTotalMinted(payload, key)));
+      socket.current.on('newLike', (payload: any) => dispatch(reduceNewCollectionLike(payload, key)));
       return function cleanup() {
         socket.current?.disconnect();
       };

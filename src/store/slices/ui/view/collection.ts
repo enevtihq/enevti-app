@@ -86,6 +86,9 @@ const collectionViewSlice = createSlice({
     setCollectionView: (collection, action: PayloadAction<{ key: string; value: Record<string, any> }>) => {
       Object.assign(collection, { [action.payload.key]: action.payload.value });
     },
+    setCollectionViewLike: (collection, action: PayloadAction<{ key: string; value: number }>) => {
+      collection[action.payload.key].like = action.payload.value;
+    },
     addCollectionViewLike: (collection, action: PayloadAction<{ key: string }>) => {
       collection[action.payload.key].liked = true;
       collection[action.payload.key].like++;
@@ -141,6 +144,7 @@ const collectionViewSlice = createSlice({
 export const {
   initCollectionView,
   setCollectionView,
+  setCollectionViewLike,
   addCollectionViewLike,
   unshiftCollectionViewMinted,
   unshiftCollectionViewActivity,
