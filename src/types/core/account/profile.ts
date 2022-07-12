@@ -20,6 +20,24 @@ export type Profile = {
   pending: number;
 };
 
+export type RedeemableNFTAccountStatsChain = {
+  nftSold: Buffer[];
+  treasuryAct: Buffer[];
+  serveRate: {
+    score: number;
+    items: {
+      id: Buffer;
+      nonce: number;
+      status: 0 | 1;
+    }[];
+  };
+  likeSent: {
+    total: number;
+    nft: Buffer[];
+    collection: Buffer[];
+  };
+};
+
 export type RedeemableNFTAccountProps = {
   redeemableNft: {
     nftSold: number;
@@ -65,4 +83,22 @@ export type ProfileActivityChainItems = Omit<ActivityChainBase, 'name'> & {
 
 export type ProfileActivityChain = {
   items: ProfileActivityChainItems[];
+};
+
+export type EngagementActivityName = 'likeNft' | 'likeCollection' | 'commentNft' | 'commentCollection' | 'reply';
+
+export type EngagementActivity = Omit<ActivityBase, 'name' | 'to' | 'value'> & {
+  name: EngagementActivityName;
+  target: Record<string, unknown>;
+};
+
+export type EngagementActivityAsset = Buffer;
+
+export type EngagementActivityChainItems = Omit<ActivityChainBase, 'name' | 'to' | 'value'> & {
+  name: EngagementActivityName;
+  target: Buffer;
+};
+
+export type EngagementActivityChain = {
+  items: EngagementActivityChainItems[];
 };
