@@ -29,7 +29,7 @@ export const loadMoments = createAsyncThunk<void, loadMomentsArgs, AsyncThunkAPI
       dispatch(setMomentViewReqStatus(200));
 
       if (reload || now - selectLastFetchMomentCache(getState()) > lastFetchTimeout.moment) {
-        const momentsResponse = await getMoments(signal);
+        const momentsResponse = await getMoments(signal, !reload);
         if (momentsResponse.status === 200 && !isErrorResponse(momentsResponse)) {
           dispatch(setLastFetchMomentCache(now));
           dispatch(setMomentItemsCache(parseMomentCache(momentsResponse.data)));
@@ -38,7 +38,7 @@ export const loadMoments = createAsyncThunk<void, loadMomentsArgs, AsyncThunkAPI
         dispatch(setMomentViewReqStatus(momentsResponse.status));
       }
     } catch (err: any) {
-      handleError(err);
+      handleError(err, undefined, !reload);
     } finally {
       dispatch(setMomentViewLoaded(true));
     }

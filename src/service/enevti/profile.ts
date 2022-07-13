@@ -52,7 +52,11 @@ async function fetchProfileBalance(address: string, signal?: AbortController['si
   }
 }
 
-async function fetchProfileNonce(address: string, signal?: AbortController['signal']): Promise<APIResponse<string>> {
+async function fetchProfileNonce(
+  address: string,
+  signal?: AbortController['signal'],
+  silent?: boolean,
+): Promise<APIResponse<string>> {
   try {
     await isInternetReachable();
     const res = await appFetch(urlGetProfileNonce(address), { signal });
@@ -64,7 +68,7 @@ async function fetchProfileNonce(address: string, signal?: AbortController['sign
       meta: ret.meta,
     };
   } catch (err: any) {
-    handleError(err);
+    handleError(err, undefined, silent);
     return responseError(err.code);
   }
 }
@@ -72,6 +76,7 @@ async function fetchProfileNonce(address: string, signal?: AbortController['sign
 async function fetchProfilePendingDelivery(
   address: string,
   signal?: AbortController['signal'],
+  silent?: boolean,
 ): Promise<APIResponse<{ id: string; secret: NFTSecret }[]>> {
   try {
     await isInternetReachable();
@@ -84,7 +89,7 @@ async function fetchProfilePendingDelivery(
       meta: ret.meta,
     };
   } catch (err: any) {
-    handleError(err);
+    handleError(err, undefined, silent);
     return responseError(err.code, err.message);
   }
 }
@@ -255,15 +260,17 @@ export async function getProfileBalance(
 export async function getProfileNonce(
   address: string,
   signal?: AbortController['signal'],
+  silent?: boolean,
 ): Promise<APIResponse<string>> {
-  return await fetchProfileNonce(address, signal);
+  return await fetchProfileNonce(address, signal, silent);
 }
 
 export async function getProfilePendingDelivery(
   address: string,
   signal?: AbortController['signal'],
+  silent?: boolean,
 ): Promise<APIResponse<{ id: string; secret: NFTSecret }[]>> {
-  return await fetchProfilePendingDelivery(address, signal);
+  return await fetchProfilePendingDelivery(address, signal, silent);
 }
 
 export async function getProfile(address: string, signal?: AbortController['signal']): Promise<APIResponse<Profile>> {

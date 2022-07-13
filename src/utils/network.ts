@@ -11,11 +11,10 @@ export async function isInternetReachable(): Promise<boolean> {
   await i18n.loadNamespaces('network');
   const status = (await NetInfo.fetch()).isInternetReachable;
   if (!status) {
-    throw {
-      name: 'NetworkError',
-      code: ERRORCODE.NETWORK_ERROR,
-      message: i18n.t('network:noInternet'),
-    };
+    const err = Error(i18n.t('network:noInternet')) as any;
+    err.name = 'NetworkError';
+    err.code = ERRORCODE.NETWORK_ERROR;
+    throw err;
   }
   return status ? status : false;
 }

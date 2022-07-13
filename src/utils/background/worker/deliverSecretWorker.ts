@@ -53,13 +53,13 @@ export const deliverSecretWorkerOnFailure = async (_job: Job<any>, _error: Error
 };
 
 export const checkDeliverSecretWorkerOnFailure = async (_job: Job<any>, _error: Error) => {
-  await sleep(await BLOCK_TIME());
+  await sleep((await BLOCK_TIME()) * 12);
   await addCheckDeliverSecretJob(_job.payload, false, undefined, false);
 };
 
 export const checkDeliverSecretWorker = async (data: { payload: string; silent?: boolean }) => {
   await isInternetReachable();
-  const pendings = await getProfilePendingDelivery(data.payload);
+  const pendings = await getProfilePendingDelivery(data.payload, undefined, true);
   if (pendings.status === 200) {
     if (pendings.data.length > 0) {
       if (!data.silent) {

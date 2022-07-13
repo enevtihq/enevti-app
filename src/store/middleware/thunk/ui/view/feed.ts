@@ -26,6 +26,7 @@ import { lastFetchTimeout } from 'enevti-app/utils/constant/lastFetch';
 import { getFeeds, getMoreFeeds, parseFeedCache } from 'enevti-app/service/enevti/feed';
 import { Feeds } from 'enevti-app/types/core/service/feed';
 import { loadMyProfile } from './profile';
+import i18n from 'enevti-app/translations/i18n';
 
 type loadFeedsArgs = { reload: boolean };
 
@@ -37,26 +38,31 @@ export const loadFeeds = createAsyncThunk<void, loadFeedsArgs, AsyncThunkAPI>(
       dispatch(setFeedViewVersion(now));
 
       if (reload || now - selectLastFetchFeedCache(getState()) > lastFetchTimeout.feed) {
-        const feedResponse = await getFeeds(signal);
+        const feedResponse = await getFeeds(signal, !reload);
+        dispatch(setFeedViewCheckpoint(feedResponse.data.checkpoint));
+
+        dispatch(setFeedView(feedResponse.data.data as Feeds));
+        dispatch(setFeedViewReqStatus(feedResponse.status));
+        dispatch(setFeedViewReqVersion(feedResponse.data.version));
+
         if (feedResponse.status === 200 && !isErrorResponse(feedResponse)) {
           dispatch(setLastFetchFeedCache(now));
           dispatch(setFeedItemsCache(parseFeedCache(feedResponse.data.data as Feeds)));
           dispatch(setFeedCacheReqVersion(feedResponse.data.version));
+        } else {
+          throw Error(i18n.t('error:clientError'));
         }
-        dispatch(setFeedView(feedResponse.data.data as Feeds));
-        dispatch(setFeedViewCheckpoint(feedResponse.data.checkpoint));
-        dispatch(setFeedViewReqStatus(feedResponse.status));
-        dispatch(setFeedViewReqVersion(feedResponse.data.version));
       } else {
         dispatch(setFeedView(selectFeedItemsCache(getState())));
         dispatch(setFeedViewReqStatus(200));
         dispatch(setFeedViewReqVersion(selectReqVersionFeedItemsCache(getState())));
       }
+
+      await loadMyProfile(reload, dispatch, signal);
     } catch (err: any) {
       handleError(err);
     } finally {
       dispatch(setFeedViewLoaded(true));
-      await loadMyProfile(reload, dispatch, signal);
     }
   },
 );

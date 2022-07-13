@@ -30,20 +30,17 @@ export function handleError(err: any, key: string = 'message', silent: boolean =
 
 export function handleResponseCode(res: Response, ret: ResponseJSON<any>) {
   if (res.status === 404) {
-    throw {
-      code: 404,
-      message: i18n.t('error:notFound'),
-    };
+    const err = Error(i18n.t('error:notFound')) as any;
+    err.code = 404;
+    throw err;
   } else if (res.status === 400) {
-    throw {
-      code: 400,
-      message: i18n.t('error:clientError'),
-    };
+    const err = Error(i18n.t('error:clientError')) as any;
+    err.code = 400;
+    throw err;
   } else if (res.status !== 200) {
-    throw {
-      code: res.status,
-      message: i18n.t('error:responseError', { msg: JSON.stringify(ret.data) }),
-    };
+    const err = Error(i18n.t('error:responseError', { msg: JSON.stringify(ret.data) })) as any;
+    err.code = res.status;
+    throw err;
   }
 }
 

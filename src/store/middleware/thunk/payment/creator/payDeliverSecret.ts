@@ -38,7 +38,7 @@ export const payDeliverSecret = createAsyncThunk<void, PayDeliverSecretPayload, 
 
       dispatch(setDeliverSecretProcessing(true));
 
-      const deliverPending = await getProfilePendingDelivery(payload);
+      const deliverPending = await getProfilePendingDelivery(payload, undefined, true);
       if (deliverPending.status !== 200) {
         throw Error(i18n.t('error:transactionPreparationFailed'));
       }

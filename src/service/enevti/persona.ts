@@ -149,20 +149,18 @@ export async function getMyPassphrase() {
     if (localKey) {
       authToken = (await decryptWithPassword(authToken, localKey, auth.version)).data;
     } else {
-      throw {
-        name: 'KeyError',
-        code: ERRORCODE.WRONG_LOCALKEY,
-        message: i18n.t('error:wrongLocalKey'),
-      };
+      const err = Error(i18n.t('error:wrongLocalKey')) as any;
+      err.name = 'KeyError';
+      err.code = ERRORCODE.WRONG_LOCALKEY;
+      throw err;
     }
   } else if (authToken && !auth.encrypted) {
     authToken = (await decryptWithDevice(authToken, auth.version)).data;
   } else {
-    throw {
-      name: 'UnknownError',
-      code: ERRORCODE.UNKNOWN,
-      message: i18n.t('error:unknownErrorGetPassphrase'),
-    };
+    const err = Error(i18n.t('error:unknownErrorGetPassphrase')) as any;
+    err.name = 'UnknownError';
+    err.code = ERRORCODE.UNKNOWN;
+    throw err;
   }
   return authToken;
 }

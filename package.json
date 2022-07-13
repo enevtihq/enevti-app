@@ -72,6 +72,7 @@
     "react-native-calendar-events": "^2.2.0",
     "react-native-circular-progress-indicator": "^3.2.0",
     "react-native-config": "^1.4.5",
+    "react-native-controlled-mentions": "^2.2.5",
     "react-native-countdown-component": "^2.7.1",
     "react-native-crypto": "^2.2.0",
     "react-native-device-info": "^8.4.8",

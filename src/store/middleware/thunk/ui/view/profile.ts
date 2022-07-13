@@ -47,6 +47,7 @@ import { Persona } from 'enevti-app/types/core/account/persona';
 import { Profile } from 'enevti-app/types/core/account/profile';
 import { payManualDeliverSecret } from 'enevti-app/store/middleware/thunk/payment/creator/payDeliverSecret';
 import { PROFILE_COLLECTION_RESPONSE_LIMIT, PROFILE_OWNED_RESPONSE_LIMIT } from 'enevti-app/utils/constant/limit';
+import i18n from 'enevti-app/translations/i18n';
 
 type ProfileRoute = StackScreenProps<RootStackParamList, 'Profile'>['route'];
 type LoadProfileArgs = { route: ProfileRoute; reload: boolean; isMyProfile: boolean };
@@ -266,6 +267,9 @@ export const unloadProfile =
 
 export const loadMyProfile = async (reload: boolean, dispatch: any, signal?: AbortController['signal']) => {
   const personaResponse = await getMyBasePersona(reload, signal);
+  if (personaResponse.status !== 200) {
+    throw Error(i18n.t('profile:errorLoadingMyProfile'));
+  }
   const profileResponse = await getMyProfile(reload, signal);
   const ownedResponse = await getMyProfileInitialOwned(reload, signal);
   const collectionResponse = await getMyProfileInitialCollection(reload, signal);
@@ -278,7 +282,6 @@ export const loadMyProfile = async (reload: boolean, dispatch: any, signal?: Abo
       version: Date.now(),
     }),
   );
-  dispatch(setMyProfileViewReqStatus(profileResponse.status));
   dispatch(
     setMyProfileViewOwnedPagination({
       checkpoint: ownedResponse.data.checkpoint,
@@ -291,4 +294,5 @@ export const loadMyProfile = async (reload: boolean, dispatch: any, signal?: Abo
       version: collectionResponse.data.version,
     }),
   );
+  dispatch(setMyProfileViewReqStatus(profileResponse.status));
 };

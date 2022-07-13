@@ -21,7 +21,7 @@ queue.configure({
     try {
       await sleep(await BLOCK_TIME());
       const myAddress = await getMyAddress();
-      const pendingPayload = await getProfilePendingDelivery(myAddress);
+      const pendingPayload = await getProfilePendingDelivery(myAddress, undefined, true);
       if (pendingPayload.status === 200) {
         if (pendingPayload.data.length > 0) {
           for (const payload of pendingPayload.data) {

@@ -39,11 +39,10 @@ export const googleSignIn = async () => {
     }
     return 0;
   } catch (error: any) {
-    throw {
-      name: 'GoogleError',
-      code: error.code,
-      message: await selectGoogleErrorText(error.code),
-    };
+    const err = Error(await selectGoogleErrorText(error.code)) as any;
+    err.name = 'GoogleError';
+    err.code = error.code;
+    throw err;
   }
 };
 

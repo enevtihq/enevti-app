@@ -9,9 +9,9 @@ export const syncTransactionNonce = createAsyncThunk<void, undefined, AsyncThunk
   async (_, { dispatch, signal }) => {
     try {
       dispatch(resetTransactionNonceCache());
-      await updateNonceCache(signal);
+      await updateNonceCache(signal, true);
     } catch (err: any) {
-      handleError(err);
+      handleError(err, undefined, true);
     }
   },
 );

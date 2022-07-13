@@ -27,4 +27,5 @@ export default {
   pendingForViewerTitle: 'Well...',
   pendingForViewerDescription: 'Looks like this creator have utility that has not been delivered yet',
   pendingForViewerButton: 'Hmmmm...',
+  errorLoadingMyProfile: 'Error loading your profile, please try again later',
 };

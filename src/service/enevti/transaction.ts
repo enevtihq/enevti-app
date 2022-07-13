@@ -252,10 +252,10 @@ export async function createSilentTransaction<T>(
   return transaction;
 }
 
-export async function updateNonceCache(signal?: AbortController['signal']) {
+export async function updateNonceCache(signal?: AbortController['signal'], silent?: boolean) {
   let nonce = '0';
   const myAddress = await getMyAddress();
-  const profileNonce = await getProfileNonce(myAddress, signal);
+  const profileNonce = await getProfileNonce(myAddress, signal, silent);
   if (profileNonce.status === 200) {
     nonce = profileNonce.data;
     store.dispatch(setTransactionNonceCache(Number(profileNonce.data)));

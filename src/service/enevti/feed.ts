@@ -13,6 +13,7 @@ async function fetchFeeds(
   offset?: number,
   limit?: number,
   version?: number,
+  silent?: boolean,
 ): Promise<APIResponse<FeedResponse>> {
   try {
     await isInternetReachable();
@@ -26,7 +27,7 @@ async function fetchFeeds(
       meta: ret.meta,
     };
   } catch (err: any) {
-    handleError(err);
+    handleError(err, undefined, silent);
     return responseError(err.code, { data: [], offset: 0, version: 0 });
   }
 }
@@ -35,8 +36,11 @@ export function parseFeedCache(feeds: Feeds) {
   return feeds.slice(0, 10);
 }
 
-export async function getFeeds(signal?: AbortController['signal']): Promise<APIResponse<FeedResponse>> {
-  return await fetchFeeds(signal);
+export async function getFeeds(
+  signal?: AbortController['signal'],
+  silent?: boolean,
+): Promise<APIResponse<FeedResponse>> {
+  return await fetchFeeds(signal, undefined, undefined, undefined, silent);
 }
 
 export async function getMoreFeeds(

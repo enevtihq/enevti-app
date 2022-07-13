@@ -11,6 +11,6 @@ export function parseMomentCache(moments: Moments) {
   return moments.slice(0, 10);
 }
 
-export async function getMoments(signal?: AbortController['signal']): Promise<APIResponse<Moments>> {
+export async function getMoments(signal?: AbortController['signal'], _silent?: boolean): Promise<APIResponse<Moments>> {
   return await fetchMoments(signal);
 }
