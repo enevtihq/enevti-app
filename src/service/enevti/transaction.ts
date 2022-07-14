@@ -148,7 +148,7 @@ export async function fecthPostTransaction(
     await isInternetReachable();
     const passphrase = await getMyPassphrase();
     const processedThisBlock = selectProcessedTransactionThisBlock(store.getState());
-    if (processedThisBlock < (await MAX_TRANSACTION_PER_ACCOUNT())) {
+    if (processedThisBlock > (await MAX_TRANSACTION_PER_ACCOUNT())) {
       await awaitNewBlock();
     }
     const res = await appFetch(urlPostTransaction(), {
