@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
 import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { StyleSheet, useColorScheme } from 'react-native';
 
 import CreateAccount from 'enevti-app/screen/auth/CreateAccount';
@@ -39,6 +39,9 @@ import ReceiveToken from 'enevti-app/screen/wallet/ReceiveToken';
 import SendToken from 'enevti-app/screen/wallet/SendToken';
 import { onNotificationForegroundHandler } from 'enevti-app/utils/notification/events';
 import notifee from '@notifee/react-native';
+import { Socket } from 'socket.io-client';
+import { appSocket } from 'enevti-app/utils/network';
+import { reduceNewBlock } from 'enevti-app/store/middleware/thunk/socket/chain/newBlock';
 
 export type RootStackParamList = {
   CreateAccount: undefined;
@@ -101,11 +104,13 @@ export type RootStackParamList = {
 const Stack = createStackNavigator();
 
 export default function AppNavigationContainer() {
+  const dispatch = useDispatch();
   const colorScheme = useColorScheme();
   const navigationRef = useNavigationContainerRef<RootStackParamList>();
   const locked = useSelector(selectLockedState);
   const localSession = useSelector(selectLocalSession);
   const currentRoute = navigationRef.isReady() ? navigationRef.getCurrentRoute()?.name : undefined;
+  const socket = React.useRef<Socket | undefined>();
 
   const theme = useTheme() as Theme;
   const styles = React.useMemo(() => makeStyles(theme), [theme]);
@@ -132,6 +137,14 @@ export default function AppNavigationContainer() {
       await onNotificationForegroundHandler(type, detail);
     });
   }, []);
+
+  React.useEffect(() => {
+    socket.current = appSocket('chain');
+    socket.current.on('newBlock', (payload: any) => dispatch(reduceNewBlock(payload)));
+    return function cleanup() {
+      socket.current?.disconnect();
+    };
+  }, [dispatch]);
 
   return (
     <NavigationContainer

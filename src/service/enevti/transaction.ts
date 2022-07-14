@@ -19,6 +19,9 @@ import {
   setTransactionNonceCacheSynced,
 } from 'enevti-app/store/slices/entities/cache/transactionNonce';
 import { getProfileNonce } from './profile';
+import { selectProcessedTransactionThisBlock } from 'enevti-app/store/slices/session/transaction/processedThisBlock';
+import { MAX_TRANSACTION_PER_ACCOUNT } from 'enevti-app/utils/constant/identifier';
+import awaitNewBlock from 'enevti-app/utils/chain/awaitNewBlock';
 
 export async function postTransaction<T>(
   payload: AppTransaction<T>,
@@ -144,6 +147,10 @@ export async function fecthPostTransaction(
   try {
     await isInternetReachable();
     const passphrase = await getMyPassphrase();
+    const processedThisBlock = selectProcessedTransactionThisBlock(store.getState());
+    if (processedThisBlock < (await MAX_TRANSACTION_PER_ACCOUNT())) {
+      await awaitNewBlock();
+    }
     const res = await appFetch(urlPostTransaction(), {
       signal,
       method: 'POST',

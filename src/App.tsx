@@ -17,7 +17,8 @@ import './translations/i18n';
 import './utils/debug/suppressWarning';
 
 const App = () => {
-  const colorScheme = useColorScheme()!;
+  const colorScheme = useColorScheme();
+
   useEffect(() => SplashScreen.hide(), []);
 
   useEffect(() => {
@@ -38,7 +39,7 @@ const App = () => {
       <StoreProvider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <PaperProvider
-            theme={getTheme(colorScheme.toString())}
+            theme={getTheme(colorScheme ? colorScheme.toString() : 'light')}
             settings={{ icon: props => <IconProvider {...props} /> }}>
             <AppNavigationContainer />
           </PaperProvider>
