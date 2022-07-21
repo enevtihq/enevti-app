@@ -21,6 +21,7 @@ import { setCreateNFTQueueType } from 'enevti-app/store/slices/queue/nft/create/
 import { setCreateNFTOneKindData } from 'enevti-app/store/slices/queue/nft/create/onekind';
 import AppCameraGalleryPicker from 'enevti-app/components/organism/picker/AppCameraGalleryPicker';
 import getFileExtension from 'enevti-app/utils/mime/getFileExtension';
+import { ImageOrVideoToDocument } from 'enevti-app/utils/format/documentPicker';
 
 type Props = StackScreenProps<RootStackParamList, 'ChooseNFTType'>;
 
@@ -39,7 +40,7 @@ export default function ChooseNFTType({ navigation }: Props) {
       setCreateNFTOneKindData({
         uri: image.path,
         mime: image.mime,
-        extension: getFileExtension(image.path),
+        extension: getFileExtension(ImageOrVideoToDocument(image)),
         size: image.size,
       }),
     );

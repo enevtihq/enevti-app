@@ -67,6 +67,7 @@ import AppListItem from 'enevti-app/components/molecules/list/AppListItem';
 import AppIconGradient from 'enevti-app/components/molecules/AppIconGradient';
 import AppTextHeading5 from 'enevti-app/components/atoms/text/AppTextHeading5';
 import AppMintingTypePicker from 'enevti-app/components/organism/picker/AppMintingTypePicker';
+import { ImageOrVideoToDocument } from 'enevti-app/utils/format/documentPicker';
 
 type Props = StackScreenProps<RootStackParamList, 'CreateOneKindContract'>;
 
@@ -325,7 +326,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
     setFormStateValue('coverName', item.name, false);
     setFormStateValue('coverSize', item.size, false);
     setFormStateValue('coverType', item.type, false);
-    setFormStateValue('coverExtension', getFileExtension(item.name), false);
+    setFormStateValue('coverExtension', getFileExtension(item), false);
     setFormStateValue('coverUri', item.uri, false);
     setMultipleFieldTouched(formikProps, coverKey, true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -373,7 +374,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
     setFormStateValue('contentName', item.name, false);
     setFormStateValue('contentSize', item.size, false);
     setFormStateValue('contentType', item.type, false);
-    setFormStateValue('contentExtension', getFileExtension(item.name), false);
+    setFormStateValue('contentExtension', getFileExtension(item), false);
     setFormStateValue('contentUri', item.uri, true);
     setMultipleFieldTouched(formikProps, contentKey, true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -444,7 +445,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
         setCreateNFTOneKindData({
           uri: image.path,
           mime: image.mime,
-          extension: getFileExtension(image.path),
+          extension: getFileExtension(ImageOrVideoToDocument(image)),
           size: image.size,
         }),
       );
