@@ -162,9 +162,13 @@ export default function AppCollectionMintButton({
             <View style={styles.actionButtonRight}>
               <View style={styles.actionButtonRightContent}>
                 <AppTextHeading3 style={styles.whiteText}>
-                  {`${parseAmount(collection.minting.price.amount, true, 2)} `}
+                  {collection.minting.price.amount !== '0'
+                    ? parseAmount(collection.minting.price.amount, true, 2)
+                    : t('collection:free')}{' '}
                 </AppTextHeading3>
-                <AppTextHeading5 style={styles.whiteText}>${collection.minting.price.currency}</AppTextHeading5>
+                {collection.minting.price.amount !== '0' ? (
+                  <AppTextHeading5 style={styles.whiteText}>${collection.minting.price.currency}</AppTextHeading5>
+                ) : null}
               </View>
             </View>
           </AppQuaternaryButton>

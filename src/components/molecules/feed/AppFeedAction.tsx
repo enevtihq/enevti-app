@@ -146,7 +146,8 @@ export default function AppFeedAction({ feed, index }: AppFeedActionProps) {
         loadingSize={15}
         onPress={onBuy}>
         <AppTextHeading4 style={styles.actionButtonText}>
-          {parseAmount(feed.price.amount)} <AppTextBody5>${feed.price.currency}</AppTextBody5>
+          {feed.price.amount !== '0' ? parseAmount(feed.price.amount) : t('home:free')}{' '}
+          {feed.price.amount !== '0' ? <AppTextBody5>${feed.price.currency}</AppTextBody5> : null}
         </AppTextHeading4>
       </AppQuaternaryButton>
     </View>
