@@ -9,13 +9,13 @@ import {
 import { PaymentStatus } from 'enevti-app/types/ui/store/Payment';
 
 interface PaymentCallbackHookProps {
-  condition?: (action?: PaymentStatus['action'], id?: any) => boolean;
-  onIdle?: (action?: PaymentStatus['action']) => void;
-  onInitiated?: (action?: PaymentStatus['action']) => void;
-  onProcess?: (action?: PaymentStatus['action']) => void;
-  onSuccess?: (action?: PaymentStatus['action']) => void;
-  onError?: (action?: PaymentStatus['action']) => void;
-  onCancel?: (action?: PaymentStatus['action']) => void;
+  condition?: (paymentStatus: PaymentStatus) => boolean;
+  onIdle?: (paymentStatus: PaymentStatus) => void;
+  onInitiated?: (paymentStatus: PaymentStatus) => void;
+  onProcess?: (paymentStatus: PaymentStatus) => void;
+  onSuccess?: (paymentStatus: PaymentStatus) => void;
+  onError?: (paymentStatus: PaymentStatus) => void;
+  onCancel?: (paymentStatus: PaymentStatus) => void;
 }
 
 export default function usePaymentCallback({
@@ -30,32 +30,32 @@ export default function usePaymentCallback({
   const dispatch = useDispatch();
   const paymentStatus = useSelector(selectPaymentStatus);
   React.useEffect(() => {
-    if (condition !== undefined && !condition(paymentStatus.action, paymentStatus.id)) {
+    if (condition !== undefined && !condition(paymentStatus)) {
       return;
     }
     switch (paymentStatus.type) {
       case 'idle':
-        onIdle && onIdle(paymentStatus.action);
+        onIdle && onIdle(paymentStatus);
         dispatch(resetPaymentStatus());
         break;
       case 'initiated':
-        onInitiated && onInitiated(paymentStatus.action);
+        onInitiated && onInitiated(paymentStatus);
         break;
       case 'process':
-        onProcess && onProcess(paymentStatus.action);
+        onProcess && onProcess(paymentStatus);
         break;
       case 'success':
-        onSuccess && onSuccess(paymentStatus.action);
+        onSuccess && onSuccess(paymentStatus);
         dispatch(resetPaymentState());
         dispatch(resetPaymentStatusType());
         break;
       case 'error':
-        onError && onError(paymentStatus.action);
+        onError && onError(paymentStatus);
         dispatch(resetPaymentState());
         dispatch(resetPaymentStatusType());
         break;
       case 'cancel':
-        onCancel && onCancel(paymentStatus.action);
+        onCancel && onCancel(paymentStatus);
         dispatch(resetPaymentState());
         dispatch(resetPaymentStatusType());
         break;

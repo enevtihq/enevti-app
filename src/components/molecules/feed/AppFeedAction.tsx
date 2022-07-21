@@ -57,31 +57,43 @@ export default function AppFeedAction({ feed, index }: AppFeedActionProps) {
     dispatch(showSnackbar({ mode: 'info', text: 'Coming Soon!' }));
   }, [dispatch]);
 
-  const paymentIdleCallback = React.useCallback((action: PaymentStatus['action']) => {
-    if (action === 'mintCollection') {
+  const paymentIdleCallback = React.useCallback((paymentStatus: PaymentStatus) => {
+    if (paymentStatus.action === 'mintCollection') {
       setBuyLoading(false);
       paymentThunkRef.current?.abort();
-    } else if (action === 'likeCollection') {
+    } else if (paymentStatus.action === 'likeCollection') {
       setLikeLoading(false);
       likeThunkRef.current?.abort();
     }
   }, []);
 
   const paymentSuccessCallback = React.useCallback(
-    (action: PaymentStatus['action']) => {
-      if (action === 'mintCollection') {
+    (paymentStatus: PaymentStatus) => {
+      if (paymentStatus.action === 'mintCollection') {
         dispatch(showSnackbar({ mode: 'info', text: t('payment:success') }));
-      } else if (action === 'likeCollection') {
-        setLikeLoading(false);
+      } else if (paymentStatus.action === 'likeCollection') {
         dispatch(addFeedViewLike({ index }));
       }
     },
     [dispatch, index, t],
   );
 
+  const paymentErrorCallback = React.useCallback(
+    (paymentStatus: PaymentStatus) => {
+      if (paymentStatus.action === 'likeCollection' && paymentStatus.message === '"Error: Address already exist"') {
+        dispatch(addFeedViewLike({ index }));
+      }
+    },
+    [dispatch, index],
+  );
+
   const paymentCondition = React.useCallback(
-    (action: PaymentStatus['action'], id: string) => {
-      return action !== undefined && ['mintCollection', 'likeCollection'].includes(action) && id === feed.id;
+    (paymentStatus: PaymentStatus) => {
+      return (
+        paymentStatus.action !== undefined &&
+        ['mintCollection', 'likeCollection'].includes(paymentStatus.action) &&
+        paymentStatus.id === feed.id
+      );
     },
     [feed.id],
   );
@@ -90,6 +102,7 @@ export default function AppFeedAction({ feed, index }: AppFeedActionProps) {
     condition: paymentCondition,
     onIdle: paymentIdleCallback,
     onSuccess: paymentSuccessCallback,
+    onError: paymentErrorCallback,
   });
 
   const onBuy = React.useCallback(async () => {

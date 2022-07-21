@@ -92,16 +92,16 @@ export default function AppCollectionHeader({
 
   const descriptionModalOnPress = React.useCallback(() => setDescriptionVisible(old => !old), []);
 
-  const paymentIdleCallback = React.useCallback((action: PaymentStatus['action']) => {
-    if (action === 'likeCollection') {
+  const paymentIdleCallback = React.useCallback((paymentStatus: PaymentStatus) => {
+    if (paymentStatus.action === 'likeCollection') {
       setLikeLoading(false);
       likeThunkRef.current?.abort();
     }
   }, []);
 
   const paymentSuccessCallback = React.useCallback(
-    (action: PaymentStatus['action']) => {
-      if (action === 'likeCollection') {
+    (paymentStatus: PaymentStatus) => {
+      if (paymentStatus.action === 'likeCollection') {
         setLikeLoading(false);
         dispatch(addCollectionViewLike({ key: route.key }));
       }
@@ -110,8 +110,12 @@ export default function AppCollectionHeader({
   );
 
   const paymentCondition = React.useCallback(
-    (action: PaymentStatus['action'], id: string) => {
-      return action !== undefined && ['likeCollection'].includes(action) && id === collection.id;
+    (paymentStatus: PaymentStatus) => {
+      return (
+        paymentStatus.action !== undefined &&
+        ['likeCollection'].includes(paymentStatus.action) &&
+        paymentStatus.id === collection.id
+      );
     },
     [collection.id],
   );

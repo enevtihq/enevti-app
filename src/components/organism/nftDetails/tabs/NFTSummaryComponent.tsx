@@ -117,16 +117,16 @@ function Component(
     });
   }, [navigation, nft.owner.address]);
 
-  const paymentIdleCallback = React.useCallback((action: PaymentStatus['action']) => {
-    if (action === 'likeNFT') {
+  const paymentIdleCallback = React.useCallback((paymentStatus: PaymentStatus) => {
+    if (paymentStatus.action === 'likeNFT') {
       setLikeLoading(false);
       likeThunkRef.current?.abort();
     }
   }, []);
 
   const paymentSuccessCallback = React.useCallback(
-    (action: PaymentStatus['action']) => {
-      if (action === 'likeNFT') {
+    (paymentStatus: PaymentStatus) => {
+      if (paymentStatus.action === 'likeNFT') {
         setLikeLoading(false);
         dispatch(addNFTDetailsViewLike({ key: route.key }));
       }
@@ -135,8 +135,10 @@ function Component(
   );
 
   const paymentCondition = React.useCallback(
-    (action: PaymentStatus['action'], id: string) => {
-      return action !== undefined && ['likeNFT'].includes(action) && id === nft.id;
+    (paymentStatus: PaymentStatus) => {
+      return (
+        paymentStatus.action !== undefined && ['likeNFT'].includes(paymentStatus.action) && paymentStatus.id === nft.id
+      );
     },
     [nft.id],
   );
