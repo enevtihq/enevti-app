@@ -54,7 +54,7 @@ export default function ConfirmPassphrase({ route, navigation }: Props) {
       </View>
 
       <View style={styles.actionContainer}>
-        <View style={{ height: hp('3%', insets) }} />
+        <View style={{ height: hp('5%', insets) }} />
 
         <AppPrimaryButton onPress={() => handleContinue()} disabled={!checked} style={styles.createAccount}>
           {t('auth:continue')}
@@ -80,7 +80,6 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
       marginRight: wp('3%', insets),
     },
     createAccount: {
-      marginBottom: hp('2%', insets),
       marginLeft: wp('5%', insets),
       marginRight: wp('5%', insets),
     },

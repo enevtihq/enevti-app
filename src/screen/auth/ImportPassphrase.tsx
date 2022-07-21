@@ -134,7 +134,7 @@ export default function ImportPassphrase({ navigation }: Props) {
             </View>
 
             <View style={styles.actionContainer}>
-              <View style={{ height: hp('3%', insets) }} />
+              <View style={{ height: hp('5%', insets) }} />
 
               <AppPrimaryButton
                 onPress={submitForm}
@@ -157,7 +157,6 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
       flexDirection: 'column-reverse',
     },
     createAccount: {
-      marginBottom: hp('2%', insets),
       marginLeft: wp('5%', insets),
       marginRight: wp('5%', insets),
     },

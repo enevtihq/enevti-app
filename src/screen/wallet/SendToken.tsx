@@ -167,7 +167,7 @@ export default function SendToken({ navigation, route }: Props) {
             </View>
 
             <View style={styles.actionContainer}>
-              <View style={{ height: hp('3%', insets) }} />
+              <View style={{ height: hp('5%', insets) }} />
 
               <AppPrimaryButton
                 onPress={submitForm}
@@ -210,7 +210,6 @@ const makeStyles = (insets: SafeAreaInsets) =>
       flexDirection: 'column-reverse',
     },
     sendButton: {
-      marginBottom: hp('2%', insets),
       marginLeft: wp('5%', insets),
       marginRight: wp('5%', insets),
     },

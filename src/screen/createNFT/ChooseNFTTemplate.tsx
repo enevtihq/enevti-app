@@ -192,6 +192,7 @@ export default function ChooseNFTTemplate({ navigation, route }: Props) {
             ? t('createNFT:createTemplateButton')
             : t('createNFT:chooseNFTTemplateContinue')}
         </AppPrimaryButton>
+        <View style={{ height: hp('2%', insets) }} />
       </View>
     </AppView>
   );
@@ -205,11 +206,9 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
       marginRight: wp('3%', insets),
     },
     actionContainer: {
-      flexDirection: 'column-reverse',
       marginTop: hp('6%', insets),
     },
     continueButton: {
-      marginBottom: hp('2%', insets),
       marginLeft: wp('5%', insets),
       marginRight: wp('5%', insets),
     },

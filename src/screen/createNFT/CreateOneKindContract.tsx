@@ -1004,6 +1004,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
           style={styles.actionButton}>
           {t('createNFT:createButton')}
         </AppPrimaryButton>
+        <View style={{ height: Platform.OS === 'ios' ? insets.bottom : hp('2%', insets) }} />
       </View>
       <AppConfirmationModal
         iconName={'question'}
@@ -1050,7 +1051,6 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
       bottom: 0,
     },
     actionButton: {
-      marginBottom: Platform.OS === 'ios' ? insets.bottom : hp('2%', insets),
       marginLeft: wp('5%', insets),
       marginRight: wp('5%', insets),
     },

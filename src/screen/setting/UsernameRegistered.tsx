@@ -55,7 +55,7 @@ export default function UsernameRegistered({ navigation, route }: Props) {
       </View>
 
       <View style={styles.actionContainer}>
-        <View style={{ height: hp('3%', insets) }} />
+        <View style={{ height: hp('5%', insets) }} />
 
         <AppPrimaryButton onPress={() => handleFormSubmit()} style={styles.createAccount}>
           {t('auth:createAccountDoneButton')}
@@ -84,7 +84,6 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
       paddingRight: wp('12%', insets),
     },
     createAccount: {
-      marginBottom: hp('2%', insets),
       marginLeft: wp('5%', insets),
       marginRight: wp('5%', insets),
     },

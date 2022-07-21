@@ -148,6 +148,7 @@ export default function AppStakeButton({
               <AppPrimaryButton onPress={submitForm} disabled={!(isValid && dirty)} style={styles.dialogButton}>
                 {selfStake ? t('stake:selfStake') : t('stake:addStake')}
               </AppPrimaryButton>
+              <View style={{ height: hp('3%', insets) }} />
             </View>
           </View>
         )}
@@ -172,7 +173,6 @@ const makeStyles = (insets: SafeAreaInsets) =>
     },
     dialogButton: {
       width: '100%',
-      marginBottom: hp('3%', insets),
     },
     dialogContent: {
       width: '100%',
