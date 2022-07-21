@@ -116,7 +116,7 @@ export default function AppProfileHeader({ navigation, persona, profile }: AppPr
         </View>
         <View style={styles.profileStatsDivider} />
         <View style={styles.profileStatsItem}>
-          <AppTextHeading3>{(profile.serveRate * 100).toFixed(2)}%</AppTextHeading3>
+          <AppTextHeading3>{(profile.serveRate / 100).toFixed(2)}%</AppTextHeading3>
           <AppTextBody4 style={{ color: theme.colors.placeholder }}>{t('profile:serveRate')}</AppTextBody4>
         </View>
       </View>

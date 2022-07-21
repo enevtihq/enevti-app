@@ -23,6 +23,7 @@ import { reduceNewPending } from 'enevti-app/store/middleware/thunk/socket/profi
 import { routeParamToAddress } from 'enevti-app/service/enevti/persona';
 import { RouteProp } from '@react-navigation/native';
 import { reduceNewProfileUpdates } from 'enevti-app/store/middleware/thunk/socket/profile/newProfileUpdates';
+import { reduceTotalServeRateChanged } from 'enevti-app/store/middleware/thunk/socket/profile/totalServeRateChanged';
 
 type Props = StackScreenProps<RootStackParamList, 'Profile'>;
 
@@ -52,6 +53,9 @@ export default function Profile({ navigation, route }: Props) {
         socket.current.on('newCollection', (payload: any) => dispatch(reduceNewCollection(payload, key)));
         socket.current.on('newProfileUpdates', (payload: any) => dispatch(reduceNewProfileUpdates(payload, key)));
         socket.current.on('totalNFTSoldChanged', (payload: any) => dispatch(reduceTotalNFTSoldChanged(payload, key)));
+        socket.current.on('totalServeRateChanged', (payload: any) =>
+          dispatch(reduceTotalServeRateChanged(payload, key)),
+        );
         socket.current.on('newOwned', (payload: any) => dispatch(reduceNewOwned(payload, key)));
         socket.current.on('newPending', (payload: any) => dispatch(reduceNewPending(payload, key)));
         return function cleanup() {

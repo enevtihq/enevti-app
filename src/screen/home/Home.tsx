@@ -65,6 +65,7 @@ import {
 } from 'enevti-app/store/slices/entities/once/like';
 import BalanceChangedSnack from 'enevti-app/components/molecules/view/BalanceChangedSnack';
 import AppBadge from 'enevti-app/components/atoms/view/AppBadge';
+import { reduceMyTotalServeRateChanged } from 'enevti-app/store/middleware/thunk/socket/profile/totalServeRateChanged';
 
 const Tab = createBottomTabNavigator();
 
@@ -125,6 +126,7 @@ export default function Home({ navigation }: Props) {
     socket.current.on('balanceChanged', (payload: any) => dispatch(reduceMyBalanceChanged(payload)));
     socket.current.on('totalStakeChanged', (payload: any) => dispatch(reduceMyTotalStakeChanged(payload)));
     socket.current.on('totalNFTSoldChanged', (payload: any) => dispatch(reduceMyTotalNFTSoldChanged(payload)));
+    socket.current.on('totalServeRateChanged', (payload: any) => dispatch(reduceMyTotalServeRateChanged(payload)));
     socket.current.on('newProfileUpdates', (payload: any) => dispatch(reduceMyNewProfileUpdates(payload)));
     socket.current.on('newPending', (payload: any) => dispatch(reduceMyNewPending(payload)));
     socket.current.on('newFeedItem', (payload: any) => dispatch(reduceFeedsUpdates(payload)));
