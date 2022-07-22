@@ -22,13 +22,16 @@ import { PaymentStatus } from 'enevti-app/types/ui/store/Payment';
 import { directPayLikeCollection } from 'enevti-app/store/middleware/thunk/payment/direct/directPayLikeCollection';
 import { addFeedViewLike } from 'enevti-app/store/slices/ui/view/feed';
 import { selectOnceLike, showOnceLike } from 'enevti-app/store/slices/entities/once/like';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from 'enevti-app/navigation';
 
 interface AppFeedActionProps {
   feed: FeedItem;
   index: number;
+  navigation: StackNavigationProp<RootStackParamList>;
 }
 
-export default function AppFeedAction({ feed, index }: AppFeedActionProps) {
+export default function AppFeedAction({ feed, index, navigation }: AppFeedActionProps) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const insets = useSafeAreaInsets();
@@ -54,8 +57,8 @@ export default function AppFeedAction({ feed, index }: AppFeedActionProps) {
   }, [dispatch, t]);
 
   const onComment = React.useCallback(() => {
-    dispatch(showSnackbar({ mode: 'info', text: 'Coming Soon!' }));
-  }, [dispatch]);
+    navigation.push('Comment', { type: 'collection', mode: 'id', arg: feed.id });
+  }, [navigation, feed.id]);
 
   const paymentIdleCallback = React.useCallback((paymentStatus: PaymentStatus) => {
     if (paymentStatus.action === 'mintCollection') {

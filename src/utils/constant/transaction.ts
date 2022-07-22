@@ -8,6 +8,9 @@ export const redeemableNftModule = {
   likeCollection: 5,
   commentNft: 6,
   commentCollection: 7,
+  likeComment: 8,
+  likeReply: 9,
+  replyComment: 10,
 };
 
 export const personaModule = {

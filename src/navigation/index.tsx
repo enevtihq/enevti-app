@@ -42,6 +42,7 @@ import notifee from '@notifee/react-native';
 import { Socket } from 'socket.io-client';
 import { appSocket } from 'enevti-app/utils/network';
 import { reduceNewBlock } from 'enevti-app/store/middleware/thunk/socket/chain/newBlock';
+import Comment from 'enevti-app/screen/explorer/Comment';
 
 export type RootStackParamList = {
   CreateAccount: undefined;
@@ -96,6 +97,11 @@ export type RootStackParamList = {
     mode: 'id' | 's';
   };
   NFTDetails: {
+    arg: string;
+    mode: 'id' | 's';
+  };
+  Comment: {
+    type: 'nft' | 'collection';
     arg: string;
     mode: 'id' | 's';
   };
@@ -316,6 +322,14 @@ export default function AppNavigationContainer() {
         <Stack.Screen
           name="SendToken"
           component={SendToken}
+          options={{
+            headerShown: false,
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          }}
+        />
+        <Stack.Screen
+          name="Comment"
+          component={Comment}
           options={{
             headerShown: false,
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,

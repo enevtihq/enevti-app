@@ -1,9 +1,9 @@
 import { NFTBase } from '../chain/nft';
 import { CollectionBase } from '../chain/collection';
 import { SocialProfile } from './social';
-import { CollectionIdAsset, NFTIdAsset } from '../chain/id';
 import { Persona, PersonaAsset } from './persona';
 import { ActivityBase, ActivityChainBase } from '../chain/activity';
+import { CollectionIdAsset, NFTIdAsset } from '../chain/id';
 
 export type ProfileView = Profile & { persona: Persona };
 
@@ -35,6 +35,8 @@ export type RedeemableNFTAccountStatsChain = {
     total: number;
     nft: Buffer[];
     collection: Buffer[];
+    comment: Buffer[];
+    reply: Buffer[];
   };
 };
 
@@ -85,7 +87,14 @@ export type ProfileActivityChain = {
   items: ProfileActivityChainItems[];
 };
 
-export type EngagementActivityName = 'likeNft' | 'likeCollection' | 'commentNft' | 'commentCollection' | 'reply';
+export type EngagementActivityName =
+  | 'likeNft'
+  | 'likeCollection'
+  | 'likeComment'
+  | 'likeReply'
+  | 'commentNft'
+  | 'commentCollection'
+  | 'replyComment';
 
 export type EngagementActivity = Omit<ActivityBase, 'name' | 'to' | 'value'> & {
   name: EngagementActivityName;

@@ -34,7 +34,7 @@ export default React.memo(
       <View style={styles[MODE]}>
         <AppFeedHeader feed={feed} navigation={navigation} />
         <AppFeedBody canvasWidth={canvasWidth} feed={feed} navigation={navigation} />
-        <AppFeedAction feed={feed} index={index} />
+        <AppFeedAction feed={feed} index={index} navigation={navigation} />
         <AppFeedFooter feed={feed} />
       </View>
     );

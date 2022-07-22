@@ -14,6 +14,7 @@ import error from './error';
 import setting from './setting';
 import wallet from './wallet';
 import notification from './notification';
+import explorer from './explorer';
 
 export default {
   auth,
@@ -32,4 +33,5 @@ export default {
   setting,
   wallet,
   notification,
+  explorer,
 };
