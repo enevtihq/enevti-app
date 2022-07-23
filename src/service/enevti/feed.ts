@@ -6,6 +6,7 @@ import { appFetch, isInternetReachable } from 'enevti-app/utils/network';
 import { getMyAddress } from './persona';
 
 type FeedResponse = { data: Feeds; checkpoint: number; version: number };
+export const FEED_CACHE_MAX_LENGTH = 10;
 const FEED_LIMIT_PER_REQ = 10;
 
 async function fetchFeeds(
@@ -33,7 +34,7 @@ async function fetchFeeds(
 }
 
 export function parseFeedCache(feeds: Feeds) {
-  return feeds.slice(0, 10);
+  return feeds.slice(0, FEED_CACHE_MAX_LENGTH);
 }
 
 export async function getFeeds(

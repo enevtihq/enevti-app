@@ -24,6 +24,8 @@ import { addFeedViewLike } from 'enevti-app/store/slices/ui/view/feed';
 import { selectOnceLike, showOnceLike } from 'enevti-app/store/slices/entities/once/like';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
+import { FEED_CACHE_MAX_LENGTH } from 'enevti-app/service/enevti/feed';
+import { addFeedItemsCacheLike } from 'enevti-app/store/slices/entities/cache/feed';
 
 interface AppFeedActionProps {
   feed: FeedItem;
@@ -76,6 +78,9 @@ export default function AppFeedAction({ feed, index, navigation }: AppFeedAction
         dispatch(showSnackbar({ mode: 'info', text: t('payment:success') }));
       } else if (paymentStatus.action === 'likeCollection') {
         dispatch(addFeedViewLike({ index }));
+        if (index <= FEED_CACHE_MAX_LENGTH) {
+          dispatch(addFeedItemsCacheLike({ index }));
+        }
       }
     },
     [dispatch, index, t],
@@ -85,6 +90,9 @@ export default function AppFeedAction({ feed, index, navigation }: AppFeedAction
     (paymentStatus: PaymentStatus) => {
       if (paymentStatus.action === 'likeCollection' && paymentStatus.message === '"Error: Address already exist"') {
         dispatch(addFeedViewLike({ index }));
+        if (index <= FEED_CACHE_MAX_LENGTH) {
+          dispatch(addFeedItemsCacheLike({ index }));
+        }
       }
     },
     [dispatch, index],

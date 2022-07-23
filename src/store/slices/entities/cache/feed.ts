@@ -14,6 +14,10 @@ const feedCacheSlice = createSlice({
     setFeedItemsCache: (feed, action: PayloadAction<Feeds>) => {
       feed.items = action.payload.slice();
     },
+    addFeedItemsCacheLike: (feed, action: PayloadAction<{ index: number }>) => {
+      feed.items[action.payload.index].liked = true;
+      feed.items[action.payload.index].like++;
+    },
     setLastFetchFeedCache: (feed, action: PayloadAction<number>) => {
       feed.lastFetch = action.payload;
     },
@@ -31,6 +35,7 @@ const feedCacheSlice = createSlice({
 
 export const {
   setFeedItemsCache,
+  addFeedItemsCacheLike,
   setLastFetchFeedCache,
   setFeedCacheCheckpoint,
   setFeedCacheReqVersion,
