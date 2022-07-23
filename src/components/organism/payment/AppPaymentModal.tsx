@@ -27,7 +27,7 @@ import {
   selectPaymentShowState,
   selectPaymentStatus,
   setPaymentActionType,
-  setPaymentStatus,
+  setPaymentStatusInReducer,
   isPaymentUndefined,
   selectPaymentFeePriority,
   setPaymentAction,
@@ -135,7 +135,7 @@ export default function AppPaymentModal() {
   const onCancel = React.useCallback(() => {
     dispatch(setPaymentActionType('cancel'));
     dispatch(
-      setPaymentStatus({
+      setPaymentStatusInReducer({
         type: 'cancel',
         action: 'cancel',
         message: t('payment:paymentCancelled'),
