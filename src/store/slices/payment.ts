@@ -1,7 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
-import { PaymentAction, PaymentFee, PaymentState, PaymentStatus } from 'enevti-app/types/ui/store/Payment';
+import {
+  PaymentAction,
+  PaymentFee,
+  PaymentState,
+  PaymentStatus,
+  PaymentStatusInReducer,
+} from 'enevti-app/types/ui/store/Payment';
 import { RootState } from 'enevti-app/store/state';
 
 const initialState: PaymentState = {
@@ -49,6 +55,9 @@ const paymentSlice = createSlice({
       payment.mode = action.payload;
     },
     setPaymentStatus: (payment, action: PayloadAction<PaymentStatus>) => {
+      Object.assign(payment.status, action.payload);
+    },
+    setPaymentStatusInReducer: (payment, action: PayloadAction<PaymentStatusInReducer>) => {
       Object.assign(payment.status, action.payload);
     },
     resetPaymentStatusType: payment => {
@@ -106,6 +115,7 @@ export const {
   setPaymentMode,
   resetPaymentStatusType,
   setPaymentStatus,
+  setPaymentStatusInReducer,
   resetPaymentStatus,
   setPaymentActionType,
   setPaymentAction,

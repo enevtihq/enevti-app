@@ -1,4 +1,4 @@
-import { selectPaymentActionPayload, setPaymentStatus } from 'enevti-app/store/slices/payment';
+import { selectPaymentActionPayload, setPaymentStatusInReducer } from 'enevti-app/store/slices/payment';
 import { AppThunk } from 'enevti-app/store/state';
 import { hideModalLoader, showModalLoader } from 'enevti-app/store/slices/ui/global/modalLoader';
 import { AppTransaction } from 'enevti-app/types/core/service/transaction';
@@ -10,19 +10,19 @@ export const reducePayRegisterUsername = (): AppThunk => async (dispatch, getSta
   try {
     dispatch(showModalLoader());
     dispatch({ type: 'payment/reducePayRegisterUsername' });
-    dispatch(setPaymentStatus({ action: 'registerUsername', type: 'process', message: '' }));
+    dispatch(setPaymentStatusInReducer({ action: 'registerUsername', type: 'process', message: '' }));
 
     const payload = JSON.parse(selectPaymentActionPayload(getState())) as AppTransaction<RegisterUsernameUI>;
 
     const response = await postTransaction(payload);
     if (response.status === 200) {
-      dispatch(setPaymentStatus({ action: 'registerUsername', type: 'success', message: '' }));
+      dispatch(setPaymentStatusInReducer({ action: 'registerUsername', type: 'success', message: '' }));
     } else {
-      dispatch(setPaymentStatus({ action: 'registerUsername', type: 'error', message: response.data }));
+      dispatch(setPaymentStatusInReducer({ action: 'registerUsername', type: 'error', message: response.data }));
     }
   } catch (err: any) {
     handleError(err);
-    dispatch(setPaymentStatus({ action: 'registerUsername', type: 'error', message: err.message }));
+    dispatch(setPaymentStatusInReducer({ action: 'registerUsername', type: 'error', message: err.message }));
   } finally {
     dispatch(hideModalLoader());
   }

@@ -1,4 +1,4 @@
-import { selectPaymentActionPayload, setPaymentStatus } from 'enevti-app/store/slices/payment';
+import { selectPaymentActionPayload, setPaymentStatusInReducer } from 'enevti-app/store/slices/payment';
 import { AppThunk } from 'enevti-app/store/state';
 import { hideModalLoader, showModalLoader } from 'enevti-app/store/slices/ui/global/modalLoader';
 import { MintNFTUI } from 'enevti-app/types/core/asset/redeemable_nft/mint_nft_asset';
@@ -11,19 +11,35 @@ export const reducePayMintCollection = (): AppThunk => async (dispatch, getState
   try {
     dispatch(showModalLoader());
     dispatch({ type: 'payment/reducePayMintCollection' });
-    dispatch(setPaymentStatus({ id: payload.asset.id, action: 'mintCollection', type: 'process', message: '' }));
+    dispatch(
+      setPaymentStatusInReducer({ id: payload.asset.id, action: 'mintCollection', type: 'process', message: '' }),
+    );
 
     const response = await postTransaction(payload);
     if (response.status === 200) {
-      dispatch(setPaymentStatus({ id: payload.asset.id, action: 'mintCollection', type: 'success', message: '' }));
+      dispatch(
+        setPaymentStatusInReducer({ id: payload.asset.id, action: 'mintCollection', type: 'success', message: '' }),
+      );
     } else {
       dispatch(
-        setPaymentStatus({ id: payload.asset.id, action: 'mintCollection', type: 'error', message: response.data }),
+        setPaymentStatusInReducer({
+          id: payload.asset.id,
+          action: 'mintCollection',
+          type: 'error',
+          message: response.data,
+        }),
       );
     }
   } catch (err: any) {
     handleError(err);
-    dispatch(setPaymentStatus({ id: payload.asset.id, action: 'mintCollection', type: 'error', message: err.message }));
+    dispatch(
+      setPaymentStatusInReducer({
+        id: payload.asset.id,
+        action: 'mintCollection',
+        type: 'error',
+        message: err.message,
+      }),
+    );
   } finally {
     dispatch(hideModalLoader());
   }

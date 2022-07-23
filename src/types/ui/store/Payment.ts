@@ -33,11 +33,16 @@ export type PaymentFee = {
 };
 
 export type PaymentStatus = {
-  id?: string;
-  key?: string;
+  id: string;
+  key: string;
   action: PaymentAction['type'];
   type: 'idle' | 'initiated' | 'process' | 'success' | 'error' | 'cancel';
   message: string;
+};
+
+export type PaymentStatusInReducer = Omit<PaymentStatus, 'id' | 'key'> & {
+  id?: string;
+  key?: string;
 };
 
 export type PaymentState = {

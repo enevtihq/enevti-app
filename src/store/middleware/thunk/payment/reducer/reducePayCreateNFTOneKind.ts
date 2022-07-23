@@ -1,5 +1,9 @@
 import { uploadURItoIPFS } from 'enevti-app/service/ipfs';
-import { setPaymentStatus, selectPaymentActionPayload, selectPaymentActionMeta } from 'enevti-app/store/slices/payment';
+import {
+  setPaymentStatusInReducer,
+  selectPaymentActionPayload,
+  selectPaymentActionMeta,
+} from 'enevti-app/store/slices/payment';
 import {
   hideModalLoader,
   resetModalLoaderText,
@@ -19,7 +23,7 @@ export const reducePayCreateNFTOneKind = (): AppThunk => async (dispatch, getSta
   try {
     dispatch(showModalLoader());
     dispatch({ type: 'payment/reducePayCreateNFTOneKind' });
-    dispatch(setPaymentStatus({ action: 'createNFTOneKind', type: 'process', message: '' }));
+    dispatch(setPaymentStatusInReducer({ action: 'createNFTOneKind', type: 'process', message: '' }));
 
     const payload = JSON.parse(selectPaymentActionPayload(getState())) as CreateNFTOneKindTransaction;
     const meta = JSON.parse(selectPaymentActionMeta(getState())) as CreateNFTOneKindMeta;
@@ -53,13 +57,13 @@ export const reducePayCreateNFTOneKind = (): AppThunk => async (dispatch, getSta
     dispatch(setModalLoaderText(i18n.t('payment:postingTransaction')));
     const response = await postTransaction(transactionPayload);
     if (response.status === 200) {
-      dispatch(setPaymentStatus({ type: 'success', message: '' }));
+      dispatch(setPaymentStatusInReducer({ type: 'success', message: '' }));
     } else {
-      dispatch(setPaymentStatus({ type: 'error', message: response.data }));
+      dispatch(setPaymentStatusInReducer({ type: 'error', message: response.data }));
     }
   } catch (err: any) {
     handleError(err);
-    dispatch(setPaymentStatus({ type: 'error', message: err.message }));
+    dispatch(setPaymentStatusInReducer({ type: 'error', message: err.message }));
   } finally {
     dispatch(resetModalLoaderText());
     dispatch(hideModalLoader());
