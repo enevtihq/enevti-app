@@ -46,7 +46,7 @@ export default function AppFeedAction({ feed, index, navigation }: AppFeedAction
   const onLikeActivate = React.useCallback(async () => {
     if (onceLike) {
       setLikeLoading(true);
-      likeThunkRef.current = dispatch(directPayLikeCollection({ id: feed.id, name: feed.name }));
+      likeThunkRef.current = dispatch(directPayLikeCollection({ id: feed.id, key: 'home', name: feed.name }));
     } else {
       dispatch(showOnceLike());
     }
@@ -95,7 +95,8 @@ export default function AppFeedAction({ feed, index, navigation }: AppFeedAction
       return (
         paymentStatus.action !== undefined &&
         ['mintCollection', 'likeCollection'].includes(paymentStatus.action) &&
-        paymentStatus.id === feed.id
+        paymentStatus.id === feed.id &&
+        paymentStatus.key === 'home'
       );
     },
     [feed.id],
@@ -115,7 +116,9 @@ export default function AppFeedAction({ feed, index, navigation }: AppFeedAction
       if (collectionResponse.status === 200) {
         if (isMintingAvailable(collectionResponse.data)) {
           if (['normal', ''].includes(collectionResponse.data.mintingType)) {
-            paymentThunkRef.current = dispatch(payMintCollection({ collection: collectionResponse.data, quantity: 1 }));
+            paymentThunkRef.current = dispatch(
+              payMintCollection({ collection: collectionResponse.data, key: 'home', quantity: 1 }),
+            );
           } else {
             dispatch(showSnackbar({ mode: 'info', text: t('collection:specialMint') }));
             setBuyLoading(false);

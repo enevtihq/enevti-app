@@ -23,6 +23,7 @@ import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 import AppAddressPicker from 'enevti-app/components/organism/wallet/AppAddressPicker';
 import { Persona } from 'enevti-app/types/core/account/persona';
 import { base32ToAddress, getBasePersona } from 'enevti-app/service/enevti/persona';
+import { PaymentStatus } from 'enevti-app/types/ui/store/Payment';
 
 type Props = StackScreenProps<RootStackParamList, 'SendToken'>;
 
@@ -70,6 +71,17 @@ export default function SendToken({ navigation, route }: Props) {
     [route.params.amount, route.params.base32],
   );
 
+  const paymentCondition = React.useCallback(
+    (paymentStatus: PaymentStatus) => {
+      return (
+        paymentStatus.action !== undefined &&
+        ['transferToken'].includes(paymentStatus.action) &&
+        paymentStatus.key === route.key
+      );
+    },
+    [route.key],
+  );
+
   const paymentIdleCallback = React.useCallback(() => {
     setIsLoading(false);
     paymentThunkRef.current?.abort();
@@ -81,6 +93,7 @@ export default function SendToken({ navigation, route }: Props) {
   }, [dispatch, navigation, t]);
 
   usePaymentCallback({
+    condition: paymentCondition,
     onIdle: paymentIdleCallback,
     onSuccess: paymentSuccessCallback,
   });
@@ -95,9 +108,9 @@ export default function SendToken({ navigation, route }: Props) {
 
   const handleFormSubmit = React.useCallback(
     (values: { base32: string; amount: string }) => {
-      dispatch(payTransferToken(values));
+      dispatch(payTransferToken({ ...values, key: route.key }));
     },
-    [dispatch],
+    [dispatch, route.key],
   );
 
   return (

@@ -16,19 +16,27 @@ import { stakingModule } from 'enevti-app/utils/constant/transaction';
 import { RegisterUsernameUI } from 'enevti-app/types/core/asset/chain/register_username';
 import { COIN_NAME } from 'enevti-app/utils/constant/identifier';
 
-type PayRegisterUsernamePayload = string;
+type PayRegisterUsernamePayload = { key: string; username: string };
 
 export const payRegisterUsername = createAsyncThunk<void, PayRegisterUsernamePayload, AsyncThunkAPI>(
   'setting/payRegisterUsername',
   async (payload, { dispatch, signal }) => {
     try {
-      dispatch(setPaymentStatus({ action: 'registerUsername', type: 'initiated', message: '' }));
+      dispatch(
+        setPaymentStatus({
+          id: payload.username,
+          key: payload.key,
+          action: 'registerUsername',
+          type: 'initiated',
+          message: '',
+        }),
+      );
       dispatch(showPayment());
 
       const transactionPayload: AppTransaction<RegisterUsernameUI> = await createTransaction<RegisterUsernameUI>(
         stakingModule.moduleID,
         stakingModule.registerDelegate,
-        { username: payload },
+        { username: payload.username },
         '0',
         signal,
       );
@@ -61,6 +69,9 @@ export const payRegisterUsername = createAsyncThunk<void, PayRegisterUsernamePay
       handleError(err);
       dispatch(
         setPaymentStatus({
+          id: payload.username,
+          key: payload.key,
+          action: 'registerUsername',
           type: 'error',
           message: (err as Record<string, any>).message.toString(),
         }),

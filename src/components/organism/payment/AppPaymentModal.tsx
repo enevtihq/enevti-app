@@ -137,6 +137,7 @@ export default function AppPaymentModal() {
     dispatch(
       setPaymentStatus({
         type: 'cancel',
+        action: 'cancel',
         message: t('payment:paymentCancelled'),
       }),
     );

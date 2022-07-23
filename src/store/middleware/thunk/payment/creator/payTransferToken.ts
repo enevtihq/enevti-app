@@ -18,13 +18,21 @@ import { base32ToAddress } from 'enevti-app/service/enevti/persona';
 import { COIN_NAME, getCoinName } from 'enevti-app/utils/constant/identifier';
 import { completeTokenUnit } from 'enevti-app/utils/format/amount';
 
-type PayTransferTokenPayload = { base32: string; amount: string };
+type PayTransferTokenPayload = { key: string; base32: string; amount: string };
 
 export const payTransferToken = createAsyncThunk<void, PayTransferTokenPayload, AsyncThunkAPI>(
   'wallet/payTransferToken',
   async (payload, { dispatch, signal }) => {
     try {
-      dispatch(setPaymentStatus({ action: 'transferToken', type: 'initiated', message: '' }));
+      dispatch(
+        setPaymentStatus({
+          id: payload.base32,
+          key: payload.key,
+          action: 'transferToken',
+          type: 'initiated',
+          message: '',
+        }),
+      );
       dispatch(showPayment());
 
       const transactionPayload: AppTransaction<TransferTokenUI> = await createTransaction(
@@ -65,6 +73,9 @@ export const payTransferToken = createAsyncThunk<void, PayTransferTokenPayload, 
       handleError(err);
       dispatch(
         setPaymentStatus({
+          id: payload.base32,
+          key: payload.key,
+          action: 'transferToken',
           type: 'error',
           message: (err as Record<string, any>).message.toString(),
         }),

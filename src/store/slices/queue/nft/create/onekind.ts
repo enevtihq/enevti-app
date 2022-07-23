@@ -7,6 +7,7 @@ import { CreateNFTOneKindMeta } from 'enevti-app/types/ui/store/CreateNFTQueue';
 import { RootState } from 'enevti-app/store/state';
 
 export const createNFTOneKindQueueInitialState: CreateNFTOneKindMeta = {
+  key: '',
   data: {
     uri: '',
     mime: '',
@@ -77,6 +78,9 @@ const createNFTOneKindQueueSlice = createSlice({
     setCreateNFTOneKindStateItem: (onekind, action: PayloadAction<{ key: keyof OneKindContractForm; value: any }>) => {
       Object.assign(onekind.state, { [action.payload.key]: action.payload.value });
     },
+    setCreateNFTOneKindKey: (onekind, action: PayloadAction<string>) => {
+      onekind.key = action.payload;
+    },
     setCreateNFTOneKindStatus: (onekind, action: PayloadAction<OneKindContractStatusForm>) => {
       Object.assign(onekind.status, action.payload);
     },
@@ -91,6 +95,7 @@ export const {
   setCreateNFTOneKindChosenTemplate,
   setCreateNFTOneKindState,
   setCreateNFTOneKindStateItem,
+  setCreateNFTOneKindKey,
   setCreateNFTOneKindStatus,
   clearCreateNFTOneKindQueue,
 } = createNFTOneKindQueueSlice.actions;

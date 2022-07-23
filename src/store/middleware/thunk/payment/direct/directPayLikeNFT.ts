@@ -16,13 +16,15 @@ import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import { COIN_NAME } from 'enevti-app/utils/constant/identifier';
 import { LikeNFTUI } from 'enevti-app/types/core/asset/redeemable_nft/like_nft_asset';
 
-type PayLikeNFTPayload = { id: string; symbol: string; serial: string };
+type PayLikeNFTPayload = { id: string; key: string; symbol: string; serial: string };
 
 export const directPayLikeNFT = createAsyncThunk<void, PayLikeNFTPayload, AsyncThunkAPI>(
   'nftDetails/directPayLikeNFT',
   async (payload, { dispatch, signal }) => {
     try {
-      dispatch(setPaymentStatus({ id: payload.id, action: 'likeNFT', type: 'initiated', message: '' }));
+      dispatch(
+        setPaymentStatus({ id: payload.id, key: payload.key, action: 'likeNFT', type: 'initiated', message: '' }),
+      );
 
       const transactionPayload: AppTransaction<LikeNFTUI> = await createTransaction(
         redeemableNftModule.moduleID,
@@ -57,21 +59,32 @@ export const directPayLikeNFT = createAsyncThunk<void, PayLikeNFTPayload, AsyncT
         }),
       );
 
-      dispatch(setPaymentStatus({ id: payload.id, action: 'likeNFT', type: 'process', message: '' }));
+      dispatch(setPaymentStatus({ id: payload.id, key: payload.key, action: 'likeNFT', type: 'process', message: '' }));
 
       const response = await postTransaction(
         attachFee(transactionPayload, (BigInt(gasFee) + BigInt(baseFee)).toString()),
       );
       if (response.status === 200) {
-        dispatch(setPaymentStatus({ id: payload.id, action: 'likeNFT', type: 'success', message: '' }));
+        dispatch(
+          setPaymentStatus({ id: payload.id, key: payload.key, action: 'likeNFT', type: 'success', message: '' }),
+        );
       } else {
-        dispatch(setPaymentStatus({ id: payload.id, action: 'likeNFT', type: 'error', message: response.data }));
+        dispatch(
+          setPaymentStatus({
+            id: payload.id,
+            key: payload.key,
+            action: 'likeNFT',
+            type: 'error',
+            message: response.data,
+          }),
+        );
       }
     } catch (err) {
       handleError(err);
       dispatch(
         setPaymentStatus({
           id: payload.id,
+          key: payload.key,
           action: 'likeNFT',
           type: 'error',
           message: (err as Record<string, any>).message.toString(),

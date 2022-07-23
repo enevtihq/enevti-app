@@ -16,14 +16,20 @@ import { Collection } from 'enevti-app/types/core/chain/collection';
 import { AppTransaction } from 'enevti-app/types/core/service/transaction';
 import { redeemableNftModule } from 'enevti-app/utils/constant/transaction';
 
-type PayMintCollectionPayload = { collection: Collection; quantity: number };
+type PayMintCollectionPayload = { key: string; collection: Collection; quantity: number };
 
 export const payMintCollection = createAsyncThunk<void, PayMintCollectionPayload, AsyncThunkAPI>(
   'collection/payMintCollection',
   async (payload, { dispatch, signal }) => {
     try {
       dispatch(
-        setPaymentStatus({ id: payload.collection.id, action: 'mintCollection', type: 'initiated', message: '' }),
+        setPaymentStatus({
+          id: payload.collection.id,
+          key: payload.key,
+          action: 'mintCollection',
+          type: 'initiated',
+          message: '',
+        }),
       );
       dispatch(showPayment());
 
@@ -83,6 +89,7 @@ export const payMintCollection = createAsyncThunk<void, PayMintCollectionPayload
       dispatch(
         setPaymentStatus({
           id: payload.collection.id,
+          key: payload.key,
           action: 'mintCollection',
           type: 'error',
           message: (err as Record<string, any>).message.toString(),

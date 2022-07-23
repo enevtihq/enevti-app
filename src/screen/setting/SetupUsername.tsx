@@ -22,6 +22,7 @@ import { payRegisterUsername } from 'enevti-app/store/middleware/thunk/payment/c
 import usePaymentCallback from 'enevti-app/utils/hook/usePaymentCallback';
 import { hideModalLoader } from 'enevti-app/store/slices/ui/global/modalLoader';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
+import { PaymentStatus } from 'enevti-app/types/ui/store/Payment';
 
 type Props = StackScreenProps<RootStackParamList, 'SetupUsername'>;
 
@@ -35,7 +36,7 @@ const validationSchema = Yup.object().shape({
   checkbox: Yup.bool().oneOf([true]),
 });
 
-export default function SetupUsername({ navigation }: Props) {
+export default function SetupUsername({ navigation, route }: Props) {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const theme = useTheme() as Theme;
@@ -51,6 +52,17 @@ export default function SetupUsername({ navigation }: Props) {
     paymentThunkRef.current = dispatch(payRegisterUsername(values.username));
   };
 
+  const paymentCondition = React.useCallback(
+    (paymentStatus: PaymentStatus) => {
+      return (
+        paymentStatus.action !== undefined &&
+        ['registerUsername'].includes(paymentStatus.action) &&
+        paymentStatus.key === route.key
+      );
+    },
+    [route.key],
+  );
+
   const paymentIdleCallback = React.useCallback(() => {
     setIsLoading(false);
     paymentThunkRef.current?.abort();
@@ -65,6 +77,7 @@ export default function SetupUsername({ navigation }: Props) {
   const paymentErrorCallback = React.useCallback(() => dispatch(hideModalLoader()), [dispatch]);
 
   usePaymentCallback({
+    condition: paymentCondition,
     onIdle: paymentIdleCallback,
     onSuccess: paymentSuccessCallback,
     onError: paymentErrorCallback,

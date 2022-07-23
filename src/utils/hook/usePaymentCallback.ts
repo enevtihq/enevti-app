@@ -9,7 +9,7 @@ import {
 import { PaymentStatus } from 'enevti-app/types/ui/store/Payment';
 
 interface PaymentCallbackHookProps {
-  condition?: (paymentStatus: PaymentStatus) => boolean;
+  condition: (paymentStatus: PaymentStatus) => boolean;
   onIdle?: (paymentStatus: PaymentStatus) => void;
   onInitiated?: (paymentStatus: PaymentStatus) => void;
   onProcess?: (paymentStatus: PaymentStatus) => void;

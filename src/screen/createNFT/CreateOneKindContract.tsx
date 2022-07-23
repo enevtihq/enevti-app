@@ -68,6 +68,7 @@ import AppIconGradient from 'enevti-app/components/molecules/AppIconGradient';
 import AppTextHeading5 from 'enevti-app/components/atoms/text/AppTextHeading5';
 import AppMintingTypePicker from 'enevti-app/components/organism/picker/AppMintingTypePicker';
 import { ImageOrVideoToDocument } from 'enevti-app/utils/format/documentPicker';
+import { PaymentStatus } from 'enevti-app/types/ui/store/Payment';
 
 type Props = StackScreenProps<RootStackParamList, 'CreateOneKindContract'>;
 
@@ -280,6 +281,17 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
     navigation.goBack();
   }, [dispatch, formikProps.values, formikProps.status, navigation]);
 
+  const paymentCondition = React.useCallback(
+    (paymentStatus: PaymentStatus) => {
+      return (
+        paymentStatus.action !== undefined &&
+        ['createNFTOneKind'].includes(paymentStatus.action) &&
+        paymentStatus.key === route.key
+      );
+    },
+    [route.key],
+  );
+
   const paymentIdleCallback = React.useCallback(() => {
     setIsLoading(false);
     paymentThunkRef.current?.abort();
@@ -294,6 +306,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
   const paymentErrorCallback = React.useCallback(() => dispatch(hideModalLoader()), [dispatch]);
 
   usePaymentCallback({
+    condition: paymentCondition,
     onIdle: paymentIdleCallback,
     onSuccess: paymentSuccessCallback,
     onError: paymentErrorCallback,

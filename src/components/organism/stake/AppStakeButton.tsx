@@ -23,6 +23,9 @@ import { COIN_NAME } from 'enevti-app/utils/constant/identifier';
 import { completeTokenUnit } from 'enevti-app/utils/format/amount';
 import usePaymentCallback from 'enevti-app/utils/hook/usePaymentCallback';
 import YupMultipleOf10 from 'enevti-app/utils/yup/number/multipleOf10';
+import { RootStackParamList } from 'enevti-app/navigation';
+import { RouteProp } from '@react-navigation/native';
+import { PaymentStatus } from 'enevti-app/types/ui/store/Payment';
 
 YupMultipleOf10(Yup);
 
@@ -38,6 +41,7 @@ interface AppStakeButtonProps {
   persona: Persona;
   visible: boolean;
   extended: boolean;
+  route: RouteProp<RootStackParamList, 'StakePool'>;
   onPress?: () => void;
   onModalDismiss?: () => void;
   onModalSubmit?: (values: StakeForm) => void;
@@ -47,6 +51,7 @@ export default function AppStakeButton({
   persona,
   visible,
   extended,
+  route,
   onPress,
   onModalDismiss,
   onModalSubmit,
@@ -69,6 +74,7 @@ export default function AppStakeButton({
       paymentThunkRef.current = dispatch(
         payAddStake({
           persona,
+          key: route.key,
           stake: {
             amount: completeTokenUnit(values.stake),
             currency: COIN_NAME,
@@ -76,7 +82,18 @@ export default function AppStakeButton({
         }),
       );
     },
-    [onModalSubmit, dispatch, persona],
+    [onModalSubmit, dispatch, persona, route.key],
+  );
+
+  const paymentCondition = React.useCallback(
+    (paymentStatus: PaymentStatus) => {
+      return (
+        paymentStatus.action !== undefined &&
+        ['addStake'].includes(paymentStatus.action) &&
+        paymentStatus.key === route.key
+      );
+    },
+    [route.key],
   );
 
   const paymentIdleCallback = React.useCallback(() => {
@@ -84,6 +101,7 @@ export default function AppStakeButton({
   }, []);
 
   usePaymentCallback({
+    condition: paymentCondition,
     onIdle: paymentIdleCallback,
   });
 

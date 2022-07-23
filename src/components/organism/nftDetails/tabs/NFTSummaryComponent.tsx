@@ -96,8 +96,10 @@ function Component(
 
   const onLikeActivate = React.useCallback(async () => {
     setLikeLoading(true);
-    likeThunkRef.current = dispatch(directPayLikeNFT({ id: nft.id, symbol: nft.symbol, serial: nft.serial }));
-  }, [dispatch, nft.id, nft.symbol, nft.serial]);
+    likeThunkRef.current = dispatch(
+      directPayLikeNFT({ id: nft.id, key: route.key, symbol: nft.symbol, serial: nft.serial }),
+    );
+  }, [dispatch, nft.id, nft.symbol, nft.serial, route.key]);
 
   const onLikeDeactivate = React.useCallback(() => {
     dispatch(showSnackbar({ mode: 'info', text: t('home:cannotLike') }));

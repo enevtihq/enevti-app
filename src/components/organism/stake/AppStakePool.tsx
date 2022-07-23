@@ -32,6 +32,7 @@ import { appSocket } from 'enevti-app/utils/network';
 import { routeParamToAddress } from 'enevti-app/service/enevti/persona';
 import { reduceStakerUpdates } from 'enevti-app/store/middleware/thunk/socket/stakePool/stakerUpdates';
 import { Socket } from 'socket.io-client';
+import { PaymentStatus } from 'enevti-app/types/ui/store/Payment';
 
 const AnimatedFlatList = Animated.createAnimatedComponent<FlatListProps<StakerItem>>(FlatList);
 
@@ -92,6 +93,17 @@ export default function AppStakePool({ route }: AppStakePoolProps) {
     };
   }, [onStakePoolScreenLoaded, dispatch, route]);
 
+  const paymentCondition = React.useCallback(
+    (paymentStatus: PaymentStatus) => {
+      return (
+        paymentStatus.action !== undefined &&
+        ['addStake'].includes(paymentStatus.action) &&
+        paymentStatus.key === route.key
+      );
+    },
+    [route.key],
+  );
+
   const paymentProcessCallback = React.useCallback(() => {
     dispatch(showModalLoader());
   }, [dispatch]);
@@ -104,6 +116,7 @@ export default function AppStakePool({ route }: AppStakePoolProps) {
   const paymentErrorCallback = React.useCallback(() => dispatch(hideModalLoader()), [dispatch]);
 
   usePaymentCallback({
+    condition: paymentCondition,
     onProcess: paymentProcessCallback,
     onSuccess: paymentSuccessCallback,
     onError: paymentErrorCallback,
@@ -212,6 +225,7 @@ export default function AppStakePool({ route }: AppStakePoolProps) {
         persona={owner}
         visible={menuVisible}
         extended={extended}
+        route={route}
         onPress={onStakeButtonPress}
         onModalDismiss={onStakeButtonDismiss}
         onModalSubmit={onStakeButtonDismiss}

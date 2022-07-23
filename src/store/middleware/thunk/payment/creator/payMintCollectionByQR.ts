@@ -18,7 +18,7 @@ import { MintNFTByQR, MintNFTByQRUI } from 'enevti-app/types/core/asset/redeemab
 import base64 from 'react-native-base64';
 import { getCollectionById } from 'enevti-app/service/enevti/collection';
 
-type PayMintCollectionByQRPayload = { collection: Collection; payload: string };
+type PayMintCollectionByQRPayload = { key: string; collection: Collection; payload: string };
 
 export const payMintCollectionByQR = createAsyncThunk<void, PayMintCollectionByQRPayload, AsyncThunkAPI>(
   'collection/payMintCollectionByQR',
@@ -34,7 +34,15 @@ export const payMintCollectionByQR = createAsyncThunk<void, PayMintCollectionByQ
         throw Error(i18n.t('collection:invalidQRCode'));
       }
 
-      dispatch(setPaymentStatus({ action: 'mintCollectionByQR', type: 'initiated', message: '' }));
+      dispatch(
+        setPaymentStatus({
+          id: payload.collection.id,
+          key: payload.key,
+          action: 'mintCollectionByQR',
+          type: 'initiated',
+          message: '',
+        }),
+      );
       dispatch(showPayment());
 
       const transactionPayload: AppTransaction<MintNFTByQRUI> = await createTransaction(
@@ -89,6 +97,9 @@ export const payMintCollectionByQR = createAsyncThunk<void, PayMintCollectionByQ
       handleError(err);
       dispatch(
         setPaymentStatus({
+          id: payload.collection.id,
+          key: payload.key,
+          action: 'mintCollectionByQR',
           type: 'error',
           message: (err as Record<string, any>).message.toString(),
         }),

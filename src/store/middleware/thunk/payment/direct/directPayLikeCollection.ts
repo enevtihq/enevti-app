@@ -16,13 +16,21 @@ import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import { COIN_NAME } from 'enevti-app/utils/constant/identifier';
 import { LikeCollectionUI } from 'enevti-app/types/core/asset/redeemable_nft/like_collection_asset';
 
-type PayLikeCollectionPayload = { id: string; name: string };
+type PayLikeCollectionPayload = { id: string; key: string; name: string };
 
 export const directPayLikeCollection = createAsyncThunk<void, PayLikeCollectionPayload, AsyncThunkAPI>(
   'collection/directPayLikeCollection',
   async (payload, { dispatch, signal }) => {
     try {
-      dispatch(setPaymentStatus({ id: payload.id, action: 'likeCollection', type: 'initiated', message: '' }));
+      dispatch(
+        setPaymentStatus({
+          id: payload.id,
+          key: payload.key,
+          action: 'likeCollection',
+          type: 'initiated',
+          message: '',
+        }),
+      );
 
       const transactionPayload: AppTransaction<LikeCollectionUI> = await createTransaction(
         redeemableNftModule.moduleID,
@@ -57,21 +65,40 @@ export const directPayLikeCollection = createAsyncThunk<void, PayLikeCollectionP
         }),
       );
 
-      dispatch(setPaymentStatus({ id: payload.id, action: 'likeCollection', type: 'process', message: '' }));
+      dispatch(
+        setPaymentStatus({ id: payload.id, key: payload.key, action: 'likeCollection', type: 'process', message: '' }),
+      );
 
       const response = await postTransaction(
         attachFee(transactionPayload, (BigInt(gasFee) + BigInt(baseFee)).toString()),
       );
       if (response.status === 200) {
-        dispatch(setPaymentStatus({ id: payload.id, action: 'likeCollection', type: 'success', message: '' }));
+        dispatch(
+          setPaymentStatus({
+            id: payload.id,
+            key: payload.key,
+            action: 'likeCollection',
+            type: 'success',
+            message: '',
+          }),
+        );
       } else {
-        dispatch(setPaymentStatus({ id: payload.id, action: 'likeCollection', type: 'error', message: response.data }));
+        dispatch(
+          setPaymentStatus({
+            id: payload.id,
+            key: payload.key,
+            action: 'likeCollection',
+            type: 'error',
+            message: response.data,
+          }),
+        );
       }
     } catch (err) {
       handleError(err);
       dispatch(
         setPaymentStatus({
           id: payload.id,
+          key: payload.key,
           action: 'likeCollection',
           type: 'error',
           message: (err as Record<string, any>).message.toString(),

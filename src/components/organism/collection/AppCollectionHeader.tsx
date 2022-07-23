@@ -78,11 +78,13 @@ export default function AppCollectionHeader({
   const onLikeActivate = React.useCallback(async () => {
     if (onceLike) {
       setLikeLoading(true);
-      likeThunkRef.current = dispatch(directPayLikeCollection({ id: collection.id, name: collection.name }));
+      likeThunkRef.current = dispatch(
+        directPayLikeCollection({ id: collection.id, key: route.key, name: collection.name }),
+      );
     } else {
       dispatch(showOnceLike());
     }
-  }, [dispatch, collection, onceLike]);
+  }, [dispatch, collection, onceLike, route.key]);
 
   const onLikeDeactivate = React.useCallback(() => {
     dispatch(showSnackbar({ mode: 'info', text: t('home:cannotLike') }));

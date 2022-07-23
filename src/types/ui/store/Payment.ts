@@ -34,7 +34,8 @@ export type PaymentFee = {
 
 export type PaymentStatus = {
   id?: string;
-  action?: PaymentAction['type'];
+  key?: string;
+  action: PaymentAction['type'];
   type: 'idle' | 'initiated' | 'process' | 'success' | 'error' | 'cancel';
   message: string;
 };

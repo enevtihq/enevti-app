@@ -18,13 +18,21 @@ import { AddStakeUI } from 'enevti-app/types/core/asset/chain/add_stake_asset';
 import { AppTransaction } from 'enevti-app/types/core/service/transaction';
 import { stakingModule } from 'enevti-app/utils/constant/transaction';
 
-type PayAddStakePayload = { persona: Persona; stake: NFTPrice };
+type PayAddStakePayload = { key: string; persona: Persona; stake: NFTPrice };
 
 export const payAddStake = createAsyncThunk<void, PayAddStakePayload, AsyncThunkAPI>(
   'stakePool/payAddStake',
   async (payload, { dispatch, signal }) => {
     try {
-      dispatch(setPaymentStatus({ action: 'addStake', type: 'initiated', message: '' }));
+      dispatch(
+        setPaymentStatus({
+          id: payload.persona.address,
+          key: payload.key,
+          action: 'addStake',
+          type: 'initiated',
+          message: '',
+        }),
+      );
       dispatch(showPayment());
 
       const transactionPayload: AppTransaction<AddStakeUI> = await createTransaction<AddStakeUI>(
@@ -63,6 +71,9 @@ export const payAddStake = createAsyncThunk<void, PayAddStakePayload, AsyncThunk
       handleError(err);
       dispatch(
         setPaymentStatus({
+          id: payload.persona.address,
+          key: payload.key,
+          action: 'addStake',
           type: 'error',
           message: (err as Record<string, any>).message.toString(),
         }),

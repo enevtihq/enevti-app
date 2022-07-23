@@ -54,6 +54,7 @@ import {
   touchOnceLike,
 } from 'enevti-app/store/slices/entities/once/like';
 import { reduceNewCollectionLike } from 'enevti-app/store/middleware/thunk/socket/collection/newLike';
+import { PaymentStatus } from 'enevti-app/types/ui/store/Payment';
 
 const noDisplay = 'none';
 const visible = 1;
@@ -147,6 +148,17 @@ export default function AppCollection({ onScrollWorklet, navigation, route }: Ap
     dispatch(hideOnceLike());
   }, [dispatch]);
 
+  const paymentCondition = React.useCallback(
+    (paymentStatus: PaymentStatus) => {
+      return (
+        paymentStatus.action !== undefined &&
+        ['mintCollection', 'mintCollectionByQR'].includes(paymentStatus.action) &&
+        paymentStatus.key === route.key
+      );
+    },
+    [route.key],
+  );
+
   const paymentSuccessCallback = React.useCallback(() => {
     dispatch(hideModalLoader());
     dispatch(showSnackbar({ mode: 'info', text: t('payment:success') }));
@@ -155,6 +167,7 @@ export default function AppCollection({ onScrollWorklet, navigation, route }: Ap
   const paymentErrorCallback = React.useCallback(() => dispatch(hideModalLoader()), [dispatch]);
 
   usePaymentCallback({
+    condition: paymentCondition,
     onSuccess: paymentSuccessCallback,
     onError: paymentErrorCallback,
   });
@@ -353,7 +366,12 @@ export default function AppCollection({ onScrollWorklet, navigation, route }: Ap
           color={theme.colors.primary}
         />
       )}
-      <AppCollectionMintButton collection={collection} mintingAvailable={mintingAvailable} navigation={navigation} />
+      <AppCollectionMintButton
+        collection={collection}
+        mintingAvailable={mintingAvailable}
+        navigation={navigation}
+        route={route}
+      />
     </AppResponseView>
   ) : (
     <View style={styles.loaderContainer}>

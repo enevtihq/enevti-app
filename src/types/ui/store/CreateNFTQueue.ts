@@ -16,6 +16,7 @@ type CreateNFTData = {
 };
 
 export type CreateNFTOneKindMeta = {
+  key: string;
   data: CreateNFTData;
   choosenTemplate: NFTTemplateAsset;
   state: OneKindContractForm;

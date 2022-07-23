@@ -25,6 +25,8 @@ import { payMintCollectionByQR } from 'enevti-app/store/middleware/thunk/payment
 import parseQRValue from 'enevti-app/utils/qr/parseQRValue';
 import { openQRScanner } from 'enevti-app/utils/qr/openQRScanner';
 import { handleError } from 'enevti-app/utils/error/handle';
+import { RouteProp } from '@react-navigation/native';
+import { PaymentStatus } from 'enevti-app/types/ui/store/Payment';
 
 export const MINT_BUTTON_HEIGHT = 11.5;
 
@@ -32,12 +34,14 @@ interface AppCollectionMintButtonProps {
   collection: Collection;
   mintingAvailable: boolean;
   navigation: StackNavigationProp<RootStackParamList>;
+  route: RouteProp<RootStackParamList, 'Collection'>;
 }
 
 export default function AppCollectionMintButton({
   collection,
   mintingAvailable,
   navigation,
+  route,
 }: AppCollectionMintButtonProps) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -50,12 +54,24 @@ export default function AppCollectionMintButton({
   const [mintingOptionVisible, setMintingOptionVisible] = React.useState<boolean>(false);
   const paymentThunkRef = React.useRef<any>();
 
+  const paymentCondition = React.useCallback(
+    (paymentStatus: PaymentStatus) => {
+      return (
+        paymentStatus.action !== undefined &&
+        ['mintCollection', 'mintCollectionByQR'].includes(paymentStatus.action) &&
+        paymentStatus.key === route.key
+      );
+    },
+    [route.key],
+  );
+
   const paymentIdleCallback = React.useCallback(() => {
     setLoading(false);
     paymentThunkRef.current?.abort();
   }, []);
 
   usePaymentCallback({
+    condition: paymentCondition,
     onIdle: paymentIdleCallback,
   });
 
@@ -64,7 +80,9 @@ export default function AppCollectionMintButton({
       try {
         const qrValue = parseQRValue(data);
         if (qrValue && qrValue.action === 'qrmint') {
-          paymentThunkRef.current = dispatch(payMintCollectionByQR({ collection, payload: qrValue.payload }));
+          paymentThunkRef.current = dispatch(
+            payMintCollectionByQR({ collection, key: route.key, payload: qrValue.payload }),
+          );
           return;
         }
         throw Error(t('error:unknownQRFormat'));
@@ -73,7 +91,7 @@ export default function AppCollectionMintButton({
         setLoading(false);
       }
     },
-    [collection, dispatch, t],
+    [collection, dispatch, t, route.key],
   );
 
   const onQRFailed = React.useCallback(() => setLoading(false), []);
@@ -93,9 +111,9 @@ export default function AppCollectionMintButton({
       }
     } else {
       setLoading(true);
-      paymentThunkRef.current = dispatch(payMintCollection({ collection, quantity: 1 }));
+      paymentThunkRef.current = dispatch(payMintCollection({ collection, key: route.key, quantity: 1 }));
     }
-  }, [dispatch, collection, myPersona.address, onScanStart]);
+  }, [dispatch, collection, myPersona.address, onScanStart, route.key]);
 
   const onMintOptionDismiss = React.useCallback(() => {
     setMintingOptionVisible(false);
