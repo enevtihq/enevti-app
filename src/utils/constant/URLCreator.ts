@@ -272,3 +272,27 @@ export function urlGetActivityProfile(
 export function urlGetWallet(address: string, host: string = ENEVTI_DEFAULT_API) {
   return encodeURI(`${host}/wallet/${address}`);
 }
+
+export function urlGetCommentCollection(id: string, host: string = ENEVTI_DEFAULT_API) {
+  return encodeURI(`${host}/comment/collection/${id}`);
+}
+
+export function urlGetCommentNFT(id: string, host: string = ENEVTI_DEFAULT_API) {
+  return encodeURI(`${host}/comment/nft/${id}`);
+}
+
+export function urlGetReplyComment(id: string, host: string = ENEVTI_DEFAULT_API) {
+  return encodeURI(`${host}/reply/comment/${id}`);
+}
+
+export function urlGetTagUsername(query: string, host: string = ENEVTI_DEFAULT_API) {
+  return encodeURI(`${host}/tag/username?q=${query}`);
+}
+
+export function urlGetTagCollection(query: string, host: string = ENEVTI_DEFAULT_API) {
+  return encodeURI(`${host}/tag/collection?q=${query}`);
+}
+
+export function urlGetTagNFT(query: string, host: string = ENEVTI_DEFAULT_API) {
+  return encodeURI(`${host}/tag/nft?q=${query}`);
+}

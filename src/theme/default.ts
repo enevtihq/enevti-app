@@ -9,6 +9,7 @@ const defaultTheme = {
     primary: '#f72585',
     secondary: '#7209b7',
     accent: '#3a0ca3',
+    link: '#f72585',
     background: '#ffffff',
     surface: '#ffffff',
     error: '#B00020',

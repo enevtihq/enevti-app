@@ -18,24 +18,27 @@ export default function AppCommentItem() {
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
 
-  const renderPart = React.useCallback((part: Part, index: number) => {
-    if (!part.partType) {
-      return <AppTextBody4 key={index}>{part.text}</AppTextBody4>;
-    }
+  const renderPart = React.useCallback(
+    (part: Part, index: number) => {
+      if (!part.partType) {
+        return <AppTextBody4 key={index}>{part.text}</AppTextBody4>;
+      }
 
-    if (isMentionPartType(part.partType)) {
-      return (
-        <AppTextBody4
-          key={`${index}-${part.data?.trigger}`}
-          style={{ color: theme.colors.primary }}
-          onPress={() => console.log('Pressed', part.data)}>
-          {part.text}
-        </AppTextBody4>
-      );
-    }
+      if (isMentionPartType(part.partType)) {
+        return (
+          <AppTextBody4
+            key={`${index}-${part.data?.trigger}`}
+            style={{ color: theme.colors.link }}
+            onPress={() => console.log('Pressed', part.data)}>
+            {part.text}
+          </AppTextBody4>
+        );
+      }
 
-    return <AppTextBody4 key={`${index}-pattern`}>{part.text}</AppTextBody4>;
-  }, []);
+      return <AppTextBody4 key={`${index}-pattern`}>{part.text}</AppTextBody4>;
+    },
+    [theme.colors.link],
+  );
 
   const renderValue = React.useCallback(
     (value: string, partTypes: PartType[]) => {

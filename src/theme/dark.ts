@@ -11,6 +11,7 @@ const darkTheme: Theme = {
     primary: '#f72585',
     secondary: '#7209b7',
     accent: '#3a0ca3',
+    link: '#Fdc9e0',
     background: '#12122a',
     surface: '#00001c',
     error: '#CF6679',
