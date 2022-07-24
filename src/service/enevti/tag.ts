@@ -10,6 +10,8 @@ export type CollectionTag = {
   name: Collection['name'];
   id: Collection['id'];
   cover: Collection['cover'];
+  symbol: Collection['symbol'];
+  creator: Collection['creator'];
 };
 
 async function fetchTagUsername(username: string, signal?: AbortController['signal']): Promise<APIResponse<Persona[]>> {
@@ -49,11 +51,14 @@ async function fetchTagCollection(
   }
 }
 
-async function fetchTagNFT(nftSerial: string, signal?: AbortController['signal']): Promise<APIResponse<NFTBase[]>> {
+async function fetchTagNFT(
+  nftSerial: string,
+  signal?: AbortController['signal'],
+): Promise<APIResponse<(NFTBase & { owner: Persona })[]>> {
   try {
     await isInternetReachable();
     const res = await appFetch(urlGetTagNFT(nftSerial), { signal });
-    const ret = (await res.json()) as ResponseJSON<NFTBase[]>;
+    const ret = (await res.json()) as ResponseJSON<(NFTBase & { owner: Persona })[]>;
     handleResponseCode(res, ret);
     return {
       status: res.status,
@@ -83,6 +88,6 @@ export async function getTagCollection(
 export async function getTagNFT(
   nftSerial: string,
   signal?: AbortController['signal'],
-): Promise<APIResponse<NFTBase[]>> {
+): Promise<APIResponse<(NFTBase & { owner: Persona })[]>> {
   return await fetchTagNFT(nftSerial, signal);
 }

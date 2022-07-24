@@ -1,4 +1,4 @@
-import { Platform, Pressable, StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
@@ -8,20 +8,23 @@ import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
 import { useTheme } from 'react-native-paper';
 import { Theme } from 'enevti-app/theme/default';
 import { MentionInput, MentionSuggestionsProps } from 'react-native-controlled-mentions';
-import AppTextBody3 from 'enevti-app/components/atoms/text/AppTextBody3';
 import AppIconButton from 'enevti-app/components/atoms/icon/AppIconButton';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import Color from 'color';
 import { useDebouncedCallback } from 'use-debounce';
 import { Persona } from 'enevti-app/types/core/account/persona';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
-import { CollectionTag, getTagCollection, getTagUsername } from 'enevti-app/service/enevti/tag';
+import { CollectionTag, getTagCollection, getTagNFT, getTagUsername } from 'enevti-app/service/enevti/tag';
 import { handleError } from 'enevti-app/utils/error/handle';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import { useTranslation } from 'react-i18next';
 import AppListItem from '../list/AppListItem';
 import { parsePersonaLabel } from 'enevti-app/service/enevti/persona';
 import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
+import AppNetworkImage from 'enevti-app/components/atoms/image/AppNetworkImage';
+import { IPFStoURL } from 'enevti-app/service/ipfs';
+import { NFTBase } from 'enevti-app/types/core/chain/nft';
+import AppNFTRenderer from '../nft/AppNFTRenderer';
 
 export default function AppCommentBox() {
   const { t } = useTranslation();
@@ -41,48 +44,6 @@ export default function AppCommentBox() {
       abortController.current && abortController.current.abort();
     };
   }, []);
-
-  const [usernameSuggestion, setUsernameSuggestion] = React.useState<Persona[]>([]);
-  const debouncedSetUsernameSuggestion = useDebouncedCallback(async (keyword: string) => {
-    try {
-      if (loading) {
-        const personaResponse = await getTagUsername(
-          keyword,
-          abortController.current ? abortController.current.signal : undefined,
-        );
-        if (personaResponse.status !== 200) {
-          setIsError(true);
-        }
-        setUsernameSuggestion(personaResponse.data);
-        setLoading(false);
-        setIsError(false);
-      }
-    } catch (err) {
-      handleError(err);
-      setLoading(false);
-    }
-  }, 1000);
-
-  const [collectionSuggestion, setCollectionSuggestion] = React.useState<CollectionTag[]>([]);
-  const debouncedSetCollectionSuggestion = useDebouncedCallback(async (keyword: string) => {
-    try {
-      if (loading) {
-        const collectionResponse = await getTagCollection(
-          keyword,
-          abortController.current ? abortController.current.signal : undefined,
-        );
-        if (collectionResponse.status !== 200) {
-          setIsError(true);
-        }
-        setCollectionSuggestion(collectionResponse.data);
-        setLoading(false);
-        setIsError(false);
-      }
-    } catch (err) {
-      handleError(err);
-      setLoading(false);
-    }
-  }, 1000);
 
   const SuggestionError = React.useMemo(
     () => (
@@ -111,6 +72,27 @@ export default function AppCommentBox() {
     [styles.suggestionContainer, styles.suggestionInfo, t],
   );
 
+  const [usernameSuggestion, setUsernameSuggestion] = React.useState<Persona[]>([]);
+  const debouncedSetUsernameSuggestion = useDebouncedCallback(async (keyword: string) => {
+    try {
+      if (loading) {
+        const personaResponse = await getTagUsername(
+          keyword,
+          abortController.current ? abortController.current.signal : undefined,
+        );
+        if (personaResponse.status !== 200) {
+          setIsError(true);
+        }
+        setUsernameSuggestion(personaResponse.data);
+        setLoading(false);
+        setIsError(false);
+      }
+    } catch (err) {
+      handleError(err);
+      setLoading(false);
+    }
+  }, 1000);
+
   const renderUsernameSuggestions: React.FC<MentionSuggestionsProps> = React.useCallback(
     ({ keyword, onSuggestionPress }) => {
       if (keyword == null) {
@@ -138,7 +120,7 @@ export default function AppCommentBox() {
               containerStyle={styles.accountCard}
               leftContent={
                 <View style={styles.collectionCoverContainer}>
-                  <AppAvatarRenderer persona={suggestion} size={wp('12%', insets)} style={styles.avatar} />
+                  <AppAvatarRenderer persona={suggestion} size={hp(5, insets)} style={styles.avatar} />
                 </View>
               }>
               <AppTextHeading3 numberOfLines={1}>{parsePersonaLabel(suggestion)}</AppTextHeading3>
@@ -169,6 +151,171 @@ export default function AppCommentBox() {
     ],
   );
 
+  const [collectionSuggestion, setCollectionSuggestion] = React.useState<CollectionTag[]>([]);
+  const debouncedSetCollectionSuggestion = useDebouncedCallback(async (keyword: string) => {
+    try {
+      if (loading) {
+        const collectionResponse = await getTagCollection(
+          keyword,
+          abortController.current ? abortController.current.signal : undefined,
+        );
+        if (collectionResponse.status !== 200) {
+          setIsError(true);
+        }
+        setCollectionSuggestion(collectionResponse.data);
+        setLoading(false);
+        setIsError(false);
+      }
+    } catch (err) {
+      handleError(err);
+      setLoading(false);
+    }
+  }, 1000);
+
+  const renderCollectionSuggestions: React.FC<MentionSuggestionsProps> = React.useCallback(
+    ({ keyword, onSuggestionPress }) => {
+      if (keyword == null) {
+        return null;
+      }
+
+      debouncedSetCollectionSuggestion(keyword);
+
+      if (isError) {
+        return SuggestionError;
+      }
+      if (loading) {
+        return SuggestionLoading;
+      }
+      if (collectionSuggestion.length === 0) {
+        return SuggestionNotFound;
+      }
+
+      return (
+        <View style={styles.suggestionSuccess}>
+          {collectionSuggestion.map(suggestion => (
+            <AppListItem
+              key={suggestion.id}
+              onPress={() => onSuggestionPress({ id: suggestion.id, name: suggestion.name })}
+              containerStyle={styles.accountCard}
+              leftContent={
+                <View style={styles.collectionCoverContainer}>
+                  <AppNetworkImage
+                    style={{ width: hp(5, insets), height: hp(5, insets) }}
+                    url={IPFStoURL(suggestion.cover.cid)}
+                  />
+                </View>
+              }>
+              <AppTextHeading3 numberOfLines={1}>
+                {suggestion.name} ({suggestion.symbol})
+              </AppTextHeading3>
+              <AppTextBody4 style={{ color: theme.colors.placeholder }} numberOfLines={1}>
+                {t('explorer:createdBy', { creator: parsePersonaLabel(suggestion.creator) })}
+              </AppTextBody4>
+            </AppListItem>
+          ))}
+        </View>
+      );
+    },
+    [
+      SuggestionError,
+      SuggestionLoading,
+      SuggestionNotFound,
+      collectionSuggestion,
+      debouncedSetCollectionSuggestion,
+      insets,
+      isError,
+      loading,
+      styles.accountCard,
+      styles.collectionCoverContainer,
+      styles.suggestionSuccess,
+      t,
+      theme.colors.placeholder,
+    ],
+  );
+
+  const [NFTSuggestion, setNFTSuggestion] = React.useState<(NFTBase & { owner: Persona })[]>([]);
+  const debouncedSetNFTSuggestion = useDebouncedCallback(async (keyword: string) => {
+    try {
+      if (loading) {
+        const nftResponse = await getTagNFT(
+          keyword,
+          abortController.current ? abortController.current.signal : undefined,
+        );
+        if (nftResponse.status !== 200) {
+          setIsError(true);
+        }
+        setNFTSuggestion(nftResponse.data);
+        setLoading(false);
+        setIsError(false);
+      }
+    } catch (err) {
+      handleError(err);
+      setLoading(false);
+    }
+  }, 1000);
+
+  const renderNFTSuggestions: React.FC<MentionSuggestionsProps> = React.useCallback(
+    ({ keyword, onSuggestionPress }) => {
+      if (keyword == null) {
+        return null;
+      }
+
+      debouncedSetNFTSuggestion(keyword);
+
+      if (isError) {
+        return SuggestionError;
+      }
+      if (loading) {
+        return SuggestionLoading;
+      }
+      if (NFTSuggestion.length === 0) {
+        return SuggestionNotFound;
+      }
+
+      return (
+        <View style={styles.suggestionSuccess}>
+          {NFTSuggestion.map(suggestion => (
+            <AppListItem
+              key={suggestion.id}
+              onPress={() =>
+                onSuggestionPress({ id: suggestion.id, name: `${suggestion.symbol}#${suggestion.serial}` })
+              }
+              containerStyle={styles.accountCard}
+              leftContent={
+                <View style={styles.collectionCoverContainer}>
+                  <View style={{ height: hp(5, insets), width: hp(5, insets) }}>
+                    <AppNFTRenderer nft={suggestion} width={hp(5, insets)} />
+                  </View>
+                </View>
+              }>
+              <AppTextHeading3 numberOfLines={1}>
+                {suggestion.symbol}#{suggestion.serial}
+              </AppTextHeading3>
+              <AppTextBody4 style={{ color: theme.colors.placeholder }} numberOfLines={1}>
+                {suggestion.owner.address ? parsePersonaLabel(suggestion.owner) : t('explorer:notMinted')}
+              </AppTextBody4>
+            </AppListItem>
+          ))}
+        </View>
+      );
+    },
+    [
+      NFTSuggestion,
+      SuggestionError,
+      SuggestionLoading,
+      SuggestionNotFound,
+      debouncedSetNFTSuggestion,
+      insets,
+      isError,
+      loading,
+      styles.accountCard,
+      styles.collectionCoverContainer,
+      styles.suggestionSuccess,
+      t,
+      theme.colors.placeholder,
+    ],
+  );
+
   return (
     <View style={styles.commentBoxContainer}>
       <View>
@@ -182,13 +329,24 @@ export default function AppCommentBox() {
               setLoading(true);
               setValue(e);
             }}
-            placeholder={'Tag username with "@", collection with "$", or NFT with "*"'}
+            placeholder={t('explorer:commentPlaceholder')}
             placeholderTextColor={theme.colors.placeholder}
             style={styles.commentInput}
             partTypes={[
               {
                 trigger: '@',
                 renderSuggestions: renderUsernameSuggestions,
+                textStyle: { fontWeight: 'bold', color: theme.colors.link },
+              },
+              {
+                trigger: '$',
+                renderSuggestions: renderCollectionSuggestions,
+                textStyle: { fontWeight: 'bold', color: theme.colors.link },
+                allowedSpacesCount: 20,
+              },
+              {
+                trigger: '*',
+                renderSuggestions: renderNFTSuggestions,
                 textStyle: { fontWeight: 'bold', color: theme.colors.link },
               },
             ]}

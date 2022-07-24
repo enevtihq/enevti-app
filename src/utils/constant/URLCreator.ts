@@ -294,5 +294,5 @@ export function urlGetTagCollection(query: string, host: string = ENEVTI_DEFAULT
 }
 
 export function urlGetTagNFT(query: string, host: string = ENEVTI_DEFAULT_API) {
-  return encodeURI(`${host}/tag/nft?q=${query}`);
+  return encodeURI(`${host}/tag/nft?q=${encodeURIComponent(query)}`);
 }
