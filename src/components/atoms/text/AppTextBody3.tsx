@@ -7,6 +7,7 @@ interface AppTextBody3Props {
   numberOfLines?: number;
   style?: StyleProp<TextStyle>;
   readMoreLimit?: number;
+  onPress?: () => void;
 }
 
 export default function AppTextBody3({
@@ -14,9 +15,16 @@ export default function AppTextBody3({
   numberOfLines,
   style,
   readMoreLimit,
+  onPress,
 }: AppTextBody3Props): JSX.Element {
   return (
-    <AppTextBase weight={'normal'} size={4.0} numberOfLines={numberOfLines} readMoreLimit={readMoreLimit} style={style}>
+    <AppTextBase
+      onPress={onPress}
+      weight={'normal'}
+      size={4.0}
+      numberOfLines={numberOfLines}
+      readMoreLimit={readMoreLimit}
+      style={style}>
       {children}
     </AppTextBase>
   );

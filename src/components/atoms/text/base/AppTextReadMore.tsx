@@ -8,9 +8,10 @@ interface AppTextReadMoreProps {
   children: React.ReactNode;
   style?: StyleProp<TextStyle>;
   readMoreLimit?: number;
+  onPress?: () => void;
 }
 
-export default function AppTextReadMore({ children, style, readMoreLimit }: AppTextReadMoreProps) {
+export default function AppTextReadMore({ children, style, readMoreLimit, onPress }: AppTextReadMoreProps) {
   const { t } = useTranslation();
   const theme = useTheme() as Theme;
 
@@ -26,7 +27,7 @@ export default function AppTextReadMore({ children, style, readMoreLimit }: AppT
 
   return (
     <Pressable onPress={onReadMorePress}>
-      <Text style={style}>
+      <Text style={style} onPress={onPress}>
         {text}{' '}
         <Text
           style={{

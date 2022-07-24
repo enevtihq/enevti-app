@@ -1,3 +1,5 @@
+import { Persona } from '../account/persona';
+
 export type LikeAt = {
   address: string[];
 };
@@ -32,7 +34,7 @@ export type Comment = {
   id: string;
   type: 'nft' | 'collection';
   date: number;
-  owner: string;
+  owner: Persona;
   text: string;
   target: string;
   reply: number;

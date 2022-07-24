@@ -7,6 +7,7 @@ import stakePoolReducer from './stakePool';
 import feedViewReducer from './feed';
 import momentViewReducer from './moment';
 import walletViewReducer from './wallet';
+import commentViewReducer from './comment';
 
 export default combineReducers({
   profile: profileViewReducer,
@@ -17,4 +18,5 @@ export default combineReducers({
   feed: feedViewReducer,
   moment: momentViewReducer,
   wallet: walletViewReducer,
+  comment: commentViewReducer,
 });

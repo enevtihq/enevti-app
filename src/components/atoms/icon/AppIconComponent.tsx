@@ -107,6 +107,7 @@ export const iconMap = {
   sendHere: 'arrow-top-right',
   addStake: 'bank-plus',
   selfStake: 'account-cache',
+  sendPost: 'send-circle',
 };
 
 interface AppIconComponentProps {

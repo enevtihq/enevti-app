@@ -7,6 +7,7 @@ interface AppTextHeading5Props {
   numberOfLines?: number;
   style?: StyleProp<TextStyle>;
   readMoreLimit?: number;
+  onPress?: () => void;
 }
 
 export default function AppTextHeading5({
@@ -14,9 +15,16 @@ export default function AppTextHeading5({
   numberOfLines,
   style,
   readMoreLimit,
+  onPress,
 }: AppTextHeading5Props): JSX.Element {
   return (
-    <AppTextBase weight={'bold'} size={2.2} numberOfLines={numberOfLines} readMoreLimit={readMoreLimit} style={style}>
+    <AppTextBase
+      onPress={onPress}
+      weight={'bold'}
+      size={2.2}
+      numberOfLines={numberOfLines}
+      readMoreLimit={readMoreLimit}
+      style={style}>
       {children}
     </AppTextBase>
   );

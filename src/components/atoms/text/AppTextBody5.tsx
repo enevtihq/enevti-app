@@ -7,6 +7,7 @@ interface AppTextBody5Props {
   numberOfLines?: number;
   style?: StyleProp<TextStyle>;
   readMoreLimit?: number;
+  onPress?: () => void;
 }
 
 export default function AppTextBody5({
@@ -14,9 +15,16 @@ export default function AppTextBody5({
   numberOfLines,
   style,
   readMoreLimit,
+  onPress,
 }: AppTextBody5Props): JSX.Element {
   return (
-    <AppTextBase weight={'normal'} size={2.2} numberOfLines={numberOfLines} readMoreLimit={readMoreLimit} style={style}>
+    <AppTextBase
+      onPress={onPress}
+      weight={'normal'}
+      size={2.2}
+      numberOfLines={numberOfLines}
+      readMoreLimit={readMoreLimit}
+      style={style}>
       {children}
     </AppTextBase>
   );

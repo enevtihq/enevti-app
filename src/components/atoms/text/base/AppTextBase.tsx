@@ -14,6 +14,7 @@ interface AppTextBaseProps {
   numberOfLines?: number;
   style?: StyleProp<TextStyle>;
   readMoreLimit?: number;
+  onPress?: () => void;
 }
 
 export default function AppTextBase({
@@ -23,6 +24,7 @@ export default function AppTextBase({
   numberOfLines,
   style,
   readMoreLimit,
+  onPress,
 }: AppTextBaseProps): JSX.Element {
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
@@ -34,11 +36,11 @@ export default function AppTextBase({
   );
 
   return readMoreActivate ? (
-    <AppTextReadMore style={[styles.text, style]} readMoreLimit={readMoreLimit}>
+    <AppTextReadMore style={[styles.text, style]} readMoreLimit={readMoreLimit} onPress={onPress}>
       {children}
     </AppTextReadMore>
   ) : (
-    <AppText numberOfLines={numberOfLines} style={[styles.text, style]}>
+    <AppText numberOfLines={numberOfLines} style={[styles.text, style]} onPress={onPress}>
       {children}
     </AppText>
   );
