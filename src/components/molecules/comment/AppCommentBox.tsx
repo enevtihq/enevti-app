@@ -1,7 +1,7 @@
-import { KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
+import { Keyboard, KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
 import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectMyPersonaCache } from 'enevti-app/store/slices/entities/cache/myPersona';
 import AppAvatarRenderer from '../avatar/AppAvatarRenderer';
 import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
@@ -25,18 +25,31 @@ import AppNetworkImage from 'enevti-app/components/atoms/image/AppNetworkImage';
 import { IPFStoURL } from 'enevti-app/service/ipfs';
 import { NFTBase } from 'enevti-app/types/core/chain/nft';
 import AppNFTRenderer from '../nft/AppNFTRenderer';
+import { RouteProp } from '@react-navigation/native';
+import { RootStackParamList } from 'enevti-app/navigation';
+import { payCommentCollection } from 'enevti-app/store/middleware/thunk/payment/creator/payCommentCollection';
+import usePaymentCallback from 'enevti-app/utils/hook/usePaymentCallback';
+import { PaymentStatus } from 'enevti-app/types/ui/store/Payment';
 
-export default function AppCommentBox() {
+interface AppCommentBoxProps {
+  route: RouteProp<RootStackParamList, 'Comment'>;
+}
+
+export default function AppCommentBox({ route }: AppCommentBoxProps) {
+  const dispatch = useDispatch();
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
   const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
   const abortController = React.useRef<AbortController>();
+  const paymentThunkRef = React.useRef<any>();
+  const inputRef = React.useRef<any>();
   const myPersona = useSelector(selectMyPersonaCache);
 
   const [value, setValue] = React.useState<string>('');
   const [isError, setIsError] = React.useState<boolean>(false);
   const [loading, setLoading] = React.useState<boolean>(false);
+  const [sending, setSending] = React.useState<boolean>(false);
 
   React.useEffect(() => {
     abortController.current = new AbortController();
@@ -44,6 +57,40 @@ export default function AppCommentBox() {
       abortController.current && abortController.current.abort();
     };
   }, []);
+
+  const paymentCondition = React.useCallback(
+    (paymentStatus: PaymentStatus) => {
+      return (
+        paymentStatus.action !== undefined &&
+        ['commentCollection', 'commentNFT'].includes(paymentStatus.action) &&
+        paymentStatus.id === route.params.arg &&
+        paymentStatus.key === route.key
+      );
+    },
+    [route.key, route.params.arg],
+  );
+
+  const paymentInitiatedCallback = React.useCallback(() => {
+    setSending(false);
+  }, []);
+
+  const paymentProcessCallback = React.useCallback(() => {
+    inputRef.current?.clear();
+  }, []);
+
+  usePaymentCallback({
+    condition: paymentCondition,
+    onInitiated: paymentInitiatedCallback,
+    onProcess: paymentProcessCallback,
+  });
+
+  const onComment = React.useCallback(() => {
+    Keyboard.dismiss();
+    setSending(true);
+    if (route.params.type === 'collection') {
+      paymentThunkRef.current = dispatch(payCommentCollection({ route, comment: value }));
+    }
+  }, [dispatch, route, value]);
 
   const SuggestionError = React.useMemo(
     () => (
@@ -324,6 +371,7 @@ export default function AppCommentBox() {
         </View>
         <View>
           <MentionInput
+            inputRef={inputRef}
             value={value}
             onChange={e => {
               setLoading(true);
@@ -353,8 +401,23 @@ export default function AppCommentBox() {
           />
         </View>
         <View style={styles.commentActionContainer}>
-          <View style={styles.commentActionBg} />
-          <AppIconButton icon={iconMap.sendPost} color={theme.colors.primary} size={hp(4, insets)} onPress={() => {}} />
+          {!sending ? (
+            <>
+              <View style={styles.commentActionBg} />
+              <AppIconButton
+                icon={iconMap.sendPost}
+                color={theme.colors.primary}
+                size={hp(4, insets)}
+                onPress={onComment}
+              />
+            </>
+          ) : (
+            <AppActivityIndicator
+              animating
+              size={hp(3, insets)}
+              style={{ bottom: hp(1, insets), right: hp(1, insets) }}
+            />
+          )}
         </View>
       </View>
       <View style={styles.bottomBar} />

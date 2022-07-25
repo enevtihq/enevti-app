@@ -9,7 +9,7 @@ export default {
   total: 'Total',
   secureNote: 'Payement are secured using blockchain, by proceeding you are agree to Terms & Conditions',
   pay: 'Pay',
-  notEnoughtBalance: 'Not Enough Balance',
+  notEnoughBalance: 'Not Enough Balance',
   snackPay: "Paying '{{action}}' for {{amount}} ${{currency}} (in 3 seconds)",
   cancel: 'Cancel',
   save: 'Save',
@@ -43,4 +43,6 @@ export default {
   payLikeCollectionDescription: 'Give like for {{name}}',
   payLikeNFTName: 'Like NFT',
   payLikeNFTDescription: 'Give like for {{symbol}}#{{serial}}',
+  payCommentCollection: 'Comment Collection',
+  payCommentCollectionDescription: 'Give comment for collection',
 };

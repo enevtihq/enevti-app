@@ -49,6 +49,7 @@ export default function AppPaymentModal() {
   const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
   const paymentSnapPoints = React.useMemo(() => ['70%'], []);
   const defaultCoin = React.useMemo(() => COIN_NAME, []);
+  const cancelRef = React.useRef<boolean>(false);
   const [gasFeePickerDialogShow, setGasFeePickerDialogShow] = React.useState<boolean>(false);
 
   const myProfile = useSelector(selectMyProfileCache);
@@ -112,6 +113,7 @@ export default function AppPaymentModal() {
     if (!gasFeePickerDialogShow) {
       dispatch(resetPaymentState());
       dispatch(resetPaymentStatusType());
+      cancelRef.current = false;
     }
   }, [dispatch, gasFeePickerDialogShow]);
 
@@ -128,11 +130,12 @@ export default function AppPaymentModal() {
   }, [dispatch, paymentAction, paymentFee.gas, paymentFee.base]);
 
   const onSnackDismiss = React.useCallback(() => {
-    payCallback();
+    !cancelRef.current ? payCallback() : {};
     paymentDismiss();
   }, [payCallback, paymentDismiss]);
 
   const onCancel = React.useCallback(() => {
+    cancelRef.current = true;
     dispatch(setPaymentActionType('cancel'));
     dispatch(
       setPaymentStatusInReducer({
@@ -141,6 +144,7 @@ export default function AppPaymentModal() {
         message: t('payment:paymentCancelled'),
       }),
     );
+    dispatch(reducePayment());
   }, [dispatch, t]);
 
   const snackAction = React.useMemo(() => {
@@ -242,7 +246,7 @@ export default function AppPaymentModal() {
               disabled={!balanceEnough}
               loading={paymentStatus.type === 'process'}
               onPress={payCallback}>
-              {balanceEnough ? t('payment:pay') : t('payment:notEnoughtBalance')}
+              {balanceEnough ? t('payment:pay') : t('payment:notEnoughBalance')}
             </AppPrimaryButton>
           </View>
 

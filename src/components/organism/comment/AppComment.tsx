@@ -44,7 +44,7 @@ export default function AppComment({ route }: AppCommentProps) {
       {/* <AppCommentItem />
       <AppCommentItem />
       <AppCommentItem /> */}
-      <AppCommentBox />
+      <AppCommentBox route={route} />
     </View>
   ) : (
     <View style={styles.loaderContainer}>
