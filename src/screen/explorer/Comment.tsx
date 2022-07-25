@@ -4,24 +4,36 @@ import AppHeader from 'enevti-app/components/atoms/view/AppHeader';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { useTranslation } from 'react-i18next';
-import AppCommentItem from 'enevti-app/components/molecules/comment/AppCommentItem';
-import AppCommentBox from 'enevti-app/components/molecules/comment/AppCommentBox';
+import { RouteProp } from '@react-navigation/native';
+import AppComment from 'enevti-app/components/organism/comment/AppComment';
+import { StyleSheet, View } from 'react-native';
 
 type Props = StackScreenProps<RootStackParamList, 'Comment'>;
 
-export default function Comment({ navigation }: Props) {
+export default function Comment({ navigation, route }: Props) {
   const { t } = useTranslation();
+  const styles = React.useMemo(() => makeStyles(), []);
+
+  const screenRoute = React.useMemo(
+    () => ({ key: route.key, name: route.name, params: route.params, path: route.path }),
+    [route.key, route.params, route.name, route.path],
+  ) as RouteProp<RootStackParamList, 'Comment'>;
 
   return (
     <AppView
       darken
       edges={['left', 'bottom', 'right']}
       header={<AppHeader back navigation={navigation} title={t('explorer:commentTitle')} />}>
-      <AppCommentItem />
-      {/* <AppCommentItem />
-      <AppCommentItem />
-      <AppCommentItem /> */}
-      <AppCommentBox />
+      <View style={styles.container}>
+        <AppComment navigation={navigation} route={screenRoute} />
+      </View>
     </AppView>
   );
 }
+
+const makeStyles = () =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+    },
+  });

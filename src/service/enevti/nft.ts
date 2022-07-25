@@ -16,6 +16,7 @@ import { APIResponse, APIResponseVersioned, ResponseJSON, ResponseVersioned } fr
 import { NFTActivity } from 'enevti-app/types/core/chain/nft/NFTActivity';
 import { NFT_ACTIVITY_INITIAL_LENGTH } from 'enevti-app/utils/constant/limit';
 import { getMyAddress } from './persona';
+import i18n from 'enevti-app/translations/i18n';
 
 type NFTDetailsRoute = StackScreenProps<RootStackParamList, 'NFTDetails'>['route']['params'];
 
@@ -163,7 +164,10 @@ export async function getNFTIdFromRouteParam(routeParam: NFTDetailsRoute, signal
       return routeParam.arg;
     case 's':
       const nftId = await getNFTIdFromSerial(routeParam.arg, signal);
-      return nftId;
+      if (nftId.status !== 200) {
+        throw Error(i18n.t('error:clientError'));
+      }
+      return nftId.data;
   }
 }
 

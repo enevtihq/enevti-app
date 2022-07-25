@@ -4,7 +4,12 @@ import { RootState } from 'enevti-app/store/state';
 import { PaginationStore } from 'enevti-app/types/ui/store/PaginationStore';
 import { Comment, Reply } from 'enevti-app/types/core/chain/engagement';
 
-type CommentItem = Comment & { replies: Reply[]; replyPagination: PaginationStore };
+type CommentItem = Comment & {
+  isPosting: boolean;
+  highlighted: boolean;
+  replies: Reply[];
+  replyPagination: PaginationStore;
+};
 
 type CommentViewState = {
   commentPagination: PaginationStore;
@@ -12,7 +17,7 @@ type CommentViewState = {
   version: number;
   fetchedVersion: number;
   loaded: boolean;
-  comments: CommentItem[];
+  comment: CommentItem[];
 };
 
 type CommentViewStore = {
@@ -28,7 +33,7 @@ const initialStateItem: CommentViewState = {
   version: 0,
   fetchedVersion: 0,
   reqStatus: 0,
-  comments: [],
+  comment: [],
 };
 
 const initialState: CommentViewStore = {};
@@ -49,43 +54,43 @@ const commentViewSlice = createSlice({
       comment[action.payload.key].fetchedVersion = action.payload.value;
     },
     pushComment: (comment, action: PayloadAction<{ key: string; value: CommentItem[] }>) => {
-      comment[action.payload.key].comments = comment[action.payload.key].comments.concat(action.payload.value);
+      comment[action.payload.key].comment = comment[action.payload.key].comment.concat(action.payload.value);
     },
     unshiftComment: (comment, action: PayloadAction<{ key: string; value: CommentItem[] }>) => {
-      comment[action.payload.key].comments = action.payload.value.concat(comment[action.payload.key].comments);
+      comment[action.payload.key].comment = action.payload.value.concat(comment[action.payload.key].comment);
     },
-    setCommentPagination: (comment, action: PayloadAction<{ key: string; value: PaginationStore }>) => {
+    setCommentViewPagination: (comment, action: PayloadAction<{ key: string; value: PaginationStore }>) => {
       comment[action.payload.key].commentPagination = { ...action.payload.value };
     },
     pushReply: (comment, action: PayloadAction<{ key: string; commentIndex: number; value: Reply[] }>) => {
-      comment[action.payload.key].comments[action.payload.commentIndex].replies = comment[action.payload.key].comments[
+      comment[action.payload.key].comment[action.payload.commentIndex].replies = comment[action.payload.key].comment[
         action.payload.commentIndex
       ].replies.concat(action.payload.value);
     },
     unshiftReply: (comment, action: PayloadAction<{ key: string; commentIndex: number; value: Reply[] }>) => {
-      comment[action.payload.key].comments[action.payload.commentIndex].replies = action.payload.value.concat(
-        comment[action.payload.key].comments[action.payload.commentIndex].replies,
+      comment[action.payload.key].comment[action.payload.commentIndex].replies = action.payload.value.concat(
+        comment[action.payload.key].comment[action.payload.commentIndex].replies,
       );
     },
     setReplyPagination: (
       comment,
       action: PayloadAction<{ key: string; commentIndex: number; value: PaginationStore }>,
     ) => {
-      comment[action.payload.key].comments[action.payload.commentIndex].replyPagination = { ...action.payload.value };
+      comment[action.payload.key].comment[action.payload.commentIndex].replyPagination = { ...action.payload.value };
     },
-    setCommentVersion: (comment, action: PayloadAction<{ key: string; value: number }>) => {
+    setCommentViewVersion: (comment, action: PayloadAction<{ key: string; value: number }>) => {
       comment[action.payload.key].version = action.payload.value;
     },
-    setCommentLoaded: (comment, action: PayloadAction<{ key: string; value: boolean }>) => {
+    setCommentViewLoaded: (comment, action: PayloadAction<{ key: string; value: boolean }>) => {
       comment[action.payload.key].loaded = action.payload.value;
     },
-    setCommentReqStatus: (comment, action: PayloadAction<{ key: string; value: number }>) => {
+    setCommentViewReqStatus: (comment, action: PayloadAction<{ key: string; value: number }>) => {
       comment[action.payload.key].reqStatus = action.payload.value;
     },
-    clearCommentByKey: (comment, action: PayloadAction<string>) => {
+    clearCommentViewByKey: (comment, action: PayloadAction<string>) => {
       delete comment[action.payload];
     },
-    resetCommentByKey: (comment, action: PayloadAction<string>) => {
+    resetCommentViewByKey: (comment, action: PayloadAction<string>) => {
       Object.assign(comment[action.payload], initialStateItem);
     },
     resetCommentView: () => {
@@ -98,17 +103,17 @@ export const {
   initCommentView,
   setCommentView,
   setCommentFetchedVersion,
-  setCommentLoaded,
-  setCommentVersion,
-  setCommentReqStatus,
+  setCommentViewLoaded,
+  setCommentViewVersion,
+  setCommentViewReqStatus,
   pushComment,
   unshiftComment,
-  setCommentPagination,
+  setCommentViewPagination,
   pushReply,
   unshiftReply,
   setReplyPagination,
-  clearCommentByKey,
-  resetCommentByKey,
+  clearCommentViewByKey,
+  resetCommentViewByKey,
   resetCommentView,
 } = commentViewSlice.actions;
 export default commentViewSlice.reducer;
@@ -116,6 +121,16 @@ export default commentViewSlice.reducer;
 export const selectCommentView = createSelector(
   [(state: RootState) => state.ui.view.comment, (state: RootState, key: string) => key],
   (comment: CommentViewStore, key: string) => (comment.hasOwnProperty(key) ? comment[key] : initialStateItem),
+);
+
+export const selectCommentByIndex = createSelector(
+  [
+    (state: RootState) => state.ui.view.comment,
+    (state: RootState, key: string) => key,
+    (state: RootState, key: string, index: number) => index,
+  ],
+  (comment: CommentViewStore, key: string, index: number) =>
+    comment.hasOwnProperty(key) ? comment[key].comment[index] : undefined,
 );
 
 export const isThereAnyNewComment = createSelector(

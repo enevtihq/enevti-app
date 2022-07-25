@@ -15,6 +15,7 @@ import { APIResponse, APIResponseVersioned, ResponseJSON, ResponseVersioned } fr
 import { NFTBase } from 'enevti-app/types/core/chain/nft';
 import { COLLECTION_ACTIVITY_INITIAL_LENGTH, COLLECTION_MINTED_INITIAL_LENGTH } from 'enevti-app/utils/constant/limit';
 import { getMyAddress } from './persona';
+import i18n from 'enevti-app/translations/i18n';
 
 type CollectionRoute = StackScreenProps<RootStackParamList, 'Collection'>['route']['params'];
 
@@ -197,7 +198,10 @@ export async function getCollectionIdFromRouteParam(routeParam: CollectionRoute,
       return routeParam.arg;
     case 's':
       const collectionId = await getCollectionIdFromSymbol(routeParam.arg, signal);
-      return collectionId;
+      if (collectionId.status !== 200) {
+        throw Error(i18n.t('error:clientError'));
+      }
+      return collectionId.data;
   }
 }
 

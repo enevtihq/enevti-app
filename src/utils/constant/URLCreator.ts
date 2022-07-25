@@ -273,16 +273,34 @@ export function urlGetWallet(address: string, host: string = ENEVTI_DEFAULT_API)
   return encodeURI(`${host}/wallet/${address}`);
 }
 
-export function urlGetCommentCollection(id: string, host: string = ENEVTI_DEFAULT_API) {
-  return encodeURI(`${host}/comment/collection/${id}`);
+export function urlGetCommentCollection(
+  id: string,
+  offset: number = 0,
+  limit: number = 10,
+  version: number = 0,
+  host: string = ENEVTI_DEFAULT_API,
+) {
+  return encodeURI(`${host}/comment/collection/${id}?offset=${offset}&limit=${limit}&version=${version}`);
 }
 
-export function urlGetCommentNFT(id: string, host: string = ENEVTI_DEFAULT_API) {
-  return encodeURI(`${host}/comment/nft/${id}`);
+export function urlGetCommentNFT(
+  id: string,
+  offset: number = 0,
+  limit: number = 10,
+  version: number = 0,
+  host: string = ENEVTI_DEFAULT_API,
+) {
+  return encodeURI(`${host}/comment/nft/${id}?offset=${offset}&limit=${limit}&version=${version}`);
 }
 
-export function urlGetReplyComment(id: string, host: string = ENEVTI_DEFAULT_API) {
-  return encodeURI(`${host}/reply/comment/${id}`);
+export function urlGetReplyComment(
+  id: string,
+  offset: number = 0,
+  limit: number = 10,
+  version: number = 0,
+  host: string = ENEVTI_DEFAULT_API,
+) {
+  return encodeURI(`${host}/reply/comment/${id}?offset=${offset}&limit=${limit}&version=${version}`);
 }
 
 export function urlGetTagUsername(query: string, host: string = ENEVTI_DEFAULT_API) {
