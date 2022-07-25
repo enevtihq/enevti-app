@@ -1,4 +1,4 @@
-import { Platform, StyleSheet, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
 import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
@@ -317,8 +317,8 @@ export default function AppCommentBox() {
   );
 
   return (
-    <View style={styles.commentBoxContainer}>
-      <View>
+    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'position' : 'height'} style={[styles.commentBoxContainer]}>
+      <View style={styles.commentBox}>
         <View style={styles.avatarBox}>
           <AppAvatarRenderer size={hp(5, insets)} persona={myPersona} />
         </View>
@@ -357,7 +357,8 @@ export default function AppCommentBox() {
           <AppIconButton icon={iconMap.sendPost} color={theme.colors.primary} size={hp(4, insets)} onPress={() => {}} />
         </View>
       </View>
-    </View>
+      <View style={styles.bottomBar} />
+    </KeyboardAvoidingView>
   );
 }
 
@@ -366,11 +367,20 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
     commentBoxContainer: {
       position: 'absolute',
       width: '100%',
-      backgroundColor: theme.colors.background,
       bottom: 0,
-      paddingBottom: hp(2, insets) + insets.bottom,
+      marginBottom: hp(2, insets) + insets.bottom,
+    },
+    commentBox: {
+      backgroundColor: theme.colors.background,
       borderColor: Color(theme.colors.placeholder).alpha(0.05).rgb().toString(),
       borderTopWidth: 1,
+    },
+    bottomBar: {
+      position: 'absolute',
+      bottom: -(hp(2, insets) + insets.bottom),
+      height: hp(2, insets) + insets.bottom,
+      width: '100%',
+      backgroundColor: theme.colors.background,
     },
     avatarBox: {
       position: 'absolute',
