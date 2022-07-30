@@ -5,7 +5,6 @@ import { reducePayAddStake } from './reducePayAddStake';
 import { reducePayRegisterUsername } from './reducePayRegisterUsername';
 import { reducePayDeliverSecret } from './reducePayDeliverSecret';
 import { handleError } from 'enevti-app/utils/error/handle';
-import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 import i18n from 'enevti-app/translations/i18n';
 import { reducePayMintCollectionByQR } from './reducePayMintCollectionByQR';
 import { reduceTransferToken } from './reduceTransferToken';
@@ -37,9 +36,6 @@ export const reducePayment = (): AppThunk => (dispatch, getState) => {
       break;
     case 'commentCollection':
       dispatch(reducePayCommentCollection());
-      break;
-    case 'cancel':
-      dispatch(showSnackbar({ mode: 'info', text: getState().payment.status.message }));
       break;
     default:
       handleError({ message: i18n.t('error:unknownPayment') });

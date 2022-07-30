@@ -26,7 +26,6 @@ import {
   selectPaymentMode,
   selectPaymentShowState,
   selectPaymentStatus,
-  setPaymentActionType,
   setPaymentStatusInReducer,
   isPaymentUndefined,
   selectPaymentFeePriority,
@@ -41,6 +40,7 @@ import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivit
 import AppQuaternaryButton from 'enevti-app/components/atoms/button/AppQuaternaryButton';
 import AppPaymentGasFeePicker from './AppPaymentGasFeePicker';
 import { attachFee } from 'enevti-app/service/enevti/transaction';
+import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 
 export default function AppPaymentModal() {
   const { t } = useTranslation();
@@ -133,20 +133,12 @@ export default function AppPaymentModal() {
 
   const onSnackDismiss = React.useCallback(() => {
     !cancelRef.current ? payCallback() : {};
-    paymentDismiss();
-  }, [payCallback, paymentDismiss]);
+  }, [payCallback]);
 
   const onCancel = React.useCallback(() => {
+    dispatch(showSnackbar({ mode: 'info', text: t('payment:paymentCancelled') }));
+    dispatch(setPaymentStatusInReducer({ type: 'cancel' }));
     cancelRef.current = true;
-    dispatch(setPaymentActionType('cancel'));
-    dispatch(
-      setPaymentStatusInReducer({
-        type: 'cancel',
-        action: 'cancel',
-        message: t('payment:paymentCancelled'),
-      }),
-    );
-    dispatch(reducePayment());
   }, [dispatch, t]);
 
   const snackAction = React.useMemo(() => {

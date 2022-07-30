@@ -40,10 +40,7 @@ export type PaymentStatus = {
   message: string;
 };
 
-export type PaymentStatusInReducer = Omit<PaymentStatus, 'id' | 'key'> & {
-  id?: string;
-  key?: string;
-};
+export type PaymentStatusInReducer = Partial<PaymentStatus>;
 
 export type PaymentState = {
   show: boolean;

@@ -72,11 +72,12 @@ export default function AppCommentBox({ route }: AppCommentBoxProps) {
     [route.key, route.params.arg],
   );
 
-  const paymentInitiatedCallback = React.useCallback(() => {
+  const paymentIdleCallback = React.useCallback(() => {
     setSending(false);
   }, []);
 
   const paymentProcessCallback = React.useCallback(() => {
+    setSending(false);
     dispatch(
       unshiftComment({
         key: route.key,
@@ -89,7 +90,7 @@ export default function AppCommentBox({ route }: AppCommentBoxProps) {
 
   usePaymentCallback({
     condition: paymentCondition,
-    onInitiated: paymentInitiatedCallback,
+    onIdle: paymentIdleCallback,
     onProcess: paymentProcessCallback,
   });
 
@@ -415,9 +416,9 @@ export default function AppCommentBox({ route }: AppCommentBoxProps) {
               <View style={styles.commentActionBg} />
               <AppIconButton
                 icon={iconMap.sendPost}
-                color={theme.colors.primary}
+                color={value.length > 0 ? theme.colors.primary : theme.colors.placeholder}
                 size={hp(4, insets)}
-                onPress={onComment}
+                onPress={value.length > 0 ? onComment : undefined}
               />
             </>
           ) : (
