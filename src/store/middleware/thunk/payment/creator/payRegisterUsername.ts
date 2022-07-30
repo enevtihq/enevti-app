@@ -4,6 +4,7 @@ import {
   setPaymentStatus,
   setPaymentAction,
   showPayment,
+  hidePayment,
   setPaymentPriority,
 } from 'enevti-app/store/slices/payment';
 import { AsyncThunkAPI } from 'enevti-app/store/state';
@@ -57,7 +58,7 @@ export const payRegisterUsername = createAsyncThunk<void, PayRegisterUsernamePay
           icon: iconMap.username,
           name: i18n.t('payment:payRegisterUsernameName'),
           description: i18n.t('payment:payRegisterUsernameDescription', {
-            username: payload,
+            username: payload.username,
           }),
           amount: BigInt(baseFee).toString(),
           currency: COIN_NAME,
@@ -67,6 +68,7 @@ export const payRegisterUsername = createAsyncThunk<void, PayRegisterUsernamePay
       );
     } catch (err) {
       handleError(err);
+      dispatch(hidePayment());
       dispatch(
         setPaymentStatus({
           id: payload.username,

@@ -49,7 +49,7 @@ export default function SetupUsername({ navigation, route }: Props) {
 
   const handleFormSubmit = async (values: any) => {
     username.current = values.username;
-    paymentThunkRef.current = dispatch(payRegisterUsername(values.username));
+    paymentThunkRef.current = dispatch(payRegisterUsername({ key: route.key, username: values.username }));
   };
 
   const paymentCondition = React.useCallback(
@@ -74,7 +74,9 @@ export default function SetupUsername({ navigation, route }: Props) {
     navigation.replace('UsernameRegistered', { username: username.current });
   }, [navigation, dispatch, t]);
 
-  const paymentErrorCallback = React.useCallback(() => dispatch(hideModalLoader()), [dispatch]);
+  const paymentErrorCallback = React.useCallback(() => {
+    dispatch(hideModalLoader());
+  }, [dispatch]);
 
   usePaymentCallback({
     condition: paymentCondition,

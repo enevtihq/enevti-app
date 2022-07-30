@@ -5,6 +5,7 @@ import {
   setPaymentAction,
   showPayment,
   setPaymentPriority,
+  hidePayment,
 } from 'enevti-app/store/slices/payment';
 import { AsyncThunkAPI } from 'enevti-app/store/state';
 import { attachFee, calculateBaseFee, calculateGasFee, createTransaction } from 'enevti-app/service/enevti/transaction';
@@ -71,6 +72,7 @@ export const payTransferToken = createAsyncThunk<void, PayTransferTokenPayload, 
       );
     } catch (err) {
       handleError(err);
+      dispatch(hidePayment());
       dispatch(
         setPaymentStatus({
           id: payload.base32,

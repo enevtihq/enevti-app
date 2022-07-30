@@ -6,6 +6,7 @@ import {
   setPaymentAction,
   showPayment,
   setPaymentPriority,
+  hidePayment,
 } from 'enevti-app/store/slices/payment';
 import { CreateNFTOneKindMeta } from 'enevti-app/types/ui/store/CreateNFTQueue';
 import { AsyncThunkAPI } from 'enevti-app/store/state';
@@ -206,6 +207,7 @@ export const payCreateNFTOneKind = createAsyncThunk<void, CreateNFTOneKindMeta, 
       );
     } catch (err) {
       handleError(err);
+      dispatch(hidePayment());
       dispatch(
         setPaymentStatus({
           id: payload.key,
