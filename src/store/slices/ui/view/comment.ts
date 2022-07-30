@@ -53,11 +53,16 @@ const commentViewSlice = createSlice({
     setCommentFetchedVersion: (comment, action: PayloadAction<{ key: string; value: number }>) => {
       comment[action.payload.key].fetchedVersion = action.payload.value;
     },
+    setComment: (comment, action: PayloadAction<{ key: string; commentIndex: number; value: CommentItem }>) => {
+      comment[action.payload.key].comment[action.payload.commentIndex] = action.payload.value;
+    },
     pushComment: (comment, action: PayloadAction<{ key: string; value: CommentItem[] }>) => {
       comment[action.payload.key].comment = comment[action.payload.key].comment.concat(action.payload.value);
+      comment[action.payload.key].commentPagination.version++;
     },
     unshiftComment: (comment, action: PayloadAction<{ key: string; value: CommentItem[] }>) => {
       comment[action.payload.key].comment = action.payload.value.concat(comment[action.payload.key].comment);
+      comment[action.payload.key].commentPagination.version++;
     },
     setCommentViewPagination: (comment, action: PayloadAction<{ key: string; value: PaginationStore }>) => {
       comment[action.payload.key].commentPagination = { ...action.payload.value };
@@ -106,6 +111,7 @@ export const {
   setCommentViewLoaded,
   setCommentViewVersion,
   setCommentViewReqStatus,
+  setComment,
   pushComment,
   unshiftComment,
   setCommentViewPagination,

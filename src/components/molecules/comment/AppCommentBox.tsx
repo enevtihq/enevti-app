@@ -30,6 +30,8 @@ import { RootStackParamList } from 'enevti-app/navigation';
 import { payCommentCollection } from 'enevti-app/store/middleware/thunk/payment/creator/payCommentCollection';
 import usePaymentCallback from 'enevti-app/utils/hook/usePaymentCallback';
 import { PaymentStatus } from 'enevti-app/types/ui/store/Payment';
+import { unshiftComment } from 'enevti-app/store/slices/ui/view/comment';
+import { makeDummyComment } from 'enevti-app/utils/dummy/comment';
 
 interface AppCommentBoxProps {
   route: RouteProp<RootStackParamList, 'Comment'>;
@@ -75,8 +77,15 @@ export default function AppCommentBox({ route }: AppCommentBoxProps) {
   }, []);
 
   const paymentProcessCallback = React.useCallback(() => {
+    dispatch(
+      unshiftComment({
+        key: route.key,
+        value: [{ ...makeDummyComment({ isPosting: true, text: value, owner: myPersona }) }],
+      }),
+    );
     inputRef.current?.clear();
-  }, []);
+    // TODO: listen socket for transaction processed in the blockchain
+  }, [dispatch, myPersona, route.key, value]);
 
   usePaymentCallback({
     condition: paymentCondition,

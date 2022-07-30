@@ -15,6 +15,9 @@ import { CommentItem } from 'enevti-app/store/slices/ui/view/comment';
 import { parsePersonaLabel } from 'enevti-app/service/enevti/persona';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
+import timeSince from 'enevti-app/utils/date/timeSince';
+import { useTranslation } from 'react-i18next';
+import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
 
 interface AppCommentItemProps {
   comment: CommentItem;
@@ -22,9 +25,10 @@ interface AppCommentItemProps {
 }
 
 export default function AppCommentItem({ comment, navigation }: AppCommentItemProps) {
+  const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
-  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
+  const styles = React.useMemo(() => makeStyles(theme, insets, comment), [theme, insets, comment]);
 
   const renderPart = React.useCallback(
     (part: Part, index: number) => {
@@ -77,7 +81,7 @@ export default function AppCommentItem({ comment, navigation }: AppCommentItemPr
   );
 
   return (
-    <View style={styles.commentContainer}>
+    <View style={styles.commentContainer} pointerEvents={comment.isPosting ? 'none' : 'auto'}>
       <View style={styles.avatar}>
         <AppAvatarRenderer persona={comment.owner} size={hp(5, insets)} />
       </View>
@@ -87,14 +91,25 @@ export default function AppCommentItem({ comment, navigation }: AppCommentItemPr
           {renderValue(comment.text, [{ trigger: '@' }, { trigger: '$' }, { trigger: '*' }])}
         </AppTextBody4>
         <View style={styles.commentAction}>
-          <AppTextHeading4 style={styles.commentActionItem}>3d</AppTextHeading4>
-          <AppTextHeading4 style={styles.commentActionItem}>0 likes</AppTextHeading4>
-          {comment.reply > 0 ? <AppTextHeading4 style={styles.commentActionItem}>Reply</AppTextHeading4> : null}
+          <AppTextHeading4 style={styles.commentActionItem}>{timeSince(comment.date)}</AppTextHeading4>
+          {comment.like > 0 ? (
+            <AppTextHeading4 style={styles.commentActionItem}>
+              {t('explorer:likeCount', { count: comment.like })}
+            </AppTextHeading4>
+          ) : null}
+          <AppTextHeading4 style={styles.commentActionItem}>{t('explorer:reply')}</AppTextHeading4>
         </View>
         {comment.reply > 0 ? (
           <View style={styles.replyContainer}>
             <View style={styles.replyLine} />
-            <AppTextHeading4 style={styles.replyCounter}>View 13 more replies</AppTextHeading4>
+            <AppTextHeading4 style={styles.replyCounter}>
+              {t('explorer:viewCountMoreReply', { count: comment.reply })}
+            </AppTextHeading4>
+          </View>
+        ) : null}
+        {comment.isPosting ? (
+          <View style={styles.isPostingLoader}>
+            <AppActivityIndicator animating />
           </View>
         ) : null}
       </View>
@@ -105,11 +120,20 @@ export default function AppCommentItem({ comment, navigation }: AppCommentItemPr
   );
 }
 
-const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
+const makeStyles = (theme: Theme, insets: SafeAreaInsets, comment: CommentItem) =>
   StyleSheet.create({
+    isPostingLoader: {
+      position: 'absolute',
+      width: '100%',
+      height: '100%',
+      justifyContent: 'center',
+    },
     commentContainer: {
       flexDirection: 'row',
-      marginBottom: hp(4, insets),
+      paddingVertical: hp(1.8, insets),
+      marginVertical: hp(0.2, insets),
+      opacity: comment.isPosting ? 0.5 : 1,
+      backgroundColor: comment.highlighted ? Color(theme.colors.primary).alpha(0.025).rgb().toString() : undefined,
     },
     avatar: {
       marginHorizontal: wp(4, insets),
