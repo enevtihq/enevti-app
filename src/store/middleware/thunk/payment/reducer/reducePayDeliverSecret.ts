@@ -18,12 +18,15 @@ export const reducePayDeliverSecret = (): AppThunk => async (dispatch, getState)
 
     const responseStatusArray = [];
     const responseErrorSet = new Set<string>();
+    const transactionIdSet = new Set<string>();
 
     for (const data of payload) {
       const response = await postSilentTransaction(data);
       responseStatusArray.push(response.status);
       if (response.status !== 200) {
         responseErrorSet.add(response.data);
+      } else {
+        transactionIdSet.add(response.data.transactionId);
       }
     }
 

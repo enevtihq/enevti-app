@@ -4,7 +4,7 @@ import { RootState } from 'enevti-app/store/state';
 import { PaginationStore } from 'enevti-app/types/ui/store/PaginationStore';
 import { Comment, Reply } from 'enevti-app/types/core/chain/engagement';
 
-type CommentItem = Comment & {
+export type CommentItem = Comment & {
   isPosting: boolean;
   highlighted: boolean;
   replies: Reply[];

@@ -66,7 +66,13 @@ export const directPayLikeNFT = createAsyncThunk<void, PayLikeNFTPayload, AsyncT
       );
       if (response.status === 200) {
         dispatch(
-          setPaymentStatus({ id: payload.id, key: payload.key, action: 'likeNFT', type: 'success', message: '' }),
+          setPaymentStatus({
+            id: payload.id,
+            key: payload.key,
+            action: 'likeNFT',
+            type: 'success',
+            message: response.data.transactionId,
+          }),
         );
       } else {
         dispatch(

@@ -259,7 +259,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
   });
 
   const handleFormSubmit = async (values: OneKindContractForm) => {
-    const payload = Object.assign({}, oneKindContractStore, { state: values });
+    const payload = Object.assign({}, oneKindContractStore, { state: values, key: route.key });
     paymentThunkRef.current = dispatch(payCreateNFTOneKind(payload));
   };
 

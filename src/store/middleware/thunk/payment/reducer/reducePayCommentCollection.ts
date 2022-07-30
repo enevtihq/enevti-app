@@ -20,7 +20,13 @@ export const reducePayCommentCollection = (): AppThunk => async (dispatch, getSt
 
     const response = await postTransaction(payload);
     if (response.status === 200) {
-      dispatch(setPaymentStatusInReducer({ action: 'commentCollection', type: 'success', message: '' }));
+      dispatch(
+        setPaymentStatusInReducer({
+          action: 'commentCollection',
+          type: 'success',
+          message: response.data.transactionId,
+        }),
+      );
     } else {
       dispatch(setPaymentStatusInReducer({ action: 'commentCollection', type: 'error', message: response.data }));
     }

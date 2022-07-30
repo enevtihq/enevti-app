@@ -16,7 +16,13 @@ export const reducePayMintCollectionByQR = (): AppThunk => async (dispatch, getS
 
     const response = await postTransaction(payload);
     if (response.status === 200) {
-      dispatch(setPaymentStatusInReducer({ action: 'mintCollectionByQR', type: 'success', message: '' }));
+      dispatch(
+        setPaymentStatusInReducer({
+          action: 'mintCollectionByQR',
+          type: 'success',
+          message: response.data.transactionId,
+        }),
+      );
     } else {
       dispatch(setPaymentStatusInReducer({ action: 'mintCollectionByQR', type: 'error', message: response.data }));
     }

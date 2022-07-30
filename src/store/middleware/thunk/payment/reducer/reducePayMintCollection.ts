@@ -18,7 +18,12 @@ export const reducePayMintCollection = (): AppThunk => async (dispatch, getState
     const response = await postTransaction(payload);
     if (response.status === 200) {
       dispatch(
-        setPaymentStatusInReducer({ id: payload.asset.id, action: 'mintCollection', type: 'success', message: '' }),
+        setPaymentStatusInReducer({
+          id: payload.asset.id,
+          action: 'mintCollection',
+          type: 'success',
+          message: response.data.transactionId,
+        }),
       );
     } else {
       dispatch(

@@ -16,7 +16,9 @@ export const reducePayAddStake = (): AppThunk => async (dispatch, getState) => {
 
     const response = await postTransaction(payload);
     if (response.status === 200) {
-      dispatch(setPaymentStatusInReducer({ action: 'addStake', type: 'success', message: '' }));
+      dispatch(
+        setPaymentStatusInReducer({ action: 'addStake', type: 'success', message: response.data.transactionId }),
+      );
     } else {
       dispatch(setPaymentStatusInReducer({ action: 'addStake', type: 'error', message: response.data }));
     }

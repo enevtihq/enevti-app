@@ -57,13 +57,19 @@ export const reducePayCreateNFTOneKind = (): AppThunk => async (dispatch, getSta
     dispatch(setModalLoaderText(i18n.t('payment:postingTransaction')));
     const response = await postTransaction(transactionPayload);
     if (response.status === 200) {
-      dispatch(setPaymentStatusInReducer({ type: 'success', message: '' }));
+      dispatch(
+        setPaymentStatusInReducer({
+          action: 'createNFTOneKind',
+          type: 'success',
+          message: response.data.transactionId,
+        }),
+      );
     } else {
-      dispatch(setPaymentStatusInReducer({ type: 'error', message: response.data }));
+      dispatch(setPaymentStatusInReducer({ action: 'createNFTOneKind', type: 'error', message: response.data }));
     }
   } catch (err: any) {
     handleError(err);
-    dispatch(setPaymentStatusInReducer({ type: 'error', message: err.message }));
+    dispatch(setPaymentStatusInReducer({ action: 'createNFTOneKind', type: 'error', message: err.message }));
   } finally {
     dispatch(resetModalLoaderText());
     dispatch(hideModalLoader());

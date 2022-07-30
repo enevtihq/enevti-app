@@ -79,7 +79,7 @@ export const directPayLikeCollection = createAsyncThunk<void, PayLikeCollectionP
             key: payload.key,
             action: 'likeCollection',
             type: 'success',
-            message: '',
+            message: response.data.transactionId,
           }),
         );
       } else {

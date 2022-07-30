@@ -431,7 +431,7 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
       position: 'absolute',
       width: '100%',
       bottom: 0,
-      marginBottom: hp(2, insets) + insets.bottom,
+      marginBottom: Platform.OS === 'ios' ? undefined : hp(2, insets) + insets.bottom,
     },
     commentBox: {
       backgroundColor: theme.colors.background,

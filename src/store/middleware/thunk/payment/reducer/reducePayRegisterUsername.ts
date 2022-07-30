@@ -16,7 +16,13 @@ export const reducePayRegisterUsername = (): AppThunk => async (dispatch, getSta
 
     const response = await postTransaction(payload);
     if (response.status === 200) {
-      dispatch(setPaymentStatusInReducer({ action: 'registerUsername', type: 'success', message: '' }));
+      dispatch(
+        setPaymentStatusInReducer({
+          action: 'registerUsername',
+          type: 'success',
+          message: response.data.transactionId,
+        }),
+      );
     } else {
       dispatch(setPaymentStatusInReducer({ action: 'registerUsername', type: 'error', message: response.data }));
     }

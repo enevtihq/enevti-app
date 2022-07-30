@@ -16,7 +16,9 @@ export const reduceTransferToken = (): AppThunk => async (dispatch, getState) =>
 
     const response = await postTransaction(payload);
     if (response.status === 200) {
-      dispatch(setPaymentStatusInReducer({ action: 'transferToken', type: 'success', message: '' }));
+      dispatch(
+        setPaymentStatusInReducer({ action: 'transferToken', type: 'success', message: response.data.transactionId }),
+      );
     } else {
       dispatch(setPaymentStatusInReducer({ action: 'transferToken', type: 'error', message: response.data }));
     }
