@@ -30,6 +30,13 @@ export default function AppCommentItem({ comment, navigation }: AppCommentItemPr
   const theme = useTheme() as Theme;
   const styles = React.useMemo(() => makeStyles(theme, insets, comment), [theme, insets, comment]);
 
+  const onOwnerDetail = React.useCallback(() => {
+    navigation.push('Profile', {
+      arg: comment.owner.address,
+      mode: 'a',
+    });
+  }, [navigation, comment.owner.address]);
+
   const renderPart = React.useCallback(
     (part: Part, index: number) => {
       if (!part.partType) {
@@ -87,7 +94,7 @@ export default function AppCommentItem({ comment, navigation }: AppCommentItemPr
       </View>
       <View style={styles.commentText}>
         <AppTextBody4 style={styles.commentTextItem}>
-          <AppTextHeading4>{parsePersonaLabel(comment.owner)}</AppTextHeading4>{' '}
+          <AppTextHeading4 onPress={onOwnerDetail}>{parsePersonaLabel(comment.owner)}</AppTextHeading4>{' '}
           {renderValue(comment.text, [{ trigger: '@' }, { trigger: '$' }, { trigger: '*' }])}
         </AppTextBody4>
         <View style={styles.commentAction}>
