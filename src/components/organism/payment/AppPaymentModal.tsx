@@ -42,16 +42,22 @@ import AppPaymentGasFeePicker from './AppPaymentGasFeePicker';
 import { attachFee } from 'enevti-app/service/enevti/transaction';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 
+const COMPACT_TIMEOUT_SEC = 3;
+
 export default function AppPaymentModal() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
-  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
   const paymentSnapPoints = React.useMemo(() => ['70%'], []);
   const defaultCoin = React.useMemo(() => COIN_NAME, []);
   const cancelRef = React.useRef<boolean>(false);
   const [gasFeePickerDialogShow, setGasFeePickerDialogShow] = React.useState<boolean>(false);
+
+  const compactSecondIntervalRef = React.useRef<any>();
+  const compactSecondRef = React.useRef<number>(COMPACT_TIMEOUT_SEC);
+  const [compactSecond, setCompactSecond] = React.useState<number>(COMPACT_TIMEOUT_SEC);
+  const styles = React.useMemo(() => makeStyles(theme, insets, compactSecond), [theme, insets, compactSecond]);
 
   const myProfile = useSelector(selectMyProfileCache);
   const paymentShowState = useSelector(selectPaymentShowState);
@@ -115,7 +121,6 @@ export default function AppPaymentModal() {
       dispatch(hidePayment());
       dispatch(resetPaymentState());
       dispatch(resetPaymentStatusType());
-      cancelRef.current = false;
     }
   }, [dispatch, gasFeePickerDialogShow]);
 
@@ -132,8 +137,14 @@ export default function AppPaymentModal() {
   }, [dispatch, paymentAction, paymentFee.gas, paymentFee.base]);
 
   const onSnackDismiss = React.useCallback(() => {
-    !cancelRef.current ? payCallback() : {};
-  }, [payCallback]);
+    if (!cancelRef.current) {
+      payCallback();
+    }
+    clearInterval(compactSecondIntervalRef.current);
+    dispatch(hidePayment());
+    compactSecondIntervalRef.current = undefined;
+    cancelRef.current = false;
+  }, [dispatch, payCallback]);
 
   const onCancel = React.useCallback(() => {
     dispatch(showSnackbar({ mode: 'info', text: t('payment:paymentCancelled') }));
@@ -150,11 +161,23 @@ export default function AppPaymentModal() {
     paymentDismiss();
   }, [payCallback, paymentDismiss]);
 
+  const compactPoll = React.useCallback(() => {
+    compactSecondIntervalRef.current = setInterval(() => {
+      setCompactSecond(s => s - 1);
+      compactSecondRef.current = compactSecondRef.current - 1;
+    }, 1000);
+  }, []);
+
   React.useEffect(() => {
     if (paymentMode === 'silent') {
       silentPay();
     }
-  }, [paymentMode, silentPay]);
+    if (paymentMode === 'compact' && !compactSecondIntervalRef.current) {
+      compactSecondRef.current = COMPACT_TIMEOUT_SEC;
+      setCompactSecond(COMPACT_TIMEOUT_SEC);
+      compactPoll();
+    }
+  }, [compactPoll, paymentMode, silentPay]);
 
   return paymentMode === 'full' ? (
     <AppMenuContainer
@@ -257,7 +280,7 @@ export default function AppPaymentModal() {
   ) : paymentMode === 'compact' ? (
     <Portal>
       <Snackbar
-        duration={3000}
+        duration={COMPACT_TIMEOUT_SEC * 1000}
         visible={paymentShowState}
         onDismiss={onSnackDismiss}
         style={styles.snackPay}
@@ -267,13 +290,14 @@ export default function AppPaymentModal() {
           action: paymentAction.name,
           amount: parseAmount(paymentTotalAmount.toString()),
           currency: paymentTotalAmountCurrency,
+          seconds: compactSecond > -1 ? compactSecond : 0,
         })}
       </Snackbar>
     </Portal>
   ) : paymentMode === 'silent' ? null : null;
 }
 
-const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
+const makeStyles = (theme: Theme, insets: SafeAreaInsets, compactSecond: number) =>
   StyleSheet.create({
     loaderContainer: {
       justifyContent: 'center',
@@ -340,5 +364,6 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
       marginVertical: hp('10%', insets),
       marginLeft: wp('5%', insets),
       marginRight: wp('5%', insets),
+      opacity: compactSecond < 1 ? 0 : 1,
     },
   });

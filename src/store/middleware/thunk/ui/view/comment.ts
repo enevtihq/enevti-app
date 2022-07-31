@@ -29,6 +29,9 @@ import {
   selectCommentByIndex,
   setReplyPagination,
   resetCommentViewByKey,
+  setComment,
+  CommentItem,
+  deleteComment,
 } from 'enevti-app/store/slices/ui/view/comment';
 import i18n from 'enevti-app/translations/i18n';
 import { COMMENT_LIMIT, REPLY_LIMIT } from 'enevti-app/utils/constant/limit';
@@ -202,4 +205,20 @@ export const unloadComment =
   (route: CommentRoute): AppThunk =>
   dispatch => {
     dispatch(clearCommentViewByKey(route.key));
+  };
+
+export const setCommentById =
+  ({ route, id, comment }: { route: CommentRoute; id: string; comment: Partial<CommentItem> }): AppThunk =>
+  (dispatch, getState) => {
+    const commentState = selectCommentView(getState(), route.key);
+    const index = commentState.comment.findIndex(c => c.id === id);
+    dispatch(setComment({ key: route.key, commentIndex: index, value: comment }));
+  };
+
+export const deleteCommentById =
+  ({ route, id }: { route: CommentRoute; id: string; comment: Partial<CommentItem> }): AppThunk =>
+  (dispatch, getState) => {
+    const commentState = selectCommentView(getState(), route.key);
+    const index = commentState.comment.findIndex(c => c.id === id);
+    dispatch(deleteComment({ key: route.key, commentIndex: index }));
   };

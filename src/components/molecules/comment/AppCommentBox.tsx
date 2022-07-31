@@ -28,10 +28,20 @@ import AppNFTRenderer from '../nft/AppNFTRenderer';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { payCommentCollection } from 'enevti-app/store/middleware/thunk/payment/creator/payCommentCollection';
+import { setCommentById } from 'enevti-app/store/middleware/thunk/ui/view/comment';
 import usePaymentCallback from 'enevti-app/utils/hook/usePaymentCallback';
 import { PaymentStatus } from 'enevti-app/types/ui/store/Payment';
-import { unshiftComment } from 'enevti-app/store/slices/ui/view/comment';
+import {
+  addCommentViewPaginationCheckpoint,
+  addCommentViewPaginationVersion,
+  shiftComment,
+  subtractCommentViewPaginationCheckpoint,
+  subtractCommentViewPaginationVersion,
+  unshiftComment,
+} from 'enevti-app/store/slices/ui/view/comment';
 import { makeDummyComment } from 'enevti-app/utils/dummy/comment';
+import { Socket } from 'socket.io-client';
+import { appSocket } from 'enevti-app/utils/network';
 
 interface AppCommentBoxProps {
   route: RouteProp<RootStackParamList, 'Comment'>;
@@ -46,6 +56,7 @@ export default function AppCommentBox({ route }: AppCommentBoxProps) {
   const abortController = React.useRef<AbortController>();
   const paymentThunkRef = React.useRef<any>();
   const inputRef = React.useRef<any>();
+  const socket = React.useRef<Socket | undefined>();
   const myPersona = useSelector(selectMyPersonaCache);
 
   const [value, setValue] = React.useState<string>('');
@@ -57,6 +68,7 @@ export default function AppCommentBox({ route }: AppCommentBoxProps) {
     abortController.current = new AbortController();
     return () => {
       abortController.current && abortController.current.abort();
+      socket.current?.disconnect();
     };
   }, []);
 
@@ -81,17 +93,38 @@ export default function AppCommentBox({ route }: AppCommentBoxProps) {
     dispatch(
       unshiftComment({
         key: route.key,
-        value: [{ ...makeDummyComment({ isPosting: true, text: value, owner: myPersona }) }],
+        value: [{ ...makeDummyComment({ id: route.key, isPosting: true, text: value, owner: myPersona }) }],
       }),
     );
+    dispatch(addCommentViewPaginationVersion({ key: route.key }));
+    dispatch(addCommentViewPaginationCheckpoint({ key: route.key }));
     inputRef.current?.clear();
-    // TODO: listen socket for transaction processed in the blockchain
   }, [dispatch, myPersona, route.key, value]);
+
+  const paymentSuccessCallback = React.useCallback(
+    (paymentStatus: PaymentStatus) => {
+      dispatch(setCommentById({ route, id: route.key, comment: { id: paymentStatus.message } }));
+      socket.current = appSocket(`transaction:${paymentStatus.message}`);
+      socket.current.on('processed', () => {
+        dispatch(setCommentById({ route, id: paymentStatus.message, comment: { isPosting: false } }));
+        socket.current?.disconnect();
+      });
+    },
+    [dispatch, route],
+  );
+
+  const paymentErrorCallback = React.useCallback(() => {
+    dispatch(shiftComment({ key: route.key }));
+    dispatch(subtractCommentViewPaginationVersion({ key: route.key }));
+    dispatch(subtractCommentViewPaginationCheckpoint({ key: route.key }));
+  }, [dispatch, route.key]);
 
   usePaymentCallback({
     condition: paymentCondition,
     onIdle: paymentIdleCallback,
     onProcess: paymentProcessCallback,
+    onSuccess: paymentSuccessCallback,
+    onError: paymentErrorCallback,
   });
 
   const onComment = React.useCallback(() => {

@@ -10,7 +10,7 @@ export default {
   secureNote: 'Payement are secured using blockchain, by proceeding you are agree to Terms & Conditions',
   pay: 'Pay',
   notEnoughBalance: 'Not Enough Balance',
-  snackPay: "Paying '{{action}}' for {{amount}} ${{currency}} (in 3 seconds)",
+  snackPay: "Paying '{{action}}' for {{amount}} ${{currency}} (in {{seconds}} sec)",
   cancel: 'Cancel',
   save: 'Save',
   advancedSetting: 'Advanced Setting',

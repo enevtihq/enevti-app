@@ -28,8 +28,15 @@ export default function usePaymentCallback({
   onCancel,
 }: PaymentCallbackHookProps) {
   const dispatch = useDispatch();
+  const lastPaymentType = React.useRef<string>('');
   const paymentStatus = useSelector(selectPaymentStatus);
+
   React.useEffect(() => {
+    if (paymentStatus.type === lastPaymentType.current) {
+      return;
+    }
+    lastPaymentType.current = paymentStatus.type;
+
     if (condition !== undefined && !condition(paymentStatus)) {
       return;
     }

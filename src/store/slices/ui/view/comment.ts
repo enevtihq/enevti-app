@@ -53,16 +53,44 @@ const commentViewSlice = createSlice({
     setCommentFetchedVersion: (comment, action: PayloadAction<{ key: string; value: number }>) => {
       comment[action.payload.key].fetchedVersion = action.payload.value;
     },
-    setComment: (comment, action: PayloadAction<{ key: string; commentIndex: number; value: CommentItem }>) => {
-      comment[action.payload.key].comment[action.payload.commentIndex] = action.payload.value;
+    setComment: (
+      comment,
+      action: PayloadAction<{ key: string; commentIndex: number; value: Partial<CommentItem> }>,
+    ) => {
+      Object.assign(comment, {
+        [action.payload.key]: Object.assign({}, comment[action.payload.key], {
+          comment: comment[action.payload.key].comment.map((c, i) =>
+            i === action.payload.commentIndex ? Object.assign({}, c, action.payload.value) : c,
+          ),
+        }),
+      });
     },
     pushComment: (comment, action: PayloadAction<{ key: string; value: CommentItem[] }>) => {
       comment[action.payload.key].comment = comment[action.payload.key].comment.concat(action.payload.value);
-      comment[action.payload.key].commentPagination.version++;
     },
     unshiftComment: (comment, action: PayloadAction<{ key: string; value: CommentItem[] }>) => {
       comment[action.payload.key].comment = action.payload.value.concat(comment[action.payload.key].comment);
+    },
+    shiftComment: (comment, action: PayloadAction<{ key: string }>) => {
+      comment[action.payload.key].comment = comment[action.payload.key].comment.slice(1);
+    },
+    deleteComment: (comment, action: PayloadAction<{ key: string; commentIndex: number }>) => {
+      comment[action.payload.key].comment = [
+        ...comment[action.payload.key].comment.slice(0, action.payload.commentIndex),
+        ...comment[action.payload.key].comment.slice(action.payload.commentIndex + 1),
+      ];
+    },
+    addCommentViewPaginationCheckpoint: (comment, action: PayloadAction<{ key: string }>) => {
+      comment[action.payload.key].commentPagination.checkpoint++;
+    },
+    addCommentViewPaginationVersion: (comment, action: PayloadAction<{ key: string }>) => {
       comment[action.payload.key].commentPagination.version++;
+    },
+    subtractCommentViewPaginationCheckpoint: (comment, action: PayloadAction<{ key: string }>) => {
+      comment[action.payload.key].commentPagination.checkpoint--;
+    },
+    subtractCommentViewPaginationVersion: (comment, action: PayloadAction<{ key: string }>) => {
+      comment[action.payload.key].commentPagination.version--;
     },
     setCommentViewPagination: (comment, action: PayloadAction<{ key: string; value: PaginationStore }>) => {
       comment[action.payload.key].commentPagination = { ...action.payload.value };
@@ -114,6 +142,12 @@ export const {
   setComment,
   pushComment,
   unshiftComment,
+  shiftComment,
+  deleteComment,
+  addCommentViewPaginationCheckpoint,
+  addCommentViewPaginationVersion,
+  subtractCommentViewPaginationVersion,
+  subtractCommentViewPaginationCheckpoint,
   setCommentViewPagination,
   pushReply,
   unshiftReply,
