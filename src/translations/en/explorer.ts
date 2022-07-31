@@ -7,4 +7,5 @@ export default {
   reply: 'Reply',
   viewCountMoreReply: 'View {{count}} replies',
   viewMoreReply: 'Load more replies',
+  commentSuccess: 'Comment Posted!',
 };

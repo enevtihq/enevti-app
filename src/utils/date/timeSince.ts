@@ -1,29 +1,31 @@
+import i18n from 'enevti-app/translations/i18n';
+
 export default function timeSince(dateInMiliseconds: number) {
   let seconds = Math.floor((Date.now() - dateInMiliseconds) / 1000);
   let intervalType;
 
   let interval = Math.floor(seconds / 31536000);
   if (interval >= 1) {
-    intervalType = 'y';
+    intervalType = i18n.t('date:yearLetter');
   } else {
     interval = Math.floor(seconds / 604800);
     if (interval >= 1) {
-      intervalType = 'w';
+      intervalType = i18n.t('date:weekLetter');
     } else {
       interval = Math.floor(seconds / 86400);
       if (interval >= 1) {
-        intervalType = 'd';
+        intervalType = i18n.t('date:dayLetter');
       } else {
         interval = Math.floor(seconds / 3600);
         if (interval >= 1) {
-          intervalType = 'h';
+          intervalType = i18n.t('date:hourLetter');
         } else {
           interval = Math.floor(seconds / 60);
           if (interval >= 1) {
-            intervalType = 'm';
+            intervalType = i18n.t('date:minuteLetter');
           } else {
             interval = seconds;
-            intervalType = 'now';
+            intervalType = i18n.t('date:nowLetter');
           }
         }
       }

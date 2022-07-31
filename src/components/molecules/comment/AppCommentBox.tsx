@@ -42,6 +42,7 @@ import {
 import { makeDummyComment } from 'enevti-app/utils/dummy/comment';
 import { Socket } from 'socket.io-client';
 import { appSocket } from 'enevti-app/utils/network';
+import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 
 interface AppCommentBoxProps {
   route: RouteProp<RootStackParamList, 'Comment'>;
@@ -89,7 +90,6 @@ export default function AppCommentBox({ route }: AppCommentBoxProps) {
   }, []);
 
   const paymentProcessCallback = React.useCallback(() => {
-    setSending(false);
     dispatch(
       unshiftComment({
         key: route.key,
@@ -103,14 +103,16 @@ export default function AppCommentBox({ route }: AppCommentBoxProps) {
 
   const paymentSuccessCallback = React.useCallback(
     (paymentStatus: PaymentStatus) => {
+      setSending(false);
       dispatch(setCommentById({ route, id: route.key, comment: { id: paymentStatus.message } }));
       socket.current = appSocket(`transaction:${paymentStatus.message}`);
       socket.current.on('processed', () => {
         dispatch(setCommentById({ route, id: paymentStatus.message, comment: { isPosting: false } }));
+        dispatch(showSnackbar({ mode: 'info', text: t('explorer:commentSuccess') }));
         socket.current?.disconnect();
       });
     },
-    [dispatch, route],
+    [dispatch, route, t],
   );
 
   const paymentErrorCallback = React.useCallback(() => {

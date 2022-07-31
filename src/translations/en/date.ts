@@ -27,4 +27,10 @@ export default {
   week: 'week',
   month: 'month',
   year: 'year',
+  minuteLetter: 'm',
+  hourLetter: 'h',
+  dayLetter: 'd',
+  weekLetter: 'w',
+  yearLetter: 'y',
+  nowLetter: 'now',
 };
