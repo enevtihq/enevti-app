@@ -138,13 +138,19 @@ export default function AppPaymentModal() {
 
   const onSnackDismiss = React.useCallback(() => {
     if (!cancelRef.current) {
-      payCallback();
+      if (!balanceEnough) {
+        dispatch(showSnackbar({ mode: 'error', text: t('payment:notEnoughBalance') }));
+        dispatch(resetPaymentState());
+        dispatch(resetPaymentStatusType());
+      } else {
+        payCallback();
+      }
     }
     clearInterval(compactSecondIntervalRef.current);
     dispatch(hidePayment());
     compactSecondIntervalRef.current = undefined;
     cancelRef.current = false;
-  }, [dispatch, payCallback]);
+  }, [balanceEnough, dispatch, payCallback, t]);
 
   const onCancel = React.useCallback(() => {
     dispatch(showSnackbar({ mode: 'info', text: t('payment:paymentCancelled') }));

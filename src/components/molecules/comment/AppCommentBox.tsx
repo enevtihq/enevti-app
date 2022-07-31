@@ -446,7 +446,7 @@ export default function AppCommentBox({ route }: AppCommentBoxProps) {
         <View style={styles.commentActionContainer}>
           {!sending ? (
             <>
-              <View style={styles.commentActionBg} />
+              {value.length > 0 ? <View style={styles.commentActionBg} /> : null}
               <AppIconButton
                 icon={iconMap.sendPost}
                 color={value.length > 0 ? theme.colors.primary : theme.colors.placeholder}
