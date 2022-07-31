@@ -14,6 +14,8 @@ import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivit
 import AppMessageEmpty from 'enevti-app/components/molecules/message/AppMessageEmpty';
 import { hp } from 'enevti-app/utils/imageRatio';
 import Animated from 'react-native-reanimated';
+import { getCollectionIdFromRouteParam } from 'enevti-app/service/enevti/collection';
+import { getNFTIdFromRouteParam } from 'enevti-app/service/enevti/nft';
 
 const AnimatedFlatList = Animated.createAnimatedComponent<FlatListProps<CommentItem>>(FlatList);
 
@@ -26,8 +28,19 @@ export default function AppComment({ route, navigation }: AppCommentProps) {
   const dispatch = useDispatch();
   const styles = React.useMemo(() => makeStyles(), []);
 
+  const [targetId, setTargetId] = React.useState<string>('');
   const comment = useSelector((state: RootState) => selectCommentView(state, route.key));
   const commentUndefined = useSelector((state: RootState) => isCommentUndefined(state, route.key));
+
+  const prepareTargetId = React.useCallback(async () => {
+    if (route.params.type === 'collection') {
+      const id = await getCollectionIdFromRouteParam(route.params);
+      setTargetId(id);
+    } else if (route.params.type === 'nft') {
+      const id = await getNFTIdFromRouteParam(route.params);
+      setTargetId(id);
+    }
+  }, [route.params]);
 
   const onCommentScreenLoaded = React.useCallback(
     (reload: boolean = false) => {
@@ -45,12 +58,13 @@ export default function AppComment({ route, navigation }: AppCommentProps) {
   }, [dispatch, route]);
 
   React.useEffect(() => {
+    prepareTargetId();
     const promise = onCommentScreenLoaded();
     return function cleanup() {
       dispatch(unloadComment(route));
       promise.abort();
     };
-  }, [dispatch, route, onCommentScreenLoaded]);
+  }, [dispatch, route, onCommentScreenLoaded, prepareTargetId]);
 
   const renderItem = React.useCallback(
     ({ item }: any) => <AppCommentItem comment={item} navigation={navigation} />,
@@ -104,7 +118,7 @@ export default function AppComment({ route, navigation }: AppCommentProps) {
         onEndReachedThreshold={0.1}
         onEndReached={handleLoadMore}
       />
-      <AppCommentBox route={route} />
+      <AppCommentBox route={route} target={targetId} />
     </View>
   ) : (
     <View style={styles.loaderContainer}>

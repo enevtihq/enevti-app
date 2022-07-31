@@ -43,12 +43,19 @@ import { makeDummyComment } from 'enevti-app/utils/dummy/comment';
 import { Socket } from 'socket.io-client';
 import { appSocket } from 'enevti-app/utils/network';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
+import {
+  clearCommentSessionByKey,
+  selectCommentSession,
+  setCommentSession,
+} from 'enevti-app/store/slices/session/engagement/comment';
+import { RootState } from 'enevti-app/store/state';
 
 interface AppCommentBoxProps {
   route: RouteProp<RootStackParamList, 'Comment'>;
+  target: string;
 }
 
-export default function AppCommentBox({ route }: AppCommentBoxProps) {
+export default function AppCommentBox({ route, target }: AppCommentBoxProps) {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
@@ -60,7 +67,10 @@ export default function AppCommentBox({ route }: AppCommentBoxProps) {
   const socket = React.useRef<Socket | undefined>();
   const myPersona = useSelector(selectMyPersonaCache);
 
-  const [value, setValue] = React.useState<string>('');
+  const commentSession = useSelector((state: RootState) => selectCommentSession(state, target));
+  const [value, setValue] = React.useState<string>(() => (commentSession ? commentSession.value : ''));
+  const valueRef = React.useRef<string>(value);
+
   const [isError, setIsError] = React.useState<boolean>(false);
   const [loading, setLoading] = React.useState<boolean>(false);
   const [sending, setSending] = React.useState<boolean>(false);
@@ -72,6 +82,16 @@ export default function AppCommentBox({ route }: AppCommentBoxProps) {
       socket.current?.disconnect();
     };
   }, []);
+
+  React.useEffect(() => {
+    return () => {
+      if (valueRef.current) {
+        dispatch(setCommentSession({ key: target, value: { value: valueRef.current } }));
+      } else {
+        dispatch(clearCommentSessionByKey(target));
+      }
+    };
+  }, [dispatch, target]);
 
   const paymentCondition = React.useCallback(
     (paymentStatus: PaymentStatus) => {
@@ -99,6 +119,7 @@ export default function AppCommentBox({ route }: AppCommentBoxProps) {
     dispatch(addCommentViewPaginationVersion({ key: route.key }));
     dispatch(addCommentViewPaginationCheckpoint({ key: route.key }));
     inputRef.current?.clear();
+    valueRef.current = '';
   }, [dispatch, myPersona, route.key, value]);
 
   const paymentSuccessCallback = React.useCallback(
@@ -421,6 +442,7 @@ export default function AppCommentBox({ route }: AppCommentBoxProps) {
             onChange={e => {
               setLoading(true);
               setValue(e);
+              valueRef.current = e;
             }}
             placeholder={t('explorer:commentPlaceholder')}
             placeholderTextColor={theme.colors.placeholder}
