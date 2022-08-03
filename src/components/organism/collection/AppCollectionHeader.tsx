@@ -190,13 +190,13 @@ export default function AppCollectionHeader({
             </AppTextBody4>
           </AppQuaternaryButton>
           <AppQuaternaryButton
-            icon={iconMap.commentFill}
+            icon={iconMap.comment}
             iconSize={hp('3%')}
-            iconColor={theme.colors.placeholder}
+            iconColor={theme.colors.text}
             style={{
               height: hp('4%'),
             }}
-            onPress={() => dispatch(showSnackbar({ mode: 'info', text: 'Coming Soon!' }))}>
+            onPress={() => navigation.push('Comment', { type: 'collection', mode: 'id', arg: collection.id })}>
             <AppTextBody4 style={{ color: theme.colors.placeholder }}>{numberKMB(collection.comment, 2)}</AppTextBody4>
           </AppQuaternaryButton>
           {collection.social.twitter.link ? (

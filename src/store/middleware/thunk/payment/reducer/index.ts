@@ -9,6 +9,7 @@ import i18n from 'enevti-app/translations/i18n';
 import { reducePayMintCollectionByQR } from './reducePayMintCollectionByQR';
 import { reduceTransferToken } from './reduceTransferToken';
 import { reducePayCommentCollection } from './reducePayCommentCollection';
+import { reducePayCommentNFT } from './reducePayCommentNFT';
 
 export const reducePayment = (): AppThunk => (dispatch, getState) => {
   const paymentType = getState().payment.action.type;
@@ -36,6 +37,9 @@ export const reducePayment = (): AppThunk => (dispatch, getState) => {
       break;
     case 'commentCollection':
       dispatch(reducePayCommentCollection());
+      break;
+    case 'commentNFT':
+      dispatch(reducePayCommentNFT());
       break;
     default:
       handleError({ message: i18n.t('error:unknownPayment') });

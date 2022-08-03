@@ -28,6 +28,7 @@ import AppNFTRenderer from '../nft/AppNFTRenderer';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { payCommentCollection } from 'enevti-app/store/middleware/thunk/payment/creator/payCommentCollection';
+import { payCommentNFT } from 'enevti-app/store/middleware/thunk/payment/creator/payCommentNFT';
 import { setCommentById, deleteCommentById } from 'enevti-app/store/middleware/thunk/ui/view/comment';
 import usePaymentCallback from 'enevti-app/utils/hook/usePaymentCallback';
 import { PaymentStatus } from 'enevti-app/types/ui/store/Payment';
@@ -141,7 +142,7 @@ export default function AppCommentBox({ route, target }: AppCommentBoxProps) {
           dispatch(showSnackbar({ mode: 'info', text: t('explorer:commentQueued') }));
         }
         socket.current?.disconnect();
-      }, (await BLOCK_TIME()) * 10);
+      }, (await BLOCK_TIME()) * 5);
 
       socket.current = appSocket(`transaction:${paymentStatus.message}`);
       socket.current.on('processed', () => {
@@ -173,6 +174,8 @@ export default function AppCommentBox({ route, target }: AppCommentBoxProps) {
     setSending(true);
     if (route.params.type === 'collection') {
       paymentThunkRef.current = dispatch(payCommentCollection({ route, comment: value }));
+    } else if (route.params.type === 'nft') {
+      paymentThunkRef.current = dispatch(payCommentNFT({ route, comment: value }));
     }
   }, [dispatch, route, value]);
 

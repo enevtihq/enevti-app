@@ -213,13 +213,13 @@ function Component(
           </AppTextBody4>
         </AppQuaternaryButton>
         <AppQuaternaryButton
-          icon={iconMap.commentFill}
+          icon={iconMap.comment}
           iconSize={hp('3%')}
-          iconColor={theme.colors.placeholder}
+          iconColor={theme.colors.text}
           style={{
             height: hp('4%'),
           }}
-          onPress={() => dispatch(showSnackbar({ mode: 'info', text: 'Coming Soon!' }))}>
+          onPress={() => navigation.push('Comment', { type: 'nft', mode: 'id', arg: nft.id })}>
           <AppTextBody4 style={{ color: theme.colors.placeholder }}>{numberKMB(nft.comment, 2)}</AppTextBody4>
         </AppQuaternaryButton>
       </View>

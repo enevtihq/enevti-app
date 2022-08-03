@@ -45,4 +45,6 @@ export default {
   payLikeNFTDescription: 'Give like for {{symbol}}#{{serial}}',
   payCommentCollection: 'Comment Collection',
   payCommentCollectionDescription: 'Give comment for collection',
+  payCommentNFT: 'Comment NFT',
+  payCommentNFTDescription: 'Give comment for NFT',
 };
