@@ -2,7 +2,7 @@ import React from 'react';
 import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
 import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
 import { useDispatch, useSelector } from 'react-redux';
-import { StyleSheet, useColorScheme } from 'react-native';
+import { StyleSheet, useColorScheme, Keyboard } from 'react-native';
 
 import CreateAccount from 'enevti-app/screen/auth/CreateAccount';
 import SetupLocalPassword from 'enevti-app/screen/auth/SetupLocalPassword';
@@ -43,6 +43,7 @@ import { Socket } from 'socket.io-client';
 import { appSocket } from 'enevti-app/utils/network';
 import { reduceNewBlock } from 'enevti-app/store/middleware/thunk/socket/chain/newBlock';
 import Comment from 'enevti-app/screen/explorer/Comment';
+import { setKeyboardShow, setKeyboardHide } from 'enevti-app/store/slices/ui/global/keyboard';
 
 export type RootStackParamList = {
   CreateAccount: undefined;
@@ -143,6 +144,19 @@ export default function AppNavigationContainer() {
       await onNotificationForegroundHandler(type, detail);
     });
   }, []);
+
+  React.useEffect(() => {
+    const keyboardShowListener = Keyboard.addListener('keyboardDidShow', () => {
+      dispatch(setKeyboardShow());
+    });
+    const keyboardHideListener = Keyboard.addListener('keyboardDidHide', () => {
+      dispatch(setKeyboardHide());
+    });
+    return () => {
+      keyboardShowListener.remove();
+      keyboardHideListener.remove();
+    };
+  }, [dispatch]);
 
   React.useEffect(() => {
     socket.current = appSocket('chain');

@@ -495,9 +495,6 @@ export default function AppCommentBox({ route, target }: AppCommentBoxProps) {
 const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
   StyleSheet.create({
     commentBoxContainer: {
-      position: 'absolute',
-      width: '100%',
-      bottom: 0,
       marginBottom: Platform.OS === 'ios' ? undefined : hp(2, insets) + insets.bottom,
     },
     commentBox: {

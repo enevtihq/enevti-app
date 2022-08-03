@@ -16,6 +16,7 @@ import { hp } from 'enevti-app/utils/imageRatio';
 import Animated from 'react-native-reanimated';
 import { getCollectionIdFromRouteParam } from 'enevti-app/service/enevti/collection';
 import { getNFTIdFromRouteParam } from 'enevti-app/service/enevti/nft';
+import { selectKeyboardStatus } from 'enevti-app/store/slices/ui/global/keyboard';
 
 const AnimatedFlatList = Animated.createAnimatedComponent<FlatListProps<CommentItem>>(FlatList);
 
@@ -29,6 +30,7 @@ export default function AppComment({ route, navigation }: AppCommentProps) {
   const styles = React.useMemo(() => makeStyles(), []);
 
   const [targetId, setTargetId] = React.useState<string>('');
+  const keyboardState = useSelector(selectKeyboardStatus);
   const comment = useSelector((state: RootState) => selectCommentView(state, route.key));
   const commentUndefined = useSelector((state: RootState) => isCommentUndefined(state, route.key));
 
@@ -74,8 +76,8 @@ export default function AppComment({ route, navigation }: AppCommentProps) {
   const keyExtractor = React.useCallback(item => item.id.toString(), []);
 
   const refreshControl = React.useMemo(
-    () => <RefreshControl refreshing={false} onRefresh={handleRefresh} />,
-    [handleRefresh],
+    () => (keyboardState === 'hide' ? <RefreshControl refreshing={false} onRefresh={handleRefresh} /> : undefined),
+    [handleRefresh, keyboardState],
   );
 
   const emptyComponent = React.useMemo(() => <AppMessageEmpty />, []);
@@ -142,7 +144,7 @@ const makeStyles = () =>
       paddingTop: undefined,
     },
     listContentEmptyContainer: {
-      flex: 0.9,
+      flex: 1,
       justifyContent: 'center',
     },
   });
