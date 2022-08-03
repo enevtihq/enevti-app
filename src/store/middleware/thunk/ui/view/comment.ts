@@ -216,7 +216,7 @@ export const setCommentById =
   };
 
 export const deleteCommentById =
-  ({ route, id }: { route: CommentRoute; id: string; comment: Partial<CommentItem> }): AppThunk =>
+  ({ route, id }: { route: CommentRoute; id: string }): AppThunk =>
   (dispatch, getState) => {
     const commentState = selectCommentView(getState(), route.key);
     const index = commentState.comment.findIndex(c => c.id === id);

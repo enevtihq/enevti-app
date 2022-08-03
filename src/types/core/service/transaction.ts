@@ -12,3 +12,5 @@ export type NodeInfoFeesResponse = {
   minFeePerByte: number;
   baseFees: unknown[];
 };
+
+export type TransactionStatus = 'sent' | 'pending' | 'not-found';

@@ -8,4 +8,5 @@ export default {
   viewCountMoreReply: 'View {{count}} replies',
   viewMoreReply: 'Load more replies',
   commentSuccess: 'Comment Posted!',
+  commentQueued: 'Queued on the chain! Your comment will automatically posted!',
 };

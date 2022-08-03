@@ -1,5 +1,7 @@
 import {
   urlGetTransactionBaseFee,
+  urlGetTransactionById,
+  urlGetTransactionStatus,
   urlPostTransaction,
   urlPostTransactionFee,
 } from 'enevti-app/utils/constant/URLCreator';
@@ -22,6 +24,7 @@ import { getProfileNonce } from './profile';
 import { selectProcessedTransactionThisBlock } from 'enevti-app/store/slices/session/transaction/processedThisBlock';
 import { MAX_TRANSACTION_PER_ACCOUNT } from 'enevti-app/utils/constant/identifier';
 import awaitNewBlock from 'enevti-app/utils/chain/awaitNewBlock';
+import { TransactionStatus } from 'enevti-app/types/core/service/transaction';
 
 export async function postTransaction<T>(
   payload: AppTransaction<T>,
@@ -221,6 +224,60 @@ export async function fecthTransactionBaseFee(
     handleError(err);
     return responseError(err.code, err.message.toString());
   }
+}
+
+async function fecthTransactionById(
+  id: string,
+  signal?: AbortController['signal'],
+): Promise<APIResponse<Record<string, any>>> {
+  try {
+    await isInternetReachable();
+    const res = await appFetch(urlGetTransactionById(id), { signal });
+    const ret = (await res.json()) as ResponseJSON<Record<string, any>>;
+    handleResponseCode(res, ret);
+    return {
+      status: res.status,
+      data: ret.data,
+      meta: ret.meta,
+    };
+  } catch (err: any) {
+    handleError(err);
+    return responseError(err.code);
+  }
+}
+
+async function fecthTransactionStatus(
+  id: string,
+  signal?: AbortController['signal'],
+): Promise<APIResponse<TransactionStatus>> {
+  try {
+    await isInternetReachable();
+    const res = await appFetch(urlGetTransactionStatus(id), { signal });
+    const ret = (await res.json()) as ResponseJSON<TransactionStatus>;
+    handleResponseCode(res, ret);
+    return {
+      status: res.status,
+      data: ret.data,
+      meta: ret.meta,
+    };
+  } catch (err: any) {
+    handleError(err);
+    return responseError(err.code, 'not-found');
+  }
+}
+
+export async function getTransactionById(
+  id: string,
+  signal?: AbortController['signal'],
+): Promise<APIResponse<Record<string, any>>> {
+  return await fecthTransactionById(id, signal);
+}
+
+export async function getTransactionStatus(
+  id: string,
+  signal?: AbortController['signal'],
+): Promise<APIResponse<TransactionStatus>> {
+  return await fecthTransactionStatus(id, signal);
 }
 
 export async function createTransaction<T>(

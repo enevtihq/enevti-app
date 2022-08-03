@@ -28,7 +28,7 @@ import AppNFTRenderer from '../nft/AppNFTRenderer';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { payCommentCollection } from 'enevti-app/store/middleware/thunk/payment/creator/payCommentCollection';
-import { setCommentById } from 'enevti-app/store/middleware/thunk/ui/view/comment';
+import { setCommentById, deleteCommentById } from 'enevti-app/store/middleware/thunk/ui/view/comment';
 import usePaymentCallback from 'enevti-app/utils/hook/usePaymentCallback';
 import { PaymentStatus } from 'enevti-app/types/ui/store/Payment';
 import {
@@ -49,6 +49,8 @@ import {
   setCommentSession,
 } from 'enevti-app/store/slices/session/engagement/comment';
 import { RootState } from 'enevti-app/store/state';
+import { BLOCK_TIME } from 'enevti-app/utils/constant/identifier';
+import { getTransactionStatus } from 'enevti-app/service/enevti/transaction';
 
 interface AppCommentBoxProps {
   route: RouteProp<RootStackParamList, 'Comment'>;
@@ -65,6 +67,7 @@ export default function AppCommentBox({ route, target }: AppCommentBoxProps) {
   const paymentThunkRef = React.useRef<any>();
   const inputRef = React.useRef<any>();
   const socket = React.useRef<Socket | undefined>();
+  const postCommentTimer = React.useRef<any>();
   const myPersona = useSelector(selectMyPersonaCache);
 
   const commentSession = useSelector((state: RootState) => selectCommentSession(state, target));
@@ -80,6 +83,7 @@ export default function AppCommentBox({ route, target }: AppCommentBoxProps) {
     return () => {
       abortController.current && abortController.current.abort();
       socket.current?.disconnect();
+      clearTimeout(postCommentTimer.current);
     };
   }, []);
 
@@ -123,14 +127,28 @@ export default function AppCommentBox({ route, target }: AppCommentBoxProps) {
   }, [dispatch, myPersona, route.key, value]);
 
   const paymentSuccessCallback = React.useCallback(
-    (paymentStatus: PaymentStatus) => {
+    async (paymentStatus: PaymentStatus) => {
       setSending(false);
       dispatch(setCommentById({ route, id: route.key, comment: { id: paymentStatus.message } }));
+
+      postCommentTimer.current = setTimeout(async () => {
+        const status = await getTransactionStatus(paymentStatus.message, abortController.current?.signal);
+        if (status.data === 'sent') {
+          dispatch(setCommentById({ route, id: paymentStatus.message, comment: { isPosting: false } }));
+          dispatch(showSnackbar({ mode: 'info', text: t('explorer:commentSuccess') }));
+        } else {
+          dispatch(deleteCommentById({ route, id: paymentStatus.message }));
+          dispatch(showSnackbar({ mode: 'info', text: t('explorer:commentQueued') }));
+        }
+        socket.current?.disconnect();
+      }, (await BLOCK_TIME()) * 10);
+
       socket.current = appSocket(`transaction:${paymentStatus.message}`);
       socket.current.on('processed', () => {
         dispatch(setCommentById({ route, id: paymentStatus.message, comment: { isPosting: false } }));
         dispatch(showSnackbar({ mode: 'info', text: t('explorer:commentSuccess') }));
         socket.current?.disconnect();
+        clearTimeout(postCommentTimer.current);
       });
     },
     [dispatch, route, t],
