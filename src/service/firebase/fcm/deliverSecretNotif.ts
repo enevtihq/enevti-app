@@ -12,11 +12,11 @@ export default async function deliverSecretNotifFCMHandler(remoteMessage: Fireba
 }
 
 export async function deliverSecretNotifFCMHandlerStart(remoteMessage: FirebaseMessagingTypes.RemoteMessage) {
-  await BackgroundService.start(deliverSecretTask, deliverSecretActionOption(remoteMessage.data!.payload));
+  await BackgroundService.start(deliverSecretTask, deliverSecretActionOption(JSON.parse(remoteMessage.data!.payload)));
 }
 
-const deliverSecretTask = async (taskDataArguments: { payload: string } | undefined) => {
-  const payload = taskDataArguments ? taskDataArguments.payload : undefined;
+const deliverSecretTask = async (taskDataArguments: { address: string } | undefined) => {
+  const payload = taskDataArguments ? taskDataArguments.address : undefined;
   if (payload) {
     await addCheckDeliverSecretJob({ payload });
   }
@@ -25,7 +25,7 @@ const deliverSecretTask = async (taskDataArguments: { payload: string } | undefi
   }
 };
 
-export const deliverSecretActionOption = (payload: string) => ({
+export const deliverSecretActionOption = (parameters: { address: string }) => ({
   taskName: 'deliverSecret',
   taskTitle: i18n.t('notification:deliverSecretTaskTitle'),
   taskDesc: i18n.t('notification:deliverSecretTaskDesc'),
@@ -35,7 +35,5 @@ export const deliverSecretActionOption = (payload: string) => ({
   },
   color: '#ff00ff',
   linkingURI: 'enevti://',
-  parameters: {
-    payload,
-  },
+  parameters,
 });

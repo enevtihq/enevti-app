@@ -1,9 +1,9 @@
 import { NFTBase } from '../chain/nft';
 import { CollectionBase } from '../chain/collection';
 import { SocialProfile } from './social';
+import { CollectionIdAsset, NFTIdAsset } from '../chain/id';
 import { Persona, PersonaAsset } from './persona';
 import { ActivityBase, ActivityChainBase } from '../chain/activity';
-import { CollectionIdAsset, NFTIdAsset } from '../chain/id';
 
 export type ProfileView = Profile & { persona: Persona };
 
@@ -23,6 +23,7 @@ export type Profile = {
 export type RedeemableNFTAccountStatsChain = {
   nftSold: Buffer[];
   treasuryAct: Buffer[];
+  raffled: Buffer[];
   serveRate: {
     score: number;
     items: {
@@ -45,6 +46,7 @@ export type RedeemableNFTAccountProps = {
     nftSold: number;
     treasuryAct: number;
     serveRate: number;
+    raffled: number;
     owned: NFTIdAsset[];
     onSale: NFTIdAsset[];
     collection: CollectionIdAsset[];
@@ -67,7 +69,8 @@ export type ProfileActivityName =
   | 'createNFT'
   | 'mintNFT'
   | 'NFTSale'
-  | 'deliverSecret';
+  | 'deliverSecret'
+  | 'winRaffle';
 
 export type ProfileActivity = Omit<ActivityBase, 'name'> & {
   name: ProfileActivityName;

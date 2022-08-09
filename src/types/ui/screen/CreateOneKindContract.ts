@@ -36,6 +36,7 @@ export type OneKindContractForm = {
   quantity: string;
   mintingExpireOption: string;
   mintingExpire: string;
+  raffled: number;
 };
 
 export type OneKindContractStatusForm = {

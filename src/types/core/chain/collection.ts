@@ -11,7 +11,7 @@ export type AllCollection = {
   items: CollectionIdAsset[];
 };
 
-export type CollectionActivityName = 'created' | 'minted' | 'secretDelivered';
+export type CollectionActivityName = 'created' | 'minted' | 'raffled' | 'secretDelivered';
 
 export type CollectionActivity = Omit<ActivityBase, 'name'> & {
   name: CollectionActivityName;
@@ -62,6 +62,7 @@ export interface Collection extends CollectionBase {
   creator: Persona;
   activity: CollectionActivity[];
   promoted: boolean;
+  raffled: number;
 }
 
 export interface CollectionAsset

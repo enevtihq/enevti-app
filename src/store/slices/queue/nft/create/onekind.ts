@@ -55,6 +55,7 @@ export const createNFTOneKindQueueInitialState: CreateNFTOneKindMeta = {
     redeemLimit: '',
     royaltyCreator: '',
     royaltyStaker: '',
+    raffled: -1,
   },
   status: {
     nameAvailable: true,

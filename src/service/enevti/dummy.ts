@@ -140,6 +140,7 @@ export const getDummyCollectionFullData = (): Collection => {
       size: 0,
       protocol: 'ipfs',
     },
+    raffled: -1,
     createdOn: 1648256392852,
     symbol: 'EYECL',
     like: 123,

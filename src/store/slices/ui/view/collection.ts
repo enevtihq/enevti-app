@@ -30,6 +30,7 @@ const initialStateItem: CollectionViewState = {
     checkpoint: 0,
     version: 0,
   },
+  raffled: -1,
   liked: false,
   fetchedVersion: 0,
   version: 0,
