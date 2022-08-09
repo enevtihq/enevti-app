@@ -66,6 +66,7 @@ import {
 import BalanceChangedSnack from 'enevti-app/components/molecules/view/BalanceChangedSnack';
 import AppBadge from 'enevti-app/components/atoms/view/AppBadge';
 import { reduceMyTotalServeRateChanged } from 'enevti-app/store/middleware/thunk/socket/profile/totalServeRateChanged';
+import { syncChainConfig } from 'enevti-app/store/middleware/thunk/ui/chainConfig/syncChainConfig';
 
 const Tab = createBottomTabNavigator();
 
@@ -100,6 +101,7 @@ export default function Home({ navigation }: Props) {
 
   React.useEffect(() => {
     dispatch(syncTransactionNonce());
+    dispatch(syncChainConfig());
     dispatch(addAppOpenCounter());
   }, [dispatch]);
 
