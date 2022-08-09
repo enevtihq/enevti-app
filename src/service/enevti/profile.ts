@@ -14,7 +14,7 @@ import {
 import { lastFetchTimeout } from 'enevti-app/utils/constant/lastFetch';
 import { base32ToAddress, getMyAddress, usernameToAddress } from './persona';
 import { completeTokenUnit } from 'enevti-app/utils/format/amount';
-import { appFetch, isInternetReachable } from 'enevti-app/utils/network';
+import { apiFetch, apiFetchVersioned } from 'enevti-app/utils/network';
 import {
   urlGetProfile,
   urlGetProfileBalance,
@@ -24,8 +24,8 @@ import {
   urlGetProfilePendingDelivery,
   urlGetUsernameToAddress,
 } from 'enevti-app/utils/constant/URLCreator';
-import { handleError, handleResponseCode, isErrorResponse, responseError } from 'enevti-app/utils/error/handle';
-import { APIResponse, ResponseJSON, APIResponseVersioned, ResponseVersioned } from 'enevti-app/types/core/service/api';
+import { isErrorResponse } from 'enevti-app/utils/error/handle';
+import { APIResponse, APIResponseVersioned } from 'enevti-app/types/core/service/api';
 import { NFTSecret } from 'enevti-app/types/core/chain/nft/NFTSecret';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -36,20 +36,7 @@ export const MINIMUM_BASIC_UNIT_STAKE_ELIGIBILITY = 1000;
 type ProfileRoute = StackScreenProps<RootStackParamList, 'Profile'>['route']['params'];
 
 async function fetchProfileBalance(address: string, signal?: AbortController['signal']): Promise<APIResponse<string>> {
-  try {
-    await isInternetReachable();
-    const res = await appFetch(urlGetProfileBalance(address), { signal });
-    const ret = (await res.json()) as ResponseJSON<string>;
-    handleResponseCode(res, ret);
-    return {
-      status: res.status,
-      data: ret.data,
-      meta: ret.meta,
-    };
-  } catch (err: any) {
-    handleError(err);
-    return responseError(err.code);
-  }
+  return await apiFetch<string>(urlGetProfileBalance(address), signal);
 }
 
 async function fetchProfileNonce(
@@ -57,20 +44,7 @@ async function fetchProfileNonce(
   signal?: AbortController['signal'],
   silent?: boolean,
 ): Promise<APIResponse<string>> {
-  try {
-    await isInternetReachable();
-    const res = await appFetch(urlGetProfileNonce(address), { signal });
-    const ret = (await res.json()) as ResponseJSON<string>;
-    handleResponseCode(res, ret);
-    return {
-      status: res.status,
-      data: ret.data,
-      meta: ret.meta,
-    };
-  } catch (err: any) {
-    handleError(err, undefined, silent);
-    return responseError(err.code);
-  }
+  return await apiFetch<string>(urlGetProfileNonce(address), signal, silent);
 }
 
 async function fetchProfilePendingDelivery(
@@ -78,57 +52,23 @@ async function fetchProfilePendingDelivery(
   signal?: AbortController['signal'],
   silent?: boolean,
 ): Promise<APIResponse<{ id: string; secret: NFTSecret }[]>> {
-  try {
-    await isInternetReachable();
-    const res = await appFetch(urlGetProfilePendingDelivery(address), { signal });
-    const ret = (await res.json()) as ResponseJSON<{ id: string; secret: NFTSecret }[]>;
-    handleResponseCode(res, ret);
-    return {
-      status: res.status,
-      data: ret.data,
-      meta: ret.meta,
-    };
-  } catch (err: any) {
-    handleError(err, undefined, silent);
-    return responseError(err.code, err.message);
-  }
+  return await apiFetch<{ id: string; secret: NFTSecret }[]>(
+    urlGetProfilePendingDelivery(address),
+    signal,
+    silent,
+    'err.message',
+  );
 }
 
 async function fetchProfile(address: string, signal?: AbortController['signal']): Promise<APIResponse<Profile>> {
-  try {
-    await isInternetReachable();
-    const res = await appFetch(urlGetProfile(address), { signal });
-    const ret = (await res.json()) as ResponseJSON<Profile>;
-    handleResponseCode(res, ret);
-    return {
-      status: res.status,
-      data: ret.data,
-      meta: ret.meta,
-    };
-  } catch (err: any) {
-    handleError(err);
-    return responseError(err.code);
-  }
+  return await apiFetch<Profile>(urlGetProfile(address), signal);
 }
 
 async function fetchProfileAddressFromUsername(
   username: string,
   signal?: AbortController['signal'],
 ): Promise<APIResponse<string>> {
-  try {
-    await isInternetReachable();
-    const res = await appFetch(urlGetUsernameToAddress(username), { signal });
-    const ret = (await res.json()) as ResponseJSON<string>;
-    handleResponseCode(res, ret);
-    return {
-      status: res.status,
-      data: ret.data,
-      meta: ret.meta,
-    };
-  } catch (err: any) {
-    handleError(err);
-    return responseError(err.code);
-  }
+  return await apiFetch<string>(urlGetUsernameToAddress(username), signal);
 }
 
 async function fetchProfileOwned(
@@ -138,20 +78,7 @@ async function fetchProfileOwned(
   version: number,
   signal?: AbortController['signal'],
 ): Promise<APIResponseVersioned<NFTBase[]>> {
-  try {
-    await isInternetReachable();
-    const res = await appFetch(urlGetProfileOwned(address, offset, limit, version), { signal });
-    const ret = (await res.json()) as ResponseJSON<ResponseVersioned<NFTBase[]>>;
-    handleResponseCode(res, ret);
-    return {
-      status: res.status,
-      data: ret.data,
-      meta: ret.meta,
-    };
-  } catch (err: any) {
-    handleError(err);
-    return responseError(err.code);
-  }
+  return await apiFetchVersioned<NFTBase[]>(urlGetProfileOwned(address, offset, limit, version), signal);
 }
 
 async function fetchProfileCollection(
@@ -161,20 +88,10 @@ async function fetchProfileCollection(
   version: number,
   signal?: AbortController['signal'],
 ): Promise<APIResponseVersioned<Profile['collection']>> {
-  try {
-    await isInternetReachable();
-    const res = await appFetch(urlGetProfileCollection(address, offset, limit, version), { signal });
-    const ret = (await res.json()) as ResponseJSON<ResponseVersioned<Profile['collection']>>;
-    handleResponseCode(res, ret);
-    return {
-      status: res.status,
-      data: ret.data,
-      meta: ret.meta,
-    };
-  } catch (err: any) {
-    handleError(err);
-    return responseError(err.code);
-  }
+  return await apiFetchVersioned<Profile['collection']>(
+    urlGetProfileCollection(address, offset, limit, version),
+    signal,
+  );
 }
 
 export async function getProfileInitialOwned(

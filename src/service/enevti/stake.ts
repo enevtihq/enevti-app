@@ -2,14 +2,13 @@ import { StakePoolData, StakerItem } from 'enevti-app/types/core/chain/stake';
 import { base32ToAddress } from 'enevti-app/service/enevti/persona';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
-import { appFetch, isInternetReachable } from 'enevti-app/utils/network';
+import { apiFetch, apiFetchVersioned } from 'enevti-app/utils/network';
 import {
   urlGetStakePoolByAddress,
   urlGetStakePoolByUsername,
   urlGetStaker,
 } from 'enevti-app/utils/constant/URLCreator';
-import { handleError, handleResponseCode, responseError } from 'enevti-app/utils/error/handle';
-import { APIResponse, APIResponseVersioned, ResponseJSON, ResponseVersioned } from 'enevti-app/types/core/service/api';
+import { APIResponse, APIResponseVersioned } from 'enevti-app/types/core/service/api';
 import { STAKER_INITIAL_LENGTH } from 'enevti-app/utils/constant/limit';
 
 type StakePoolRoute = StackScreenProps<RootStackParamList, 'StakePool'>['route']['params'];
@@ -18,40 +17,14 @@ async function fetchStakePool(
   address: string,
   signal?: AbortController['signal'],
 ): Promise<APIResponse<StakePoolData>> {
-  try {
-    await isInternetReachable();
-    const res = await appFetch(urlGetStakePoolByAddress(address), { signal });
-    const ret = (await res.json()) as ResponseJSON<StakePoolData>;
-    handleResponseCode(res, ret);
-    return {
-      status: res.status,
-      data: ret.data,
-      meta: ret.meta,
-    };
-  } catch (err: any) {
-    handleError(err);
-    return responseError(err.code);
-  }
+  return await apiFetch<StakePoolData>(urlGetStakePoolByAddress(address), signal);
 }
 
 async function fetchStakePoolByUsername(
   username: string,
   signal?: AbortController['signal'],
 ): Promise<APIResponse<StakePoolData>> {
-  try {
-    await isInternetReachable();
-    const res = await appFetch(urlGetStakePoolByUsername(username), { signal });
-    const ret = (await res.json()) as ResponseJSON<StakePoolData>;
-    handleResponseCode(res, ret);
-    return {
-      status: res.status,
-      data: ret.data,
-      meta: ret.meta,
-    };
-  } catch (err: any) {
-    handleError(err);
-    return responseError(err.code);
-  }
+  return await apiFetch<StakePoolData>(urlGetStakePoolByUsername(username), signal);
 }
 
 async function fetchStakePoolStaker(
@@ -61,20 +34,7 @@ async function fetchStakePoolStaker(
   version: number,
   signal?: AbortController['signal'],
 ): Promise<APIResponseVersioned<StakerItem[]>> {
-  try {
-    await isInternetReachable();
-    const res = await appFetch(urlGetStaker(address, offset, limit, version), { signal });
-    const ret = (await res.json()) as ResponseJSON<ResponseVersioned<StakerItem[]>>;
-    handleResponseCode(res, ret);
-    return {
-      status: res.status,
-      data: ret.data,
-      meta: ret.meta,
-    };
-  } catch (err: any) {
-    handleError(err);
-    return responseError(err.code);
-  }
+  return await apiFetchVersioned<StakerItem[]>(urlGetStaker(address, offset, limit, version), signal);
 }
 
 export async function getStakePoolData(

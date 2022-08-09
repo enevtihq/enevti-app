@@ -1,8 +1,7 @@
-import { APIResponse, ResponseJSON } from 'enevti-app/types/core/service/api';
+import { APIResponse } from 'enevti-app/types/core/service/api';
 import { Feeds } from 'enevti-app/types/core/service/feed';
 import { urlGetFeeds } from 'enevti-app/utils/constant/URLCreator';
-import { handleError, handleResponseCode, responseError } from 'enevti-app/utils/error/handle';
-import { appFetch, isInternetReachable } from 'enevti-app/utils/network';
+import { apiFetch } from 'enevti-app/utils/network';
 import { getMyAddress } from './persona';
 
 type FeedResponse = { data: Feeds; checkpoint: number; version: number };
@@ -16,21 +15,12 @@ async function fetchFeeds(
   version?: number,
   silent?: boolean,
 ): Promise<APIResponse<FeedResponse>> {
-  try {
-    await isInternetReachable();
-    const myAddress = await getMyAddress();
-    const res = await appFetch(urlGetFeeds(offset, limit, version, myAddress), { signal });
-    const ret = (await res.json()) as ResponseJSON<FeedResponse>;
-    handleResponseCode(res, ret);
-    return {
-      status: res.status,
-      data: ret.data,
-      meta: ret.meta,
-    };
-  } catch (err: any) {
-    handleError(err, undefined, silent);
-    return responseError(err.code, { data: [], offset: 0, version: 0 });
-  }
+  const myAddress = await getMyAddress();
+  return await apiFetch<FeedResponse>(urlGetFeeds(offset, limit, version, myAddress), signal, silent, {
+    data: [],
+    offset: 0,
+    version: 0,
+  });
 }
 
 export function parseFeedCache(feeds: Feeds) {

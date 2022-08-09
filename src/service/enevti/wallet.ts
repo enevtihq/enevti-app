@@ -1,30 +1,16 @@
 import { base32ToAddress, usernameToAddress } from 'enevti-app/service/enevti/persona';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
-import { appFetch, isInternetReachable } from 'enevti-app/utils/network';
+import { apiFetch, apiFetchVersioned } from 'enevti-app/utils/network';
 import { urlGetActivityProfile, urlGetWallet } from 'enevti-app/utils/constant/URLCreator';
-import { handleError, handleResponseCode, responseError } from 'enevti-app/utils/error/handle';
-import { APIResponse, APIResponseVersioned, ResponseJSON, ResponseVersioned } from 'enevti-app/types/core/service/api';
+import { APIResponse, APIResponseVersioned } from 'enevti-app/types/core/service/api';
 import { WALLET_HISTORY_INITIAL_LENGTH } from 'enevti-app/utils/constant/limit';
 import { WalletView } from 'enevti-app/types/core/service/wallet';
 
 type WalletRoute = StackScreenProps<RootStackParamList, 'Wallet'>['route']['params'];
 
 async function fetchWallet(address: string, signal?: AbortController['signal']): Promise<APIResponse<WalletView>> {
-  try {
-    await isInternetReachable();
-    const res = await appFetch(urlGetWallet(address), { signal });
-    const ret = (await res.json()) as ResponseJSON<WalletView>;
-    handleResponseCode(res, ret);
-    return {
-      status: res.status,
-      data: ret.data,
-      meta: ret.meta,
-    };
-  } catch (err: any) {
-    handleError(err);
-    return responseError(err.code);
-  }
+  return await apiFetch<WalletView>(urlGetWallet(address), signal);
 }
 
 async function fetchTransactionHistory(
@@ -34,20 +20,7 @@ async function fetchTransactionHistory(
   version: number,
   signal?: AbortController['signal'],
 ): Promise<APIResponseVersioned<WalletView['history']>> {
-  try {
-    await isInternetReachable();
-    const res = await appFetch(urlGetActivityProfile(address, offset, limit, version), { signal });
-    const ret = (await res.json()) as ResponseJSON<ResponseVersioned<WalletView['history']>>;
-    handleResponseCode(res, ret);
-    return {
-      status: res.status,
-      data: ret.data,
-      meta: ret.meta,
-    };
-  } catch (err: any) {
-    handleError(err);
-    return responseError(err.code);
-  }
+  return await apiFetchVersioned<WalletView['history']>(urlGetActivityProfile(address, offset, limit, version), signal);
 }
 
 export async function getWallet(address: string, signal?: AbortController['signal']): Promise<APIResponse<WalletView>> {

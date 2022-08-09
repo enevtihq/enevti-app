@@ -1,9 +1,9 @@
 import ImageCropPicker from 'react-native-image-crop-picker';
-import { handleError, handleResponseCode, responseError } from 'enevti-app/utils/error/handle';
+import { handleError, handleResponseCode } from 'enevti-app/utils/error/handle';
 import { NFT } from 'enevti-app/types/core/chain/nft';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
-import { appFetch, isInternetReachable } from 'enevti-app/utils/network';
+import { apiFetch, apiFetchVersioned, appFetch, isInternetReachable } from 'enevti-app/utils/network';
 import {
   urlGetIsNameExists,
   urlGetIsSymbolExists,
@@ -12,7 +12,7 @@ import {
   urlGetSerialToNFTId,
   urlGetNFTActivityById,
 } from 'enevti-app/utils/constant/URLCreator';
-import { APIResponse, APIResponseVersioned, ResponseJSON, ResponseVersioned } from 'enevti-app/types/core/service/api';
+import { APIResponse, APIResponseVersioned, ResponseJSON } from 'enevti-app/types/core/service/api';
 import { NFTActivity } from 'enevti-app/types/core/chain/nft/NFTActivity';
 import { NFT_ACTIVITY_INITIAL_LENGTH } from 'enevti-app/utils/constant/limit';
 import { getMyAddress } from './persona';
@@ -55,21 +55,8 @@ export async function isSymbolAvailable(symbol: string, signal?: AbortController
 }
 
 async function fetchNFTbyId(id: string, signal?: AbortController['signal']): Promise<APIResponse<NFT>> {
-  try {
-    await isInternetReachable();
-    const myAddress = await getMyAddress();
-    const res = await appFetch(urlGetNFTById(id, myAddress), { signal });
-    const ret = (await res.json()) as ResponseJSON<NFT>;
-    handleResponseCode(res, ret);
-    return {
-      status: res.status,
-      data: ret.data,
-      meta: ret.meta,
-    };
-  } catch (err: any) {
-    handleError(err);
-    return responseError(err.code);
-  }
+  const myAddress = await getMyAddress();
+  return await apiFetch<NFT>(urlGetNFTById(id, myAddress), signal);
 }
 
 async function fetchNFTbySerial(
@@ -77,38 +64,12 @@ async function fetchNFTbySerial(
   serial: string,
   signal?: AbortController['signal'],
 ): Promise<APIResponse<NFT>> {
-  try {
-    await isInternetReachable();
-    const myAddress = await getMyAddress();
-    const res = await appFetch(urlGetNFTBySerial(`${symbol}#${serial}`, myAddress), { signal });
-    const ret = (await res.json()) as ResponseJSON<NFT>;
-    handleResponseCode(res, ret);
-    return {
-      status: res.status,
-      data: ret.data,
-      meta: ret.meta,
-    };
-  } catch (err: any) {
-    handleError(err);
-    return responseError(err.code);
-  }
+  const myAddress = await getMyAddress();
+  return await apiFetch<NFT>(urlGetNFTBySerial(`${symbol}#${serial}`, myAddress), signal);
 }
 
 async function fetchNFTIdFromSerial(serial: string, signal?: AbortController['signal']): Promise<APIResponse<string>> {
-  try {
-    await isInternetReachable();
-    const res = await appFetch(urlGetSerialToNFTId(serial), { signal });
-    const ret = (await res.json()) as ResponseJSON<string>;
-    handleResponseCode(res, ret);
-    return {
-      status: res.status,
-      data: ret.data,
-      meta: ret.meta,
-    };
-  } catch (err: any) {
-    handleError(err);
-    return responseError(err.code);
-  }
+  return await apiFetch<string>(urlGetSerialToNFTId(serial), signal);
 }
 
 async function fetchNFTActivity(
@@ -118,20 +79,7 @@ async function fetchNFTActivity(
   version: number,
   signal?: AbortController['signal'],
 ): Promise<APIResponseVersioned<NFTActivity[]>> {
-  try {
-    await isInternetReachable();
-    const res = await appFetch(urlGetNFTActivityById(id, offset, limit, version), { signal });
-    const ret = (await res.json()) as ResponseJSON<ResponseVersioned<NFTActivity[]>>;
-    handleResponseCode(res, ret);
-    return {
-      status: res.status,
-      data: ret.data,
-      meta: ret.meta,
-    };
-  } catch (err: any) {
-    handleError(err);
-    return responseError(err.code);
-  }
+  return await apiFetchVersioned<NFTActivity[]>(urlGetNFTActivityById(id, offset, limit, version), signal);
 }
 
 export async function getNFTActivity(

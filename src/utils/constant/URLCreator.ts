@@ -322,3 +322,7 @@ export function urlGetTagCollection(query: string, host: string = ENEVTI_DEFAULT
 export function urlGetTagNFT(query: string, host: string = ENEVTI_DEFAULT_API) {
   return encodeURI(`${host}/tag/nft?q=${encodeURIComponent(query)}`);
 }
+
+export function urlGetConfigSocialRaffle(host: string = ENEVTI_DEFAULT_API) {
+  return encodeURI(`${host}/config/raffle`);
+}

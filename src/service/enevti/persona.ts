@@ -16,10 +16,10 @@ import { selectLocalSession } from 'enevti-app/store/slices/session/local';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { COIN_NAME } from 'enevti-app/utils/constant/identifier';
-import { appFetch, isInternetReachable } from 'enevti-app/utils/network';
+import { apiFetch } from 'enevti-app/utils/network';
 import { urlGetPersonaByAddress, urlGetPersonaByUsername } from 'enevti-app/utils/constant/URLCreator';
-import { handleError, handleResponseCode, isErrorResponse, responseError } from 'enevti-app/utils/error/handle';
-import { APIResponse, ResponseJSON } from 'enevti-app/types/core/service/api';
+import { isErrorResponse } from 'enevti-app/utils/error/handle';
+import { APIResponse } from 'enevti-app/types/core/service/api';
 import i18n from 'enevti-app/translations/i18n';
 
 type ProfileRoute = StackScreenProps<RootStackParamList, 'Profile'>['route']['params'];
@@ -29,40 +29,14 @@ const PREFIX_MAX_LENGTH = 3;
 const ENEVTI_BASE32_VALID_LENGTH = 42;
 
 async function fetchPersona(address: string, signal?: AbortController['signal']): Promise<APIResponse<Persona>> {
-  try {
-    await isInternetReachable();
-    const res = await appFetch(urlGetPersonaByAddress(address), { signal });
-    const ret = (await res.json()) as ResponseJSON<Persona>;
-    handleResponseCode(res, ret);
-    return {
-      status: res.status,
-      data: ret.data,
-      meta: ret.meta,
-    };
-  } catch (err: any) {
-    handleError(err);
-    return responseError(err.code);
-  }
+  return await apiFetch<Persona>(urlGetPersonaByAddress(address), signal);
 }
 
 async function fetchPersonaByUsername(
   username: string,
   signal?: AbortController['signal'],
 ): Promise<APIResponse<Persona>> {
-  try {
-    await isInternetReachable();
-    const res = await appFetch(urlGetPersonaByUsername(username), { signal });
-    const ret = (await res.json()) as ResponseJSON<Persona>;
-    handleResponseCode(res, ret);
-    return {
-      status: res.status,
-      data: ret.data,
-      meta: ret.meta,
-    };
-  } catch (err: any) {
-    handleError(err);
-    return responseError(err.code);
-  }
+  return await apiFetch<Persona>(urlGetPersonaByUsername(username), signal);
 }
 
 export function convertBase32Prefix(base32: string, oldPrefix: string, newPrefix: string): string {

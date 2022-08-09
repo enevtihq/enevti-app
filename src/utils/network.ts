@@ -6,6 +6,8 @@ import io from 'socket.io-client';
 import { urlSocketIO } from './constant/URLCreator';
 import ReactNativeBlobUtil, { ReactNativeBlobUtilConfig } from 'react-native-blob-util';
 import { checkPermissionStorage } from './permission';
+import { APIResponse, APIResponseVersioned, ResponseJSON } from 'enevti-app/types/core/service/api';
+import { handleError, handleResponseCode, responseError } from './error/handle';
 
 export async function isInternetReachable(): Promise<boolean> {
   await i18n.loadNamespaces('network');
@@ -125,4 +127,44 @@ export function appSocket(room?: string) {
     });
   }
   return socket;
+}
+
+async function apiFetchBase<T>(
+  url: string,
+  signal?: AbortController['signal'],
+  silent?: boolean,
+  errorReturn?: any,
+): Promise<APIResponse<T>> {
+  try {
+    await isInternetReachable();
+    const res = await appFetch(url, { signal });
+    const ret = (await res.json()) as ResponseJSON<T>;
+    handleResponseCode(res, ret);
+    return {
+      status: res.status,
+      data: ret.data,
+      meta: ret.meta,
+    };
+  } catch (err: any) {
+    handleError(err, undefined, silent);
+    return responseError(err.code, errorReturn === 'err.message' ? err.message : errorReturn);
+  }
+}
+
+export async function apiFetch<T>(
+  url: string,
+  signal?: AbortController['signal'],
+  silent?: boolean,
+  errorReturn?: any,
+): Promise<APIResponse<T>> {
+  return await apiFetchBase<T>(url, signal, silent, errorReturn);
+}
+
+export async function apiFetchVersioned<T>(
+  url: string,
+  signal?: AbortController['signal'],
+  silent?: boolean,
+  errorReturn?: any,
+): Promise<APIResponseVersioned<T>> {
+  return (await apiFetchBase<T>(url, signal, silent, errorReturn)) as unknown as Promise<APIResponseVersioned<T>>;
 }

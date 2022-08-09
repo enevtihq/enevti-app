@@ -1,9 +1,8 @@
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
-import { appFetch, isInternetReachable } from 'enevti-app/utils/network';
+import { apiFetchVersioned } from 'enevti-app/utils/network';
 import { urlGetCommentCollection, urlGetCommentNFT, urlGetReplyComment } from 'enevti-app/utils/constant/URLCreator';
-import { handleError, handleResponseCode, responseError } from 'enevti-app/utils/error/handle';
-import { APIResponseVersioned, ResponseJSON, ResponseVersioned } from 'enevti-app/types/core/service/api';
+import { APIResponseVersioned } from 'enevti-app/types/core/service/api';
 import { COMMENT_INITIAL_LENGTH, REPLY_INITIAL_LENGTH } from 'enevti-app/utils/constant/limit';
 import { CommentAt, ReplyAt } from 'enevti-app/types/core/chain/engagement';
 import { getCollectionIdFromRouteParam } from './collection';
@@ -18,20 +17,7 @@ async function fetchCollectionComment(
   version: number,
   signal?: AbortController['signal'],
 ): Promise<APIResponseVersioned<CommentAt>> {
-  try {
-    await isInternetReachable();
-    const res = await appFetch(urlGetCommentCollection(id, offset, limit, version), { signal });
-    const ret = (await res.json()) as ResponseJSON<ResponseVersioned<CommentAt>>;
-    handleResponseCode(res, ret);
-    return {
-      status: res.status,
-      data: ret.data,
-      meta: ret.meta,
-    };
-  } catch (err: any) {
-    handleError(err);
-    return responseError(err.code);
-  }
+  return await apiFetchVersioned<CommentAt>(urlGetCommentCollection(id, offset, limit, version), signal);
 }
 
 async function fetchNFTComment(
@@ -41,20 +27,7 @@ async function fetchNFTComment(
   version: number,
   signal?: AbortController['signal'],
 ): Promise<APIResponseVersioned<CommentAt>> {
-  try {
-    await isInternetReachable();
-    const res = await appFetch(urlGetCommentNFT(id, offset, limit, version), { signal });
-    const ret = (await res.json()) as ResponseJSON<ResponseVersioned<CommentAt>>;
-    handleResponseCode(res, ret);
-    return {
-      status: res.status,
-      data: ret.data,
-      meta: ret.meta,
-    };
-  } catch (err: any) {
-    handleError(err);
-    return responseError(err.code);
-  }
+  return await apiFetchVersioned<CommentAt>(urlGetCommentNFT(id, offset, limit, version), signal);
 }
 
 async function fetchCommentReply(
@@ -64,20 +37,7 @@ async function fetchCommentReply(
   version: number,
   signal?: AbortController['signal'],
 ): Promise<APIResponseVersioned<ReplyAt>> {
-  try {
-    await isInternetReachable();
-    const res = await appFetch(urlGetReplyComment(id, offset, limit, version), { signal });
-    const ret = (await res.json()) as ResponseJSON<ResponseVersioned<ReplyAt>>;
-    handleResponseCode(res, ret);
-    return {
-      status: res.status,
-      data: ret.data,
-      meta: ret.meta,
-    };
-  } catch (err: any) {
-    handleError(err);
-    return responseError(err.code);
-  }
+  return await apiFetchVersioned<ReplyAt>(urlGetReplyComment(id, offset, limit, version), signal);
 }
 
 export async function getCollectionComment(

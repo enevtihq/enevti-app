@@ -9,9 +9,8 @@ import {
   urlGetNameToCollectionId,
   urlGetSymbolToCollectionId,
 } from 'enevti-app/utils/constant/URLCreator';
-import { handleError, handleResponseCode, responseError } from 'enevti-app/utils/error/handle';
-import { appFetch, isInternetReachable } from 'enevti-app/utils/network';
-import { APIResponse, APIResponseVersioned, ResponseJSON, ResponseVersioned } from 'enevti-app/types/core/service/api';
+import { apiFetch, apiFetchVersioned } from 'enevti-app/utils/network';
+import { APIResponse, APIResponseVersioned } from 'enevti-app/types/core/service/api';
 import { NFTBase } from 'enevti-app/types/core/chain/nft';
 import { COLLECTION_ACTIVITY_INITIAL_LENGTH, COLLECTION_MINTED_INITIAL_LENGTH } from 'enevti-app/utils/constant/limit';
 import { getMyAddress } from './persona';
@@ -20,82 +19,30 @@ import i18n from 'enevti-app/translations/i18n';
 type CollectionRoute = StackScreenProps<RootStackParamList, 'Collection'>['route']['params'];
 
 async function fetchCollectionById(id: string, signal?: AbortController['signal']): Promise<APIResponse<Collection>> {
-  try {
-    await isInternetReachable();
-    const myAddress = await getMyAddress();
-    const res = await appFetch(urlGetCollectionById(id, myAddress), { signal });
-    const ret = (await res.json()) as ResponseJSON<Collection>;
-    handleResponseCode(res, ret);
-    return {
-      status: res.status,
-      data: ret.data,
-      meta: ret.meta,
-    };
-  } catch (err: any) {
-    handleError(err);
-    return responseError(err.code);
-  }
+  const myAddress = await getMyAddress();
+  return await apiFetch<Collection>(urlGetCollectionById(id, myAddress), signal);
 }
 
 async function fetchCollectionBySymbol(
   symbol: string,
   signal?: AbortController['signal'],
 ): Promise<APIResponse<Collection>> {
-  try {
-    await isInternetReachable();
-    const myAddress = await getMyAddress();
-    const res = await appFetch(urlGetCollectionBySymbol(symbol, myAddress), { signal });
-    const ret = (await res.json()) as ResponseJSON<Collection>;
-    handleResponseCode(res, ret);
-    return {
-      status: res.status,
-      data: ret.data,
-      meta: ret.meta,
-    };
-  } catch (err: any) {
-    handleError(err);
-    return responseError(err.code);
-  }
+  const myAddress = await getMyAddress();
+  return await apiFetch<Collection>(urlGetCollectionBySymbol(symbol, myAddress), signal);
 }
 
 async function fetchCollectionIdFromSymbol(
   symbol: string,
   signal?: AbortController['signal'],
 ): Promise<APIResponse<string>> {
-  try {
-    await isInternetReachable();
-    const res = await appFetch(urlGetSymbolToCollectionId(symbol), { signal });
-    const ret = (await res.json()) as ResponseJSON<string>;
-    handleResponseCode(res, ret);
-    return {
-      status: res.status,
-      data: ret.data,
-      meta: ret.meta,
-    };
-  } catch (err: any) {
-    handleError(err);
-    return responseError(err.code);
-  }
+  return await apiFetch<string>(urlGetSymbolToCollectionId(symbol), signal);
 }
 
 async function fetchCollectionIdFromName(
   name: string,
   signal?: AbortController['signal'],
 ): Promise<APIResponse<string>> {
-  try {
-    await isInternetReachable();
-    const res = await appFetch(urlGetNameToCollectionId(name), { signal });
-    const ret = (await res.json()) as ResponseJSON<string>;
-    handleResponseCode(res, ret);
-    return {
-      status: res.status,
-      data: ret.data,
-      meta: ret.meta,
-    };
-  } catch (err: any) {
-    handleError(err);
-    return responseError(err.code);
-  }
+  return await apiFetch<string>(urlGetNameToCollectionId(name), signal);
 }
 
 async function fetchCollectionMinted(
@@ -105,20 +52,7 @@ async function fetchCollectionMinted(
   version: number,
   signal?: AbortController['signal'],
 ): Promise<APIResponseVersioned<NFTBase[]>> {
-  try {
-    await isInternetReachable();
-    const res = await appFetch(urlGetCollectionMintedNFTById(id, offset, limit, version), { signal });
-    const ret = (await res.json()) as ResponseJSON<ResponseVersioned<NFTBase[]>>;
-    handleResponseCode(res, ret);
-    return {
-      status: res.status,
-      data: ret.data,
-      meta: ret.meta,
-    };
-  } catch (err: any) {
-    handleError(err);
-    return responseError(err.code);
-  }
+  return await apiFetchVersioned<NFTBase[]>(urlGetCollectionMintedNFTById(id, offset, limit, version), signal);
 }
 
 async function fetchCollectionActivity(
@@ -128,20 +62,10 @@ async function fetchCollectionActivity(
   version: number,
   signal?: AbortController['signal'],
 ): Promise<APIResponseVersioned<CollectionActivity[]>> {
-  try {
-    await isInternetReachable();
-    const res = await appFetch(urlGetCollectionActivityById(id, offset, limit, version), { signal });
-    const ret = (await res.json()) as ResponseJSON<ResponseVersioned<CollectionActivity[]>>;
-    handleResponseCode(res, ret);
-    return {
-      status: res.status,
-      data: ret.data,
-      meta: ret.meta,
-    };
-  } catch (err: any) {
-    handleError(err);
-    return responseError(err.code);
-  }
+  return await apiFetchVersioned<CollectionActivity[]>(
+    urlGetCollectionActivityById(id, offset, limit, version),
+    signal,
+  );
 }
 
 export async function getCollectionMinted(
