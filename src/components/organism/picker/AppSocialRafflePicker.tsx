@@ -134,9 +134,7 @@ function Component({
 const makeStyles = (theme: Theme, insets: SafeAreaInsets, itemWidth: number, itemHeight: number) =>
   StyleSheet.create({
     alertContainer: {
-      width: wp('90%', insets),
       marginBottom: hp('3%', insets),
-      alignSelf: 'center',
       flex: 0,
     },
     items: {
