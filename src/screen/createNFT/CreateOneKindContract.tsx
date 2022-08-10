@@ -69,6 +69,7 @@ import AppTextHeading5 from 'enevti-app/components/atoms/text/AppTextHeading5';
 import AppMintingTypePicker from 'enevti-app/components/organism/picker/AppMintingTypePicker';
 import { ImageOrVideoToDocument } from 'enevti-app/utils/format/documentPicker';
 import { PaymentStatus } from 'enevti-app/types/ui/store/Payment';
+import AppSocialRafflePicker from 'enevti-app/components/organism/picker/AppSocialRafflePicker';
 
 type Props = StackScreenProps<RootStackParamList, 'CreateOneKindContract'>;
 
@@ -786,6 +787,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
               },
               quantityInput,
             )}
+            <AppSocialRafflePicker />
             {commonFormInput(
               formikProps,
               quantityInput,

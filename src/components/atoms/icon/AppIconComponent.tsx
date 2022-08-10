@@ -108,6 +108,10 @@ export const iconMap = {
   addStake: 'bank-plus',
   selfStake: 'account-cache',
   sendPost: 'send-circle',
+  rank: 'podium-gold',
+  portion: 'chart-donut',
+  gift: 'gift',
+  raffleHappy: 'hand-heart',
 };
 
 interface AppIconComponentProps {

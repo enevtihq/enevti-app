@@ -5,7 +5,7 @@ export default {
   onSale: 'On Sale',
   collection: 'Collections',
   nftSold: 'NFT Sold',
-  treasuryAct: 'Treasury Act',
+  treasuryAct: 'DAO Vote',
   serveRate: 'Serve Rate',
   stakeAndInsight: 'Stake & Insight',
   setupStake: 'Setup Your Stake Pool',

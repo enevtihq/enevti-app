@@ -107,17 +107,23 @@ export default function AppProfileHeader({ navigation, persona, profile }: AppPr
       <View style={styles.profileStatsContainer}>
         <View style={styles.profileStatsItem}>
           <AppTextHeading3>{numberKMB(profile.nftSold, 2)}</AppTextHeading3>
-          <AppTextBody4 style={{ color: theme.colors.placeholder }}>{t('profile:nftSold')}</AppTextBody4>
+          <AppTextBody4 style={{ color: theme.colors.placeholder }} numberOfLines={1}>
+            {t('profile:nftSold')}
+          </AppTextBody4>
         </View>
         <View style={styles.profileStatsDivider} />
         <View style={styles.profileStatsItem}>
           <AppTextHeading3>{profile.treasuryAct}</AppTextHeading3>
-          <AppTextBody4 style={{ color: theme.colors.placeholder }}>{t('profile:treasuryAct')}</AppTextBody4>
+          <AppTextBody4 style={{ color: theme.colors.placeholder }} numberOfLines={1}>
+            {t('profile:treasuryAct')}
+          </AppTextBody4>
         </View>
         <View style={styles.profileStatsDivider} />
         <View style={styles.profileStatsItem}>
           <AppTextHeading3>{(profile.serveRate / 100).toFixed(2)}%</AppTextHeading3>
-          <AppTextBody4 style={{ color: theme.colors.placeholder }}>{t('profile:serveRate')}</AppTextBody4>
+          <AppTextBody4 style={{ color: theme.colors.placeholder }} numberOfLines={1}>
+            {t('profile:serveRate')}
+          </AppTextBody4>
         </View>
       </View>
 
