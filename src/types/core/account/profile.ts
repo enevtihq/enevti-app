@@ -18,6 +18,7 @@ export type Profile = {
   onSale: NFTBase[];
   collection: CollectionBase[];
   pending: number;
+  raffled: number;
 };
 
 export type RedeemableNFTAccountStatsChain = {

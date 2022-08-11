@@ -39,6 +39,7 @@ const initialState: Profile & {
   onSale: [],
   collection: [],
   pending: 0,
+  raffled: 0,
   lastFetch: { profile: 0, owned: 0, onSale: 0, collection: 0 },
 };
 

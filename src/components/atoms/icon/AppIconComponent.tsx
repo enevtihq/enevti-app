@@ -112,6 +112,11 @@ export const iconMap = {
   portion: 'chart-donut',
   gift: 'gift',
   raffleHappy: 'hand-heart',
+  eligible: 'check-circle',
+  notEligible: 'close-circle',
+  socialRaffleSetting: 'puzzle-heart',
+  socialRaffleDeactivated: 'heart-remove',
+  socialRaffleActivated: 'heart',
 };
 
 interface AppIconComponentProps {

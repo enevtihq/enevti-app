@@ -48,6 +48,7 @@ const initialStateItem: ProfileViewState = {
   onSale: [],
   collection: [],
   pending: 0,
+  raffled: 0,
 };
 
 const initialState: ProfileViewStore = {};

@@ -453,6 +453,12 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const onPressSocialRaffle = React.useCallback(item => {
+    setFormStateValue('raffled', item, true);
+    setFormStateValue('raffledTouched', true, true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const onOneKindImagePicked = React.useCallback(
     (image: ImageOrVideo) => {
       dispatch(
@@ -787,7 +793,13 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
               },
               quantityInput,
             )}
-            <AppSocialRafflePicker />
+            <AppSocialRafflePicker
+              price={formikProps.values.priceAmount}
+              value={formikProps.values.raffled}
+              touched={formikProps.values.raffledTouched}
+              onOKPress={onPressSocialRaffle}
+              onCancelPress={onPressSocialRaffle}
+            />
             {commonFormInput(
               formikProps,
               quantityInput,

@@ -1,6 +1,6 @@
 export type SocialRaffleGenesisConfig = {
   socialRaffle: {
-    maxPrice: number;
+    maxPrice: string;
     rewardsCutPercentage: number;
     blockInterval: number;
     maxRaffledPerCollection: number;

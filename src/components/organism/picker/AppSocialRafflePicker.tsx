@@ -1,7 +1,7 @@
 import React from 'react';
 import AppIconComponent, { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import { useTranslation } from 'react-i18next';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import AppMenuContainer from 'enevti-app/components/atoms/menu/AppMenuContainer';
 import AppHeaderWizard from 'enevti-app/components/molecules/AppHeaderWizard';
 import { StyleSheet, View } from 'react-native';
@@ -16,21 +16,46 @@ import { Theme } from 'enevti-app/theme/default';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import LinearGradient from 'react-native-linear-gradient';
 import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
-import { BLOCK_TIME } from 'enevti-app/utils/constant/identifier';
+import { BLOCK_TIME, getCoinName } from 'enevti-app/utils/constant/identifier';
+import { selectChainConfigSynced } from 'enevti-app/store/slices/entities/chainConfig/synced';
+import { syncChainConfig } from 'enevti-app/store/middleware/thunk/ui/chainConfig/syncChainConfig';
+import AppListItem from 'enevti-app/components/molecules/list/AppListItem';
+import AppTextBodyCustom from 'enevti-app/components/atoms/text/AppTextBodyCustom';
+import AppTextHeadingCustom from 'enevti-app/components/atoms/text/AppTextHeadingCustom';
+import AppSecondaryButton from 'enevti-app/components/atoms/button/AppSecondaryButton';
+import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
+import { completeTokenUnit, parseAmount } from 'enevti-app/utils/format/amount';
+import { selectMyProfileCache } from 'enevti-app/store/slices/entities/cache/myProfile';
+import AppListPickerItem from 'enevti-app/components/molecules/listpicker/AppListPickerItem';
+import Color from 'color';
 
 interface AppSocialRafflePickerProps {
+  price: string;
+  value: number;
+  onOKPress: (value: number) => void;
+  onCancelPress: (value: number) => void;
+  touched?: boolean;
   memoKey?: (keyof AppSocialRafflePickerProps)[];
 }
 
 function Component({
+  price,
+  touched,
+  value,
+  onOKPress,
+  onCancelPress,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   memoKey,
 }: AppSocialRafflePickerProps) {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
   const socialRaffleConfig = useSelector(selectSocialRaffleConfig);
+  const myProfile = useSelector(selectMyProfileCache);
+  const chainConfigSynced = useSelector(selectChainConfigSynced);
   const [blockTime, setBlockTime] = React.useState<number>();
+  const [menuVisible, setMenuVisible] = React.useState<boolean>(false);
 
   const itemWidth = React.useMemo(() => wp('80%', insets), [insets]);
   const itemHeight = React.useMemo(() => hp('35%', insets), [insets]);
@@ -40,10 +65,58 @@ function Component({
     [theme, insets, itemWidth, itemHeight],
   );
 
-  React.useEffect(() => {
-    const getBlockTime = async () => setBlockTime(await BLOCK_TIME());
-    getBlockTime();
+  const snapPoints = React.useMemo(() => ['85%'], []);
+  const onMenuDismiss = React.useCallback(() => {
+    setMenuVisible(false);
   }, []);
+
+  const isEligible = React.useMemo(() => {
+    if (!price) {
+      return false;
+    }
+    const collectionEligible =
+      BigInt(socialRaffleConfig.maxPrice) > BigInt(-1)
+        ? BigInt(completeTokenUnit(price)) < BigInt(socialRaffleConfig.maxPrice)
+          ? true
+          : false
+        : true;
+    const profileEligible =
+      socialRaffleConfig.maxRaffledPerProfile > -1
+        ? myProfile.raffled < socialRaffleConfig.maxRaffledPerProfile
+          ? true
+          : false
+        : true;
+    return collectionEligible && profileEligible;
+  }, [myProfile.raffled, price, socialRaffleConfig.maxPrice, socialRaffleConfig.maxRaffledPerProfile]);
+
+  const eligibility = React.useMemo(() => {
+    let ret = t('createNFT:socialRaffleEligibilityFirst');
+    if (BigInt(socialRaffleConfig.maxPrice) > BigInt(-1)) {
+      ret += `, ${t('createNFT:socialRaffleEligibilityPriceSpecified', {
+        amount: parseAmount(socialRaffleConfig.maxPrice),
+        currency: getCoinName(),
+      })}`;
+    } else {
+      ret += `, ${t('createNFT:socialRaffleEligibilityPriceUnspecified')}`;
+    }
+    ret += '.';
+    if (socialRaffleConfig.maxRaffledPerProfile > -1) {
+      ret += ` ${t('createNFT:socialRaffleEligibilityAnd')}, ${t('createNFT:socialRaffleEligibilityCreator', {
+        count: socialRaffleConfig.maxRaffledPerProfile,
+      })}.`;
+    }
+    return ret;
+  }, [socialRaffleConfig.maxPrice, socialRaffleConfig.maxRaffledPerProfile, t]);
+
+  React.useEffect(() => {
+    const initSocialRafflePicker = async () => {
+      setBlockTime(await BLOCK_TIME());
+      if (!chainConfigSynced) {
+        dispatch(syncChainConfig());
+      }
+    };
+    initSocialRafflePicker();
+  }, [chainConfigSynced, dispatch]);
 
   const renderItem = React.useCallback(
     ({ item }: { index?: number; item: { icon: string; step: number; title: string; description: string } }) => (
@@ -52,15 +125,23 @@ function Component({
           <LinearGradient style={styles.itemHeadGradient} colors={[theme.colors.primary, theme.colors.secondary]} />
           <AppIconComponent name={item.icon} size={hp(8)} color={'white'} />
         </View>
-        <View style={{ marginVertical: hp(3), paddingHorizontal: wp(5) }}>
-          <AppTextHeading3 style={{ marginBottom: hp(1) }}>
+        <View style={styles.itemFooter}>
+          <AppTextHeading3 style={styles.itemFooterTitle}>
             {item.step}. {item.title}
           </AppTextHeading3>
           <AppTextBody4>{item.description}</AppTextBody4>
         </View>
       </View>
     ),
-    [styles.itemHead, styles.itemHeadGradient, styles.items, theme.colors.primary, theme.colors.secondary],
+    [
+      styles.itemFooter,
+      styles.itemFooterTitle,
+      styles.itemHead,
+      styles.itemHeadGradient,
+      styles.items,
+      theme.colors.primary,
+      theme.colors.secondary,
+    ],
   );
 
   const socialRaffleStep = React.useMemo(() => {
@@ -68,66 +149,162 @@ function Component({
       {
         icon: iconMap.likeActive,
         step: 1,
-        title: 'Gather Like',
-        description: 'People can give like to your collection',
+        title: t('createNFT:raffleStep1Title'),
+        description: t('createNFT:raffleStep1Description'),
       },
       {
         icon: iconMap.rank,
         step: 2,
-        title: 'Ranking Period',
-        description: `Every ${socialRaffleConfig.blockInterval} blocks (${blockToInterval(
-          socialRaffleConfig.blockInterval * (blockTime ?? 1),
-        )}), Collection will be ranked based on the like they get on that period`,
+        title: t('createNFT:raffleStep2Title'),
+        description: t('createNFT:raffleStep2Description', {
+          block: socialRaffleConfig.blockInterval,
+          interval: blockToInterval(socialRaffleConfig.blockInterval * (blockTime ?? 1)),
+        }),
       },
       {
         icon: iconMap.portion,
         step: 3,
-        title: 'Minting Top Collection',
-        description: `${socialRaffleConfig.rewardsCutPercentage}% of total block reward will be allocated to mint top liked Collection`,
+        title: t('createNFT:raffleStep3Title'),
+        description: t('createNFT:raffleStep3Description', { percentage: socialRaffleConfig.rewardsCutPercentage }),
       },
       {
         icon: iconMap.gift,
         step: 4,
-        title: 'Airdrop!',
-        description: 'Minted items will be raffled to random people who give like to selected collection',
+        title: t('createNFT:raffleStep4Title'),
+        description: t('createNFT:raffleStep4Description'),
       },
       {
         icon: iconMap.raffleHappy,
         step: 5,
-        title: 'Happy!',
-        description: 'As a creator, you will get paid by tokens. And, people will get FREE NFT with specified utility!',
+        title: t('createNFT:raffleStep5Title'),
+        description: t('createNFT:raffleStep5Description'),
       },
     ];
-  }, [blockTime, socialRaffleConfig.blockInterval, socialRaffleConfig.rewardsCutPercentage]);
+  }, [blockTime, socialRaffleConfig.blockInterval, socialRaffleConfig.rewardsCutPercentage, t]);
 
   return (
-    <AppMenuContainer
-      enablePanDownToClose={true}
-      onDismiss={() => console.log('dismiss')}
-      visible={true}
-      snapPoints={['90%']}>
-      <AppHeaderWizard
-        noHeaderSpace
-        style={styles.alertContainer}
-        title={'Empowering Social Wisdom!'}
-        description={'Here is how Social Raffle works:'}
-      />
-      <NativeViewGestureHandler disallowInterruption={true}>
-        <Carousel
-          loop
-          autoplay={true}
-          autoplayInterval={8000}
-          enableMomentum={true}
-          decelerationRate={'fast'}
-          inactiveSlideOpacity={0.2}
-          data={socialRaffleStep}
-          renderItem={renderItem}
-          sliderWidth={sliderWidth}
-          itemWidth={itemWidth}
-          itemHeight={itemHeight}
+    <>
+      {!price ? (
+        <AppListPickerItem
+          showDropDown
+          disabled
+          icon={iconMap.socialRaffleSetting}
+          title={t('createNFT:enableSocialRaffle')}
+          description={t('createNFT:setPriceFirst')}
+          style={styles.pickerItem}
         />
-      </NativeViewGestureHandler>
-    </AppMenuContainer>
+      ) : !touched ? (
+        <AppListPickerItem
+          showDropDown
+          onPress={() => setMenuVisible(!menuVisible)}
+          icon={iconMap.socialRaffleSetting}
+          title={t('createNFT:enableSocialRaffle')}
+          description={t('createNFT:enableSocialRaffleDescription')}
+          style={styles.pickerItem}
+        />
+      ) : value === -1 ? (
+        <AppListPickerItem
+          showDropDown
+          onPress={() => setMenuVisible(!menuVisible)}
+          icon={iconMap.socialRaffleDeactivated}
+          title={t('createNFT:socialRaffledDisabled')}
+          description={t('createNFT:socialRaffledDisabledDesc')}
+          style={styles.pickerItem}
+        />
+      ) : value === 0 ? (
+        <AppListPickerItem
+          showDropDown
+          onPress={() => setMenuVisible(!menuVisible)}
+          icon={iconMap.socialRaffleActivated}
+          title={t('createNFT:socialRaffledEnabled')}
+          description={t('createNFT:socialRaffledEnabledDesc')}
+          style={styles.pickerItem}
+        />
+      ) : null}
+      <AppMenuContainer
+        enablePanDownToClose={false}
+        onDismiss={onMenuDismiss}
+        visible={menuVisible}
+        snapPoints={snapPoints}>
+        <AppHeaderWizard
+          noHeaderSpace
+          style={styles.alertContainer}
+          title={t('createNFT:socialRaffleTitle')}
+          description={t('createNFT:socialRaffleDescription')}
+        />
+        <View>
+          <NativeViewGestureHandler disallowInterruption={true}>
+            <Carousel
+              loop
+              autoplay={true}
+              autoplayInterval={8000}
+              enableMomentum={true}
+              decelerationRate={'fast'}
+              inactiveSlideOpacity={0.2}
+              data={socialRaffleStep}
+              renderItem={renderItem}
+              sliderWidth={sliderWidth}
+              itemWidth={itemWidth}
+              itemHeight={itemHeight}
+            />
+          </NativeViewGestureHandler>
+        </View>
+        <View style={styles.eligibilityContainer}>
+          <AppListItem
+            leftContent={
+              <AppIconComponent
+                style={styles.eligibilityIcon}
+                name={isEligible ? iconMap.eligible : iconMap.notEligible}
+                size={hp(4)}
+                color={isEligible ? theme.colors.success : theme.colors.error}
+              />
+            }>
+            <AppTextHeadingCustom size={3.5} numberOfLines={1}>
+              {isEligible ? t('createNFT:socialRaffleIsEligible') : t('createNFT:socialRaffleIsNotEligible')}
+            </AppTextHeadingCustom>
+            <AppTextBodyCustom size={2.8} style={styles.eligibilityDescription}>
+              {eligibility}
+            </AppTextBodyCustom>
+          </AppListItem>
+        </View>
+        <View style={styles.actionContainer}>
+          {isEligible ? (
+            <View style={styles.buttonContainer}>
+              <View style={styles.buttonItem}>
+                <AppSecondaryButton
+                  onPress={() => {
+                    onMenuDismiss();
+                    onCancelPress(-1);
+                  }}>
+                  {t('createNFT:socialRaffleActionEligibleButtonCancel')}
+                </AppSecondaryButton>
+              </View>
+              <View style={styles.buttonContainerSpace} />
+              <View style={styles.buttonItem}>
+                <AppPrimaryButton
+                  onPress={() => {
+                    onMenuDismiss();
+                    onOKPress(0);
+                  }}>
+                  {t('createNFT:socialRaffleActionEligibleButtonOK')}
+                </AppPrimaryButton>
+              </View>
+            </View>
+          ) : (
+            <View style={styles.buttonContainer}>
+              <View style={styles.buttonItem}>
+                <AppSecondaryButton onPress={onMenuDismiss}>
+                  {t('createNFT:socialRaffleActionNotEligibleButton')}
+                </AppSecondaryButton>
+              </View>
+            </View>
+          )}
+          <AppTextBody4>
+            {isEligible ? t('createNFT:socialRaffleActionEligible') : t('createNFT:socialRaffleActionNotEligible')}
+          </AppTextBody4>
+        </View>
+      </AppMenuContainer>
+    </>
   );
 }
 
@@ -152,7 +329,51 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets, itemWidth: number, ite
       justifyContent: 'center',
       alignItems: 'center',
     },
-    itemHeadGradient: { position: 'absolute', width: '100%', height: '100%' },
+    itemFooter: {
+      marginVertical: hp(3),
+      paddingHorizontal: wp(5),
+    },
+    itemFooterTitle: {
+      marginBottom: hp(1),
+    },
+    itemHeadGradient: {
+      position: 'absolute',
+      width: '100%',
+      height: '100%',
+    },
+    buttonContainer: {
+      paddingHorizontal: wp('5%', insets),
+      paddingBottom: wp('10%', insets),
+      marginTop: hp('3%', insets),
+      flexDirection: 'row',
+    },
+    buttonItem: {
+      flex: 1,
+    },
+    buttonContainerSpace: {
+      marginHorizontal: wp('1%', insets),
+    },
+    eligibilityContainer: {
+      marginTop: hp(3),
+    },
+    eligibilityIcon: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginRight: wp(3),
+    },
+    eligibilityDescription: {
+      color: theme.colors.placeholder,
+    },
+    actionContainer: {
+      flex: 1,
+      flexDirection: 'column-reverse',
+      alignItems: 'center',
+    },
+    pickerItem: {
+      backgroundColor: theme.dark
+        ? Color(theme.colors.background).lighten(0.5).rgb().string()
+        : Color(theme.colors.background).darken(0.04).rgb().string(),
+    },
   });
 
 const AppSocialRafflePicker = React.memo(Component, (prevProps, nextProps) => {

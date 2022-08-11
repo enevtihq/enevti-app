@@ -44,6 +44,7 @@ const initialState: MyProfileViewState = {
   onSale: [],
   collection: [],
   pending: 0,
+  raffled: 0,
 };
 
 const myProfileViewSlice = createSlice({
