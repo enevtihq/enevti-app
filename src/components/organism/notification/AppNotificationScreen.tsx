@@ -4,8 +4,13 @@ import Animated from 'react-native-reanimated';
 import AppMessageEmpty from 'enevti-app/components/molecules/message/AppMessageEmpty';
 import AppNotificationItem from './AppNotificationItem';
 import { NotificationItem, NotificationState } from 'enevti-app/types/ui/store/Notification';
-import { useSelector } from 'react-redux';
-import { selectNotificationView } from 'enevti-app/store/slices/entities/notification';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  readAllNotificationItems,
+  selectNotificationView,
+  setNotificationLastRead,
+  setNotificationUnread,
+} from 'enevti-app/store/slices/entities/notification';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
 import { hp } from 'enevti-app/utils/imageRatio';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -18,8 +23,15 @@ interface AppNotificationScreenProps {
 }
 
 export default function AppNotificationScreen({ navigation }: AppNotificationScreenProps) {
+  const dispatch = useDispatch();
   const styles = React.useMemo(() => makeStyles(), []);
   const myNotification: NotificationState = useSelector(selectNotificationView);
+
+  React.useEffect(() => {
+    dispatch(setNotificationLastRead(Date.now()));
+    dispatch(readAllNotificationItems());
+    dispatch(setNotificationUnread(0));
+  }, [dispatch]);
 
   const renderItem = React.useCallback(
     ({ item, index }: any) => <AppNotificationItem index={index} navigation={navigation} notification={item} />,

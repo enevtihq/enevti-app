@@ -22,11 +22,17 @@ const notificationViewSlice = createSlice({
     setNotificationView: (notification, action: PayloadAction<Partial<NotificationState>>) => {
       Object.assign(notification, action.payload);
     },
+    readAllNotificationItems: notification => {
+      notification.items = notification.items.map(item => ({ ...item, read: true }));
+    },
     setNotificationVersion: (notification, action: PayloadAction<number>) => {
       notification.version = action.payload;
     },
     setNotificationLastRead: (notification, action: PayloadAction<number>) => {
       notification.lastRead = action.payload;
+    },
+    addNotificationUnread: notification => {
+      notification.unread += 1;
     },
     setNotificationUnread: (notification, action: PayloadAction<number>) => {
       notification.unread = action.payload;
@@ -54,7 +60,9 @@ const notificationViewSlice = createSlice({
 
 export const {
   setNotificationView,
+  readAllNotificationItems,
   setNotificationVersion,
+  addNotificationUnread,
   setNotificationLastRead,
   setNotificationUnread,
   setNotificationPagination,
@@ -68,6 +76,11 @@ export default notificationViewSlice.reducer;
 export const selectNotificationView = createSelector(
   (state: RootState) => state.entities.notification,
   (notification: NotificationState) => notification,
+);
+
+export const selectNotificationUnread = createSelector(
+  (state: RootState) => state.entities.notification,
+  (notification: NotificationState) => notification.unread,
 );
 
 export const selectNotificationItem = createSelector(

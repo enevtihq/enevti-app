@@ -67,6 +67,7 @@ import BalanceChangedSnack from 'enevti-app/components/molecules/view/BalanceCha
 import AppBadge from 'enevti-app/components/atoms/view/AppBadge';
 import { reduceMyTotalServeRateChanged } from 'enevti-app/store/middleware/thunk/socket/profile/totalServeRateChanged';
 import { syncChainConfig } from 'enevti-app/store/middleware/thunk/ui/chainConfig/syncChainConfig';
+import { selectNotificationUnread } from 'enevti-app/store/slices/entities/notification';
 
 const Tab = createBottomTabNavigator();
 
@@ -89,8 +90,9 @@ export default function Home({ navigation }: Props) {
   const welcome = useSelector(selectOnceWelcome);
   const newProfileUpdate = useSelector(isThereAnyNewMyProfileUpdates);
   const newFeedUpdate = useSelector(isThereAnyNewFeedView);
-  const appOpenCounter = useSelector(selectAppOpenCounter);
   const isDeliverSecretProcessing = useSelector(selectDeliverSecretProcessing);
+  const unreadNotification = useSelector(selectNotificationUnread);
+  const appOpenCounter = useSelector(selectAppOpenCounter);
 
   const [uneligibleSheetVisible, setUneligibleSheetVisible] = React.useState<boolean>(false);
   const [restoreMenuVisible, setRestoreMenuVisible] = React.useState<boolean>(false);
@@ -292,7 +294,15 @@ export default function Home({ navigation }: Props) {
                   icon={iconMap.magnify}
                   onPress={() => dispatch(showSnackbar({ mode: 'info', text: 'Coming Soon!' }))}
                 />
-                <AppHeaderAction icon={iconMap.notification} onPress={() => navigation.push('Notification')} />
+                <View>
+                  <AppHeaderAction icon={iconMap.notification} onPress={() => navigation.push('Notification')} />
+                  {unreadNotification > 0 ? (
+                    <AppBadge
+                      offset={hp(1)}
+                      content={unreadNotification > 99 ? '99+' : unreadNotification.toString()}
+                    />
+                  ) : null}
+                </View>
               </AppHeader>
             ),
           }}>

@@ -2,22 +2,41 @@ import { StyleSheet, View } from 'react-native';
 import React from 'react';
 import { useTheme } from 'react-native-paper';
 import { Theme } from 'enevti-app/theme/default';
+import AppTextBodyCustom from '../text/AppTextBodyCustom';
 
-export default function AppBadge() {
-  const theme = useTheme() as Theme;
-  const styles = React.useMemo(() => makeStyles(theme), [theme]);
-
-  return <View style={styles.container} />;
+interface AppBadgeProps {
+  offset?: number;
+  content?: string;
 }
 
-const makeStyles = (theme: Theme) =>
+export default function AppBadge({ offset, content }: AppBadgeProps) {
+  const theme = useTheme() as Theme;
+  const styles = React.useMemo(() => makeStyles(theme, offset, content), [theme, offset, content]);
+
+  return (
+    <View style={styles.container}>
+      <AppTextBodyCustom size={2.6} style={styles.content}>
+        {content}
+      </AppTextBodyCustom>
+    </View>
+  );
+}
+
+const makeStyles = (theme: Theme, offset?: number, content?: string) =>
   StyleSheet.create({
     container: {
       position: 'absolute',
       alignSelf: 'flex-end',
-      borderRadius: 12,
-      height: 12,
-      width: 12,
+      borderRadius: content ? 16 : 12,
+      height: content ? undefined : 12,
+      width: content ? undefined : 12,
+      right: offset ?? undefined,
+      top: offset ?? undefined,
       backgroundColor: theme.colors.notification,
+    },
+    content: {
+      color: 'white',
+      textAlign: 'center',
+      paddingHorizontal: 3,
     },
   });
