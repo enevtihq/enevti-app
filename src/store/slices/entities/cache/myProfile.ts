@@ -40,6 +40,8 @@ const initialState: Profile & {
   collection: [],
   pending: 0,
   raffled: 0,
+  likeSent: 0,
+  commentSent: 0,
   lastFetch: { profile: 0, owned: 0, onSale: 0, collection: 0 },
 };
 

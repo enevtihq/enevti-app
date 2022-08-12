@@ -5,7 +5,7 @@ import { SocialRaffleGenesisConfig } from 'enevti-app/types/core/chain/config/So
 
 const initialState: SocialRaffleGenesisConfig['socialRaffle'] = {
   blockInterval: 0,
-  maxPrice: -1,
+  maxPrice: '-1',
   maxRaffledPerCollection: -1,
   maxRaffledPerProfile: -1,
   rewardsCutPercentage: 0,

@@ -49,6 +49,8 @@ const initialStateItem: ProfileViewState = {
   collection: [],
   pending: 0,
   raffled: 0,
+  likeSent: 0,
+  commentSent: 0,
 };
 
 const initialState: ProfileViewStore = {};

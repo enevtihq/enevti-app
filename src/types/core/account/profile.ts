@@ -19,6 +19,8 @@ export type Profile = {
   collection: CollectionBase[];
   pending: number;
   raffled: number;
+  likeSent: number;
+  commentSent: number;
 };
 
 export type RedeemableNFTAccountStatsChain = {
@@ -48,6 +50,8 @@ export type RedeemableNFTAccountProps = {
     treasuryAct: number;
     serveRate: number;
     raffled: number;
+    likeSent: number;
+    commentSent: number;
     owned: NFTIdAsset[];
     onSale: NFTIdAsset[];
     collection: CollectionIdAsset[];
