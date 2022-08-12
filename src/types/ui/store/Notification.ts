@@ -1,5 +1,3 @@
-import { PaginationStore } from './PaginationStore';
-
 export type NotificationItem = {
   type: string;
   date: number;
@@ -8,7 +6,6 @@ export type NotificationItem = {
 };
 
 export type NotificationState = {
-  notificationPagination: PaginationStore;
   version: number;
   lastRead: number;
   unread: number;

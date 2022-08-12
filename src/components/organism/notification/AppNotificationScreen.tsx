@@ -11,7 +11,6 @@ import {
   setNotificationLastRead,
   setNotificationUnread,
 } from 'enevti-app/store/slices/entities/notification';
-import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
 import { hp } from 'enevti-app/utils/imageRatio';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
@@ -42,15 +41,6 @@ export default function AppNotificationScreen({ navigation }: AppNotificationScr
 
   const emptyComponent = React.useMemo(() => <AppMessageEmpty />, []);
 
-  const footerComponent = React.useMemo(
-    () =>
-      myNotification.notificationPagination.version !== myNotification.items.length &&
-      myNotification.items.length !== 0 ? (
-        <AppActivityIndicator style={{ marginVertical: hp('3%') }} />
-      ) : null,
-    [myNotification.items.length, myNotification.notificationPagination.version],
-  );
-
   const contentContainerStyle = React.useMemo(
     () =>
       myNotification.items && myNotification.items.length > 0
@@ -73,7 +63,6 @@ export default function AppNotificationScreen({ navigation }: AppNotificationScr
       updateCellsBatchingPeriod={50}
       windowSize={21}
       ListEmptyComponent={emptyComponent}
-      ListFooterComponent={footerComponent}
       contentContainerStyle={contentContainerStyle}
       onEndReachedThreshold={0.1}
       onEndReached={handleLoadMore}

@@ -66,6 +66,7 @@ export const checkDeliverSecretWorker = async (data: { payload: string; silent?:
         await showOngoingNotification({
           id: 'deliverSecretNotif',
           title: i18n.t('notification:deliverSecretTask'),
+          actionId: 'deliverSecretNotif',
         });
       }
       store.dispatch(setDeliverSecretProcessing(true));

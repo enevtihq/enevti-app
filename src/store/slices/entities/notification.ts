@@ -1,14 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
 import { RootState } from 'enevti-app/store/state';
-import { PaginationStore } from 'enevti-app/types/ui/store/PaginationStore';
 import { NotificationItem, NotificationState } from 'enevti-app/types/ui/store/Notification';
 
 const initialState: NotificationState = {
-  notificationPagination: {
-    checkpoint: 0,
-    version: 0,
-  },
   version: 0,
   lastRead: 0,
   unread: 0,
@@ -37,9 +32,6 @@ const notificationViewSlice = createSlice({
     setNotificationUnread: (notification, action: PayloadAction<number>) => {
       notification.unread = action.payload;
     },
-    setNotificationPagination: (notification, action: PayloadAction<PaginationStore>) => {
-      notification.notificationPagination = { ...action.payload };
-    },
     pushNotificationItem: (notification, action: PayloadAction<NotificationItem[]>) => {
       notification.items = notification.items.concat(action.payload);
     },
@@ -65,7 +57,6 @@ export const {
   addNotificationUnread,
   setNotificationLastRead,
   setNotificationUnread,
-  setNotificationPagination,
   pushNotificationItem,
   unshiftNotificationItem,
   deleteNotificationItem,

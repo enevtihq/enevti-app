@@ -28,6 +28,7 @@ const makeStyles = (theme: Theme, offset?: number, content?: string) =>
       position: 'absolute',
       alignSelf: 'flex-end',
       borderRadius: content ? 16 : 12,
+      minWidth: content ? 16 : undefined,
       height: content ? undefined : 12,
       width: content ? undefined : 12,
       right: offset ?? undefined,

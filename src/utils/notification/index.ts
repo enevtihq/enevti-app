@@ -1,12 +1,13 @@
 import notifee, { AndroidImportance } from '@notifee/react-native';
 
-type NotificationArg = { id?: string; title: string; body?: string };
+type NotificationArg = { id?: string; title: string; body?: string; actionId: string };
 
-export async function showNotification({ id, title, body }: NotificationArg) {
+export async function showNotification({ id, title, body, actionId }: NotificationArg) {
   await notifee.requestPermission();
   const channelId = await notifee.createChannel({
     id: 'default',
     name: 'Default Channel',
+    importance: AndroidImportance.HIGH,
   });
   return await notifee.displayNotification({
     id,
@@ -14,14 +15,15 @@ export async function showNotification({ id, title, body }: NotificationArg) {
     body,
     android: {
       channelId,
+      importance: AndroidImportance.HIGH,
       pressAction: {
-        id: 'default',
+        id: actionId,
       },
     },
   });
 }
 
-export async function showOngoingNotification({ id, title, body }: NotificationArg) {
+export async function showOngoingNotification({ id, title, body, actionId }: NotificationArg) {
   await notifee.requestPermission();
   const channelId = await notifee.createChannel({
     id: 'important',
@@ -42,7 +44,7 @@ export async function showOngoingNotification({ id, title, body }: NotificationA
         indeterminate: true,
       },
       pressAction: {
-        id: 'default',
+        id: actionId,
       },
     },
   });
