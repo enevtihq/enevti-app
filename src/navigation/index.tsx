@@ -44,6 +44,7 @@ import { appSocket } from 'enevti-app/utils/network';
 import { reduceNewBlock } from 'enevti-app/store/middleware/thunk/socket/chain/newBlock';
 import Comment from 'enevti-app/screen/explorer/Comment';
 import { setKeyboardShow, setKeyboardHide } from 'enevti-app/store/slices/ui/global/keyboard';
+import Notification from 'enevti-app/screen/notification/Notification';
 
 export type RootStackParamList = {
   CreateAccount: undefined;
@@ -106,6 +107,7 @@ export type RootStackParamList = {
     arg: string;
     mode: 'id' | 's';
   };
+  Notification: undefined;
 };
 
 const Stack = createStackNavigator();
@@ -344,6 +346,14 @@ export default function AppNavigationContainer() {
         <Stack.Screen
           name="Comment"
           component={Comment}
+          options={{
+            headerShown: false,
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          }}
+        />
+        <Stack.Screen
+          name="Notification"
+          component={Notification}
           options={{
             headerShown: false,
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,

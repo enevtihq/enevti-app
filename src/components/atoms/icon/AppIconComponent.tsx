@@ -18,6 +18,7 @@ export const iconMap = {
   insideDevice: 'cellphone-cog',
   importAccount: 'swap-vertical-bold',
   close: 'close',
+  remove: 'close-circle',
   binderPassword: 'shield-key',
   magnify: 'magnify',
   menu: 'dots-vertical',

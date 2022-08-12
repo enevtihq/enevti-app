@@ -292,10 +292,7 @@ export default function Home({ navigation }: Props) {
                   icon={iconMap.magnify}
                   onPress={() => dispatch(showSnackbar({ mode: 'info', text: 'Coming Soon!' }))}
                 />
-                <AppHeaderAction
-                  icon={iconMap.notification}
-                  onPress={() => dispatch(showSnackbar({ mode: 'info', text: 'Coming Soon!' }))}
-                />
+                <AppHeaderAction icon={iconMap.notification} onPress={() => navigation.push('Notification')} />
               </AppHeader>
             ),
           }}>
