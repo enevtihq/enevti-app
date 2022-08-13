@@ -7,6 +7,7 @@ import { Theme } from 'enevti-app/theme/default';
 import { StyleProp, TextStyle } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
+import { COLLECTION_MENTION_TRIGGER, NFT_MENTION_TRIGGER, PROFILE_MENTION_TRIGGER } from 'enevti-app/utils/mention';
 
 interface AppMentionRendererProps {
   navigation: StackNavigationProp<RootStackParamList>;
@@ -25,7 +26,7 @@ export default function AppMentionRenderer({ navigation, text, style, title, onT
       }
 
       if (isMentionPartType(part.partType)) {
-        if (part.partType.trigger === '@') {
+        if (part.partType.trigger === PROFILE_MENTION_TRIGGER) {
           return (
             <AppTextBody4
               key={`${index}-${part.data?.trigger}`}
@@ -34,7 +35,7 @@ export default function AppMentionRenderer({ navigation, text, style, title, onT
               {part.text}
             </AppTextBody4>
           );
-        } else if (part.partType.trigger === '$') {
+        } else if (part.partType.trigger === COLLECTION_MENTION_TRIGGER) {
           return (
             <AppTextBody4
               key={`${index}-${part.data?.trigger}`}
@@ -43,7 +44,7 @@ export default function AppMentionRenderer({ navigation, text, style, title, onT
               {part.text}
             </AppTextBody4>
           );
-        } else if (part.partType.trigger === '*') {
+        } else if (part.partType.trigger === NFT_MENTION_TRIGGER) {
           return (
             <AppTextBody4
               key={`${index}-${part.data?.trigger}`}
@@ -71,7 +72,11 @@ export default function AppMentionRenderer({ navigation, text, style, title, onT
   return (
     <AppTextBody4 style={style}>
       {title ? <AppTextHeading4 onPress={onTitlePress}>{title} </AppTextHeading4> : null}
-      {renderValue(text, [{ trigger: '@' }, { trigger: '$' }, { trigger: '*' }])}
+      {renderValue(text, [
+        { trigger: PROFILE_MENTION_TRIGGER },
+        { trigger: COLLECTION_MENTION_TRIGGER },
+        { trigger: NFT_MENTION_TRIGGER },
+      ])}
     </AppTextBody4>
   );
 }

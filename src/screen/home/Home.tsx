@@ -112,9 +112,10 @@ export default function Home({ navigation }: Props) {
   }, [myPersona.address]);
 
   React.useEffect(() => {
-    messaging().onMessage(async remoteMessage => {
+    const unsubsribe = messaging().onMessage(async remoteMessage => {
       handleFCM(remoteMessage);
     });
+    return unsubsribe;
   }, []);
 
   React.useEffect(() => {

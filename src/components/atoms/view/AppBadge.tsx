@@ -14,7 +14,7 @@ export default function AppBadge({ offset, content }: AppBadgeProps) {
   const styles = React.useMemo(() => makeStyles(theme, offset, content), [theme, offset, content]);
 
   return (
-    <View style={styles.container}>
+    <View pointerEvents={'none'} style={styles.container}>
       <AppTextBodyCustom size={2.6} style={styles.content}>
         {content}
       </AppTextBodyCustom>

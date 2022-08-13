@@ -7,6 +7,7 @@ import {
 import { store } from 'enevti-app/store/state';
 import i18n from 'enevti-app/translations/i18n';
 import { Collection } from 'enevti-app/types/core/chain/collection';
+import { createCollectionMention } from 'enevti-app/utils/mention';
 import { showNotification } from 'enevti-app/utils/notification';
 
 export default async function newRaffledFCMHandler(remoteMessage: FirebaseMessagingTypes.RemoteMessage) {
@@ -22,7 +23,9 @@ export default async function newRaffledFCMHandler(remoteMessage: FirebaseMessag
     unshiftNotificationItem([
       {
         type: 'newRaffled',
-        text: i18n.t('notification:newRaffledBody', { collection: data.collection.name }),
+        text: i18n.t('notification:newRaffledBody', {
+          collection: createCollectionMention(data.collection),
+        }),
         date: now,
         read: false,
       },
