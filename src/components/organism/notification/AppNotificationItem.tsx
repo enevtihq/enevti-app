@@ -34,8 +34,8 @@ export default function AppNotificationItem({ notification, navigation, index }:
   return (
     <AppListItem
       leftContent={
-        <View style={styles.activityIcon}>
-          <AppActivityIcon activityName={notification.type} />
+        <View style={styles.activityIconContainer}>
+          <AppActivityIcon style={styles.activityIcon} activityName={notification.type} />
         </View>
       }
       rightContent={
@@ -53,9 +53,13 @@ export default function AppNotificationItem({ notification, navigation, index }:
 
 const makeStyles = () =>
   StyleSheet.create({
-    activityIcon: {
+    activityIconContainer: {
       justifyContent: 'flex-start',
       alignItems: 'flex-start',
+    },
+    activityIcon: {
+      marginLeft: 0,
+      marginRight: wp(2),
     },
     removeButton: {
       justifyContent: 'flex-start',
