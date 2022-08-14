@@ -10,6 +10,7 @@ import { reducePayMintCollectionByQR } from './reducePayMintCollectionByQR';
 import { reduceTransferToken } from './reduceTransferToken';
 import { reducePayCommentCollection } from './reducePayCommentCollection';
 import { reducePayCommentNFT } from './reducePayCommentNFT';
+import { reducePayReplyComment } from './reducePayReplyComment';
 
 export const reducePayment = (): AppThunk => (dispatch, getState) => {
   const paymentType = getState().payment.action.type;
@@ -40,6 +41,9 @@ export const reducePayment = (): AppThunk => (dispatch, getState) => {
       break;
     case 'commentNFT':
       dispatch(reducePayCommentNFT());
+      break;
+    case 'replyComment':
+      dispatch(reducePayReplyComment());
       break;
     default:
       handleError({ message: i18n.t('error:unknownPayment') });

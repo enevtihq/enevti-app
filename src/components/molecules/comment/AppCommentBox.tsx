@@ -54,6 +54,7 @@ import { RootState } from 'enevti-app/store/state';
 import { BLOCK_TIME } from 'enevti-app/utils/constant/identifier';
 import { getTransactionStatus } from 'enevti-app/service/enevti/transaction';
 import AppTextHeading4 from 'enevti-app/components/atoms/text/AppTextHeading4';
+import { payReplyComment } from 'enevti-app/store/middleware/thunk/payment/creator/payReplyComment';
 
 interface AppCommentBoxProps {
   route: RouteProp<RootStackParamList, 'Comment'>;
@@ -121,7 +122,9 @@ export default function AppCommentBox({ route, target, inputRef }: AppCommentBox
     (paymentStatus: PaymentStatus) => {
       return (
         paymentStatus.action !== undefined &&
-        ['commentCollection', 'commentNFT'].includes(paymentStatus.action) &&
+        ['commentCollection', 'commentNFT', 'likeComment', 'likeReply', 'replyComment'].includes(
+          paymentStatus.action,
+        ) &&
         paymentStatus.id === route.params.arg &&
         paymentStatus.key === route.key
       );
@@ -129,56 +132,90 @@ export default function AppCommentBox({ route, target, inputRef }: AppCommentBox
     [route.key, route.params.arg],
   );
 
-  const paymentIdleCallback = React.useCallback(() => {
-    setSending(false);
+  const paymentIdleCallback = React.useCallback((paymentStatus: PaymentStatus) => {
+    switch (paymentStatus.action) {
+      case 'commentCollection':
+      case 'commentNFT':
+        setSending(false);
+        break;
+      default:
+        break;
+    }
   }, []);
 
-  const paymentProcessCallback = React.useCallback(() => {
-    dispatch(
-      unshiftComment({
-        key: route.key,
-        value: [{ ...makeDummyComment({ id: route.key, isPosting: true, text: value, owner: myPersona }) }],
-      }),
-    );
-    dispatch(addCommentViewPaginationVersion({ key: route.key }));
-    dispatch(addCommentViewPaginationCheckpoint({ key: route.key }));
-    inputRef.current?.clear();
-    valueRef.current = '';
-  }, [dispatch, inputRef, myPersona, route.key, value]);
+  const paymentProcessCallback = React.useCallback(
+    (paymentStatus: PaymentStatus) => {
+      switch (paymentStatus.action) {
+        case 'commentCollection':
+        case 'commentNFT':
+          dispatch(
+            unshiftComment({
+              key: route.key,
+              value: [{ ...makeDummyComment({ id: route.key, isPosting: true, text: value, owner: myPersona }) }],
+            }),
+          );
+          dispatch(addCommentViewPaginationVersion({ key: route.key }));
+          dispatch(addCommentViewPaginationCheckpoint({ key: route.key }));
+          break;
+        default:
+          break;
+      }
+      inputRef.current?.clear();
+      valueRef.current = '';
+    },
+    [dispatch, inputRef, myPersona, route.key, value],
+  );
 
   const paymentSuccessCallback = React.useCallback(
     async (paymentStatus: PaymentStatus) => {
-      setSending(false);
-      dispatch(setCommentById({ route, id: route.key, comment: { id: paymentStatus.message } }));
+      switch (paymentStatus.action) {
+        case 'commentCollection':
+        case 'commentNFT':
+          setSending(false);
+          dispatch(setCommentById({ route, id: route.key, comment: { id: paymentStatus.message } }));
 
-      postCommentTimer.current = setTimeout(async () => {
-        const status = await getTransactionStatus(paymentStatus.message, abortController.current?.signal);
-        if (status.data === 'sent') {
-          dispatch(setCommentById({ route, id: paymentStatus.message, comment: { isPosting: false } }));
-          dispatch(showSnackbar({ mode: 'info', text: t('explorer:commentSuccess') }));
-        } else {
-          dispatch(deleteCommentById({ route, id: paymentStatus.message }));
-          dispatch(showSnackbar({ mode: 'info', text: t('explorer:commentQueued') }));
-        }
-        socket.current?.disconnect();
-      }, (await BLOCK_TIME()) * 5);
+          postCommentTimer.current = setTimeout(async () => {
+            const status = await getTransactionStatus(paymentStatus.message, abortController.current?.signal);
+            if (status.data === 'sent') {
+              dispatch(setCommentById({ route, id: paymentStatus.message, comment: { isPosting: false } }));
+              dispatch(showSnackbar({ mode: 'info', text: t('explorer:commentSuccess') }));
+            } else {
+              dispatch(deleteCommentById({ route, id: paymentStatus.message }));
+              dispatch(showSnackbar({ mode: 'info', text: t('explorer:commentQueued') }));
+            }
+            socket.current?.disconnect();
+          }, (await BLOCK_TIME()) * 5);
 
-      socket.current = appSocket(`transaction:${paymentStatus.message}`);
-      socket.current.on('processed', () => {
-        dispatch(setCommentById({ route, id: paymentStatus.message, comment: { isPosting: false } }));
-        dispatch(showSnackbar({ mode: 'info', text: t('explorer:commentSuccess') }));
-        socket.current?.disconnect();
-        clearTimeout(postCommentTimer.current);
-      });
+          socket.current = appSocket(`transaction:${paymentStatus.message}`);
+          socket.current.on('processed', () => {
+            dispatch(setCommentById({ route, id: paymentStatus.message, comment: { isPosting: false } }));
+            dispatch(showSnackbar({ mode: 'info', text: t('explorer:commentSuccess') }));
+            socket.current?.disconnect();
+            clearTimeout(postCommentTimer.current);
+          });
+          break;
+        default:
+          break;
+      }
     },
     [dispatch, route, t],
   );
 
-  const paymentErrorCallback = React.useCallback(() => {
-    dispatch(shiftComment({ key: route.key }));
-    dispatch(subtractCommentViewPaginationVersion({ key: route.key }));
-    dispatch(subtractCommentViewPaginationCheckpoint({ key: route.key }));
-  }, [dispatch, route.key]);
+  const paymentErrorCallback = React.useCallback(
+    (paymentStatus: PaymentStatus) => {
+      switch (paymentStatus.action) {
+        case 'commentCollection':
+        case 'commentNFT':
+          dispatch(shiftComment({ key: route.key }));
+          dispatch(subtractCommentViewPaginationVersion({ key: route.key }));
+          dispatch(subtractCommentViewPaginationCheckpoint({ key: route.key }));
+          break;
+        default:
+          break;
+      }
+    },
+    [dispatch, route.key],
+  );
 
   usePaymentCallback({
     condition: paymentCondition,
@@ -191,12 +228,18 @@ export default function AppCommentBox({ route, target, inputRef }: AppCommentBox
   const onComment = React.useCallback(() => {
     Keyboard.dismiss();
     setSending(true);
-    if (route.params.type === 'collection') {
-      paymentThunkRef.current = dispatch(payCommentCollection({ route, comment: value }));
-    } else if (route.params.type === 'nft') {
-      paymentThunkRef.current = dispatch(payCommentNFT({ route, comment: value }));
+    if (isReplying) {
+      paymentThunkRef.current = dispatch(
+        payReplyComment({ route, commentId: commentView.comment[commentView.replying!].id, reply: value }),
+      );
+    } else {
+      if (route.params.type === 'collection') {
+        paymentThunkRef.current = dispatch(payCommentCollection({ route, comment: value }));
+      } else if (route.params.type === 'nft') {
+        paymentThunkRef.current = dispatch(payCommentNFT({ route, comment: value }));
+      }
     }
-  }, [dispatch, route, value]);
+  }, [commentView.comment, commentView.replying, dispatch, isReplying, route, value]);
 
   const SuggestionError = React.useMemo(
     () => (

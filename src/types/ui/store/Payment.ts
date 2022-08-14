@@ -10,8 +10,11 @@ export type PaymentAction = {
     | 'transferToken'
     | 'likeNFT'
     | 'likeCollection'
+    | 'likeComment'
+    | 'likeReply'
     | 'commentNFT'
     | 'commentCollection'
+    | 'replyComment'
     | 'cancel'
     | '';
   icon: string;
