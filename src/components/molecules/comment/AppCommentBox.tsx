@@ -479,9 +479,9 @@ export default function AppCommentBox({ route, target, inputRef }: AppCommentBox
           {isReplying ? (
             <View style={styles.replyBoxContainer}>
               <View style={styles.replyBox}>
-                <AppTextBody4 style={styles.replyBoxText}>
+                <AppTextBody4 numberOfLines={1} style={styles.replyBoxText}>
                   {t('explorer:replyTo')}{' '}
-                  <AppTextHeading4>
+                  <AppTextHeading4 numberOfLines={1}>
                     @{parsePersonaLabel(commentView.comment[commentView.replying!].owner)}
                   </AppTextHeading4>
                 </AppTextBody4>
