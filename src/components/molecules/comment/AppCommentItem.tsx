@@ -1,4 +1,4 @@
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, TextInput } from 'react-native';
 import React from 'react';
 import Color from 'color';
 import AppIconButton from 'enevti-app/components/atoms/icon/AppIconButton';
@@ -17,13 +17,20 @@ import timeSince from 'enevti-app/utils/date/timeSince';
 import { useTranslation } from 'react-i18next';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
 import AppMentionRenderer from './AppMentionRenderer';
+import { useDispatch } from 'react-redux';
+import { resetReplying, setReplying } from 'enevti-app/store/middleware/thunk/ui/view/comment';
+import { RouteProp } from '@react-navigation/native';
 
 interface AppCommentItemProps {
   comment: CommentItem;
   navigation: StackNavigationProp<RootStackParamList>;
+  index: number;
+  route: RouteProp<RootStackParamList, 'Comment'>;
+  commentBoxInputRef: React.RefObject<TextInput>;
 }
 
-export default function AppCommentItem({ comment, navigation }: AppCommentItemProps) {
+export default function AppCommentItem({ comment, navigation, index, route, commentBoxInputRef }: AppCommentItemProps) {
+  const dispatch = useDispatch();
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
@@ -35,6 +42,12 @@ export default function AppCommentItem({ comment, navigation }: AppCommentItemPr
       mode: 'a',
     });
   }, [navigation, comment.owner.address]);
+
+  const onReplyPress = React.useCallback(() => {
+    dispatch(resetReplying({ route }));
+    dispatch(setReplying({ route, index }));
+    commentBoxInputRef.current?.focus();
+  }, [commentBoxInputRef, dispatch, index, route]);
 
   return (
     <View style={styles.commentContainer} pointerEvents={comment.isPosting ? 'none' : 'auto'}>
@@ -56,7 +69,9 @@ export default function AppCommentItem({ comment, navigation }: AppCommentItemPr
               {t('explorer:likeCount', { count: comment.like })}
             </AppTextHeading4>
           ) : null}
-          <AppTextHeading4 style={styles.commentActionItem}>{t('explorer:reply')}</AppTextHeading4>
+          <AppTextHeading4 onPress={onReplyPress} style={styles.commentActionItem}>
+            {t('explorer:reply')}
+          </AppTextHeading4>
         </View>
         {comment.reply > 0 ? (
           <View style={styles.replyContainer}>

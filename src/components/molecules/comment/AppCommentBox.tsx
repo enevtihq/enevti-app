@@ -1,4 +1,4 @@
-import { Keyboard, KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
+import { Keyboard, KeyboardAvoidingView, Platform, StyleSheet, TextInput, View } from 'react-native';
 import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
@@ -29,12 +29,13 @@ import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { payCommentCollection } from 'enevti-app/store/middleware/thunk/payment/creator/payCommentCollection';
 import { payCommentNFT } from 'enevti-app/store/middleware/thunk/payment/creator/payCommentNFT';
-import { setCommentById, deleteCommentById } from 'enevti-app/store/middleware/thunk/ui/view/comment';
+import { setCommentById, deleteCommentById, resetReplying } from 'enevti-app/store/middleware/thunk/ui/view/comment';
 import usePaymentCallback from 'enevti-app/utils/hook/usePaymentCallback';
 import { PaymentStatus } from 'enevti-app/types/ui/store/Payment';
 import {
   addCommentViewPaginationCheckpoint,
   addCommentViewPaginationVersion,
+  selectCommentView,
   shiftComment,
   subtractCommentViewPaginationCheckpoint,
   subtractCommentViewPaginationVersion,
@@ -52,13 +53,15 @@ import {
 import { RootState } from 'enevti-app/store/state';
 import { BLOCK_TIME } from 'enevti-app/utils/constant/identifier';
 import { getTransactionStatus } from 'enevti-app/service/enevti/transaction';
+import AppTextHeading4 from 'enevti-app/components/atoms/text/AppTextHeading4';
 
 interface AppCommentBoxProps {
   route: RouteProp<RootStackParamList, 'Comment'>;
   target: string;
+  inputRef: React.RefObject<TextInput>;
 }
 
-export default function AppCommentBox({ route, target }: AppCommentBoxProps) {
+export default function AppCommentBox({ route, target, inputRef }: AppCommentBoxProps) {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
@@ -66,18 +69,34 @@ export default function AppCommentBox({ route, target }: AppCommentBoxProps) {
   const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
   const abortController = React.useRef<AbortController>();
   const paymentThunkRef = React.useRef<any>();
-  const inputRef = React.useRef<any>();
   const socket = React.useRef<Socket | undefined>();
   const postCommentTimer = React.useRef<any>();
   const myPersona = useSelector(selectMyPersonaCache);
 
+  const commentView = useSelector((state: RootState) => selectCommentView(state, route.key));
   const commentSession = useSelector((state: RootState) => selectCommentSession(state, target));
   const [value, setValue] = React.useState<string>(() => (commentSession ? commentSession.value : ''));
   const valueRef = React.useRef<string>(value);
+  const isReplying = React.useMemo(
+    () => commentView.replying !== undefined && commentView.replying > -1,
+    [commentView.replying],
+  );
 
   const [isError, setIsError] = React.useState<boolean>(false);
   const [loading, setLoading] = React.useState<boolean>(false);
   const [sending, setSending] = React.useState<boolean>(false);
+
+  const onReplyClose = React.useCallback(() => {
+    dispatch(resetReplying({ route }));
+  }, [dispatch, route]);
+
+  React.useEffect(() => {
+    if (isReplying) {
+      inputRef.current?.focus();
+    } else {
+      Keyboard.dismiss();
+    }
+  }, [commentView.replying, inputRef, isReplying]);
 
   React.useEffect(() => {
     abortController.current = new AbortController();
@@ -125,7 +144,7 @@ export default function AppCommentBox({ route, target }: AppCommentBoxProps) {
     dispatch(addCommentViewPaginationCheckpoint({ key: route.key }));
     inputRef.current?.clear();
     valueRef.current = '';
-  }, [dispatch, myPersona, route.key, value]);
+  }, [dispatch, inputRef, myPersona, route.key, value]);
 
   const paymentSuccessCallback = React.useCallback(
     async (paymentStatus: PaymentStatus) => {
@@ -457,6 +476,24 @@ export default function AppCommentBox({ route, target }: AppCommentBoxProps) {
           <AppAvatarRenderer size={hp(5, insets)} persona={myPersona} />
         </View>
         <View>
+          {isReplying ? (
+            <View style={styles.replyBoxContainer}>
+              <View style={styles.replyBox}>
+                <AppTextBody4 style={styles.replyBoxText}>
+                  {t('explorer:replyTo')}{' '}
+                  <AppTextHeading4>
+                    @{parsePersonaLabel(commentView.comment[commentView.replying!].owner)}
+                  </AppTextHeading4>
+                </AppTextBody4>
+                <AppIconButton
+                  onPress={onReplyClose}
+                  color={theme.colors.placeholder}
+                  size={hp(2.5)}
+                  icon={iconMap.remove}
+                />
+              </View>
+            </View>
+          ) : null}
           <MentionInput
             inputRef={inputRef}
             value={value}
@@ -563,6 +600,7 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
       padding: hp(2, insets),
       borderColor: Color(theme.colors.placeholder).alpha(0.05).rgb().toString(),
       borderBottomWidth: 1,
+      backgroundColor: theme.colors.background,
     },
     suggestionError: {
       color: theme.colors.error,
@@ -590,5 +628,21 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
     },
     avatar: {
       alignSelf: 'center',
+    },
+    replyBoxContainer: {
+      position: 'absolute',
+      bottom: hp(7),
+      width: '100%',
+      height: hp(5),
+      paddingHorizontal: wp(3),
+      justifyContent: 'center',
+      backgroundColor: Color(theme.colors.placeholder).alpha(0.05).rgb().toString(),
+    },
+    replyBox: {
+      alignItems: 'center',
+      flexDirection: 'row',
+    },
+    replyBoxText: {
+      flex: 1,
     },
   });

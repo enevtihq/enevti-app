@@ -1,4 +1,4 @@
-import { View, StyleSheet, FlatListProps, FlatList, RefreshControl } from 'react-native';
+import { View, StyleSheet, FlatListProps, FlatList, RefreshControl, TextInput } from 'react-native';
 import React from 'react';
 import AppCommentItem from 'enevti-app/components/molecules/comment/AppCommentItem';
 import AppCommentBox from 'enevti-app/components/molecules/comment/AppCommentBox';
@@ -33,6 +33,7 @@ export default function AppComment({ route, navigation }: AppCommentProps) {
   const keyboardState = useSelector(selectKeyboardStatus);
   const comment = useSelector((state: RootState) => selectCommentView(state, route.key));
   const commentUndefined = useSelector((state: RootState) => isCommentUndefined(state, route.key));
+  const commentBoxInputRef = React.useRef<TextInput>(null);
 
   const prepareTargetId = React.useCallback(async () => {
     if (route.params.type === 'collection') {
@@ -69,8 +70,16 @@ export default function AppComment({ route, navigation }: AppCommentProps) {
   }, [dispatch, route, onCommentScreenLoaded, prepareTargetId]);
 
   const renderItem = React.useCallback(
-    ({ item }: any) => <AppCommentItem comment={item} navigation={navigation} />,
-    [navigation],
+    ({ item, index }: any) => (
+      <AppCommentItem
+        commentBoxInputRef={commentBoxInputRef}
+        route={route}
+        index={index}
+        comment={item}
+        navigation={navigation}
+      />
+    ),
+    [navigation, route],
   );
 
   const keyExtractor = React.useCallback(item => item.id.toString(), []);
@@ -120,7 +129,7 @@ export default function AppComment({ route, navigation }: AppCommentProps) {
         onEndReachedThreshold={0.1}
         onEndReached={handleLoadMore}
       />
-      <AppCommentBox route={route} target={targetId} />
+      <AppCommentBox inputRef={commentBoxInputRef} route={route} target={targetId} />
     </View>
   ) : (
     <View style={styles.loaderContainer}>
