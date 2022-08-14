@@ -122,9 +122,7 @@ export default function AppCommentBox({ route, target, inputRef }: AppCommentBox
     (paymentStatus: PaymentStatus) => {
       return (
         paymentStatus.action !== undefined &&
-        ['commentCollection', 'commentNFT', 'likeComment', 'likeReply', 'replyComment'].includes(
-          paymentStatus.action,
-        ) &&
+        ['commentCollection', 'commentNFT', 'replyComment'].includes(paymentStatus.action) &&
         paymentStatus.id === route.params.arg &&
         paymentStatus.key === route.key
       );

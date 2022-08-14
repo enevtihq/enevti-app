@@ -27,7 +27,7 @@ export const directPayLikeComment = createAsyncThunk<void, PayLikeCommentPayload
     try {
       dispatch(
         setPaymentStatus({
-          id: payload.route.params.arg,
+          id: payload.id,
           key: payload.key,
           action: 'likeComment',
           type: 'initiated',
@@ -70,7 +70,7 @@ export const directPayLikeComment = createAsyncThunk<void, PayLikeCommentPayload
 
       dispatch(
         setPaymentStatus({
-          id: payload.route.params.arg,
+          id: payload.id,
           key: payload.key,
           action: 'likeComment',
           type: 'process',
@@ -84,7 +84,7 @@ export const directPayLikeComment = createAsyncThunk<void, PayLikeCommentPayload
       if (response.status === 200) {
         dispatch(
           setPaymentStatus({
-            id: payload.route.params.arg,
+            id: payload.id,
             key: payload.key,
             action: 'likeComment',
             type: 'success',
@@ -94,7 +94,7 @@ export const directPayLikeComment = createAsyncThunk<void, PayLikeCommentPayload
       } else {
         dispatch(
           setPaymentStatus({
-            id: payload.route.params.arg,
+            id: payload.id,
             key: payload.key,
             action: 'likeComment',
             type: 'error',
@@ -106,7 +106,7 @@ export const directPayLikeComment = createAsyncThunk<void, PayLikeCommentPayload
       handleError(err);
       dispatch(
         setPaymentStatus({
-          id: payload.route.params.arg,
+          id: payload.id,
           key: payload.key,
           action: 'likeComment',
           type: 'error',

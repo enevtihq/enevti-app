@@ -6,6 +6,7 @@ import { Comment, Reply } from 'enevti-app/types/core/chain/engagement';
 
 export type CommentItem = Comment & {
   isPosting: boolean;
+  isLiking: boolean;
   highlighted: boolean;
   replies: Reply[];
   replyPagination: PaginationStore;

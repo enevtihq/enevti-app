@@ -20,6 +20,7 @@ import AppMentionRenderer from './AppMentionRenderer';
 import { useDispatch } from 'react-redux';
 import { resetReplying, setReplying } from 'enevti-app/store/middleware/thunk/ui/view/comment';
 import { RouteProp } from '@react-navigation/native';
+import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 
 interface AppCommentItemProps {
   comment: CommentItem;
@@ -27,9 +28,17 @@ interface AppCommentItemProps {
   index: number;
   route: RouteProp<RootStackParamList, 'Comment'>;
   commentBoxInputRef: React.RefObject<TextInput>;
+  onLikeCommentPress: (id: string, key: string, target: string) => void;
 }
 
-export default function AppCommentItem({ comment, navigation, index, route, commentBoxInputRef }: AppCommentItemProps) {
+export default function AppCommentItem({
+  comment,
+  navigation,
+  index,
+  route,
+  commentBoxInputRef,
+  onLikeCommentPress,
+}: AppCommentItemProps) {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
@@ -48,6 +57,14 @@ export default function AppCommentItem({ comment, navigation, index, route, comm
     dispatch(setReplying({ route, index }));
     commentBoxInputRef.current?.focus();
   }, [commentBoxInputRef, dispatch, index, route]);
+
+  const onLikeComment = React.useCallback(() => {
+    onLikeCommentPress(comment.id, route.key, parsePersonaLabel(comment.owner));
+  }, [comment.id, comment.owner, onLikeCommentPress, route.key]);
+
+  const onAlreadyLiked = React.useCallback(() => {
+    dispatch(showSnackbar({ mode: 'info', text: t('home:cannotLike') }));
+  }, [dispatch, t]);
 
   return (
     <View style={styles.commentContainer} pointerEvents={comment.isPosting ? 'none' : 'auto'}>
@@ -88,7 +105,23 @@ export default function AppCommentItem({ comment, navigation, index, route, comm
         ) : null}
       </View>
       <View style={styles.likeCommentButton}>
-        <AppIconButton icon={iconMap.likeInactive} size={hp(2.25, insets)} />
+        {comment.isLiking ? (
+          <AppActivityIndicator animating size={hp(2)} />
+        ) : comment.liked ? (
+          <AppIconButton
+            onPress={onAlreadyLiked}
+            color={theme.colors.primary}
+            icon={iconMap.likeActive}
+            size={hp(2.25, insets)}
+          />
+        ) : (
+          <AppIconButton
+            onPress={onLikeComment}
+            color={theme.colors.text}
+            icon={iconMap.likeInactive}
+            size={hp(2.25, insets)}
+          />
+        )}
       </View>
     </View>
   );

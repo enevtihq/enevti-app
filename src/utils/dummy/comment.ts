@@ -16,7 +16,9 @@ export function makeDefaultDummyComment(): CommentItem {
     date: Date.now(),
     highlighted: false,
     isPosting: false,
+    isLiking: false,
     like: 0,
+    liked: false,
     owner: {
       address: '',
       base32: '',

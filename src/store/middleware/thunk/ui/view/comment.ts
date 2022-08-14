@@ -225,6 +225,16 @@ export const deleteCommentById =
     dispatch(deleteComment({ key: route.key, commentIndex: index }));
   };
 
+export const addCommentLikeById =
+  ({ route, id }: { route: CommentRoute; id: string }): AppThunk =>
+  (dispatch, getState) => {
+    const commentState = selectCommentView(getState(), route.key);
+    const index = commentState.comment.findIndex(c => c.id === id);
+    dispatch(
+      setComment({ key: route.key, commentIndex: index, value: { like: commentState.comment[index].like + 1 } }),
+    );
+  };
+
 export const setReplying =
   ({ route, index }: { route: CommentRoute; index: number }): AppThunk =>
   dispatch => {

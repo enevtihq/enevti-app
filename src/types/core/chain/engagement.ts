@@ -39,6 +39,7 @@ export type Comment = {
   target: string;
   reply: number;
   like: number;
+  liked: boolean;
 };
 
 export interface CommentAsset extends Omit<Comment, 'id' | 'date' | 'owner' | 'target'> {

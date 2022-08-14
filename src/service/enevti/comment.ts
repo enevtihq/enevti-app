@@ -7,6 +7,7 @@ import { COMMENT_INITIAL_LENGTH, REPLY_INITIAL_LENGTH } from 'enevti-app/utils/c
 import { CommentAt, ReplyAt } from 'enevti-app/types/core/chain/engagement';
 import { getCollectionIdFromRouteParam } from './collection';
 import { getNFTIdFromRouteParam } from './nft';
+import { getMyAddress } from './persona';
 
 type CommentRoute = StackScreenProps<RootStackParamList, 'Comment'>['route']['params'];
 
@@ -17,7 +18,8 @@ async function fetchCollectionComment(
   version: number,
   signal?: AbortController['signal'],
 ): Promise<APIResponseVersioned<CommentAt>> {
-  return await apiFetchVersioned<CommentAt>(urlGetCommentCollection(id, offset, limit, version), signal);
+  const myAddress = await getMyAddress();
+  return await apiFetchVersioned<CommentAt>(urlGetCommentCollection(id, offset, limit, version, myAddress), signal);
 }
 
 async function fetchNFTComment(
@@ -27,7 +29,8 @@ async function fetchNFTComment(
   version: number,
   signal?: AbortController['signal'],
 ): Promise<APIResponseVersioned<CommentAt>> {
-  return await apiFetchVersioned<CommentAt>(urlGetCommentNFT(id, offset, limit, version), signal);
+  const myAddress = await getMyAddress();
+  return await apiFetchVersioned<CommentAt>(urlGetCommentNFT(id, offset, limit, version, myAddress), signal);
 }
 
 async function fetchCommentReply(
@@ -37,7 +40,8 @@ async function fetchCommentReply(
   version: number,
   signal?: AbortController['signal'],
 ): Promise<APIResponseVersioned<ReplyAt>> {
-  return await apiFetchVersioned<ReplyAt>(urlGetReplyComment(id, offset, limit, version), signal);
+  const myAddress = await getMyAddress();
+  return await apiFetchVersioned<ReplyAt>(urlGetReplyComment(id, offset, limit, version, myAddress), signal);
 }
 
 export async function getCollectionComment(
@@ -130,6 +134,7 @@ export function initCommentViewState(comment: CommentAt['comment']) {
   return comment.map(c => ({
     ...c,
     isPosting: false,
+    isLiking: false,
     highlighted: false,
     replies: [],
     replyPagination: {

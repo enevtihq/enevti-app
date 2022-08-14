@@ -6,7 +6,13 @@ import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppAsyncThunk } from 'enevti-app/types/ui/store/AppAsyncThunk';
-import { loadComment, unloadComment, loadMoreComment } from 'enevti-app/store/middleware/thunk/ui/view/comment';
+import {
+  loadComment,
+  unloadComment,
+  loadMoreComment,
+  setCommentById,
+  addCommentLikeById,
+} from 'enevti-app/store/middleware/thunk/ui/view/comment';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootState } from 'enevti-app/store/state';
 import { CommentItem, isCommentUndefined, selectCommentView } from 'enevti-app/store/slices/ui/view/comment';
@@ -17,6 +23,9 @@ import Animated from 'react-native-reanimated';
 import { getCollectionIdFromRouteParam } from 'enevti-app/service/enevti/collection';
 import { getNFTIdFromRouteParam } from 'enevti-app/service/enevti/nft';
 import { selectKeyboardStatus } from 'enevti-app/store/slices/ui/global/keyboard';
+import { directPayLikeComment } from 'enevti-app/store/middleware/thunk/payment/direct/directPayLikeComment';
+import usePaymentCallback from 'enevti-app/utils/hook/usePaymentCallback';
+import { PaymentStatus } from 'enevti-app/types/ui/store/Payment';
 
 const AnimatedFlatList = Animated.createAnimatedComponent<FlatListProps<CommentItem>>(FlatList);
 
@@ -34,6 +43,7 @@ export default function AppComment({ route, navigation }: AppCommentProps) {
   const comment = useSelector((state: RootState) => selectCommentView(state, route.key));
   const commentUndefined = useSelector((state: RootState) => isCommentUndefined(state, route.key));
   const commentBoxInputRef = React.useRef<TextInput>(null);
+  const paymentThunkRef = React.useRef<any>();
 
   const prepareTargetId = React.useCallback(async () => {
     if (route.params.type === 'collection') {
@@ -60,12 +70,65 @@ export default function AppComment({ route, navigation }: AppCommentProps) {
     dispatch(loadMoreComment({ route, reload: true }));
   }, [dispatch, route]);
 
+  const onLikeCommentPress = React.useCallback(
+    (id: string, key: string, target: string) => {
+      dispatch(setCommentById({ route, id, comment: { isLiking: true } }));
+      paymentThunkRef.current = dispatch(directPayLikeComment({ id, key, route, target }));
+    },
+    [dispatch, route],
+  );
+
+  const paymentCondition = React.useCallback(
+    (paymentStatus: PaymentStatus) => {
+      return (
+        paymentStatus.action !== undefined &&
+        ['likeComment', 'likeReply'].includes(paymentStatus.action) &&
+        paymentStatus.key === route.key
+      );
+    },
+    [route.key],
+  );
+
+  const paymentIdleCallback = React.useCallback(
+    (paymentStatus: PaymentStatus) => {
+      switch (paymentStatus.action) {
+        case 'likeComment':
+          dispatch(setCommentById({ route, id: paymentStatus.id, comment: { isLiking: false } }));
+          break;
+        default:
+          break;
+      }
+    },
+    [dispatch, route],
+  );
+
+  const paymentSuccessCallback = React.useCallback(
+    async (paymentStatus: PaymentStatus) => {
+      switch (paymentStatus.action) {
+        case 'likeComment':
+          dispatch(addCommentLikeById({ route, id: paymentStatus.id }));
+          dispatch(setCommentById({ route, id: paymentStatus.id, comment: { liked: true } }));
+          break;
+        default:
+          break;
+      }
+    },
+    [dispatch, route],
+  );
+
+  usePaymentCallback({
+    condition: paymentCondition,
+    onIdle: paymentIdleCallback,
+    onSuccess: paymentSuccessCallback,
+  });
+
   React.useEffect(() => {
     prepareTargetId();
     const promise = onCommentScreenLoaded();
     return function cleanup() {
       dispatch(unloadComment(route));
       promise.abort();
+      paymentThunkRef.current?.abort();
     };
   }, [dispatch, route, onCommentScreenLoaded, prepareTargetId]);
 
@@ -77,9 +140,10 @@ export default function AppComment({ route, navigation }: AppCommentProps) {
         index={index}
         comment={item}
         navigation={navigation}
+        onLikeCommentPress={onLikeCommentPress}
       />
     ),
-    [navigation, route],
+    [navigation, route, onLikeCommentPress],
   );
 
   const keyExtractor = React.useCallback(item => item.id.toString(), []);

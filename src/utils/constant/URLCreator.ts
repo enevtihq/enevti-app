@@ -286,9 +286,12 @@ export function urlGetCommentCollection(
   offset: number = 0,
   limit: number = 10,
   version: number = 0,
+  viewer: string,
   host: string = ENEVTI_DEFAULT_API,
 ) {
-  return encodeURI(`${host}/comment/collection/${id}?offset=${offset}&limit=${limit}&version=${version}`);
+  return encodeURI(
+    `${host}/comment/collection/${id}?offset=${offset}&limit=${limit}&version=${version}&viewer=${viewer}`,
+  );
 }
 
 export function urlGetCommentNFT(
@@ -296,9 +299,10 @@ export function urlGetCommentNFT(
   offset: number = 0,
   limit: number = 10,
   version: number = 0,
+  viewer: string,
   host: string = ENEVTI_DEFAULT_API,
 ) {
-  return encodeURI(`${host}/comment/nft/${id}?offset=${offset}&limit=${limit}&version=${version}`);
+  return encodeURI(`${host}/comment/nft/${id}?offset=${offset}&limit=${limit}&version=${version}&viewer=${viewer}`);
 }
 
 export function urlGetReplyComment(
@@ -306,9 +310,10 @@ export function urlGetReplyComment(
   offset: number = 0,
   limit: number = 10,
   version: number = 0,
+  viewer: string,
   host: string = ENEVTI_DEFAULT_API,
 ) {
-  return encodeURI(`${host}/reply/comment/${id}?offset=${offset}&limit=${limit}&version=${version}`);
+  return encodeURI(`${host}/reply/comment/${id}?offset=${offset}&limit=${limit}&version=${version}&viewer=${viewer}`);
 }
 
 export function urlGetTagUsername(query: string, host: string = ENEVTI_DEFAULT_API) {
