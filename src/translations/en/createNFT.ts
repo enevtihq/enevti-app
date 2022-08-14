@@ -113,6 +113,8 @@ export default {
     'Every {{block}} blocks ({{interval}}), Collection will be ranked based on the like they get on that period',
   raffleStep3Title: 'Minting Top Collection',
   raffleStep3Description: '{{percentage}}% of total block reward will be allocated to mint top liked Collection',
+  raffleStep3MaxMintPerCollection: ', max {{count}} times per collection',
+  raffleStep3UnlimitedMint: ', no limit on raffled NFT per collection',
   raffleStep4Title: 'Airdrop!',
   raffleStep4Description: 'Minted items will be raffled to random people who give like to selected collection',
   raffleStep5Title: 'Happy!',

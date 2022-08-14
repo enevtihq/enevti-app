@@ -165,7 +165,13 @@ function Component({
         icon: iconMap.portion,
         step: 3,
         title: t('createNFT:raffleStep3Title'),
-        description: t('createNFT:raffleStep3Description', { percentage: socialRaffleConfig.rewardsCutPercentage }),
+        description: `${t('createNFT:raffleStep3Description', {
+          percentage: socialRaffleConfig.rewardsCutPercentage,
+        })}${
+          socialRaffleConfig.maxRaffledPerCollection > -1
+            ? t('createNFT:raffleStep3MaxMintPerCollection', { count: socialRaffleConfig.maxRaffledPerCollection })
+            : t('createNFT:raffleStep3UnlimitedMint')
+        }`,
       },
       {
         icon: iconMap.gift,
@@ -180,7 +186,13 @@ function Component({
         description: t('createNFT:raffleStep5Description'),
       },
     ];
-  }, [blockTime, socialRaffleConfig.blockInterval, socialRaffleConfig.rewardsCutPercentage, t]);
+  }, [
+    blockTime,
+    socialRaffleConfig.blockInterval,
+    socialRaffleConfig.maxRaffledPerCollection,
+    socialRaffleConfig.rewardsCutPercentage,
+    t,
+  ]);
 
   return (
     <>
