@@ -159,6 +159,7 @@ export default function AppCommentBox({ route, target, inputRef }: AppCommentBox
           break;
       }
       inputRef.current?.clear();
+      setValue('');
       valueRef.current = '';
     },
     [dispatch, inputRef, myPersona, route.key, value],
