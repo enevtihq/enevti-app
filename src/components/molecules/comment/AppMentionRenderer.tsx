@@ -8,6 +8,9 @@ import { StyleProp, TextStyle } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { COLLECTION_MENTION_TRIGGER, NFT_MENTION_TRIGGER, PROFILE_MENTION_TRIGGER } from 'enevti-app/utils/mention';
+import { useDispatch } from 'react-redux';
+import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
+import { useTranslation } from 'react-i18next';
 
 interface AppMentionRendererProps {
   navigation: StackNavigationProp<RootStackParamList>;
@@ -18,7 +21,21 @@ interface AppMentionRendererProps {
 }
 
 export default function AppMentionRenderer({ navigation, text, style, title, onTitlePress }: AppMentionRendererProps) {
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
   const theme = useTheme() as Theme;
+
+  const profileMentionOnPress = React.useCallback(
+    (arg?: string) => {
+      if (arg) {
+        navigation.push('Profile', { mode: 'a', arg });
+      } else {
+        dispatch(showSnackbar({ mode: 'info', text: t('error:dataUnavailable') }));
+      }
+    },
+    [dispatch, navigation, t],
+  );
+
   const renderPart = React.useCallback(
     (part: Part, index: number) => {
       if (!part.partType) {
@@ -31,7 +48,7 @@ export default function AppMentionRenderer({ navigation, text, style, title, onT
             <AppTextBody4
               key={`${index}-${part.data?.trigger}`}
               style={{ color: theme.colors.link }}
-              onPress={() => navigation.push('Profile', { mode: 'a', arg: part.data!.id })}>
+              onPress={() => profileMentionOnPress(part.data!.id)}>
               {part.text}
             </AppTextBody4>
           );
@@ -58,7 +75,7 @@ export default function AppMentionRenderer({ navigation, text, style, title, onT
 
       return <AppTextBody4 key={`${index}-pattern`}>{part.text}</AppTextBody4>;
     },
-    [navigation, theme.colors.link],
+    [navigation, profileMentionOnPress, theme.colors.link],
   );
 
   const renderValue = React.useCallback(

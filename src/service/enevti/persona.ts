@@ -79,8 +79,17 @@ export function isValidAddress(address: string): boolean {
   return validBase32;
 }
 
-export function parsePersonaLabel(persona: Persona) {
-  return persona.username ? persona.username : persona.base32 ? persona.base32 : '???';
+export function parsePersonaLabel(persona: Persona, compact: boolean = true) {
+  return persona.username
+    ? persona.username
+    : persona.base32
+    ? compact
+      ? `${persona.base32.substring(0, COIN_NAME.length + 4)}...${persona.base32.substring(
+          persona.base32.length - 8,
+          persona.base32.length,
+        )}`
+      : persona.base32
+    : '???';
 }
 
 export function addressToBase32(address: string) {

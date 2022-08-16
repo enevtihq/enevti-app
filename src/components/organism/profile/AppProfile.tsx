@@ -93,6 +93,9 @@ export default function AppProfile({
   const [onSaleMounted, setOnSaleMounted] = React.useState<boolean>(false);
   const [collectionMounted, setCollectionMouted] = React.useState<boolean>(false);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, afterRefresh] = React.useState<boolean>(false);
+
   const ownedRef = useAnimatedRef<FlatList>();
   const onSaleRef = useAnimatedRef<FlatList>();
   const collectionRef = useAnimatedRef<FlatList>();
@@ -243,8 +246,8 @@ export default function AppProfile({
     [ownedMounted, onSaleMounted, collectionMounted],
   );
 
-  const onRefresh = React.useCallback(() => {
-    onProfileScreenLoaded(true);
+  const onRefresh = React.useCallback(async () => {
+    afterRefresh(false); // ios after refresh fix
     ownedRef.current?.scrollToOffset({ offset: 0 });
     onSaleRef.current?.scrollToOffset({ offset: 0 });
     collectionRef.current?.scrollToOffset({ offset: 0 });
@@ -252,6 +255,8 @@ export default function AppProfile({
     onScrollWorklet && onScrollWorklet(0);
     onEndDragWorklet && onEndDragWorklet(0);
     onMomentumEndWorklet && onMomentumEndWorklet(0);
+    await onProfileScreenLoaded(true).unwrap();
+    afterRefresh(true); // ios after refresh fix
   }, [
     onProfileScreenLoaded,
     ownedRef,

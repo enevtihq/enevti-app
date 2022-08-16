@@ -112,6 +112,9 @@ export default function AppCollection({ onScrollWorklet, navigation, route }: Ap
   const [mintedItemsMounted, setMintedItemsMounted] = React.useState<boolean>(false);
   const [activityMounted, setActivityMounted] = React.useState<boolean>(false);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, afterRefresh] = React.useState<boolean>(false);
+
   const mintedRef = useAnimatedRef<FlatList>();
   const activityRef = useAnimatedRef<FlatList>();
 
@@ -124,11 +127,13 @@ export default function AppCollection({ onScrollWorklet, navigation, route }: Ap
     [dispatch, route],
   ) as AppAsyncThunk;
 
-  const onRefresh = React.useCallback(() => {
-    onCollectionScreenLoaded(true);
+  const onRefresh = React.useCallback(async () => {
+    afterRefresh(false); // ios after refresh fix
     mintedRef.current?.scrollToOffset({ offset: 0 });
     activityRef.current?.scrollToOffset({ offset: 0 });
     onScrollWorklet && onScrollWorklet(0);
+    await onCollectionScreenLoaded(true).unwrap();
+    afterRefresh(true); // ios after refresh fix
   }, [onCollectionScreenLoaded, mintedRef, activityRef, onScrollWorklet]);
 
   React.useEffect(() => {

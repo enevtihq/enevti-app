@@ -38,8 +38,12 @@ export default function AppFeedHeader({ feed, navigation }: AppFeedHeaderProps) 
   const [menuVisible, setMenuVisible] = React.useState<boolean>(false);
 
   const onProfileDetail = React.useCallback(() => {
-    navigation.push('Profile', { arg: feed.owner.address, mode: 'a' });
-  }, [navigation, feed.owner]);
+    if (feed.owner.address) {
+      navigation.push('Profile', { arg: feed.owner.address, mode: 'a' });
+    } else {
+      dispatch(showSnackbar({ mode: 'info', text: t('error:dataUnavailable') }));
+    }
+  }, [navigation, feed.owner.address, dispatch, t]);
 
   const onPromoteInfo = () => {};
 

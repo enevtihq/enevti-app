@@ -69,11 +69,15 @@ export default function AppCollectionHeader({
   );
 
   const onCreatorDetail = React.useCallback(() => {
-    navigation.push('Profile', {
-      arg: collection.creator.address,
-      mode: 'a',
-    });
-  }, [navigation, collection.creator.address]);
+    if (collection.creator.address) {
+      navigation.push('Profile', {
+        arg: collection.creator.address,
+        mode: 'a',
+      });
+    } else {
+      dispatch(showSnackbar({ mode: 'info', text: t('error:dataUnavailable') }));
+    }
+  }, [navigation, collection.creator.address, dispatch, t]);
 
   const onLikeActivate = React.useCallback(async () => {
     if (onceLike) {
@@ -197,7 +201,7 @@ export default function AppCollectionHeader({
               height: hp('4%'),
             }}
             onPress={() => navigation.push('Comment', { type: 'collection', mode: 'id', arg: collection.id })}>
-            <AppTextBody4 style={{ color: theme.colors.placeholder }}>{numberKMB(collection.comment, 2)}</AppTextBody4>
+            <AppTextBody4>{numberKMB(collection.comment, 2)}</AppTextBody4>
           </AppQuaternaryButton>
           {collection.social.twitter.link ? (
             <AppQuaternaryButton

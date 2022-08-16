@@ -46,11 +46,15 @@ export default function AppCommentItem({
   const styles = React.useMemo(() => makeStyles(theme, insets, comment), [theme, insets, comment]);
 
   const onOwnerDetail = React.useCallback(() => {
-    navigation.push('Profile', {
-      arg: comment.owner.address,
-      mode: 'a',
-    });
-  }, [navigation, comment.owner.address]);
+    if (comment.owner.address) {
+      navigation.push('Profile', {
+        arg: comment.owner.address,
+        mode: 'a',
+      });
+    } else {
+      dispatch(showSnackbar({ mode: 'info', text: t('error:dataUnavailable') }));
+    }
+  }, [comment.owner.address, navigation, dispatch, t]);
 
   const onReplyPress = React.useCallback(() => {
     dispatch(resetReplying({ route }));
@@ -140,7 +144,7 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets, comment: CommentItem) 
       paddingVertical: hp(1.8, insets),
       marginVertical: hp(0.2, insets),
       opacity: comment.isPosting ? 0.5 : 1,
-      backgroundColor: comment.highlighted ? Color(theme.colors.primary).alpha(0.025).rgb().toString() : undefined,
+      backgroundColor: comment.highlighted ? Color(theme.colors.placeholder).alpha(0.05).rgb().toString() : undefined,
     },
     avatar: {
       marginHorizontal: wp(4, insets),

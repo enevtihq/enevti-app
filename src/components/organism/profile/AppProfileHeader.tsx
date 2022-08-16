@@ -94,14 +94,7 @@ export default function AppProfileHeader({ navigation, persona, profile }: AppPr
       <AppAvatarRenderer persona={persona} size={wp('25%', insets)} style={{ marginBottom: hp('2%', insets) }} />
 
       <View style={{ height: hp('3.3%', insets) }}>
-        <AppPersonaLabel
-          persona={persona}
-          usernameComponent={AppTextHeading2}
-          base32Component={AppTextBody3}
-          base32Style={{
-            width: wp('50%', insets),
-          }}
-        />
+        <AppPersonaLabel persona={persona} usernameComponent={AppTextHeading2} base32Component={AppTextBody3} />
       </View>
 
       <View style={styles.profileStatsContainer}>

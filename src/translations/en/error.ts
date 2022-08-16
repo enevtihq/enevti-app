@@ -35,4 +35,5 @@ export default {
   unknownLink: 'Unknown Link Format',
   timeout: 'Timeout',
   getExtensionFailed: 'Failed to get file extension',
+  dataUnavailable: 'Data not available!',
 };

@@ -11,7 +11,7 @@ import { handleError, handleResponseCode, responseError } from './error/handle';
 
 export async function isInternetReachable(): Promise<boolean> {
   await i18n.loadNamespaces('network');
-  const status = (await NetInfo.fetch()).isInternetReachable;
+  const status = (await NetInfo.fetch()).isConnected;
   if (!status) {
     const err = Error(i18n.t('network:noInternet')) as any;
     err.name = 'NetworkError';

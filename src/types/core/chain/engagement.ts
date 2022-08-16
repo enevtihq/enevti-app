@@ -42,7 +42,7 @@ export type Comment = {
   liked: boolean;
 };
 
-export interface CommentAsset extends Omit<Comment, 'id' | 'date' | 'owner' | 'target'> {
+export interface CommentAsset extends Omit<Comment, 'id' | 'date' | 'owner' | 'target' | 'liked'> {
   id: Buffer;
   date: bigint;
   owner: Buffer;

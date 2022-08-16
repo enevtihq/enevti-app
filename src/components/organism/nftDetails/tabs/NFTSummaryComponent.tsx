@@ -106,18 +106,26 @@ function Component(
   }, [dispatch, t]);
 
   const onCreatorDetail = React.useCallback(() => {
-    navigation.push('Profile', {
-      arg: nft.creator.address,
-      mode: 'a',
-    });
-  }, [navigation, nft.creator.address]);
+    if (nft.creator.address) {
+      navigation.push('Profile', {
+        arg: nft.creator.address,
+        mode: 'a',
+      });
+    } else {
+      dispatch(showSnackbar({ mode: 'info', text: t('error:dataUnavailable') }));
+    }
+  }, [dispatch, navigation, nft.creator.address, t]);
 
   const onOwnerDetail = React.useCallback(() => {
-    navigation.push('Profile', {
-      arg: nft.owner.address,
-      mode: 'a',
-    });
-  }, [navigation, nft.owner.address]);
+    if (nft.owner.address) {
+      navigation.push('Profile', {
+        arg: nft.owner.address,
+        mode: 'a',
+      });
+    } else {
+      dispatch(showSnackbar({ mode: 'info', text: t('error:dataUnavailable') }));
+    }
+  }, [dispatch, t, navigation, nft.owner.address]);
 
   const paymentIdleCallback = React.useCallback((paymentStatus: PaymentStatus) => {
     if (paymentStatus.action === 'likeNFT') {
@@ -220,7 +228,7 @@ function Component(
             height: hp('4%'),
           }}
           onPress={() => navigation.push('Comment', { type: 'nft', mode: 'id', arg: nft.id })}>
-          <AppTextBody4 style={{ color: theme.colors.placeholder }}>{numberKMB(nft.comment, 2)}</AppTextBody4>
+          <AppTextBody4>{numberKMB(nft.comment, 2)}</AppTextBody4>
         </AppQuaternaryButton>
       </View>
 

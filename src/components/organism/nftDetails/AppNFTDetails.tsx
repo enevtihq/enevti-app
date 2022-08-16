@@ -87,6 +87,9 @@ export default function AppNFTDetails({ onScrollWorklet, navigation, route }: Ap
   const [summaryMounted, setSummaryMounted] = React.useState<boolean>(false);
   const [activityMounted, setActivityMounted] = React.useState<boolean>(false);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, afterRefresh] = React.useState<boolean>(false);
+
   const summaryRef = useAnimatedRef<ScrollView>();
   const activityRef = useAnimatedRef<FlatList>();
 
@@ -99,11 +102,13 @@ export default function AppNFTDetails({ onScrollWorklet, navigation, route }: Ap
     [dispatch, route],
   ) as AppAsyncThunk;
 
-  const onRefresh = React.useCallback(() => {
-    onNFTDetailsScreenLoaded(true);
+  const onRefresh = React.useCallback(async () => {
+    afterRefresh(false); // ios after refresh fix
     summaryRef.current?.scrollTo({ x: 0, y: 0 });
     activityRef.current?.scrollToOffset({ offset: 0 });
     onScrollWorklet && onScrollWorklet(0);
+    await onNFTDetailsScreenLoaded(true).unwrap();
+    afterRefresh(true); // ios after refresh fix
   }, [onNFTDetailsScreenLoaded, summaryRef, activityRef, onScrollWorklet]);
 
   React.useEffect(() => {

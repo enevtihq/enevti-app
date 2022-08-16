@@ -596,6 +596,7 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
   StyleSheet.create({
     commentBoxContainer: {
       marginBottom: Platform.OS === 'ios' ? undefined : hp(2, insets) + insets.bottom,
+      height: hp(8),
     },
     commentBox: {
       backgroundColor: theme.colors.background,
@@ -673,7 +674,7 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
     },
     replyBoxContainer: {
       position: 'absolute',
-      bottom: hp(7),
+      bottom: Platform.OS === 'ios' ? hp(7.3) : hp(7, insets) + insets.bottom,
       width: '100%',
       height: hp(5),
       paddingHorizontal: wp(3),
