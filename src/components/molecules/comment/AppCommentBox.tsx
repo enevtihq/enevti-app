@@ -1,4 +1,4 @@
-import { Keyboard, KeyboardAvoidingView, Platform, StyleSheet, TextInput, View } from 'react-native';
+import { Keyboard, KeyboardAvoidingView, LayoutChangeEvent, Platform, StyleSheet, TextInput, View } from 'react-native';
 import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
@@ -70,8 +70,12 @@ export default function AppCommentBox({ route, target, inputRef }: AppCommentBox
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
   const { keyboardHeight } = useKeyboard();
+  const [commentBoxHeight, setCommentBoxHeight] = React.useState<number>(0);
 
-  const styles = React.useMemo(() => makeStyles(theme, insets, keyboardHeight), [theme, insets, keyboardHeight]);
+  const styles = React.useMemo(
+    () => makeStyles(theme, insets, keyboardHeight, commentBoxHeight),
+    [theme, insets, keyboardHeight, commentBoxHeight],
+  );
   const abortController = React.useRef<AbortController>();
   const paymentThunkRef = React.useRef<any>();
   const socket = React.useRef<Socket | undefined>();
@@ -515,6 +519,10 @@ export default function AppCommentBox({ route, target, inputRef }: AppCommentBox
     ],
   );
 
+  const commentBoxLayoutHandler = React.useCallback((layout: LayoutChangeEvent) => {
+    setCommentBoxHeight(layout.nativeEvent.layout.height);
+  }, []);
+
   return (
     <KeyboardAvoidingView
       keyboardVerticalOffset={hp(HEADER_HEIGHT_PERCENTAGE) + insets.top}
@@ -545,6 +553,7 @@ export default function AppCommentBox({ route, target, inputRef }: AppCommentBox
           ) : null}
           <MentionInput
             inputRef={inputRef}
+            onLayout={commentBoxLayoutHandler}
             value={value}
             onChange={e => {
               setLoading(true);
@@ -599,7 +608,7 @@ export default function AppCommentBox({ route, target, inputRef }: AppCommentBox
   );
 }
 
-const makeStyles = (theme: Theme, insets: SafeAreaInsets, keyboardHeight: number) =>
+const makeStyles = (theme: Theme, insets: SafeAreaInsets, keyboardHeight: number, commentBoxHeight: number) =>
   StyleSheet.create({
     commentBoxContainer: {
       position: 'absolute',
@@ -683,7 +692,7 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets, keyboardHeight: number
     },
     replyBoxContainer: {
       position: 'absolute',
-      bottom: Platform.OS === 'ios' ? hp(7.3) : hp(7, insets) + insets.bottom,
+      bottom: commentBoxHeight + (Platform.OS === 'ios' ? hp(2, insets) : 0),
       width: '100%',
       height: hp(5),
       justifyContent: 'center',
