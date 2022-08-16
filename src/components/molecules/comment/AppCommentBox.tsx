@@ -55,6 +55,8 @@ import { BLOCK_TIME } from 'enevti-app/utils/constant/identifier';
 import { getTransactionStatus } from 'enevti-app/service/enevti/transaction';
 import AppTextHeading4 from 'enevti-app/components/atoms/text/AppTextHeading4';
 import { payReplyComment } from 'enevti-app/store/middleware/thunk/payment/creator/payReplyComment';
+import { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
+import { useKeyboard } from 'enevti-app/utils/hook/useKeyboard';
 
 interface AppCommentBoxProps {
   route: RouteProp<RootStackParamList, 'Comment'>;
@@ -67,7 +69,9 @@ export default function AppCommentBox({ route, target, inputRef }: AppCommentBox
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
-  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
+  const { keyboardHeight } = useKeyboard();
+
+  const styles = React.useMemo(() => makeStyles(theme, insets, keyboardHeight), [theme, insets, keyboardHeight]);
   const abortController = React.useRef<AbortController>();
   const paymentThunkRef = React.useRef<any>();
   const socket = React.useRef<Socket | undefined>();
@@ -512,7 +516,10 @@ export default function AppCommentBox({ route, target, inputRef }: AppCommentBox
   );
 
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'position' : 'height'} style={[styles.commentBoxContainer]}>
+    <KeyboardAvoidingView
+      keyboardVerticalOffset={hp(HEADER_HEIGHT_PERCENTAGE) + insets.top}
+      behavior={Platform.OS === 'ios' ? 'position' : 'height'}
+      style={[styles.commentBoxContainer]}>
       <View style={styles.commentBox}>
         <View style={styles.avatarBox}>
           <AppAvatarRenderer size={hp(5, insets)} persona={myPersona} />
@@ -592,11 +599,13 @@ export default function AppCommentBox({ route, target, inputRef }: AppCommentBox
   );
 }
 
-const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
+const makeStyles = (theme: Theme, insets: SafeAreaInsets, keyboardHeight: number) =>
   StyleSheet.create({
     commentBoxContainer: {
+      position: 'absolute',
+      bottom: 0,
       marginBottom: Platform.OS === 'ios' ? undefined : hp(2, insets) + insets.bottom,
-      height: hp(8),
+      width: '100%',
     },
     commentBox: {
       backgroundColor: theme.colors.background,
@@ -605,8 +614,8 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
     },
     bottomBar: {
       position: 'absolute',
-      bottom: -(hp(2, insets) + insets.bottom),
-      height: hp(2, insets) + insets.bottom,
+      bottom: -keyboardHeight,
+      height: keyboardHeight,
       width: '100%',
       backgroundColor: theme.colors.background,
     },
@@ -677,13 +686,15 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
       bottom: Platform.OS === 'ios' ? hp(7.3) : hp(7, insets) + insets.bottom,
       width: '100%',
       height: hp(5),
-      paddingHorizontal: wp(3),
       justifyContent: 'center',
-      backgroundColor: Color(theme.colors.placeholder).alpha(0.05).rgb().toString(),
+      backgroundColor: theme.colors.background,
     },
     replyBox: {
       alignItems: 'center',
       flexDirection: 'row',
+      height: '100%',
+      paddingHorizontal: wp(3),
+      backgroundColor: Color(theme.colors.placeholder).alpha(0.05).rgb().toString(),
     },
     replyBoxText: {
       flex: 1,
