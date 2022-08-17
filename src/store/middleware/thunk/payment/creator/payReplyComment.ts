@@ -62,7 +62,7 @@ export const payReplyComment = createAsyncThunk<void, PayReplyCommentPayload, As
 
       dispatch(
         setPaymentStatus({
-          id: payload.route.params.arg,
+          id: payload.commentId,
           key: payload.route.key,
           action: 'replyComment',
           type: 'initiated',
@@ -74,7 +74,7 @@ export const payReplyComment = createAsyncThunk<void, PayReplyCommentPayload, As
       dispatch(hidePayment());
       dispatch(
         setPaymentStatus({
-          id: payload.route.params.arg,
+          id: payload.commentId,
           key: payload.route.key,
           action: 'replyComment',
           type: 'error',

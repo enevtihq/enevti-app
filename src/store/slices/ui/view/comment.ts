@@ -82,6 +82,9 @@ const commentViewSlice = createSlice({
     pushComment: (comment, action: PayloadAction<{ key: string; value: CommentItem[] }>) => {
       comment[action.payload.key].comment = comment[action.payload.key].comment.concat(action.payload.value);
     },
+    popComment: (comment, action: PayloadAction<{ key: string; value: CommentItem[] }>) => {
+      comment[action.payload.key].comment = comment[action.payload.key].comment.slice(0, -1);
+    },
     unshiftComment: (comment, action: PayloadAction<{ key: string; value: CommentItem[] }>) => {
       comment[action.payload.key].comment = action.payload.value.concat(comment[action.payload.key].comment);
     },
@@ -93,6 +96,12 @@ const commentViewSlice = createSlice({
         ...comment[action.payload.key].comment.slice(0, action.payload.commentIndex),
         ...comment[action.payload.key].comment.slice(action.payload.commentIndex + 1),
       ];
+    },
+    addCommentReplyCount: (comment, action: PayloadAction<{ key: string; commentIndex: number }>) => {
+      comment[action.payload.key].comment[action.payload.commentIndex].reply++;
+    },
+    subtractCommentReplyCount: (comment, action: PayloadAction<{ key: string; commentIndex: number }>) => {
+      comment[action.payload.key].comment[action.payload.commentIndex].reply--;
     },
     addCommentViewPaginationCheckpoint: (comment, action: PayloadAction<{ key: string }>) => {
       comment[action.payload.key].commentPagination.checkpoint++;
@@ -109,15 +118,69 @@ const commentViewSlice = createSlice({
     setCommentViewPagination: (comment, action: PayloadAction<{ key: string; value: PaginationStore }>) => {
       comment[action.payload.key].commentPagination = { ...action.payload.value };
     },
+    setReply: (
+      comment,
+      action: PayloadAction<{ key: string; commentIndex: number; replyIndex: number; value: Partial<ReplyItem> }>,
+    ) => {
+      Object.assign(comment, {
+        [action.payload.key]: Object.assign(comment[action.payload.key], {
+          comment: comment[action.payload.key].comment.map((c, i) =>
+            i === action.payload.commentIndex
+              ? Object.assign({}, c, {
+                  replies: comment[action.payload.key].comment[i].replies.map((r, i2) =>
+                    i2 === action.payload.replyIndex ? Object.assign({}, r, action.payload.value) : r,
+                  ),
+                })
+              : c,
+          ),
+        }),
+      });
+    },
     pushReply: (comment, action: PayloadAction<{ key: string; commentIndex: number; value: ReplyItem[] }>) => {
       comment[action.payload.key].comment[action.payload.commentIndex].replies = comment[action.payload.key].comment[
         action.payload.commentIndex
       ].replies.concat(action.payload.value);
     },
+    popReply: (comment, action: PayloadAction<{ key: string; commentIndex: number }>) => {
+      comment[action.payload.key].comment[action.payload.commentIndex].replies = comment[action.payload.key].comment[
+        action.payload.commentIndex
+      ].replies.slice(0, -1);
+    },
     unshiftReply: (comment, action: PayloadAction<{ key: string; commentIndex: number; value: ReplyItem[] }>) => {
       comment[action.payload.key].comment[action.payload.commentIndex].replies = action.payload.value.concat(
         comment[action.payload.key].comment[action.payload.commentIndex].replies,
       );
+    },
+    shiftReply: (comment, action: PayloadAction<{ key: string; commentIndex: number }>) => {
+      comment[action.payload.key].comment[action.payload.commentIndex].replies =
+        comment[action.payload.key].comment[action.payload.commentIndex].replies.slice(1);
+    },
+    deleteReply: (comment, action: PayloadAction<{ key: string; commentIndex: number; replyIndex: number }>) => {
+      comment[action.payload.key].comment[action.payload.commentIndex].replies = [
+        ...comment[action.payload.key].comment[action.payload.commentIndex].replies.slice(0, action.payload.replyIndex),
+        ...comment[action.payload.key].comment[action.payload.commentIndex].replies.slice(
+          action.payload.replyIndex + 1,
+        ),
+      ];
+    },
+    addReplyPaginationCheckpoint: (comment, action: PayloadAction<{ key: string; commentIndex: number }>) => {
+      comment[action.payload.key].comment[action.payload.commentIndex].replyPagination.checkpoint++;
+    },
+    setReplyPaginationCheckpoint: (
+      comment,
+      action: PayloadAction<{ key: string; commentIndex: number; checkpoint: number }>,
+    ) => {
+      comment[action.payload.key].comment[action.payload.commentIndex].replyPagination.checkpoint =
+        action.payload.checkpoint;
+    },
+    addReplyPaginationVersion: (comment, action: PayloadAction<{ key: string; commentIndex: number }>) => {
+      comment[action.payload.key].comment[action.payload.commentIndex].replyPagination.version++;
+    },
+    subtractReplyPaginationCheckpoint: (comment, action: PayloadAction<{ key: string; commentIndex: number }>) => {
+      comment[action.payload.key].comment[action.payload.commentIndex].replyPagination.checkpoint--;
+    },
+    subtractReplyPaginationVersion: (comment, action: PayloadAction<{ key: string; commentIndex: number }>) => {
+      comment[action.payload.key].comment[action.payload.commentIndex].replyPagination.version--;
     },
     setReplyPagination: (
       comment,
@@ -155,16 +218,28 @@ export const {
   setCommentViewReqStatus,
   setComment,
   pushComment,
+  popComment,
   unshiftComment,
   shiftComment,
   deleteComment,
+  addCommentReplyCount,
+  subtractCommentReplyCount,
   addCommentViewPaginationCheckpoint,
   addCommentViewPaginationVersion,
   subtractCommentViewPaginationVersion,
   subtractCommentViewPaginationCheckpoint,
   setCommentViewPagination,
+  setReply,
   pushReply,
+  popReply,
   unshiftReply,
+  shiftReply,
+  deleteReply,
+  addReplyPaginationCheckpoint,
+  addReplyPaginationVersion,
+  subtractReplyPaginationCheckpoint,
+  subtractReplyPaginationVersion,
+  setReplyPaginationCheckpoint,
   setReplyPagination,
   clearCommentViewByKey,
   resetCommentViewByKey,

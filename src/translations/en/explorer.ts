@@ -10,6 +10,8 @@ export default {
   viewMoreReply: 'Load more replies',
   commentSuccess: 'Comment Posted!',
   commentQueued: 'Queued on the chain! Your comment will automatically posted!',
+  replySuccess: 'Reply Posted!',
+  replyQueued: 'Queued on the chain! Your reply will automatically posted!',
   replyTo: 'Reply to:',
   loading: 'Loading...',
 };

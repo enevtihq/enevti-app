@@ -35,6 +35,10 @@ import {
   deleteComment,
   setCommentReplying,
   resetCommentReplying,
+  addCommentReplyCount,
+  subtractCommentReplyCount,
+  addReplyPaginationVersion,
+  setReplyPaginationCheckpoint,
 } from 'enevti-app/store/slices/ui/view/comment';
 import i18n from 'enevti-app/translations/i18n';
 import { COMMENT_LIMIT, REPLY_LIMIT } from 'enevti-app/utils/constant/limit';
@@ -238,6 +242,22 @@ export const addCommentLikeById =
     );
   };
 
+export const addCommentReplyCountById =
+  ({ route, id }: { route: CommentRoute; id: string }): AppThunk =>
+  (dispatch, getState) => {
+    const commentState = selectCommentView(getState(), route.key);
+    const index = commentState.comment.findIndex(c => c.id === id);
+    dispatch(addCommentReplyCount({ key: route.key, commentIndex: index }));
+  };
+
+export const subtractCommentReplyCountById =
+  ({ route, id }: { route: CommentRoute; id: string }): AppThunk =>
+  (dispatch, getState) => {
+    const commentState = selectCommentView(getState(), route.key);
+    const index = commentState.comment.findIndex(c => c.id === id);
+    dispatch(subtractCommentReplyCount({ key: route.key, commentIndex: index }));
+  };
+
 export const setReplying =
   ({ route, index }: { route: CommentRoute; index: number }): AppThunk =>
   dispatch => {
@@ -253,4 +273,26 @@ export const resetReplying =
       dispatch(setComment({ key: route.key, commentIndex: commentState.replying, value: { highlighted: false } }));
       dispatch(resetCommentReplying(route.key));
     }
+  };
+
+export const addReplyPaginationVersionByCommentId =
+  ({ key, commentId }: { key: string; commentId: string }): AppThunk =>
+  (dispatch, getState) => {
+    const commentState = selectCommentView(getState(), key);
+    const index = commentState.comment.findIndex(c => c.id === commentId);
+    dispatch(addReplyPaginationVersion({ key, commentIndex: index }));
+  };
+
+export const setReplyPaginationCheckpointToRepliesLength =
+  ({ key, commentId }: { key: string; commentId: string }): AppThunk =>
+  (dispatch, getState) => {
+    const commentState = selectCommentView(getState(), key);
+    const index = commentState.comment.findIndex(c => c.id === commentId);
+    dispatch(
+      setReplyPaginationCheckpoint({
+        key,
+        commentIndex: index,
+        checkpoint: commentState.comment[index].replies.length,
+      }),
+    );
   };
