@@ -70,7 +70,7 @@ export default function AppPaymentModal() {
 
   const paymentTotalAmountCurrency = defaultCoin;
   const paymentTotalAmount = React.useMemo(
-    () => BigInt(paymentAction.amount) + BigInt(paymentFee.gas) + BigInt(paymentFee.platform),
+    () => BigInt(paymentAction.amount) + BigInt(paymentFee.gas) + BigInt(paymentFee.platform), // paymentFee.base is already included in paymentAction.amount
     [paymentAction.amount, paymentFee.gas, paymentFee.platform],
   );
   const balanceEnough = React.useMemo(

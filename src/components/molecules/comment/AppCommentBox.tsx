@@ -138,15 +138,8 @@ export default function AppCommentBox({ route, target, inputRef }: AppCommentBox
     [route.key, route.params.arg],
   );
 
-  const paymentIdleCallback = React.useCallback((paymentStatus: PaymentStatus) => {
-    switch (paymentStatus.action) {
-      case 'commentCollection':
-      case 'commentNFT':
-        setSending(false);
-        break;
-      default:
-        break;
-    }
+  const paymentIdleCallback = React.useCallback(() => {
+    setSending(false);
   }, []);
 
   const paymentProcessCallback = React.useCallback(
@@ -163,6 +156,7 @@ export default function AppCommentBox({ route, target, inputRef }: AppCommentBox
           dispatch(addCommentViewPaginationVersion({ key: route.key }));
           dispatch(addCommentViewPaginationCheckpoint({ key: route.key }));
           break;
+        // TODO: implement reply comment
         default:
           break;
       }
@@ -191,7 +185,7 @@ export default function AppCommentBox({ route, target, inputRef }: AppCommentBox
               dispatch(showSnackbar({ mode: 'info', text: t('explorer:commentQueued') }));
             }
             socket.current?.disconnect();
-          }, (await BLOCK_TIME()) * 5);
+          }, (await BLOCK_TIME()) * 3);
 
           socket.current = appSocket(`transaction:${paymentStatus.message}`);
           socket.current.on('processed', () => {
@@ -201,11 +195,17 @@ export default function AppCommentBox({ route, target, inputRef }: AppCommentBox
             clearTimeout(postCommentTimer.current);
           });
           break;
+        case 'replyComment':
+          // TODO: implement reply comment
+          setSending(false);
+          onReplyClose();
+          dispatch(showSnackbar({ mode: 'info', text: t('explorer:commentSuccess') }));
+          break;
         default:
           break;
       }
     },
-    [dispatch, route, t],
+    [dispatch, route, t, onReplyClose],
   );
 
   const paymentErrorCallback = React.useCallback(
@@ -217,6 +217,7 @@ export default function AppCommentBox({ route, target, inputRef }: AppCommentBox
           dispatch(subtractCommentViewPaginationVersion({ key: route.key }));
           dispatch(subtractCommentViewPaginationCheckpoint({ key: route.key }));
           break;
+        // TODO: implement reply comment
         default:
           break;
       }

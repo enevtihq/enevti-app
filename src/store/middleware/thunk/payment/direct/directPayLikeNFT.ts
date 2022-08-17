@@ -1,4 +1,11 @@
-import { setPaymentAction, setPaymentFee, setPaymentPriority, setPaymentStatus } from 'enevti-app/store/slices/payment';
+import {
+  resetPaymentState,
+  resetPaymentStatusType,
+  setPaymentAction,
+  setPaymentFee,
+  setPaymentPriority,
+  setPaymentStatus,
+} from 'enevti-app/store/slices/payment';
 import { AsyncThunkAPI } from 'enevti-app/store/state';
 import { AppTransaction } from 'enevti-app/types/core/service/transaction';
 import {
@@ -15,12 +22,14 @@ import i18n from 'enevti-app/translations/i18n';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import { COIN_NAME } from 'enevti-app/utils/constant/identifier';
 import { LikeNFTUI } from 'enevti-app/types/core/asset/redeemable_nft/like_nft_asset';
+import { selectMyProfileCache } from 'enevti-app/store/slices/entities/cache/myProfile';
+import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 
 type PayLikeNFTPayload = { id: string; key: string; symbol: string; serial: string };
 
 export const directPayLikeNFT = createAsyncThunk<void, PayLikeNFTPayload, AsyncThunkAPI>(
   'nftDetails/directPayLikeNFT',
-  async (payload, { dispatch, signal }) => {
+  async (payload, { dispatch, signal, getState }) => {
     try {
       dispatch(
         setPaymentStatus({ id: payload.id, key: payload.key, action: 'likeNFT', type: 'initiated', message: '' }),
@@ -60,6 +69,17 @@ export const directPayLikeNFT = createAsyncThunk<void, PayLikeNFTPayload, AsyncT
       );
 
       dispatch(setPaymentStatus({ id: payload.id, key: payload.key, action: 'likeNFT', type: 'process', message: '' }));
+
+      const myProfile = selectMyProfileCache(getState());
+      const paymentTotalAmount = BigInt(gasFee) + BigInt(baseFee);
+      const balanceEnough = BigInt(myProfile.balance) > paymentTotalAmount;
+
+      if (!balanceEnough) {
+        dispatch(showSnackbar({ mode: 'error', text: i18n.t('payment:notEnoughBalance') }));
+        dispatch(resetPaymentState());
+        dispatch(resetPaymentStatusType());
+        return;
+      }
 
       const response = await postTransaction(
         attachFee(transactionPayload, (BigInt(gasFee) + BigInt(baseFee)).toString()),

@@ -1,4 +1,11 @@
-import { setPaymentAction, setPaymentFee, setPaymentPriority, setPaymentStatus } from 'enevti-app/store/slices/payment';
+import {
+  resetPaymentState,
+  resetPaymentStatusType,
+  setPaymentAction,
+  setPaymentFee,
+  setPaymentPriority,
+  setPaymentStatus,
+} from 'enevti-app/store/slices/payment';
 import { AsyncThunkAPI } from 'enevti-app/store/state';
 import { AppTransaction } from 'enevti-app/types/core/service/transaction';
 import {
@@ -17,13 +24,15 @@ import { COIN_NAME } from 'enevti-app/utils/constant/identifier';
 import { LikeCommentUI } from 'enevti-app/types/core/asset/redeemable_nft/like_comment_asset';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from 'enevti-app/navigation';
+import { selectMyProfileCache } from 'enevti-app/store/slices/entities/cache/myProfile';
+import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 
 type CommentRoute = RouteProp<RootStackParamList, 'Comment'>;
 type PayLikeCommentPayload = { route: CommentRoute; id: string; key: string; target: string };
 
 export const directPayLikeComment = createAsyncThunk<void, PayLikeCommentPayload, AsyncThunkAPI>(
   'commentView/directPayLikeComment',
-  async (payload, { dispatch, signal }) => {
+  async (payload, { dispatch, signal, getState }) => {
     try {
       dispatch(
         setPaymentStatus({
@@ -77,6 +86,17 @@ export const directPayLikeComment = createAsyncThunk<void, PayLikeCommentPayload
           message: '',
         }),
       );
+
+      const myProfile = selectMyProfileCache(getState());
+      const paymentTotalAmount = BigInt(gasFee) + BigInt(baseFee);
+      const balanceEnough = BigInt(myProfile.balance) > paymentTotalAmount;
+
+      if (!balanceEnough) {
+        dispatch(showSnackbar({ mode: 'error', text: i18n.t('payment:notEnoughBalance') }));
+        dispatch(resetPaymentState());
+        dispatch(resetPaymentStatusType());
+        return;
+      }
 
       const response = await postTransaction(
         attachFee(transactionPayload, (BigInt(gasFee) + BigInt(baseFee)).toString()),

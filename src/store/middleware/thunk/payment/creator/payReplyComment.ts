@@ -49,8 +49,8 @@ export const payReplyComment = createAsyncThunk<void, PayReplyCommentPayload, As
         setPaymentAction({
           type: 'replyComment',
           icon: iconMap.commentFill,
-          name: i18n.t('payment:payCommentCollection'),
-          description: i18n.t('payment:payCommentCollectionDescription'),
+          name: i18n.t('payment:payReplyComment'),
+          description: i18n.t('payment:paypayReplyCommentDescription'),
           amount: '0',
           currency: COIN_NAME,
           payload: JSON.stringify(attachFee(transactionPayload, (BigInt(gasFee) + BigInt(baseFee)).toString())),

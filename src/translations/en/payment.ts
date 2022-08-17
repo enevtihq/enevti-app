@@ -51,4 +51,6 @@ export default {
   payCommentCollectionDescription: 'Give comment for collection',
   payCommentNFT: 'Comment NFT',
   payCommentNFTDescription: 'Give comment for NFT',
+  payReplyComment: 'Reply Comment',
+  paypayReplyCommentDescription: 'Give reply for comment',
 };

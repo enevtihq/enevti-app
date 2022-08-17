@@ -8,6 +8,7 @@ import { CommentAt, ReplyAt } from 'enevti-app/types/core/chain/engagement';
 import { getCollectionIdFromRouteParam } from './collection';
 import { getNFTIdFromRouteParam } from './nft';
 import { getMyAddress } from './persona';
+import { CommentItem, ReplyItem } from 'enevti-app/store/slices/ui/view/comment';
 
 type CommentRoute = StackScreenProps<RootStackParamList, 'Comment'>['route']['params'];
 
@@ -130,7 +131,7 @@ export async function getInitialNFTCommentByRouteParam(routeParam: CommentRoute,
   return await getInitialNFTComment(nftId, signal);
 }
 
-export function initCommentViewState(comment: CommentAt['comment']) {
+export function initCommentViewState(comment: CommentAt['comment']): CommentItem[] {
   return comment.map(c => ({
     ...c,
     isPosting: false,
@@ -141,5 +142,14 @@ export function initCommentViewState(comment: CommentAt['comment']) {
       checkpoint: 0,
       version: 0,
     },
+  }));
+}
+
+export function initReplyState(reply: ReplyAt['reply']): ReplyItem[] {
+  return reply.map(r => ({
+    ...r,
+    isPosting: false,
+    isLiking: false,
+    highlighted: false,
   }));
 }

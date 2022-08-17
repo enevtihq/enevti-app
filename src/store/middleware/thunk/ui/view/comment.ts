@@ -15,6 +15,7 @@ import {
   getInitialNFTCommentByRouteParam,
   getNFTCommentByRouteParam,
   initCommentViewState,
+  initReplyState,
 } from 'enevti-app/service/enevti/comment';
 import {
   initCommentView,
@@ -145,7 +146,9 @@ export const loadReply = createAsyncThunk<void, LoadReplyArgs, AsyncThunkAPI>(
       if (replyResponse.status !== 200) {
         throw Error(i18n.t('error:clientError'));
       }
-      dispatch(pushReply({ key: route.key, commentIndex: index, value: replyResponse.data.data.reply }));
+      dispatch(
+        pushReply({ key: route.key, commentIndex: index, value: initReplyState(replyResponse.data.data.reply) }),
+      );
       dispatch(
         setReplyPagination({
           key: route.key,
@@ -183,7 +186,7 @@ export const loadMoreReply = createAsyncThunk<void, LoadReplyArgs, AsyncThunkAPI
           pushReply({
             key: route.key,
             commentIndex: index,
-            value: replyResponse.data.data.reply,
+            value: initReplyState(replyResponse.data.data.reply),
           }),
         );
         dispatch(

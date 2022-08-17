@@ -4,13 +4,19 @@ import { RootState } from 'enevti-app/store/state';
 import { PaginationStore } from 'enevti-app/types/ui/store/PaginationStore';
 import { Comment, Reply } from 'enevti-app/types/core/chain/engagement';
 
-export type CommentItem = Comment & {
+type EngagementItemBase = {
   isPosting: boolean;
   isLiking: boolean;
   highlighted: boolean;
-  replies: Reply[];
-  replyPagination: PaginationStore;
 };
+
+export type ReplyItem = Reply & EngagementItemBase;
+
+export type CommentItem = Comment &
+  EngagementItemBase & {
+    replies: ReplyItem[];
+    replyPagination: PaginationStore;
+  };
 
 type CommentViewState = {
   commentPagination: PaginationStore;
@@ -103,12 +109,12 @@ const commentViewSlice = createSlice({
     setCommentViewPagination: (comment, action: PayloadAction<{ key: string; value: PaginationStore }>) => {
       comment[action.payload.key].commentPagination = { ...action.payload.value };
     },
-    pushReply: (comment, action: PayloadAction<{ key: string; commentIndex: number; value: Reply[] }>) => {
+    pushReply: (comment, action: PayloadAction<{ key: string; commentIndex: number; value: ReplyItem[] }>) => {
       comment[action.payload.key].comment[action.payload.commentIndex].replies = comment[action.payload.key].comment[
         action.payload.commentIndex
       ].replies.concat(action.payload.value);
     },
-    unshiftReply: (comment, action: PayloadAction<{ key: string; commentIndex: number; value: Reply[] }>) => {
+    unshiftReply: (comment, action: PayloadAction<{ key: string; commentIndex: number; value: ReplyItem[] }>) => {
       comment[action.payload.key].comment[action.payload.commentIndex].replies = action.payload.value.concat(
         comment[action.payload.key].comment[action.payload.commentIndex].replies,
       );
