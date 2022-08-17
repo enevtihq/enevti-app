@@ -16,6 +16,9 @@ import {
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { NFT_ACTIVITY_RESPONSE_LIMIT } from 'enevti-app/utils/constant/limit';
+import { Platform } from 'react-native';
+import { IOS_MIN_RELOAD_TIME } from 'enevti-app/utils/constant/reload';
+import sleep from 'enevti-app/utils/dummy/sleep';
 
 type NFTDetailsRoute = StackScreenProps<RootStackParamList, 'NFTDetails'>['route'];
 type loadNFTArgs = { route: NFTDetailsRoute; reload: boolean };
@@ -24,9 +27,17 @@ export const loadNFTDetails = createAsyncThunk<void, loadNFTArgs, AsyncThunkAPI>
   'nftDetailsView/loadNFTDetails',
   async ({ route, reload = false }, { dispatch, signal }) => {
     try {
-      reload && dispatch(showModalLoader());
+      let reloadTime = 0;
+      if (reload) {
+        Platform.OS === 'ios' ? (reloadTime = Date.now()) : {};
+        dispatch(showModalLoader());
+      }
       const nftResponse = await getNFTbyRouteParam(route.params, signal);
       const activityResponse = await getNFTInitialActivity(nftResponse.data.id, signal);
+      if (reload && Platform.OS === 'ios') {
+        reloadTime = Date.now() - reloadTime;
+        await sleep(IOS_MIN_RELOAD_TIME - reloadTime);
+      }
       dispatch(initNFTDetailsView(route.key));
       dispatch(
         setNFTDetailsView({

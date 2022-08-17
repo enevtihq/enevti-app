@@ -48,6 +48,9 @@ import { Profile } from 'enevti-app/types/core/account/profile';
 import { payManualDeliverSecret } from 'enevti-app/store/middleware/thunk/payment/creator/payDeliverSecret';
 import { PROFILE_COLLECTION_RESPONSE_LIMIT, PROFILE_OWNED_RESPONSE_LIMIT } from 'enevti-app/utils/constant/limit';
 import i18n from 'enevti-app/translations/i18n';
+import { Platform } from 'react-native';
+import { IOS_MIN_RELOAD_TIME } from 'enevti-app/utils/constant/reload';
+import sleep from 'enevti-app/utils/dummy/sleep';
 
 type ProfileRoute = StackScreenProps<RootStackParamList, 'Profile'>['route'];
 type LoadProfileArgs = { route: ProfileRoute; reload: boolean; isMyProfile: boolean };
@@ -60,46 +63,7 @@ export const loadProfile = createAsyncThunk<void, LoadProfileArgs, AsyncThunkAPI
       if (isMyProfile) {
         await loadMyProfile(reload, dispatch, signal);
       } else {
-        dispatch(initProfileView(route.key));
-        const personaBase = await getBasePersonaByRouteParam(route.params, signal);
-        if (personaBase.status === 200 && !isErrorResponse(personaBase)) {
-          const profileResponse = await getProfile(personaBase.data.address, signal);
-          const ownedResponse = await getProfileInitialOwned(personaBase.data.address, signal);
-          const collectionResponse = await getProfileInitialCollection(personaBase.data.address, signal);
-          if (profileResponse.status === 200 && !isErrorResponse(profileResponse)) {
-            dispatch(
-              setProfileView({
-                key: route.key,
-                value: {
-                  ...profileResponse.data,
-                  persona: personaBase.data,
-                  version: Date.now(),
-                  owned: ownedResponse.data.data,
-                  collection: collectionResponse.data.data,
-                },
-              }),
-            );
-            dispatch(
-              setProfileViewOwnedPagination({
-                key: route.key,
-                value: {
-                  checkpoint: ownedResponse.data.checkpoint,
-                  version: ownedResponse.data.version,
-                },
-              }),
-            );
-            dispatch(
-              setProfileViewCollectionPagination({
-                key: route.key,
-                value: {
-                  checkpoint: collectionResponse.data.checkpoint,
-                  version: collectionResponse.data.version,
-                },
-              }),
-            );
-          }
-        }
-        dispatch(setProfileViewReqStatus({ key: route.key, value: personaBase.status }));
+        await loadProfileBase(reload, route, dispatch, signal);
       }
     } catch (err: any) {
       handleError(err);
@@ -266,6 +230,8 @@ export const unloadProfile =
   };
 
 export const loadMyProfile = async (reload: boolean, dispatch: any, signal?: AbortController['signal']) => {
+  let reloadTime = 0;
+  reload && Platform.OS === 'ios' ? (reloadTime = Date.now()) : {};
   const personaResponse = await getMyBasePersona(reload, signal);
   if (personaResponse.status !== 200) {
     throw Error(i18n.t('profile:errorLoadingMyProfile'));
@@ -273,6 +239,10 @@ export const loadMyProfile = async (reload: boolean, dispatch: any, signal?: Abo
   const profileResponse = await getMyProfile(reload, signal);
   const ownedResponse = await getMyProfileInitialOwned(reload, signal);
   const collectionResponse = await getMyProfileInitialCollection(reload, signal);
+  if (reload && Platform.OS === 'ios') {
+    reloadTime = Date.now() - reloadTime;
+    await sleep(IOS_MIN_RELOAD_TIME - reloadTime);
+  }
   dispatch(
     setMyProfileView({
       ...(profileResponse.data as Profile),
@@ -295,4 +265,58 @@ export const loadMyProfile = async (reload: boolean, dispatch: any, signal?: Abo
     }),
   );
   dispatch(setMyProfileViewReqStatus(profileResponse.status));
+};
+
+export const loadProfileBase = async (
+  reload: boolean,
+  route: ProfileRoute,
+  dispatch: any,
+  signal?: AbortController['signal'],
+) => {
+  let reloadTime = 0;
+  reload && Platform.OS === 'ios' ? (reloadTime = Date.now()) : {};
+  !reload && dispatch(initProfileView(route.key));
+  const personaBase = await getBasePersonaByRouteParam(route.params, signal);
+  if (personaBase.status === 200 && !isErrorResponse(personaBase)) {
+    const profileResponse = await getProfile(personaBase.data.address, signal);
+    const ownedResponse = await getProfileInitialOwned(personaBase.data.address, signal);
+    const collectionResponse = await getProfileInitialCollection(personaBase.data.address, signal);
+    if (profileResponse.status === 200 && !isErrorResponse(profileResponse)) {
+      if (reload && Platform.OS === 'ios') {
+        reloadTime = Date.now() - reloadTime;
+        await sleep(IOS_MIN_RELOAD_TIME - reloadTime);
+      }
+      dispatch(
+        setProfileView({
+          key: route.key,
+          value: {
+            ...profileResponse.data,
+            persona: personaBase.data,
+            version: Date.now(),
+            owned: ownedResponse.data.data,
+            collection: collectionResponse.data.data,
+          },
+        }),
+      );
+      dispatch(
+        setProfileViewOwnedPagination({
+          key: route.key,
+          value: {
+            checkpoint: ownedResponse.data.checkpoint,
+            version: ownedResponse.data.version,
+          },
+        }),
+      );
+      dispatch(
+        setProfileViewCollectionPagination({
+          key: route.key,
+          value: {
+            checkpoint: collectionResponse.data.checkpoint,
+            version: collectionResponse.data.version,
+          },
+        }),
+      );
+    }
+  }
+  dispatch(setProfileViewReqStatus({ key: route.key, value: personaBase.status }));
 };

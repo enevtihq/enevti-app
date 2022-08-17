@@ -24,6 +24,9 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { COLLECTION_MINTED_RESPONSE_LIMIT, COLLECTION_ACTIVITY_RESPONSE_LIMIT } from 'enevti-app/utils/constant/limit';
+import sleep from 'enevti-app/utils/dummy/sleep';
+import { Platform } from 'react-native';
+import { IOS_MIN_RELOAD_TIME } from 'enevti-app/utils/constant/reload';
 
 type CollectionRoute = StackScreenProps<RootStackParamList, 'Collection'>['route'];
 type LoadCollectionArgs = { route: CollectionRoute; reload: boolean };
@@ -32,10 +35,18 @@ export const loadCollection = createAsyncThunk<void, LoadCollectionArgs, AsyncTh
   'collectionView/loadCollection',
   async ({ route, reload = false }, { dispatch, signal }) => {
     try {
-      reload && dispatch(showModalLoader());
+      let reloadTime = 0;
+      if (reload) {
+        Platform.OS === 'ios' ? (reloadTime = Date.now()) : {};
+        dispatch(showModalLoader());
+      }
       const collectionResponse = await getCollectionByRouteParam(route.params, signal);
       const mintedResponse = await getCollectionInitialMinted(collectionResponse.data.id, signal);
       const activityResponse = await getCollectionInitialActivity(collectionResponse.data.id, signal);
+      if (reload && Platform.OS === 'ios') {
+        reloadTime = Date.now() - reloadTime;
+        await sleep(IOS_MIN_RELOAD_TIME - reloadTime);
+      }
       dispatch(initCollectionView(route.key));
       dispatch(
         setCollectionView({
