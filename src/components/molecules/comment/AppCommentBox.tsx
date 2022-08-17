@@ -623,8 +623,8 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets, keyboardHeight: number
     },
     bottomBar: {
       position: 'absolute',
-      bottom: -keyboardHeight,
-      height: keyboardHeight,
+      bottom: keyboardHeight ? -keyboardHeight : -hp(4),
+      height: keyboardHeight ? keyboardHeight : hp(4),
       width: '100%',
       backgroundColor: theme.colors.background,
     },
