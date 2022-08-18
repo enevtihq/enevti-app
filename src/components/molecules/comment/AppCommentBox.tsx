@@ -32,11 +32,10 @@ import { payCommentNFT } from 'enevti-app/store/middleware/thunk/payment/creator
 import {
   setCommentById,
   deleteCommentById,
-  resetReplying,
   subtractCommentReplyCountById,
   addCommentReplyCountById,
   addReplyPaginationVersionByCommentId,
-  resetReplyingOnReply,
+  clearReplying,
 } from 'enevti-app/store/middleware/thunk/ui/view/comment';
 import usePaymentCallback from 'enevti-app/utils/hook/usePaymentCallback';
 import { PaymentStatus } from 'enevti-app/types/ui/store/Payment';
@@ -111,11 +110,8 @@ export default function AppCommentBox({ route, target, inputRef }: AppCommentBox
   );
 
   const onReplyClose = React.useCallback(() => {
-    if (isReplyingOnReply) {
-      dispatch(resetReplyingOnReply({ route, commentIndex: commentView.replying! }));
-    }
-    dispatch(resetReplying({ route }));
-  }, [commentView.replying, dispatch, isReplyingOnReply, route]);
+    dispatch(clearReplying({ route }));
+  }, [dispatch, route]);
 
   React.useEffect(() => {
     if (isReplying) {

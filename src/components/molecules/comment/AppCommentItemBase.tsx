@@ -75,62 +75,64 @@ export default function AppCommentItemBase({
   }, [dispatch, t]);
 
   return (
-    <View
-      style={[styles.commentContainer, contentContainerStyle]}
-      pointerEvents={commentOrReply.isPosting ? 'none' : 'auto'}>
-      <View style={styles.avatar}>
-        <AppAvatarRenderer persona={commentOrReply.owner} size={hp(avatarSize, insets)} />
-      </View>
-      <View style={styles.commentRightSection}>
-        <View style={styles.commentTextAndLike}>
-          <View style={styles.commentText}>
-            <AppMentionRenderer
-              navigation={navigation}
-              style={styles.commentTextItem}
-              onTitlePress={onOwnerDetail}
-              title={parsePersonaLabel(commentOrReply.owner)}
-              text={commentOrReply.text}
-            />
-            <View style={styles.commentAction}>
-              <AppTextHeading4 style={styles.commentActionItem}>{timeSince(commentOrReply.date)}</AppTextHeading4>
-              {commentOrReply.like > 0 ? (
-                <AppTextHeading4 style={styles.commentActionItem}>
-                  {t('explorer:likeCount', { count: commentOrReply.like })}
+    <>
+      <View
+        style={[styles.commentContainer, contentContainerStyle]}
+        pointerEvents={commentOrReply.isPosting ? 'none' : 'auto'}>
+        <View style={styles.avatar}>
+          <AppAvatarRenderer persona={commentOrReply.owner} size={hp(avatarSize, insets)} />
+        </View>
+        <View style={styles.commentRightSection}>
+          <View style={styles.commentTextAndLike}>
+            <View style={styles.commentText}>
+              <AppMentionRenderer
+                navigation={navigation}
+                style={styles.commentTextItem}
+                onTitlePress={onOwnerDetail}
+                title={parsePersonaLabel(commentOrReply.owner)}
+                text={commentOrReply.text}
+              />
+              <View style={styles.commentAction}>
+                <AppTextHeading4 style={styles.commentActionItem}>{timeSince(commentOrReply.date)}</AppTextHeading4>
+                {commentOrReply.like > 0 ? (
+                  <AppTextHeading4 style={styles.commentActionItem}>
+                    {t('explorer:likeCount', { count: commentOrReply.like })}
+                  </AppTextHeading4>
+                ) : null}
+                <AppTextHeading4 onPress={onReplyPress} style={styles.commentActionItem}>
+                  {t('explorer:reply')}
                 </AppTextHeading4>
-              ) : null}
-              <AppTextHeading4 onPress={onReplyPress} style={styles.commentActionItem}>
-                {t('explorer:reply')}
-              </AppTextHeading4>
-            </View>
-            {commentOrReply.isPosting ? (
-              <View style={styles.isPostingLoader}>
-                <AppActivityIndicator animating />
               </View>
-            ) : null}
-          </View>
-          <View style={styles.likeCommentButton}>
-            {commentOrReply.isLiking ? (
-              <AppActivityIndicator animating size={hp(2)} />
-            ) : commentOrReply.liked ? (
-              <AppIconButton
-                onPress={onAlreadyLiked}
-                color={theme.colors.primary}
-                icon={iconMap.likeActive}
-                size={hp(2.25, insets)}
-              />
-            ) : (
-              <AppIconButton
-                onPress={onLike}
-                color={theme.colors.text}
-                icon={iconMap.likeInactive}
-                size={hp(2.25, insets)}
-              />
-            )}
+              {commentOrReply.isPosting ? (
+                <View style={styles.isPostingLoader}>
+                  <AppActivityIndicator animating />
+                </View>
+              ) : null}
+            </View>
+            <View style={styles.likeCommentButton}>
+              {commentOrReply.isLiking ? (
+                <AppActivityIndicator animating size={hp(2)} />
+              ) : commentOrReply.liked ? (
+                <AppIconButton
+                  onPress={onAlreadyLiked}
+                  color={theme.colors.primary}
+                  icon={iconMap.likeActive}
+                  size={hp(2.25, insets)}
+                />
+              ) : (
+                <AppIconButton
+                  onPress={onLike}
+                  color={theme.colors.text}
+                  icon={iconMap.likeInactive}
+                  size={hp(2.25, insets)}
+                />
+              )}
+            </View>
           </View>
         </View>
-        {'reply' in commentOrReply && commentOrReply.reply > 0 && replyComponent ? replyComponent(index) : null}
       </View>
-    </View>
+      {'reply' in commentOrReply && commentOrReply.reply > 0 && replyComponent ? replyComponent(index) : null}
+    </>
   );
 }
 

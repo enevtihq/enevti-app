@@ -15,9 +15,9 @@ import { RootStackParamList } from 'enevti-app/navigation';
 import { RouteProp } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import {
+  clearReplying,
   loadMoreReply,
   loadReply,
-  resetReplyingOnReply,
   setReplyingOnReply,
 } from 'enevti-app/store/middleware/thunk/ui/view/comment';
 import { AppAsyncThunk } from 'enevti-app/types/ui/store/AppAsyncThunk';
@@ -67,7 +67,7 @@ export default function AppReplyList({
 
   const onReplyPress = React.useCallback(
     (index: number) => {
-      dispatch(resetReplyingOnReply({ route, commentIndex }));
+      dispatch(clearReplying({ route }));
       dispatch(setReplyingOnReply({ route, commentIndex, replyIndex: index }));
       commentBoxInputRef.current?.focus();
     },
@@ -95,7 +95,7 @@ export default function AppReplyList({
 
   const initialReplyListComponent = React.useMemo(() => {
     return (
-      <TouchableRipple onPress={onLoadReply} style={styles.replyTouchable}>
+      <TouchableRipple onPress={onLoadReply} style={styles.replyInitTouchable}>
         <View style={styles.replyContainer}>
           <View style={styles.replyLine} />
           <AppTextHeading4 style={styles.replyCounter}>
@@ -111,7 +111,7 @@ export default function AppReplyList({
     styles.replyContainer,
     styles.replyCounter,
     styles.replyLine,
-    styles.replyTouchable,
+    styles.replyInitTouchable,
   ]);
 
   const footerComponent = React.useMemo(() => {
@@ -119,7 +119,7 @@ export default function AppReplyList({
       comment.replies &&
       comment.replyPagination.version !== comment.replies.length &&
       comment.replies.length !== 0 ? (
-      <TouchableRipple onPress={onLoadMoreReply} style={styles.replyTouchable}>
+      <TouchableRipple onPress={onLoadMoreReply} style={styles.replyLoadMoreTouchable}>
         <View style={styles.replyContainer}>
           <View style={styles.replyLine} />
           <AppTextHeading4 style={styles.replyCounter}>
@@ -139,7 +139,7 @@ export default function AppReplyList({
     styles.replyContainer,
     styles.replyCounter,
     styles.replyLine,
-    styles.replyTouchable,
+    styles.replyLoadMoreTouchable,
   ]);
 
   return comment.replies.length > 0 ? (
@@ -162,11 +162,15 @@ export default function AppReplyList({
 
 const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
   StyleSheet.create({
-    replyTouchable: {
-      marginTop: hp(2.5, insets),
+    replyInitTouchable: {
+      paddingVertical: hp(1, insets),
+    },
+    replyLoadMoreTouchable: {
+      paddingVertical: hp(1, insets),
     },
     replyContainer: {
       flexDirection: 'row',
+      paddingLeft: wp(17),
     },
     replyLine: {
       height: 2,
@@ -179,6 +183,8 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
       color: theme.colors.placeholder,
     },
     replyItem: {
-      marginTop: hp(2, insets),
+      paddingVertical: hp(1, insets),
+      paddingLeft: wp(17),
+      paddingRight: wp(4),
     },
   });

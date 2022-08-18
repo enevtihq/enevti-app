@@ -300,7 +300,6 @@ export const resetReplyingOnReply =
         }),
       );
       dispatch(resetCommentReplyingOnReply(route.key));
-      dispatch(resetCommentReplying(route.key));
     }
   };
 
@@ -324,4 +323,15 @@ export const setReplyPaginationCheckpointToRepliesLength =
         checkpoint: commentState.comment[index].replies.length,
       }),
     );
+  };
+
+export const clearReplying =
+  ({ route }: { route: CommentRoute }): AppThunk =>
+  (dispatch, getState) => {
+    const commentState = selectCommentView(getState(), route.key);
+    const commentIndex = commentState.replying;
+    if (commentIndex !== undefined) {
+      dispatch(resetReplyingOnReply({ route, commentIndex }));
+      dispatch(resetReplying({ route }));
+    }
   };

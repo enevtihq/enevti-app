@@ -10,7 +10,7 @@ import AppReplyList from './AppReplyList';
 import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
-import { resetReplying, setReplying } from 'enevti-app/store/middleware/thunk/ui/view/comment';
+import { clearReplying, setReplying } from 'enevti-app/store/middleware/thunk/ui/view/comment';
 
 interface AppCommentItemProps {
   comment: CommentItem;
@@ -38,7 +38,7 @@ export default function AppCommentItem({
   }, [comment.id, comment.owner, onLikeCommentPress, route.key]);
 
   const onReplyPress = React.useCallback(() => {
-    dispatch(resetReplying({ route }));
+    dispatch(clearReplying({ route }));
     dispatch(setReplying({ route, index }));
     commentBoxInputRef.current?.focus();
   }, [commentBoxInputRef, dispatch, index, route]);
