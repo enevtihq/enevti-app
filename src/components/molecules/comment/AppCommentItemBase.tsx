@@ -75,10 +75,8 @@ export default function AppCommentItemBase({
   }, [dispatch, t]);
 
   return (
-    <>
-      <View
-        style={[styles.commentContainer, contentContainerStyle]}
-        pointerEvents={commentOrReply.isPosting ? 'none' : 'auto'}>
+    <View pointerEvents={commentOrReply.isPosting ? 'none' : 'auto'} style={styles.commentItemContainer}>
+      <View style={[styles.commentContainer, contentContainerStyle]}>
         <View style={styles.avatar}>
           <AppAvatarRenderer persona={commentOrReply.owner} size={hp(avatarSize, insets)} />
         </View>
@@ -103,11 +101,6 @@ export default function AppCommentItemBase({
                   {t('explorer:reply')}
                 </AppTextHeading4>
               </View>
-              {commentOrReply.isPosting ? (
-                <View style={styles.isPostingLoader}>
-                  <AppActivityIndicator animating />
-                </View>
-              ) : null}
             </View>
             <View style={styles.likeCommentButton}>
               {commentOrReply.isLiking ? (
@@ -132,7 +125,12 @@ export default function AppCommentItemBase({
         </View>
       </View>
       {'reply' in commentOrReply && commentOrReply.reply > 0 && replyComponent ? replyComponent(index) : null}
-    </>
+      {commentOrReply.isPosting ? (
+        <View style={styles.isPostingLoader}>
+          <AppActivityIndicator animating />
+        </View>
+      ) : null}
+    </View>
   );
 }
 
@@ -156,9 +154,11 @@ const makeStyles = (
       flexDirection: 'row',
       flex: 1,
     },
+    commentItemContainer: {
+      opacity: commentOrReply.isPosting ? 0.5 : 1,
+    },
     commentContainer: {
       flexDirection: 'row',
-      opacity: commentOrReply.isPosting ? 0.5 : 1,
       backgroundColor: commentOrReply.highlighted
         ? Color(theme.colors.placeholder).alpha(0.05).rgb().toString()
         : undefined,
