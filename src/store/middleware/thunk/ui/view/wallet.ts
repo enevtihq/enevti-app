@@ -77,7 +77,7 @@ export const loadMoreTransactionHistory = createAsyncThunk<void, LoadWalletArgs,
       const walletView = selectWalletView(getState(), route.key);
       const offset = walletView.historyPagination.checkpoint;
       const version = walletView.historyPagination.version;
-      if (walletView.history.length !== version) {
+      if (walletView.history.length - 1 !== version) {
         const transactionHistoryResponse = await getTransactionHistoryByRouteParam(
           route.params,
           offset,

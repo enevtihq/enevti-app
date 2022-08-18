@@ -74,7 +74,9 @@ function Component(
     () =>
       mintingAvailable ? (
         <View>
-          {collection.mintedPagination && collection.mintedPagination.version !== nfts.length && nfts.length !== 0 ? (
+          {collection.mintedPagination &&
+          collection.mintedPagination.version !== nfts.length - 1 &&
+          nfts.length !== 0 ? (
             <AppActivityIndicator style={{ marginVertical: hp('3%') }} />
           ) : null}
           <View style={{ height: hp(MINT_BUTTON_HEIGHT) }} />

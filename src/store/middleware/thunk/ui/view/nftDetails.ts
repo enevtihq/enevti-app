@@ -68,7 +68,7 @@ export const loadMoreActivity = createAsyncThunk<void, loadNFTArgs, AsyncThunkAP
       const nftView = selectNFTDetailsView(getState(), route.key);
       const offset = nftView.activityPagination.checkpoint;
       const version = nftView.activityPagination.version;
-      if (nftView.activity.length !== version) {
+      if (nftView.activity.length - 1 !== version) {
         const activityResponse = await getNFTActivity(nftView.id, offset, NFT_ACTIVITY_RESPONSE_LIMIT, version, signal);
         dispatch(pushNFTDetailsViewActivity({ key: route.key, value: activityResponse.data.data }));
         dispatch(

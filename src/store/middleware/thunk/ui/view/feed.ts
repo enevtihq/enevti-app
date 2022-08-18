@@ -74,7 +74,7 @@ export const loadMoreFeeds = createAsyncThunk<void, undefined, AsyncThunkAPI>(
       const feedItem = selectFeedView(getState());
       const offset = selectFeedViewCheckpoint(getState());
       const version = selectFeedViewReqVersion(getState());
-      if (feedItem.length !== version) {
+      if (feedItem.length - 1 !== version) {
         const feedResponse = await getMoreFeeds(offset, version, signal);
         dispatch(addFeedView(feedResponse.data.data as Feeds));
         dispatch(setFeedViewCheckpoint(feedResponse.data.checkpoint));

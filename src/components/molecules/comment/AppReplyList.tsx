@@ -97,7 +97,7 @@ export default function AppReplyList({ comment, index, navigation, route, commen
   const footerComponent = React.useMemo(() => {
     return comment.replyPagination &&
       comment.replies &&
-      comment.replyPagination.version !== comment.replies.length &&
+      comment.replyPagination.version !== comment.replies.length - 1 &&
       comment.replies.length !== 0 ? (
       <TouchableRipple onPress={onLoadMoreReply} style={styles.replyTouchable}>
         <View style={styles.replyContainer}>

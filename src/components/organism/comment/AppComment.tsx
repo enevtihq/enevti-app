@@ -67,7 +67,7 @@ export default function AppComment({ route, navigation }: AppCommentProps) {
   }, [onCommentScreenLoaded]);
 
   const handleLoadMore = React.useCallback(() => {
-    dispatch(loadMoreComment({ route, reload: true }));
+    dispatch(loadMoreComment({ route }));
   }, [dispatch, route]);
 
   const onLikeCommentPress = React.useCallback(
@@ -167,7 +167,7 @@ export default function AppComment({ route, navigation }: AppCommentProps) {
     () =>
       comment.commentPagination &&
       comment.comment &&
-      comment.commentPagination.version !== comment.comment.length &&
+      comment.commentPagination.version !== comment.comment.length - 1 &&
       comment.comment.length !== 0 ? (
         <AppActivityIndicator style={{ marginVertical: hp('3%') }} />
       ) : null,

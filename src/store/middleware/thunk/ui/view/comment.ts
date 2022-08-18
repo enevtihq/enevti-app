@@ -44,7 +44,7 @@ import i18n from 'enevti-app/translations/i18n';
 import { COMMENT_LIMIT, REPLY_LIMIT } from 'enevti-app/utils/constant/limit';
 
 type CommentRoute = StackScreenProps<RootStackParamList, 'Comment'>['route'];
-type LoadCommentArgs = { route: CommentRoute; reload: boolean };
+type LoadCommentArgs = { route: CommentRoute; reload?: boolean };
 type LoadReplyArgs = { route: CommentRoute; index: number };
 
 export const loadComment = createAsyncThunk<void, LoadCommentArgs, AsyncThunkAPI>(
@@ -98,7 +98,7 @@ export const loadMoreComment = createAsyncThunk<void, LoadCommentArgs, AsyncThun
       const commentView = selectCommentView(getState(), route.key);
       const offset = commentView.commentPagination.checkpoint;
       const version = commentView.commentPagination.version;
-      if (commentView.comment.length !== version) {
+      if (commentView.comment.length - 1 !== version) {
         let commentResponse: APIResponseVersioned<CommentAt> | undefined;
         if (route.params.type === 'nft') {
           commentResponse = await getNFTCommentByRouteParam(route.params, offset, COMMENT_LIMIT, version, signal);
@@ -179,7 +179,7 @@ export const loadMoreReply = createAsyncThunk<void, LoadReplyArgs, AsyncThunkAPI
       }
       const offset = comment.replyPagination.checkpoint;
       const version = comment.replyPagination.version;
-      if (comment.replies.length !== version) {
+      if (comment.replies.length - 1 !== version) {
         const replyResponse = await getCommentReply(comment.id, offset, REPLY_LIMIT, version, signal);
 
         if (replyResponse.status !== 200) {

@@ -158,7 +158,7 @@ function Component(
       mintingAvailable ? (
         <View>
           {collection.activityPagination &&
-          collection.activityPagination.version !== collection.activity.length &&
+          collection.activityPagination.version !== collection.activity.length - 1 &&
           collection.activity.length !== 0 ? (
             <AppActivityIndicator style={{ marginVertical: hp('3%') }} />
           ) : null}

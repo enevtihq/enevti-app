@@ -138,7 +138,7 @@ function Component(
       <View>
         {nftDetails.activityPagination &&
         nftDetails.activity &&
-        nftDetails.activityPagination.version !== nftDetails.activity.length &&
+        nftDetails.activityPagination.version !== nftDetails.activity.length - 1 &&
         nftDetails.activity.length !== 0 ? (
           <AppActivityIndicator style={{ marginVertical: hp('3%') }} />
         ) : null}

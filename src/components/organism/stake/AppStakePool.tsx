@@ -186,7 +186,7 @@ export default function AppStakePool({ route }: AppStakePoolProps) {
     () =>
       stakePool.stakerPagination &&
       stakePool.staker &&
-      stakePool.stakerPagination.version !== stakePool.staker.length &&
+      stakePool.stakerPagination.version !== stakePool.staker.length - 1 &&
       stakePool.staker.length !== 0 ? (
         <AppActivityIndicator style={{ marginVertical: hp('3%') }} />
       ) : null,
