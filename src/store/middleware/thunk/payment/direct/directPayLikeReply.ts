@@ -28,7 +28,14 @@ import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 import { selectMyProfileCache } from 'enevti-app/store/slices/entities/cache/myProfile';
 
 type CommentRoute = RouteProp<RootStackParamList, 'Comment'>;
-type PayLikeReplyPayload = { route: CommentRoute; id: string; key: string; target: string };
+type PayLikeReplyPayload = {
+  route: CommentRoute;
+  id: string;
+  commentIndex: number;
+  replyIndex: number;
+  key: string;
+  target: string;
+};
 
 export const directPayLikeReply = createAsyncThunk<void, PayLikeReplyPayload, AsyncThunkAPI>(
   'commentView/directPayLikeReply',
@@ -36,7 +43,7 @@ export const directPayLikeReply = createAsyncThunk<void, PayLikeReplyPayload, As
     try {
       dispatch(
         setPaymentStatus({
-          id: payload.route.params.arg,
+          id: `${payload.commentIndex}:${payload.replyIndex}`,
           key: payload.key,
           action: 'likeReply',
           type: 'initiated',
@@ -79,7 +86,7 @@ export const directPayLikeReply = createAsyncThunk<void, PayLikeReplyPayload, As
 
       dispatch(
         setPaymentStatus({
-          id: payload.route.params.arg,
+          id: `${payload.commentIndex}:${payload.replyIndex}`,
           key: payload.key,
           action: 'likeReply',
           type: 'process',
@@ -104,7 +111,7 @@ export const directPayLikeReply = createAsyncThunk<void, PayLikeReplyPayload, As
       if (response.status === 200) {
         dispatch(
           setPaymentStatus({
-            id: payload.route.params.arg,
+            id: `${payload.commentIndex}:${payload.replyIndex}`,
             key: payload.key,
             action: 'likeReply',
             type: 'success',
@@ -114,7 +121,7 @@ export const directPayLikeReply = createAsyncThunk<void, PayLikeReplyPayload, As
       } else {
         dispatch(
           setPaymentStatus({
-            id: payload.route.params.arg,
+            id: `${payload.commentIndex}:${payload.replyIndex}`,
             key: payload.key,
             action: 'likeReply',
             type: 'error',
@@ -126,7 +133,7 @@ export const directPayLikeReply = createAsyncThunk<void, PayLikeReplyPayload, As
       handleError(err);
       dispatch(
         setPaymentStatus({
-          id: payload.route.params.arg,
+          id: `${payload.commentIndex}:${payload.replyIndex}`,
           key: payload.key,
           action: 'likeReply',
           type: 'error',

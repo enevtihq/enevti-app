@@ -335,3 +335,17 @@ export const clearReplying =
       dispatch(resetReplying({ route }));
     }
   };
+
+export const addReplyLikeById =
+  ({ route, commentIndex, replyIndex }: { route: CommentRoute; commentIndex: number; replyIndex: number }): AppThunk =>
+  (dispatch, getState) => {
+    const commentState = selectCommentView(getState(), route.key);
+    dispatch(
+      setReply({
+        key: route.key,
+        commentIndex,
+        replyIndex,
+        value: { like: commentState.comment[commentIndex].replies[replyIndex].like + 1 },
+      }),
+    );
+  };

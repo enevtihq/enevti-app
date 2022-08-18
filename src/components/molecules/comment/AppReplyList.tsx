@@ -21,6 +21,7 @@ import {
   setReplyingOnReply,
 } from 'enevti-app/store/middleware/thunk/ui/view/comment';
 import { AppAsyncThunk } from 'enevti-app/types/ui/store/AppAsyncThunk';
+import { parsePersonaLabel } from 'enevti-app/service/enevti/persona';
 
 const AnimatedFlatList = Animated.createAnimatedComponent<FlatListProps<ReplyItem>>(FlatList);
 
@@ -30,6 +31,7 @@ interface AppReplyListProps {
   navigation: StackNavigationProp<RootStackParamList>;
   route: RouteProp<RootStackParamList, 'Comment'>;
   commentBoxInputRef: React.RefObject<TextInput>;
+  onLikeReplyPress: (id: string, commentIndex: number, replyIndex: number, key: string, target: string) => void;
 }
 
 export default function AppReplyList({
@@ -38,6 +40,7 @@ export default function AppReplyList({
   navigation,
   route,
   commentBoxInputRef,
+  onLikeReplyPress,
 }: AppReplyListProps) {
   const dispatch = useDispatch();
   const theme = useTheme() as Theme;
@@ -87,10 +90,10 @@ export default function AppReplyList({
         commentOrReply={item}
         navigation={navigation}
         onReplyPress={() => onReplyPress(index)}
-        onLikePress={() => {}}
+        onLikePress={() => onLikeReplyPress(item.id, commentIndex, index, route.key, parsePersonaLabel(item.owner))}
       />
     ),
-    [styles.replyItem, route, navigation, onReplyPress],
+    [styles.replyItem, route, navigation, onReplyPress, onLikeReplyPress, commentIndex],
   );
 
   const initialReplyListComponent = React.useMemo(() => {
@@ -183,7 +186,7 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
       color: theme.colors.placeholder,
     },
     replyItem: {
-      paddingVertical: hp(1, insets),
+      paddingVertical: hp(2, insets),
       paddingLeft: wp(17),
       paddingRight: wp(4),
     },

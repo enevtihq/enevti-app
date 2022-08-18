@@ -19,6 +19,7 @@ interface AppCommentItemProps {
   route: RouteProp<RootStackParamList, 'Comment'>;
   commentBoxInputRef: React.RefObject<TextInput>;
   onLikeCommentPress: (id: string, key: string, target: string) => void;
+  onLikeReplyPress: (id: string, commentIndex: number, replyIndex: number, key: string, target: string) => void;
 }
 
 export default function AppCommentItem({
@@ -28,6 +29,7 @@ export default function AppCommentItem({
   route,
   commentBoxInputRef,
   onLikeCommentPress,
+  onLikeReplyPress,
 }: AppCommentItemProps) {
   const dispatch = useDispatch();
   const insets = useSafeAreaInsets();
@@ -51,9 +53,10 @@ export default function AppCommentItem({
         navigation={navigation}
         route={route}
         commentBoxInputRef={commentBoxInputRef}
+        onLikeReplyPress={onLikeReplyPress}
       />
     ),
-    [comment, commentBoxInputRef, navigation, route],
+    [comment, commentBoxInputRef, navigation, route, onLikeReplyPress],
   );
 
   return (

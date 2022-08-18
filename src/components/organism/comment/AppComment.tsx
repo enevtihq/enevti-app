@@ -12,10 +12,11 @@ import {
   loadMoreComment,
   setCommentById,
   addCommentLikeById,
+  addReplyLikeById,
 } from 'enevti-app/store/middleware/thunk/ui/view/comment';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootState } from 'enevti-app/store/state';
-import { CommentItem, isCommentUndefined, selectCommentView } from 'enevti-app/store/slices/ui/view/comment';
+import { CommentItem, isCommentUndefined, selectCommentView, setReply } from 'enevti-app/store/slices/ui/view/comment';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
 import AppMessageEmpty from 'enevti-app/components/molecules/message/AppMessageEmpty';
 import { hp } from 'enevti-app/utils/imageRatio';
@@ -27,6 +28,7 @@ import { directPayLikeComment } from 'enevti-app/store/middleware/thunk/payment/
 import usePaymentCallback from 'enevti-app/utils/hook/usePaymentCallback';
 import { PaymentStatus } from 'enevti-app/types/ui/store/Payment';
 import { useKeyboard } from 'enevti-app/utils/hook/useKeyboard';
+import { directPayLikeReply } from 'enevti-app/store/middleware/thunk/payment/direct/directPayLikeReply';
 
 const AnimatedFlatList = Animated.createAnimatedComponent<FlatListProps<CommentItem>>(FlatList);
 
@@ -80,6 +82,14 @@ export default function AppComment({ route, navigation }: AppCommentProps) {
     [dispatch, route],
   );
 
+  const onLikeReplyPress = React.useCallback(
+    (id: string, commentIndex: number, replyIndex: number, key: string, target: string) => {
+      dispatch(setReply({ key: route.key, commentIndex, replyIndex, value: { isLiking: true } }));
+      paymentThunkRef.current = dispatch(directPayLikeReply({ id, commentIndex, replyIndex, key, route, target }));
+    },
+    [dispatch, route],
+  );
+
   const paymentCondition = React.useCallback(
     (paymentStatus: PaymentStatus) => {
       return (
@@ -97,6 +107,16 @@ export default function AppComment({ route, navigation }: AppCommentProps) {
         case 'likeComment':
           dispatch(setCommentById({ route, id: paymentStatus.id, comment: { isLiking: false } }));
           break;
+        case 'likeReply':
+          dispatch(
+            setReply({
+              key: route.key,
+              commentIndex: Number(paymentStatus.id.split(':')[0]),
+              replyIndex: Number(paymentStatus.id.split(':')[1]),
+              value: { isLiking: false },
+            }),
+          );
+          break;
         default:
           break;
       }
@@ -110,6 +130,23 @@ export default function AppComment({ route, navigation }: AppCommentProps) {
         case 'likeComment':
           dispatch(addCommentLikeById({ route, id: paymentStatus.id }));
           dispatch(setCommentById({ route, id: paymentStatus.id, comment: { liked: true } }));
+          break;
+        case 'likeReply':
+          dispatch(
+            addReplyLikeById({
+              route,
+              commentIndex: Number(paymentStatus.id.split(':')[0]),
+              replyIndex: Number(paymentStatus.id.split(':')[1]),
+            }),
+          );
+          dispatch(
+            setReply({
+              key: route.key,
+              commentIndex: Number(paymentStatus.id.split(':')[0]),
+              replyIndex: Number(paymentStatus.id.split(':')[1]),
+              value: { liked: true },
+            }),
+          );
           break;
         default:
           break;
@@ -143,9 +180,10 @@ export default function AppComment({ route, navigation }: AppCommentProps) {
         comment={item}
         navigation={navigation}
         onLikeCommentPress={onLikeCommentPress}
+        onLikeReplyPress={onLikeReplyPress}
       />
     ),
-    [navigation, route, onLikeCommentPress],
+    [navigation, route, onLikeCommentPress, onLikeReplyPress],
   );
 
   const keyExtractor = React.useCallback(item => item.id.toString(), []);
