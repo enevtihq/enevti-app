@@ -1,4 +1,13 @@
-import { View, StyleSheet, FlatListProps, FlatList, RefreshControl, TextInput } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  FlatListProps,
+  FlatList,
+  RefreshControl,
+  TextInput,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
 import React from 'react';
 import AppCommentItem from 'enevti-app/components/molecules/comment/AppCommentItem';
 import AppCommentBox from 'enevti-app/components/molecules/comment/AppCommentBox';
@@ -26,6 +35,8 @@ import { selectKeyboardStatus } from 'enevti-app/store/slices/ui/global/keyboard
 import { directPayLikeComment } from 'enevti-app/store/middleware/thunk/payment/direct/directPayLikeComment';
 import usePaymentCallback from 'enevti-app/utils/hook/usePaymentCallback';
 import { PaymentStatus } from 'enevti-app/types/ui/store/Payment';
+import { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const AnimatedFlatList = Animated.createAnimatedComponent<FlatListProps<CommentItem>>(FlatList);
 
@@ -36,6 +47,7 @@ interface AppCommentProps {
 
 export default function AppComment({ route, navigation }: AppCommentProps) {
   const dispatch = useDispatch();
+  const insets = useSafeAreaInsets();
   const styles = React.useMemo(() => makeStyles(), []);
 
   const [targetId, setTargetId] = React.useState<string>('');
@@ -149,7 +161,7 @@ export default function AppComment({ route, navigation }: AppCommentProps) {
   const keyExtractor = React.useCallback(item => item.id.toString(), []);
 
   const refreshControl = React.useMemo(
-    () => (keyboardState === 'hide' ? <RefreshControl refreshing={false} onRefresh={handleRefresh} /> : undefined),
+    () => <RefreshControl refreshing={false} onRefresh={keyboardState === 'hide' ? handleRefresh : undefined} />,
     [handleRefresh, keyboardState],
   );
 
@@ -175,13 +187,16 @@ export default function AppComment({ route, navigation }: AppCommentProps) {
   );
 
   return !commentUndefined ? (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      enabled={Platform.OS === 'ios' ? true : false}
+      keyboardVerticalOffset={hp(HEADER_HEIGHT_PERCENTAGE) + insets.top}
+      behavior={'position'}
+      style={styles.container}>
       <AnimatedFlatList
         scrollEventThrottle={16}
         data={comment.comment}
         renderItem={renderItem}
         keyExtractor={keyExtractor}
-        removeClippedSubviews={true}
         initialNumToRender={10}
         maxToRenderPerBatch={10}
         updateCellsBatchingPeriod={50}
@@ -194,7 +209,7 @@ export default function AppComment({ route, navigation }: AppCommentProps) {
         onEndReached={handleLoadMore}
       />
       <AppCommentBox inputRef={commentBoxInputRef} route={route} target={targetId} />
-    </View>
+    </KeyboardAvoidingView>
   ) : (
     <View style={styles.loaderContainer}>
       <AppActivityIndicator animating />
@@ -215,6 +230,7 @@ const makeStyles = () =>
     },
     listContentContainer: {
       paddingTop: undefined,
+      paddingBottom: hp(14),
     },
     listContentEmptyContainer: {
       flex: 1,

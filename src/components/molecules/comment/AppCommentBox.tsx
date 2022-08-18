@@ -1,4 +1,4 @@
-import { Keyboard, KeyboardAvoidingView, LayoutChangeEvent, Platform, StyleSheet, TextInput, View } from 'react-native';
+import { Keyboard, LayoutChangeEvent, Platform, StyleSheet, TextInput, View } from 'react-native';
 import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
@@ -63,7 +63,6 @@ import { BLOCK_TIME } from 'enevti-app/utils/constant/identifier';
 import { getTransactionStatus } from 'enevti-app/service/enevti/transaction';
 import AppTextHeading4 from 'enevti-app/components/atoms/text/AppTextHeading4';
 import { payReplyComment } from 'enevti-app/store/middleware/thunk/payment/creator/payReplyComment';
-import { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
 import { useKeyboard } from 'enevti-app/utils/hook/useKeyboard';
 
 interface AppCommentBoxProps {
@@ -566,10 +565,7 @@ export default function AppCommentBox({ route, target, inputRef }: AppCommentBox
   }, []);
 
   return (
-    <KeyboardAvoidingView
-      keyboardVerticalOffset={hp(HEADER_HEIGHT_PERCENTAGE) + insets.top}
-      behavior={Platform.OS === 'ios' ? 'position' : 'height'}
-      style={[styles.commentBoxContainer]}>
+    <View style={[styles.commentBoxContainer]}>
       <View style={styles.commentBox}>
         <View style={styles.avatarBox}>
           <AppAvatarRenderer size={hp(5, insets)} persona={myPersona} />
@@ -646,7 +642,7 @@ export default function AppCommentBox({ route, target, inputRef }: AppCommentBox
         </View>
       </View>
       <View style={styles.bottomBar} />
-    </KeyboardAvoidingView>
+    </View>
   );
 }
 
