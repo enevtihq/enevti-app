@@ -14,20 +14,31 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { RouteProp } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
-import { loadMoreReply, loadReply } from 'enevti-app/store/middleware/thunk/ui/view/comment';
+import {
+  loadMoreReply,
+  loadReply,
+  resetReplyingOnReply,
+  setReplyingOnReply,
+} from 'enevti-app/store/middleware/thunk/ui/view/comment';
 import { AppAsyncThunk } from 'enevti-app/types/ui/store/AppAsyncThunk';
 
 const AnimatedFlatList = Animated.createAnimatedComponent<FlatListProps<ReplyItem>>(FlatList);
 
 interface AppReplyListProps {
-  index: number;
+  commentIndex: number;
   comment: CommentItem;
   navigation: StackNavigationProp<RootStackParamList>;
   route: RouteProp<RootStackParamList, 'Comment'>;
   commentBoxInputRef: React.RefObject<TextInput>;
 }
 
-export default function AppReplyList({ comment, index, navigation, route, commentBoxInputRef }: AppReplyListProps) {
+export default function AppReplyList({
+  comment,
+  commentIndex,
+  navigation,
+  route,
+  commentBoxInputRef,
+}: AppReplyListProps) {
   const dispatch = useDispatch();
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
@@ -36,12 +47,12 @@ export default function AppReplyList({ comment, index, navigation, route, commen
   const [isLoadingMoreReply, setIsLoadingMoreReply] = React.useState<boolean>(false);
 
   const loadReplyCallback = React.useCallback(() => {
-    return dispatch(loadReply({ route, index }));
-  }, [dispatch, index, route]) as AppAsyncThunk;
+    return dispatch(loadReply({ route, index: commentIndex }));
+  }, [dispatch, commentIndex, route]) as AppAsyncThunk;
 
   const loadMoreReplyCallback = React.useCallback(() => {
-    return dispatch(loadMoreReply({ route, index }));
-  }, [dispatch, index, route]) as AppAsyncThunk;
+    return dispatch(loadMoreReply({ route, index: commentIndex }));
+  }, [dispatch, commentIndex, route]) as AppAsyncThunk;
 
   const onLoadReply = React.useCallback(async () => {
     setIsLoadingReply(true);
@@ -54,23 +65,32 @@ export default function AppReplyList({ comment, index, navigation, route, commen
     setIsLoadingMoreReply(false);
   }, [loadMoreReplyCallback]);
 
+  const onReplyPress = React.useCallback(
+    (index: number) => {
+      dispatch(resetReplyingOnReply({ route, commentIndex }));
+      dispatch(setReplyingOnReply({ route, commentIndex, replyIndex: index }));
+      commentBoxInputRef.current?.focus();
+    },
+    [commentBoxInputRef, dispatch, commentIndex, route],
+  );
+
   const keyExtractor = React.useCallback(item => item.id.toString(), []);
 
   const renderItem = React.useCallback(
-    ({ item }: any) => (
+    ({ item, index }: any) => (
       <AppCommentItemBase
         avatarSize={4}
         innerPadding={3}
         contentContainerStyle={styles.replyItem}
-        commentBoxInputRef={commentBoxInputRef}
         route={route}
         index={index}
         commentOrReply={item}
         navigation={navigation}
+        onReplyPress={() => onReplyPress(index)}
         onLikePress={() => {}}
       />
     ),
-    [styles.replyItem, commentBoxInputRef, route, index, navigation],
+    [styles.replyItem, route, navigation, onReplyPress],
   );
 
   const initialReplyListComponent = React.useMemo(() => {
@@ -97,7 +117,7 @@ export default function AppReplyList({ comment, index, navigation, route, commen
   const footerComponent = React.useMemo(() => {
     return comment.replyPagination &&
       comment.replies &&
-      comment.replyPagination.version !== comment.replies.length - 1 &&
+      comment.replyPagination.version !== comment.replies.length &&
       comment.replies.length !== 0 ? (
       <TouchableRipple onPress={onLoadMoreReply} style={styles.replyTouchable}>
         <View style={styles.replyContainer}>

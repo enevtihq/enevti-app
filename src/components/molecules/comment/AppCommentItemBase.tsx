@@ -1,4 +1,4 @@
-import { View, StyleSheet, TextInput, StyleProp, ViewStyle } from 'react-native';
+import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import React from 'react';
 import Color from 'color';
 import AppIconButton from 'enevti-app/components/atoms/icon/AppIconButton';
@@ -18,17 +18,16 @@ import { useTranslation } from 'react-i18next';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
 import AppMentionRenderer from './AppMentionRenderer';
 import { useDispatch } from 'react-redux';
-import { resetReplying, setReplying } from 'enevti-app/store/middleware/thunk/ui/view/comment';
 import { RouteProp } from '@react-navigation/native';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 
 interface AppCommentItemBaseProps {
   commentOrReply: CommentItem | ReplyItem;
   navigation: StackNavigationProp<RootStackParamList>;
-  index: number;
   route: RouteProp<RootStackParamList, 'Comment'>;
-  commentBoxInputRef: React.RefObject<TextInput>;
   onLikePress: (id: string, key: string, target: string) => void;
+  onReplyPress: () => void;
+  index: number;
   contentContainerStyle?: StyleProp<ViewStyle>;
   replyComponent?: (index: number) => React.ReactNode;
   avatarSize?: number;
@@ -40,8 +39,8 @@ export default function AppCommentItemBase({
   navigation,
   index,
   route,
-  commentBoxInputRef,
   onLikePress,
+  onReplyPress,
   contentContainerStyle,
   replyComponent,
   avatarSize = 5,
@@ -66,12 +65,6 @@ export default function AppCommentItemBase({
       dispatch(showSnackbar({ mode: 'info', text: t('error:dataUnavailable') }));
     }
   }, [commentOrReply.owner.address, navigation, dispatch, t]);
-
-  const onReplyPress = React.useCallback(() => {
-    dispatch(resetReplying({ route }));
-    dispatch(setReplying({ route, index }));
-    commentBoxInputRef.current?.focus();
-  }, [commentBoxInputRef, dispatch, index, route]);
 
   const onLike = React.useCallback(() => {
     onLikePress(commentOrReply.id, route.key, parsePersonaLabel(commentOrReply.owner));

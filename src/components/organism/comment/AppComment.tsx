@@ -1,13 +1,4 @@
-import {
-  View,
-  StyleSheet,
-  FlatListProps,
-  FlatList,
-  RefreshControl,
-  TextInput,
-  KeyboardAvoidingView,
-  Platform,
-} from 'react-native';
+import { View, StyleSheet, FlatListProps, FlatList, RefreshControl, TextInput, Platform } from 'react-native';
 import React from 'react';
 import AppCommentItem from 'enevti-app/components/molecules/comment/AppCommentItem';
 import AppCommentBox from 'enevti-app/components/molecules/comment/AppCommentBox';
@@ -35,8 +26,7 @@ import { selectKeyboardStatus } from 'enevti-app/store/slices/ui/global/keyboard
 import { directPayLikeComment } from 'enevti-app/store/middleware/thunk/payment/direct/directPayLikeComment';
 import usePaymentCallback from 'enevti-app/utils/hook/usePaymentCallback';
 import { PaymentStatus } from 'enevti-app/types/ui/store/Payment';
-import { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useKeyboard } from 'enevti-app/utils/hook/useKeyboard';
 
 const AnimatedFlatList = Animated.createAnimatedComponent<FlatListProps<CommentItem>>(FlatList);
 
@@ -47,11 +37,11 @@ interface AppCommentProps {
 
 export default function AppComment({ route, navigation }: AppCommentProps) {
   const dispatch = useDispatch();
-  const insets = useSafeAreaInsets();
-  const styles = React.useMemo(() => makeStyles(), []);
+  const { keyboardHeight } = useKeyboard();
+  const keyboardState = useSelector(selectKeyboardStatus);
+  const styles = React.useMemo(() => makeStyles(keyboardState, keyboardHeight), [keyboardState, keyboardHeight]);
 
   const [targetId, setTargetId] = React.useState<string>('');
-  const keyboardState = useSelector(selectKeyboardStatus);
   const comment = useSelector((state: RootState) => selectCommentView(state, route.key));
   const commentUndefined = useSelector((state: RootState) => isCommentUndefined(state, route.key));
   const commentBoxInputRef = React.useRef<TextInput>(null);
@@ -179,7 +169,7 @@ export default function AppComment({ route, navigation }: AppCommentProps) {
     () =>
       comment.commentPagination &&
       comment.comment &&
-      comment.commentPagination.version !== comment.comment.length - 1 &&
+      comment.commentPagination.version !== comment.comment.length &&
       comment.comment.length !== 0 ? (
         <AppActivityIndicator style={{ marginVertical: hp('3%') }} />
       ) : null,
@@ -187,11 +177,7 @@ export default function AppComment({ route, navigation }: AppCommentProps) {
   );
 
   return !commentUndefined ? (
-    <KeyboardAvoidingView
-      enabled={Platform.OS === 'ios' ? true : false}
-      keyboardVerticalOffset={hp(HEADER_HEIGHT_PERCENTAGE) + insets.top}
-      behavior={'position'}
-      style={styles.container}>
+    <View style={styles.container}>
       <AnimatedFlatList
         scrollEventThrottle={16}
         data={comment.comment}
@@ -209,7 +195,7 @@ export default function AppComment({ route, navigation }: AppCommentProps) {
         onEndReached={handleLoadMore}
       />
       <AppCommentBox inputRef={commentBoxInputRef} route={route} target={targetId} />
-    </KeyboardAvoidingView>
+    </View>
   ) : (
     <View style={styles.loaderContainer}>
       <AppActivityIndicator animating />
@@ -217,7 +203,7 @@ export default function AppComment({ route, navigation }: AppCommentProps) {
   );
 }
 
-const makeStyles = () =>
+const makeStyles = (keyboardState: 'show' | 'hide', keyboardHeight: number) =>
   StyleSheet.create({
     container: {
       flex: 1,
@@ -230,7 +216,7 @@ const makeStyles = () =>
     },
     listContentContainer: {
       paddingTop: undefined,
-      paddingBottom: hp(14),
+      paddingBottom: hp(14) + (keyboardState === 'show' && Platform.OS === 'ios' ? keyboardHeight : 0),
     },
     listContentEmptyContainer: {
       flex: 1,

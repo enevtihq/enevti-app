@@ -86,7 +86,7 @@ export const loadMoreOwned = createAsyncThunk<void, LoadProfileArgs, AsyncThunkA
         const myProfileOwned = selectMyProfileViewOwned(getState());
         const offset = selectMyProfileView(getState()).ownedPagination.checkpoint;
         const version = selectMyProfileView(getState()).ownedPagination.version;
-        if (myProfileOwned.length - 1 !== version) {
+        if (myProfileOwned.length !== version) {
           const myAddress = await getMyAddress();
           const ownedResponse = await getProfileOwned(myAddress, offset, PROFILE_OWNED_RESPONSE_LIMIT, version, signal);
           dispatch(
@@ -108,7 +108,7 @@ export const loadMoreOwned = createAsyncThunk<void, LoadProfileArgs, AsyncThunkA
         const profileOwned = selectProfileViewOwned(getState(), route.key);
         const offset = profile.ownedPagination.checkpoint;
         const version = profile.ownedPagination.version;
-        if (profileOwned.length - 1 !== version) {
+        if (profileOwned.length !== version) {
           const personaBase = await getBasePersonaByRouteParam(route.params, signal);
           if (personaBase.status === 200 && !isErrorResponse(personaBase)) {
             const ownedResponse = await getProfileOwned(
@@ -146,7 +146,7 @@ export const loadMoreCollection = createAsyncThunk<void, LoadProfileArgs, AsyncT
         const myProfileCollection = selectMyProfileViewCollection(getState());
         const offset = selectMyProfileView(getState()).collectionPagination.checkpoint;
         const version = selectMyProfileView(getState()).collectionPagination.version;
-        if (myProfileCollection.length - 1 !== version) {
+        if (myProfileCollection.length !== version) {
           const myAddress = await getMyAddress();
           const collectionResponse = await getProfileCollection(
             myAddress,
@@ -174,7 +174,7 @@ export const loadMoreCollection = createAsyncThunk<void, LoadProfileArgs, AsyncT
         const profileCollection = selectProfileViewCollection(getState(), route.key);
         const offset = profile.collectionPagination.checkpoint;
         const version = profile.collectionPagination.version;
-        if (profileCollection.length - 1 !== version) {
+        if (profileCollection.length !== version) {
           const personaBase = await getBasePersonaByRouteParam(route.params, signal);
           if (personaBase.status === 200 && !isErrorResponse(personaBase)) {
             const collectionResponse = await getProfileCollection(

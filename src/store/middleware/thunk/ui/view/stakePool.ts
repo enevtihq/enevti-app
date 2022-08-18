@@ -62,7 +62,7 @@ export const loadMoreStaker = createAsyncThunk<void, loadStakePoolArgs, AsyncThu
       const stakePoolView = selectStakePoolView(getState(), route.key);
       const offset = stakePoolView.stakerPagination.checkpoint;
       const version = stakePoolView.stakerPagination.version;
-      if (stakePoolView.staker.length - 1 !== version) {
+      if (stakePoolView.staker.length !== version) {
         const stakerResponse = await getStakePoolStaker(
           stakePoolView.owner.address,
           offset,

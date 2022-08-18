@@ -1,4 +1,4 @@
-import { Keyboard, LayoutChangeEvent, Platform, StyleSheet, TextInput, View } from 'react-native';
+import { Keyboard, KeyboardAvoidingView, LayoutChangeEvent, Platform, StyleSheet, TextInput, View } from 'react-native';
 import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
@@ -36,7 +36,7 @@ import {
   subtractCommentReplyCountById,
   addCommentReplyCountById,
   addReplyPaginationVersionByCommentId,
-  setReplyPaginationCheckpointToRepliesLength,
+  resetReplyingOnReply,
 } from 'enevti-app/store/middleware/thunk/ui/view/comment';
 import usePaymentCallback from 'enevti-app/utils/hook/usePaymentCallback';
 import { PaymentStatus } from 'enevti-app/types/ui/store/Payment';
@@ -64,6 +64,7 @@ import { getTransactionStatus } from 'enevti-app/service/enevti/transaction';
 import AppTextHeading4 from 'enevti-app/components/atoms/text/AppTextHeading4';
 import { payReplyComment } from 'enevti-app/store/middleware/thunk/payment/creator/payReplyComment';
 import { useKeyboard } from 'enevti-app/utils/hook/useKeyboard';
+import { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
 
 interface AppCommentBoxProps {
   route: RouteProp<RootStackParamList, 'Comment'>;
@@ -79,10 +80,6 @@ export default function AppCommentBox({ route, target, inputRef }: AppCommentBox
   const { keyboardHeight } = useKeyboard();
   const [commentBoxHeight, setCommentBoxHeight] = React.useState<number>(0);
 
-  const styles = React.useMemo(
-    () => makeStyles(theme, insets, keyboardHeight, commentBoxHeight),
-    [theme, insets, keyboardHeight, commentBoxHeight],
-  );
   const abortController = React.useRef<AbortController>();
   const paymentThunkRef = React.useRef<any>();
   const socket = React.useRef<Socket | undefined>();
@@ -99,14 +96,26 @@ export default function AppCommentBox({ route, target, inputRef }: AppCommentBox
     () => commentView.replying !== undefined && commentView.replying > -1,
     [commentView.replying],
   );
+  const isReplyingOnReply = React.useMemo(
+    () => commentView.replyingOnReply !== undefined && commentView.replyingOnReply > -1,
+    [commentView.replyingOnReply],
+  );
 
   const [isError, setIsError] = React.useState<boolean>(false);
   const [loading, setLoading] = React.useState<boolean>(false);
   const [sending, setSending] = React.useState<boolean>(false);
 
+  const styles = React.useMemo(
+    () => makeStyles(theme, insets, keyboardHeight, commentBoxHeight, sending),
+    [theme, insets, keyboardHeight, commentBoxHeight, sending],
+  );
+
   const onReplyClose = React.useCallback(() => {
+    if (isReplyingOnReply) {
+      dispatch(resetReplyingOnReply({ route, commentIndex: commentView.replying! }));
+    }
     dispatch(resetReplying({ route }));
-  }, [dispatch, route]);
+  }, [commentView.replying, dispatch, isReplyingOnReply, route]);
 
   React.useEffect(() => {
     if (isReplying) {
@@ -217,8 +226,6 @@ export default function AppCommentBox({ route, target, inputRef }: AppCommentBox
               dispatch(setCommentById({ route, id: paymentStatus.id, comment: { isPosting: false } }));
               dispatch(addCommentReplyCountById({ route, id: paymentStatus.id }));
               dispatch(addReplyPaginationVersionByCommentId({ key: route.key, commentId: paymentStatus.id }));
-              // TODO: temporary solution
-              dispatch(setReplyPaginationCheckpointToRepliesLength({ key: route.key, commentId: paymentStatus.id }));
               dispatch(showSnackbar({ mode: 'info', text: t('explorer:replySuccess') }));
             } else {
               dispatch(setCommentById({ route, id: paymentStatus.id, comment: { isPosting: true } }));
@@ -232,8 +239,6 @@ export default function AppCommentBox({ route, target, inputRef }: AppCommentBox
             dispatch(setCommentById({ route, id: paymentStatus.id, comment: { isPosting: false } }));
             dispatch(addCommentReplyCountById({ route, id: paymentStatus.id }));
             dispatch(addReplyPaginationVersionByCommentId({ key: route.key, commentId: paymentStatus.id }));
-            // TODO: temporary solution
-            dispatch(setReplyPaginationCheckpointToRepliesLength({ key: route.key, commentId: paymentStatus.id }));
             dispatch(showSnackbar({ mode: 'info', text: t('explorer:replySuccess') }));
             replySocket.current?.disconnect();
             clearTimeout(postReplyTimer.current);
@@ -565,19 +570,28 @@ export default function AppCommentBox({ route, target, inputRef }: AppCommentBox
   }, []);
 
   return (
-    <View style={[styles.commentBoxContainer]}>
-      <View style={styles.commentBox}>
+    <KeyboardAvoidingView
+      enabled={Platform.OS === 'ios' ? true : false}
+      keyboardVerticalOffset={hp(HEADER_HEIGHT_PERCENTAGE) + insets.top}
+      behavior={'position'}
+      style={[styles.commentBoxContainer]}>
+      <View pointerEvents={sending ? 'none' : 'auto'} style={styles.commentBox}>
         <View style={styles.avatarBox}>
           <AppAvatarRenderer size={hp(5, insets)} persona={myPersona} />
         </View>
         <View>
-          {isReplying ? (
+          {isReplying || isReplyingOnReply ? (
             <View style={styles.replyBoxContainer}>
               <View style={styles.replyBox}>
                 <AppTextBody4 numberOfLines={1} style={styles.replyBoxText}>
                   {t('explorer:replyTo')}{' '}
                   <AppTextHeading4 numberOfLines={1}>
-                    @{parsePersonaLabel(commentView.comment[commentView.replying!].owner)}
+                    @
+                    {isReplyingOnReply
+                      ? parsePersonaLabel(
+                          commentView.comment[commentView.replying!].replies[commentView.replyingOnReply!].owner,
+                        )
+                      : parsePersonaLabel(commentView.comment[commentView.replying!].owner)}
                   </AppTextHeading4>
                 </AppTextBody4>
                 <AppIconButton
@@ -642,22 +656,30 @@ export default function AppCommentBox({ route, target, inputRef }: AppCommentBox
         </View>
       </View>
       <View style={styles.bottomBar} />
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 
-const makeStyles = (theme: Theme, insets: SafeAreaInsets, keyboardHeight: number, commentBoxHeight: number) =>
+const makeStyles = (
+  theme: Theme,
+  insets: SafeAreaInsets,
+  keyboardHeight: number,
+  commentBoxHeight: number,
+  sending: boolean,
+) =>
   StyleSheet.create({
     commentBoxContainer: {
       position: 'absolute',
       bottom: 0,
       marginBottom: Platform.OS === 'ios' ? undefined : hp(2, insets) + insets.bottom,
       width: '100%',
+      backgroundColor: theme.colors.background,
     },
     commentBox: {
       backgroundColor: theme.colors.background,
       borderColor: Color(theme.colors.placeholder).alpha(0.05).rgb().toString(),
       borderTopWidth: 1,
+      opacity: sending ? 0.5 : 1,
     },
     bottomBar: {
       position: 'absolute',

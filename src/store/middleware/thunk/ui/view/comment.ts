@@ -39,6 +39,9 @@ import {
   subtractCommentReplyCount,
   addReplyPaginationVersion,
   setReplyPaginationCheckpoint,
+  setReply,
+  setCommentReplyingOnReply,
+  resetCommentReplyingOnReply,
 } from 'enevti-app/store/slices/ui/view/comment';
 import i18n from 'enevti-app/translations/i18n';
 import { COMMENT_LIMIT, REPLY_LIMIT } from 'enevti-app/utils/constant/limit';
@@ -98,7 +101,7 @@ export const loadMoreComment = createAsyncThunk<void, LoadCommentArgs, AsyncThun
       const commentView = selectCommentView(getState(), route.key);
       const offset = commentView.commentPagination.checkpoint;
       const version = commentView.commentPagination.version;
-      if (commentView.comment.length - 1 !== version) {
+      if (commentView.comment.length !== version) {
         let commentResponse: APIResponseVersioned<CommentAt> | undefined;
         if (route.params.type === 'nft') {
           commentResponse = await getNFTCommentByRouteParam(route.params, offset, COMMENT_LIMIT, version, signal);
@@ -179,7 +182,7 @@ export const loadMoreReply = createAsyncThunk<void, LoadReplyArgs, AsyncThunkAPI
       }
       const offset = comment.replyPagination.checkpoint;
       const version = comment.replyPagination.version;
-      if (comment.replies.length - 1 !== version) {
+      if (comment.replies.length !== version) {
         const replyResponse = await getCommentReply(comment.id, offset, REPLY_LIMIT, version, signal);
 
         if (replyResponse.status !== 200) {
@@ -271,6 +274,32 @@ export const resetReplying =
     const commentState = selectCommentView(getState(), route.key);
     if (commentState.replying !== undefined && commentState.replying > -1) {
       dispatch(setComment({ key: route.key, commentIndex: commentState.replying, value: { highlighted: false } }));
+      dispatch(resetCommentReplying(route.key));
+    }
+  };
+
+export const setReplyingOnReply =
+  ({ route, commentIndex, replyIndex }: { route: CommentRoute; commentIndex: number; replyIndex: number }): AppThunk =>
+  dispatch => {
+    dispatch(setReply({ key: route.key, commentIndex, replyIndex, value: { highlighted: true } }));
+    dispatch(setCommentReplying({ key: route.key, value: commentIndex }));
+    dispatch(setCommentReplyingOnReply({ key: route.key, value: replyIndex }));
+  };
+
+export const resetReplyingOnReply =
+  ({ route, commentIndex }: { route: CommentRoute; commentIndex: number }): AppThunk =>
+  (dispatch, getState) => {
+    const commentState = selectCommentView(getState(), route.key);
+    if (commentState.replyingOnReply !== undefined && commentState.replyingOnReply > -1) {
+      dispatch(
+        setReply({
+          key: route.key,
+          commentIndex,
+          replyIndex: commentState.replyingOnReply,
+          value: { highlighted: false },
+        }),
+      );
+      dispatch(resetCommentReplyingOnReply(route.key));
       dispatch(resetCommentReplying(route.key));
     }
   };

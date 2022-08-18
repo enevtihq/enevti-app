@@ -102,7 +102,7 @@ export default function AppWallet({ navigation, route }: AppWalletProps) {
   const ListFooterComponent = React.useMemo(
     () => (
       <View style={{ marginBottom: hp(18) }}>
-        {transactionHistoryPagination.version !== transactionHistory.length - 1 && transactionHistory.length !== 0 ? (
+        {transactionHistoryPagination.version !== transactionHistory.length && transactionHistory.length !== 0 ? (
           <AppActivityIndicator style={{ marginVertical: hp('3%') }} />
         ) : null}
       </View>

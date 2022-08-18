@@ -9,6 +9,8 @@ import AppCommentItemBase from './AppCommentItemBase';
 import AppReplyList from './AppReplyList';
 import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useDispatch } from 'react-redux';
+import { resetReplying, setReplying } from 'enevti-app/store/middleware/thunk/ui/view/comment';
 
 interface AppCommentItemProps {
   comment: CommentItem;
@@ -27,6 +29,7 @@ export default function AppCommentItem({
   commentBoxInputRef,
   onLikeCommentPress,
 }: AppCommentItemProps) {
+  const dispatch = useDispatch();
   const insets = useSafeAreaInsets();
   const styles = React.useMemo(() => makeStyles(insets), [insets]);
 
@@ -34,10 +37,16 @@ export default function AppCommentItem({
     onLikeCommentPress(comment.id, route.key, parsePersonaLabel(comment.owner));
   }, [comment.id, comment.owner, onLikeCommentPress, route.key]);
 
+  const onReplyPress = React.useCallback(() => {
+    dispatch(resetReplying({ route }));
+    dispatch(setReplying({ route, index }));
+    commentBoxInputRef.current?.focus();
+  }, [commentBoxInputRef, dispatch, index, route]);
+
   const replyComponent = React.useCallback(
     (commentIndex: number) => (
       <AppReplyList
-        index={commentIndex}
+        commentIndex={commentIndex}
         comment={comment}
         navigation={navigation}
         route={route}
@@ -54,7 +63,7 @@ export default function AppCommentItem({
       navigation={navigation}
       index={index}
       route={route}
-      commentBoxInputRef={commentBoxInputRef}
+      onReplyPress={onReplyPress}
       onLikePress={onLikeComment}
       replyComponent={replyComponent}
     />

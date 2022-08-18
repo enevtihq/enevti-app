@@ -88,7 +88,7 @@ export const loadMoreMinted = createAsyncThunk<void, LoadCollectionArgs, AsyncTh
       const collectionView = selectCollectionView(getState(), route.key);
       const offset = collectionView.mintedPagination.checkpoint;
       const version = collectionView.mintedPagination.version;
-      if (collectionView.minted.length - 1 !== version) {
+      if (collectionView.minted.length !== version) {
         const mintedResponse = await getCollectionMinted(
           collectionView.id,
           offset,
@@ -117,7 +117,7 @@ export const loadMoreActivity = createAsyncThunk<void, LoadCollectionArgs, Async
       const collectionView = selectCollectionView(getState(), route.key);
       const offset = collectionView.activityPagination.checkpoint;
       const version = collectionView.activityPagination.version;
-      if (collectionView.activity.length - 1 !== version) {
+      if (collectionView.activity.length !== version) {
         const activityResponse = await getCollectionActivity(
           collectionView.id,
           offset,

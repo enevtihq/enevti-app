@@ -25,6 +25,7 @@ type CommentViewState = {
   fetchedVersion: number;
   loaded: boolean;
   replying?: number;
+  replyingOnReply?: number;
   comment: CommentItem[];
 };
 
@@ -66,6 +67,12 @@ const commentViewSlice = createSlice({
     },
     resetCommentReplying: (comment, action: PayloadAction<string>) => {
       comment[action.payload].replying = undefined;
+    },
+    setCommentReplyingOnReply: (comment, action: PayloadAction<{ key: string; value: number }>) => {
+      comment[action.payload.key].replyingOnReply = action.payload.value;
+    },
+    resetCommentReplyingOnReply: (comment, action: PayloadAction<string>) => {
+      comment[action.payload].replyingOnReply = undefined;
     },
     setComment: (
       comment,
@@ -245,6 +252,8 @@ export const {
   resetCommentViewByKey,
   setCommentReplying,
   resetCommentReplying,
+  setCommentReplyingOnReply,
+  resetCommentReplyingOnReply,
   resetCommentView,
 } = commentViewSlice.actions;
 export default commentViewSlice.reducer;
