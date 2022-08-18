@@ -183,7 +183,7 @@ export const loadMoreReply = createAsyncThunk<void, LoadReplyArgs, AsyncThunkAPI
       const offset = comment.replyPagination.checkpoint;
       const version = comment.replyPagination.version;
       if (comment.replies.length !== version) {
-        const replyResponse = await getCommentReply(comment.id, offset, REPLY_LIMIT, version, signal);
+        const replyResponse = await getCommentReply(comment.id, offset, REPLY_LIMIT, 0, signal);
 
         if (replyResponse.status !== 200) {
           throw Error(i18n.t('error:clientError'));
