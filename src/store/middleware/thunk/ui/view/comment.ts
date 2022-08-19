@@ -65,6 +65,7 @@ export const loadComment = createAsyncThunk<void, LoadCommentArgs, AsyncThunkAPI
   'commentView/loadComment',
   async ({ route, type, reload = false }, { dispatch, signal }) => {
     const key = getCommentKey(route, type);
+    let status: number = 200;
     try {
       reload && dispatch(showModalLoader());
       dispatch(initCommentView(key));
@@ -72,12 +73,16 @@ export const loadComment = createAsyncThunk<void, LoadCommentArgs, AsyncThunkAPI
       if (type === 'clubs') {
         if (route.params.type === 'nft') {
           const isOwnerOrCreatorResponse = await getIsNFTOwnerOrCreatorByRouteParam(route.params, signal);
+          status = isOwnerOrCreatorResponse.status;
           if (isOwnerOrCreatorResponse.status === 200 && !isOwnerOrCreatorResponse.data) {
+            dispatch(setCommentAuthorized({ key, value: false }));
             return;
           }
         } else if (route.params.type === 'collection') {
           const isOwnerOrCreatorResponse = await getIsCollectionOwnerOrCreatorByRouteParam(route.params, signal);
+          status = isOwnerOrCreatorResponse.status;
           if (isOwnerOrCreatorResponse.status === 200 && !isOwnerOrCreatorResponse.data) {
+            dispatch(setCommentAuthorized({ key, value: false }));
             return;
           }
         }
@@ -109,6 +114,8 @@ export const loadComment = createAsyncThunk<void, LoadCommentArgs, AsyncThunkAPI
         }
       }
 
+      status = commentResponse.status;
+
       dispatch(resetCommentViewByKey(key));
       dispatch(
         pushComment({
@@ -126,11 +133,10 @@ export const loadComment = createAsyncThunk<void, LoadCommentArgs, AsyncThunkAPI
           },
         }),
       );
-      dispatch(setCommentAuthorized({ key, value: true }));
-      dispatch(setCommentViewReqStatus({ key, value: commentResponse.status }));
     } catch (err: any) {
       handleError(err);
     } finally {
+      dispatch(setCommentViewReqStatus({ key, value: status }));
       dispatch(setCommentViewLoaded({ key, value: true }));
       reload && dispatch(hideModalLoader());
     }

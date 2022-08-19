@@ -19,6 +19,7 @@ import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { COIN_NAME } from 'enevti-app/utils/constant/identifier';
 import { ReplyCommentUI } from 'enevti-app/types/core/asset/redeemable_nft/reply_comment_asset';
+import { getCommentKey } from '../../ui/view/comment';
 
 type CommentRoute = RouteProp<RootStackParamList, 'Comment'>;
 type PayReplyCommentPayload = { route: CommentRoute; commentId: string; reply: string };
@@ -63,7 +64,7 @@ export const payReplyComment = createAsyncThunk<void, PayReplyCommentPayload, As
       dispatch(
         setPaymentStatus({
           id: payload.commentId,
-          key: payload.route.key,
+          key: getCommentKey(payload.route, 'common'),
           action: 'replyComment',
           type: 'initiated',
           message: '',
@@ -75,7 +76,7 @@ export const payReplyComment = createAsyncThunk<void, PayReplyCommentPayload, As
       dispatch(
         setPaymentStatus({
           id: payload.commentId,
-          key: payload.route.key,
+          key: getCommentKey(payload.route, 'common'),
           action: 'replyComment',
           type: 'error',
           message: (err as Record<string, any>).message.toString(),

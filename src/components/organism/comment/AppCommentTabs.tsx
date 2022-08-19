@@ -306,7 +306,7 @@ const makeStyles = (keyboardState: 'show' | 'hide', keyboardHeight: number) =>
       height: '90%',
     },
     listContentContainer: {
-      paddingTop: undefined,
+      paddingTop: hp(1),
       paddingBottom: hp(14) + (keyboardState === 'show' && Platform.OS === 'ios' ? keyboardHeight : 0),
     },
     listContentEmptyContainer: {

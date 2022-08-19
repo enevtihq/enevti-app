@@ -172,6 +172,8 @@ export default function AppCommentBox({ route, type, target, inputRef }: AppComm
       switch (paymentStatus.action) {
         case 'commentCollection':
         case 'commentNFT':
+        case 'commentCollectionClubs':
+        case 'commentNFTClubs':
           dispatch(
             unshiftComment({
               key: getCommentKey(route, type),
@@ -191,6 +193,7 @@ export default function AppCommentBox({ route, type, target, inputRef }: AppComm
           dispatch(addCommentViewPaginationCheckpoint({ key: getCommentKey(route, type) }));
           break;
         case 'replyComment':
+        case 'replyCommentClubs':
           dispatch(setCommentById({ route, type, id: paymentStatus.id, comment: { isPosting: true } }));
           break;
         default:
@@ -208,6 +211,8 @@ export default function AppCommentBox({ route, type, target, inputRef }: AppComm
       switch (paymentStatus.action) {
         case 'commentCollection':
         case 'commentNFT':
+        case 'commentCollectionClubs':
+        case 'commentNFTClubs':
           setSending(false);
           dispatch(
             setCommentById({ route, type, id: getCommentKey(route, type), comment: { id: paymentStatus.message } }),
@@ -234,6 +239,7 @@ export default function AppCommentBox({ route, type, target, inputRef }: AppComm
           });
           break;
         case 'replyComment':
+        case 'replyCommentClubs':
           setSending(false);
           onReplyClose();
 
@@ -273,11 +279,14 @@ export default function AppCommentBox({ route, type, target, inputRef }: AppComm
       switch (paymentStatus.action) {
         case 'commentCollection':
         case 'commentNFT':
+        case 'commentCollectionClubs':
+        case 'commentNFTClubs':
           dispatch(shiftComment({ key: getCommentKey(route, type) }));
           dispatch(subtractCommentViewPaginationVersion({ key: getCommentKey(route, type) }));
           dispatch(subtractCommentViewPaginationCheckpoint({ key: getCommentKey(route, type) }));
           break;
         case 'replyComment':
+        case 'replyCommentClubs':
           dispatch(subtractCommentReplyCountById({ route, type, id: paymentStatus.id }));
           break;
         default:

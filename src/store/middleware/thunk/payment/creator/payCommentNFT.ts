@@ -20,6 +20,7 @@ import { RootStackParamList } from 'enevti-app/navigation';
 import { CommentNFTUI } from 'enevti-app/types/core/asset/redeemable_nft/comment_nft_asset';
 import { getNFTIdFromRouteParam } from 'enevti-app/service/enevti/nft';
 import { COIN_NAME } from 'enevti-app/utils/constant/identifier';
+import { getCommentKey } from '../../ui/view/comment';
 
 type CommentRoute = RouteProp<RootStackParamList, 'Comment'>;
 type PayCommentNFTPayload = { route: CommentRoute; comment: string };
@@ -65,7 +66,7 @@ export const payCommentNFT = createAsyncThunk<void, PayCommentNFTPayload, AsyncT
       dispatch(
         setPaymentStatus({
           id: payload.route.params.arg,
-          key: payload.route.key,
+          key: getCommentKey(payload.route, 'common'),
           action: 'commentNFT',
           type: 'initiated',
           message: '',
@@ -77,7 +78,7 @@ export const payCommentNFT = createAsyncThunk<void, PayCommentNFTPayload, AsyncT
       dispatch(
         setPaymentStatus({
           id: payload.route.params.arg,
-          key: payload.route.key,
+          key: getCommentKey(payload.route, 'common'),
           action: 'commentNFT',
           type: 'error',
           message: (err as Record<string, any>).message.toString(),

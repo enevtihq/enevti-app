@@ -35,7 +35,7 @@ type CommentViewStore = {
 };
 
 const initialStateItem: CommentViewState = {
-  authorized: false,
+  authorized: true,
   commentPagination: {
     checkpoint: 0,
     version: 0,
