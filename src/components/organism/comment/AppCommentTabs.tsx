@@ -39,6 +39,8 @@ import { directPayLikeReply } from 'enevti-app/store/middleware/thunk/payment/di
 import AppResponseView from '../view/AppResponseView';
 import AppInfoMessage from 'enevti-app/components/molecules/message/base/AppInfoMessage';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
+import { directPayLikeCommentClubs } from 'enevti-app/store/middleware/thunk/payment/direct/directPayLikeCommentClubs';
+import { directPayLikeReplyClubs } from 'enevti-app/store/middleware/thunk/payment/direct/directPayLikeReplyClubs';
 
 const AnimatedFlatList = Animated.createAnimatedComponent<FlatListProps<CommentItem>>(FlatList);
 
@@ -89,7 +91,11 @@ export default function AppCommentTabs({ route, navigation, type }: AppCommentTa
   const onLikeCommentPress = React.useCallback(
     (id: string, key: string, target: string) => {
       dispatch(setCommentById({ route, type, id, comment: { isLiking: true } }));
-      paymentThunkRef.current = dispatch(directPayLikeComment({ id, key, route, target }));
+      if (type === 'common') {
+        paymentThunkRef.current = dispatch(directPayLikeComment({ id, key, route, target }));
+      } else if (type === 'clubs') {
+        paymentThunkRef.current = dispatch(directPayLikeCommentClubs({ id, key, route, target }));
+      }
     },
     [dispatch, route, type],
   );
@@ -97,7 +103,13 @@ export default function AppCommentTabs({ route, navigation, type }: AppCommentTa
   const onLikeReplyPress = React.useCallback(
     (id: string, commentIndex: number, replyIndex: number, key: string, target: string) => {
       dispatch(setReply({ key: getCommentKey(route, type), commentIndex, replyIndex, value: { isLiking: true } }));
-      paymentThunkRef.current = dispatch(directPayLikeReply({ id, commentIndex, replyIndex, key, route, target }));
+      if (type === 'common') {
+        paymentThunkRef.current = dispatch(directPayLikeReply({ id, commentIndex, replyIndex, key, route, target }));
+      } else if (type === 'clubs') {
+        paymentThunkRef.current = dispatch(
+          directPayLikeReplyClubs({ id, commentIndex, replyIndex, key, route, target }),
+        );
+      }
     },
     [dispatch, route, type],
   );
@@ -121,9 +133,11 @@ export default function AppCommentTabs({ route, navigation, type }: AppCommentTa
     (paymentStatus: PaymentStatus) => {
       switch (paymentStatus.action) {
         case 'likeComment':
+        case 'likeCommentClubs':
           dispatch(setCommentById({ route, type, id: paymentStatus.id, comment: { isLiking: false } }));
           break;
         case 'likeReply':
+        case 'likeReplyClubs':
           dispatch(
             setReply({
               key: getCommentKey(route, type),
@@ -144,10 +158,12 @@ export default function AppCommentTabs({ route, navigation, type }: AppCommentTa
     async (paymentStatus: PaymentStatus) => {
       switch (paymentStatus.action) {
         case 'likeComment':
+        case 'likeCommentClubs':
           dispatch(addCommentLikeById({ route, type, id: paymentStatus.id }));
           dispatch(setCommentById({ route, type, id: paymentStatus.id, comment: { liked: true } }));
           break;
         case 'likeReply':
+        case 'likeReplyClubs':
           dispatch(
             addReplyLikeById({
               route,

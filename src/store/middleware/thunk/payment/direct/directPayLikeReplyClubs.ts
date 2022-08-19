@@ -23,12 +23,19 @@ import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import { COIN_NAME } from 'enevti-app/utils/constant/identifier';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from 'enevti-app/navigation';
-import { selectMyProfileCache } from 'enevti-app/store/slices/entities/cache/myProfile';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
+import { selectMyProfileCache } from 'enevti-app/store/slices/entities/cache/myProfile';
 import { LikeReplyClubsUI } from 'enevti-app/types/core/asset/redeemable_nft/like_reply_clubs_asset';
 
 type CommentRoute = RouteProp<RootStackParamList, 'Comment'>;
-type PayLikeReplyClubsPayload = { route: CommentRoute; id: string; key: string; target: string };
+type PayLikeReplyClubsPayload = {
+  route: CommentRoute;
+  id: string;
+  commentIndex: number;
+  replyIndex: number;
+  key: string;
+  target: string;
+};
 
 export const directPayLikeReplyClubs = createAsyncThunk<void, PayLikeReplyClubsPayload, AsyncThunkAPI>(
   'commentView/directPayLikeReplyClubs',
@@ -36,7 +43,7 @@ export const directPayLikeReplyClubs = createAsyncThunk<void, PayLikeReplyClubsP
     try {
       dispatch(
         setPaymentStatus({
-          id: payload.id,
+          id: `${payload.commentIndex}:${payload.replyIndex}`,
           key: payload.key,
           action: 'likeReplyClubs',
           type: 'initiated',
@@ -79,7 +86,7 @@ export const directPayLikeReplyClubs = createAsyncThunk<void, PayLikeReplyClubsP
 
       dispatch(
         setPaymentStatus({
-          id: payload.id,
+          id: `${payload.commentIndex}:${payload.replyIndex}`,
           key: payload.key,
           action: 'likeReplyClubs',
           type: 'process',
@@ -104,7 +111,7 @@ export const directPayLikeReplyClubs = createAsyncThunk<void, PayLikeReplyClubsP
       if (response.status === 200) {
         dispatch(
           setPaymentStatus({
-            id: payload.id,
+            id: `${payload.commentIndex}:${payload.replyIndex}`,
             key: payload.key,
             action: 'likeReplyClubs',
             type: 'success',
@@ -114,7 +121,7 @@ export const directPayLikeReplyClubs = createAsyncThunk<void, PayLikeReplyClubsP
       } else {
         dispatch(
           setPaymentStatus({
-            id: payload.id,
+            id: `${payload.commentIndex}:${payload.replyIndex}`,
             key: payload.key,
             action: 'likeReplyClubs',
             type: 'error',
@@ -126,7 +133,7 @@ export const directPayLikeReplyClubs = createAsyncThunk<void, PayLikeReplyClubsP
       handleError(err);
       dispatch(
         setPaymentStatus({
-          id: payload.id,
+          id: `${payload.commentIndex}:${payload.replyIndex}`,
           key: payload.key,
           action: 'likeReplyClubs',
           type: 'error',

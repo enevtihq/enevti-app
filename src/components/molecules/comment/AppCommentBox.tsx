@@ -66,6 +66,9 @@ import { payReplyComment } from 'enevti-app/store/middleware/thunk/payment/creat
 import { useKeyboard } from 'enevti-app/utils/hook/useKeyboard';
 import { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
 import { TOP_TABBAR_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppTopTabBar';
+import { payReplyCommentClubs } from 'enevti-app/store/middleware/thunk/payment/creator/payReplyCommentClubs';
+import { payCommentCollectionClubs } from 'enevti-app/store/middleware/thunk/payment/creator/payCommentCollectionClubs';
+import { payCommentNFTClubs } from 'enevti-app/store/middleware/thunk/payment/creator/payCommentNFTClubs';
 
 interface AppCommentBoxProps {
   route: RouteProp<RootStackParamList, 'Comment'>;
@@ -296,17 +299,31 @@ export default function AppCommentBox({ route, type, target, inputRef }: AppComm
     Keyboard.dismiss();
     setSending(true);
     if (isReplying) {
-      paymentThunkRef.current = dispatch(
-        payReplyComment({ route, commentId: commentView.comment[commentView.replying!].id, reply: value }),
-      );
+      if (type === 'common') {
+        paymentThunkRef.current = dispatch(
+          payReplyComment({ route, commentId: commentView.comment[commentView.replying!].id, reply: value }),
+        );
+      } else if (type === 'clubs') {
+        paymentThunkRef.current = dispatch(
+          payReplyCommentClubs({ route, commentId: commentView.comment[commentView.replying!].id, reply: value }),
+        );
+      }
     } else {
       if (route.params.type === 'collection') {
-        paymentThunkRef.current = dispatch(payCommentCollection({ route, comment: value }));
+        if (type === 'common') {
+          paymentThunkRef.current = dispatch(payCommentCollection({ route, comment: value }));
+        } else if (type === 'clubs') {
+          paymentThunkRef.current = dispatch(payCommentCollectionClubs({ route, comment: value }));
+        }
       } else if (route.params.type === 'nft') {
-        paymentThunkRef.current = dispatch(payCommentNFT({ route, comment: value }));
+        if (type === 'common') {
+          paymentThunkRef.current = dispatch(payCommentNFT({ route, comment: value }));
+        } else if (type === 'clubs') {
+          paymentThunkRef.current = dispatch(payCommentNFTClubs({ route, comment: value }));
+        }
       }
     }
-  }, [commentView.comment, commentView.replying, dispatch, isReplying, route, value]);
+  }, [commentView.comment, commentView.replying, dispatch, isReplying, route, type, value]);
 
   const SuggestionError = React.useMemo(
     () => (
