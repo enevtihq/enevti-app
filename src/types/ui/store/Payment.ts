@@ -15,7 +15,7 @@ export type PaymentAction = {
     | 'likeReply'
     | 'likeReplyClubs'
     | 'commentNFT'
-    | 'commentNftClubs'
+    | 'commentNFTClubs'
     | 'commentCollection'
     | 'commentCollectionClubs'
     | 'replyComment'

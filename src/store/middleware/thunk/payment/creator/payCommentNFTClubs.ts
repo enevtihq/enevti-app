@@ -17,20 +17,22 @@ import { AppTransaction } from 'enevti-app/types/core/service/transaction';
 import { redeemableNftModule } from 'enevti-app/utils/constant/transaction';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from 'enevti-app/navigation';
+import { getNFTIdFromRouteParam } from 'enevti-app/service/enevti/nft';
 import { COIN_NAME } from 'enevti-app/utils/constant/identifier';
-import { ReplyCommentUI } from 'enevti-app/types/core/asset/redeemable_nft/reply_comment_asset';
+import { CommentNFTClubsUI } from 'enevti-app/types/core/asset/redeemable_nft/comment_nft_clubs_asset';
 
 type CommentRoute = RouteProp<RootStackParamList, 'Comment'>;
-type PayReplyCommentPayload = { route: CommentRoute; commentId: string; reply: string };
+type PayCommentNFTClubsPayload = { route: CommentRoute; comment: string };
 
-export const payReplyComment = createAsyncThunk<void, PayReplyCommentPayload, AsyncThunkAPI>(
-  'commentView/payReplyComment',
+export const payCommentNFTClubs = createAsyncThunk<void, PayCommentNFTClubsPayload, AsyncThunkAPI>(
+  'commentView/payCommentNFTClubs',
   async (payload, { dispatch, signal }) => {
     try {
-      const transactionPayload: AppTransaction<ReplyCommentUI> = await createTransaction<ReplyCommentUI>(
+      const nftId = await getNFTIdFromRouteParam(payload.route.params, signal);
+      const transactionPayload: AppTransaction<CommentNFTClubsUI> = await createTransaction<CommentNFTClubsUI>(
         redeemableNftModule.moduleID,
-        redeemableNftModule.replyComment,
-        { id: payload.commentId, text: payload.reply },
+        redeemableNftModule.commentNftClubs,
+        { id: nftId, text: payload.comment },
         '0',
         signal,
       );
@@ -47,10 +49,10 @@ export const payReplyComment = createAsyncThunk<void, PayReplyCommentPayload, As
       dispatch(setPaymentPriority('normal'));
       dispatch(
         setPaymentAction({
-          type: 'replyComment',
+          type: 'commentNFTClubs',
           icon: iconMap.commentFill,
-          name: i18n.t('payment:payReplyComment'),
-          description: i18n.t('payment:payReplyCommentDescription'),
+          name: i18n.t('payment:payCommentNFTClubs'),
+          description: i18n.t('payment:payCommentNFTClubsDescription'),
           amount: '0',
           currency: COIN_NAME,
           payload: JSON.stringify(attachFee(transactionPayload, (BigInt(gasFee) + BigInt(baseFee)).toString())),
@@ -62,9 +64,9 @@ export const payReplyComment = createAsyncThunk<void, PayReplyCommentPayload, As
 
       dispatch(
         setPaymentStatus({
-          id: payload.commentId,
+          id: payload.route.params.arg,
           key: payload.route.key,
-          action: 'replyComment',
+          action: 'commentNFTClubs',
           type: 'initiated',
           message: '',
         }),
@@ -74,9 +76,9 @@ export const payReplyComment = createAsyncThunk<void, PayReplyCommentPayload, As
       dispatch(hidePayment());
       dispatch(
         setPaymentStatus({
-          id: payload.commentId,
+          id: payload.route.params.arg,
           key: payload.route.key,
-          action: 'replyComment',
+          action: 'commentNFTClubs',
           type: 'error',
           message: (err as Record<string, any>).message.toString(),
         }),
