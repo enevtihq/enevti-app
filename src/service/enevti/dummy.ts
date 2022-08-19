@@ -145,6 +145,7 @@ export const getDummyCollectionFullData = (): Collection => {
     symbol: 'EYECL',
     like: 123,
     comment: 12,
+    clubs: 5,
     social: {
       twitter: {
         link: 'https://twitter.com/aldhosutra',
@@ -288,6 +289,7 @@ export const getDummyNFTFullData = (): NFT => {
     collectionId: Math.random().toString(),
     like: 10,
     comment: 3,
+    clubs: 2,
     createdOn: 1649172800701,
     networkIdentifier: COIN_NAME,
     symbol: 'EYECL',

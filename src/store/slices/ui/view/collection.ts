@@ -53,6 +53,7 @@ const initialStateItem: CollectionViewState = {
   createdOn: 0,
   like: 0,
   comment: 0,
+  clubs: 0,
   social: {
     twitter: { link: '', stat: 0 },
   },

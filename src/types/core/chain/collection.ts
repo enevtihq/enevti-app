@@ -56,6 +56,7 @@ export interface Collection extends CollectionBase {
   createdOn: number;
   like: number;
   comment: number;
+  clubs: number;
   social: SocialProfile;
   packSize: number;
   minted: NFTBase[];

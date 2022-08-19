@@ -41,6 +41,18 @@ export type RedeemableNFTAccountStatsChain = {
     collection: Buffer[];
     comment: Buffer[];
     reply: Buffer[];
+    commentClubs: Buffer[];
+    replyClubs: Buffer[];
+  };
+  commentSent: {
+    total: number;
+    comment: Buffer[];
+    reply: Buffer[];
+  };
+  commentClubsSent: {
+    total: number;
+    comment: Buffer[];
+    reply: Buffer[];
   };
 };
 
@@ -52,6 +64,7 @@ export type RedeemableNFTAccountProps = {
     raffled: number;
     likeSent: number;
     commentSent: number;
+    commentClubsSent: number;
     owned: NFTIdAsset[];
     onSale: NFTIdAsset[];
     collection: CollectionIdAsset[];
@@ -100,9 +113,14 @@ export type EngagementActivityName =
   | 'likeCollection'
   | 'likeComment'
   | 'likeReply'
+  | 'likeCommentClubs'
+  | 'likeReplyClubs'
   | 'commentNft'
   | 'commentCollection'
-  | 'replyComment';
+  | 'replyComment'
+  | 'replyCommentClubs'
+  | 'commentCollectionClubs'
+  | 'commentNftClubs';
 
 export type EngagementActivity = Omit<ActivityBase, 'name' | 'to' | 'value'> & {
   name: EngagementActivityName;

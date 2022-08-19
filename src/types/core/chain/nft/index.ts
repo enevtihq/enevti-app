@@ -35,6 +35,7 @@ export interface NFT extends NFTBase {
   collectionId: string;
   redeem: NFTRedeem;
   comment: number;
+  clubs: number;
   description: string;
   createdOn: number;
   owner: Persona;

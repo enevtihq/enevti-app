@@ -32,6 +32,7 @@ const initialStateItem: NFTDetailsViewState = {
   like: 0,
   liked: false,
   comment: 0,
+  clubs: 0,
   createdOn: 0,
   name: '',
   description: '',

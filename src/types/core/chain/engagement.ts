@@ -24,6 +24,14 @@ export type ReplyAtAsset = {
   reply: Buffer[];
 };
 
+export type CommentClubsAt = {
+  clubs: CommentClubs[];
+};
+
+export type CommentClubsAtAsset = {
+  clubs: Buffer[];
+};
+
 export type Liked = {
   status: 0 | 1;
 };
@@ -52,3 +60,7 @@ export interface CommentAsset extends Omit<Comment, 'id' | 'date' | 'owner' | 't
 export type Reply = Omit<Comment, 'type' | 'reply'>;
 
 export type ReplyAsset = Omit<CommentAsset, 'type' | 'reply'>;
+
+export type CommentClubs = Comment;
+
+export type CommentClubsAsset = CommentAsset;
