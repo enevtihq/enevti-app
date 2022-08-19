@@ -41,6 +41,7 @@ import AppInfoMessage from 'enevti-app/components/molecules/message/base/AppInfo
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import { directPayLikeCommentClubs } from 'enevti-app/store/middleware/thunk/payment/direct/directPayLikeCommentClubs';
 import { directPayLikeReplyClubs } from 'enevti-app/store/middleware/thunk/payment/direct/directPayLikeReplyClubs';
+import { useTranslation } from 'react-i18next';
 
 const AnimatedFlatList = Animated.createAnimatedComponent<FlatListProps<CommentItem>>(FlatList);
 
@@ -51,6 +52,7 @@ interface AppCommentTabsProps {
 }
 
 export default function AppCommentTabs({ route, navigation, type }: AppCommentTabsProps) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { keyboardHeight } = useKeyboard();
   const keyboardState = useSelector(selectKeyboardStatus);
@@ -275,7 +277,11 @@ export default function AppCommentTabs({ route, navigation, type }: AppCommentTa
       </AppResponseView>
     ) : (
       <View style={styles.notAuthorizedContainer}>
-        <AppInfoMessage icon={iconMap.error} message={'you are not authorized'} />
+        <AppInfoMessage
+          icon={iconMap.cannotComment}
+          title={t('explorer:notAuthorizedTitle')}
+          message={t('explorer:notAuthorizedDescription')}
+        />
       </View>
     )
   ) : (

@@ -16,4 +16,6 @@ export default {
   loading: 'Loading...',
   commonComment: 'Common',
   clubsComment: 'Clubs',
+  notAuthorizedTitle: 'You Are Not Authorized!',
+  notAuthorizedDescription: 'Only owners or creator of this item can leave comment on Clubs',
 };
