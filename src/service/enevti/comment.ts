@@ -11,7 +11,7 @@ import {
 } from 'enevti-app/utils/constant/URLCreator';
 import { APIResponseVersioned } from 'enevti-app/types/core/service/api';
 import { COMMENT_INITIAL_LENGTH, REPLY_INITIAL_LENGTH } from 'enevti-app/utils/constant/limit';
-import { CommentAt, CommentClubsAt, ReplyAt } from 'enevti-app/types/core/chain/engagement';
+import { Comment, CommentAt, CommentClubsAt, ReplyAt } from 'enevti-app/types/core/chain/engagement';
 import { getCollectionIdFromRouteParam } from './collection';
 import { getNFTIdFromRouteParam } from './nft';
 import { getMyAddress } from './persona';
@@ -263,7 +263,7 @@ export async function getInitialNFTCommentClubsByRouteParam(
   return await getInitialNFTCommentClubs(nftId, signal);
 }
 
-export function initCommentViewState(comment: CommentAt['comment']): CommentItem[] {
+export function initCommentViewState(comment: Comment[]): CommentItem[] {
   return comment.map(c => ({
     ...c,
     isPosting: false,

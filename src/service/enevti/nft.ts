@@ -11,6 +11,7 @@ import {
   urlGetNFTBySerial,
   urlGetSerialToNFTId,
   urlGetNFTActivityById,
+  urlGetIsNFTOwnerOrCreator,
 } from 'enevti-app/utils/constant/URLCreator';
 import { APIResponse, APIResponseVersioned, ResponseJSON } from 'enevti-app/types/core/service/api';
 import { NFTActivity } from 'enevti-app/types/core/chain/nft/NFTActivity';
@@ -26,6 +27,11 @@ export function cleanTMPImage() {
   ImageCropPicker.clean().catch(e => {
     handleError(e);
   });
+}
+
+async function fetchIsNFTOwnerOrCreator(id: string, signal?: AbortController['signal']): Promise<APIResponse<boolean>> {
+  const myAddress = await getMyAddress();
+  return await apiFetch<boolean>(urlGetIsNFTOwnerOrCreator(id, myAddress), signal);
 }
 
 export async function isNameAvailable(name: string, signal?: AbortController['signal']): Promise<boolean> {
@@ -82,6 +88,10 @@ async function fetchNFTActivity(
   return await apiFetchVersioned<NFTActivity[]>(urlGetNFTActivityById(id, offset, limit, version), signal);
 }
 
+export async function getIsNFTOwnerOrCreator(id: string, signal?: AbortController['signal']) {
+  return await fetchIsNFTOwnerOrCreator(id, signal);
+}
+
 export async function getNFTActivity(
   id: string,
   offset: number,
@@ -134,4 +144,12 @@ export async function getNFTbyRouteParam(routeParam: NFTDetailsRoute, signal?: A
     default:
       return await fetchNFTbyId(routeParam.arg, signal);
   }
+}
+
+export async function getIsNFTOwnerOrCreatorByRouteParam(
+  routeParam: NFTDetailsRoute,
+  signal?: AbortController['signal'],
+) {
+  const id = await getNFTIdFromRouteParam(routeParam, signal);
+  return await fetchIsNFTOwnerOrCreator(id, signal);
 }

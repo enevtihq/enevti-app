@@ -10,10 +10,11 @@ import AppReplyList from './AppReplyList';
 import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
-import { clearReplying, setReplying } from 'enevti-app/store/middleware/thunk/ui/view/comment';
+import { clearReplying, getCommentKey, setReplying } from 'enevti-app/store/middleware/thunk/ui/view/comment';
 
 interface AppCommentItemProps {
   comment: CommentItem;
+  type: 'common' | 'clubs';
   navigation: StackNavigationProp<RootStackParamList>;
   index: number;
   route: RouteProp<RootStackParamList, 'Comment'>;
@@ -24,6 +25,7 @@ interface AppCommentItemProps {
 
 export default function AppCommentItem({
   comment,
+  type,
   navigation,
   index,
   route,
@@ -36,18 +38,19 @@ export default function AppCommentItem({
   const styles = React.useMemo(() => makeStyles(insets), [insets]);
 
   const onLikeComment = React.useCallback(() => {
-    onLikeCommentPress(comment.id, route.key, parsePersonaLabel(comment.owner));
-  }, [comment.id, comment.owner, onLikeCommentPress, route.key]);
+    onLikeCommentPress(comment.id, getCommentKey(route, type), parsePersonaLabel(comment.owner));
+  }, [comment.id, comment.owner, onLikeCommentPress, route, type]);
 
   const onReplyPress = React.useCallback(() => {
-    dispatch(clearReplying({ route }));
-    dispatch(setReplying({ route, index }));
+    dispatch(clearReplying({ route, type }));
+    dispatch(setReplying({ route, type, index }));
     commentBoxInputRef.current?.focus();
-  }, [commentBoxInputRef, dispatch, index, route]);
+  }, [commentBoxInputRef, dispatch, index, route, type]);
 
   const replyComponent = React.useCallback(
     (commentIndex: number) => (
       <AppReplyList
+        type={type}
         commentIndex={commentIndex}
         comment={comment}
         navigation={navigation}
@@ -56,7 +59,7 @@ export default function AppCommentItem({
         onLikeReplyPress={onLikeReplyPress}
       />
     ),
-    [comment, commentBoxInputRef, navigation, route, onLikeReplyPress],
+    [type, comment, navigation, route, commentBoxInputRef, onLikeReplyPress],
   );
 
   return (
@@ -66,6 +69,7 @@ export default function AppCommentItem({
       navigation={navigation}
       index={index}
       route={route}
+      type={type}
       onReplyPress={onReplyPress}
       onLikePress={onLikeComment}
       replyComponent={replyComponent}

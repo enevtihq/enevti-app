@@ -16,6 +16,7 @@ import { RouteProp } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import {
   clearReplying,
+  getCommentKey,
   loadMoreReply,
   loadReply,
   setReplyingOnReply,
@@ -27,6 +28,7 @@ const AnimatedFlatList = Animated.createAnimatedComponent<FlatListProps<ReplyIte
 
 interface AppReplyListProps {
   commentIndex: number;
+  type: 'common' | 'clubs';
   comment: CommentItem;
   navigation: StackNavigationProp<RootStackParamList>;
   route: RouteProp<RootStackParamList, 'Comment'>;
@@ -36,6 +38,7 @@ interface AppReplyListProps {
 
 export default function AppReplyList({
   comment,
+  type,
   commentIndex,
   navigation,
   route,
@@ -50,12 +53,12 @@ export default function AppReplyList({
   const [isLoadingMoreReply, setIsLoadingMoreReply] = React.useState<boolean>(false);
 
   const loadReplyCallback = React.useCallback(() => {
-    return dispatch(loadReply({ route, index: commentIndex }));
-  }, [dispatch, commentIndex, route]) as AppAsyncThunk;
+    return dispatch(loadReply({ route, type, index: commentIndex }));
+  }, [dispatch, commentIndex, route, type]) as AppAsyncThunk;
 
   const loadMoreReplyCallback = React.useCallback(() => {
-    return dispatch(loadMoreReply({ route, index: commentIndex }));
-  }, [dispatch, commentIndex, route]) as AppAsyncThunk;
+    return dispatch(loadMoreReply({ route, type, index: commentIndex }));
+  }, [dispatch, commentIndex, route, type]) as AppAsyncThunk;
 
   const onLoadReply = React.useCallback(async () => {
     setIsLoadingReply(true);
@@ -70,11 +73,11 @@ export default function AppReplyList({
 
   const onReplyPress = React.useCallback(
     (index: number) => {
-      dispatch(clearReplying({ route }));
-      dispatch(setReplyingOnReply({ route, commentIndex, replyIndex: index }));
+      dispatch(clearReplying({ route, type }));
+      dispatch(setReplyingOnReply({ route, type, commentIndex, replyIndex: index }));
       commentBoxInputRef.current?.focus();
     },
-    [commentBoxInputRef, dispatch, commentIndex, route],
+    [commentBoxInputRef, dispatch, commentIndex, route, type],
   );
 
   const keyExtractor = React.useCallback(item => item.id.toString(), []);
@@ -86,14 +89,17 @@ export default function AppReplyList({
         innerPadding={3}
         contentContainerStyle={styles.replyItem}
         route={route}
+        type={type}
         index={index}
         commentOrReply={item}
         navigation={navigation}
         onReplyPress={() => onReplyPress(index)}
-        onLikePress={() => onLikeReplyPress(item.id, commentIndex, index, route.key, parsePersonaLabel(item.owner))}
+        onLikePress={() =>
+          onLikeReplyPress(item.id, commentIndex, index, getCommentKey(route, type), parsePersonaLabel(item.owner))
+        }
       />
     ),
-    [styles.replyItem, route, navigation, onReplyPress, onLikeReplyPress, commentIndex],
+    [styles.replyItem, route, navigation, onReplyPress, onLikeReplyPress, commentIndex, type],
   );
 
   const initialReplyListComponent = React.useMemo(() => {

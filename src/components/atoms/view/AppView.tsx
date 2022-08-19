@@ -19,6 +19,7 @@ interface AppViewProps {
   headerOffset?: number;
   darken?: boolean;
   style?: StyleProp<ViewStyle>;
+  contentContainerStyle?: StyleProp<ViewStyle>;
   dismissKeyboard?: boolean;
   withModal?: boolean;
   withSnackbar?: boolean;
@@ -32,6 +33,7 @@ export default function AppView({
   children,
   header,
   style,
+  contentContainerStyle,
   edges,
   headerOffset,
   withModal = false,
@@ -53,13 +55,23 @@ export default function AppView({
         <View style={[styles.view, style]}>
           {withModal ? (
             <BottomSheetModalProvider>
-              <AppContainer header={header} headerOffset={headerOffset} darken={darken} edges={edges}>
+              <AppContainer
+                style={contentContainerStyle}
+                header={header}
+                headerOffset={headerOffset}
+                darken={darken}
+                edges={edges}>
                 {children}
               </AppContainer>
               {withPayment ? <AppPaymentModal /> : null}
             </BottomSheetModalProvider>
           ) : (
-            <AppContainer header={header} headerOffset={headerOffset} darken={darken} edges={edges}>
+            <AppContainer
+              style={contentContainerStyle}
+              header={header}
+              headerOffset={headerOffset}
+              darken={darken}
+              edges={edges}>
               {children}
             </AppContainer>
           )}

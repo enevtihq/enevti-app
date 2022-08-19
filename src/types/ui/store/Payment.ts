@@ -11,10 +11,15 @@ export type PaymentAction = {
     | 'likeNFT'
     | 'likeCollection'
     | 'likeComment'
+    | 'likeCommentClubs'
     | 'likeReply'
+    | 'likeReplyClubs'
     | 'commentNFT'
+    | 'commentNftClubs'
     | 'commentCollection'
+    | 'commentCollectionClubs'
     | 'replyComment'
+    | 'replyCommentClubs'
     | 'cancel'
     | '';
   icon: string;

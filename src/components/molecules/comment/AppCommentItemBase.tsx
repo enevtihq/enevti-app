@@ -20,9 +20,11 @@ import AppMentionRenderer from './AppMentionRenderer';
 import { useDispatch } from 'react-redux';
 import { RouteProp } from '@react-navigation/native';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
+import { getCommentKey } from 'enevti-app/store/middleware/thunk/ui/view/comment';
 
 interface AppCommentItemBaseProps {
   commentOrReply: CommentItem | ReplyItem;
+  type: 'common' | 'clubs';
   navigation: StackNavigationProp<RootStackParamList>;
   route: RouteProp<RootStackParamList, 'Comment'>;
   onLikePress: (id: string, key: string, target: string) => void;
@@ -39,6 +41,7 @@ export default function AppCommentItemBase({
   navigation,
   index,
   route,
+  type,
   onLikePress,
   onReplyPress,
   contentContainerStyle,
@@ -67,8 +70,8 @@ export default function AppCommentItemBase({
   }, [commentOrReply.owner.address, navigation, dispatch, t]);
 
   const onLike = React.useCallback(() => {
-    onLikePress(commentOrReply.id, route.key, parsePersonaLabel(commentOrReply.owner));
-  }, [commentOrReply.id, commentOrReply.owner, onLikePress, route.key]);
+    onLikePress(commentOrReply.id, getCommentKey(route, type), parsePersonaLabel(commentOrReply.owner));
+  }, [commentOrReply.id, commentOrReply.owner, onLikePress, route, type]);
 
   const onAlreadyLiked = React.useCallback(() => {
     dispatch(showSnackbar({ mode: 'info', text: t('home:cannotLike') }));

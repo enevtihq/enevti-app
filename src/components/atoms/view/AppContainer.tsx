@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import React from 'react';
 import { Edge, SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Theme } from 'enevti-app/theme/default';
@@ -11,13 +11,21 @@ import { BackgroundColorContext, EdgeContext } from 'enevti-app/context';
 
 interface AppContainerProps {
   children: React.ReactNode;
+  style?: StyleProp<ViewStyle>;
   header?: React.ReactNode;
   headerOffset?: number;
   darken?: boolean;
   edges?: Edge[];
 }
 
-export default function AppContainer({ children, header, headerOffset, darken = false, edges }: AppContainerProps) {
+export default function AppContainer({
+  children,
+  style,
+  header,
+  headerOffset,
+  darken = false,
+  edges,
+}: AppContainerProps) {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
   const backgroundColor = darken
@@ -31,7 +39,7 @@ export default function AppContainer({ children, header, headerOffset, darken = 
   return (
     <EdgeContext.Provider value={edges}>
       <BackgroundColorContext.Provider value={backgroundColor}>
-        <SafeAreaView style={styles.container} edges={edges}>
+        <SafeAreaView style={[styles.container, style]} edges={edges}>
           <AppStatusBar />
           {header ? header : null}
           {header ? (

@@ -36,6 +36,7 @@ import {
   addCommentReplyCountById,
   addReplyPaginationVersionByCommentId,
   clearReplying,
+  getCommentKey,
 } from 'enevti-app/store/middleware/thunk/ui/view/comment';
 import usePaymentCallback from 'enevti-app/utils/hook/usePaymentCallback';
 import { PaymentStatus } from 'enevti-app/types/ui/store/Payment';
@@ -64,14 +65,16 @@ import AppTextHeading4 from 'enevti-app/components/atoms/text/AppTextHeading4';
 import { payReplyComment } from 'enevti-app/store/middleware/thunk/payment/creator/payReplyComment';
 import { useKeyboard } from 'enevti-app/utils/hook/useKeyboard';
 import { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
+import { TOP_TABBAR_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppTopTabBar';
 
 interface AppCommentBoxProps {
   route: RouteProp<RootStackParamList, 'Comment'>;
+  type: 'common' | 'clubs';
   target: string;
   inputRef: React.RefObject<TextInput>;
 }
 
-export default function AppCommentBox({ route, target, inputRef }: AppCommentBoxProps) {
+export default function AppCommentBox({ route, type, target, inputRef }: AppCommentBoxProps) {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
@@ -87,7 +90,7 @@ export default function AppCommentBox({ route, target, inputRef }: AppCommentBox
   const postReplyTimer = React.useRef<any>();
   const myPersona = useSelector(selectMyPersonaCache);
 
-  const commentView = useSelector((state: RootState) => selectCommentView(state, route.key));
+  const commentView = useSelector((state: RootState) => selectCommentView(state, getCommentKey(route, type)));
   const commentSession = useSelector((state: RootState) => selectCommentSession(state, target));
   const [value, setValue] = React.useState<string>(() => (commentSession ? commentSession.value : ''));
   const valueRef = React.useRef<string>(value);
@@ -110,8 +113,8 @@ export default function AppCommentBox({ route, target, inputRef }: AppCommentBox
   );
 
   const onReplyClose = React.useCallback(() => {
-    dispatch(clearReplying({ route }));
-  }, [dispatch, route]);
+    dispatch(clearReplying({ route, type }));
+  }, [dispatch, route, type]);
 
   React.useEffect(() => {
     if (isReplying) {
@@ -144,13 +147,17 @@ export default function AppCommentBox({ route, target, inputRef }: AppCommentBox
 
   const paymentCondition = React.useCallback(
     (paymentStatus: PaymentStatus) => {
-      return (
-        paymentStatus.action !== undefined &&
-        ['commentCollection', 'commentNFT', 'replyComment'].includes(paymentStatus.action) &&
-        paymentStatus.key === route.key
-      );
+      return type === 'common'
+        ? paymentStatus.action !== undefined &&
+            ['commentCollection', 'commentNFT', 'replyComment'].includes(paymentStatus.action) &&
+            paymentStatus.key === getCommentKey(route, type)
+        : type === 'clubs'
+        ? paymentStatus.action !== undefined &&
+          ['commentCollectionClubs', 'commentNFTClubs', 'replyCommentClubs'].includes(paymentStatus.action) &&
+          paymentStatus.key === getCommentKey(route, type)
+        : false;
     },
-    [route.key],
+    [route, type],
   );
 
   const paymentIdleCallback = React.useCallback(() => {
@@ -164,15 +171,24 @@ export default function AppCommentBox({ route, target, inputRef }: AppCommentBox
         case 'commentNFT':
           dispatch(
             unshiftComment({
-              key: route.key,
-              value: [{ ...makeDummyComment({ id: route.key, isPosting: true, text: value, owner: myPersona }) }],
+              key: getCommentKey(route, type),
+              value: [
+                {
+                  ...makeDummyComment({
+                    id: getCommentKey(route, type),
+                    isPosting: true,
+                    text: value,
+                    owner: myPersona,
+                  }),
+                },
+              ],
             }),
           );
-          dispatch(addCommentViewPaginationVersion({ key: route.key }));
-          dispatch(addCommentViewPaginationCheckpoint({ key: route.key }));
+          dispatch(addCommentViewPaginationVersion({ key: getCommentKey(route, type) }));
+          dispatch(addCommentViewPaginationCheckpoint({ key: getCommentKey(route, type) }));
           break;
         case 'replyComment':
-          dispatch(setCommentById({ route, id: paymentStatus.id, comment: { isPosting: true } }));
+          dispatch(setCommentById({ route, type, id: paymentStatus.id, comment: { isPosting: true } }));
           break;
         default:
           break;
@@ -181,7 +197,7 @@ export default function AppCommentBox({ route, target, inputRef }: AppCommentBox
       setValue('');
       valueRef.current = '';
     },
-    [dispatch, inputRef, myPersona, route, value],
+    [dispatch, inputRef, myPersona, route, type, value],
   );
 
   const paymentSuccessCallback = React.useCallback(
@@ -190,15 +206,17 @@ export default function AppCommentBox({ route, target, inputRef }: AppCommentBox
         case 'commentCollection':
         case 'commentNFT':
           setSending(false);
-          dispatch(setCommentById({ route, id: route.key, comment: { id: paymentStatus.message } }));
+          dispatch(
+            setCommentById({ route, type, id: getCommentKey(route, type), comment: { id: paymentStatus.message } }),
+          );
 
           postCommentTimer.current = setTimeout(async () => {
             const status = await getTransactionStatus(paymentStatus.message, abortController.current?.signal);
             if (status.data === 'sent') {
-              dispatch(setCommentById({ route, id: paymentStatus.message, comment: { isPosting: false } }));
+              dispatch(setCommentById({ route, type, id: paymentStatus.message, comment: { isPosting: false } }));
               dispatch(showSnackbar({ mode: 'info', text: t('explorer:commentSuccess') }));
             } else {
-              dispatch(deleteCommentById({ route, id: paymentStatus.message }));
+              dispatch(deleteCommentById({ route, type, id: paymentStatus.message }));
               dispatch(showSnackbar({ mode: 'info', text: t('explorer:commentQueued') }));
             }
             socket.current?.disconnect();
@@ -206,7 +224,7 @@ export default function AppCommentBox({ route, target, inputRef }: AppCommentBox
 
           socket.current = appSocket(`transaction:${paymentStatus.message}`);
           socket.current.on('processed', () => {
-            dispatch(setCommentById({ route, id: paymentStatus.message, comment: { isPosting: false } }));
+            dispatch(setCommentById({ route, type, id: paymentStatus.message, comment: { isPosting: false } }));
             dispatch(showSnackbar({ mode: 'info', text: t('explorer:commentSuccess') }));
             socket.current?.disconnect();
             clearTimeout(postCommentTimer.current);
@@ -219,12 +237,12 @@ export default function AppCommentBox({ route, target, inputRef }: AppCommentBox
           postReplyTimer.current = setTimeout(async () => {
             const status = await getTransactionStatus(paymentStatus.message, abortController.current?.signal);
             if (status.data === 'sent') {
-              dispatch(setCommentById({ route, id: paymentStatus.id, comment: { isPosting: false } }));
-              dispatch(addCommentReplyCountById({ route, id: paymentStatus.id }));
-              dispatch(addReplyPaginationVersionByCommentId({ key: route.key, commentId: paymentStatus.id }));
+              dispatch(setCommentById({ route, type, id: paymentStatus.id, comment: { isPosting: false } }));
+              dispatch(addCommentReplyCountById({ route, type, id: paymentStatus.id }));
+              dispatch(addReplyPaginationVersionByCommentId({ route, type, commentId: paymentStatus.id }));
               dispatch(showSnackbar({ mode: 'info', text: t('explorer:replySuccess') }));
             } else {
-              dispatch(setCommentById({ route, id: paymentStatus.id, comment: { isPosting: true } }));
+              dispatch(setCommentById({ route, type, id: paymentStatus.id, comment: { isPosting: true } }));
               dispatch(showSnackbar({ mode: 'info', text: t('explorer:replyQueued') }));
             }
             replySocket.current?.disconnect();
@@ -232,9 +250,9 @@ export default function AppCommentBox({ route, target, inputRef }: AppCommentBox
 
           replySocket.current = appSocket(`transaction:${paymentStatus.message}`);
           replySocket.current.on('processed', () => {
-            dispatch(setCommentById({ route, id: paymentStatus.id, comment: { isPosting: false } }));
-            dispatch(addCommentReplyCountById({ route, id: paymentStatus.id }));
-            dispatch(addReplyPaginationVersionByCommentId({ key: route.key, commentId: paymentStatus.id }));
+            dispatch(setCommentById({ route, type, id: paymentStatus.id, comment: { isPosting: false } }));
+            dispatch(addCommentReplyCountById({ route, type, id: paymentStatus.id }));
+            dispatch(addReplyPaginationVersionByCommentId({ route, type, commentId: paymentStatus.id }));
             dispatch(showSnackbar({ mode: 'info', text: t('explorer:replySuccess') }));
             replySocket.current?.disconnect();
             clearTimeout(postReplyTimer.current);
@@ -244,7 +262,7 @@ export default function AppCommentBox({ route, target, inputRef }: AppCommentBox
           break;
       }
     },
-    [dispatch, route, t, onReplyClose],
+    [dispatch, route, type, onReplyClose, t],
   );
 
   const paymentErrorCallback = React.useCallback(
@@ -252,18 +270,18 @@ export default function AppCommentBox({ route, target, inputRef }: AppCommentBox
       switch (paymentStatus.action) {
         case 'commentCollection':
         case 'commentNFT':
-          dispatch(shiftComment({ key: route.key }));
-          dispatch(subtractCommentViewPaginationVersion({ key: route.key }));
-          dispatch(subtractCommentViewPaginationCheckpoint({ key: route.key }));
+          dispatch(shiftComment({ key: getCommentKey(route, type) }));
+          dispatch(subtractCommentViewPaginationVersion({ key: getCommentKey(route, type) }));
+          dispatch(subtractCommentViewPaginationCheckpoint({ key: getCommentKey(route, type) }));
           break;
         case 'replyComment':
-          dispatch(subtractCommentReplyCountById({ route, id: paymentStatus.id }));
+          dispatch(subtractCommentReplyCountById({ route, type, id: paymentStatus.id }));
           break;
         default:
           break;
       }
     },
-    [dispatch, route],
+    [dispatch, route, type],
   );
 
   usePaymentCallback({
@@ -568,7 +586,7 @@ export default function AppCommentBox({ route, target, inputRef }: AppCommentBox
   return (
     <KeyboardAvoidingView
       enabled={Platform.OS === 'ios' ? true : false}
-      keyboardVerticalOffset={hp(HEADER_HEIGHT_PERCENTAGE) + insets.top}
+      keyboardVerticalOffset={hp(HEADER_HEIGHT_PERCENTAGE) + hp(TOP_TABBAR_HEIGHT_PERCENTAGE) + insets.top}
       behavior={'position'}
       style={[styles.commentBoxContainer]}>
       <View pointerEvents={sending ? 'none' : 'auto'} style={styles.commentBox}>

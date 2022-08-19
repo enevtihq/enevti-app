@@ -7,12 +7,15 @@ import { useTranslation } from 'react-i18next';
 import { RouteProp } from '@react-navigation/native';
 import AppComment from 'enevti-app/components/organism/comment/AppComment';
 import { StyleSheet, View } from 'react-native';
+import { useTheme } from 'react-native-paper';
+import { Theme } from 'enevti-app/theme/default';
 
 type Props = StackScreenProps<RootStackParamList, 'Comment'>;
 
 export default function Comment({ navigation, route }: Props) {
   const { t } = useTranslation();
-  const styles = React.useMemo(() => makeStyles(), []);
+  const theme = useTheme() as Theme;
+  const styles = React.useMemo(() => makeStyles(theme), [theme]);
 
   const screenRoute = React.useMemo(
     () => ({ key: route.key, name: route.name, params: route.params, path: route.path }),
@@ -23,6 +26,7 @@ export default function Comment({ navigation, route }: Props) {
     <AppView
       darken
       edges={['left', 'bottom', 'right']}
+      contentContainerStyle={styles.view}
       header={<AppHeader back navigation={navigation} title={t('explorer:commentTitle')} />}>
       <View style={styles.container}>
         <AppComment navigation={navigation} route={screenRoute} />
@@ -31,9 +35,12 @@ export default function Comment({ navigation, route }: Props) {
   );
 }
 
-const makeStyles = () =>
+const makeStyles = (theme: Theme) =>
   StyleSheet.create({
     container: {
       flex: 1,
+    },
+    view: {
+      backgroundColor: theme.colors.background,
     },
   });

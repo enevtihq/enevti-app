@@ -19,6 +19,7 @@ export type CommentItem = Comment &
   };
 
 type CommentViewState = {
+  authorized: boolean;
   commentPagination: PaginationStore;
   reqStatus: number;
   version: number;
@@ -34,6 +35,7 @@ type CommentViewStore = {
 };
 
 const initialStateItem: CommentViewState = {
+  authorized: false,
   commentPagination: {
     checkpoint: 0,
     version: 0,
@@ -58,6 +60,9 @@ const commentViewSlice = createSlice({
       Object.assign(comment, {
         [action.payload.key]: action.payload.value,
       });
+    },
+    setCommentAuthorized: (comment, action: PayloadAction<{ key: string; value: boolean }>) => {
+      comment[action.payload.key].authorized = action.payload.value;
     },
     setCommentFetchedVersion: (comment, action: PayloadAction<{ key: string; value: number }>) => {
       comment[action.payload.key].fetchedVersion = action.payload.value;
@@ -219,6 +224,7 @@ const commentViewSlice = createSlice({
 export const {
   initCommentView,
   setCommentView,
+  setCommentAuthorized,
   setCommentFetchedVersion,
   setCommentViewLoaded,
   setCommentViewVersion,
@@ -282,4 +288,9 @@ export const isThereAnyNewComment = createSelector(
 export const isCommentUndefined = createSelector(
   [(state: RootState) => state.ui.view.comment, (state: RootState, key: string) => key],
   (comment: CommentViewStore, key: string) => (comment.hasOwnProperty(key) ? !comment[key].loaded : true),
+);
+
+export const isCommentAuthorized = createSelector(
+  [(state: RootState) => state.ui.view.comment, (state: RootState, key: string) => key],
+  (comment: CommentViewStore, key: string) => (comment.hasOwnProperty(key) ? comment[key].authorized : true),
 );

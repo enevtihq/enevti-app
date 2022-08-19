@@ -6,6 +6,7 @@ import {
   urlGetCollectionById,
   urlGetCollectionBySymbol,
   urlGetCollectionMintedNFTById,
+  urlGetIsCollectionOwnerOrCreator,
   urlGetNameToCollectionId,
   urlGetSymbolToCollectionId,
 } from 'enevti-app/utils/constant/URLCreator';
@@ -17,6 +18,14 @@ import { getMyAddress } from './persona';
 import i18n from 'enevti-app/translations/i18n';
 
 type CollectionRoute = StackScreenProps<RootStackParamList, 'Collection'>['route']['params'];
+
+async function fetchIsCollectionOwnerOrCreator(
+  id: string,
+  signal?: AbortController['signal'],
+): Promise<APIResponse<boolean>> {
+  const myAddress = await getMyAddress();
+  return await apiFetch<boolean>(urlGetIsCollectionOwnerOrCreator(id, myAddress), signal);
+}
 
 async function fetchCollectionById(id: string, signal?: AbortController['signal']): Promise<APIResponse<Collection>> {
   const myAddress = await getMyAddress();
@@ -66,6 +75,10 @@ async function fetchCollectionActivity(
     urlGetCollectionActivityById(id, offset, limit, version),
     signal,
   );
+}
+
+export async function getIsCollectionOwnerOrCreator(id: string, signal?: AbortController['signal']) {
+  return await fetchIsCollectionOwnerOrCreator(id, signal);
 }
 
 export async function getCollectionMinted(
@@ -145,4 +158,12 @@ export async function getCollectionByRouteParam(routeParam: CollectionRoute, sig
     default:
       return await fetchCollectionById(routeParam.arg, signal);
   }
+}
+
+export async function getIsCollectionOwnerOrCreatorByRouteParam(
+  routeParam: CollectionRoute,
+  signal?: AbortController['signal'],
+) {
+  const id = await getCollectionIdFromRouteParam(routeParam, signal);
+  return await fetchIsCollectionOwnerOrCreator(id, signal);
 }

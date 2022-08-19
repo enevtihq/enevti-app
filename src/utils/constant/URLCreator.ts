@@ -85,6 +85,10 @@ export function urlGetAllNFTTemplateGenesis(offset: number = 0, limit: number = 
   return encodeURI(`${host}/nft/template/genesis?offset=${offset}&limit=${limit}`);
 }
 
+export function urlGetIsCollectionOwnerOrCreator(id: string, address: string, host: string = ENEVTI_DEFAULT_API) {
+  return encodeURI(`${host}/authorized/collection/${id}?address=${address}`);
+}
+
 export function urlGetCollectionById(id: string, viewer: string, host: string = ENEVTI_DEFAULT_API) {
   return encodeURI(`${host}/collection/id/${id}?viewer=${viewer}`);
 }
@@ -125,6 +129,10 @@ export function urlGetFeeds(
   host: string = ENEVTI_DEFAULT_API,
 ) {
   return encodeURI(`${host}/feeds/available?offset=${offset}&limit=${limit}&version=${version}&viewer=${viewer}`);
+}
+
+export function urlGetIsNFTOwnerOrCreator(id: string, address: string, host: string = ENEVTI_DEFAULT_API) {
+  return encodeURI(`${host}/authorized/nft/${id}?address=${address}`);
 }
 
 export function urlGetNFTById(id: string, viewer: string, host: string = ENEVTI_DEFAULT_API) {

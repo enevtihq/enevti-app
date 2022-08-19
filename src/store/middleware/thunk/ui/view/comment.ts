@@ -6,14 +6,20 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 
 import { APIResponseVersioned } from 'enevti-app/types/core/service/api';
-import { CommentAt } from 'enevti-app/types/core/chain/engagement';
+import { Comment, CommentAt, CommentClubsAt } from 'enevti-app/types/core/chain/engagement';
 import {
   getCollectionCommentByRouteParam,
+  getCollectionCommentClubsByRouteParam,
+  getCommentClubsReply,
   getCommentReply,
   getInitialCollectionCommentByRouteParam,
+  getInitialCollectionCommentClubsByRouteParam,
+  getInitialCommentClubsReply,
   getInitialCommentReply,
   getInitialNFTCommentByRouteParam,
+  getInitialNFTCommentClubsByRouteParam,
   getNFTCommentByRouteParam,
+  getNFTCommentClubsByRouteParam,
   initCommentViewState,
   initReplyState,
 } from 'enevti-app/service/enevti/comment';
@@ -42,53 +48,90 @@ import {
   setReply,
   setCommentReplyingOnReply,
   resetCommentReplyingOnReply,
+  setCommentAuthorized,
 } from 'enevti-app/store/slices/ui/view/comment';
 import i18n from 'enevti-app/translations/i18n';
 import { COMMENT_LIMIT, REPLY_LIMIT } from 'enevti-app/utils/constant/limit';
+import { getIsNFTOwnerOrCreatorByRouteParam } from 'enevti-app/service/enevti/nft';
+import { getIsCollectionOwnerOrCreatorByRouteParam } from 'enevti-app/service/enevti/collection';
 
 type CommentRoute = StackScreenProps<RootStackParamList, 'Comment'>['route'];
-type LoadCommentArgs = { route: CommentRoute; reload?: boolean };
-type LoadReplyArgs = { route: CommentRoute; index: number };
+type LoadCommentArgs = { route: CommentRoute; type: 'common' | 'clubs'; reload?: boolean };
+type LoadReplyArgs = { route: CommentRoute; type: 'common' | 'clubs'; index: number };
+
+export const getCommentKey = (route: CommentRoute, type: 'common' | 'clubs') => `${type}${route.key}`;
 
 export const loadComment = createAsyncThunk<void, LoadCommentArgs, AsyncThunkAPI>(
   'commentView/loadComment',
-  async ({ route, reload = false }, { dispatch, signal }) => {
+  async ({ route, type, reload = false }, { dispatch, signal }) => {
+    const key = getCommentKey(route, type);
     try {
       reload && dispatch(showModalLoader());
-      let commentResponse: APIResponseVersioned<CommentAt> | undefined;
+      dispatch(initCommentView(key));
+
+      if (type === 'clubs') {
+        if (route.params.type === 'nft') {
+          const isOwnerOrCreatorResponse = await getIsNFTOwnerOrCreatorByRouteParam(route.params, signal);
+          if (isOwnerOrCreatorResponse.status === 200 && !isOwnerOrCreatorResponse.data) {
+            return;
+          }
+        } else if (route.params.type === 'collection') {
+          const isOwnerOrCreatorResponse = await getIsCollectionOwnerOrCreatorByRouteParam(route.params, signal);
+          if (isOwnerOrCreatorResponse.status === 200 && !isOwnerOrCreatorResponse.data) {
+            return;
+          }
+        }
+      }
+
+      let commentResponse: APIResponseVersioned<unknown> | undefined;
+      let commentData: Comment[] = [];
       if (route.params.type === 'nft') {
-        commentResponse = await getInitialNFTCommentByRouteParam(route.params, signal);
+        if (type === 'common') {
+          commentResponse = await getInitialNFTCommentByRouteParam(route.params, signal);
+        } else if (type === 'clubs') {
+          commentResponse = await getInitialNFTCommentClubsByRouteParam(route.params, signal);
+        }
       } else if (route.params.type === 'collection') {
-        commentResponse = await getInitialCollectionCommentByRouteParam(route.params, signal);
+        if (type === 'common') {
+          commentResponse = await getInitialCollectionCommentByRouteParam(route.params, signal);
+        } else if (type === 'clubs') {
+          commentResponse = await getInitialCollectionCommentClubsByRouteParam(route.params, signal);
+        }
       }
 
       if (commentResponse === undefined) {
         throw Error(i18n.t('error:clientError'));
+      } else {
+        if (type === 'common') {
+          commentData = (commentResponse as APIResponseVersioned<CommentAt>).data.data.comment;
+        } else if (type === 'clubs') {
+          commentData = (commentResponse as APIResponseVersioned<CommentClubsAt>).data.data.clubs;
+        }
       }
 
-      dispatch(initCommentView(route.key));
-      dispatch(resetCommentViewByKey(route.key));
+      dispatch(resetCommentViewByKey(key));
       dispatch(
         pushComment({
-          key: route.key,
-          value: initCommentViewState(commentResponse.data.data.comment),
+          key,
+          value: initCommentViewState(commentData),
         }),
       );
-      dispatch(setCommentViewVersion({ key: route.key, value: Date.now() }));
+      dispatch(setCommentViewVersion({ key, value: Date.now() }));
       dispatch(
         setCommentViewPagination({
-          key: route.key,
+          key,
           value: {
             checkpoint: commentResponse.data.checkpoint,
             version: commentResponse.data.version,
           },
         }),
       );
-      dispatch(setCommentViewReqStatus({ key: route.key, value: commentResponse.status }));
+      dispatch(setCommentAuthorized({ key, value: true }));
+      dispatch(setCommentViewReqStatus({ key, value: commentResponse.status }));
     } catch (err: any) {
       handleError(err);
     } finally {
-      dispatch(setCommentViewLoaded({ key: route.key, value: true }));
+      dispatch(setCommentViewLoaded({ key, value: true }));
       reload && dispatch(hideModalLoader());
     }
   },
@@ -96,38 +139,66 @@ export const loadComment = createAsyncThunk<void, LoadCommentArgs, AsyncThunkAPI
 
 export const loadMoreComment = createAsyncThunk<void, LoadCommentArgs, AsyncThunkAPI>(
   'commentView/loadMoreComment',
-  async ({ route }, { dispatch, getState, signal }) => {
+  async ({ route, type }, { dispatch, getState, signal }) => {
+    const key = getCommentKey(route, type);
     try {
-      const commentView = selectCommentView(getState(), route.key);
+      const commentView = selectCommentView(getState(), key);
       const offset = commentView.commentPagination.checkpoint;
       const version = commentView.commentPagination.version;
       if (commentView.comment.length !== version) {
-        let commentResponse: APIResponseVersioned<CommentAt> | undefined;
+        let commentData: Comment[] = [];
+        let commentResponse: APIResponseVersioned<unknown> | undefined;
         if (route.params.type === 'nft') {
-          commentResponse = await getNFTCommentByRouteParam(route.params, offset, COMMENT_LIMIT, version, signal);
+          if (type === 'common') {
+            commentResponse = await getNFTCommentByRouteParam(route.params, offset, COMMENT_LIMIT, version, signal);
+          } else if (type === 'clubs') {
+            commentResponse = await getNFTCommentClubsByRouteParam(
+              route.params,
+              offset,
+              COMMENT_LIMIT,
+              version,
+              signal,
+            );
+          }
         } else if (route.params.type === 'collection') {
-          commentResponse = await getCollectionCommentByRouteParam(
-            route.params,
-            offset,
-            COMMENT_LIMIT,
-            version,
-            signal,
-          );
+          if (type === 'common') {
+            commentResponse = await getCollectionCommentByRouteParam(
+              route.params,
+              offset,
+              COMMENT_LIMIT,
+              version,
+              signal,
+            );
+          } else if (type === 'clubs') {
+            commentResponse = await getCollectionCommentClubsByRouteParam(
+              route.params,
+              offset,
+              COMMENT_LIMIT,
+              version,
+              signal,
+            );
+          }
         }
 
         if (commentResponse === undefined || commentResponse.status !== 200) {
           throw Error(i18n.t('error:clientError'));
+        } else {
+          if (type === 'common') {
+            commentData = (commentResponse as APIResponseVersioned<CommentAt>).data.data.comment;
+          } else if (type === 'clubs') {
+            commentData = (commentResponse as APIResponseVersioned<CommentClubsAt>).data.data.clubs;
+          }
         }
 
         dispatch(
           pushComment({
-            key: route.key,
-            value: initCommentViewState(commentResponse.data.data.comment),
+            key,
+            value: initCommentViewState(commentData),
           }),
         );
         dispatch(
           setCommentViewPagination({
-            key: route.key,
+            key,
             value: {
               checkpoint: commentResponse.data.checkpoint,
               version: commentResponse.data.version,
@@ -143,22 +214,26 @@ export const loadMoreComment = createAsyncThunk<void, LoadCommentArgs, AsyncThun
 
 export const loadReply = createAsyncThunk<void, LoadReplyArgs, AsyncThunkAPI>(
   'commentView/loadReply',
-  async ({ route, index }, { dispatch, getState, signal }) => {
+  async ({ route, type, index }, { dispatch, getState, signal }) => {
+    const key = getCommentKey(route, type);
     try {
-      const comment = selectCommentByIndex(getState(), route.key, index);
+      const comment = selectCommentByIndex(getState(), key, index);
       if (comment === undefined) {
         throw Error(i18n.t('error:clientError'));
       }
-      const replyResponse = await getInitialCommentReply(comment.id, signal);
-      if (replyResponse.status !== 200) {
+      const replyResponse =
+        type === 'common'
+          ? await getInitialCommentReply(comment.id, signal)
+          : type === 'clubs'
+          ? await getInitialCommentClubsReply(comment.id, signal)
+          : undefined;
+      if (replyResponse === undefined || replyResponse.status !== 200) {
         throw Error(i18n.t('error:clientError'));
       }
-      dispatch(
-        pushReply({ key: route.key, commentIndex: index, value: initReplyState(replyResponse.data.data.reply) }),
-      );
+      dispatch(pushReply({ key, commentIndex: index, value: initReplyState(replyResponse.data.data.reply) }));
       dispatch(
         setReplyPagination({
-          key: route.key,
+          key,
           commentIndex: index,
           value: {
             checkpoint: replyResponse.data.checkpoint,
@@ -174,31 +249,37 @@ export const loadReply = createAsyncThunk<void, LoadReplyArgs, AsyncThunkAPI>(
 
 export const loadMoreReply = createAsyncThunk<void, LoadReplyArgs, AsyncThunkAPI>(
   'commentView/loadMoreReply',
-  async ({ route, index }, { dispatch, getState, signal }) => {
+  async ({ route, type, index }, { dispatch, getState, signal }) => {
+    const key = getCommentKey(route, type);
     try {
-      const comment = selectCommentByIndex(getState(), route.key, index);
+      const comment = selectCommentByIndex(getState(), key, index);
       if (comment === undefined) {
         throw Error(i18n.t('error:clientError'));
       }
       const offset = comment.replyPagination.checkpoint;
       const version = comment.replyPagination.version;
       if (comment.replies.length !== version) {
-        const replyResponse = await getCommentReply(comment.id, offset, REPLY_LIMIT, 0, signal);
+        const replyResponse =
+          type === 'common'
+            ? await getCommentReply(comment.id, offset, REPLY_LIMIT, 0, signal)
+            : type === 'clubs'
+            ? await getCommentClubsReply(comment.id, offset, REPLY_LIMIT, 0, signal)
+            : undefined;
 
-        if (replyResponse.status !== 200) {
+        if (replyResponse === undefined || replyResponse.status !== 200) {
           throw Error(i18n.t('error:clientError'));
         }
 
         dispatch(
           pushReply({
-            key: route.key,
+            key,
             commentIndex: index,
             value: initReplyState(replyResponse.data.data.reply),
           }),
         );
         dispatch(
           setReplyPagination({
-            key: route.key,
+            key,
             commentIndex: index,
             value: {
               checkpoint: replyResponse.data.checkpoint,
@@ -214,106 +295,136 @@ export const loadMoreReply = createAsyncThunk<void, LoadReplyArgs, AsyncThunkAPI
 );
 
 export const unloadComment =
-  (route: CommentRoute): AppThunk =>
+  (route: CommentRoute, type: 'common' | 'clubs'): AppThunk =>
   dispatch => {
-    dispatch(clearCommentViewByKey(route.key));
+    const key = getCommentKey(route, type);
+    dispatch(clearCommentViewByKey(key));
   };
 
 export const setCommentById =
-  ({ route, id, comment }: { route: CommentRoute; id: string; comment: Partial<CommentItem> }): AppThunk =>
+  ({
+    route,
+    id,
+    type,
+    comment,
+  }: {
+    route: CommentRoute;
+    type: 'common' | 'clubs';
+    id: string;
+    comment: Partial<CommentItem>;
+  }): AppThunk =>
   (dispatch, getState) => {
-    const commentState = selectCommentView(getState(), route.key);
+    const key = getCommentKey(route, type);
+    const commentState = selectCommentView(getState(), key);
     const index = commentState.comment.findIndex(c => c.id === id);
-    dispatch(setComment({ key: route.key, commentIndex: index, value: comment }));
+    dispatch(setComment({ key, commentIndex: index, value: comment }));
   };
 
 export const deleteCommentById =
-  ({ route, id }: { route: CommentRoute; id: string }): AppThunk =>
+  ({ route, type, id }: { route: CommentRoute; type: 'common' | 'clubs'; id: string }): AppThunk =>
   (dispatch, getState) => {
-    const commentState = selectCommentView(getState(), route.key);
+    const key = getCommentKey(route, type);
+    const commentState = selectCommentView(getState(), key);
     const index = commentState.comment.findIndex(c => c.id === id);
-    dispatch(deleteComment({ key: route.key, commentIndex: index }));
+    dispatch(deleteComment({ key, commentIndex: index }));
   };
 
 export const addCommentLikeById =
-  ({ route, id }: { route: CommentRoute; id: string }): AppThunk =>
+  ({ route, type, id }: { route: CommentRoute; type: 'common' | 'clubs'; id: string }): AppThunk =>
   (dispatch, getState) => {
-    const commentState = selectCommentView(getState(), route.key);
+    const key = getCommentKey(route, type);
+    const commentState = selectCommentView(getState(), key);
     const index = commentState.comment.findIndex(c => c.id === id);
-    dispatch(
-      setComment({ key: route.key, commentIndex: index, value: { like: commentState.comment[index].like + 1 } }),
-    );
+    dispatch(setComment({ key, commentIndex: index, value: { like: commentState.comment[index].like + 1 } }));
   };
 
 export const addCommentReplyCountById =
-  ({ route, id }: { route: CommentRoute; id: string }): AppThunk =>
+  ({ route, type, id }: { route: CommentRoute; type: 'common' | 'clubs'; id: string }): AppThunk =>
   (dispatch, getState) => {
-    const commentState = selectCommentView(getState(), route.key);
+    const key = getCommentKey(route, type);
+    const commentState = selectCommentView(getState(), key);
     const index = commentState.comment.findIndex(c => c.id === id);
-    dispatch(addCommentReplyCount({ key: route.key, commentIndex: index }));
+    dispatch(addCommentReplyCount({ key, commentIndex: index }));
   };
 
 export const subtractCommentReplyCountById =
-  ({ route, id }: { route: CommentRoute; id: string }): AppThunk =>
+  ({ route, type, id }: { route: CommentRoute; type: 'common' | 'clubs'; id: string }): AppThunk =>
   (dispatch, getState) => {
-    const commentState = selectCommentView(getState(), route.key);
+    const key = getCommentKey(route, type);
+    const commentState = selectCommentView(getState(), key);
     const index = commentState.comment.findIndex(c => c.id === id);
-    dispatch(subtractCommentReplyCount({ key: route.key, commentIndex: index }));
+    dispatch(subtractCommentReplyCount({ key, commentIndex: index }));
   };
 
 export const setReplying =
-  ({ route, index }: { route: CommentRoute; index: number }): AppThunk =>
+  ({ route, type, index }: { route: CommentRoute; type: 'common' | 'clubs'; index: number }): AppThunk =>
   dispatch => {
-    dispatch(setComment({ key: route.key, commentIndex: index, value: { highlighted: true } }));
-    dispatch(setCommentReplying({ key: route.key, value: index }));
+    const key = getCommentKey(route, type);
+    dispatch(setComment({ key, commentIndex: index, value: { highlighted: true } }));
+    dispatch(setCommentReplying({ key, value: index }));
   };
 
 export const resetReplying =
-  ({ route }: { route: CommentRoute }): AppThunk =>
+  ({ route, type }: { route: CommentRoute; type: 'common' | 'clubs' }): AppThunk =>
   (dispatch, getState) => {
-    const commentState = selectCommentView(getState(), route.key);
+    const key = getCommentKey(route, type);
+    const commentState = selectCommentView(getState(), key);
     if (commentState.replying !== undefined && commentState.replying > -1) {
-      dispatch(setComment({ key: route.key, commentIndex: commentState.replying, value: { highlighted: false } }));
-      dispatch(resetCommentReplying(route.key));
+      dispatch(setComment({ key, commentIndex: commentState.replying, value: { highlighted: false } }));
+      dispatch(resetCommentReplying(key));
     }
   };
 
 export const setReplyingOnReply =
-  ({ route, commentIndex, replyIndex }: { route: CommentRoute; commentIndex: number; replyIndex: number }): AppThunk =>
+  ({
+    route,
+    commentIndex,
+    type,
+    replyIndex,
+  }: {
+    route: CommentRoute;
+    type: 'common' | 'clubs';
+    commentIndex: number;
+    replyIndex: number;
+  }): AppThunk =>
   dispatch => {
-    dispatch(setReply({ key: route.key, commentIndex, replyIndex, value: { highlighted: true } }));
-    dispatch(setCommentReplying({ key: route.key, value: commentIndex }));
-    dispatch(setCommentReplyingOnReply({ key: route.key, value: replyIndex }));
+    const key = getCommentKey(route, type);
+    dispatch(setReply({ key, commentIndex, replyIndex, value: { highlighted: true } }));
+    dispatch(setCommentReplying({ key, value: commentIndex }));
+    dispatch(setCommentReplyingOnReply({ key, value: replyIndex }));
   };
 
 export const resetReplyingOnReply =
-  ({ route, commentIndex }: { route: CommentRoute; commentIndex: number }): AppThunk =>
+  ({ route, type, commentIndex }: { route: CommentRoute; type: 'common' | 'clubs'; commentIndex: number }): AppThunk =>
   (dispatch, getState) => {
-    const commentState = selectCommentView(getState(), route.key);
+    const key = getCommentKey(route, type);
+    const commentState = selectCommentView(getState(), key);
     if (commentState.replyingOnReply !== undefined && commentState.replyingOnReply > -1) {
       dispatch(
         setReply({
-          key: route.key,
+          key,
           commentIndex,
           replyIndex: commentState.replyingOnReply,
           value: { highlighted: false },
         }),
       );
-      dispatch(resetCommentReplyingOnReply(route.key));
+      dispatch(resetCommentReplyingOnReply(key));
     }
   };
 
 export const addReplyPaginationVersionByCommentId =
-  ({ key, commentId }: { key: string; commentId: string }): AppThunk =>
+  ({ route, type, commentId }: { route: CommentRoute; type: 'common' | 'clubs'; commentId: string }): AppThunk =>
   (dispatch, getState) => {
+    const key = getCommentKey(route, type);
     const commentState = selectCommentView(getState(), key);
     const index = commentState.comment.findIndex(c => c.id === commentId);
     dispatch(addReplyPaginationVersion({ key, commentIndex: index }));
   };
 
 export const setReplyPaginationCheckpointToRepliesLength =
-  ({ key, commentId }: { key: string; commentId: string }): AppThunk =>
+  ({ route, type, commentId }: { route: CommentRoute; type: 'common' | 'clubs'; commentId: string }): AppThunk =>
   (dispatch, getState) => {
+    const key = getCommentKey(route, type);
     const commentState = selectCommentView(getState(), key);
     const index = commentState.comment.findIndex(c => c.id === commentId);
     dispatch(
@@ -326,23 +437,35 @@ export const setReplyPaginationCheckpointToRepliesLength =
   };
 
 export const clearReplying =
-  ({ route }: { route: CommentRoute }): AppThunk =>
+  ({ route, type }: { route: CommentRoute; type: 'common' | 'clubs' }): AppThunk =>
   (dispatch, getState) => {
-    const commentState = selectCommentView(getState(), route.key);
+    const key = getCommentKey(route, type);
+    const commentState = selectCommentView(getState(), key);
     const commentIndex = commentState.replying;
     if (commentIndex !== undefined) {
-      dispatch(resetReplyingOnReply({ route, commentIndex }));
-      dispatch(resetReplying({ route }));
+      dispatch(resetReplyingOnReply({ route, type, commentIndex }));
+      dispatch(resetReplying({ route, type }));
     }
   };
 
 export const addReplyLikeById =
-  ({ route, commentIndex, replyIndex }: { route: CommentRoute; commentIndex: number; replyIndex: number }): AppThunk =>
+  ({
+    route,
+    type,
+    commentIndex,
+    replyIndex,
+  }: {
+    route: CommentRoute;
+    type: 'common' | 'clubs';
+    commentIndex: number;
+    replyIndex: number;
+  }): AppThunk =>
   (dispatch, getState) => {
-    const commentState = selectCommentView(getState(), route.key);
+    const key = getCommentKey(route, type);
+    const commentState = selectCommentView(getState(), key);
     dispatch(
       setReply({
-        key: route.key,
+        key,
         commentIndex,
         replyIndex,
         value: { like: commentState.comment[commentIndex].replies[replyIndex].like + 1 },

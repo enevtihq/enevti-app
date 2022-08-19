@@ -14,4 +14,6 @@ export default {
   replyQueued: 'Queued on the chain! Your reply will automatically posted!',
   replyTo: 'Reply to:',
   loading: 'Loading...',
+  commonComment: 'Common',
+  clubsComment: 'Clubs',
 };

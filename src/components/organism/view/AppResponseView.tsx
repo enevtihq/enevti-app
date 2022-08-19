@@ -10,6 +10,7 @@ interface AppResponseViewProps {
   status: number;
   children: React.ReactNode;
   style?: StyleProp<ViewStyle>;
+  infoBoxStyle?: StyleProp<ViewStyle>;
   onReload?: () => void;
   progressViewOffset?: number;
   refreshing?: boolean;
@@ -19,6 +20,7 @@ export default function AppResponseView({
   status,
   children,
   style,
+  infoBoxStyle,
   onReload,
   progressViewOffset = 0,
   refreshing = false,
@@ -38,7 +40,7 @@ export default function AppResponseView({
     <ScrollView
       refreshControl={refreshControl}
       showsVerticalScrollIndicator={false}
-      contentContainerStyle={[style, styles.responseView]}>
+      contentContainerStyle={[style, infoBoxStyle, styles.responseView]}>
       {status === 404 ? (
         <AppMessageNotFound />
       ) : status === ERRORCODE.NETWORK_ERROR ? (
