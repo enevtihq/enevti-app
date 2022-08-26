@@ -45,6 +45,8 @@ import { reduceNewBlock } from 'enevti-app/store/middleware/thunk/socket/chain/n
 import Comment from 'enevti-app/screen/explorer/Comment';
 import { setKeyboardShow, setKeyboardHide } from 'enevti-app/store/slices/ui/global/keyboard';
 import Notification from 'enevti-app/screen/notification/Notification';
+import { initFCMToken, refreshFCMToken } from 'enevti-app/store/middleware/thunk/session/fcm';
+import messaging from '@react-native-firebase/messaging';
 
 export type RootStackParamList = {
   CreateAccount: undefined;
@@ -166,6 +168,14 @@ export default function AppNavigationContainer() {
     return function cleanup() {
       socket.current?.disconnect();
     };
+  }, [dispatch]);
+
+  React.useEffect(() => {
+    dispatch(initFCMToken());
+    const unsubsribe = messaging().onTokenRefresh(async token => {
+      dispatch(refreshFCMToken({ token }));
+    });
+    return unsubsribe;
   }, [dispatch]);
 
   return (

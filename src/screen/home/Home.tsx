@@ -39,15 +39,9 @@ import AppAlertModal from 'enevti-app/components/organism/menu/AppAlertModal';
 import AppConfirmationModal from 'enevti-app/components/organism/menu/AppConfirmationModal';
 import { appSocket } from 'enevti-app/utils/network';
 import { Socket } from 'socket.io-client';
-import { reduceMyNewUsername } from 'enevti-app/store/middleware/thunk/socket/profile/newUsername';
-import { reduceMyBalanceChanged } from 'enevti-app/store/middleware/thunk/socket/profile/balanceChanged';
-import { reduceMyTotalStakeChanged } from 'enevti-app/store/middleware/thunk/socket/profile/totalStakeChanged';
 import { reduceFeedsUpdates } from 'enevti-app/store/middleware/thunk/socket/feeds/feedsUpdates';
 import { payDeliverSecret } from 'enevti-app/store/middleware/thunk/payment/creator/payDeliverSecret';
 import { syncTransactionNonce } from 'enevti-app/store/middleware/thunk/ui/cache/syncTransactionNonce';
-import { reduceMyTotalNFTSoldChanged } from 'enevti-app/store/middleware/thunk/socket/profile/totalNFTSoldChanged';
-import { reduceMyNewPending } from 'enevti-app/store/middleware/thunk/socket/profile/newPending';
-import { reduceMyNewProfileUpdates } from 'enevti-app/store/middleware/thunk/socket/profile/newProfileUpdates';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 import { selectOnceWelcome, touchOnceWelcome } from 'enevti-app/store/slices/entities/once/welcome';
 import { requestFaucet } from 'enevti-app/service/enevti/dummy';
@@ -65,7 +59,6 @@ import {
 } from 'enevti-app/store/slices/entities/once/like';
 import BalanceChangedSnack from 'enevti-app/components/molecules/view/BalanceChangedSnack';
 import AppBadge from 'enevti-app/components/atoms/view/AppBadge';
-import { reduceMyTotalServeRateChanged } from 'enevti-app/store/middleware/thunk/socket/profile/totalServeRateChanged';
 import { syncChainConfig } from 'enevti-app/store/middleware/thunk/ui/chainConfig/syncChainConfig';
 import { selectNotificationUnread } from 'enevti-app/store/slices/entities/notification';
 
@@ -126,14 +119,7 @@ export default function Home({ navigation }: Props) {
   }, [myPersona.address]);
 
   React.useEffect(() => {
-    socket.current = appSocket(myPersona.address);
-    socket.current.on('usernameChanged', (payload: any) => dispatch(reduceMyNewUsername(payload)));
-    socket.current.on('balanceChanged', (payload: any) => dispatch(reduceMyBalanceChanged(payload)));
-    socket.current.on('totalStakeChanged', (payload: any) => dispatch(reduceMyTotalStakeChanged(payload)));
-    socket.current.on('totalNFTSoldChanged', (payload: any) => dispatch(reduceMyTotalNFTSoldChanged(payload)));
-    socket.current.on('totalServeRateChanged', (payload: any) => dispatch(reduceMyTotalServeRateChanged(payload)));
-    socket.current.on('newProfileUpdates', (payload: any) => dispatch(reduceMyNewProfileUpdates(payload)));
-    socket.current.on('newPending', (payload: any) => dispatch(reduceMyNewPending(payload)));
+    socket.current = appSocket(myPersona.address, 'register-address');
     socket.current.on('newFeedItem', (payload: any) => dispatch(reduceFeedsUpdates(payload)));
     socket.current.on('deliverSecretNotif', (payload: any) => dispatch(payDeliverSecret(payload)));
     return function cleanup() {

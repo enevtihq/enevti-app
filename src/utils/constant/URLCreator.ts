@@ -378,3 +378,19 @@ export function urlGetTagNFT(query: string, host: string = ENEVTI_DEFAULT_API) {
 export function urlGetConfigSocialRaffle(host: string = ENEVTI_DEFAULT_API) {
   return encodeURI(`${host}/config/raffle`);
 }
+
+export function urlGetFCMIsReady(host: string = ENEVTI_DEFAULT_API) {
+  return encodeURI(`${host}/fcm/ready`);
+}
+
+export function urlGetFCMIsAddressRegistered(address: string, host: string = ENEVTI_DEFAULT_API) {
+  return encodeURI(`${host}/fcm/registered/${address}`);
+}
+
+export function urlPostFCMRegisterAddress(host: string = ENEVTI_DEFAULT_API) {
+  return encodeURI(`${host}/fcm/register`);
+}
+
+export function urlDeleteFCMAddress(host: string = ENEVTI_DEFAULT_API) {
+  return encodeURI(`${host}/fcm/remove`);
+}

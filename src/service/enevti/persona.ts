@@ -108,6 +108,14 @@ export function passphraseToAddress(passphrase: string) {
   return Lisk.cryptography.getAddressFromPassphrase(passphrase).toString('hex');
 }
 
+export function passphraseToPublicAndPrivateKey(passphrase: string) {
+  const key = Lisk.cryptography.getPrivateAndPublicKeyFromPassphrase(passphrase);
+  return {
+    privateKey: key.privateKey.toString('hex'),
+    publicKey: key.publicKey.toString('hex'),
+  };
+}
+
 export async function usernameToAddress(username: string) {
   const persona = await fetchPersonaByUsername(username);
   return persona.data.address;

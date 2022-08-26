@@ -41,6 +41,36 @@ import {
   setMyProfileViewVersion,
   isThereAnyNewMyProfileUpdates,
 } from 'enevti-app/store/slices/ui/view/myProfile';
+import { Socket } from 'socket.io-client';
+import { getMyAddress, routeParamToAddress } from 'enevti-app/service/enevti/persona';
+import {
+  reduceMyBalanceChanged,
+  reduceBalanceChanged,
+} from 'enevti-app/store/middleware/thunk/socket/profile/balanceChanged';
+import {
+  reduceMyNewCollection,
+  reduceNewCollection,
+} from 'enevti-app/store/middleware/thunk/socket/profile/newCollection';
+import { reduceMyNewOwned, reduceNewOwned } from 'enevti-app/store/middleware/thunk/socket/profile/newOwned';
+import { reduceMyNewPending, reduceNewPending } from 'enevti-app/store/middleware/thunk/socket/profile/newPending';
+import {
+  reduceMyNewProfileUpdates,
+  reduceNewProfileUpdates,
+} from 'enevti-app/store/middleware/thunk/socket/profile/newProfileUpdates';
+import { reduceMyNewUsername, reduceNewUsername } from 'enevti-app/store/middleware/thunk/socket/profile/newUsername';
+import {
+  reduceMyTotalNFTSoldChanged,
+  reduceTotalNFTSoldChanged,
+} from 'enevti-app/store/middleware/thunk/socket/profile/totalNFTSoldChanged';
+import {
+  reduceMyTotalServeRateChanged,
+  reduceTotalServeRateChanged,
+} from 'enevti-app/store/middleware/thunk/socket/profile/totalServeRateChanged';
+import {
+  reduceMyTotalStakeChanged,
+  reduceTotalStakeChanged,
+} from 'enevti-app/store/middleware/thunk/socket/profile/totalStakeChanged';
+import { appSocket } from 'enevti-app/utils/network';
 
 const noDisplay = 'none';
 const visible = 1;
@@ -75,6 +105,7 @@ export default function AppProfile({
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const theme = useTheme();
+  const socket = React.useRef<Socket | undefined>();
 
   const profile = useSelector((state: RootState) =>
     isMyProfile ? selectMyProfileView(state) : selectProfileView(state, route.key),
@@ -135,6 +166,46 @@ export default function AppProfile({
       promise.abort();
     };
   }, [onProfileScreenLoaded, dispatch, route, isMyProfile]);
+
+  React.useEffect(() => {
+    const run = async () => {
+      if (isMyProfile) {
+        const myAddress = await getMyAddress();
+        socket.current = appSocket(myAddress);
+        socket.current.on('usernameChanged', (payload: any) => dispatch(reduceMyNewUsername(payload)));
+        socket.current.on('balanceChanged', (payload: any) => dispatch(reduceMyBalanceChanged(payload)));
+        socket.current.on('totalStakeChanged', (payload: any) => dispatch(reduceMyTotalStakeChanged(payload)));
+        socket.current.on('totalNFTSoldChanged', (payload: any) => dispatch(reduceMyTotalNFTSoldChanged(payload)));
+        socket.current.on('totalServeRateChanged', (payload: any) => dispatch(reduceMyTotalServeRateChanged(payload)));
+        socket.current.on('newProfileUpdates', (payload: any) => dispatch(reduceMyNewProfileUpdates(payload)));
+        socket.current.on('newPending', (payload: any) => dispatch(reduceMyNewPending(payload)));
+        socket.current.on('newOwned', (payload: any) => dispatch(reduceMyNewOwned(payload)));
+        socket.current.on('newCollection', (payload: any) => dispatch(reduceMyNewCollection(payload)));
+      } else {
+        if (profile.persona && profile.persona.address) {
+          const key = route.key;
+          const address = await routeParamToAddress(route.params);
+          socket.current = appSocket(address);
+          socket.current.on('usernameChanged', (payload: any) => dispatch(reduceNewUsername(payload, key)));
+          socket.current.on('balanceChanged', (payload: any) => dispatch(reduceBalanceChanged(payload, key)));
+          socket.current.on('totalStakeChanged', (payload: any) => dispatch(reduceTotalStakeChanged(payload, key)));
+          socket.current.on('totalNFTSoldChanged', (payload: any) => dispatch(reduceTotalNFTSoldChanged(payload, key)));
+          socket.current.on('totalServeRateChanged', (payload: any) =>
+            dispatch(reduceTotalServeRateChanged(payload, key)),
+          );
+          socket.current.on('newProfileUpdates', (payload: any) => dispatch(reduceNewProfileUpdates(payload, key)));
+          socket.current.on('newPending', (payload: any) => dispatch(reduceNewPending(payload, key)));
+          socket.current.on('newOwned', (payload: any) => dispatch(reduceNewOwned(payload, key)));
+          socket.current.on('newCollection', (payload: any) => dispatch(reduceNewCollection(payload, key)));
+        }
+      }
+    };
+
+    run();
+    return function cleanup() {
+      socket.current?.disconnect();
+    };
+  }, [profile.persona, dispatch, route.params, route.key, isMyProfile]);
 
   const useCustomAnimatedScrollHandler = (scrollRefList: React.RefObject<any>[]) =>
     useAnimatedScrollHandler({

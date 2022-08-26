@@ -7,8 +7,14 @@ import {
 } from 'enevti-app/store/slices/entities/cache/myPersona';
 import { resetMyProfileCache } from 'enevti-app/store/slices/entities/cache/myProfile';
 import { setLocalSessionKey } from 'enevti-app/store/slices/session/local';
-import { passphraseToBase32, passphraseToAddress } from 'enevti-app/service/enevti/persona';
+import {
+  passphraseToBase32,
+  passphraseToAddress,
+  passphraseToPublicAndPrivateKey,
+} from 'enevti-app/service/enevti/persona';
 import { EncryptedData } from 'enevti-app/types/core/service/cryptography';
+import { AnyAction } from '@reduxjs/toolkit';
+import { updateFCMToken } from './fcm';
 
 export const initPassphrase =
   (encryptedPassphrase: EncryptedData, plainPassphrase: string, localKey: string): AppThunk =>
@@ -19,4 +25,7 @@ export const initPassphrase =
     dispatch(setEncryptedPassphraseAuth(encryptedPassphrase));
     dispatch(setMyPersonaBase32Cache(passphraseToBase32(plainPassphrase)));
     dispatch(setMyPersonaAddressCache(passphraseToAddress(plainPassphrase)));
+
+    const publicKey = passphraseToPublicAndPrivateKey(plainPassphrase).publicKey;
+    dispatch(updateFCMToken({ publicKey }) as unknown as AnyAction);
   };

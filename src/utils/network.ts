@@ -119,11 +119,11 @@ export async function appFetchBlob(
   return ret;
 }
 
-export function appSocket(room?: string) {
+export function appSocket(room?: string, event: string = 'register-room') {
   const socket = io(urlSocketIO(), { transports: ['websocket'] });
   if (room) {
     socket.on('connect', () => {
-      socket.emit('register', room);
+      socket.emit(event, room);
     });
   }
   return socket;
