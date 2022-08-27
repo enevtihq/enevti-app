@@ -1,6 +1,5 @@
 import { NFT } from 'enevti-app/types/core/chain/nft';
 import i18n from 'enevti-app/translations/i18n';
-import { dateOfNearestDay } from './calendar';
 
 type RedeemTimeOffset = {
   year?: number;
@@ -10,8 +9,20 @@ type RedeemTimeOffset = {
   minute?: number;
 };
 
+export function dateOfNearestDay(startingDate: Date, nearestDay: number) {
+  const nearestTime = new Date(startingDate.getTime());
+
+  if (startingDate.getDay() === 6 && nearestDay === 5) {
+    nearestTime.setDate(startingDate.getDate() + ((7 + nearestDay - startingDate.getDay()) % 7) - 7);
+  } else {
+    nearestTime.setDate(startingDate.getDate() + ((7 + nearestDay - startingDate.getDay()) % 7));
+  }
+
+  return nearestTime;
+}
+
 export function getRedeemTime(nft: NFT, offset?: RedeemTimeOffset) {
-  let time: number = 0;
+  let time = 0;
   const now = new Date();
   const year = now.getFullYear();
   const month = now.getMonth();
@@ -76,7 +87,7 @@ export function getRedeemTime(nft: NFT, offset?: RedeemTimeOffset) {
 }
 
 export function getRedeemTimeUTC(nft: NFT, offset?: RedeemTimeOffset) {
-  let time: number = 0;
+  let time = 0;
   const now = new Date();
   const year = now.getUTCFullYear();
   const month = now.getUTCMonth();

@@ -3,7 +3,7 @@ import i18n from 'enevti-app/translations/i18n';
 import { lastFetchTimeout } from './constant/lastFetch';
 import { ERRORCODE } from './error/code';
 import io from 'socket.io-client';
-import { urlSocketIO } from './constant/URLCreator';
+import { urlSocketIO, urlVideoCallSocketIO } from './constant/URLCreator';
 import ReactNativeBlobUtil, { ReactNativeBlobUtilConfig } from 'react-native-blob-util';
 import { checkPermissionStorage } from './permission';
 import { APIResponse, APIResponseVersioned, ResponseJSON } from 'enevti-app/types/core/service/api';
@@ -126,6 +126,14 @@ export function appSocket(room?: string, event: string = 'register-room') {
       socket.emit(event, room);
     });
   }
+  return socket;
+}
+
+export function videoCallSocket(params: { nftId: string; signature: string; publicKey: string }) {
+  const socket = io(urlVideoCallSocketIO(), { transports: ['websocket'] });
+  socket.on('connect', () => {
+    socket.emit('startVideoCall', params);
+  });
   return socket;
 }
 

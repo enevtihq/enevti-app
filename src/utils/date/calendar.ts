@@ -3,23 +3,11 @@ import i18n from 'enevti-app/translations/i18n';
 import nftToRedeemCalendarTitle from 'enevti-app/utils/date/nftToRedeemCalendarTitle';
 import { store } from 'enevti-app/store/state';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
-import { getRedeemTimeUTC } from 'enevti-app/utils/date/redeemDate';
+import { dateOfNearestDay, getRedeemTimeUTC } from 'enevti-app/utils/date/redeemDate';
 
 import { handleError } from '../error/handle';
 import { getAppLink } from '../linking';
 import { NFT } from 'enevti-app/types/core/chain/nft';
-
-export function dateOfNearestDay(startingDate: Date, nearestDay: number) {
-  var nearestTime = new Date(startingDate.getTime());
-
-  if (startingDate.getDay() === 6 && nearestDay === 5) {
-    nearestTime.setDate(startingDate.getDate() + ((7 + nearestDay - startingDate.getDay()) % 7) - 7);
-  } else {
-    nearestTime.setDate(startingDate.getDate() + ((7 + nearestDay - startingDate.getDay()) % 7));
-  }
-
-  return nearestTime;
-}
 
 export const addCalendarEvent = async (title: string, event: CalendarEventWritable) => {
   let permissions;

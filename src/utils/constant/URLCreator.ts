@@ -2,6 +2,7 @@ export const ENEVTI_DEFAULT_API = 'http://192.168.0.103:8880';
 export const ENEVTI_SERVICE_API = 'http://192.168.0.103:9901';
 export const ENEVTI_FAUCET_API = 'http://192.168.0.103:8881';
 export const ENEVTI_SOCKET_IO = 'ws://192.168.0.103:8082';
+export const ENEVTI_VIDEOCALL_SOCKET = 'ws://192.168.0.103:8082';
 export const ENEVTI_CORE_WS = 'ws://192.168.0.103:8082/ws';
 export const IPFS_GATEWAY = '.ipfs.nftstorage.link';
 export const NFT_STORAGE_URL = 'https://api.nft.storage/upload';
@@ -40,6 +41,10 @@ export function urlWSCore() {
 
 export function urlSocketIO() {
   return ENEVTI_SOCKET_IO;
+}
+
+export function urlVideoCallSocketIO() {
+  return ENEVTI_VIDEOCALL_SOCKET;
 }
 
 export function urlGetIPFS(hash: string, gateway: string = IPFS_GATEWAY) {
