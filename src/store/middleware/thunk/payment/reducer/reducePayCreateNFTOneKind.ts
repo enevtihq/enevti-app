@@ -102,6 +102,10 @@ export function parseTransactionPayloadTime(payload: CreateNFTOneKindTransaction
         payload.asset.from.hour,
         payload.asset.from.minute,
       );
+      time = {
+        ...time,
+        day: ret.getUTCDay(),
+      };
       break;
     case 'monthly':
       ret = new Date(year, month, payload.asset.time.date, payload.asset.from.hour, payload.asset.from.minute);

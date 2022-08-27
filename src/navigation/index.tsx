@@ -47,6 +47,8 @@ import { setKeyboardShow, setKeyboardHide } from 'enevti-app/store/slices/ui/glo
 import Notification from 'enevti-app/screen/notification/Notification';
 import { initFCMToken, refreshFCMToken } from 'enevti-app/store/middleware/thunk/session/fcm';
 import messaging from '@react-native-firebase/messaging';
+import RedeemVideoCall from 'enevti-app/screen/redeem/RedeemVideoCall';
+import { NFT } from 'enevti-app/types/core/chain/nft';
 
 export type RootStackParamList = {
   CreateAccount: undefined;
@@ -110,6 +112,9 @@ export type RootStackParamList = {
     mode: 'id' | 's';
   };
   Notification: undefined;
+  RedeemVideoCall: {
+    nft: NFT;
+  };
 };
 
 const Stack = createStackNavigator();
@@ -364,6 +369,14 @@ export default function AppNavigationContainer() {
         <Stack.Screen
           name="Notification"
           component={Notification}
+          options={{
+            headerShown: false,
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          }}
+        />
+        <Stack.Screen
+          name="RedeemVideoCall"
+          component={RedeemVideoCall}
           options={{
             headerShown: false,
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,

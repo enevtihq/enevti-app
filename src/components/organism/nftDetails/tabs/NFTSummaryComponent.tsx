@@ -202,7 +202,7 @@ function Component(
         />
       </View>
 
-      <AppNFTDetailsRedeemBar nft={nft} />
+      <AppNFTDetailsRedeemBar nft={nft} navigation={navigation} route={route} />
 
       <View style={styles.nftDetailsChipsContainer}>
         <AppQuaternaryButton

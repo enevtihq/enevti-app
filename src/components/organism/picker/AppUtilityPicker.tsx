@@ -51,7 +51,7 @@ function Component({ value, onSelected, memoKey }: AppUtilityPickerProps) {
         icon: utilityToIcon('videocall'),
         title: t('createNFT:utilityVideoCall'),
         description: t('createNFT:utilityVideoCallDescription'),
-        disabled: true,
+        disabled: false,
       },
       {
         value: 'gift',

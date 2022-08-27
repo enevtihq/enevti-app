@@ -22,12 +22,17 @@ import { getMyAddress } from 'enevti-app/service/enevti/persona';
 import { isRedeemTimeUTC } from 'enevti-app/utils/date/redeemDate';
 import AppPoppableIcon from 'enevti-app/components/molecules/menu/AppPoppableIcon';
 import { NFT } from 'enevti-app/types/core/chain/nft';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from 'enevti-app/navigation';
+import { RouteProp } from '@react-navigation/native';
 
 interface AppNFTDetailsRedeemBarProps {
   nft: NFT;
+  navigation: StackNavigationProp<RootStackParamList>;
+  route: RouteProp<RootStackParamList, 'NFTDetails'>;
 }
 
-export default function AppNFTDetailsRedeemBar({ nft }: AppNFTDetailsRedeemBarProps) {
+export default function AppNFTDetailsRedeemBar({ nft, navigation, route }: AppNFTDetailsRedeemBarProps) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const theme = useTheme() as Theme;
@@ -71,8 +76,8 @@ export default function AppNFTDetailsRedeemBar({ nft }: AppNFTDetailsRedeemBarPr
   }, [onLoaded]);
 
   const onRedeem = React.useCallback(() => {
-    dispatch(reduceRedeem(nft));
-  }, [dispatch, nft]);
+    dispatch(reduceRedeem(nft, navigation, route));
+  }, [dispatch, nft, navigation, route]);
 
   const onAddEvent = React.useCallback(async () => {
     await addRedeemCalendarEvent(nft);
