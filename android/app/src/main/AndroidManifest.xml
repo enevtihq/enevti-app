@@ -13,6 +13,9 @@
     <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.BIND_TELECOM_CONNECTION_SERVICE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <uses-feature android:name="android.hardware.camera" android:required="false" />
     <uses-feature android:name="android.hardware.camera.front" android:required="false" />
@@ -63,6 +66,20 @@
       </activity>
 
       <service android:name="com.asterinet.react.bgactions.RNBackgroundActionsTask" />
+
+      <service android:name="io.wazo.callkeep.RNCallKeepBackgroundMessagingService" />
+
+      <service 
+        android:exported="true"
+        android:name="io.wazo.callkeep.VoiceConnectionService"
+        android:label="Wazo"
+        android:permission="android.permission.BIND_TELECOM_CONNECTION_SERVICE"
+        android:foregroundServiceType="camera|microphone">
+        <!-- NOTE: 👆 for android < 11 use:android:foregroundServiceType="phoneCall" (https://github.com/react-native-webrtc/react-native-callkeep/blob/master/docs/android-installation.md) -->
+        <intent-filter>
+          <action android:name="android.telecom.ConnectionService" />
+        </intent-filter>
+      </service>
 
     </application>
 
