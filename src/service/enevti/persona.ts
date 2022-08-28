@@ -79,15 +79,16 @@ export function isValidAddress(address: string): boolean {
   return validBase32;
 }
 
+export function compactBase32Address(base32: string) {
+  return `${base32.substring(0, COIN_NAME.length + 4)}...${base32.substring(base32.length - 8, base32.length)}`;
+}
+
 export function parsePersonaLabel(persona: Persona, compact: boolean = true) {
   return persona.username
     ? persona.username
     : persona.base32
     ? compact
-      ? `${persona.base32.substring(0, COIN_NAME.length + 4)}...${persona.base32.substring(
-          persona.base32.length - 8,
-          persona.base32.length,
-        )}`
+      ? `${compactBase32Address(persona.base32)}`
       : persona.base32
     : '???';
 }

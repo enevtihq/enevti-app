@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { useEffect } from 'react';
-import { useColorScheme } from 'react-native';
+import { DeviceEventEmitter, Platform, useColorScheme } from 'react-native';
 import { PersistGate } from 'redux-persist/integration/react';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { Provider as StoreProvider } from 'react-redux';
@@ -13,6 +13,8 @@ import AppNavigationContainer from './navigation';
 import { persistor, store } from './store/state';
 import { getTheme } from './theme';
 import { IconProvider } from './components/atoms/icon/AppIconComponent';
+import { setupCall } from './service/call/device';
+import IncomingCall from '@bob.hardcoder/react-native-incoming-call';
 import './translations/i18n';
 import './utils/debug/suppressWarning';
 
@@ -32,6 +34,33 @@ const App = () => {
     return () => {
       unsubscribe();
     };
+  }, []);
+
+  useEffect(() => {
+    setupCall();
+  }, []);
+
+  // Listen to cancel and answer call events
+  useEffect(() => {
+    const run = async () => {
+      // TODO: clean up
+      if (Platform.OS === 'android') {
+        // App open from killed state (headless mode)
+        const payload = await IncomingCall.getExtrasFromHeadlessMode();
+
+        // App in foreground / background: listen to call events and determine what to do next
+        if (payload) {
+          // Start call action here. You probably want to navigate to some CallRoom screen with the payload.uuid.
+        }
+        DeviceEventEmitter.addListener('endCall', _payload => {
+          // End call action here
+        });
+        DeviceEventEmitter.addListener('answerCall', _payload => {
+          // Start call action here. You probably want to navigate to some CallRoom screen with the payload.uuid.
+        });
+      }
+    };
+    run();
   }, []);
 
   return (

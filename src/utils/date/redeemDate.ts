@@ -35,6 +35,7 @@ export function dateOfNearestDayUTC(startingDate: Date, nearestDayUTC: number) {
 
 export function getRedeemTimeUTC(nft: NFT, offset?: RedeemTimeOffset) {
   let time = 0;
+  let redeemStartTimeDate = new Date();
   const now = new Date();
   const year = now.getUTCFullYear();
   const month = now.getUTCMonth();
@@ -47,25 +48,32 @@ export function getRedeemTimeUTC(nft: NFT, offset?: RedeemTimeOffset) {
 
   switch (nft.redeem.schedule.recurring) {
     case 'daily':
-      time = new Date(
-        Date.UTC(
-          year + (offset && offset.year ? offset.year : 0),
-          month + (offset && offset.month ? offset.month : 0),
-          date + (offset && offset.date ? offset.date : 0),
-          nftTime.hour + (offset && offset.hour ? offset.hour : 0),
-          nftTime.minute + (offset && offset.minute ? offset.minute : 0),
-        ),
-      ).setUTCDate(date);
-      break;
-    case 'weekly':
-      const nearestTime = dateOfNearestDayUTC(now, nftTime.day);
       time = Date.UTC(
-        nearestTime.getUTCFullYear() + (offset && offset.year ? offset.year : 0),
-        nearestTime.getUTCMonth() + (offset && offset.month ? offset.month : 0),
-        nearestTime.getUTCDate() + (offset && offset.date ? offset.date : 0),
+        year + (offset && offset.year ? offset.year : 0),
+        month + (offset && offset.month ? offset.month : 0),
+        date + (offset && offset.date ? offset.date : 0),
         nftTime.hour + (offset && offset.hour ? offset.hour : 0),
         nftTime.minute + (offset && offset.minute ? offset.minute : 0),
       );
+      redeemStartTimeDate = new Date(time);
+      now.setHours(redeemStartTimeDate.getHours());
+      now.setMinutes(redeemStartTimeDate.getMinutes());
+      time = now.getTime();
+      break;
+    case 'weekly':
+      const nearestTimeUTC = dateOfNearestDayUTC(now, nftTime.day);
+      time = Date.UTC(
+        nearestTimeUTC.getUTCFullYear() + (offset && offset.year ? offset.year : 0),
+        nearestTimeUTC.getUTCMonth() + (offset && offset.month ? offset.month : 0),
+        nearestTimeUTC.getUTCDate() + (offset && offset.date ? offset.date : 0),
+        nftTime.hour + (offset && offset.hour ? offset.hour : 0),
+        nftTime.minute + (offset && offset.minute ? offset.minute : 0),
+      );
+      redeemStartTimeDate = new Date(time);
+      const nearestTime = dateOfNearestDay(now, new Date(time).getDay());
+      nearestTime.setHours(redeemStartTimeDate.getHours());
+      nearestTime.setMinutes(redeemStartTimeDate.getMinutes());
+      time = nearestTime.getTime();
       break;
     case 'monthly':
       time = Date.UTC(
@@ -113,5 +121,5 @@ export function isRedeemTimeUTC(nft: NFT) {
   const now = Date.now();
   const redeemStartTime = getRedeemTimeUTC(nft);
   const redeemEndTime = redeemStartTime + nft.redeem.schedule.until;
-  return redeemStartTime < now && now < redeemEndTime;
+  return redeemStartTime <= now && now <= redeemEndTime;
 }
