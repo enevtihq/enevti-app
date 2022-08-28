@@ -21,6 +21,18 @@ export function dateOfNearestDay(startingDate: Date, nearestDay: number) {
   return nearestTime;
 }
 
+export function dateOfNearestDayUTC(startingDate: Date, nearestDayUTC: number) {
+  const nearestTime = new Date(startingDate.getTime());
+
+  if (startingDate.getUTCDay() === 6 && nearestDayUTC === 5) {
+    nearestTime.setDate(startingDate.getUTCDate() + ((7 + nearestDayUTC - startingDate.getUTCDay()) % 7) - 7);
+  } else {
+    nearestTime.setDate(startingDate.getUTCDate() + ((7 + nearestDayUTC - startingDate.getUTCDay()) % 7));
+  }
+
+  return nearestTime;
+}
+
 export function getRedeemTimeUTC(nft: NFT, offset?: RedeemTimeOffset) {
   let time = 0;
   const now = new Date();
@@ -43,13 +55,14 @@ export function getRedeemTimeUTC(nft: NFT, offset?: RedeemTimeOffset) {
           nftTime.hour + (offset && offset.hour ? offset.hour : 0),
           nftTime.minute + (offset && offset.minute ? offset.minute : 0),
         ),
-      ).setDate(date);
+      ).setUTCDate(date);
       break;
     case 'weekly':
+      const nearestTime = dateOfNearestDayUTC(now, nftTime.day);
       time = Date.UTC(
-        year + (offset && offset.year ? offset.year : 0),
-        month + (offset && offset.month ? offset.month : 0),
-        dateOfNearestDay(now, nftTime.day).getDate() + (offset && offset.date ? offset.date : 0),
+        nearestTime.getUTCFullYear() + (offset && offset.year ? offset.year : 0),
+        nearestTime.getUTCMonth() + (offset && offset.month ? offset.month : 0),
+        nearestTime.getUTCDate() + (offset && offset.date ? offset.date : 0),
         nftTime.hour + (offset && offset.hour ? offset.hour : 0),
         nftTime.minute + (offset && offset.minute ? offset.minute : 0),
       );

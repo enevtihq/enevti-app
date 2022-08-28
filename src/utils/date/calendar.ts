@@ -3,7 +3,7 @@ import i18n from 'enevti-app/translations/i18n';
 import nftToRedeemCalendarTitle from 'enevti-app/utils/date/nftToRedeemCalendarTitle';
 import { store } from 'enevti-app/store/state';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
-import { dateOfNearestDay, getRedeemTimeUTC } from 'enevti-app/utils/date/redeemDate';
+import { dateOfNearestDayUTC, getRedeemTimeUTC } from 'enevti-app/utils/date/redeemDate';
 
 import { handleError } from '../error/handle';
 import { getAppLink } from '../linking';
@@ -51,7 +51,7 @@ export const addRedeemCalendarEvent = async (nft: NFT) => {
       }
       break;
     case 'weekly':
-      startTime = dateOfNearestDay(now, nftTime.day).getTime();
+      startTime = dateOfNearestDayUTC(now, nftTime.day).getTime();
       if (startTime > now.getTime()) {
         nextTime = i18n.t('date:week');
       }

@@ -86,19 +86,20 @@ export function parseTransactionPayloadTime(payload: CreateNFTOneKindTransaction
   let from = payload.asset.from;
 
   const now = new Date();
-  const year = now.getUTCFullYear();
-  const month = now.getUTCMonth();
-  const date = now.getUTCDate();
+  const year = now.getFullYear();
+  const month = now.getMonth();
+  const date = now.getDate();
 
   switch (payload.asset.recurring) {
     case 'daily':
       ret = new Date(year, month, date, payload.asset.from.hour, payload.asset.from.minute);
       break;
     case 'weekly':
+      const nearestTime = dateOfNearestDay(now, payload.asset.time.day);
       ret = new Date(
-        year,
-        month,
-        dateOfNearestDay(now, payload.asset.time.day).getDate(),
+        nearestTime.getFullYear(),
+        nearestTime.getMonth(),
+        nearestTime.getDate(),
         payload.asset.from.hour,
         payload.asset.from.minute,
       );
