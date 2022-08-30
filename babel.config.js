@@ -2,6 +2,7 @@ module.exports = {
   presets: ['module:metro-react-native-babel-preset'],
   plugins: [
     '@babel/plugin-proposal-async-generator-functions',
+    '@babel/plugin-proposal-numeric-separator',
     '@babel/plugin-syntax-bigint',
     'jest-hoist',
     [
