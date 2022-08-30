@@ -61,3 +61,6 @@ buck-out/
 
 # Environment Variable
 .env
+.env*
+!.env.project
+!.env.vault
