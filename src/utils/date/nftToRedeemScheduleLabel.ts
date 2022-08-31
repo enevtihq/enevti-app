@@ -11,11 +11,6 @@ export default function nftToRedeemScheduleLabel(nft: NFT) {
   let ret: string = '';
   let timeString: string = '';
 
-  const separator = ' · ';
-  const time: number = getRedeemTimeUTC(nft);
-  const startTime: Date = new Date(time);
-  const endTime: Date = new Date(time + nft.redeem.schedule.until);
-
   if (nft.utility === 'content') {
     ret = i18n.t('nftDetails:contentCalendarLabel', {
       status: nft.redeem.status,
@@ -27,6 +22,11 @@ export default function nftToRedeemScheduleLabel(nft: NFT) {
     if (nft.redeem.schedule.recurring === 'anytime') {
       throw Error(i18n.t('error:invalidRecurring'));
     }
+
+    const separator = ' · ';
+    const time: number = getRedeemTimeUTC(nft);
+    const startTime: Date = new Date(time);
+    const endTime: Date = new Date(time + nft.redeem.schedule.until);
 
     ret +=
       (nft.redeem.schedule.recurring === 'once' ? `${i18n.t('nftDetails:redeem')} ` : '') +
