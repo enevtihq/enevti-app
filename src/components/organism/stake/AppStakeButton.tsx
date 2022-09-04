@@ -1,4 +1,4 @@
-import { View, Keyboard, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import React from 'react';
 import AppMenuContainer from 'enevti-app/components/atoms/menu/AppMenuContainer';
 import AppFloatingActionButton from 'enevti-app/components/atoms/view/AppFloatingActionButton';
@@ -39,38 +39,34 @@ const initialValues: StakeForm = {
 
 interface AppStakeButtonProps {
   persona: Persona;
-  visible: boolean;
   extended: boolean;
   route: RouteProp<RootStackParamList, 'StakePool'>;
-  onPress?: () => void;
-  onModalDismiss?: () => void;
-  onModalSubmit?: (values: StakeForm) => void;
 }
 
-export default function AppStakeButton({
-  persona,
-  visible,
-  extended,
-  route,
-  onPress,
-  onModalDismiss,
-  onModalSubmit,
-}: AppStakeButtonProps) {
+export default function AppStakeButton({ persona, extended, route }: AppStakeButtonProps) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const insets = useSafeAreaInsets();
   const theme = useTheme();
   const styles = React.useMemo(() => makeStyles(insets), [insets]);
   const snapPoints = React.useMemo(() => ['62%'], []);
+  const [menuVisible, setMenuVisible] = React.useState<boolean>(false);
 
   const paymentThunkRef = React.useRef<any>();
 
   const myPersona = useSelector(selectMyPersonaCache);
   const selfStake = persona.address === myPersona.address;
 
+  const onStakeButtonDismiss = React.useCallback(() => {
+    setMenuVisible(false);
+  }, []);
+
+  const onStakeButtonPress = React.useCallback(async () => {
+    setMenuVisible(!menuVisible);
+  }, [menuVisible]);
+
   const onStakeSubmit = React.useCallback(
     (values: StakeForm) => {
-      onModalSubmit && onModalSubmit(values);
       paymentThunkRef.current = dispatch(
         payAddStake({
           persona,
@@ -82,7 +78,15 @@ export default function AppStakeButton({
         }),
       );
     },
-    [onModalSubmit, dispatch, persona, route.key],
+    [dispatch, persona, route.key],
+  );
+
+  const onSubmit = React.useCallback(
+    values => {
+      onStakeButtonDismiss();
+      onStakeSubmit(values);
+    },
+    [onStakeButtonDismiss, onStakeSubmit],
   );
 
   const paymentCondition = React.useCallback(
@@ -106,72 +110,61 @@ export default function AppStakeButton({
   });
 
   return (
-    <AppMenuContainer
-      dismissKeyboard
-      visible={visible}
-      onDismiss={() => {
-        onModalDismiss && onModalDismiss();
-      }}
-      snapPoints={snapPoints}
-      anchor={
-        <AppFloatingActionButton
-          label={selfStake ? t('stake:selfStake') : t('stake:addStake')}
-          icon={iconMap.add}
-          extended={extended}
-          onPress={onPress}
-        />
-      }>
-      <Formik
-        initialValues={initialValues}
-        onSubmit={async values => {
-          Keyboard.dismiss();
-          await onStakeSubmit(values);
-        }}
-        validationSchema={validationSchema}>
-        {({ handleChange, submitForm, setFieldTouched, values, errors, isValid, dirty, touched }) => (
-          <View style={styles.modalBox}>
-            <AppHeaderWizard
-              noHeaderSpace
-              mode={'icon'}
-              modeData={'stake'}
-              style={styles.modalHeader}
-              title={t('stake:addStakeTitle')}
-              description={t('stake:addStakeDescription')}
-            />
-            <View style={styles.dialogContent}>
-              <AppMenuFormTextInputWithError
-                hideMaxLengthIndicator
-                maxLength={13}
-                endComponent={<AppCoinChipsPicker />}
-                right={<TextInput.Icon name={iconMap.dropDown} />}
-                theme={theme}
-                onChangeText={handleChange('stake')}
-                value={values.stake}
-                returnKeyType={'done'}
-                autoComplete={'off'}
-                autoCorrect={false}
-                label={t('stake:addStakePlaceholder')}
-                onBlur={() => {
-                  setFieldTouched('stake');
-                }}
-                errorText={errors.stake}
-                error={touched.stake && !!errors.stake}
-                showError={touched.stake}
-                blurOnSubmit={true}
-                onSubmitEditing={isValid && dirty ? submitForm : () => {}}
-                keyboardType={'number-pad'}
-              />
-            </View>
-            <View style={styles.dialogAction}>
-              <AppPrimaryButton onPress={submitForm} disabled={!(isValid && dirty)} style={styles.dialogButton}>
-                {selfStake ? t('stake:selfStake') : t('stake:addStake')}
-              </AppPrimaryButton>
-              <View style={{ height: hp('3%', insets) }} />
-            </View>
-          </View>
-        )}
-      </Formik>
-    </AppMenuContainer>
+    <View>
+      <AppFloatingActionButton
+        label={selfStake ? t('stake:selfStake') : t('stake:addStake')}
+        icon={iconMap.add}
+        extended={extended}
+        onPress={onStakeButtonPress}
+      />
+      {menuVisible ? (
+        <AppMenuContainer dismissKeyboard visible={true} onDismiss={onStakeButtonDismiss} snapPoints={snapPoints}>
+          <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
+            {({ handleChange, submitForm, setFieldTouched, values, errors, isValid, dirty, touched }) => (
+              <View style={styles.modalBox}>
+                <AppHeaderWizard
+                  noHeaderSpace
+                  mode={'icon'}
+                  modeData={'stake'}
+                  style={styles.modalHeader}
+                  title={t('stake:addStakeTitle')}
+                  description={t('stake:addStakeDescription')}
+                />
+                <View style={styles.dialogContent}>
+                  <AppMenuFormTextInputWithError
+                    hideMaxLengthIndicator
+                    maxLength={13}
+                    endComponent={<AppCoinChipsPicker />}
+                    right={<TextInput.Icon name={iconMap.dropDown} />}
+                    theme={theme}
+                    onChangeText={handleChange('stake')}
+                    value={values.stake}
+                    returnKeyType={'done'}
+                    autoComplete={'off'}
+                    autoCorrect={false}
+                    label={t('stake:addStakePlaceholder')}
+                    onBlur={() => {
+                      setFieldTouched('stake');
+                    }}
+                    errorText={errors.stake}
+                    error={touched.stake && !!errors.stake}
+                    showError={touched.stake}
+                    blurOnSubmit={true}
+                    keyboardType={'number-pad'}
+                  />
+                </View>
+                <View style={styles.dialogAction}>
+                  <AppPrimaryButton onPress={submitForm} disabled={!(isValid && dirty)} style={styles.dialogButton}>
+                    {selfStake ? t('stake:selfStake') : t('stake:addStake')}
+                  </AppPrimaryButton>
+                  <View style={{ height: hp('3%', insets) }} />
+                </View>
+              </View>
+            )}
+          </Formik>
+        </AppMenuContainer>
+      ) : null}
+    </View>
   );
 }
 

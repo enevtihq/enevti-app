@@ -61,6 +61,15 @@ import BalanceChangedSnack from 'enevti-app/components/molecules/view/BalanceCha
 import AppBadge from 'enevti-app/components/atoms/view/AppBadge';
 import { syncChainConfig } from 'enevti-app/store/middleware/thunk/ui/chainConfig/syncChainConfig';
 import { selectNotificationUnread } from 'enevti-app/store/slices/entities/notification';
+import { reduceMyBalanceChanged } from 'enevti-app/store/middleware/thunk/socket/profile/balanceChanged';
+import { reduceMyNewCollection } from 'enevti-app/store/middleware/thunk/socket/profile/newCollection';
+import { reduceMyNewOwned } from 'enevti-app/store/middleware/thunk/socket/profile/newOwned';
+import { reduceMyNewPending } from 'enevti-app/store/middleware/thunk/socket/profile/newPending';
+import { reduceMyNewProfileUpdates } from 'enevti-app/store/middleware/thunk/socket/profile/newProfileUpdates';
+import { reduceMyNewUsername } from 'enevti-app/store/middleware/thunk/socket/profile/newUsername';
+import { reduceMyTotalNFTSoldChanged } from 'enevti-app/store/middleware/thunk/socket/profile/totalNFTSoldChanged';
+import { reduceMyTotalServeRateChanged } from 'enevti-app/store/middleware/thunk/socket/profile/totalServeRateChanged';
+import { reduceMyTotalStakeChanged } from 'enevti-app/store/middleware/thunk/socket/profile/totalStakeChanged';
 
 const Tab = createBottomTabNavigator();
 
@@ -93,6 +102,7 @@ export default function Home({ navigation }: Props) {
   const tabBarHeight = hp(TABBAR_HEIGHT_PERCENTAGE, insets);
 
   const socket = React.useRef<Socket | undefined>();
+  const myProfileSocket = React.useRef<Socket | undefined>();
 
   React.useEffect(() => {
     dispatch(syncTransactionNonce());
@@ -122,8 +132,22 @@ export default function Home({ navigation }: Props) {
     socket.current = appSocket(myPersona.address, 'register-address');
     socket.current.on('newFeedItem', (payload: any) => dispatch(reduceFeedsUpdates(payload)));
     socket.current.on('deliverSecretNotif', (payload: any) => dispatch(payDeliverSecret(payload)));
+
+    myProfileSocket.current = appSocket(myPersona.address);
+    myProfileSocket.current.on('usernameChanged', (payload: any) => dispatch(reduceMyNewUsername(payload)));
+    myProfileSocket.current.on('balanceChanged', (payload: any) => dispatch(reduceMyBalanceChanged(payload)));
+    myProfileSocket.current.on('totalStakeChanged', (payload: any) => dispatch(reduceMyTotalStakeChanged(payload)));
+    myProfileSocket.current.on('totalNFTSoldChanged', (payload: any) => dispatch(reduceMyTotalNFTSoldChanged(payload)));
+    myProfileSocket.current.on('totalServeRateChanged', (payload: any) =>
+      dispatch(reduceMyTotalServeRateChanged(payload)),
+    );
+    myProfileSocket.current.on('newProfileUpdates', (payload: any) => dispatch(reduceMyNewProfileUpdates(payload)));
+    myProfileSocket.current.on('newPending', (payload: any) => dispatch(reduceMyNewPending(payload)));
+    myProfileSocket.current.on('newOwned', (payload: any) => dispatch(reduceMyNewOwned(payload)));
+    myProfileSocket.current.on('newCollection', (payload: any) => dispatch(reduceMyNewCollection(payload)));
     return function cleanup() {
       socket.current?.disconnect();
+      myProfileSocket.current?.disconnect();
     };
   }, [myPersona.address, dispatch]);
 

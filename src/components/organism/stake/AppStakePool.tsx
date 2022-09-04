@@ -47,7 +47,6 @@ export default function AppStakePool({ route }: AppStakePoolProps) {
   const styles = React.useMemo(() => makeStyles(), []);
   const extendedTreshold = hp('10%', insets);
 
-  const [menuVisible, setMenuVisible] = React.useState<boolean>(false);
   const [extended, setExtended] = React.useState(true);
   const UIExtended = useSharedValue(true);
 
@@ -122,10 +121,6 @@ export default function AppStakePool({ route }: AppStakePoolProps) {
     onError: paymentErrorCallback,
   });
 
-  const onStakeButtonDismiss = React.useCallback(() => {
-    setMenuVisible(false);
-  }, []);
-
   const setJSExtended = (value: boolean) => {
     setExtended(value);
   };
@@ -145,10 +140,6 @@ export default function AppStakePool({ route }: AppStakePoolProps) {
       }
     },
   });
-
-  const onStakeButtonPress = React.useCallback(async () => {
-    setMenuVisible(!menuVisible);
-  }, [menuVisible]);
 
   const renderItem = React.useCallback(({ item }: any) => <AppStakerItem staker={item} />, []);
 
@@ -221,15 +212,7 @@ export default function AppStakePool({ route }: AppStakePoolProps) {
         onEndReachedThreshold={0.1}
         onEndReached={handleLoadMore}
       />
-      <AppStakeButton
-        persona={owner}
-        visible={menuVisible}
-        extended={extended}
-        route={route}
-        onPress={onStakeButtonPress}
-        onModalDismiss={onStakeButtonDismiss}
-        onModalSubmit={onStakeButtonDismiss}
-      />
+      <AppStakeButton persona={owner} extended={extended} route={route} />
     </AppResponseView>
   ) : (
     <View style={styles.loaderContainer}>

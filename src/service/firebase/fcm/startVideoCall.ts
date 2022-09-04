@@ -13,7 +13,7 @@ export default async function startVideoCallFCMHandler(remoteMessage: FirebaseMe
     const nft = await getNFTbyId(data.nftId);
     if (nft.status === 200) {
       displayIncomingCall(
-        data.socketId, // TODO: convert to uuid.v4
+        data.socketId,
         parsePersonaLabel(nft.data.owner),
         `Redeem NFT Video Call of ${nft.data.symbol}#${nft.data.serial}`, // TODO: localize
       );

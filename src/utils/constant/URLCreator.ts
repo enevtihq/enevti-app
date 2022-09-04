@@ -1,9 +1,9 @@
-export const ENEVTI_DEFAULT_API = 'http://3.145.141.12:8880';
-export const ENEVTI_SERVICE_API = 'http://3.145.141.12:9901';
-export const ENEVTI_FAUCET_API = 'http://3.145.141.12:8881';
-export const ENEVTI_SOCKET_IO = 'ws://3.145.141.12:8082';
-export const ENEVTI_VIDEOCALL_SOCKET = 'ws://3.145.141.12:8083';
-export const ENEVTI_CORE_WS = 'ws://3.145.141.12:8082/ws';
+export const ENEVTI_DEFAULT_API = 'http://192.168.43.113:8880';
+export const ENEVTI_SERVICE_API = 'http://192.168.43.113:9901';
+export const ENEVTI_FAUCET_API = 'http://192.168.43.113:8881';
+export const ENEVTI_SOCKET_IO = 'ws://192.168.43.113:8082';
+export const ENEVTI_VIDEOCALL_SOCKET = 'ws://192.168.43.113:8083';
+export const ENEVTI_CORE_WS = 'ws://192.168.43.113:8082/ws';
 export const IPFS_GATEWAY = '.ipfs.nftstorage.link';
 export const NFT_STORAGE_URL = 'https://api.nft.storage/upload';
 
