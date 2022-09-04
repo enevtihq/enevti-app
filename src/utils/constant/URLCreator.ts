@@ -31,6 +31,10 @@ type UrlGetTransactionsParam = {
   sort?: 'amount:asc' | 'amount:desc' | 'timestamp:asc' | 'timestamp:desc';
 };
 
+export function makeUrl(url: string, host: string = ENEVTI_DEFAULT_API) {
+  return encodeURI(`${host}${url}`);
+}
+
 export function urlNFTStorage() {
   return NFT_STORAGE_URL;
 }
@@ -398,4 +402,8 @@ export function urlPostFCMRegisterAddress(host: string = ENEVTI_DEFAULT_API) {
 
 export function urlDeleteFCMAddress(host: string = ENEVTI_DEFAULT_API) {
   return encodeURI(`${host}/fcm/remove`);
+}
+
+export function urlGetAvatarUrl(address: string, host: string = ENEVTI_DEFAULT_API) {
+  return encodeURI(`${host}/avatar/url/${address}`);
 }
