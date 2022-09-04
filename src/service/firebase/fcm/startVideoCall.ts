@@ -5,6 +5,7 @@ import { getMyAddress, parsePersonaLabel } from 'enevti-app/service/enevti/perso
 import { displayIncomingCall } from 'enevti-app/service/call/device';
 import { getAvatarUrl } from 'enevti-app/service/enevti/avatar';
 import { makeUrl } from 'enevti-app/utils/constant/URLCreator';
+import i18n from 'enevti-app/translations/i18n';
 
 export default async function startVideoCallFCMHandler(remoteMessage: FirebaseMessagingTypes.RemoteMessage) {
   await runInBackground(async () => {
@@ -21,7 +22,7 @@ export default async function startVideoCallFCMHandler(remoteMessage: FirebaseMe
       displayIncomingCall(
         data.socketId,
         parsePersonaLabel(callerPersona),
-        `Redeem NFT Video Call of ${nft.data.symbol}#${nft.data.serial}`, // TODO: localize
+        i18n.t('redeem:videoCallIncomingAndroidLabel', { nft: `${nft.data.symbol}#${nft.data.serial}` }),
         avatarUrl,
       );
     }
