@@ -87,7 +87,7 @@ export default function AppWalletHeader({ navigation, route }: AppWalletHeaderPr
       <AppTextBody2 numberOfLines={1} style={styles.amountHeader}>
         {balance.split('.')[0]}
         <AppTextBody2 style={{ color: theme.colors.placeholder }}>
-          .{balance.split('.')[1]} {getCoinName()}
+          {balance.includes('.') ? `.${balance.split('.')[1]}` : ''} {getCoinName()}
         </AppTextBody2>
       </AppTextBody2>
 

@@ -59,6 +59,7 @@ export default function AppAvatarRenderer({ size, persona, photo, base32, style,
           name={iconMap.accountCircle}
           color={color ? color : theme.colors.text}
           size={size * 0.9}
+          style={styles.icon}
         />
       )}
     </View>
@@ -79,5 +80,8 @@ const makeStyles = (size: number, color?: string) =>
     image: {
       width: '100%',
       height: '100%',
+    },
+    icon: {
+      textAlign: 'center',
     },
   });
