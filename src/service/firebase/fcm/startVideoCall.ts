@@ -6,13 +6,11 @@ import { displayIncomingCall } from 'enevti-app/service/call/device';
 import { getAvatarUrl } from 'enevti-app/service/enevti/avatar';
 import { makeUrl } from 'enevti-app/utils/constant/URLCreator';
 import i18n from 'enevti-app/translations/i18n';
+import { StartVideoCallPayload } from 'enevti-app/types/core/service/call';
 
 export default async function startVideoCallFCMHandler(remoteMessage: FirebaseMessagingTypes.RemoteMessage) {
   await runInBackground(async () => {
-    const data = JSON.parse(remoteMessage.data!.payload) as {
-      socketId: string;
-      nftId: string;
-    };
+    const data = JSON.parse(remoteMessage.data!.payload) as StartVideoCallPayload;
     const nft = await getNFTbyId(data.nftId);
     if (nft.status === 200) {
       const myAddress = await getMyAddress();

@@ -18,3 +18,7 @@
   **[] $VALUES;
   public *;
 }
+-keep class org.webrtc.** { *; }
+-keep class com.twilio.** { *; }
+-keep class tvi.webrtc.** { *; }
+-keep class com.shopify.reactnative.skia.** { *; }

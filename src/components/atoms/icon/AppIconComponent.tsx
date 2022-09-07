@@ -119,6 +119,12 @@ export const iconMap = {
   socialRaffleSetting: 'puzzle-heart',
   socialRaffleDeactivated: 'heart-remove',
   socialRaffleActivated: 'heart',
+  callEnd: 'phone-hangup',
+  videoOn: 'video',
+  videoOff: 'video-off',
+  micOn: 'microphone',
+  micOff: 'microphone-off',
+  callChat: 'forum',
 };
 
 interface AppIconComponentProps {

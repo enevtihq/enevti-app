@@ -10,21 +10,22 @@ interface NFTDataProps {
   args: TemplateArgs;
   box?: boolean;
   dataUri?: string;
+  blurRadius?: number;
 }
 
-const handleRenderNFTData = (nftObject: NFTBase, dataUri?: string) => {
+const handleRenderNFTData = (nftObject: NFTBase, dataUri?: string, blurRadius?: number) => {
   switch (mimeMapping(nftObject.data.mime)) {
     case 'image':
-      return <NFTImageData nft={nftObject} dataUri={dataUri} />;
+      return <NFTImageData nft={nftObject} dataUri={dataUri} blurRadius={blurRadius} />;
     default:
       return <View />;
   }
 };
 
-export default function NFTData({ nft, args, box = false, dataUri }: NFTDataProps) {
+export default function NFTData({ nft, args, box = false, dataUri, blurRadius }: NFTDataProps) {
   const styles = React.useMemo(() => makeStyles(box, args), [box, args]);
 
-  return <View style={styles.nftDataContainer}>{handleRenderNFTData(nft, dataUri)}</View>;
+  return <View style={styles.nftDataContainer}>{handleRenderNFTData(nft, dataUri, blurRadius)}</View>;
 }
 
 const makeStyles = (box: boolean, args: TemplateArgs) =>

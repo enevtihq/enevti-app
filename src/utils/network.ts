@@ -129,11 +129,16 @@ export function appSocket(room?: string, event: string = 'register-room') {
   return socket;
 }
 
-export function videoCallSocket(params: { nftId: string; signature: string; publicKey: string }) {
+export function videoCallSocket(
+  params: { nftId: string; signature: string; publicKey: string },
+  startVideoCall: boolean = false,
+) {
   const socket = io(urlVideoCallSocketIO(), { transports: ['websocket'] });
-  socket.on('connect', () => {
-    socket.emit('startVideoCall', params);
-  });
+  if (startVideoCall) {
+    socket.on('connect', () => {
+      socket.emit('startVideoCall', params);
+    });
+  }
   return socket;
 }
 

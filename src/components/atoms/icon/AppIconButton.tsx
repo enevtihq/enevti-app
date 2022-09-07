@@ -8,6 +8,7 @@ const AnimatedIcon = Animated.createAnimatedComponent(MaterialCommunityIcons);
 
 interface AppIconButtonProps {
   icon: string;
+  disabled?: boolean;
   size?: number;
   onPress?: (e?: any) => void;
   color?: string;
@@ -15,13 +16,28 @@ interface AppIconButtonProps {
   animatedIconStyle?: StyleProp<TextStyle>;
 }
 
-export default function AppIconButton({ icon, size, onPress, color, style, animatedIconStyle }: AppIconButtonProps) {
+export default function AppIconButton({
+  icon,
+  disabled,
+  size,
+  onPress,
+  color,
+  style,
+  animatedIconStyle,
+}: AppIconButtonProps) {
   const theme = useTheme();
   const iSize = size ? size : Platform.OS === 'ios' ? 35 : 23;
+  const opacity = disabled ? 0.2 : 1;
 
   return (
-    <Animated.View style={[{ borderRadius: iSize, overflow: hidden, width: iSize * 1.25 }, style]}>
-      <TouchableRipple onPress={onPress} style={{ padding: iSize / 7 }}>
+    <Animated.View style={[{ borderRadius: iSize, overflow: hidden, width: iSize * 1.25, opacity }, style]}>
+      <TouchableRipple
+        onPress={disabled ? undefined : onPress}
+        style={{
+          padding: iSize / 7,
+          alignItems: center,
+          width: style ? (style as { width: number | undefined }).width : undefined,
+        }}>
         <AnimatedIcon name={icon} size={iSize} style={[{ color: color ?? theme.colors.text }, animatedIconStyle]} />
       </TouchableRipple>
     </Animated.View>
@@ -29,3 +45,4 @@ export default function AppIconButton({ icon, size, onPress, color, style, anima
 }
 
 const hidden = 'hidden';
+const center = 'center';

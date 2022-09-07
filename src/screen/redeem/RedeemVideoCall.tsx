@@ -7,7 +7,7 @@ import { RouteProp } from '@react-navigation/native';
 
 type Props = StackScreenProps<RootStackParamList, 'RedeemVideoCall'>;
 
-export default function RedeemVideoCall({ route }: Props) {
+export default function RedeemVideoCall({ navigation, route }: Props) {
   const screenRoute = React.useMemo(
     () => ({ key: route.key, name: route.name, params: route.params, path: route.path }),
     [route.key, route.params, route.name, route.path],
@@ -15,7 +15,7 @@ export default function RedeemVideoCall({ route }: Props) {
 
   return (
     <AppView darken withModal edges={['left', 'bottom', 'right']}>
-      <AppRedeemVideoCall route={screenRoute} />
+      <AppRedeemVideoCall navigation={navigation} route={screenRoute} />
     </AppView>
   );
 }

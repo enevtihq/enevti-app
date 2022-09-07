@@ -8,14 +8,15 @@ import { shallowEqual } from 'react-redux';
 interface NFTImageDataProps {
   nft: NFTBase;
   dataUri?: string;
+  blurRadius?: number;
 }
 
 export default React.memo(
-  function NFTImageData({ nft, dataUri }: NFTImageDataProps) {
+  function NFTImageData({ nft, dataUri, blurRadius }: NFTImageDataProps) {
     const styles = React.useMemo(() => makeStyles(), []);
 
     return dataUri ? (
-      <Image style={styles.imageContainer} source={{ uri: dataUri }} />
+      <Image style={styles.imageContainer} source={{ uri: dataUri }} blurRadius={blurRadius} />
     ) : (
       <AppNetworkImage url={IPFStoURL(nft.data.cid)} style={styles.imageContainer} />
     );

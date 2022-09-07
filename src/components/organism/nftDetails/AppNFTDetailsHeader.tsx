@@ -8,10 +8,10 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
 import AppNFTRenderer from 'enevti-app/components/molecules/nft/AppNFTRenderer';
-import { BlurView } from '@react-native-community/blur';
 import NFTData from 'enevti-app/components/atoms/nft/data/NFTData';
 import { NFT } from 'enevti-app/types/core/chain/nft';
 import { STATUS_BAR_HEIGHT } from 'enevti-app/components/atoms/view/AppStatusBar';
+import { IPFStoURL } from 'enevti-app/service/ipfs';
 
 const NFT_WIDTH = Dimensions.get('window').width * 0.8;
 export const NFT_DETAILS_HEADER_VIEW_HEIGHT =
@@ -55,6 +55,8 @@ export default function AppNFTDetailsHeader({ nft }: AppNFTDetailsHeaderProps) {
         <View style={styles.nftBackground}>
           <NFTData
             nft={nft}
+            dataUri={IPFStoURL(nft.data.cid)}
+            blurRadius={10}
             args={{
               x: '0%',
               y: '0%',
@@ -64,12 +66,6 @@ export default function AppNFTDetailsHeader({ nft }: AppNFTDetailsHeaderProps) {
             }}
           />
         </View>
-        <BlurView
-          style={styles.absolute}
-          blurType={theme.dark ? 'dark' : 'light'}
-          blurAmount={10}
-          reducedTransparencyFallbackColor={theme.colors.background}
-        />
         <View
           style={{
             padding: wp('10%'),

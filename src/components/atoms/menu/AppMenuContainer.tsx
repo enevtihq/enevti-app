@@ -19,6 +19,7 @@ interface AppMenuContainerProps {
   tapEverywhereToDismiss?: boolean;
   backDisabled?: boolean;
   style?: StyleProp<ViewStyle>;
+  backgroundStyle?: StyleProp<ViewStyle>;
   memoKey?: (keyof AppMenuContainerProps)[];
 }
 
@@ -29,6 +30,7 @@ function Component({
   children,
   snapPoints,
   style,
+  backgroundStyle,
   enablePanDownToClose = true,
   tapEverywhereToDismiss = false,
   transparentBackdrop = false,
@@ -112,7 +114,7 @@ function Component({
         onChange={onChange}
         snapPoints={parseSnapPoints(snapPoints ?? defaultSnapPoints)}
         enablePanDownToClose={enablePanDownToClose}
-        backgroundStyle={{ backgroundColor: theme.colors.background }}
+        backgroundStyle={[{ backgroundColor: theme.colors.background }, backgroundStyle]}
         backdropComponent={renderBackdrop}>
         <MenuContainer style={styles.menuChild}>{children}</MenuContainer>
       </BottomSheetModal>
