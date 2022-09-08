@@ -14,6 +14,7 @@ interface AppIconButtonProps {
   color?: string;
   style?: StyleProp<ViewStyle>;
   animatedIconStyle?: StyleProp<TextStyle>;
+  rippleColor?: string;
 }
 
 export default function AppIconButton({
@@ -24,6 +25,7 @@ export default function AppIconButton({
   color,
   style,
   animatedIconStyle,
+  rippleColor,
 }: AppIconButtonProps) {
   const theme = useTheme();
   const iSize = size ? size : Platform.OS === 'ios' ? 35 : 23;
@@ -33,6 +35,7 @@ export default function AppIconButton({
     <Animated.View style={[{ borderRadius: iSize, overflow: hidden, width: iSize * 1.25, opacity }, style]}>
       <TouchableRipple
         onPress={disabled ? undefined : onPress}
+        rippleColor={rippleColor}
         style={{
           padding: iSize / 7,
           alignItems: center,

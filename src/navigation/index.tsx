@@ -48,7 +48,7 @@ import Notification from 'enevti-app/screen/notification/Notification';
 import { initFCMToken, refreshFCMToken } from 'enevti-app/store/middleware/thunk/session/fcm';
 import messaging from '@react-native-firebase/messaging';
 import RedeemVideoCall from 'enevti-app/screen/redeem/RedeemVideoCall';
-import { NFT } from 'enevti-app/types/core/chain/nft';
+import { EventRegister } from 'react-native-event-listeners';
 
 export type RootStackParamList = {
   CreateAccount: undefined;
@@ -113,7 +113,9 @@ export type RootStackParamList = {
   };
   Notification: undefined;
   RedeemVideoCall: {
-    nft: NFT;
+    nftId: string;
+    isAnswering?: boolean;
+    callId?: string;
   };
 };
 
@@ -146,6 +148,10 @@ export default function AppNavigationContainer() {
     if (auth.encrypted && localSession.key === '' && locked && currentRoute !== 'Login') {
       navigationRef.navigate('Login', {});
     }
+
+    EventRegister.addEventListener('answerCall', (data: { nftId: string; isAnswering: boolean; callId: string }) => {
+      navigationRef.navigate('RedeemVideoCall', data);
+    });
   }, [auth.encrypted, locked, navigationRef, currentRoute, localSession.key]);
 
   React.useEffect(() => {

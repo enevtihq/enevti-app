@@ -6,5 +6,5 @@ import { NFT } from 'enevti-app/types/core/chain/nft';
 export const reduceRedeemVideoCall =
   (nft: NFT, _navigation: StackNavigationProp<RootStackParamList>, _route: Record<string, any>): AppThunk =>
   async () => {
-    _navigation.push('RedeemVideoCall', { nft });
+    _navigation.push('RedeemVideoCall', { nftId: nft.id });
   };

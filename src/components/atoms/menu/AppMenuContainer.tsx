@@ -18,6 +18,8 @@ interface AppMenuContainerProps {
   snapPoints?: string[];
   tapEverywhereToDismiss?: boolean;
   backDisabled?: boolean;
+  enableTouchThrough?: boolean;
+  disableBackdrop?: boolean;
   style?: StyleProp<ViewStyle>;
   backgroundStyle?: StyleProp<ViewStyle>;
   memoKey?: (keyof AppMenuContainerProps)[];
@@ -31,11 +33,13 @@ function Component({
   snapPoints,
   style,
   backgroundStyle,
+  disableBackdrop,
   enablePanDownToClose = true,
   tapEverywhereToDismiss = false,
   transparentBackdrop = false,
   backDisabled = false,
   dismissKeyboard = false,
+  enableTouchThrough = false,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   memoKey,
 }: AppMenuContainerProps) {
@@ -99,9 +103,10 @@ function Component({
         appearsOnIndex={snapPoints ? snapPoints.length - 1 : 0}
         disappearsOnIndex={-1}
         pressBehavior={tapEverywhereToDismiss ? 'close' : 'none'}
+        enableTouchThrough={enableTouchThrough}
       />
     ),
-    [snapPoints, tapEverywhereToDismiss, transparentBackdrop],
+    [snapPoints, tapEverywhereToDismiss, transparentBackdrop, enableTouchThrough],
   );
 
   return (
@@ -115,7 +120,7 @@ function Component({
         snapPoints={parseSnapPoints(snapPoints ?? defaultSnapPoints)}
         enablePanDownToClose={enablePanDownToClose}
         backgroundStyle={[{ backgroundColor: theme.colors.background }, backgroundStyle]}
-        backdropComponent={renderBackdrop}>
+        backdropComponent={disableBackdrop ? undefined : renderBackdrop}>
         <MenuContainer style={styles.menuChild}>{children}</MenuContainer>
       </BottomSheetModal>
     </View>

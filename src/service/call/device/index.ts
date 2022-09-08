@@ -25,6 +25,7 @@ export async function setupCall() {
         }
       });
     }
+    RNCallKeep.addEventListener('didChangeAudioRoute', () => {});
   } catch (err) {
     handleError(err);
   }

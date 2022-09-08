@@ -129,16 +129,24 @@ export function appSocket(room?: string, event: string = 'register-room') {
   return socket;
 }
 
-export function videoCallSocket(
-  params: { nftId: string; signature: string; publicKey: string },
-  startVideoCall: boolean = false,
-) {
+export function videoCallSocketBase() {
   const socket = io(urlVideoCallSocketIO(), { transports: ['websocket'] });
-  if (startVideoCall) {
-    socket.on('connect', () => {
-      socket.emit('startVideoCall', params);
-    });
-  }
+  return socket;
+}
+
+export function startVideoCall(params: { nftId: string; signature: string; publicKey: string }) {
+  const socket = videoCallSocketBase();
+  socket.on('connect', () => {
+    socket.emit('startVideoCall', params);
+  });
+  return socket;
+}
+
+export function answerVideoCall(params: { nftId: string; callId: string; emitter: string }) {
+  const socket = videoCallSocketBase();
+  socket.on('connect', () => {
+    socket.emit('answered', params);
+  });
   return socket;
 }
 
