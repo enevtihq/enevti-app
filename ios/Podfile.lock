@@ -211,6 +211,10 @@ PODS:
   - libwebp/mux (1.2.1):
     - libwebp/demux
   - libwebp/webp (1.2.1)
+  - lottie-ios (3.4.3)
+  - lottie-react-native (5.1.4):
+    - lottie-ios (~> 3.4.0)
+    - React-Core
   - MLImage (1.0.0-beta3)
   - MLKitBarcodeScanning (2.1.0):
     - MLKitCommon (~> 7.0)
@@ -655,6 +659,11 @@ PODS:
     - React-RCTImage
   - RNSecureRandom (1.0.0):
     - React
+  - RNSound (0.11.2):
+    - React-Core
+    - RNSound/Core (= 0.11.2)
+  - RNSound/Core (0.11.2):
+    - React-Core
   - RNSVG (12.3.0):
     - React-Core
   - RNVectorIcons (9.0.0):
@@ -709,6 +718,7 @@ DEPENDENCIES:
   - FlipperKit/FlipperKitUserDefaultsPlugin (= 0.146.0)
   - FlipperKit/SKIOSNetworkPlugin (= 0.146.0)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
+  - lottie-react-native (from `../node_modules/lottie-react-native`)
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
@@ -774,6 +784,7 @@ DEPENDENCIES:
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSecureRandom (from `../node_modules/react-native-securerandom`)
+  - RNSound (from `../node_modules/react-native-sound`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - "RNWheelPicker (from `../node_modules/@yz1311/react-native-wheel-picker`)"
@@ -812,6 +823,7 @@ SPEC REPOS:
     - GTMSessionFetcher
     - libevent
     - libwebp
+    - lottie-ios
     - MLImage
     - MLKitBarcodeScanning
     - MLKitCommon
@@ -840,6 +852,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/React/FBReactNativeSpec"
   glog:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
+  lottie-react-native:
+    :path: "../node_modules/lottie-react-native"
   RCT-Folly:
     :podspec: "../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec"
   RCTRequired:
@@ -966,6 +980,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-screens"
   RNSecureRandom:
     :path: "../node_modules/react-native-securerandom"
+  RNSound:
+    :path: "../node_modules/react-native-sound"
   RNSVG:
     :path: "../node_modules/react-native-svg"
   RNVectorIcons:
@@ -1015,6 +1031,8 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: 5595ec75acf5be50814f81e9189490412bad82ba
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   libwebp: 98a37e597e40bfdb4c911fc98f2c53d0b12d05fc
+  lottie-ios: 9ae750cdc7820fecbd3c2f0cfc493038208fcdc4
+  lottie-react-native: b702fab740cdb952a8e2354713d3beda63ff97b0
   MLImage: 489dfec109f21da8621b28d476401aaf7a0d4ff4
   MLKitBarcodeScanning: 74f43c38f3f85b3f3f332006b20a1a22f404256c
   MLKitCommon: 20f4aca0ec2bb37cef2b9c211b50586817bac5d3
@@ -1086,6 +1104,7 @@ SPEC CHECKSUMS:
   RNReanimated: da3860204e5660c0dd66739936732197d359d753
   RNScreens: 522705f2e5c9d27efb17f24aceb2bf8335bc7b8e
   RNSecureRandom: 0dcee021fdb3d50cd5cee5db0ebf583c42f5af0e
+  RNSound: 1081cf2576b404ca804daf4934bb644cb506ff98
   RNSVG: 302bfc9905bd8122f08966dc2ce2d07b7b52b9f8
   RNVectorIcons: 4143ba35feebab8fdbe6bc43d1e776b393d47ac8
   RNWheelPicker: a109c3d1d13811955e34c4c83211cf9ce6826e73

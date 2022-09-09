@@ -13,7 +13,8 @@ export type CallStatus =
   | 'rejected'
   | 'ended'
   | 'disconnected'
-  | 'error';
+  | 'error'
+  | 'exited';
 
 export type CallStartedParam = {
   emitter: string;

@@ -33,6 +33,12 @@
 		A632D9482795C35F00911BB7 /* Poppins-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D1C139A68B0249189AE8A8D9 /* Poppins-Thin.ttf */; };
 		A632D9492795C35F00911BB7 /* Poppins-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 76F38305BE9743178AD709FF /* Poppins-ThinItalic.ttf */; };
 		A65CBC6727E846B600D0F767 /* RNLockDetection.m in Sources */ = {isa = PBXBuildFile; fileRef = A65CBC6627E846B600D0F767 /* RNLockDetection.m */; };
+		A6ABE9F928CB97F100E7FEF0 /* calling.aac in Resources */ = {isa = PBXBuildFile; fileRef = A6ABE9F328CB97ED00E7FEF0 /* calling.aac */; };
+		A6ABE9FA28CB97F100E7FEF0 /* message_sent.aac in Resources */ = {isa = PBXBuildFile; fileRef = A6ABE9F428CB97EE00E7FEF0 /* message_sent.aac */; };
+		A6ABE9FB28CB97F100E7FEF0 /* call_end.aac in Resources */ = {isa = PBXBuildFile; fileRef = A6ABE9F528CB97EE00E7FEF0 /* call_end.aac */; };
+		A6ABE9FC28CB97F100E7FEF0 /* call_busy.aac in Resources */ = {isa = PBXBuildFile; fileRef = A6ABE9F628CB97EF00E7FEF0 /* call_busy.aac */; };
+		A6ABE9FD28CB97F100E7FEF0 /* message_received.aac in Resources */ = {isa = PBXBuildFile; fileRef = A6ABE9F728CB97F000E7FEF0 /* message_received.aac */; };
+		A6ABEA0C28CBA45000E7FEF0 /* call_answer.aac in Resources */ = {isa = PBXBuildFile; fileRef = A6ABEA0B28CBA45000E7FEF0 /* call_answer.aac */; };
 		A6CB3EAA28B9BC11003624EB /* CallKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6CB3EA928B9BC10003624EB /* CallKit.framework */; };
 		A6CB3EAC28B9BC1A003624EB /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6CB3EAB28B9BC1A003624EB /* Intents.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		B1600D67257D9BAB021ECA08 /* libPods-Enevti.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 787974458852CE1F23E27453 /* libPods-Enevti.a */; };
@@ -85,6 +91,12 @@
 		A61FAA7228715336003EF149 /* Enevti.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Enevti.entitlements; path = Enevti/Enevti.entitlements; sourceTree = "<group>"; };
 		A65CBC6527E8469100D0F767 /* RNLockDetection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNLockDetection.h; sourceTree = "<group>"; };
 		A65CBC6627E846B600D0F767 /* RNLockDetection.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNLockDetection.m; sourceTree = "<group>"; };
+		A6ABE9F328CB97ED00E7FEF0 /* calling.aac */ = {isa = PBXFileReference; lastKnownFileType = file; path = calling.aac; sourceTree = "<group>"; };
+		A6ABE9F428CB97EE00E7FEF0 /* message_sent.aac */ = {isa = PBXFileReference; lastKnownFileType = file; path = message_sent.aac; sourceTree = "<group>"; };
+		A6ABE9F528CB97EE00E7FEF0 /* call_end.aac */ = {isa = PBXFileReference; lastKnownFileType = file; path = call_end.aac; sourceTree = "<group>"; };
+		A6ABE9F628CB97EF00E7FEF0 /* call_busy.aac */ = {isa = PBXFileReference; lastKnownFileType = file; path = call_busy.aac; sourceTree = "<group>"; };
+		A6ABE9F728CB97F000E7FEF0 /* message_received.aac */ = {isa = PBXFileReference; lastKnownFileType = file; path = message_received.aac; sourceTree = "<group>"; };
+		A6ABEA0B28CBA45000E7FEF0 /* call_answer.aac */ = {isa = PBXFileReference; lastKnownFileType = file; path = call_answer.aac; sourceTree = "<group>"; };
 		A6CB3EA928B9BC10003624EB /* CallKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CallKit.framework; path = System/Library/Frameworks/CallKit.framework; sourceTree = SDKROOT; };
 		A6CB3EAB28B9BC1A003624EB /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
 		AB3CDA783E424AC49045F76D /* Poppins-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Light.ttf"; path = "../src/assets/fonts/Poppins-Light.ttf"; sourceTree = "<group>"; };
@@ -226,6 +238,12 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				A6ABEA0B28CBA45000E7FEF0 /* call_answer.aac */,
+				A6ABE9F628CB97EF00E7FEF0 /* call_busy.aac */,
+				A6ABE9F528CB97EE00E7FEF0 /* call_end.aac */,
+				A6ABE9F328CB97ED00E7FEF0 /* calling.aac */,
+				A6ABE9F728CB97F000E7FEF0 /* message_received.aac */,
+				A6ABE9F428CB97EE00E7FEF0 /* message_sent.aac */,
 				A61FAA702870B0BD003EF149 /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* Enevti */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -355,22 +373,28 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A6ABEA0C28CBA45000E7FEF0 /* call_answer.aac in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				A632D9382795C35F00911BB7 /* Poppins-Black.ttf in Resources */,
 				A632D9392795C35F00911BB7 /* Poppins-BlackItalic.ttf in Resources */,
+				A6ABE9FD28CB97F100E7FEF0 /* message_received.aac in Resources */,
 				A632D93A2795C35F00911BB7 /* Poppins-Bold.ttf in Resources */,
 				A632D93B2795C35F00911BB7 /* Poppins-BoldItalic.ttf in Resources */,
 				A632D93C2795C35F00911BB7 /* Poppins-ExtraBold.ttf in Resources */,
 				A632D93D2795C35F00911BB7 /* Poppins-ExtraBoldItalic.ttf in Resources */,
 				A632D93E2795C35F00911BB7 /* Poppins-ExtraLight.ttf in Resources */,
+				A6ABE9FA28CB97F100E7FEF0 /* message_sent.aac in Resources */,
 				A632D93F2795C35F00911BB7 /* Poppins-ExtraLightItalic.ttf in Resources */,
 				A632D9402795C35F00911BB7 /* Poppins-Italic.ttf in Resources */,
+				A6ABE9F928CB97F100E7FEF0 /* calling.aac in Resources */,
+				A6ABE9FC28CB97F100E7FEF0 /* call_busy.aac in Resources */,
 				A632D9412795C35F00911BB7 /* Poppins-Light.ttf in Resources */,
 				A632D9422795C35F00911BB7 /* Poppins-LightItalic.ttf in Resources */,
 				A632D9432795C35F00911BB7 /* Poppins-Medium.ttf in Resources */,
 				A632D9442795C35F00911BB7 /* Poppins-MediumItalic.ttf in Resources */,
 				A632D9452795C35F00911BB7 /* Poppins-Regular.ttf in Resources */,
+				A6ABE9FB28CB97F100E7FEF0 /* call_end.aac in Resources */,
 				A632D9462795C35F00911BB7 /* Poppins-SemiBold.ttf in Resources */,
 				A632D9472795C35F00911BB7 /* Poppins-SemiBoldItalic.ttf in Resources */,
 				A632D9482795C35F00911BB7 /* Poppins-Thin.ttf in Resources */,

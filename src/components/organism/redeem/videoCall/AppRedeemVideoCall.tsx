@@ -34,6 +34,15 @@ import AppVideoCallParticipantView from './AppVideoCallParticipantView';
 import { Persona } from 'enevti-app/types/core/account/persona';
 import { getNFTbyId } from 'enevti-app/service/enevti/nft';
 import AppVideoCallHeader from './AppVideoCallHeader';
+import {
+  callAnswerSound,
+  callEndSound,
+  callingSound,
+  cleanCallSound,
+  initCallSound,
+} from 'enevti-app/service/call/device/sound';
+import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
+import { useTranslation } from 'react-i18next';
 
 interface AppRedeemVideoCallProps {
   navigation: StackNavigationProp<RootStackParamList>;
@@ -41,6 +50,7 @@ interface AppRedeemVideoCallProps {
 }
 
 export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideoCallProps) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const socket = React.useRef<Socket | undefined>();
   const styles = React.useMemo(() => makeStyles(), []);
@@ -61,9 +71,11 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
   const twilioRef = React.useRef<TwilioVideo>(null);
   const myPublicKey = React.useRef<string>('');
   const callId = React.useRef<string>('');
+  const callReady = React.useRef<boolean>(false);
   const [participantPersona, setParticipantPersona] = React.useState<Persona | undefined>();
 
   const onCallStarting = React.useCallback(async (param: CallStartedParam) => {
+    callReady.current && callingSound?.play();
     callId.current = param.callId;
     setLoaded(true);
     if (myPublicKey.current && myPublicKey.current === param.emitter) {
@@ -82,6 +94,8 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
       if (route.params.isAnswering && route.params.callId) {
         setTimeout(() => setMinimized(true), 2000);
       } else {
+        callReady.current && callingSound?.stop();
+        callReady.current && callAnswerSound?.play();
         setMinimized(true);
       }
       if (myPublicKey.current && myPublicKey.current === param.emitter) {
@@ -92,7 +106,10 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
     [route.params.callId, route.params.isAnswering],
   );
 
-  const onExitCall = React.useCallback(() => {
+  const onExitCall = React.useCallback(async () => {
+    callReady.current && callingSound?.stop();
+    callReady.current && callEndSound?.play();
+    await sleep(1000);
     twilioRef.current?.disconnect();
     socket.current?.disconnect();
     navigation.goBack();
@@ -101,16 +118,17 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
   const onCallRejected = React.useCallback(
     async (_param: CallRejectedParam) => {
       setStatus('rejected');
-      await sleep(1000);
-      onExitCall();
+      await onExitCall();
     },
     [onExitCall],
   );
 
   const onCallEnded = React.useCallback(
-    async (_param: CallEndedParam) => {
+    async (param: CallEndedParam) => {
       setStatus('ended');
-      onExitCall();
+      if (param.emitter !== myPublicKey.current) {
+        await onExitCall();
+      }
     },
     [onExitCall],
   );
@@ -118,16 +136,20 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
   const onCallError = React.useCallback(
     async (_param: CallErrorParam) => {
       setStatus('error');
-      await sleep(1000);
-      onExitCall();
+      dispatch(showSnackbar({ mode: 'error', text: t('error:clientError') }));
+      await onExitCall();
     },
-    [onExitCall],
+    [dispatch, onExitCall, t],
   );
 
-  const onEndButtonPress = React.useCallback(() => {
-    socket.current?.emit('ended', { callId: callId.current, emitter: myPublicKey.current });
-    onExitCall();
-  }, [onExitCall]);
+  const onEndButtonPress = React.useCallback(async () => {
+    if (status === 'answered') {
+      socket.current?.emit('ended', { callId: callId.current, emitter: myPublicKey.current });
+    } else {
+      setStatus('exited');
+    }
+    await onExitCall();
+  }, [onExitCall, status]);
 
   const onMuteButtonPress = () => {
     twilioRef.current?.setLocalAudioEnabled(!isAudioEnabled).then(isEnabled => setIsAudioEnabled(isEnabled));
@@ -213,6 +235,7 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
     }
 
     const run = async () => {
+      callReady.current = await initCallSound();
       const myAddress = await getMyAddress();
       const nft = await getNFTbyId(route.params.nftId);
       if (nft.status === 200) {
@@ -253,6 +276,7 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
     return () => {
       dispatch(setStatusBarTint('system'));
       unsubscribeFocus();
+      cleanCallSound();
       socket.current?.disconnect();
     };
   }, [

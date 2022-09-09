@@ -7,6 +7,7 @@ export default {
   VCSanswered: 'answered',
   VCSrejected: 'rejected',
   VCSended: 'ended',
+  VCSexited: 'ended',
   VCSdisconnected: 'disconnected',
   VCSerror: 'error',
 };
