@@ -133,6 +133,10 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
     [onExitCall],
   );
 
+  const onCallDisconnected = React.useCallback(async () => {
+    await onExitCall();
+  }, [onExitCall]);
+
   const onCallError = React.useCallback(
     async (_param: CallErrorParam) => {
       setStatus('error');
@@ -164,9 +168,9 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
     twilioRef.current?.flipCamera();
   };
 
-  const onCallConnected: RoomEventCb = React.useCallback(() => {}, []);
+  const onRoomDidConnect: RoomEventCb = React.useCallback(() => {}, []);
 
-  const onCallDisconnected: RoomErrorEventCb = React.useCallback(() => {}, []);
+  const onRoomDidDisconnect: RoomErrorEventCb = React.useCallback(() => {}, []);
 
   const onRoomDidFailToConnect: RoomErrorEventCb = React.useCallback(
     async error => {
@@ -264,6 +268,7 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
       socket.current.on('callRejected', (payload: CallRejectedParam) => onCallRejected(payload));
       socket.current.on('callEnded', (payload: CallEndedParam) => onCallEnded(payload));
       socket.current.on('callStarted', (payload: CallStartedParam) => onCallStarting(payload));
+      socket.current.on('callDisconnected', () => onCallDisconnected());
       socket.current.on('callRinging', () => onCallRinging());
     };
     run();
@@ -283,6 +288,7 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
     dispatch,
     navigation,
     onCallAnswered,
+    onCallDisconnected,
     onCallEnded,
     onCallError,
     onCallRejected,
@@ -383,8 +389,8 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
       />
       <TwilioVideo
         ref={twilioRef}
-        onRoomDidConnect={onCallConnected}
-        onRoomDidDisconnect={onCallDisconnected}
+        onRoomDidConnect={onRoomDidConnect}
+        onRoomDidDisconnect={onRoomDidDisconnect}
         onRoomDidFailToConnect={onRoomDidFailToConnect}
         onParticipantAddedVideoTrack={onParticipantAddedVideoTrack}
         onParticipantRemovedVideoTrack={onParticipantRemovedVideoTrack}
