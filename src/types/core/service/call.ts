@@ -22,6 +22,16 @@ export type CallStartedParam = {
   callId: string;
 };
 
+export type CallReconnectedParam = {
+  emitter: string;
+  callId: string;
+};
+
+export type SomeoneIsCallingParam = {
+  emitter: string;
+  nftId: string;
+};
+
 export type CallAnsweredParam = {
   emitter: string;
   twilioToken: string;

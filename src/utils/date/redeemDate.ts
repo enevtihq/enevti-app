@@ -1,5 +1,6 @@
 import { NFT } from 'enevti-app/types/core/chain/nft';
 import i18n from 'enevti-app/translations/i18n';
+import * as moment from 'moment';
 
 type RedeemTimeOffset = {
   year?: number;
@@ -7,6 +8,19 @@ type RedeemTimeOffset = {
   date?: number;
   hour?: number;
   minute?: number;
+};
+
+export const isTimeBetweenDailyUTC = (startTime: string, endTime: string, currentTime: string) => {
+  const start = moment.utc(startTime, 'H:mm');
+  const end = moment.utc(endTime, 'H:mm');
+  const current = moment.utc(currentTime, 'H:mm');
+  if (end < start) {
+    return (
+      (current >= start && current <= moment.utc('23:59:59', 'h:mm:ss')) ||
+      (current >= moment.utc('0:00:00', 'h:mm:ss') && current < end)
+    );
+  }
+  return current >= start && current < end;
 };
 
 export function dateOfNearestDay(startingDate: Date, nearestDay: number) {
@@ -121,5 +135,23 @@ export function isRedeemTimeUTC(nft: NFT) {
   const now = Date.now();
   const redeemStartTime = getRedeemTimeUTC(nft);
   const redeemEndTime = redeemStartTime + nft.redeem.schedule.until;
+
+  if (nft.redeem.schedule.recurring === 'daily') {
+    return isTimeBetweenDailyUTC(
+      new Date(redeemStartTime).toISOString(),
+      new Date(redeemEndTime).toISOString(),
+      new Date(now).toISOString(),
+    );
+  }
+  if (nft.redeem.schedule.recurring === 'weekly') {
+    return (
+      new Date(redeemStartTime).getUTCDay() === new Date(now).getUTCDay() &&
+      isTimeBetweenDailyUTC(
+        new Date(redeemStartTime).toISOString(),
+        new Date(redeemEndTime).toISOString(),
+        new Date(now).toISOString(),
+      )
+    );
+  }
   return redeemStartTime <= now && now <= redeemEndTime;
 }

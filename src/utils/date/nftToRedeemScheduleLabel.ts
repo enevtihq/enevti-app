@@ -74,9 +74,11 @@ export default function nftToRedeemScheduleLabel(nft: NFT) {
         ret +
         separator +
         (nft.redeem.status !== 'limit-exceeded'
-          ? i18n.t('nftDetails:redeemRemaining', {
-              count: nft.redeem.limit - nft.redeem.count,
-            })
+          ? nft.redeem.limit === 0
+            ? i18n.t('nftDetails:noRedeemLimit')
+            : i18n.t('nftDetails:redeemRemaining', {
+                count: nft.redeem.limit - nft.redeem.count,
+              })
           : i18n.t('nftDetails:limitExceeded'));
     }
   }

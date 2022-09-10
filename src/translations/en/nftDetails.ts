@@ -10,6 +10,7 @@ export default {
   redeemError: 'You cant redeem this NFT, because:\n',
   alreadyRedeemed: 'Already Redeemed',
   redeemRemaining: '{{count}} Redeem Remaining',
+  noRedeemLimit: 'No redeem limit!',
   limitExceeded: 'Redeem Limit Exceeded',
   redeemFrom: 'from',
   redeemWith: 'with',
