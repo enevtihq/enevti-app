@@ -6,7 +6,7 @@ export default function recurringToLabel(recurring: NFTRecurring | '') {
 
   switch (recurring) {
     case 'daily':
-      text = i18n.t('create:recurringEveryDay');
+      text = i18n.t('createNFT:recurringEveryDay');
       break;
     case 'weekly':
       text = i18n.t('createNFT:recurringEveryWeek');
