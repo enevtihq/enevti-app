@@ -17,7 +17,6 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import Color from 'color';
 import darkTheme from 'enevti-app/theme/dark';
 import AppVideoCallLocalView from './AppVideoCallLocalView';
-import sleep from 'enevti-app/utils/dummy/sleep';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
 import {
   CallAnsweredParam,
@@ -35,17 +34,18 @@ import AppVideoCallParticipantView from './AppVideoCallParticipantView';
 import { Persona } from 'enevti-app/types/core/account/persona';
 import { getNFTbyId } from 'enevti-app/service/enevti/nft';
 import AppVideoCallHeader from './AppVideoCallHeader';
-import {
-  callAnswerSound,
-  callBusySound,
-  callEndSound,
-  callingSound,
-  cleanCallSound,
-  initCallSound,
-} from 'enevti-app/service/call/device/sound';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 import { useTranslation } from 'react-i18next';
 import NetInfo from '@react-native-community/netinfo';
+import {
+  cleanCallSound,
+  playCallAnswerSound,
+  playCallBusySound,
+  playCallEndSound,
+  playCallingSound,
+  stopCallBusySound,
+  stopCallingSound,
+} from 'enevti-app/service/call/device/sound';
 
 interface AppRedeemVideoCallProps {
   navigation: StackNavigationProp<RootStackParamList>;
@@ -61,7 +61,6 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
   const styles = React.useMemo(() => makeStyles(), []);
 
   const myPersona = useSelector(selectMyPersonaCache);
-  const [token, setToken] = React.useState<string>('');
   const [loaded, setLoaded] = React.useState<boolean>(false);
   const [disconnected, setDisconnected] = React.useState<boolean>(false);
   const [someoneIsCalling, setSomeoneIsCalling] = React.useState<boolean>(false);
@@ -82,17 +81,19 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
   const twilioRef = React.useRef<TwilioVideo>(null);
   const myPublicKey = React.useRef<string>('');
   const callId = React.useRef<string>('');
-  const callReady = React.useRef<boolean>(false);
+  const token = React.useRef<string>('');
+  const isRoomDidConnect = React.useRef<boolean>(false);
   const timeoutRef = React.useRef<any>();
+  const internetTimeoutRef = React.useRef<any>();
   const [participantPersona, setParticipantPersona] = React.useState<Persona | undefined>();
 
   const onCallStarting = React.useCallback(async (param: CallStartedParam) => {
-    callReady.current && callingSound?.play();
     callId.current = param.callId;
     setLoaded(true);
     if (myPublicKey.current && myPublicKey.current === param.emitter) {
-      setToken(param.twilioToken);
-      twilioRef.current?.connect({ accessToken: param.twilioToken });
+      token.current = param.twilioToken;
+      twilioRef.current?.connect({ accessToken: '' });
+      playCallingSound();
     }
     setStatus('starting');
   }, []);
@@ -107,12 +108,14 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
       if (route.params.isAnswering && route.params.callId) {
         setTimeout(() => setMinimized(true), 2000);
       } else {
-        callReady.current && callingSound?.stop();
-        callReady.current && callAnswerSound?.play();
+        stopCallingSound();
+        playCallAnswerSound();
         setMinimized(true);
       }
-      if (myPublicKey.current && myPublicKey.current === param.emitter) {
-        setToken(param.twilioToken);
+      if (token.current) {
+        twilioRef.current?.connect({ accessToken: token.current });
+      } else if (myPublicKey.current && myPublicKey.current === param.emitter) {
+        token.current = param.twilioToken;
         twilioRef.current?.connect({ accessToken: param.twilioToken });
       }
       setStatus('answered');
@@ -122,13 +125,16 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
 
   const onExitCall = React.useCallback(async () => {
     clearTimeout(timeoutRef.current);
-    callReady.current && callingSound?.stop();
-    callReady.current && callBusySound?.stop();
-    callReady.current && callEndSound?.play();
-    await sleep(1500);
-    twilioRef.current?.disconnect();
-    socket.current?.disconnect();
-    navigation.goBack();
+    clearTimeout(internetTimeoutRef.current);
+
+    stopCallingSound();
+    stopCallBusySound();
+
+    playCallEndSound(() => {
+      twilioRef.current?.disconnect();
+      socket.current?.disconnect();
+      navigation.goBack();
+    });
   }, [navigation]);
 
   const onCallRejected = React.useCallback(
@@ -141,8 +147,13 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
 
   const onCallReconnected = React.useCallback(async (_param: CallReconnectedParam) => {
     clearTimeout(timeoutRef.current);
-    callReady.current && callBusySound?.stop();
+    clearTimeout(internetTimeoutRef.current);
+    stopCallBusySound();
     setDisconnected(false);
+    if (token.current && !isRoomDidConnect.current) {
+      twilioRef.current?.disconnect();
+      twilioRef.current?.connect({ accessToken: token.current });
+    }
   }, []);
 
   const onSomeoneIsCalling = React.useCallback(async (_param: SomeoneIsCallingParam) => {
@@ -186,8 +197,10 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
   }, [onExitCall, route.params.nftId, status]);
 
   const onCallDisconnected = React.useCallback(async () => {
-    callReady.current && callBusySound?.play();
-    timeoutRef.current = setTimeout(() => onExitCall(), RECONNECTION_TIMEOUT);
+    playCallBusySound();
+    timeoutRef.current = setTimeout(() => {
+      onExitCall();
+    }, RECONNECTION_TIMEOUT);
     setDisconnected(true);
   }, [onExitCall]);
 
@@ -204,14 +217,13 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
     twilioRef.current?.flipCamera();
   };
 
-  const onRoomDidConnect: RoomEventCb = React.useCallback(() => {}, []);
+  const onRoomDidConnect: RoomEventCb = React.useCallback(() => {
+    isRoomDidConnect.current = true;
+  }, []);
 
   const onRoomDidDisconnect: RoomErrorEventCb = React.useCallback(async () => {
-    if (token) {
-      twilioRef.current?.disconnect();
-      twilioRef.current?.connect({ accessToken: token });
-    }
-  }, [token]);
+    isRoomDidConnect.current = false;
+  }, []);
 
   const onParticipantAddedVideoTrack: TrackEventCb = React.useCallback(({ participant, track }) => {
     setIsParticipantVideoEnabled(true);
@@ -268,7 +280,6 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
     }
 
     const run = async () => {
-      callReady.current = await initCallSound();
       const myAddress = await getMyAddress();
       const nft = await getNFTbyId(route.params.nftId);
       if (nft.status === 200) {
@@ -342,11 +353,13 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
 
   React.useEffect(() => {
     if (!internetAvailable) {
-      const timeout = setTimeout(() => onExitCall(), RECONNECTION_TIMEOUT);
-      callReady.current && callBusySound?.play();
+      internetTimeoutRef.current = setTimeout(() => {
+        onExitCall();
+      }, RECONNECTION_TIMEOUT);
+      playCallBusySound();
       return () => {
-        clearTimeout(timeout);
-        callReady.current && callBusySound?.stop();
+        clearTimeout(internetTimeoutRef.current);
+        stopCallBusySound();
       };
     }
   }, [internetAvailable, onExitCall]);

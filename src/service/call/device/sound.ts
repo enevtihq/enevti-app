@@ -56,3 +56,77 @@ export function cleanCallSound() {
   messageReceivedSound?.release();
   messageSentSound?.release();
 }
+
+export function playCallAnswerSound(callback?: () => void) {
+  callAnswerSound = new Sound('call_answer.aac', Sound.MAIN_BUNDLE, (error: any) => {
+    if (!error) {
+      callAnswerSound?.play(callback);
+    }
+  });
+}
+
+export function stopCallAnswerSound() {
+  callAnswerSound?.stop();
+}
+
+export function playCallEndSound(callback?: () => void) {
+  callEndSound = new Sound('call_end.aac', Sound.MAIN_BUNDLE, (error: any) => {
+    if (!error) {
+      callEndSound?.play(callback);
+    }
+  });
+}
+
+export function stopCallEndSound() {
+  callEndSound?.stop();
+}
+
+export function playCallingSound(callback?: () => void) {
+  callingSound = new Sound('calling.aac', Sound.MAIN_BUNDLE, (error: any) => {
+    if (!error) {
+      callingSound?.setNumberOfLoops(-1);
+      callingSound?.play(callback);
+    }
+  });
+}
+
+export function stopCallingSound() {
+  callingSound?.stop();
+}
+
+export function playCallBusySound(callback?: () => void) {
+  callBusySound = new Sound('call_busy.aac', Sound.MAIN_BUNDLE, (error: any) => {
+    if (!error) {
+      callBusySound?.setNumberOfLoops(-1);
+      callBusySound?.play(callback);
+    }
+  });
+}
+
+export function stopCallBusySound() {
+  callBusySound?.stop();
+}
+
+export function playMessageReceivedSound(callback?: () => void) {
+  messageReceivedSound = new Sound('message_received.aac', Sound.MAIN_BUNDLE, (error: any) => {
+    if (!error) {
+      messageReceivedSound?.play(callback);
+    }
+  });
+}
+
+export function stopMessageReceivedSound() {
+  messageReceivedSound?.stop();
+}
+
+export function playMessageSentSound(callback?: () => void) {
+  messageSentSound = new Sound('message_sent.aac', Sound.MAIN_BUNDLE, (error: any) => {
+    if (!error) {
+      messageSentSound?.play(callback);
+    }
+  });
+}
+
+export function stopMessageSentSound() {
+  messageSentSound?.stop();
+}
