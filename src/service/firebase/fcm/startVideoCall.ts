@@ -35,14 +35,14 @@ export default async function startVideoCallFCMHandler(remoteMessage: FirebaseMe
         avatarUrl,
       );
 
-      const endCallSubsribtion = DeviceEventEmitter.addListener('endCall', payload => {
-        socket.emit('rejected', { callId: payload.uuid, emitter: publicKey });
+      const endCallSubsribtion = DeviceEventEmitter.addListener('endCall', () => {
         socket.disconnect();
         endCallSubsribtion.remove();
         answerCallSubcription.remove();
       });
 
       const answerCallSubcription = DeviceEventEmitter.addListener('answerCall', payload => {
+        socket.emit('accepted', { emitter: publicKey });
         endCallSubsribtion.remove();
         answerCallSubcription.remove();
         socket.disconnect();
