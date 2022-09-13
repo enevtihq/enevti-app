@@ -34,3 +34,12 @@ index 5d1d0aa..3b73345 100644
          player.start();
  
          AnimateImage acceptCallBtn = findViewById(R.id.ivAcceptCall);
+diff --git a/node_modules/@bob.hardcoder/react-native-incoming-call/android/src/main/res/values/colors.xml b/node_modules/@bob.hardcoder/react-native-incoming-call/android/src/main/res/values/colors.xml
+index 104b062..c580c9c 100644
+--- a/node_modules/@bob.hardcoder/react-native-incoming-call/android/src/main/res/values/colors.xml
++++ b/node_modules/@bob.hardcoder/react-native-incoming-call/android/src/main/res/values/colors.xml
+@@ -1,3 +1,3 @@
+ <resources>
+-    <color name="background">#141C2E</color>
++    <color name="background">#000000</color>
+ </resources>
