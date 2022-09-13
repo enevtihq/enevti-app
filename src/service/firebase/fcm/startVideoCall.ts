@@ -42,7 +42,7 @@ export default async function startVideoCallFCMHandler(remoteMessage: FirebaseMe
       });
 
       const answerCallSubcription = DeviceEventEmitter.addListener('answerCall', payload => {
-        socket.emit('accepted', { emitter: publicKey });
+        socket.emit('accepted', { callId: data.socketId, emitter: publicKey });
         endCallSubsribtion.remove();
         answerCallSubcription.remove();
         socket.disconnect();

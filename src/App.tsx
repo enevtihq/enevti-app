@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { useEffect } from 'react';
-import { Platform, useColorScheme } from 'react-native';
+import { useColorScheme } from 'react-native';
 import { PersistGate } from 'redux-persist/integration/react';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { Provider as StoreProvider } from 'react-redux';
@@ -14,10 +14,8 @@ import { persistor, store } from './store/state';
 import { getTheme } from './theme';
 import { IconProvider } from './components/atoms/icon/AppIconComponent';
 import { setupCall } from './service/call/device';
-import IncomingCall from '@bob.hardcoder/react-native-incoming-call';
 import './translations/i18n';
 import './utils/debug/suppressWarning';
-import { EventRegister } from 'react-native-event-listeners';
 
 const App = () => {
   const colorScheme = useColorScheme();
@@ -39,18 +37,6 @@ const App = () => {
 
   useEffect(() => {
     setupCall();
-  }, []);
-
-  useEffect(() => {
-    const run = async () => {
-      if (Platform.OS === 'android') {
-        const payload = await IncomingCall.getExtrasFromHeadlessMode();
-        if (payload) {
-          EventRegister.emit('answerCall', JSON.parse(payload));
-        }
-      }
-    };
-    run();
   }, []);
 
   return (

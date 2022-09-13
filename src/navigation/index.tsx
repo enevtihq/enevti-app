@@ -2,7 +2,7 @@ import React from 'react';
 import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
 import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
 import { useDispatch, useSelector } from 'react-redux';
-import { StyleSheet, useColorScheme, Keyboard } from 'react-native';
+import { StyleSheet, useColorScheme, Keyboard, Platform } from 'react-native';
 
 import CreateAccount from 'enevti-app/screen/auth/CreateAccount';
 import SetupLocalPassword from 'enevti-app/screen/auth/SetupLocalPassword';
@@ -49,6 +49,7 @@ import { initFCMToken, refreshFCMToken } from 'enevti-app/store/middleware/thunk
 import messaging from '@react-native-firebase/messaging';
 import RedeemVideoCall from 'enevti-app/screen/redeem/RedeemVideoCall';
 import { EventRegister } from 'react-native-event-listeners';
+import IncomingCall from '@bob.hardcoder/react-native-incoming-call';
 
 export type RootStackParamList = {
   CreateAccount: undefined;
@@ -148,11 +149,26 @@ export default function AppNavigationContainer() {
     if (auth.encrypted && localSession.key === '' && locked && currentRoute !== 'Login') {
       navigationRef.navigate('Login', {});
     }
-
-    EventRegister.addEventListener('answerCall', (data: { nftId: string; isAnswering: boolean; callId: string }) => {
-      navigationRef.navigate('RedeemVideoCall', data);
-    });
   }, [auth.encrypted, locked, navigationRef, currentRoute, localSession.key]);
+
+  React.useEffect(() => {
+    const run = async () => {
+      if (Platform.OS === 'android') {
+        EventRegister.addEventListener(
+          'answerCall',
+          (data: { nftId: string; isAnswering: boolean; callId: string }) => {
+            navigationRef.navigate('RedeemVideoCall', data);
+          },
+        );
+
+        const payload = await IncomingCall.getExtrasFromHeadlessMode();
+        if (payload) {
+          EventRegister.emit('answerCall', JSON.parse(payload.uuid));
+        }
+      }
+    };
+    run();
+  }, [navigationRef]);
 
   React.useEffect(() => {
     return notifee.onForegroundEvent(async ({ type, detail }) => {
