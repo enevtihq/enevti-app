@@ -53,7 +53,7 @@ export default async function startVideoCallFCMHandler(remoteMessage: FirebaseMe
           if (!display.maximized) {
             IncomingCall.backToForeground();
           }
-          EventRegister.emit('answerCall', params);
+          EventRegister.emit('answerVideoCall', params);
         }
       });
     }

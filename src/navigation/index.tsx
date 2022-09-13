@@ -152,22 +152,28 @@ export default function AppNavigationContainer() {
   }, [auth.encrypted, locked, navigationRef, currentRoute, localSession.key]);
 
   React.useEffect(() => {
+    let answerCallListener: string = '';
+
     const run = async () => {
       if (Platform.OS === 'android') {
-        EventRegister.addEventListener(
-          'answerCall',
+        answerCallListener = EventRegister.addEventListener(
+          'answerVideoCall',
           (data: { nftId: string; isAnswering: boolean; callId: string }) => {
             navigationRef.navigate('RedeemVideoCall', data);
           },
-        );
+        ).toString();
 
         const payload = await IncomingCall.getExtrasFromHeadlessMode();
         if (payload) {
-          EventRegister.emit('answerCall', JSON.parse(payload.uuid));
+          EventRegister.emit('answerVideoCall', JSON.parse(payload.uuid));
         }
       }
     };
     run();
+
+    return () => {
+      EventRegister.removeEventListener(answerCallListener);
+    };
   }, [navigationRef]);
 
   React.useEffect(() => {
