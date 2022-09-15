@@ -82,6 +82,7 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
   const myPublicKey = React.useRef<string>('');
   const callId = React.useRef<string>('');
   const token = React.useRef<string>('');
+  const signature = React.useRef<string>('');
   const isRoomDidConnect = React.useRef<boolean>(false);
   const timeoutRef = React.useRef<any>();
   const internetTimeoutRef = React.useRef<any>();
@@ -124,6 +125,8 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
   );
 
   const onExitCall = React.useCallback(async () => {
+    twilioRef.current?.disconnect();
+    socket.current?.disconnect();
     clearTimeout(timeoutRef.current);
     clearTimeout(internetTimeoutRef.current);
 
@@ -131,8 +134,6 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
     stopCallBusySound();
 
     playCallEndSound(() => {
-      twilioRef.current?.disconnect();
-      socket.current?.disconnect();
       navigation.goBack();
     });
   }, [navigation]);
@@ -189,6 +190,7 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
         nftId: route.params.nftId,
         callId: callId.current,
         emitter: myPublicKey.current,
+        signature: signature.current,
       });
     } else {
       setStatus('exited');
@@ -291,6 +293,7 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
       }
 
       const publicKey = await getMyPublicKey();
+      signature.current = await createSignature(route.params.nftId);
       myPublicKey.current = publicKey;
       if (route.params.isAnswering && route.params.callId) {
         callId.current = route.params.callId;
@@ -298,10 +301,10 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
           nftId: route.params.nftId,
           emitter: publicKey,
           callId: route.params.callId,
+          signature: signature.current,
         });
       } else {
-        const signature = await createSignature(route.params.nftId);
-        socket.current = startVideoCall({ nftId: route.params.nftId, publicKey, signature });
+        socket.current = startVideoCall({ nftId: route.params.nftId, publicKey, signature: signature.current });
       }
       socket.current.on('callAnswered', (payload: CallAnsweredParam) => onCallAnswered(payload));
       socket.current.on('callError', (payload: CallErrorParam) => onCallError(payload));

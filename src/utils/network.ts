@@ -142,7 +142,7 @@ export function startVideoCall(params: { nftId: string; signature: string; publi
   return socket;
 }
 
-export function answerVideoCall(params: { nftId: string; callId: string; emitter: string }) {
+export function answerVideoCall(params: { nftId: string; callId: string; emitter: string; signature: string }) {
   const socket = videoCallSocketBase();
   socket.on('connect', () => {
     socket.emit('answered', params);

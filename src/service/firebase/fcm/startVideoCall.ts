@@ -13,6 +13,7 @@ import { videoCallSocketBase } from 'enevti-app/utils/network';
 import { EventRegister } from 'react-native-event-listeners';
 import { selectDisplayState } from 'enevti-app/store/slices/ui/screen/display';
 import { store } from 'enevti-app/store/state';
+import { createSignature } from 'enevti-app/utils/cryptography';
 
 export default async function startVideoCallFCMHandler(remoteMessage: FirebaseMessagingTypes.RemoteMessage) {
   await runInBackground(async () => {
@@ -22,7 +23,8 @@ export default async function startVideoCallFCMHandler(remoteMessage: FirebaseMe
     const data = JSON.parse(remoteMessage.data!.payload) as StartVideoCallPayload;
     const nft = await getNFTbyId(data.nftId);
     if (nft.status === 200) {
-      socket.emit('ringing', { callId: data.socketId, emitter: publicKey });
+      const signature = await createSignature(data.socketId);
+      socket.emit('ringing', { callId: data.socketId, emitter: publicKey, signature });
       const myAddress = await getMyAddress();
       const callerPersona = myAddress === nft.data.owner.address ? nft.data.creator : nft.data.owner;
       const avatarEndpoint = await getAvatarUrl(callerPersona.address);
@@ -42,7 +44,7 @@ export default async function startVideoCallFCMHandler(remoteMessage: FirebaseMe
       });
 
       const answerCallSubcription = DeviceEventEmitter.addListener('answerCall', payload => {
-        socket.emit('accepted', { callId: data.socketId, emitter: publicKey });
+        socket.emit('accepted', { callId: data.socketId, emitter: publicKey, signature });
         endCallSubsribtion.remove();
         answerCallSubcription.remove();
         socket.disconnect();
