@@ -76,6 +76,7 @@ export async function appFetchBlob(
     method?: 'GET' | 'POST' | 'PUT';
     headers?: Record<string, any>;
     filePath?: string;
+    fileBody?: any;
     onUploadProgress?: (sent: number, total: number) => void;
     onDownloadProgress?: (received: number, total: number) => void;
     onBeginProgress?: () => void;
@@ -90,6 +91,7 @@ export async function appFetchBlob(
     method,
     headers,
     filePath,
+    fileBody,
     onUploadProgress,
     onDownloadProgress,
     onBeginProgress,
@@ -102,7 +104,12 @@ export async function appFetchBlob(
   const pConfig = progressConfig ?? { count: 10 };
 
   const response = ReactNativeBlobUtil.config(config)
-    .fetch(method ?? 'GET', resource, headers, filePath ? ReactNativeBlobUtil.wrap(filePath) : undefined)
+    .fetch(
+      method ?? 'GET',
+      resource,
+      headers,
+      filePath ? ReactNativeBlobUtil.wrap(filePath) : fileBody ? fileBody : undefined,
+    )
     .uploadProgress(pConfig, onUploadProgress ? onUploadProgress : () => {})
     .progress(pConfig, onDownloadProgress ? onDownloadProgress : () => {});
 

@@ -1,6 +1,6 @@
 export type CommentNFTProps = {
   id: string;
-  text: string;
+  cid: string;
 };
 
 export type CommentNFTUI = CommentNFTProps;

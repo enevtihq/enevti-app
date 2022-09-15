@@ -1,11 +1,12 @@
-export const ENEVTI_DEFAULT_API = 'http://192.168.0.102:8880';
-export const ENEVTI_SERVICE_API = 'http://192.168.0.102:9901';
-export const ENEVTI_FAUCET_API = 'http://192.168.0.102:8881';
-export const ENEVTI_SOCKET_IO = 'ws://192.168.0.102:8082';
-export const ENEVTI_VIDEOCALL_SOCKET = 'ws://192.168.0.102:8083';
-export const ENEVTI_CORE_WS = 'ws://192.168.0.102:8082/ws';
+export const ENEVTI_DEFAULT_API = 'http://192.168.0.105:8880';
+export const ENEVTI_SERVICE_API = 'http://192.168.0.105:9901';
+export const ENEVTI_FAUCET_API = 'http://192.168.0.105:8881';
+export const ENEVTI_SOCKET_IO = 'ws://192.168.0.105:8082';
+export const ENEVTI_VIDEOCALL_SOCKET = 'ws://192.168.0.105:8083';
+export const ENEVTI_CORE_WS = 'ws://192.168.0.105:8082/ws';
 export const IPFS_GATEWAY = '.ipfs.nftstorage.link';
 export const NFT_STORAGE_URL = 'https://api.nft.storage/upload';
+export const WEB3_STORAGE_URL = 'https://api.web3.storage/upload';
 
 type UrlGetTransactionsParam = {
   transactionId?: string;
@@ -37,6 +38,10 @@ export function makeUrl(url: string, host: string = ENEVTI_DEFAULT_API) {
 
 export function urlNFTStorage() {
   return NFT_STORAGE_URL;
+}
+
+export function urlWeb3Storage() {
+  return WEB3_STORAGE_URL;
 }
 
 export function urlWSCore() {

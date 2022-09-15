@@ -33,7 +33,7 @@ export function makeDefaultDummyComment(): CommentItem {
       version: 0,
     },
     target: '',
-    text: '',
+    data: '',
     type: 'collection',
   };
 }
@@ -62,6 +62,6 @@ export function makeDefaultDummyReply(): ReplyItem {
       username: '',
     },
     target: '',
-    text: '',
+    data: '',
   };
 }

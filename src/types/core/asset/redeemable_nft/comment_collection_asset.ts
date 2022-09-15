@@ -1,6 +1,6 @@
 export type CommentCollectionProps = {
   id: string;
-  text: string;
+  cid: string;
 };
 
 export type CommentCollectionUI = CommentCollectionProps;

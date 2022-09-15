@@ -20,6 +20,7 @@ import { RootStackParamList } from 'enevti-app/navigation';
 import { COIN_NAME } from 'enevti-app/utils/constant/identifier';
 import { ReplyCommentClubsUI } from 'enevti-app/types/core/asset/redeemable_nft/reply_comment_clubs_asset';
 import { getCommentKey } from '../../ui/view/comment';
+import { makeDummyIPFS } from 'enevti-app/utils/dummy/ipfs';
 
 type CommentRoute = RouteProp<RootStackParamList, 'Comment'>;
 type PayReplyCommentClubsPayload = { route: CommentRoute; commentId: string; reply: string };
@@ -31,7 +32,7 @@ export const payReplyCommentClubs = createAsyncThunk<void, PayReplyCommentClubsP
       const transactionPayload: AppTransaction<ReplyCommentClubsUI> = await createTransaction<ReplyCommentClubsUI>(
         redeemableNftModule.moduleID,
         redeemableNftModule.replyCommentClubs,
-        { id: payload.commentId, text: payload.reply },
+        { id: payload.commentId, cid: makeDummyIPFS() },
         '0',
         signal,
       );
@@ -55,7 +56,7 @@ export const payReplyCommentClubs = createAsyncThunk<void, PayReplyCommentClubsP
           amount: '0',
           currency: COIN_NAME,
           payload: JSON.stringify(attachFee(transactionPayload, (BigInt(gasFee) + BigInt(baseFee)).toString())),
-          meta: '',
+          meta: payload.reply,
         }),
       );
       dispatch(setPaymentMode('compact'));

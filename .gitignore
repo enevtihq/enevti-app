@@ -64,3 +64,4 @@ buck-out/
 .env*
 !.env.project
 !.env.vault
+.flaskenv*

@@ -1,6 +1,6 @@
 export type ReplyCommentProps = {
   id: string;
-  text: string;
+  cid: string;
 };
 
 export type ReplyCommentUI = ReplyCommentProps;

@@ -1,6 +1,6 @@
 export type CommentNFTClubsProps = {
   id: string;
-  text: string;
+  cid: string;
 };
 
 export type CommentNFTClubsUI = CommentNFTClubsProps;

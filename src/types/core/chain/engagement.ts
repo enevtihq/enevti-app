@@ -43,7 +43,8 @@ export type Comment = {
   type: 'nft' | 'collection';
   date: number;
   owner: Persona;
-  text: string;
+  text?: string;
+  data: string;
   target: string;
   reply: number;
   like: number;

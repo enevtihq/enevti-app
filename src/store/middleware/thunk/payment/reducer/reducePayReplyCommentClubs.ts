@@ -1,9 +1,14 @@
-import { selectPaymentActionPayload, setPaymentStatusInReducer } from 'enevti-app/store/slices/payment';
+import {
+  selectPaymentActionMeta,
+  selectPaymentActionPayload,
+  setPaymentStatusInReducer,
+} from 'enevti-app/store/slices/payment';
 import { AppThunk } from 'enevti-app/store/state';
 import { AppTransaction } from 'enevti-app/types/core/service/transaction';
 import { postTransaction } from 'enevti-app/service/enevti/transaction';
 import { handleError } from 'enevti-app/utils/error/handle';
 import { ReplyCommentClubsUI } from 'enevti-app/types/core/asset/redeemable_nft/reply_comment_clubs_asset';
+import { uploadTextToIPFS } from 'enevti-app/service/ipfs';
 
 export const reducePayReplyCommentClubs = (): AppThunk => async (dispatch, getState) => {
   try {
@@ -11,6 +16,8 @@ export const reducePayReplyCommentClubs = (): AppThunk => async (dispatch, getSt
     dispatch(setPaymentStatusInReducer({ action: 'replyCommentClubs', type: 'process', message: '' }));
 
     const payload = JSON.parse(selectPaymentActionPayload(getState())) as AppTransaction<ReplyCommentClubsUI>;
+    const meta = selectPaymentActionMeta(getState());
+    payload.asset.cid = await uploadTextToIPFS(meta);
 
     const response = await postTransaction(payload);
     if (response.status === 200) {

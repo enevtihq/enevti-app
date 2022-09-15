@@ -21,6 +21,8 @@ import { useDispatch } from 'react-redux';
 import { RouteProp } from '@react-navigation/native';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 import { getCommentKey } from 'enevti-app/store/middleware/thunk/ui/view/comment';
+import { fetchIPFS } from 'enevti-app/service/ipfs';
+import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 
 interface AppCommentItemBaseProps {
   commentOrReply: CommentItem | ReplyItem;
@@ -58,6 +60,22 @@ export default function AppCommentItemBase({
     [theme, insets, commentOrReply, innerPadding],
   );
 
+  const [text, setText] = React.useState<string>('');
+
+  React.useEffect(() => {
+    const run = async () => {
+      if (commentOrReply.data) {
+        const data = await fetchIPFS(commentOrReply.data);
+        if (data) {
+          setText(data);
+        }
+      } else if (commentOrReply.text) {
+        setText(commentOrReply.text);
+      }
+    };
+    run();
+  }, [commentOrReply.data, commentOrReply.text]);
+
   const onOwnerDetail = React.useCallback(() => {
     if (commentOrReply.owner.address) {
       navigation.push('Profile', {
@@ -86,13 +104,20 @@ export default function AppCommentItemBase({
         <View style={styles.commentRightSection}>
           <View style={styles.commentTextAndLike}>
             <View style={styles.commentText}>
-              <AppMentionRenderer
-                navigation={navigation}
-                style={styles.commentTextItem}
-                onTitlePress={onOwnerDetail}
-                title={parsePersonaLabel(commentOrReply.owner)}
-                text={commentOrReply.text}
-              />
+              {text ? (
+                <AppMentionRenderer
+                  navigation={navigation}
+                  style={styles.commentTextItem}
+                  onTitlePress={onOwnerDetail}
+                  title={parsePersonaLabel(commentOrReply.owner)}
+                  text={text}
+                />
+              ) : (
+                <View style={styles.isCommentContentLoading}>
+                  <AppActivityIndicator animating size={hp(1.8)} style={styles.isCommentContentLoadingLoader} />
+                  <AppTextBody4 style={styles.isCommentContentLoadingText}>{t('explorer:loading')}</AppTextBody4>
+                </View>
+              )}
               <View style={styles.commentAction}>
                 <AppTextHeading4 style={styles.commentActionItem}>{timeSince(commentOrReply.date)}</AppTextHeading4>
                 {commentOrReply.like > 0 ? (
@@ -149,6 +174,16 @@ const makeStyles = (
       width: '100%',
       height: '100%',
       justifyContent: 'center',
+    },
+    isCommentContentLoading: {
+      flexDirection: 'row',
+      marginBottom: hp(0.5),
+    },
+    isCommentContentLoadingLoader: {
+      justifyContent: 'center',
+    },
+    isCommentContentLoadingText: {
+      marginLeft: wp(2),
     },
     commentRightSection: {
       flex: 1,
