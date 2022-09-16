@@ -91,6 +91,9 @@ const commentViewSlice = createSlice({
         }),
       });
     },
+    setCommentText: (comment, action: PayloadAction<{ key: string; value: string; commentIndex: number }>) => {
+      comment[action.payload.key].comment[action.payload.commentIndex].text = action.payload.value;
+    },
     pushComment: (comment, action: PayloadAction<{ key: string; value: CommentItem[] }>) => {
       comment[action.payload.key].comment = comment[action.payload.key].comment.concat(action.payload.value);
     },
@@ -147,6 +150,13 @@ const commentViewSlice = createSlice({
           ),
         }),
       });
+    },
+    setReplyText: (
+      comment,
+      action: PayloadAction<{ key: string; commentIndex: number; replyIndex: number; value: string }>,
+    ) => {
+      comment[action.payload.key].comment[action.payload.commentIndex].replies[action.payload.replyIndex].text =
+        action.payload.value;
     },
     pushReply: (comment, action: PayloadAction<{ key: string; commentIndex: number; value: ReplyItem[] }>) => {
       comment[action.payload.key].comment[action.payload.commentIndex].replies = comment[action.payload.key].comment[
@@ -230,6 +240,7 @@ export const {
   setCommentViewVersion,
   setCommentViewReqStatus,
   setComment,
+  setCommentText,
   pushComment,
   popComment,
   unshiftComment,
@@ -243,6 +254,7 @@ export const {
   subtractCommentViewPaginationCheckpoint,
   setCommentViewPagination,
   setReply,
+  setReplyText,
   pushReply,
   popReply,
   unshiftReply,

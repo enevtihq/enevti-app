@@ -1,6 +1,6 @@
 import { View, StyleSheet, FlatListProps, FlatList, TextInput } from 'react-native';
 import React from 'react';
-import { CommentItem, ReplyItem } from 'enevti-app/store/slices/ui/view/comment';
+import { CommentItem, ReplyItem, setReplyText } from 'enevti-app/store/slices/ui/view/comment';
 import AppTextHeading4 from 'enevti-app/components/atoms/text/AppTextHeading4';
 import { t } from 'i18next';
 import Color from 'color';
@@ -23,6 +23,7 @@ import {
 } from 'enevti-app/store/middleware/thunk/ui/view/comment';
 import { AppAsyncThunk } from 'enevti-app/types/ui/store/AppAsyncThunk';
 import { parsePersonaLabel } from 'enevti-app/service/enevti/persona';
+import { fetchIPFS } from 'enevti-app/service/ipfs';
 
 const AnimatedFlatList = Animated.createAnimatedComponent<FlatListProps<ReplyItem>>(FlatList);
 
@@ -51,6 +52,18 @@ export default function AppReplyList({
   const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
   const [isLoadingReply, setIsLoadingReply] = React.useState<boolean>(false);
   const [isLoadingMoreReply, setIsLoadingMoreReply] = React.useState<boolean>(false);
+
+  const onReplyLoad = React.useCallback(
+    (item: ReplyItem, index: number) => async () => {
+      if (!item.text) {
+        const data = await fetchIPFS(item.data);
+        if (data) {
+          dispatch(setReplyText({ key: getCommentKey(route, type), commentIndex, replyIndex: index, value: data }));
+        }
+      }
+    },
+    [commentIndex, dispatch, route, type],
+  );
 
   const loadReplyCallback = React.useCallback(() => {
     return dispatch(loadReply({ route, type, index: commentIndex }));
@@ -93,13 +106,14 @@ export default function AppReplyList({
         index={index}
         commentOrReply={item}
         navigation={navigation}
+        onLoad={onReplyLoad(item, index)}
         onReplyPress={() => onReplyPress(index)}
         onLikePress={() =>
           onLikeReplyPress(item.id, commentIndex, index, getCommentKey(route, type), parsePersonaLabel(item.owner))
         }
       />
     ),
-    [styles.replyItem, route, navigation, onReplyPress, onLikeReplyPress, commentIndex, type],
+    [styles.replyItem, route, type, navigation, onReplyLoad, onReplyPress, onLikeReplyPress, commentIndex],
   );
 
   const initialReplyListComponent = React.useMemo(() => {

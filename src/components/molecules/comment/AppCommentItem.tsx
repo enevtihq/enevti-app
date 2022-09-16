@@ -1,6 +1,6 @@
 import { StyleSheet, TextInput } from 'react-native';
 import React from 'react';
-import { CommentItem } from 'enevti-app/store/slices/ui/view/comment';
+import { CommentItem, setCommentText } from 'enevti-app/store/slices/ui/view/comment';
 import { parsePersonaLabel } from 'enevti-app/service/enevti/persona';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
@@ -11,6 +11,7 @@ import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
 import { clearReplying, getCommentKey, setReplying } from 'enevti-app/store/middleware/thunk/ui/view/comment';
+import { fetchIPFS } from 'enevti-app/service/ipfs';
 
 interface AppCommentItemProps {
   comment: CommentItem;
@@ -40,6 +41,15 @@ export default function AppCommentItem({
   const onLikeComment = React.useCallback(() => {
     onLikeCommentPress(comment.id, getCommentKey(route, type), parsePersonaLabel(comment.owner));
   }, [comment.id, comment.owner, onLikeCommentPress, route, type]);
+
+  const onCommentLoad = React.useCallback(async () => {
+    if (!comment.text) {
+      const data = await fetchIPFS(comment.data);
+      if (data) {
+        dispatch(setCommentText({ key: getCommentKey(route, type), commentIndex: index, value: data }));
+      }
+    }
+  }, [comment.data, comment.text, dispatch, index, route, type]);
 
   const onReplyPress = React.useCallback(() => {
     dispatch(clearReplying({ route, type }));
@@ -72,6 +82,7 @@ export default function AppCommentItem({
       type={type}
       onReplyPress={onReplyPress}
       onLikePress={onLikeComment}
+      onLoad={onCommentLoad}
       replyComponent={replyComponent}
     />
   );
