@@ -126,6 +126,8 @@ export const iconMap = {
   micOff: 'microphone-off',
   callChat: 'forum',
   cameraFlip: 'camera-switch',
+  callBusy: 'phone-message',
+  callSomeoneIsCalling: 'phone-incoming',
 };
 
 interface AppIconComponentProps {

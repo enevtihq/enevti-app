@@ -26,6 +26,7 @@ interface AppAlertModalProps {
   tertiaryButtonText?: string;
   tertiaryButtonOnPress?: () => void;
   tertiaryButtonIsLoading?: boolean;
+  enablePanDownToClose?: boolean;
   height?: number;
 }
 
@@ -44,6 +45,7 @@ export default function AppAlertModal({
   tertiaryButtonText,
   tertiaryButtonOnPress,
   tertiaryButtonIsLoading,
+  enablePanDownToClose,
   height,
 }: AppAlertModalProps) {
   const insets = useSafeAreaInsets();
@@ -56,7 +58,11 @@ export default function AppAlertModal({
   );
 
   return (
-    <AppMenuContainer visible={visible} snapPoints={[`${snapPoints}%`]} onDismiss={onDismiss}>
+    <AppMenuContainer
+      enablePanDownToClose={enablePanDownToClose}
+      visible={visible}
+      snapPoints={[`${snapPoints}%`]}
+      onDismiss={onDismiss}>
       <AppHeaderWizard
         noHeaderSpace
         mode={'icon'}

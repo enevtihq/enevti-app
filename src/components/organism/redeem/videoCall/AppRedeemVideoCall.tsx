@@ -53,6 +53,8 @@ import {
   setModalLoaderState,
   setModalLoaderSubText,
 } from 'enevti-app/store/slices/ui/global/modalLoader';
+import AppAlertModal from '../../menu/AppAlertModal';
+import AppConfirmationModal from '../../menu/AppConfirmationModal';
 
 interface AppRedeemVideoCallProps {
   navigation: StackNavigationProp<RootStackParamList>;
@@ -69,7 +71,6 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
 
   const myPersona = useSelector(selectMyPersonaCache);
   const [loaded, setLoaded] = React.useState<boolean>(false);
-  const [disconnected, setDisconnected] = React.useState<boolean>(false);
   const [someoneIsCalling, setSomeoneIsCalling] = React.useState<boolean>(false);
   const [busy, setBusy] = React.useState<boolean>(false);
   const [internetAvailable, setInternetAvailable] = React.useState<boolean>(true);
@@ -96,6 +97,8 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
   const timeoutRef = React.useRef<any>();
   const timeoutIntervalRef = React.useRef<any>();
   const internetTimeoutRef = React.useRef<any>();
+  const someoneIsCallingNftId = React.useRef<string>('');
+  const [callMode, setCallMode] = React.useState<'owner' | 'creator' | ''>('');
   const [participantPersona, setParticipantPersona] = React.useState<Persona | undefined>();
 
   const onCallStarting = React.useCallback(async (param: CallStartedParam) => {
@@ -167,7 +170,6 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
       clearInterval(timeoutIntervalRef.current);
       timeoutCountdown.current = RECONNECTION_TIMEOUT;
       stopCallBusySound();
-      setDisconnected(false);
       if (token.current && !isRoomDidConnect.current) {
         twilioRef.current?.disconnect();
         twilioRef.current?.connect({ accessToken: token.current });
@@ -175,10 +177,6 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
     },
     [dispatch],
   );
-
-  const onSomeoneIsCalling = React.useCallback(async (_param: SomeoneIsCallingParam) => {
-    setSomeoneIsCalling(true);
-  }, []);
 
   const onCallBusy = React.useCallback(async () => {
     setBusy(true);
@@ -217,6 +215,20 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
     await onExitCall();
   }, [onExitCall, route.params.nftId, status]);
 
+  const onSomeoneIsCalling = React.useCallback(async (_param: SomeoneIsCallingParam) => {
+    setSomeoneIsCalling(true);
+    someoneIsCallingNftId.current = _param.nftId;
+  }, []);
+
+  const onSomeoneIsCallingYes = React.useCallback(async () => {
+    await onEndButtonPress();
+    navigation.navigate('NFTDetails', { mode: 'id', arg: someoneIsCallingNftId.current, redeem: true });
+  }, [navigation, onEndButtonPress]);
+
+  const onSomeoneIsCallingNo = React.useCallback(async () => {
+    setSomeoneIsCalling(false);
+  }, []);
+
   const onCallDisconnected = React.useCallback(async () => {
     playCallBusySound();
     dispatch(
@@ -243,7 +255,6 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
       });
       onExitCall();
     }, RECONNECTION_TIMEOUT);
-    setDisconnected(true);
   }, [dispatch, onExitCall, route.params.nftId, t]);
 
   const onMuteButtonPress = () => {
@@ -328,8 +339,10 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
         setNft(nftResponse.data);
         if (myAddress === nftResponse.data.owner.address) {
           setParticipantPersona(nftResponse.data.creator);
+          setCallMode('owner');
         } else {
           setParticipantPersona(nftResponse.data.owner);
+          setCallMode('creator');
         }
       }
 
@@ -435,6 +448,32 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
 
   return loaded ? (
     <View style={styles.container}>
+      {callMode === 'creator' ? (
+        <AppConfirmationModal
+          enablePanDownToClose={false}
+          iconName={'callSomeoneIsCalling'}
+          visible={someoneIsCalling}
+          onDismiss={() => {}}
+          title={t('redeem:VCAlertSomeoneIsCalling')}
+          description={t('redeem:VCAlertSomeoneIsCallingDesc')}
+          cancelText={t('redeem:VCAlertSomeoneIsCallingNo')}
+          cancelOnPress={onSomeoneIsCallingNo}
+          okText={t('redeem:VCAlertSomeoneIsCallingYes')}
+          okOnPress={onSomeoneIsCallingYes}
+        />
+      ) : null}
+      {callMode === 'owner' ? (
+        <AppAlertModal
+          enablePanDownToClose={false}
+          iconName={'callSomeoneIsCalling'}
+          visible={someoneIsCalling}
+          onDismiss={() => {}}
+          title={t('redeem:VCAlertSomeoneIsCallingOwner')}
+          description={t('redeem:VCAlertSomeoneIsCallingOwnerDesc')}
+          secondaryButtonText={t('redeem:VCAlertSomeoneIsCallingOwnerButton')}
+          secondaryButtonOnPress={onSomeoneIsCallingNo}
+        />
+      ) : null}
       <AppMenuContainer
         backDisabled
         disableBackdrop
@@ -548,6 +587,16 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
   ) : (
     <View style={styles.loaderContainer}>
       <AppActivityIndicator animating />
+      <AppAlertModal
+        visible={busy}
+        enablePanDownToClose={false}
+        iconName={'callBusy'}
+        onDismiss={() => {}}
+        title={t('redeem:VCAlertBusyTitle')}
+        description={t('redeem:VCAlertBusyDescription')}
+        secondaryButtonText={t('redeem:VCAlertBusyButton')}
+        secondaryButtonOnPress={onEndButtonPress}
+      />
     </View>
   );
 }
