@@ -12,8 +12,10 @@ import {
   selectModalLoaderMessage,
   selectModalLoaderShow,
   selectModalLoaderProgress,
+  selectModalLoaderDescription,
 } from 'enevti-app/store/slices/ui/global/modalLoader';
 import { StyleSheet } from 'react-native';
+import AppTextBody5 from '../text/AppTextBody5';
 
 export default function AppModalLoader() {
   const { t } = useTranslation();
@@ -23,6 +25,7 @@ export default function AppModalLoader() {
   const mode = useSelector(selectModalLoaderMode);
   const visible = useSelector(selectModalLoaderShow);
   const message = useSelector(selectModalLoaderMessage);
+  const description = useSelector(selectModalLoaderDescription);
   const progress = useSelector(selectModalLoaderProgress);
 
   return (
@@ -33,6 +36,7 @@ export default function AppModalLoader() {
           containerStyle={{ backgroundColor: theme.colors.background }}
           leftContent={<AppActivityIndicator style={styles.activityIndicator} mode={mode} progress={progress} />}>
           <AppTextBody4>{message ? message : t('form:loading')}</AppTextBody4>
+          {description ? <AppTextBody5>{description}</AppTextBody5> : null}
         </AppListItem>
       </Modal>
     </Portal>

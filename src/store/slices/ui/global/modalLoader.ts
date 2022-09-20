@@ -6,6 +6,7 @@ interface ModalLoaderState {
   mode: 'activity' | 'progress';
   show: boolean;
   text: string;
+  subtext: string;
   progress: number;
 }
 
@@ -13,6 +14,7 @@ const initialState: ModalLoaderState = {
   mode: 'activity',
   show: false,
   text: '',
+  subtext: '',
   progress: 0,
 };
 
@@ -45,9 +47,17 @@ const modalLoaderSlice = createSlice({
     resetModalLoaderText: loader => {
       loader.text = initialState.text;
     },
-    setModalLoaderState: (loader, action: PayloadAction<ModalLoaderState>) => {
-      loader.show = action.payload.show;
-      loader.text = action.payload.text;
+    setModalLoaderSubText: (loader, action: PayloadAction<string>) => {
+      loader.subtext = action.payload;
+    },
+    resetModalLoaderSubText: loader => {
+      loader.subtext = initialState.subtext;
+    },
+    setModalLoaderState: (loader, action: PayloadAction<Partial<ModalLoaderState>>) => {
+      Object.assign(loader, action.payload);
+    },
+    resetModalLoaderState: () => {
+      return initialState;
     },
   },
 });
@@ -61,7 +71,10 @@ export const {
   resetModalLoaderProgress,
   setModalLoaderText,
   resetModalLoaderText,
+  setModalLoaderSubText,
+  resetModalLoaderSubText,
   setModalLoaderState,
+  resetModalLoaderState,
 } = modalLoaderSlice.actions;
 export default modalLoaderSlice.reducer;
 
@@ -83,6 +96,11 @@ export const selectModalLoaderShow = createSelector(
 export const selectModalLoaderMessage = createSelector(
   (state: RootState) => state,
   (state: RootState) => state.ui.global.modalLoader.text,
+);
+
+export const selectModalLoaderDescription = createSelector(
+  (state: RootState) => state,
+  (state: RootState) => state.ui.global.modalLoader.subtext,
 );
 
 export const selectModalLoaderProgress = createSelector(

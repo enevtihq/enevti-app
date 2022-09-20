@@ -46,6 +46,13 @@ import {
   stopCallBusySound,
   stopCallingSound,
 } from 'enevti-app/service/call/device/sound';
+import { NFT } from 'enevti-app/types/core/chain/nft';
+import {
+  hideModalLoader,
+  resetModalLoaderState,
+  setModalLoaderState,
+  setModalLoaderSubText,
+} from 'enevti-app/store/slices/ui/global/modalLoader';
 
 interface AppRedeemVideoCallProps {
   navigation: StackNavigationProp<RootStackParamList>;
@@ -66,6 +73,8 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
   const [someoneIsCalling, setSomeoneIsCalling] = React.useState<boolean>(false);
   const [busy, setBusy] = React.useState<boolean>(false);
   const [internetAvailable, setInternetAvailable] = React.useState<boolean>(true);
+  const [nft, setNft] = React.useState<NFT>();
+  const timeoutCountdown = React.useRef<number>(RECONNECTION_TIMEOUT);
 
   const [minimized, setMinimized] = React.useState<boolean>(false);
   const [isAudioEnabled, setIsAudioEnabled] = React.useState(true);
@@ -85,6 +94,7 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
   const signature = React.useRef<string>('');
   const isRoomDidConnect = React.useRef<boolean>(false);
   const timeoutRef = React.useRef<any>();
+  const timeoutIntervalRef = React.useRef<any>();
   const internetTimeoutRef = React.useRef<any>();
   const [participantPersona, setParticipantPersona] = React.useState<Persona | undefined>();
 
@@ -129,6 +139,9 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
     socket.current?.disconnect();
     clearTimeout(timeoutRef.current);
     clearTimeout(internetTimeoutRef.current);
+    clearInterval(timeoutIntervalRef.current);
+    timeoutCountdown.current = RECONNECTION_TIMEOUT;
+    dispatch(resetModalLoaderState());
 
     stopCallingSound();
     stopCallBusySound();
@@ -136,7 +149,7 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
     playCallEndSound(() => {
       navigation.goBack();
     });
-  }, [navigation]);
+  }, [dispatch, navigation]);
 
   const onCallRejected = React.useCallback(
     async (_param: CallRejectedParam) => {
@@ -146,16 +159,22 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
     [onExitCall],
   );
 
-  const onCallReconnected = React.useCallback(async (_param: CallReconnectedParam) => {
-    clearTimeout(timeoutRef.current);
-    clearTimeout(internetTimeoutRef.current);
-    stopCallBusySound();
-    setDisconnected(false);
-    if (token.current && !isRoomDidConnect.current) {
-      twilioRef.current?.disconnect();
-      twilioRef.current?.connect({ accessToken: token.current });
-    }
-  }, []);
+  const onCallReconnected = React.useCallback(
+    async (_param: CallReconnectedParam) => {
+      dispatch(hideModalLoader());
+      clearTimeout(timeoutRef.current);
+      clearTimeout(internetTimeoutRef.current);
+      clearInterval(timeoutIntervalRef.current);
+      timeoutCountdown.current = RECONNECTION_TIMEOUT;
+      stopCallBusySound();
+      setDisconnected(false);
+      if (token.current && !isRoomDidConnect.current) {
+        twilioRef.current?.disconnect();
+        twilioRef.current?.connect({ accessToken: token.current });
+      }
+    },
+    [dispatch],
+  );
 
   const onSomeoneIsCalling = React.useCallback(async (_param: SomeoneIsCallingParam) => {
     setSomeoneIsCalling(true);
@@ -200,11 +219,32 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
 
   const onCallDisconnected = React.useCallback(async () => {
     playCallBusySound();
+    dispatch(
+      setModalLoaderState({
+        show: true,
+        text: t('redeem:VCSreconnecting'),
+        subtext: t('redeem:VCSreconnectingSubtext', { countdown: Math.floor(RECONNECTION_TIMEOUT / 1000) }),
+      }),
+    );
+    timeoutIntervalRef.current = setInterval(() => {
+      timeoutCountdown.current -= 1000;
+      dispatch(
+        setModalLoaderSubText(
+          t('redeem:VCSreconnectingSubtext', { countdown: Math.floor(timeoutCountdown.current / 1000) }),
+        ),
+      );
+    }, 1000);
     timeoutRef.current = setTimeout(() => {
+      socket.current?.emit('ended', {
+        nftId: route.params.nftId,
+        callId: callId.current,
+        emitter: myPublicKey.current,
+        signature: signature.current,
+      });
       onExitCall();
     }, RECONNECTION_TIMEOUT);
     setDisconnected(true);
-  }, [onExitCall]);
+  }, [dispatch, onExitCall, route.params.nftId, t]);
 
   const onMuteButtonPress = () => {
     twilioRef.current?.setLocalAudioEnabled(!isAudioEnabled).then(isEnabled => setIsAudioEnabled(isEnabled));
@@ -283,12 +323,13 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
 
     const run = async () => {
       const myAddress = await getMyAddress();
-      const nft = await getNFTbyId(route.params.nftId);
-      if (nft.status === 200) {
-        if (myAddress === nft.data.owner.address) {
-          setParticipantPersona(nft.data.creator);
+      const nftResponse = await getNFTbyId(route.params.nftId);
+      if (nftResponse.status === 200) {
+        setNft(nftResponse.data);
+        if (myAddress === nftResponse.data.owner.address) {
+          setParticipantPersona(nftResponse.data.creator);
         } else {
-          setParticipantPersona(nft.data.owner);
+          setParticipantPersona(nftResponse.data.owner);
         }
       }
 
@@ -356,16 +397,41 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
 
   React.useEffect(() => {
     if (!internetAvailable) {
+      dispatch(
+        setModalLoaderState({
+          show: true,
+          text: t('redeem:VCSreconnecting'),
+          subtext: t('redeem:VCSreconnectingSubtext', { countdown: Math.floor(RECONNECTION_TIMEOUT / 1000) }),
+        }),
+      );
+      timeoutIntervalRef.current = setInterval(() => {
+        timeoutCountdown.current -= 1000;
+        dispatch(
+          setModalLoaderSubText(
+            t('redeem:VCSreconnectingSubtext', { countdown: Math.floor(timeoutCountdown.current / 1000) }),
+          ),
+        );
+      }, 1000);
       internetTimeoutRef.current = setTimeout(() => {
+        socket.current?.emit('ended', {
+          nftId: route.params.nftId,
+          callId: callId.current,
+          emitter: myPublicKey.current,
+          signature: signature.current,
+        });
         onExitCall();
       }, RECONNECTION_TIMEOUT);
       playCallBusySound();
       return () => {
         clearTimeout(internetTimeoutRef.current);
+        clearInterval(timeoutIntervalRef.current);
+        timeoutCountdown.current = RECONNECTION_TIMEOUT;
         stopCallBusySound();
       };
+    } else {
+      dispatch(hideModalLoader());
     }
-  }, [internetAvailable, onExitCall]);
+  }, [dispatch, internetAvailable, onExitCall, route.params.nftId, t]);
 
   return loaded ? (
     <View style={styles.container}>

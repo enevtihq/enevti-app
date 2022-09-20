@@ -10,4 +10,6 @@ export default {
   VCSexited: 'ended',
   VCSdisconnected: 'disconnected',
   VCSerror: 'error',
+  VCSreconnecting: 'Reconnecting',
+  VCSreconnectingSubtext: 'call will automatically ended in {{countdown}}s',
 };
