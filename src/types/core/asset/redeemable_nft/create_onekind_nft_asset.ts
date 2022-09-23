@@ -43,7 +43,8 @@ export type CreateOneKindNFTProps = {
     minute: number;
   };
   until: number;
-  redeemLimit: number;
+  redeemCountLimit: number;
+  redeemNonceLimit: number;
   royalty: {
     creator: number;
     staker: number;

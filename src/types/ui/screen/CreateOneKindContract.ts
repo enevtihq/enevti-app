@@ -28,7 +28,8 @@ export type OneKindContractForm = {
   untilHour: number;
   untilMinute: number;
   redeemLimitOption: string;
-  redeemLimit: string;
+  redeemNonceLimit: string;
+  redeemCountLimit: string;
   royaltyCreator: string;
   royaltyStaker: string;
   priceAmount: string;

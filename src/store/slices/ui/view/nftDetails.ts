@@ -70,8 +70,10 @@ const initialStateItem: NFTDetailsViewState = {
   redeem: {
     status: '',
     count: -1,
-    limit: -1,
-    touched: -1,
+    velocity: -1,
+    nonce: -1,
+    nonceLimit: -1,
+    countLimit: -1,
     secret: {
       cipher: '',
       signature: {

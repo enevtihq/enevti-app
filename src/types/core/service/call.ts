@@ -32,6 +32,15 @@ export type SomeoneIsCallingParam = {
   nftId: string;
 };
 
+export type TokenReceivedParam = {
+  emitter: string;
+  twilioToken: string;
+};
+
+export type CallRefreshedParam = {
+  emitter: string;
+};
+
 export type CallAnsweredParam = {
   emitter: string;
   twilioToken: string;

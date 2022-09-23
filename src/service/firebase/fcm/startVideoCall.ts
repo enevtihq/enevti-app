@@ -23,8 +23,8 @@ export default async function startVideoCallFCMHandler(remoteMessage: FirebaseMe
     const data = JSON.parse(remoteMessage.data!.payload) as StartVideoCallPayload;
     const nft = await getNFTbyId(data.nftId);
     if (nft.status === 200) {
-      const signature = await createSignature(data.socketId);
-      socket.emit('ringing', { callId: data.socketId, emitter: publicKey, signature });
+      const signature = await createSignature(nft.data.id);
+      socket.emit('ringing', { nftId: nft.data.id, callId: data.socketId, emitter: publicKey, signature });
       const myAddress = await getMyAddress();
       const callerPersona = myAddress === nft.data.owner.address ? nft.data.creator : nft.data.owner;
       const avatarEndpoint = await getAvatarUrl(callerPersona.address);
@@ -44,7 +44,7 @@ export default async function startVideoCallFCMHandler(remoteMessage: FirebaseMe
       });
 
       const answerCallSubcription = DeviceEventEmitter.addListener('answerCall', payload => {
-        socket.emit('accepted', { callId: data.socketId, emitter: publicKey, signature });
+        socket.emit('accepted', { nftId: nft.data.id, callId: data.socketId, emitter: publicKey, signature });
         endCallSubsribtion.remove();
         answerCallSubcription.remove();
         socket.disconnect();

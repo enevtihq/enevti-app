@@ -21,12 +21,15 @@ export type Profile = {
   raffled: number;
   likeSent: number;
   commentSent: number;
+  momentSlot: number;
+  momentCreated: number;
 };
 
 export type RedeemableNFTAccountStatsChain = {
   nftSold: Buffer[];
   treasuryAct: Buffer[];
   raffled: Buffer[];
+  momentCreated: Buffer[];
   serveRate: {
     score: number;
     items: {
@@ -62,6 +65,8 @@ export type RedeemableNFTAccountProps = {
     treasuryAct: number;
     serveRate: number;
     raffled: number;
+    momentSlot: number;
+    momentCreated: number;
     likeSent: number;
     commentSent: number;
     commentClubsSent: number;
@@ -120,7 +125,9 @@ export type EngagementActivityName =
   | 'replyComment'
   | 'replyCommentClubs'
   | 'commentCollectionClubs'
-  | 'commentNftClubs';
+  | 'commentNftClubs'
+  | 'setVideoCallAnswered'
+  | 'setVideoCallRejected';
 
 export type EngagementActivity = Omit<ActivityBase, 'name' | 'to' | 'value'> & {
   name: EngagementActivityName;

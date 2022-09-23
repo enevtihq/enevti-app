@@ -38,6 +38,8 @@ const initialState: Profile & {
   owned: [],
   onSale: [],
   collection: [],
+  momentCreated: 0,
+  momentSlot: 0,
   pending: 0,
   raffled: 0,
   likeSent: 0,

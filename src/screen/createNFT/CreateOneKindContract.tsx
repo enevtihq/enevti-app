@@ -119,7 +119,7 @@ const redeemTimeKey: (keyof OneKindContractForm)[] = [
   'untilHour',
   'untilMinute',
   'redeemLimitOption',
-  'redeemLimit',
+  'redeemNonceLimit',
 ];
 
 const contentKey: (keyof OneKindContractForm)[] = [
@@ -447,7 +447,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
 
   const onSelectedRedeemLimitPicker = React.useCallback(item => {
     if (item.value === 'no-limit') {
-      setFormStateValue('redeemLimit', 0, true);
+      setFormStateValue('redeemNonceLimit', 0, true);
     }
     setFormStateValue('redeemLimitOption', item.value, true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -936,7 +936,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
               ? commonFormInput(
                   formikProps,
                   redeemLimitInput,
-                  'redeemLimit',
+                  'redeemNonceLimit',
                   t('createNFT:redeemLimitCount'),
                   t('createNFT:redeemLimitCountPlaceholder'),
                   {
