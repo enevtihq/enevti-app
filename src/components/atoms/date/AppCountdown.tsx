@@ -23,14 +23,16 @@ class CountDown extends ReactNativeCountdownComponent {
 interface AppCountdownProps {
   until: number;
   style?: StyleProp<ViewStyle>;
+  theme?: Theme;
   onFinish?: () => void;
 }
 
-export default function AppCountdown({ until, style, onFinish }: AppCountdownProps) {
+export default function AppCountdown({ until, style, theme, onFinish }: AppCountdownProps) {
   const { t } = useTranslation();
-  const theme = useTheme() as Theme;
+  const paperTheme = useTheme() as Theme;
+  const countdownTheme = theme ?? paperTheme;
   const insets = useSafeAreaInsets();
-  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
+  const styles = React.useMemo(() => makeStyles(countdownTheme, insets), [countdownTheme, insets]);
   const timeLabels = React.useMemo(
     () => ({
       d: t('date:days'),

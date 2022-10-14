@@ -1,5 +1,6 @@
 export default {
   notOwner: 'Only the owner can redeem the NFT!',
+  notOwnerOrCreator: 'Only the owner or creator can redeem the video call NFT!',
   notTheOwner: 'You are not the owner of the NFT!',
   isPending: 'Seller have not sent the needed content, contact the previous seller!',
   notTheTime: 'Now is not the time to redeem, check the shcedule!',

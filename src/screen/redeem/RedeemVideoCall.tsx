@@ -18,6 +18,7 @@ export default function RedeemVideoCall({ navigation, route }: Props) {
     <AppView
       darken
       withModal
+      withPayment
       edges={['left', 'right']}
       contentContainerStyle={{ backgroundColor: darkTheme.colors.background }}>
       <AppRedeemVideoCall navigation={navigation} route={screenRoute} />

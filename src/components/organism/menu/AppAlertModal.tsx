@@ -27,6 +27,7 @@ interface AppAlertModalProps {
   tertiaryButtonOnPress?: () => void;
   tertiaryButtonIsLoading?: boolean;
   enablePanDownToClose?: boolean;
+  tapEverywhereToDismiss?: boolean;
   height?: number;
 }
 
@@ -46,6 +47,7 @@ export default function AppAlertModal({
   tertiaryButtonOnPress,
   tertiaryButtonIsLoading,
   enablePanDownToClose,
+  tapEverywhereToDismiss,
   height,
 }: AppAlertModalProps) {
   const insets = useSafeAreaInsets();
@@ -59,6 +61,7 @@ export default function AppAlertModal({
 
   return (
     <AppMenuContainer
+      tapEverywhereToDismiss={tapEverywhereToDismiss}
       enablePanDownToClose={enablePanDownToClose}
       visible={visible}
       snapPoints={[`${snapPoints}%`]}

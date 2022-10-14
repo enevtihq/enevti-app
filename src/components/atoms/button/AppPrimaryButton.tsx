@@ -18,6 +18,7 @@ interface AppPrimaryButtonProps {
   disabled?: boolean;
   icon?: IconSource;
   style?: StyleProp<ViewStyle>;
+  theme?: Theme;
 }
 
 export default function AppPrimaryButton({
@@ -27,12 +28,14 @@ export default function AppPrimaryButton({
   disabled = false,
   icon,
   style,
+  theme,
 }: AppPrimaryButtonProps): JSX.Element {
-  const theme = useTheme() as Theme;
+  const paperTheme = useTheme() as Theme;
+  const buttonTheme = theme ?? paperTheme;
   const insets = useSafeAreaInsets();
-  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
-  const primary = disabled ? Color('black').alpha(0.5).rgb().string() : theme.colors.primary;
-  const secondary = disabled ? Color('black').alpha(0.5).rgb().string() : theme.colors.secondary;
+  const styles = React.useMemo(() => makeStyles(buttonTheme, insets), [buttonTheme, insets]);
+  const primary = disabled ? Color('black').alpha(0.5).rgb().string() : buttonTheme.colors.primary;
+  const secondary = disabled ? Color('black').alpha(0.5).rgb().string() : buttonTheme.colors.secondary;
 
   return (
     <LinearGradient colors={[primary, secondary]} style={[styles.primaryButton, style]}>
@@ -40,6 +43,7 @@ export default function AppPrimaryButton({
         <AppActivityIndicator animating={true} style={styles.loading} color="white" />
       ) : (
         <Button
+          theme={buttonTheme as any}
           disabled={disabled}
           mode="text"
           onPress={onPress}

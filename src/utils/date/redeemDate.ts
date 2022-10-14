@@ -16,8 +16,8 @@ export const isTimeBetweenDailyUTC = (startTime: string, endTime: string, curren
   const current = moment.utc(currentTime, 'H:mm');
   if (end < start) {
     return (
-      (current >= start && current <= moment.utc('23:59:59', 'h:mm:ss')) ||
-      (current >= moment.utc('0:00:00', 'h:mm:ss') && current < end)
+      (current >= start && current <= moment.utc('23:59:59', 'H:mm:ss')) ||
+      (current >= moment.utc('0:00:00', 'H:mm:ss') && current < end)
     );
   }
   return current >= start && current < end;
@@ -155,3 +155,23 @@ export function isRedeemTimeUTC(nft: NFT) {
   }
   return redeemStartTime <= now && now <= redeemEndTime;
 }
+
+export const getRedeemEndTimeUTC = (nft: NFT) => {
+  const now = moment.utc(new Date().toISOString());
+  const redeemStartTime = getRedeemTimeUTC(nft);
+  let redeemEndTime = redeemStartTime + nft.redeem.schedule.until;
+
+  if (
+    (nft.redeem.schedule.recurring === 'daily' || nft.redeem.schedule.recurring === 'weekly') &&
+    isRedeemTimeUTC(nft)
+  ) {
+    if (
+      now >= moment.utc(new Date(redeemStartTime).toISOString(), 'H:mm') &&
+      now <= moment.utc('23:59:59', 'H:mm:ss')
+    ) {
+      redeemEndTime += 86400000;
+    }
+  }
+
+  return redeemEndTime;
+};

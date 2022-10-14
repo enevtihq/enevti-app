@@ -13,8 +13,14 @@ export const reduceRedeem =
   async dispatch => {
     try {
       const myAddress = await getMyAddress();
-      if (nft.owner.address !== myAddress) {
-        throw Error(i18n.t('error:notOwner'));
+      if (nft.utility === 'videocall') {
+        if (![nft.owner.address, nft.creator.address].includes(myAddress)) {
+          throw Error(i18n.t('error:notOwnerOrCreator'));
+        }
+      } else {
+        if (nft.owner.address !== myAddress) {
+          throw Error(i18n.t('error:notOwner'));
+        }
       }
       const utility = nft.utility;
       switch (utility) {

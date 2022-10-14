@@ -63,4 +63,10 @@ export default {
   payCommentNFTClubsDescription: 'Give comment for NFT clubs',
   payReplyCommentClubs: 'Reply Clubs',
   payReplyCommentClubsDescription: 'Give reply for comment clubs',
+  setVideoCallAnswered: 'Set as Answered',
+  setVideoCallAnsweredDescription: 'For {{nft}} redeem video call utility',
+  setVideoCallAnsweredDetails: 'Set permanently video call on-chain status as answered',
+  setVideoCallRejected: 'Set as Rejected',
+  setVideoCallRejectedDescription: 'For {{nft}} redeem video call utility',
+  setVideoCallRejectedDetails: 'Set permanently video call on-chain status as rejected',
 };

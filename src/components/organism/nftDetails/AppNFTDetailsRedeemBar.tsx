@@ -58,7 +58,10 @@ export default function AppNFTDetailsRedeemBar({ nft, navigation, route }: AppNF
     let errorCount: number = 1;
 
     const isExceeded = nft.redeem.status === 'limit-exceeded';
-    const isNotOwner = nft.owner.address !== addr;
+    const isNotOwner =
+      nft.utility === 'videocall'
+        ? ![nft.owner.address, nft.creator.address].includes(addr)
+        : nft.owner.address !== addr;
     const isPending = nft.redeem.status === 'pending-secret';
     const isNotTime = !isTime;
 

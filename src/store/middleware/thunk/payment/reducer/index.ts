@@ -14,6 +14,8 @@ import { reducePayReplyComment } from './reducePayReplyComment';
 import { reducePayCommentCollectionClubs } from './reducePayCommentCollectionClubs';
 import { reducePayCommentNFTClubs } from './reducePayCommentNFTClubs';
 import { reducePayReplyCommentClubs } from './reducePayReplyCommentClubs';
+import { reduceSetVideoCallAnswered } from './reduceSetVideoCallAnswered';
+import { reduceSetVideoCallRejected } from './reduceSetVideoCallRejected';
 
 export const reducePayment = (): AppThunk => (dispatch, getState) => {
   const paymentType = getState().payment.action.type;
@@ -56,6 +58,12 @@ export const reducePayment = (): AppThunk => (dispatch, getState) => {
       break;
     case 'replyCommentClubs':
       dispatch(reducePayReplyCommentClubs());
+      break;
+    case 'setVideoCallAnswered':
+      dispatch(reduceSetVideoCallAnswered());
+      break;
+    case 'setVideoCallRejected':
+      dispatch(reduceSetVideoCallRejected());
       break;
     default:
       handleError({ message: i18n.t('error:unknownPayment') });

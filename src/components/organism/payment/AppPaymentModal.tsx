@@ -52,6 +52,7 @@ export default function AppPaymentModal() {
   const paymentSnapPoints = React.useMemo(() => ['70%'], []);
   const defaultCoin = React.useMemo(() => COIN_NAME, []);
   const cancelRef = React.useRef<boolean>(false);
+  const dismissRef = React.useRef<boolean>(true);
   const [gasFeePickerDialogShow, setGasFeePickerDialogShow] = React.useState<boolean>(false);
 
   const compactSecondIntervalRef = React.useRef<any>();
@@ -118,13 +119,18 @@ export default function AppPaymentModal() {
 
   const paymentDismiss = React.useCallback(() => {
     if (!gasFeePickerDialogShow) {
+      if (dismissRef.current) {
+        dispatch(setPaymentStatusInReducer({ type: 'dismissed' }));
+      }
       dispatch(hidePayment());
       dispatch(resetPaymentState());
       dispatch(resetPaymentStatusType());
+      dismissRef.current = true;
     }
   }, [dispatch, gasFeePickerDialogShow]);
 
   const payCallback = React.useCallback(() => {
+    dismissRef.current = false;
     dispatch(
       setPaymentAction({
         ...paymentAction,

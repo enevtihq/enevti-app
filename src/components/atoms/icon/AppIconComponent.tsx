@@ -128,6 +128,10 @@ export const iconMap = {
   cameraFlip: 'camera-switch',
   callBusy: 'phone-message',
   callSomeoneIsCalling: 'phone-incoming',
+  timesUp: 'av-timer',
+  creatorAskToSetStatus: 'help-rhombus',
+  setVideoCallAnswered: 'phone-check',
+  setVideoCallRejected: 'phone-cancel',
 };
 
 interface AppIconComponentProps {

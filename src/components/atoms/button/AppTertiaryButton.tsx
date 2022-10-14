@@ -17,6 +17,7 @@ interface AppTertiaryButtonProps {
   disabled?: boolean;
   icon?: IconSource;
   style?: StyleProp<ViewStyle>;
+  theme?: Theme;
 }
 
 export default function AppTertiaryButton({
@@ -26,20 +27,23 @@ export default function AppTertiaryButton({
   disabled = false,
   icon,
   style,
+  theme,
 }: AppTertiaryButtonProps): JSX.Element {
-  const theme = useTheme() as Theme;
+  const paperTheme = useTheme() as Theme;
+  const buttonTheme = theme ?? paperTheme;
   const insets = useSafeAreaInsets();
-  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
+  const styles = React.useMemo(() => makeStyles(buttonTheme, insets), [buttonTheme, insets]);
 
   return loading ? (
     <View style={[styles.tertiaryLoading, styles.tertiaryButton, style]}>
-      <AppActivityIndicator animating={true} style={styles.loading} color={theme.colors.text} />
+      <AppActivityIndicator animating={true} style={styles.loading} color={buttonTheme.colors.text} />
     </View>
   ) : (
     <Button
+      theme={buttonTheme as any}
       disabled={disabled}
       mode="outlined"
-      color={theme.dark ? 'white' : 'black'}
+      color={buttonTheme.dark ? 'white' : 'black'}
       icon={icon}
       onPress={onPress}
       uppercase={false}

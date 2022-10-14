@@ -1,3 +1,5 @@
+import { NFTActivityName } from '../chain/nft/NFTActivity';
+
 export type StartVideoCallPayload = {
   socketId: string;
   nftId: string;
@@ -52,9 +54,17 @@ export type CallErrorParam = {
 };
 
 export type CallRejectedParam = {
+  nftId: string;
   emitter: string;
+  signature: string;
 };
 
 export type CallEndedParam = {
   emitter: string;
 };
+
+export type OwnerRespondToSetStatusParam = {
+  respond: 'accepted' | 'declined' | 'error';
+};
+
+export type VideoCallStatusChangedParams = NFTActivityName;

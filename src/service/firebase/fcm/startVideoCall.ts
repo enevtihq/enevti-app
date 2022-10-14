@@ -37,7 +37,15 @@ export default async function startVideoCallFCMHandler(remoteMessage: FirebaseMe
         avatarUrl,
       );
 
-      const endCallSubsribtion = DeviceEventEmitter.addListener('endCall', () => {
+      const endCallSubsribtion = DeviceEventEmitter.addListener('endCall', async () => {
+        const rejectData = `${nft.data.id}:${nft.data.redeem.count}:${nft.data.redeem.velocity}:${nft.data.redeem.nonce}`;
+        const rejectSignature = await createSignature(rejectData);
+        socket.emit('rejected', {
+          nftId: nft.data.id,
+          callId: data.socketId,
+          emitter: publicKey,
+          signature: rejectSignature,
+        });
         socket.disconnect();
         endCallSubsribtion.remove();
         answerCallSubcription.remove();

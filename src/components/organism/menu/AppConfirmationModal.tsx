@@ -19,6 +19,7 @@ interface AppConfirmationModalProps {
   cancelText: string;
   cancelOnPress: () => void;
   enablePanDownToClose?: boolean;
+  tapEverywhereToDismiss?: boolean;
 }
 
 export default function AppConfirmationModal({
@@ -32,13 +33,14 @@ export default function AppConfirmationModal({
   cancelText,
   cancelOnPress,
   enablePanDownToClose,
+  tapEverywhereToDismiss = true,
 }: AppConfirmationModalProps) {
   const insets = useSafeAreaInsets();
   const styles = React.useMemo(() => makeStyles(insets), [insets]);
   const snapPoints = React.useMemo(() => ['47%'], []);
   return (
     <AppMenuContainer
-      tapEverywhereToDismiss
+      tapEverywhereToDismiss={tapEverywhereToDismiss}
       enablePanDownToClose={enablePanDownToClose}
       snapPoints={snapPoints}
       visible={visible}

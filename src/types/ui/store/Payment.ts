@@ -20,6 +20,8 @@ export type PaymentAction = {
     | 'commentCollectionClubs'
     | 'replyComment'
     | 'replyCommentClubs'
+    | 'setVideoCallAnswered'
+    | 'setVideoCallRejected'
     | 'cancel'
     | '';
   icon: string;
@@ -44,7 +46,7 @@ export type PaymentStatus = {
   id: string;
   key: string;
   action: PaymentAction['type'];
-  type: 'idle' | 'initiated' | 'process' | 'success' | 'error' | 'cancel';
+  type: 'idle' | 'initiated' | 'process' | 'success' | 'error' | 'dismissed' | 'cancel';
   message: string;
 };
 
