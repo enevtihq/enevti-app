@@ -17,6 +17,8 @@ export const HEADER_HEIGHT_COMPACT_PERCENTAGE = 6;
 
 interface AppHeaderProps {
   children?: React.ReactNode;
+  backComponent?: React.ReactNode;
+  leftComponent?: React.ReactNode;
   back?: boolean;
   backIconSize?: number;
   navigation?: StackNavigationProp<RootStackParamList>;
@@ -27,6 +29,7 @@ interface AppHeaderProps {
   iconStyle?: StyleProp<TextStyle>;
   withAnimatedGradient?: boolean;
   height?: number;
+  marginTop?: number;
   title?: string;
   subtitle?: string;
   compact?: boolean;
@@ -35,12 +38,15 @@ interface AppHeaderProps {
 
 export default function AppHeader({
   style,
+  backComponent,
+  leftComponent,
   backgroundStyle,
   textStyle,
   subtitleStyle,
   iconStyle,
   withAnimatedGradient,
   height,
+  marginTop,
   children,
   back = false,
   backIconSize,
@@ -57,7 +63,10 @@ export default function AppHeader({
     : compact
     ? hp(HEADER_HEIGHT_COMPACT_PERCENTAGE, insets)
     : hp(HEADER_HEIGHT_PERCENTAGE, insets);
-  const styles = React.useMemo(() => makeStyles(theme, headerHeight, insets), [theme, headerHeight, insets]);
+  const styles = React.useMemo(
+    () => makeStyles(theme, headerHeight, insets, marginTop),
+    [theme, headerHeight, marginTop, insets],
+  );
 
   return (
     <Animated.View style={[styles.headerContainer, style]}>
@@ -72,6 +81,8 @@ export default function AppHeader({
             animatedIconStyle={iconStyle}
           />
         ) : null}
+        {!back && backComponent ? backComponent : null}
+        {leftComponent ? leftComponent : null}
         {title ? (
           <View style={{ marginLeft: wp('5%', insets) }}>
             <Animated.Text style={[styles.title, textStyle]}>{title}</Animated.Text>
@@ -91,20 +102,20 @@ export default function AppHeader({
   );
 }
 
-const makeStyles = (theme: Theme, height: number, insets: SafeAreaInsets) =>
+const makeStyles = (theme: Theme, height: number, insets: SafeAreaInsets, marginTop?: number) =>
   StyleSheet.create({
     divider: {
       flex: 1,
     },
     headerBar: {
       backgroundColor: theme.colors.background,
-      height: height + insets.top,
+      height: height + (marginTop ?? insets.top),
       width: '100%',
       position: 'absolute',
       zIndex: 998,
     },
     headerGradientBar: {
-      height: height + insets.top,
+      height: height + (marginTop ?? insets.top),
       width: '100%',
       position: 'absolute',
       zIndex: 997,
@@ -116,7 +127,7 @@ const makeStyles = (theme: Theme, height: number, insets: SafeAreaInsets) =>
       position: 'absolute',
       backgroundColor: 'transparent',
       width: '100%',
-      marginTop: insets.top,
+      marginTop: marginTop ?? insets.top,
       height: height,
       zIndex: 999,
     },

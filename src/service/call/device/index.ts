@@ -36,7 +36,7 @@ export function displayIncomingCall(
   number: string,
   callerName: string,
   avatar?: string,
-  timeout: number = 20000,
+  timeout: number = 60000,
 ) {
   if (Platform.OS === 'ios') {
     RNCallKeep.displayIncomingCall(callId, number, callerName, 'email');

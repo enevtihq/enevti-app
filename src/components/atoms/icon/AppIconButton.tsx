@@ -11,6 +11,7 @@ interface AppIconButtonProps {
   disabled?: boolean;
   size?: number;
   onPress?: (e?: any) => void;
+  onPressOut?: (e?: any) => void;
   color?: string;
   style?: StyleProp<ViewStyle>;
   animatedIconStyle?: StyleProp<TextStyle>;
@@ -22,6 +23,7 @@ export default function AppIconButton({
   disabled,
   size,
   onPress,
+  onPressOut,
   color,
   style,
   animatedIconStyle,
@@ -34,6 +36,7 @@ export default function AppIconButton({
   return (
     <Animated.View style={[{ borderRadius: iSize, overflow: hidden, width: iSize * 1.25, opacity }, style]}>
       <TouchableRipple
+        onPressOut={disabled ? undefined : onPressOut}
         onPress={disabled ? undefined : onPress}
         rippleColor={rippleColor}
         style={{

@@ -20,6 +20,7 @@ interface AppMenuContainerProps {
   backDisabled?: boolean;
   enableTouchThrough?: boolean;
   disableBackdrop?: boolean;
+  enableContentPanningGesture?: boolean;
   style?: StyleProp<ViewStyle>;
   backgroundStyle?: StyleProp<ViewStyle>;
   memoKey?: (keyof AppMenuContainerProps)[];
@@ -34,6 +35,7 @@ function Component({
   style,
   backgroundStyle,
   disableBackdrop,
+  enableContentPanningGesture,
   enablePanDownToClose = true,
   tapEverywhereToDismiss = false,
   transparentBackdrop = false,
@@ -114,6 +116,7 @@ function Component({
       {anchor}
       <BottomSheetModal
         ref={bottomSheetRef}
+        enableContentPanningGesture={enableContentPanningGesture}
         keyboardBehavior={'interactive'}
         keyboardBlurBehavior={'restore'}
         onChange={onChange}

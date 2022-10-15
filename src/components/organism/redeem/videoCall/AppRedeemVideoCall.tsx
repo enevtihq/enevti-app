@@ -9,7 +9,7 @@ import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import AppMenuContainer from 'enevti-app/components/atoms/menu/AppMenuContainer';
 import { RoomErrorEventCb, RoomEventCb, TrackEventCb, TwilioVideo } from 'react-native-twilio-video-webrtc';
 import { getMyAddress, getMyPublicKey, parsePersonaLabel } from 'enevti-app/service/enevti/persona';
-import { createSignature } from 'enevti-app/utils/cryptography';
+import { createSignature, decryptAsymmetric, encryptAsymmetric } from 'enevti-app/utils/cryptography';
 import { answerVideoCall, appSocket, startVideoCall } from 'enevti-app/utils/network';
 import { useDispatch, useSelector } from 'react-redux';
 import { setStatusBarBackground, setStatusBarTint } from 'enevti-app/store/slices/ui/global/statusbar';
@@ -27,12 +27,13 @@ import {
   CallRejectedParam,
   CallStartedParam,
   CallStatus,
+  ChatMessage,
   OwnerRespondToSetStatusParam,
   SomeoneIsCallingParam,
   TokenReceivedParam,
   VideoCallStatusChangedParams,
 } from 'enevti-app/types/core/service/call';
-import defaultTheme from 'enevti-app/theme/default';
+import defaultTheme, { Theme } from 'enevti-app/theme/default';
 import { selectMyPersonaCache } from 'enevti-app/store/slices/entities/cache/myPersona';
 import AppVideoCallParticipantView from './AppVideoCallParticipantView';
 import { Persona } from 'enevti-app/types/core/account/persona';
@@ -64,7 +65,7 @@ import AppListItem from 'enevti-app/components/molecules/list/AppListItem';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AppAvatarRenderer from 'enevti-app/components/molecules/avatar/AppAvatarRenderer';
 import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
-import { Divider } from 'react-native-paper';
+import { Divider, useTheme } from 'react-native-paper';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import AppNFTRenderer from 'enevti-app/components/molecules/nft/AppNFTRenderer';
 import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
@@ -76,6 +77,9 @@ import { paySetVideoCallAnswered } from 'enevti-app/store/middleware/thunk/payme
 import { paySetVideoCallRejected } from 'enevti-app/store/middleware/thunk/payment/creator/paySetVideoCallRejected';
 import usePaymentCallback from 'enevti-app/utils/hook/usePaymentCallback';
 import { PaymentStatus } from 'enevti-app/types/ui/store/Payment';
+import AppVideoCallChat from './AppVideoCallChat';
+import AppVideoCallChatFloatingNotification from './AppVideoCallChatFloatingNotification';
+import AppBadge from 'enevti-app/components/atoms/view/AppBadge';
 
 interface AppRedeemVideoCallProps {
   navigation: StackNavigationProp<RootStackParamList>;
@@ -89,6 +93,7 @@ const CREATOR_ASK_TO_SET_STATUS_LIMIT_SEC = 10;
 
 export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideoCallProps) {
   const { t } = useTranslation();
+  const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
   const dispatch = useDispatch();
   const socket = React.useRef<Socket | undefined>();
@@ -96,7 +101,13 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
   const styles = React.useMemo(() => makeStyles(insets), [insets]);
 
   const myPersona = useSelector(selectMyPersonaCache);
+  const [newChatBadge, setNewChatBadge] = React.useState<boolean>(false);
+  const [newChatShow, setNewChatShow] = React.useState<boolean>(false);
+  const [newChat, setNewChat] = React.useState<string>('');
+  const [chat, setChat] = React.useState<ChatMessage[]>([]);
   const [loaded, setLoaded] = React.useState<boolean>(false);
+  const [chatShow, setChatShow] = React.useState<boolean>(false);
+  const chatShowRef = React.useRef<boolean>(false);
   const [rejectedModalShow, setRejectedModalShow] = React.useState<boolean>(false);
   const [answeredModalShow, setAnsweredModalShow] = React.useState<boolean>(false);
   const [someoneIsCalling, setSomeoneIsCalling] = React.useState<boolean>(false);
@@ -116,6 +127,7 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
     CREATOR_ASK_TO_SET_STATUS_LIMIT_SEC,
   );
 
+  const [myPublicKey, setMyPublicKey] = React.useState<string>('');
   const [minimized, setMinimized] = React.useState<boolean>(false);
   const [isAudioEnabled, setIsAudioEnabled] = React.useState(true);
   const [isVideoEnabled, setIsVideoEnabled] = React.useState(true);
@@ -137,7 +149,8 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
   );
 
   const twilioRef = React.useRef<TwilioVideo>(null);
-  const myPublicKey = React.useRef<string>('');
+  const myPublicKeyRef = React.useRef<string>('');
+  const participantPublicKeyRef = React.useRef<string>('');
   const callId = React.useRef<string>('');
   const token = React.useRef<string>('');
   const signature = React.useRef<string>('');
@@ -171,7 +184,7 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
   const onCallStarting = React.useCallback(async (param: CallStartedParam) => {
     callId.current = param.callId;
     setLoaded(true);
-    if (myPublicKey.current && myPublicKey.current === param.emitter) {
+    if (myPublicKeyRef.current && myPublicKeyRef.current === param.emitter) {
       token.current = param.twilioToken;
       twilioRef.current?.connect({ accessToken: '' });
       playCallingSound();
@@ -195,7 +208,7 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
       }
       if (token.current) {
         twilioRef.current?.connect({ accessToken: token.current });
-      } else if (myPublicKey.current && myPublicKey.current === param.emitter) {
+      } else if (myPublicKeyRef.current && myPublicKeyRef.current === param.emitter) {
         token.current = param.twilioToken;
         twilioRef.current?.connect({ accessToken: param.twilioToken });
       }
@@ -205,7 +218,7 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
   );
 
   const onTokenReceived = React.useCallback(async (param: TokenReceivedParam) => {
-    if (myPublicKey.current && myPublicKey.current === param.emitter) {
+    if (myPublicKeyRef.current && myPublicKeyRef.current === param.emitter) {
       setLoaded(true);
       token.current = param.twilioToken;
       twilioRef.current?.connect({ accessToken: param.twilioToken });
@@ -252,7 +265,7 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
   );
 
   const onCallRefreshed = React.useCallback(async (_param: CallRefreshedParam) => {
-    if (token.current && myPublicKey.current !== _param.emitter) {
+    if (token.current && myPublicKeyRef.current !== _param.emitter) {
       twilioRef.current?.disconnect();
       await sleep(DISCONNECT_DELAY);
       twilioRef.current?.connect({ accessToken: token.current });
@@ -275,7 +288,7 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
         socket.current?.emit('requestToken', {
           nftId: route.params.nftId,
           callId: _param.callId,
-          emitter: myPublicKey.current,
+          emitter: myPublicKeyRef.current,
           signature: signature.current,
         });
       } else if (!isRoomDidConnect.current) {
@@ -298,7 +311,7 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
         cleanCall();
         playCallEndSound();
         setAnsweredModalShow(true);
-      } else if (param.emitter !== myPublicKey.current) {
+      } else if (param.emitter !== myPublicKeyRef.current) {
         await onExitCall();
       }
     },
@@ -319,7 +332,7 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
       socket.current?.emit('ended', {
         nftId: route.params.nftId,
         callId: callId.current,
-        emitter: myPublicKey.current,
+        emitter: myPublicKeyRef.current,
         signature: signature.current,
       });
       setStatus('ended');
@@ -372,7 +385,7 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
     socket.current?.emit('respondToCreatorStatusAsk', {
       nftId: route.params.nftId,
       callId: callId.current,
-      emitter: myPublicKey.current,
+      emitter: myPublicKeyRef.current,
       signature: signature.current,
       respond: 'declined',
     });
@@ -461,7 +474,7 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
       socket.current?.emit('ended', {
         nftId: route.params.nftId,
         callId: callId.current,
-        emitter: myPublicKey.current,
+        emitter: myPublicKeyRef.current,
         signature: signature.current,
       });
       onExitCall();
@@ -476,7 +489,7 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
       socket.current?.emit('askOwnerToSetStatus', {
         nftId: route.params.nftId,
         callId: callId.current,
-        emitter: myPublicKey.current,
+        emitter: myPublicKeyRef.current,
         signature: signature.current,
       });
       setCallStatusActionLoading(true);
@@ -528,6 +541,9 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
   }, []);
 
   const onParticipantAddedVideoTrack: TrackEventCb = React.useCallback(({ participant, track }) => {
+    if (!participantPublicKeyRef.current) {
+      participantPublicKeyRef.current = participant.identity;
+    }
     setIsParticipantVideoEnabled(true);
     setParticipantVideoSid(participant.sid);
     setParticipantVideoTrackSid(track.trackSid);
@@ -540,6 +556,9 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
   }, []);
 
   const onParticipantAddedAudioTrack: TrackEventCb = React.useCallback(({ participant, track }) => {
+    if (!participantPublicKeyRef.current) {
+      participantPublicKeyRef.current = participant.identity;
+    }
     setIsParticipantAudioEnabled(true);
     setParticipantAudioSid(participant.sid);
     setParticipantAudioTrackSid(track.trackSid);
@@ -573,6 +592,63 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
     }
   }, [status]);
 
+  const onChatButtonPress = React.useCallback(async () => {
+    setChatShow(old => {
+      chatShowRef.current = !old;
+      return !old;
+    });
+    setNewChatBadge(false);
+    if (!theme.dark) {
+      await sleep(250);
+      dispatch(setStatusBarTint('dark'));
+    }
+  }, [dispatch, theme.dark]);
+
+  const onChatDialogDismiss = React.useCallback(async () => {
+    setChatShow(false);
+    chatShowRef.current = false;
+    if (!theme.dark) {
+      await sleep(250);
+      dispatch(setStatusBarTint('light'));
+    }
+  }, [dispatch, theme.dark]);
+
+  const onSendChat = React.useCallback(
+    async (message: string) => {
+      setChat(oldChat => [...oldChat, { sender: myPublicKeyRef.current, timestamp: Date.now(), message }]);
+      const encryptedMessage = await encryptAsymmetric(message, participantPublicKeyRef.current);
+      socket.current?.emit('newChatMessage', {
+        nftId: route.params.nftId,
+        callId: callId.current,
+        emitter: myPublicKeyRef.current,
+        signature: signature.current,
+        message: encryptedMessage,
+      });
+    },
+    [route.params.nftId],
+  );
+
+  const onNewChat = React.useCallback(async (param: ChatMessage) => {
+    if (param.sender !== myPublicKeyRef.current) {
+      const decryptedMessage = await decryptAsymmetric(param.message, participantPublicKeyRef.current);
+      setChat(oldChat => [...oldChat, { ...param, message: decryptedMessage.data }]);
+      if (!chatShowRef.current) {
+        setNewChat(decryptedMessage.data);
+        setNewChatShow(true);
+        setNewChatBadge(true);
+      }
+    }
+  }, []);
+
+  const onNewChatFloatingPress = React.useCallback(() => {
+    onChatButtonPress();
+    setNewChatShow(false);
+  }, [onChatButtonPress]);
+
+  const onNewChatFloatingClose = React.useCallback(() => {
+    setNewChatShow(false);
+  }, []);
+
   const paymentCondition = React.useCallback(
     (paymentStatus: PaymentStatus) => {
       return (
@@ -598,7 +674,7 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
           socket.current?.emit('respondToCreatorStatusAsk', {
             nftId: route.params.nftId,
             callId: callId.current,
-            emitter: myPublicKey.current,
+            emitter: myPublicKeyRef.current,
             signature: signature.current,
             respond: 'accepted',
           });
@@ -638,7 +714,7 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
           socket.current?.emit('respondToCreatorStatusAsk', {
             nftId: route.params.nftId,
             callId: callId.current,
-            emitter: myPublicKey.current,
+            emitter: myPublicKeyRef.current,
             signature: signature.current,
             respond: 'error',
           });
@@ -741,7 +817,8 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
 
         const publicKey = await getMyPublicKey();
         signature.current = await createSignature(route.params.nftId);
-        myPublicKey.current = publicKey;
+        myPublicKeyRef.current = publicKey;
+        setMyPublicKey(publicKey);
 
         if (socket.current === undefined) {
           if (route.params.isAnswering && route.params.callId) {
@@ -769,6 +846,7 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
         socket.current.on('callBusy', () => onCallBusy());
         socket.current.on('callRinging', () => onCallRinging());
         socket.current.on('creatorAskToSetStatus', () => onCreatorAskToSetStatus());
+        socket.current.on('newChat', (payload: ChatMessage) => onNewChat(payload));
         socket.current.on('ownerRespondToSetStatus', (payload: OwnerRespondToSetStatusParam) =>
           onOwnerRespondToSetStatus(payload),
         );
@@ -826,6 +904,7 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
     route.params.callId,
     route.params.isAnswering,
     route.params.nftId,
+    onNewChat,
   ]);
 
   React.useEffect(() => {
@@ -849,7 +928,7 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
         socket.current?.emit('ended', {
           nftId: route.params.nftId,
           callId: callId.current,
-          emitter: myPublicKey.current,
+          emitter: myPublicKeyRef.current,
           signature: signature.current,
         });
         onExitCall();
@@ -946,6 +1025,21 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
         okText={`${t('redeem:VCDoYouWantToAnswerYes')}`}
         okOnPress={onAnsweredModalOK}
       />
+      <AppVideoCallChat
+        chat={chat}
+        onSendChat={onSendChat}
+        myPublicKey={myPublicKey}
+        visible={chatShow}
+        participantPersona={participantPersona}
+        onDismiss={onChatDialogDismiss}
+      />
+      <AppVideoCallChatFloatingNotification
+        show={newChatShow}
+        label={newChat}
+        participantPersona={participantPersona}
+        onPress={onNewChatFloatingPress}
+        onClose={onNewChatFloatingClose}
+      />
       <AppMenuContainer
         backDisabled
         disableBackdrop
@@ -1027,14 +1121,17 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
                       rippleColor={darkTheme.colors.text}
                       style={styles.avatarActionButton}
                     />
-                    <AppIconButton
-                      disabled={!['answered', 'ended'].includes(status)}
-                      icon={iconMap.callChat}
-                      size={hp(3.5)}
-                      color={darkTheme.colors.text}
-                      rippleColor={darkTheme.colors.text}
-                      style={styles.avatarActionButton}
-                    />
+                    <View style={styles.avatarActionButton}>
+                      <AppIconButton
+                        disabled={!['answered', 'ended'].includes(status)}
+                        icon={iconMap.callChat}
+                        size={hp(3.5)}
+                        color={darkTheme.colors.text}
+                        rippleColor={darkTheme.colors.text}
+                        onPress={onChatButtonPress}
+                      />
+                      {newChatBadge ? <AppBadge /> : null}
+                    </View>
                   </View>
                 }>
                 <AppTextHeading3 numberOfLines={1} style={{ color: darkTheme.colors.text }}>

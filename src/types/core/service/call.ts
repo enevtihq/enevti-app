@@ -68,3 +68,9 @@ export type OwnerRespondToSetStatusParam = {
 };
 
 export type VideoCallStatusChangedParams = NFTActivityName;
+
+export type ChatMessage = {
+  sender: string;
+  timestamp: number;
+  message: string;
+};

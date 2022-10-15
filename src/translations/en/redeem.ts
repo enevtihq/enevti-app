@@ -61,4 +61,6 @@ export default {
   VCOwnerResponseAccepted: 'Owner has accepted your request!',
   VCOwnerResponseDeclined: 'Owner has declined your request!',
   VCOwnerResponseError: 'There was an error while owner setting the status!',
+  VCChatPlaceholder: 'Type your message',
+  VCChatHeader: 'Message are encrypted end-to-end. No message are stored!',
 };
