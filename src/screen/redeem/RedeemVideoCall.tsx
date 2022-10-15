@@ -4,8 +4,8 @@ import { RootStackParamList } from 'enevti-app/navigation';
 import AppView from 'enevti-app/components/atoms/view/AppView';
 import AppRedeemVideoCall from 'enevti-app/components/organism/redeem/videoCall/AppRedeemVideoCall';
 import { RouteProp } from '@react-navigation/native';
-import darkTheme from 'enevti-app/theme/dark';
 
+const BLACK = 'black';
 type Props = StackScreenProps<RootStackParamList, 'RedeemVideoCall'>;
 
 export default function RedeemVideoCall({ navigation, route }: Props) {
@@ -15,12 +15,7 @@ export default function RedeemVideoCall({ navigation, route }: Props) {
   ) as RouteProp<RootStackParamList, 'RedeemVideoCall'>;
 
   return (
-    <AppView
-      darken
-      withModal
-      withPayment
-      edges={['left', 'right']}
-      contentContainerStyle={{ backgroundColor: darkTheme.colors.background }}>
+    <AppView darken withModal withPayment edges={['left', 'right']} contentContainerStyle={{ backgroundColor: BLACK }}>
       <AppRedeemVideoCall navigation={navigation} route={screenRoute} />
     </AppView>
   );

@@ -65,7 +65,7 @@ export default function AppVideoCallLocalView({
       <Animated.View
         style={[
           styles.container,
-          { backgroundColor: Color(darkTheme.colors.background).lighten(0.3).rgb().toString() },
+          { backgroundColor: Color('white').darken(0.9).rgb().toString() },
           minimizedAnimatedStyle,
         ]}>
         {videoOff ? (

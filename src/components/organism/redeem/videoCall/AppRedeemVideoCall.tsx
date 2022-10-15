@@ -15,7 +15,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setStatusBarBackground, setStatusBarTint } from 'enevti-app/store/slices/ui/global/statusbar';
 import { StackNavigationProp } from '@react-navigation/stack';
 import Color from 'color';
-import darkTheme from 'enevti-app/theme/dark';
 import AppVideoCallLocalView from './AppVideoCallLocalView';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
 import {
@@ -98,7 +97,7 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
   const dispatch = useDispatch();
   const socket = React.useRef<Socket | undefined>();
   const nftSocket = React.useRef<Socket | undefined>();
-  const styles = React.useMemo(() => makeStyles(insets), [insets]);
+  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
 
   const myPersona = useSelector(selectMyPersonaCache);
   const [newChatBadge, setNewChatBadge] = React.useState<boolean>(false);
@@ -1047,7 +1046,7 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
         visible={!minimized}
         snapPoints={['18%', '60%']}
         backgroundStyle={{
-          backgroundColor: Color(darkTheme.colors.background).lighten(0.3).alpha(0.95).rgb().toString(),
+          backgroundColor: Color(theme.colors.background).lighten(0.3).alpha(0.95).rgb().toString(),
         }}
         onDismiss={() => {}}>
         <View>
@@ -1056,43 +1055,43 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
               disabled={!['answered', 'ended'].includes(status)}
               icon={iconMap.cameraFlip}
               size={hp(4)}
-              color={darkTheme.colors.text}
-              rippleColor={darkTheme.colors.text}
+              color={theme.colors.text}
+              rippleColor={theme.colors.text}
               onPress={onFlipButtonPress}
               style={{
                 marginHorizontal: wp(5),
-                backgroundColor: isFrontCamera ? undefined : darkTheme.colors.placeholder,
+                backgroundColor: isFrontCamera ? undefined : theme.colors.placeholder,
               }}
             />
             <AppIconButton
               disabled={!['answered', 'ended'].includes(status)}
               icon={isVideoEnabled ? iconMap.videoOn : iconMap.videoOff}
               size={hp(4)}
-              color={darkTheme.colors.text}
-              rippleColor={darkTheme.colors.text}
+              color={theme.colors.text}
+              rippleColor={theme.colors.text}
               onPress={onVideoToggleButtonPress}
               style={{
                 marginHorizontal: wp(5),
-                backgroundColor: isVideoEnabled ? undefined : darkTheme.colors.placeholder,
+                backgroundColor: isVideoEnabled ? undefined : theme.colors.placeholder,
               }}
             />
             <AppIconButton
               disabled={!['answered', 'ended'].includes(status)}
               icon={isAudioEnabled ? iconMap.micOn : iconMap.micOff}
               size={hp(4)}
-              color={darkTheme.colors.text}
-              rippleColor={darkTheme.colors.text}
+              color={theme.colors.text}
+              rippleColor={theme.colors.text}
               onPress={onMuteButtonPress}
               style={{
                 marginHorizontal: wp(5),
-                backgroundColor: isAudioEnabled ? undefined : darkTheme.colors.placeholder,
+                backgroundColor: isAudioEnabled ? undefined : theme.colors.placeholder,
               }}
             />
             <AppIconButton
               icon={iconMap.callEnd}
               size={hp(4)}
-              color={darkTheme.colors.text}
-              rippleColor={darkTheme.colors.text}
+              color={'white'}
+              rippleColor={'white'}
               onPress={onEndButtonPress}
               style={{
                 marginRight: wp(4),
@@ -1117,8 +1116,8 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
                       disabled={!['answered', 'ended'].includes(status)}
                       icon={iconMap.dollar}
                       size={hp(3.5)}
-                      color={darkTheme.colors.text}
-                      rippleColor={darkTheme.colors.text}
+                      color={theme.colors.text}
+                      rippleColor={theme.colors.text}
                       style={styles.avatarActionButton}
                     />
                     <View style={styles.avatarActionButton}>
@@ -1126,19 +1125,19 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
                         disabled={!['answered', 'ended'].includes(status)}
                         icon={iconMap.callChat}
                         size={hp(3.5)}
-                        color={darkTheme.colors.text}
-                        rippleColor={darkTheme.colors.text}
+                        color={theme.colors.text}
+                        rippleColor={theme.colors.text}
                         onPress={onChatButtonPress}
                       />
                       {newChatBadge ? <AppBadge /> : null}
                     </View>
                   </View>
                 }>
-                <AppTextHeading3 numberOfLines={1} style={{ color: darkTheme.colors.text }}>
+                <AppTextHeading3 numberOfLines={1} style={{ color: theme.colors.text }}>
                   {parsePersonaLabel(participantPersona)}
                 </AppTextHeading3>
                 {participantPersona.username ? (
-                  <AppTextBody4 style={{ color: darkTheme.colors.placeholder }} numberOfLines={1}>
+                  <AppTextBody4 style={{ color: theme.colors.placeholder }} numberOfLines={1}>
                     {participantPersona.base32}
                   </AppTextBody4>
                 ) : null}
@@ -1160,7 +1159,7 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
                         ) : (
                           <>
                             <AppTextBody5 style={styles.remainingTimeText}>{t('redeem:VCRemainingTime')}</AppTextBody5>
-                            <AppCountdown theme={darkTheme} until={until} onFinish={onTimesUp} />
+                            <AppCountdown theme={theme} until={until} onFinish={onTimesUp} />
                           </>
                         )
                       ) : (
@@ -1176,7 +1175,7 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
                 loading={callStatusActionLoading}
                 disabled={markCallStatusButtonDisabled}
                 style={{ marginHorizontal: wp(5) }}
-                theme={darkTheme}>
+                theme={theme}>
                 {callMode === 'owner' ? t('redeem:VCMarkAsAcceptedButton') : t('redeem:VCAskOwnerToAcceptButton')}
               </AppPrimaryButton>
             </View>
@@ -1238,7 +1237,7 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
   );
 }
 
-const makeStyles = (insets: SafeAreaInsets) =>
+const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
   StyleSheet.create({
     container: {
       flex: 1,
@@ -1246,21 +1245,21 @@ const makeStyles = (insets: SafeAreaInsets) =>
     callStatusDesc: {
       textAlign: 'center',
       marginBottom: hp(1.5),
-      color: darkTheme.colors.text,
+      color: theme.colors.text,
     },
     divider: {
       marginVertical: wp('2%', insets),
-      backgroundColor: Color(darkTheme.colors.text).alpha(0.1).rgb().toString(),
+      backgroundColor: Color(theme.colors.text).alpha(0.1).rgb().toString(),
     },
     nftInfoContainer: {
       marginHorizontal: wp('5%', insets),
       marginBottom: hp('3%', insets),
       paddingVertical: wp('2%', insets),
       paddingHorizontal: wp('3%', insets),
-      backgroundColor: Color(darkTheme.colors.background).lighten(0.3).alpha(0.95).rgb().toString(),
-      borderRadius: darkTheme.roundness,
+      backgroundColor: Color(theme.colors.background).lighten(0.3).alpha(0.95).rgb().toString(),
+      borderRadius: theme.roundness,
       borderWidth: StyleSheet.hairlineWidth,
-      borderColor: Color(darkTheme.colors.text).alpha(0.05).rgb().toString(),
+      borderColor: Color(theme.colors.text).alpha(0.05).rgb().toString(),
       overflow: 'hidden',
     },
     nftInfoRow: {
@@ -1277,19 +1276,19 @@ const makeStyles = (insets: SafeAreaInsets) =>
       marginTop: wp(2),
     },
     nftInfoText: {
-      color: darkTheme.colors.text,
+      color: theme.colors.text,
       textAlign: 'center',
     },
     remainingTimeText: {
-      color: darkTheme.colors.text,
+      color: theme.colors.text,
       textAlign: 'center',
       marginBottom: hp(1),
     },
     accountCard: {
       marginVertical: hp('3%', insets),
-      backgroundColor: Color(darkTheme.colors.background).lighten(0.3).alpha(0.95).rgb().toString(),
+      backgroundColor: Color(theme.colors.background).lighten(0.3).alpha(0.95).rgb().toString(),
       borderWidth: StyleSheet.hairlineWidth,
-      borderColor: Color(darkTheme.colors.text).alpha(0.05).rgb().toString(),
+      borderColor: Color(theme.colors.text).alpha(0.05).rgb().toString(),
     },
     collectionCoverContainer: {
       marginRight: wp('3%', insets),
