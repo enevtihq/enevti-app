@@ -11,17 +11,19 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 interface AppPoppableProps {
   children: React.ReactNode;
   content: string;
+  action?: 'hover' | 'press' | 'longpress';
   position?: 'bottom' | 'left' | 'right' | 'top';
   width?: number;
   style?: StyleProp<ViewStyle>;
 }
 
-export default function AppPoppable({ children, content, position, width = 50, style }: AppPoppableProps) {
+export default function AppPoppable({ children, action, content, position, width = 50, style }: AppPoppableProps) {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
   const styles = React.useMemo(() => makeStyles(theme, insets, width), [theme, insets, width]);
   return (
     <Popable
+      action={action}
       position={position}
       style={[styles.popableView, style]}
       content={

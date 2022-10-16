@@ -4,7 +4,7 @@ import AppMenuContainer from 'enevti-app/components/atoms/menu/AppMenuContainer'
 import AppHeader, { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
 import AppIconButton from 'enevti-app/components/atoms/icon/AppIconButton';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
-import { useTheme } from 'react-native-paper';
+import { TouchableRipple, useTheme } from 'react-native-paper';
 import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
 import { Theme } from 'enevti-app/theme/default';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -18,6 +18,9 @@ import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
 import moment from 'moment';
 import AppFormTextInputWithError from 'enevti-app/components/molecules/AppFormTextInputWithError';
 import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
+import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
+import Clipboard from '@react-native-clipboard/clipboard';
 
 const FLEX_END = 'flex-end';
 const FLEX_START = 'flex-start';
@@ -39,6 +42,7 @@ export default function AppVideoCallChat({
   onDismiss,
   onSendChat,
 }: AppVideoCallChatProps) {
+  const dispatch = useDispatch();
   const { t } = useTranslation();
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
@@ -46,6 +50,14 @@ export default function AppVideoCallChat({
   const snapPoints = React.useMemo(() => ['105%'], []);
   const headerMarginTop = React.useMemo(() => (Platform.OS === 'ios' ? hp(3) : hp(1)), []);
   const [value, setValue] = React.useState<string>('');
+
+  const onLongPressCopy = React.useCallback(
+    (text: string) => {
+      dispatch(showSnackbar({ mode: 'info', text: t('form:textCopied') }));
+      Clipboard.setString(text);
+    },
+    [dispatch, t],
+  );
 
   const onSend = React.useCallback(() => {
     onSendChat(value);
@@ -78,15 +90,24 @@ export default function AppVideoCallChat({
                   : Color(theme.colors.background).darken(0.1).rgb().toString(),
             },
           ]}>
-          <AppTextBody4 style={styles.chat}>{item.message}</AppTextBody4>
-          <AppTextBody5 style={styles.timestamp}>{moment(item.timestamp).format('HH:mm')}</AppTextBody5>
+          <TouchableRipple
+            style={styles.chatTouchable}
+            onPress={() => {}}
+            onLongPress={() => onLongPressCopy(item.message)}>
+            <>
+              <AppTextBody4 style={styles.chat}>{item.message}</AppTextBody4>
+              <AppTextBody5 style={styles.timestamp}>{moment(item.timestamp).format('HH:mm')}</AppTextBody5>
+            </>
+          </TouchableRipple>
         </View>
       </View>
     ),
     [
       myPublicKey,
+      onLongPressCopy,
       styles.chat,
       styles.chatContainer,
+      styles.chatTouchable,
       styles.timestamp,
       theme.colors.background,
       theme.colors.primary,
@@ -218,10 +239,13 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
     chatContainer: {
       minWidth: wp(30),
       maxWidth: wp(80),
+      marginBottom: hp(1),
+      borderRadius: wp(5),
+      overflow: 'hidden',
+    },
+    chatTouchable: {
       paddingHorizontal: wp(3),
       paddingVertical: wp(2),
-      borderRadius: wp(5),
-      marginBottom: hp(1),
     },
     chat: {
       marginRight: wp(10),

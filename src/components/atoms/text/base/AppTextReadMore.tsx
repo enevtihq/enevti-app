@@ -9,9 +9,10 @@ interface AppTextReadMoreProps {
   style?: StyleProp<TextStyle>;
   readMoreLimit?: number;
   onPress?: () => void;
+  selectable?: boolean;
 }
 
-export default function AppTextReadMore({ children, style, readMoreLimit, onPress }: AppTextReadMoreProps) {
+export default function AppTextReadMore({ children, selectable, style, readMoreLimit, onPress }: AppTextReadMoreProps) {
   const { t } = useTranslation();
   const theme = useTheme() as Theme;
 
@@ -27,7 +28,7 @@ export default function AppTextReadMore({ children, style, readMoreLimit, onPres
 
   return (
     <Pressable onPress={onReadMorePress}>
-      <Text style={style} onPress={onPress}>
+      <Text selectable={selectable} style={style} onPress={onPress}>
         {text}{' '}
         <Text
           style={{

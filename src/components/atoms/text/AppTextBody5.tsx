@@ -8,6 +8,7 @@ interface AppTextBody5Props {
   style?: StyleProp<TextStyle>;
   readMoreLimit?: number;
   onPress?: () => void;
+  selectable?: boolean;
 }
 
 export default function AppTextBody5({
@@ -16,9 +17,11 @@ export default function AppTextBody5({
   style,
   readMoreLimit,
   onPress,
+  selectable,
 }: AppTextBody5Props): JSX.Element {
   return (
     <AppTextBase
+      selectable={selectable}
       onPress={onPress}
       weight={'normal'}
       size={2.2}

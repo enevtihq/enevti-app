@@ -8,6 +8,7 @@ interface AppTextHeading5Props {
   style?: StyleProp<TextStyle>;
   readMoreLimit?: number;
   onPress?: () => void;
+  selectable?: boolean;
 }
 
 export default function AppTextHeading5({
@@ -16,9 +17,11 @@ export default function AppTextHeading5({
   style,
   readMoreLimit,
   onPress,
+  selectable,
 }: AppTextHeading5Props): JSX.Element {
   return (
     <AppTextBase
+      selectable={selectable}
       onPress={onPress}
       weight={'bold'}
       size={2.2}

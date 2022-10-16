@@ -19,4 +19,5 @@ export default {
   noSpace: 'No space allowed',
   multipleOf10: 'Must be multiple of 10',
   invalidNumber: 'Must be valid number',
+  textCopied: 'Text copied',
 };
