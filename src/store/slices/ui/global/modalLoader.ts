@@ -28,6 +28,7 @@ const modalLoaderSlice = createSlice({
     hideModalLoader: loader => {
       loader.show = false;
       loader.text = initialState.text;
+      loader.subtext = initialState.subtext;
     },
     setModalLoaderMode: (loader, action: PayloadAction<'activity' | 'progress'>) => {
       loader.mode = action.payload;

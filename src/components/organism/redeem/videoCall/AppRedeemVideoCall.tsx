@@ -8,7 +8,7 @@ import AppIconButton from 'enevti-app/components/atoms/icon/AppIconButton';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import AppMenuContainer from 'enevti-app/components/atoms/menu/AppMenuContainer';
 import { RoomErrorEventCb, RoomEventCb, TrackEventCb, TwilioVideo } from 'react-native-twilio-video-webrtc';
-import { getMyAddress, getMyPublicKey, parsePersonaLabel } from 'enevti-app/service/enevti/persona';
+import { getMyAddress, getMyPublicKey, parsePersonaLabel, publicKeyToBase32 } from 'enevti-app/service/enevti/persona';
 import { createSignature, decryptAsymmetric, encryptAsymmetric } from 'enevti-app/utils/cryptography';
 import { answerVideoCall, appSocket, startVideoCall } from 'enevti-app/utils/network';
 import { useDispatch, useSelector } from 'react-redux';
@@ -29,6 +29,7 @@ import {
   ChatMessage,
   OwnerRespondToSetStatusParam,
   SomeoneIsCallingParam,
+  TipReceived,
   TokenReceivedParam,
   VideoCallStatusChangedParams,
 } from 'enevti-app/types/core/service/call';
@@ -79,6 +80,10 @@ import { PaymentStatus } from 'enevti-app/types/ui/store/Payment';
 import AppVideoCallChat from './AppVideoCallChat';
 import AppVideoCallChatFloatingNotification from './AppVideoCallChatFloatingNotification';
 import AppBadge from 'enevti-app/components/atoms/view/AppBadge';
+import AppVideoCallTipModal from './AppVideoCallTipModal';
+import { payTransferToken } from 'enevti-app/store/middleware/thunk/payment/creator/payTransferToken';
+import { parseAmount } from 'enevti-app/utils/format/amount';
+import { getCoinName } from 'enevti-app/utils/constant/identifier';
 
 interface AppRedeemVideoCallProps {
   navigation: StackNavigationProp<RootStackParamList>;
@@ -100,6 +105,7 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
   const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
 
   const myPersona = useSelector(selectMyPersonaCache);
+  const [tipModalShow, setTipModalShow] = React.useState<boolean>(false);
   const [newChatBadge, setNewChatBadge] = React.useState<boolean>(false);
   const [newChatShow, setNewChatShow] = React.useState<boolean>(false);
   const [newChat, setNewChat] = React.useState<string>('');
@@ -148,6 +154,7 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
   );
 
   const twilioRef = React.useRef<TwilioVideo>(null);
+  const tipAmountRef = React.useRef<string>('');
   const myPublicKeyRef = React.useRef<string>('');
   const participantPublicKeyRef = React.useRef<string>('');
   const callId = React.useRef<string>('');
@@ -518,6 +525,43 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
     navigation.goBack();
   }, [navigation]);
 
+  const onTipButtonPress = React.useCallback(() => {
+    setTipModalShow(old => !old);
+  }, []);
+
+  const onTipModalDismiss = React.useCallback(() => {
+    setTipModalShow(false);
+  }, []);
+
+  const onSendTip = React.useCallback(
+    (amount: string) => {
+      setTipModalShow(false);
+      tipAmountRef.current = amount;
+      dispatch(
+        payTransferToken({
+          key: route.key,
+          base32: publicKeyToBase32(participantPublicKeyRef.current),
+          amount: parseAmount(amount),
+        }),
+      );
+    },
+    [dispatch, route.key],
+  );
+
+  const onTipReceived = React.useCallback(
+    async (param: TipReceived) => {
+      if (param.sender !== myPublicKeyRef.current) {
+        dispatch(
+          showSnackbar({
+            mode: 'info',
+            text: t('redeem:VCTipReceived', { amount: parseAmount(param.amount), currency: getCoinName() }),
+          }),
+        );
+      }
+    },
+    [dispatch, t],
+  );
+
   const onMuteButtonPress = () => {
     twilioRef.current?.setLocalAudioEnabled(!isAudioEnabled).then(isEnabled => setIsAudioEnabled(isEnabled));
   };
@@ -652,7 +696,7 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
     (paymentStatus: PaymentStatus) => {
       return (
         paymentStatus.action !== undefined &&
-        ['setVideoCallRejected', 'setVideoCallAnswered'].includes(paymentStatus.action) &&
+        ['setVideoCallRejected', 'setVideoCallAnswered', 'transferToken'].includes(paymentStatus.action) &&
         (paymentStatus.key === route.key || paymentStatus.key === `CA:${route.key}`)
       );
     },
@@ -679,6 +723,16 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
           });
         }
       }
+      if (paymentStatus.action === 'transferToken') {
+        socket.current?.emit('tipSent', {
+          nftId: route.params.nftId,
+          callId: callId.current,
+          emitter: myPublicKeyRef.current,
+          signature: signature.current,
+          amount: tipAmountRef.current,
+        });
+        tipAmountRef.current = '';
+      }
     },
     [dispatch, navigation, route.key, route.params.nftId, status, t],
   );
@@ -695,6 +749,9 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
         if (paymentStatus.key === `CA:${route.key}`) {
           onCreatorAskToSetStatus();
         }
+      }
+      if (paymentStatus.action === 'transferToken') {
+        tipAmountRef.current = '';
       }
     },
     [onCreatorAskToSetStatus, route.key],
@@ -718,6 +775,9 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
             respond: 'error',
           });
         }
+      }
+      if (paymentStatus.action === 'transferToken') {
+        tipAmountRef.current = '';
       }
     },
     [route.key, route.params.nftId],
@@ -846,6 +906,7 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
         socket.current.on('callRinging', () => onCallRinging());
         socket.current.on('creatorAskToSetStatus', () => onCreatorAskToSetStatus());
         socket.current.on('newChat', (payload: ChatMessage) => onNewChat(payload));
+        socket.current.on('tipReceived', (payload: TipReceived) => onTipReceived(payload));
         socket.current.on('ownerRespondToSetStatus', (payload: OwnerRespondToSetStatusParam) =>
           onOwnerRespondToSetStatus(payload),
         );
@@ -900,6 +961,7 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
     onCreatorAskToSetStatus,
     onOwnerRespondToSetStatus,
     onVideoCallStatusChanged,
+    onTipReceived,
     route.params.callId,
     route.params.isAnswering,
     route.params.nftId,
@@ -1039,6 +1101,9 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
         onPress={onNewChatFloatingPress}
         onClose={onNewChatFloatingClose}
       />
+      {tipModalShow ? (
+        <AppVideoCallTipModal show={tipModalShow} onDismiss={onTipModalDismiss} onSendTip={onSendTip} />
+      ) : null}
       <AppMenuContainer
         backDisabled
         disableBackdrop
@@ -1113,12 +1178,13 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
                 rightContent={
                   <View style={styles.avatarAction}>
                     <AppIconButton
-                      disabled={!['answered', 'ended'].includes(status)}
+                      // disabled={!['answered', 'ended'].includes(status)}
                       icon={iconMap.dollar}
                       size={hp(3.5)}
                       color={theme.colors.text}
                       rippleColor={theme.colors.text}
                       style={styles.avatarActionButton}
+                      onPress={onTipButtonPress}
                     />
                     <View style={styles.avatarActionButton}>
                       <AppIconButton

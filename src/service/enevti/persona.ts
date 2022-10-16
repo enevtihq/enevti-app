@@ -93,6 +93,10 @@ export function parsePersonaLabel(persona: Persona, compact: boolean = true) {
     : '???';
 }
 
+export function publicKeyToBase32(publicKey: string) {
+  return Lisk.cryptography.getBase32AddressFromPublicKey(Buffer.from(publicKey, 'hex'), PREFIX);
+}
+
 export function addressToBase32(address: string) {
   return Lisk.cryptography.getBase32AddressFromAddress(Buffer.from(address, 'hex'), PREFIX);
 }

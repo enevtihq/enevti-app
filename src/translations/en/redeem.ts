@@ -63,4 +63,11 @@ export default {
   VCOwnerResponseError: 'There was an error while owner setting the status!',
   VCChatPlaceholder: 'Type your message',
   VCChatHeader: 'Message are encrypted end-to-end. No message are stored!',
+  VCGiveATipTitle: 'Give a Tip',
+  VCGiveATipDesc: 'How much you want to tip?',
+  VCCustomTipLabel: 'Custom Tip',
+  VCCustomTipPlaceholder: 'Enter amount in {{currency}}',
+  VCSendTipButton: 'Send Tip',
+  VCTipTooLow: 'Minimum tip is {{minTip}} {{currency}}',
+  VCTipReceived: 'You get a tip of {{amount}} {{currency}}',
 };

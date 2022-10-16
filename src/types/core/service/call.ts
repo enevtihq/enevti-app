@@ -74,3 +74,8 @@ export type ChatMessage = {
   timestamp: number;
   message: string;
 };
+
+export type TipReceived = {
+  sender: string;
+  amount: string;
+};
