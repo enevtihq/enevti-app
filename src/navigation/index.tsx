@@ -157,18 +157,17 @@ export default function AppNavigationContainer() {
 
     const run = async () => {
       if (Platform.OS === 'android') {
-        answerCallListener = EventRegister.addEventListener(
-          'answerVideoCall',
-          (data: { nftId: string; isAnswering: boolean; callId: string }) => {
-            navigationRef.navigate('RedeemVideoCall', data);
-          },
-        ).toString();
-
         const payload = await IncomingCall.getExtrasFromHeadlessMode();
         if (payload) {
           EventRegister.emit('answerVideoCall', JSON.parse(payload.uuid));
         }
       }
+      answerCallListener = EventRegister.addEventListener(
+        'answerVideoCall',
+        (data: { nftId: string; isAnswering: boolean; callId: string }) => {
+          navigationRef.navigate('RedeemVideoCall', data);
+        },
+      ).toString();
     };
     run();
 

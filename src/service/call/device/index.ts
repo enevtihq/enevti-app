@@ -8,6 +8,7 @@ const options: IOptions = {
   android: { alertTitle: '', alertDescription: '', cancelButton: '', okButton: '', additionalPermissions: [] },
   ios: {
     appName: 'Enevti.com',
+    includesCallsInRecents: false,
   },
 };
 

@@ -108,7 +108,6 @@ export default function AppVideoCallTipModal({ show, onDismiss, onSendTip }: App
     <AppMenuContainer
       dismissKeyboard
       tapEverywhereToDismiss={false}
-      enablePanDownToClose={false}
       snapPoints={snapPoints}
       visible={show}
       onDismiss={onDismiss}>
