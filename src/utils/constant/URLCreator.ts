@@ -405,6 +405,10 @@ export function urlPostFCMRegisterAddress(host: string = ENEVTI_DEFAULT_API) {
   return encodeURI(`${host}/fcm/register`);
 }
 
+export function urlPostFCMIsTokenUpdated(host: string = ENEVTI_DEFAULT_API) {
+  return encodeURI(`${host}/fcm/isupdated`);
+}
+
 export function urlDeleteFCMAddress(host: string = ENEVTI_DEFAULT_API) {
   return encodeURI(`${host}/fcm/remove`);
 }

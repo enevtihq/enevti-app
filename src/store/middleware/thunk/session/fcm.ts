@@ -2,13 +2,10 @@ import { AsyncThunkAPI } from 'enevti-app/store/state';
 import { AnyAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { handleError } from 'enevti-app/utils/error/handle';
 import messaging from '@react-native-firebase/messaging';
-import {
-  isFCMTokenCacheReady,
-  selectFCMTokenCacheState,
-  setFCMTokenCache,
-} from 'enevti-app/store/slices/entities/cache/fcm';
+import { selectFCMTokenCacheState, setFCMTokenCache } from 'enevti-app/store/slices/entities/cache/fcm';
 import { getMyAddress, getMyPublicKey } from 'enevti-app/service/enevti/persona';
-import { getFCMIsAddressRegistered, postFCMRegisterAddress } from 'enevti-app/service/enevti/fcm';
+import { getFCMIsTokenUpdated, postFCMRegisterAddress } from 'enevti-app/service/enevti/fcm';
+import notifee from '@notifee/react-native';
 
 type InitFCMTokenPayload = undefined;
 type RefreshFCMTokenPayload = { token: string };
@@ -20,18 +17,28 @@ export const initFCMToken = createAsyncThunk<void, InitFCMTokenPayload, AsyncThu
   'fcm/initFCMToken',
   async (_, { dispatch, getState, signal }) => {
     try {
-      const isFCMReady = isFCMTokenCacheReady(getState());
-      if (!isFCMReady) {
-        const fcmToken = await messaging().getToken();
-        dispatch(setFCMTokenCache(fcmToken));
+      await notifee.requestPermission();
+      if (!messaging().isDeviceRegisteredForRemoteMessages) {
+        await messaging().registerDeviceForRemoteMessages();
       }
-      const myAddress = await getMyAddress();
-      const FCMRegistered = await getFCMIsAddressRegistered(myAddress, signal);
-      if (FCMRegistered.status === 200 && !FCMRegistered.data && myAddress) {
-        const fcmTokenCache = selectFCMTokenCacheState(getState());
-        const token = fcmTokenCache ?? (await messaging().getToken());
-        const publicKey = await getMyPublicKey();
-        dispatch(setFCMToken({ publicKey, token }) as unknown as AnyAction);
+      let authStatus = await messaging().hasPermission();
+      if (authStatus !== messaging.AuthorizationStatus.AUTHORIZED) {
+        authStatus = await messaging().requestPermission();
+      }
+      if (authStatus === messaging.AuthorizationStatus.AUTHORIZED) {
+        const fcmToken = await messaging().getToken();
+        if (fcmToken) {
+          const tokenCache = selectFCMTokenCacheState(getState());
+          if (fcmToken !== tokenCache) {
+            dispatch(setFCMTokenCache(fcmToken));
+          }
+          const myAddress = await getMyAddress();
+          const FCMIsTokenUpdated = await getFCMIsTokenUpdated(myAddress, fcmToken, signal);
+          if (FCMIsTokenUpdated.status === 200 && !FCMIsTokenUpdated.data && myAddress) {
+            const publicKey = await getMyPublicKey();
+            dispatch(setFCMToken({ publicKey, token: fcmToken }) as unknown as AnyAction);
+          }
+        }
       }
     } catch (err) {
       handleError(err, undefined, true);
@@ -55,10 +62,9 @@ export const refreshFCMToken = createAsyncThunk<void, RefreshFCMTokenPayload, As
 // update fcm after address is generated
 export const updateFCMToken = createAsyncThunk<void, UpdateFCMTokenPayload, AsyncThunkAPI>(
   'fcm/updateFCMToken',
-  async (payload, { dispatch, getState }) => {
+  async (payload, { dispatch }) => {
     try {
-      const fcmTokenCache = selectFCMTokenCacheState(getState());
-      const token = fcmTokenCache ?? (await messaging().getToken());
+      const token = await messaging().getToken();
       dispatch(setFCMToken({ publicKey: payload.publicKey, token }) as unknown as AnyAction);
     } catch (err) {
       handleError(err);
@@ -69,10 +75,13 @@ export const updateFCMToken = createAsyncThunk<void, UpdateFCMTokenPayload, Asyn
 // helper
 export const setFCMToken = createAsyncThunk<void, SetFCMTokenPayload, AsyncThunkAPI>(
   'fcm/setFCMToken',
-  async (payload, { dispatch, signal }) => {
+  async (payload, { dispatch, getState, signal }) => {
     try {
       await postFCMRegisterAddress(payload.token, payload.publicKey, signal);
-      dispatch(setFCMTokenCache(payload.token));
+      const tokenCache = selectFCMTokenCacheState(getState());
+      if (payload.token !== tokenCache) {
+        dispatch(setFCMTokenCache(payload.token));
+      }
     } catch (err) {
       handleError(err);
     }

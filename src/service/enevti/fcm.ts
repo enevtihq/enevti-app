@@ -3,6 +3,7 @@ import {
   urlDeleteFCMAddress,
   urlGetFCMIsAddressRegistered,
   urlGetFCMIsReady,
+  urlPostFCMIsTokenUpdated,
   urlPostFCMRegisterAddress,
 } from 'enevti-app/utils/constant/URLCreator';
 import { createSignature } from 'enevti-app/utils/cryptography';
@@ -37,6 +38,34 @@ async function fetchFCMRegisterAddress(
       body: JSON.stringify({ publicKey, token, signature }),
     });
     const ret = (await res.json()) as ResponseJSON<string>;
+    handleResponseCode(res, ret);
+    return {
+      status: res.status,
+      data: ret.data,
+      meta: ret.meta,
+    };
+  } catch (err: any) {
+    handleError(err);
+    return responseError(err.code, err.message.toString());
+  }
+}
+
+async function fetchFCMIsTokenUpdated(
+  address: string,
+  token: string,
+  signal?: AbortController['signal'],
+): Promise<APIResponse<boolean>> {
+  try {
+    await isInternetReachable();
+    const res = await appFetch(urlPostFCMIsTokenUpdated(), {
+      signal,
+      method: 'POST',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+      body: JSON.stringify({ address, token }),
+    });
+    const ret = (await res.json()) as ResponseJSON<boolean>;
     handleResponseCode(res, ret);
     return {
       status: res.status,
@@ -86,6 +115,10 @@ export async function getFCMIsAddressRegistered(address: string, signal?: AbortC
 
 export async function postFCMRegisterAddress(token: string, publicKey: string, signal?: AbortController['signal']) {
   return await fetchFCMRegisterAddress(token, publicKey, signal);
+}
+
+export async function getFCMIsTokenUpdated(address: string, token: string, signal?: AbortController['signal']) {
+  return await fetchFCMIsTokenUpdated(address, token, signal);
 }
 
 export async function deleteFCMDeleteAddress(address: string, signal?: AbortController['signal']) {

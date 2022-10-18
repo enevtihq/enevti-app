@@ -1178,7 +1178,7 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
                 rightContent={
                   <View style={styles.avatarAction}>
                     <AppIconButton
-                      // disabled={!['answered', 'ended'].includes(status)}
+                      disabled={!['answered', 'ended'].includes(status)}
                       icon={iconMap.dollar}
                       size={hp(3.5)}
                       color={theme.colors.text}

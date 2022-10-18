@@ -3,7 +3,6 @@ import notifee, { AndroidImportance } from '@notifee/react-native';
 type NotificationArg = { id?: string; title: string; body?: string; actionId: string };
 
 export async function showNotification({ id, title, body, actionId }: NotificationArg) {
-  await notifee.requestPermission();
   const channelId = await notifee.createChannel({
     id: 'default',
     name: 'Default Channel',
@@ -24,7 +23,6 @@ export async function showNotification({ id, title, body, actionId }: Notificati
 }
 
 export async function showOngoingNotification({ id, title, body, actionId }: NotificationArg) {
-  await notifee.requestPermission();
   const channelId = await notifee.createChannel({
     id: 'important',
     name: 'Important Channel',
