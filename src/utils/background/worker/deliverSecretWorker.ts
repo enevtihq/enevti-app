@@ -15,7 +15,9 @@ import { showOngoingNotification } from 'enevti-app/utils/notification';
 import queue from 'react-native-job-queue';
 import { Job } from 'react-native-job-queue/lib/typescript/src/models/Job';
 import notifee from '@notifee/react-native';
+import BackgroundFetch from 'react-native-background-fetch';
 import runInBackground from '../task/runInBackground';
+import { EventRegister } from 'react-native-event-listeners';
 
 export default async function deliverSecretWorker(data: { payload: DeliverSecretPayload }) {
   return await runInBackground(async () => {
@@ -58,7 +60,7 @@ export const checkDeliverSecretWorkerOnFailure = async (_job: Job<any>, _error: 
   await addCheckDeliverSecretJob(_job.payload, false, undefined, false);
 };
 
-export const checkDeliverSecretWorker = async (data: { payload: string; silent?: boolean }) => {
+export const checkDeliverSecretWorker = async (data: { payload: string; silent?: boolean; taskId?: string }) => {
   await isInternetReachable();
 
   const notifications = await notifee.getDisplayedNotifications();
@@ -84,8 +86,18 @@ export const checkDeliverSecretWorker = async (data: { payload: string; silent?:
       for (const payload of pendings.data) {
         addDeliverSecretJob({ payload });
       }
+      if (data.taskId) {
+        EventRegister.addEventListener('BackgroundFetchFinish', () => BackgroundFetch.finish(data.taskId));
+      }
+    } else {
+      if (data.taskId) {
+        BackgroundFetch.finish(data.taskId);
+      }
     }
   } else {
+    if (data.taskId) {
+      BackgroundFetch.finish(data.taskId);
+    }
     throw Error(pendings.data.toString());
   }
 };
@@ -99,10 +111,15 @@ export async function addDeliverSecretJob(
 }
 
 export async function addCheckDeliverSecretJob(
-  data: { payload: string },
+  data: { payload: string; taskId?: string },
   startQueue: boolean = true,
   option?: { attempts: number; timeout: number; priority: number },
   showNotification: boolean = true,
 ) {
-  queue.addJob('checkDeliverSecret', { payload: data.payload, silent: !showNotification }, option, startQueue);
+  queue.addJob(
+    'checkDeliverSecret',
+    { payload: data.payload, silent: !showNotification, taskId: data.taskId },
+    option,
+    startQueue,
+  );
 }

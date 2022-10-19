@@ -19,7 +19,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectMyPersonaCache } from 'enevti-app/store/slices/entities/cache/myPersona';
 import { selectMyProfileCache } from 'enevti-app/store/slices/entities/cache/myProfile';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import { Linking, View } from 'react-native';
+import { Linking, Platform, View } from 'react-native';
 import Color from 'color';
 import AppIconGradient from 'enevti-app/components/molecules/AppIconGradient';
 import { Theme } from 'enevti-app/theme/default';
@@ -70,6 +70,9 @@ import { reduceMyNewUsername } from 'enevti-app/store/middleware/thunk/socket/pr
 import { reduceMyTotalNFTSoldChanged } from 'enevti-app/store/middleware/thunk/socket/profile/totalNFTSoldChanged';
 import { reduceMyTotalServeRateChanged } from 'enevti-app/store/middleware/thunk/socket/profile/totalServeRateChanged';
 import { reduceMyTotalStakeChanged } from 'enevti-app/store/middleware/thunk/socket/profile/totalStakeChanged';
+import { initUserMeta } from 'enevti-app/store/middleware/thunk/session/userMeta';
+import { initFCMToken, refreshFCMToken } from 'enevti-app/store/middleware/thunk/session/fcm';
+import BackgroundFetch from 'react-native-background-fetch';
 
 const Tab = createBottomTabNavigator();
 
@@ -103,6 +106,31 @@ export default function Home({ navigation }: Props) {
 
   const socket = React.useRef<Socket | undefined>();
   const myProfileSocket = React.useRef<Socket | undefined>();
+
+  React.useEffect(() => {
+    if (Platform.OS === 'ios') {
+      const initBackgroundFetch = async () => {
+        const onEvent = async (taskId: string) => addCheckDeliverSecretJob({ payload: myPersona.address, taskId });
+        const onTimeout = async (taskId: string) => BackgroundFetch.finish(taskId);
+        await BackgroundFetch.configure({ minimumFetchInterval: 15 }, onEvent, onTimeout);
+        BackgroundFetch.scheduleTask({
+          taskId: 'com.enevti.checkdeliversecret',
+          delay: 5000,
+          periodic: true,
+        });
+      };
+      initBackgroundFetch();
+    }
+  }, [myPersona.address]);
+
+  React.useEffect(() => {
+    dispatch(initUserMeta());
+    dispatch(initFCMToken());
+    const unsubsribe = messaging().onTokenRefresh(async token => {
+      dispatch(refreshFCMToken({ token }));
+    });
+    return unsubsribe;
+  }, [dispatch]);
 
   React.useEffect(() => {
     dispatch(syncTransactionNonce());

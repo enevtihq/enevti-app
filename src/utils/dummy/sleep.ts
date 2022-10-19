@@ -8,7 +8,10 @@ export default async function sleep(time: number, signal?: AbortController['sign
     if (signal && signal.aborted) {
       return reject(AbortError);
     }
-    const timeout = setTimeout(resolve, time);
+    const timeout = setTimeout(() => {
+      resolve(undefined);
+      clearTimeout(timeout);
+    }, time);
     signal?.addEventListener('abort', () => {
       clearTimeout(timeout);
       reject(AbortError);

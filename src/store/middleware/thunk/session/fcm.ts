@@ -18,9 +18,6 @@ export const initFCMToken = createAsyncThunk<void, InitFCMTokenPayload, AsyncThu
   async (_, { dispatch, getState, signal }) => {
     try {
       await notifee.requestPermission();
-      if (!messaging().isDeviceRegisteredForRemoteMessages) {
-        await messaging().registerDeviceForRemoteMessages();
-      }
       let authStatus = await messaging().hasPermission();
       if (authStatus !== messaging.AuthorizationStatus.AUTHORIZED) {
         authStatus = await messaging().requestPermission();

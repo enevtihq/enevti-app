@@ -1,4 +1,5 @@
 import notifee, { AndroidImportance } from '@notifee/react-native';
+import { Platform } from 'react-native';
 
 type NotificationArg = { id?: string; title: string; body?: string; actionId: string };
 
@@ -50,4 +51,10 @@ export async function showOngoingNotification({ id, title, body, actionId }: Not
 
 export async function cancelNotification(notificationId: string) {
   await notifee.cancelNotification(notificationId);
+}
+
+export async function setIOSBadgeCount(count: number) {
+  if (Platform.OS === 'ios') {
+    await notifee.setBadgeCount(count);
+  }
 }

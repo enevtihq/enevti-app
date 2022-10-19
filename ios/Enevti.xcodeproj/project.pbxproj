@@ -41,6 +41,7 @@
 		A6ABEA0C28CBA45000E7FEF0 /* call_answer.aac in Resources */ = {isa = PBXBuildFile; fileRef = A6ABEA0B28CBA45000E7FEF0 /* call_answer.aac */; };
 		A6CB3EAA28B9BC11003624EB /* CallKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6CB3EA928B9BC10003624EB /* CallKit.framework */; };
 		A6CB3EAC28B9BC1A003624EB /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6CB3EAB28B9BC1A003624EB /* Intents.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		A6FBAFC728FFD2020045775F /* RNBackgroundFetch+AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A6FBAFC628FFD2010045775F /* RNBackgroundFetch+AppDelegate.m */; };
 		B1600D67257D9BAB021ECA08 /* libPods-Enevti.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 787974458852CE1F23E27453 /* libPods-Enevti.a */; };
 /* End PBXBuildFile section */
 
@@ -99,6 +100,7 @@
 		A6ABEA0B28CBA45000E7FEF0 /* call_answer.aac */ = {isa = PBXFileReference; lastKnownFileType = file; path = call_answer.aac; sourceTree = "<group>"; };
 		A6CB3EA928B9BC10003624EB /* CallKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CallKit.framework; path = System/Library/Frameworks/CallKit.framework; sourceTree = SDKROOT; };
 		A6CB3EAB28B9BC1A003624EB /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
+		A6FBAFC628FFD2010045775F /* RNBackgroundFetch+AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "RNBackgroundFetch+AppDelegate.m"; path = "../node_modules/react-native-background-fetch/ios/RNBackgroundFetch/RNBackgroundFetch+AppDelegate.m"; sourceTree = "<group>"; };
 		AB3CDA783E424AC49045F76D /* Poppins-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Light.ttf"; path = "../src/assets/fonts/Poppins-Light.ttf"; sourceTree = "<group>"; };
 		B0BC211E048945B9988E8372 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
 		B8B5B9E10CCF41BCA4F25DB6 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
@@ -206,6 +208,7 @@
 				A61FAA7228715336003EF149 /* Enevti.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
+				A6FBAFC628FFD2010045775F /* RNBackgroundFetch+AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
@@ -582,6 +585,7 @@
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				A65CBC6727E846B600D0F767 /* RNLockDetection.m in Sources */,
+				A6FBAFC728FFD2020045775F /* RNBackgroundFetch+AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

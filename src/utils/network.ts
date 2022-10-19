@@ -55,6 +55,7 @@ export async function appFetch(resource: string, options: Record<string, any> = 
 
   const id = setTimeout(() => {
     abortController.abort();
+    clearTimeout(id);
   }, timeout);
 
   try {

@@ -11,9 +11,10 @@ import { getProfilePendingDelivery } from 'enevti-app/service/enevti/profile';
 import { getMyAddress } from 'enevti-app/service/enevti/persona';
 import sleep from '../dummy/sleep';
 import { BLOCK_TIME } from '../constant/identifier';
-import { cancelNotification } from '../notification';
+import { cancelNotification, setIOSBadgeCount } from '../notification';
 import { store } from 'enevti-app/store/state';
 import { setDeliverSecretProcessing } from 'enevti-app/store/slices/session/transaction/processing';
+import { EventRegister } from 'react-native-event-listeners';
 
 queue.configure({
   concurrency: 1,
@@ -29,14 +30,18 @@ queue.configure({
           }
         } else {
           await cancelNotification('deliverSecretNotif');
+          await setIOSBadgeCount(0);
           store.dispatch(setDeliverSecretProcessing(false));
           await BackgroundService.stop();
+          EventRegister.emit('BackgroundFetchFinish');
+          EventRegister.removeEventListener('BackgroundFetchFinish');
         }
       } else {
         await addCheckDeliverSecretJob({ payload: myAddress }, true, { attempts: 5, timeout: 0, priority: 0 }, false);
       }
     } catch (err) {
       store.dispatch(setDeliverSecretProcessing(false));
+      await setIOSBadgeCount(0);
       await cancelNotification('deliverSecretNotif');
       await BackgroundService.stop();
     }

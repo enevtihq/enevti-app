@@ -22,3 +22,6 @@
 -keep class com.twilio.** { *; }
 -keep class tvi.webrtc.** { *; }
 -keep class com.shopify.reactnative.skia.** { *; }
+
+# [react-native-background-fetch]
+-keep class com.transistorsoft.rnbackgroundfetch.HeadlessTask { *; }
