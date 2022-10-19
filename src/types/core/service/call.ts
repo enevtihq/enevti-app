@@ -1,8 +1,17 @@
+import { Persona } from '../account/persona';
 import { NFTActivityName } from '../chain/nft/NFTActivity';
+
+export type StartVideoCallHandlerPayload = {
+  id: string;
+  serial: string;
+  rejectData: string;
+  callerPersona: Persona;
+  avatarUrl: string;
+};
 
 export type StartVideoCallPayload = {
   socketId: string;
-  nftId: string;
+  payload: StartVideoCallHandlerPayload;
   caller: 'creator' | 'owner';
 };
 

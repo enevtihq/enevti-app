@@ -1,9 +1,7 @@
 import { FirebaseMessagingTypes } from '@react-native-firebase/messaging';
-import { getNFTbyId } from 'enevti-app/service/enevti/nft';
 import runInBackground from 'enevti-app/utils/background/task/runInBackground';
-import { getMyAddress, getMyPublicKey, parsePersonaLabel } from 'enevti-app/service/enevti/persona';
+import { getMyPublicKey, parsePersonaLabel } from 'enevti-app/service/enevti/persona';
 import { displayIncomingCall } from 'enevti-app/service/call/device';
-import { getAvatarUrl } from 'enevti-app/service/enevti/avatar';
 import { makeUrl } from 'enevti-app/utils/constant/URLCreator';
 import i18n from 'enevti-app/translations/i18n';
 import { StartVideoCallPayload } from 'enevti-app/types/core/service/call';
@@ -24,92 +22,86 @@ export default async function startVideoCallFCMHandler(remoteMessage: FirebaseMe
     const publicKey = await getMyPublicKey();
     const display = selectDisplayState(store.getState());
     const data = JSON.parse(remoteMessage.data!.payload) as StartVideoCallPayload;
-    const nft = await getNFTbyId(data.nftId);
-    if (nft.status === 200) {
-      const signature = await createSignature(nft.data.id);
-      const rejectData = `${nft.data.id}:${nft.data.redeem.count}:${nft.data.redeem.velocity}:${nft.data.redeem.nonce}`;
-      const rejectSignature = await createSignature(rejectData);
+    const signature = await createSignature(data.payload.id);
+    const rejectData = data.payload.rejectData;
+    const rejectSignature = await createSignature(rejectData);
 
-      socket.emit('ringing', { nftId: nft.data.id, callId: data.socketId, emitter: publicKey, signature });
-      const myAddress = await getMyAddress();
-      const callerPersona = myAddress === nft.data.owner.address ? nft.data.creator : nft.data.owner;
-      const avatarEndpoint = await getAvatarUrl(callerPersona.address);
-      const avatarUrl = makeUrl(avatarEndpoint.data);
+    socket.emit('ringing', { nftId: data.payload.id, callId: data.socketId, emitter: publicKey, signature });
+    const avatarUrl = makeUrl(data.payload.avatarUrl);
 
-      displayIncomingCall(
-        data.socketId,
-        parsePersonaLabel(callerPersona),
-        i18n.t('redeem:videoCallIncomingAndroidLabel', { nft: `${nft.data.symbol}#${nft.data.serial}` }),
-        avatarUrl,
-      );
+    displayIncomingCall(
+      data.socketId,
+      parsePersonaLabel(data.payload.callerPersona),
+      i18n.t('redeem:videoCallIncomingAndroidLabel', { nft: data.payload.serial }),
+      avatarUrl,
+    );
 
-      if (Platform.OS === 'android') {
-        const endCallSubsribtion = DeviceEventEmitter.addListener('endCall', async () => {
-          socket.emit('rejected', {
-            nftId: nft.data.id,
-            callId: data.socketId,
-            emitter: publicKey,
-            signature: rejectSignature,
-          });
-          socket.disconnect();
-          endCallSubsribtion.remove();
-          answerCallSubcription.remove();
+    if (Platform.OS === 'android') {
+      const endCallSubsribtion = DeviceEventEmitter.addListener('endCall', async () => {
+        socket.emit('rejected', {
+          nftId: data.payload.id,
+          callId: data.socketId,
+          emitter: publicKey,
+          signature: rejectSignature,
         });
+        socket.disconnect();
+        endCallSubsribtion.remove();
+        answerCallSubcription.remove();
+      });
 
-        const answerCallSubcription = DeviceEventEmitter.addListener('answerCall', payload => {
-          socket.emit('accepted', { nftId: nft.data.id, callId: data.socketId, emitter: publicKey, signature });
-          endCallSubsribtion.remove();
-          answerCallSubcription.remove();
-          socket.disconnect();
-          const params = { nftId: nft.data.id, isAnswering: true, callId: payload.uuid };
-          if (payload.isHeadless) {
-            IncomingCall.openAppFromHeadlessMode(JSON.stringify(params));
-          } else {
-            if (!display.maximized) {
-              IncomingCall.backToForeground();
-            }
-            EventRegister.emit('answerVideoCall', params);
+      const answerCallSubcription = DeviceEventEmitter.addListener('answerCall', payload => {
+        socket.emit('accepted', { nftId: data.payload.id, callId: data.socketId, emitter: publicKey, signature });
+        endCallSubsribtion.remove();
+        answerCallSubcription.remove();
+        socket.disconnect();
+        const params = { nftId: data.payload.id, isAnswering: true, callId: payload.uuid };
+        if (payload.isHeadless) {
+          IncomingCall.openAppFromHeadlessMode(JSON.stringify(params));
+        } else {
+          if (!display.maximized) {
+            IncomingCall.backToForeground();
           }
-        });
-      }
+          EventRegister.emit('answerVideoCall', params);
+        }
+      });
+    }
 
-      if (Platform.OS === 'ios') {
-        RNCallKeep.addEventListener('endCall', ({ callUUID }) => {
-          RNCallKeep.endCall(callUUID);
-          socket.emit('rejected', {
-            nftId: nft.data.id,
-            callId: data.socketId,
-            emitter: publicKey,
-            signature: rejectSignature,
-          });
-          socket.disconnect();
-          RNCallKeep.removeEventListener('answerCall');
-          RNCallKeep.removeEventListener('endCall');
+    if (Platform.OS === 'ios') {
+      RNCallKeep.addEventListener('endCall', ({ callUUID }) => {
+        RNCallKeep.endCall(callUUID);
+        socket.emit('rejected', {
+          nftId: data.payload.id,
+          callId: data.socketId,
+          emitter: publicKey,
+          signature: rejectSignature,
         });
+        socket.disconnect();
+        RNCallKeep.removeEventListener('answerCall');
+        RNCallKeep.removeEventListener('endCall');
+      });
 
-        RNCallKeep.addEventListener('answerCall', ({ callUUID }) => {
-          socket.emit('accepted', { nftId: nft.data.id, callId: data.socketId, emitter: publicKey, signature });
-          RNCallKeep.removeEventListener('answerCall');
-          RNCallKeep.removeEventListener('endCall');
-          RNCallKeep.endCall(callUUID);
-          socket.disconnect();
-          const params = { nftId: nft.data.id, isAnswering: true, callId: callUUID };
-          messaging()
-            .getIsHeadless()
-            .then(isHeadless => {
-              if (isHeadless) {
-                AppReadyInstance.awaitAppReady().then(() => {
-                  EventRegister.emit('answerVideoCall', params);
-                });
-              } else {
-                if (!display.maximized) {
-                  RNCallKeep.backToForeground();
-                }
+      RNCallKeep.addEventListener('answerCall', ({ callUUID }) => {
+        socket.emit('accepted', { nftId: data.payload.id, callId: data.socketId, emitter: publicKey, signature });
+        RNCallKeep.removeEventListener('answerCall');
+        RNCallKeep.removeEventListener('endCall');
+        RNCallKeep.endCall(callUUID);
+        socket.disconnect();
+        const params = { nftId: data.payload.id, isAnswering: true, callId: callUUID };
+        messaging()
+          .getIsHeadless()
+          .then(isHeadless => {
+            if (isHeadless) {
+              AppReadyInstance.awaitAppReady().then(() => {
                 EventRegister.emit('answerVideoCall', params);
+              });
+            } else {
+              if (!display.maximized) {
+                RNCallKeep.backToForeground();
               }
-            });
-        });
-      }
+              EventRegister.emit('answerVideoCall', params);
+            }
+          });
+      });
     }
   });
 }
