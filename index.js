@@ -14,6 +14,7 @@ import { name as appName } from './app.json';
 
 import messaging from '@react-native-firebase/messaging';
 import handleFCM from 'enevti-app/service/firebase/fcm';
+import Null from 'enevti-app/Null';
 
 messaging().setBackgroundMessageHandler(async remoteMessage => {
   handleFCM(remoteMessage);
@@ -21,7 +22,7 @@ messaging().setBackgroundMessageHandler(async remoteMessage => {
 
 function HeadlessCheck({ isHeadless }) {
   if (isHeadless) {
-    return null;
+    return <Null />;
   }
   return <App />;
 }

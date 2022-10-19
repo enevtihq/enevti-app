@@ -15,6 +15,8 @@ import { selectDisplayState } from 'enevti-app/store/slices/ui/screen/display';
 import { store } from 'enevti-app/store/state';
 import { createSignature } from 'enevti-app/utils/cryptography';
 import RNCallKeep from 'react-native-callkeep';
+import messaging from '@react-native-firebase/messaging';
+import AppReadyInstance from 'enevti-app/utils/app/ready';
 
 export default async function startVideoCallFCMHandler(remoteMessage: FirebaseMessagingTypes.RemoteMessage) {
   await runInBackground(async () => {
@@ -92,7 +94,20 @@ export default async function startVideoCallFCMHandler(remoteMessage: FirebaseMe
           RNCallKeep.endCall(callUUID);
           socket.disconnect();
           const params = { nftId: nft.data.id, isAnswering: true, callId: callUUID };
-          EventRegister.emit('answerVideoCall', params);
+          messaging()
+            .getIsHeadless()
+            .then(isHeadless => {
+              if (isHeadless) {
+                AppReadyInstance.awaitAppReady().then(() => {
+                  EventRegister.emit('answerVideoCall', params);
+                });
+              } else {
+                if (!display.maximized) {
+                  RNCallKeep.backToForeground();
+                }
+                EventRegister.emit('answerVideoCall', params);
+              }
+            });
         });
       }
     }

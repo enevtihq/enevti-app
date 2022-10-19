@@ -48,6 +48,8 @@ import Notification from 'enevti-app/screen/notification/Notification';
 import RedeemVideoCall from 'enevti-app/screen/redeem/RedeemVideoCall';
 import { EventRegister } from 'react-native-event-listeners';
 import IncomingCall from '@bob.hardcoder/react-native-incoming-call';
+import AppReadyInstance from 'enevti-app/utils/app/ready';
+import NavigationReady from 'enevti-app/utils/app/navigationReady';
 
 export type RootStackParamList = {
   CreateAccount: undefined;
@@ -166,6 +168,8 @@ export default function AppNavigationContainer() {
           navigationRef.navigate('RedeemVideoCall', data);
         },
       ).toString();
+      await NavigationReady.awaitNavigationReady();
+      AppReadyInstance.setReady();
     };
     run();
 
@@ -201,9 +205,14 @@ export default function AppNavigationContainer() {
     };
   }, [dispatch]);
 
+  const onNavigationReady = React.useCallback(() => {
+    NavigationReady.setReady();
+  }, []);
+
   return (
     <NavigationContainer
       ref={navigationRef}
+      onReady={onNavigationReady}
       linking={navLinking}
       fallback={LinkingFallback}
       theme={getTheme(colorScheme!.toString())}>
