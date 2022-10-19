@@ -17,17 +17,19 @@ export const LANGUAGES = {
 const LANG_CODES = Object.keys(LANGUAGES);
 const DEFAULT_LANG = 'en';
 
+export const detectLanguage = () => {
+  const userSettingLanguage = selectLanguageState(stateStore.getState());
+  if (userSettingLanguage === 'system' || !LANG_CODES.includes(userSettingLanguage)) {
+    const bestLangs = RNLocalize.findBestAvailableLanguage(LANG_CODES);
+    return bestLangs ? bestLangs.languageTag : DEFAULT_LANG;
+  }
+  return userSettingLanguage;
+};
+
 const LANGUAGE_DETECTOR: LanguageDetectorModule = {
   type: 'languageDetector',
   init: () => {},
-  detect: () => {
-    const userSettingLanguage = selectLanguageState(stateStore.getState());
-    if (userSettingLanguage === 'system' || !LANG_CODES.includes(userSettingLanguage)) {
-      const bestLang = RNLocalize.findBestAvailableLanguage(LANG_CODES);
-      return bestLang ? bestLang.languageTag : DEFAULT_LANG;
-    }
-    return userSettingLanguage;
-  },
+  detect: detectLanguage,
   cacheUserLanguage: language => {
     stateStore.dispatch(setLanguage(language));
   },

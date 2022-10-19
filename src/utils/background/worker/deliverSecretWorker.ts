@@ -14,6 +14,7 @@ import { isInternetReachable } from 'enevti-app/utils/network';
 import { showOngoingNotification } from 'enevti-app/utils/notification';
 import queue from 'react-native-job-queue';
 import { Job } from 'react-native-job-queue/lib/typescript/src/models/Job';
+import notifee from '@notifee/react-native';
 import runInBackground from '../task/runInBackground';
 
 export default async function deliverSecretWorker(data: { payload: DeliverSecretPayload }) {
@@ -59,6 +60,16 @@ export const checkDeliverSecretWorkerOnFailure = async (_job: Job<any>, _error: 
 
 export const checkDeliverSecretWorker = async (data: { payload: string; silent?: boolean }) => {
   await isInternetReachable();
+
+  const notifications = await notifee.getDisplayedNotifications();
+  const indexs: number[] = [];
+  notifications.forEach((t, i) => {
+    if (t.notification.data && t.notification.data.type === 'deliverSecretNotif') {
+      indexs.push(i);
+    }
+  });
+  await notifee.cancelDisplayedNotifications(indexs.map(i => notifications[i].id ?? ''));
+
   const pendings = await getProfilePendingDelivery(data.payload, undefined, true);
   if (pendings.status === 200) {
     if (pendings.data.length > 0) {

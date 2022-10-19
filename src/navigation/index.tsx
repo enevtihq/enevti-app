@@ -50,6 +50,7 @@ import messaging from '@react-native-firebase/messaging';
 import RedeemVideoCall from 'enevti-app/screen/redeem/RedeemVideoCall';
 import { EventRegister } from 'react-native-event-listeners';
 import IncomingCall from '@bob.hardcoder/react-native-incoming-call';
+import { initUserMeta } from 'enevti-app/store/middleware/thunk/session/userMeta';
 
 export type RootStackParamList = {
   CreateAccount: undefined;
@@ -204,6 +205,7 @@ export default function AppNavigationContainer() {
   }, [dispatch]);
 
   React.useEffect(() => {
+    dispatch(initUserMeta());
     dispatch(initFCMToken());
     const unsubsribe = messaging().onTokenRefresh(async token => {
       dispatch(refreshFCMToken({ token }));

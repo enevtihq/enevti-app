@@ -416,3 +416,7 @@ export function urlDeleteFCMAddress(host: string = ENEVTI_DEFAULT_API) {
 export function urlGetAvatarUrl(address: string, host: string = ENEVTI_DEFAULT_API) {
   return encodeURI(`${host}/avatar/url/${address}`);
 }
+
+export function urlPostUserMeta(host: string = ENEVTI_DEFAULT_API) {
+  return encodeURI(`${host}/usermeta/set`);
+}
