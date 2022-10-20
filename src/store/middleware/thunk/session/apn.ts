@@ -6,7 +6,7 @@ import { getMyAddress, getMyPublicKey } from 'enevti-app/service/enevti/persona'
 import { getAPNIsTokenUpdated, postAPNRegisterAddress } from 'enevti-app/service/enevti/apn';
 import { Platform } from 'react-native';
 
-type InitAPNTokenPayload = { token: string };
+type InitAPNTokenPayload = { token?: string };
 type UpdateAPNTokenPayload = { publicKey: string };
 type SetAPNTokenPayload = { publicKey: string; token: string };
 
@@ -17,14 +17,15 @@ export const initAPNToken = createAsyncThunk<void, InitAPNTokenPayload, AsyncThu
     try {
       if (Platform.OS === 'ios') {
         const tokenCache = selectAPNTokenCacheState(getState());
-        if (payload.token !== tokenCache) {
-          dispatch(setAPNTokenCache(payload.token));
+        const apnToken = payload.token ?? tokenCache;
+        if (payload.token !== tokenCache && apnToken) {
+          dispatch(setAPNTokenCache(apnToken));
         }
         const myAddress = await getMyAddress();
-        const APNIsTokenUpdated = await getAPNIsTokenUpdated(myAddress, payload.token, signal);
-        if (APNIsTokenUpdated.status === 200 && !APNIsTokenUpdated.data && myAddress) {
+        const APNIsTokenUpdated = await getAPNIsTokenUpdated(myAddress, apnToken, signal);
+        if (APNIsTokenUpdated.status === 200 && !APNIsTokenUpdated.data && myAddress && apnToken) {
           const publicKey = await getMyPublicKey();
-          dispatch(setAPNToken({ publicKey, token: payload.token }) as unknown as AnyAction);
+          dispatch(setAPNToken({ publicKey, token: apnToken }) as unknown as AnyAction);
         }
       }
     } catch (err) {

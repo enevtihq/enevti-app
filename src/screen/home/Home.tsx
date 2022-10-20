@@ -73,6 +73,7 @@ import { reduceMyTotalStakeChanged } from 'enevti-app/store/middleware/thunk/soc
 import { initUserMeta } from 'enevti-app/store/middleware/thunk/session/userMeta';
 import { initFCMToken, refreshFCMToken } from 'enevti-app/store/middleware/thunk/session/fcm';
 import BackgroundFetch from 'react-native-background-fetch';
+import { initAPNToken } from 'enevti-app/store/middleware/thunk/session/apn';
 
 const Tab = createBottomTabNavigator();
 
@@ -126,6 +127,7 @@ export default function Home({ navigation }: Props) {
   React.useEffect(() => {
     dispatch(initUserMeta());
     dispatch(initFCMToken());
+    dispatch(initAPNToken({}));
     const unsubsribe = messaging().onTokenRefresh(async token => {
       dispatch(refreshFCMToken({ token }));
     });
