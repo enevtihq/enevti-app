@@ -5,6 +5,9 @@ import OverlayPermissionModule from 'rn-android-overlay-permission';
 import IncomingCall from '@bob.hardcoder/react-native-incoming-call';
 import VoipPushNotification from 'react-native-voip-push-notification';
 import { StartVideoCallPayloadIOS } from 'enevti-app/types/core/service/call';
+import { store } from 'enevti-app/store/state';
+import { initAPNToken } from 'enevti-app/store/middleware/thunk/session/apn';
+import { AnyAction } from '@reduxjs/toolkit';
 
 const ENEVTI_LOGO_URL = 'https://pbs.twimg.com/profile_images/1399393541294415873/83l_AT9i_400x400.jpg';
 
@@ -51,8 +54,7 @@ export function displayIncomingCall(
 }
 
 async function onVoipTokenRegistered(token: string) {
-  // TODO: implement
-  console.log(token);
+  store.dispatch(initAPNToken({ token }) as unknown as AnyAction);
 }
 
 async function onVoipNotificationReceived(notification: StartVideoCallPayloadIOS) {

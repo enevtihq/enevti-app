@@ -420,3 +420,23 @@ export function urlGetAvatarUrl(address: string, host: string = ENEVTI_DEFAULT_A
 export function urlPostUserMeta(host: string = ENEVTI_DEFAULT_API) {
   return encodeURI(`${host}/usermeta/set`);
 }
+
+export function urlGetAPNIsReady(host: string = ENEVTI_DEFAULT_API) {
+  return encodeURI(`${host}/apn/ready`);
+}
+
+export function urlGetAPNIsAddressRegistered(address: string, host: string = ENEVTI_DEFAULT_API) {
+  return encodeURI(`${host}/apn/registered/${address}`);
+}
+
+export function urlPostAPNRegisterAddress(host: string = ENEVTI_DEFAULT_API) {
+  return encodeURI(`${host}/apn/register`);
+}
+
+export function urlPostAPNIsTokenUpdated(host: string = ENEVTI_DEFAULT_API) {
+  return encodeURI(`${host}/apn/isupdated`);
+}
+
+export function urlDeleteAPNAddress(host: string = ENEVTI_DEFAULT_API) {
+  return encodeURI(`${host}/apn/remove`);
+}

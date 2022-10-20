@@ -5,6 +5,7 @@ import feedCacheSliceReducer from './feed';
 import momentCacheSliceReducer from './moment';
 import transactionNonceCacheSliceReducer from './transactionNonce';
 import fcmTokenCacheSliceReducer from './fcm';
+import apnTokenCacheSliceReducer from './apn';
 
 export default combineReducers({
   myProfile: profileEntitySliceReducer,
@@ -13,4 +14,5 @@ export default combineReducers({
   moment: momentCacheSliceReducer,
   transactionNonce: transactionNonceCacheSliceReducer,
   fcm: fcmTokenCacheSliceReducer,
+  apn: apnTokenCacheSliceReducer,
 });

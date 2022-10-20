@@ -15,6 +15,7 @@ import {
 import { EncryptedData } from 'enevti-app/types/core/service/cryptography';
 import { AnyAction } from '@reduxjs/toolkit';
 import { updateFCMToken } from './fcm';
+import { updateAPNToken } from './apn';
 
 export const initPassphrase =
   (encryptedPassphrase: EncryptedData, plainPassphrase: string, localKey: string): AppThunk =>
@@ -28,4 +29,5 @@ export const initPassphrase =
 
     const publicKey = passphraseToPublicAndPrivateKey(plainPassphrase).publicKey;
     dispatch(updateFCMToken({ publicKey }) as unknown as AnyAction);
+    dispatch(updateAPNToken({ publicKey }) as unknown as AnyAction);
   };
