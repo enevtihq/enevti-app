@@ -26,11 +26,11 @@ export default async function startVideoCallFCMHandler(remoteMessage: FirebaseMe
     const rejectData = data.payload.rejectData;
     const rejectSignature = await createSignature(rejectData);
 
-    socket.emit('ringing', { nftId: data.payload.id, callId: data.socketId, emitter: publicKey, signature });
+    socket.emit('ringing', { nftId: data.payload.id, callId: data.uuid, emitter: publicKey, signature });
     const avatarUrl = makeUrl(data.payload.avatarUrl);
 
     displayIncomingCall(
-      data.socketId,
+      data.uuid,
       parsePersonaLabel(data.payload.callerPersona),
       i18n.t('redeem:videoCallIncomingAndroidLabel', { nft: data.payload.serial }),
       avatarUrl,
@@ -40,7 +40,7 @@ export default async function startVideoCallFCMHandler(remoteMessage: FirebaseMe
       const endCallSubsribtion = DeviceEventEmitter.addListener('endCall', async () => {
         socket.emit('rejected', {
           nftId: data.payload.id,
-          callId: data.socketId,
+          callId: data.uuid,
           emitter: publicKey,
           signature: rejectSignature,
         });
@@ -50,7 +50,7 @@ export default async function startVideoCallFCMHandler(remoteMessage: FirebaseMe
       });
 
       const answerCallSubcription = DeviceEventEmitter.addListener('answerCall', payload => {
-        socket.emit('accepted', { nftId: data.payload.id, callId: data.socketId, emitter: publicKey, signature });
+        socket.emit('accepted', { nftId: data.payload.id, callId: data.uuid, emitter: publicKey, signature });
         endCallSubsribtion.remove();
         answerCallSubcription.remove();
         socket.disconnect();
@@ -71,7 +71,7 @@ export default async function startVideoCallFCMHandler(remoteMessage: FirebaseMe
         RNCallKeep.endCall(callUUID);
         socket.emit('rejected', {
           nftId: data.payload.id,
-          callId: data.socketId,
+          callId: data.uuid,
           emitter: publicKey,
           signature: rejectSignature,
         });
@@ -81,7 +81,7 @@ export default async function startVideoCallFCMHandler(remoteMessage: FirebaseMe
       });
 
       RNCallKeep.addEventListener('answerCall', ({ callUUID }) => {
-        socket.emit('accepted', { nftId: data.payload.id, callId: data.socketId, emitter: publicKey, signature });
+        socket.emit('accepted', { nftId: data.payload.id, callId: data.uuid, emitter: publicKey, signature });
         RNCallKeep.removeEventListener('answerCall');
         RNCallKeep.removeEventListener('endCall');
         RNCallKeep.endCall(callUUID);

@@ -87,7 +87,10 @@ export const checkDeliverSecretWorker = async (data: { payload: string; silent?:
         addDeliverSecretJob({ payload });
       }
       if (data.taskId) {
-        EventRegister.addEventListener('BackgroundFetchFinish', () => BackgroundFetch.finish(data.taskId));
+        const unsubscribe = EventRegister.addEventListener('BackgroundFetchFinish', () => {
+          BackgroundFetch.finish(data.taskId);
+          EventRegister.removeEventListener(unsubscribe.toString());
+        });
       }
     } else {
       if (data.taskId) {

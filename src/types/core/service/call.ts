@@ -10,7 +10,15 @@ export type StartVideoCallHandlerPayload = {
 };
 
 export type StartVideoCallPayload = {
-  socketId: string;
+  uuid: string;
+  payload: StartVideoCallHandlerPayload;
+  caller: 'creator' | 'owner';
+};
+
+export type StartVideoCallPayloadIOS = {
+  uuid: string;
+  callerName: string;
+  handle: string;
   payload: StartVideoCallHandlerPayload;
   caller: 'creator' | 'owner';
 };

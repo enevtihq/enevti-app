@@ -670,6 +670,8 @@ PODS:
     - React-Core
   - RNVectorIcons (9.0.0):
     - React-Core
+  - RNVoipPushNotification (3.3.0):
+    - React-Core
   - RNWheelPicker (0.3.9):
     - React
   - SDWebImage (5.11.1):
@@ -790,6 +792,7 @@ DEPENDENCIES:
   - RNSound (from `../node_modules/react-native-sound`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
+  - RNVoipPushNotification (from `../node_modules/react-native-voip-push-notification`)
   - "RNWheelPicker (from `../node_modules/@yz1311/react-native-wheel-picker`)"
   - vision-camera-code-scanner (from `../node_modules/vision-camera-code-scanner`)
   - VisionCamera (from `../node_modules/react-native-vision-camera`)
@@ -991,6 +994,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-svg"
   RNVectorIcons:
     :path: "../node_modules/react-native-vector-icons"
+  RNVoipPushNotification:
+    :path: "../node_modules/react-native-voip-push-notification"
   RNWheelPicker:
     :path: "../node_modules/@yz1311/react-native-wheel-picker"
   vision-camera-code-scanner:
@@ -1113,6 +1118,7 @@ SPEC CHECKSUMS:
   RNSound: 1081cf2576b404ca804daf4934bb644cb506ff98
   RNSVG: 302bfc9905bd8122f08966dc2ce2d07b7b52b9f8
   RNVectorIcons: 4143ba35feebab8fdbe6bc43d1e776b393d47ac8
+  RNVoipPushNotification: 024d316cf810e8409132c520ab3dc23628e327c1
   RNWheelPicker: a109c3d1d13811955e34c4c83211cf9ce6826e73
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d

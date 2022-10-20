@@ -9,6 +9,8 @@
 #import <Firebase.h>
 #import "RNCallKeep.h"
 #import <TSBackgroundFetch/TSBackgroundFetch.h>
+#import <PushKit/PushKit.h>
+#import "RNVoipPushNotificationManager.h"
 
 #ifdef FB_SONARKIT_ENABLED
 #import <FlipperKit/FlipperClient.h>
@@ -60,8 +62,41 @@ static void InitializeFlipper(UIApplication *application) {
   
   [RNSplashScreen show];
   [[TSBackgroundFetch sharedInstance] didFinishLaunching];
+  [RNVoipPushNotificationManager voipRegistration];
 
   return YES;
+}
+
+- (void)pushRegistry:(PKPushRegistry *)registry didUpdatePushCredentials:(PKPushCredentials *)credentials forType:(PKPushType)type {
+  [RNVoipPushNotificationManager didUpdatePushCredentials:credentials forType:(NSString *)type];
+}
+
+- (void)pushRegistry:(PKPushRegistry *)registry didInvalidatePushTokenForType:(PKPushType)type
+{
+  // --- The system calls this method when a previously provided push token is no longer valid for use. No action is necessary on your part to reregister the push type. Instead, use this method to notify your server not to send push notifications using the matching push token.
+}
+
+- (void)pushRegistry:(PKPushRegistry *)registry didReceiveIncomingPushWithPayload:(PKPushPayload *)payload forType:(PKPushType)type withCompletionHandler:(void (^)(void))completion {
+
+  NSString *uuid = payload.dictionaryPayload[@"uuid"];
+  NSString *callerName = payload.dictionaryPayload[@"callerName"];
+  NSString *handle = payload.dictionaryPayload[@"handle"];
+
+  [RNVoipPushNotificationManager addCompletionHandler:uuid completionHandler:completion];
+  [RNVoipPushNotificationManager didReceiveIncomingPushWithPayload:payload forType:(NSString *)type];
+
+  [RNCallKeep reportNewIncomingCall: uuid
+                             handle: handle
+                         handleType: @"generic"
+                           hasVideo: YES
+                localizedCallerName: callerName
+                    supportsHolding: YES
+                       supportsDTMF: YES
+                   supportsGrouping: YES
+                 supportsUngrouping: YES
+                        fromPushKit: YES
+                            payload: nil
+              withCompletionHandler: nil];
 }
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge

@@ -34,7 +34,6 @@ queue.configure({
           store.dispatch(setDeliverSecretProcessing(false));
           await BackgroundService.stop();
           EventRegister.emit('BackgroundFetchFinish');
-          EventRegister.removeEventListener('BackgroundFetchFinish');
         }
       } else {
         await addCheckDeliverSecretJob({ payload: myAddress }, true, { attempts: 5, timeout: 0, priority: 0 }, false);

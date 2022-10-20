@@ -13,7 +13,7 @@ import AppNavigationContainer from './navigation';
 import { persistor, store } from './store/state';
 import { getTheme } from './theme';
 import { IconProvider } from './components/atoms/icon/AppIconComponent';
-import { setupCall } from './service/call/device';
+import { cleanVoipNotificationHandler, setupCall, setupVoipNotificationHandler } from './service/call/device';
 import './translations/i18n';
 import './utils/debug/suppressWarning';
 
@@ -37,6 +37,13 @@ const App = () => {
 
   useEffect(() => {
     setupCall();
+  }, []);
+
+  useEffect(() => {
+    setupVoipNotificationHandler();
+    return () => {
+      cleanVoipNotificationHandler();
+    };
   }, []);
 
   return (
