@@ -19,7 +19,7 @@ export type StartVideoCallPayloadIOS = {
   uuid: string;
   callerName: string;
   handle: string;
-  payload: StartVideoCallHandlerPayload;
+  data: StartVideoCallHandlerPayload;
   caller: 'creator' | 'owner';
 };
 

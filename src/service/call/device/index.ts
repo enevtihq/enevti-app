@@ -63,11 +63,11 @@ async function onVoipNotificationReceived(notification: StartVideoCallPayloadIOS
 
 export function setupVoipNotificationHandler() {
   if (Platform.OS === 'ios') {
-    VoipPushNotification.addEventListener('register', token => {
+    VoipPushNotification.addEventListener('register', (token: string) => {
       onVoipTokenRegistered(token);
     });
 
-    VoipPushNotification.addEventListener('notification', notification => {
+    VoipPushNotification.addEventListener('notification', (notification: StartVideoCallPayloadIOS) => {
       onVoipNotificationReceived(notification);
     });
 
