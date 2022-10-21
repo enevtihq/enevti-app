@@ -41,6 +41,9 @@ export const reducePayDeliverSecret = (): AppThunk => async (dispatch, getState)
   } finally {
     dispatch(setDeliverSecretProcessing(false));
     dispatch(resetPaymentState());
-    setTimeout(() => dispatch(initProfile() as unknown as AnyAction), await BLOCK_TIME());
+    const reducePayDeliverSecretTimeout = setTimeout(() => {
+      dispatch(initProfile() as unknown as AnyAction);
+      clearTimeout(reducePayDeliverSecretTimeout);
+    }, await BLOCK_TIME());
   }
 };

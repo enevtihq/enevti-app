@@ -64,6 +64,7 @@ export default function AppVideoCallChatFloatingNotification({
       clearTimeout(showTimeout.current);
       showTimeout.current = setTimeout(() => {
         closeCallback();
+        clearTimeout(showTimeout.current);
       }, 5000);
     }
   }, [closeCallback, show, label, onClose, opacity, translateY]);

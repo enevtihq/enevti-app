@@ -62,7 +62,10 @@ export default function QRScanner({ navigation, route }: Props) {
         dispatch(showSnackbar({ mode: 'error', text: t('error:deniedCameraDecided') }));
         navigation.goBack();
       } else {
-        setTimeout(() => setVisible(true), 500);
+        const initTimeout = setTimeout(() => {
+          setVisible(true);
+          clearTimeout(initTimeout);
+        }, 500);
       }
     }
     init();

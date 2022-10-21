@@ -1,15 +1,18 @@
 /* eslint-disable no-undef */
 /* eslint-disable dot-notation */
 /* eslint-disable curly */
-// import BackgroundTimer from 'react-native-background-timer';
+import BackgroundTimer from 'react-native-background-timer';
 import { Buffer } from 'buffer';
 import 'text-encoding-polyfill';
 import 'react-native-url-polyfill/auto';
+import { Platform } from 'react-native';
 
-// global.setTimeout = BackgroundTimer.setTimeout.bind(BackgroundTimer);
-// global.clearTimeout = BackgroundTimer.clearTimeout.bind(BackgroundTimer);
-// global.setInterval = BackgroundTimer.setInterval.bind(BackgroundTimer);
-// global.clearInterval = BackgroundTimer.clearInterval.bind(BackgroundTimer);
+if (Platform.OS === 'android') {
+  global.setTimeout = BackgroundTimer.setTimeout.bind(BackgroundTimer);
+  global.clearTimeout = BackgroundTimer.clearTimeout.bind(BackgroundTimer);
+  global.setInterval = BackgroundTimer.setInterval.bind(BackgroundTimer);
+  global.clearInterval = BackgroundTimer.clearInterval.bind(BackgroundTimer);
+}
 
 if (typeof BigInt === 'undefined') global.BigInt = require('big-integer');
 if (typeof __dirname === 'undefined') global.__dirname = '/';

@@ -206,7 +206,10 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
     async (param: CallAnsweredParam) => {
       setLoaded(true);
       if (route.params.isAnswering && route.params.callId) {
-        setTimeout(() => setMinimized(true), MINIMIZED_DELAY);
+        const onCallAnsweredTimeout = setTimeout(() => {
+          setMinimized(true);
+          clearTimeout(onCallAnsweredTimeout);
+        }, MINIMIZED_DELAY);
       } else {
         stopCallingSound();
         playCallAnswerSound();
@@ -228,7 +231,10 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
       setLoaded(true);
       token.current = param.twilioToken;
       twilioRef.current?.connect({ accessToken: param.twilioToken });
-      setTimeout(() => setMinimized(true), MINIMIZED_DELAY);
+      const onTokenReceivedTimeout = setTimeout(() => {
+        setMinimized(true);
+        clearTimeout(onTokenReceivedTimeout);
+      }, MINIMIZED_DELAY);
       setStatus('answered');
     }
   }, []);

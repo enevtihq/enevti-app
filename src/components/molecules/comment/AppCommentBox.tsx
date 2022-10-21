@@ -228,6 +228,7 @@ export default function AppCommentBox({ route, type, target, inputRef }: AppComm
               dispatch(showSnackbar({ mode: 'info', text: t('explorer:commentQueued') }));
             }
             socket.current?.disconnect();
+            clearTimeout(postCommentTimer.current);
           }, (await BLOCK_TIME()) * 3);
 
           socket.current = appSocket(`transaction:${paymentStatus.message}`);
@@ -255,6 +256,7 @@ export default function AppCommentBox({ route, type, target, inputRef }: AppComm
               dispatch(showSnackbar({ mode: 'info', text: t('explorer:replyQueued') }));
             }
             replySocket.current?.disconnect();
+            clearTimeout(postReplyTimer.current);
           }, (await BLOCK_TIME()) * 3);
 
           replySocket.current = appSocket(`transaction:${paymentStatus.message}`);
