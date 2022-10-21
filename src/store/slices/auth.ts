@@ -3,9 +3,11 @@ import { createSelector } from 'reselect';
 import { RootState } from 'enevti-app/store/state';
 import { EncryptedData } from 'enevti-app/types/core/service/cryptography';
 
+const initialState = { type: '', encrypted: false, token: '', version: 0 };
+
 const authSlice = createSlice({
   name: 'auth',
-  initialState: { type: '', encrypted: false, token: '', version: 0 },
+  initialState,
   reducers: {
     setEncryptedPassphraseAuth: (auth, action: PayloadAction<EncryptedData>) => {
       auth.type = 'passphrase';
@@ -19,10 +21,13 @@ const authSlice = createSlice({
       auth.token = action.payload.data;
       auth.version = action.payload.version;
     },
+    resetAuthState: () => {
+      return initialState;
+    },
   },
 });
 
-export const { setEncryptedPassphraseAuth, setUnencryptedPassphraseAuth } = authSlice.actions;
+export const { setEncryptedPassphraseAuth, setUnencryptedPassphraseAuth, resetAuthState } = authSlice.actions;
 export default authSlice.reducer;
 
 export const selectAuthState = createSelector(

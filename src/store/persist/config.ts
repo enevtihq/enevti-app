@@ -4,12 +4,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const KEYCHAIN = 'enevtiKeychain';
 const SHAREDPREFS = 'enevtiSharedPrefs';
 
-const sensitiveStorage = createSensitiveStorage({
+export const sensitiveStorageOption = {
   keyChainService: KEYCHAIN,
   sharedPreferencesName: SHAREDPREFS,
-});
+};
 
-export const asyncStoragePersistConfig = (key, blacklist) => {
+const sensitiveStorage = createSensitiveStorage(sensitiveStorageOption);
+
+export const asyncStoragePersistConfig = (key: string, blacklist?: string[]) => {
   return {
     key,
     blacklist,
@@ -17,7 +19,7 @@ export const asyncStoragePersistConfig = (key, blacklist) => {
   };
 };
 
-export const sensitiveStoragePersistConfig = key => {
+export const sensitiveStoragePersistConfig = (key: string) => {
   return {
     key,
     storage: sensitiveStorage,

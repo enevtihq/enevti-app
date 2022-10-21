@@ -17,5 +17,5 @@ export default UserMetaEntitySlice.reducer;
 
 export const selectOnceUserMeta = createSelector(
   (state: RootState) => state,
-  (state: RootState) => state.entities.once.welcome,
+  (state: RootState) => state.entities.once.userMeta,
 );
