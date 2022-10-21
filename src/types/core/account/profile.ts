@@ -101,6 +101,7 @@ export type ProfileActivity = Omit<ActivityBase, 'name'> & {
   name: ProfileActivityName;
   from: Persona;
   payload: Record<string, unknown>;
+  fee: string;
 };
 
 export type ProfileActivityAsset = Buffer;

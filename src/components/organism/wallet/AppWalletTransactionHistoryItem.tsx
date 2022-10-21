@@ -17,6 +17,7 @@ import { getCoinName } from 'enevti-app/utils/constant/identifier';
 import { ProfileActivity } from 'enevti-app/types/core/account/profile';
 import { parsePersonaLabel } from 'enevti-app/service/enevti/persona';
 import { useTranslation } from 'react-i18next';
+import Color from 'color';
 
 export const TRANSACTION_HISTORY_ITEM_HEIGHT = 9;
 const AMOUNT_LENGTH_LIMIT = 10;
@@ -25,6 +26,7 @@ const AVATAR_ACTION = ['tokenReceived', 'tokenSent'];
 const BALANCE_PLUS_ACTION = ['tokenReceived', 'NFTSale', 'deliverSecret'];
 const BALANCE_MINUS_ACTION = ['tokenSent', 'registerUsername', 'addStake', 'selfStake', 'mintNFT'];
 const BALANCE_NOAMOUNT_ACTION = ['createNFT'];
+const BALANCE_WITH_FEE = BALANCE_MINUS_ACTION.concat(BALANCE_NOAMOUNT_ACTION);
 
 interface AppWalletTransactionHistoryItemProps {
   item: ProfileActivity;
@@ -35,6 +37,20 @@ export default function AppWalletTransactionHistoryItem({ item }: AppWalletTrans
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
   const now = React.useMemo(() => Date.now(), []);
+
+  const fee = React.useMemo(() => {
+    if (BALANCE_WITH_FEE.includes(item.name)) {
+      return {
+        type: 'withFee',
+        value: item.fee,
+      };
+    } else {
+      return {
+        type: 'noFee',
+        value: '0',
+      };
+    }
+  }, [item.fee, item.name]);
 
   const amount = React.useMemo(() => {
     if (BALANCE_NOAMOUNT_ACTION.includes(item.name)) {
@@ -100,6 +116,11 @@ export default function AppWalletTransactionHistoryItem({ item }: AppWalletTrans
               {amount.value} <AppTextBody5 style={styles.collectionRightText}>{getCoinName()}</AppTextBody5>
             </AppTextBody4>
           ) : null}
+          {!['noFee'].includes(fee.type) ? (
+            <AppTextBody5 style={styles.collectionRightSubText}>
+              {t('wallet:feeAmount', { amount: parseAmount(fee.value), currency: getCoinName() })}
+            </AppTextBody5>
+          ) : null}
         </View>
       }>
       <AppTextHeading3 numberOfLines={1}>{action}</AppTextHeading3>
@@ -125,6 +146,10 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets, type: string) =>
     collectionRightText: {
       textAlign: 'right',
       color: type === 'minus' ? theme.colors.error : type === 'plus' ? theme.colors.success : undefined,
+    },
+    collectionRightSubText: {
+      textAlign: 'right',
+      color: Color(theme.colors.placeholder).alpha(0.25).rgb().toString(),
     },
     collectionCoverContainer: {
       marginRight: wp('3%', insets),
