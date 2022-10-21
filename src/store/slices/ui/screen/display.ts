@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
 import { RootState } from 'enevti-app/store/state';
 
-type DisplayInitialState = {
+export type DisplayInitialState = {
   current: string;
   maximized: boolean;
 };

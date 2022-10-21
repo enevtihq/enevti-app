@@ -8,6 +8,15 @@ import { StartVideoCallPayloadIOS } from 'enevti-app/types/core/service/call';
 import { store } from 'enevti-app/store/state';
 import { initAPNToken } from 'enevti-app/store/middleware/thunk/session/apn';
 import { AnyAction } from '@reduxjs/toolkit';
+import {
+  setupIOSVideoCallHandler,
+  setupIOSVideoCallHandlerWithAwait,
+} from 'enevti-app/service/firebase/fcm/startVideoCall';
+import { selectDisplayState } from 'enevti-app/store/slices/ui/screen/display';
+import { videoCallSocketBase } from 'enevti-app/utils/network';
+import { getMyPublicKey } from 'enevti-app/service/enevti/persona';
+import { createSignature } from 'enevti-app/utils/cryptography';
+import { EventRegister } from 'react-native-event-listeners';
 
 const ENEVTI_LOGO_URL = 'https://pbs.twimg.com/profile_images/1399393541294415873/83l_AT9i_400x400.jpg';
 
@@ -58,9 +67,28 @@ async function onVoipTokenRegistered(token: string) {
 }
 
 async function onVoipNotificationReceived(notification: StartVideoCallPayloadIOS) {
-  // TODO: implement
-  displayIncomingCall(notification.uuid, 'aldhosutra@gmail.com', 'Test');
+  displayIncomingCall(notification.uuid, notification.handle, notification.callerName);
   VoipPushNotification.onVoipNotificationCompleted(notification.uuid);
+
+  let callInteracted = false;
+  const display = selectDisplayState(store.getState());
+  setupIOSVideoCallHandlerWithAwait(notification, display, () => (callInteracted = true));
+
+  const socket = videoCallSocketBase();
+  const publicKey = await getMyPublicKey();
+  const signature = await createSignature(notification.data.id);
+  socket.emit('ringing', { nftId: notification.data.id, callId: notification.uuid, emitter: publicKey, signature });
+
+  const rejectData = notification.data.rejectData;
+  const rejectSignature = await createSignature(rejectData);
+
+  if (!callInteracted) {
+    RNCallKeep.removeEventListener('answerCall');
+    RNCallKeep.removeEventListener('endCall');
+    setupIOSVideoCallHandler(socket, notification, publicKey, signature, rejectSignature, display, false);
+  } else {
+    EventRegister.emit('iosVideoCallReady', { socket, publicKey, signature, rejectSignature });
+  }
 }
 
 export function setupVoipNotificationHandler() {

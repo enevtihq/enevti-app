@@ -11,7 +11,7 @@ export type StartVideoCallHandlerPayload = {
 
 export type StartVideoCallPayload = {
   uuid: string;
-  payload: StartVideoCallHandlerPayload;
+  data: StartVideoCallHandlerPayload;
   caller: 'creator' | 'owner';
 };
 
