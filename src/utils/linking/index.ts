@@ -5,6 +5,7 @@ import { store } from 'enevti-app/store/state';
 import { selectLockedState } from 'enevti-app/store/slices/ui/screen/locked';
 import { selectAuthState } from 'enevti-app/store/slices/auth';
 import i18n from 'enevti-app/translations/i18n';
+import { selectAppOnboarded } from 'enevti-app/store/slices/entities/onboarding/app';
 
 export type AppLinking = (
   initialRouteName: keyof RootStackParamList,
@@ -50,6 +51,9 @@ const screens = {
   },
   CreateAccount: {
     path: 'createaccount',
+  },
+  AppOnboarding: {
+    path: 'apponboarding',
   },
   Wallet: {
     path: 'wallet',
@@ -118,8 +122,15 @@ export const linking: AppLinking = (initialRouteName, currentRoute) => {
     prefixes: [APP_LINK, UNIVERSAL_LINK_HTTP, UNIVERSAL_LINK_HTTPS],
     config: { initialRouteName, screens },
     async getInitialURL() {
+      const appOnboarded = selectAppOnboarded(store.getState());
       const auth = selectAuthState(store.getState());
-      const initialRoute = auth.encrypted ? 'Login' : auth.token ? 'Home' : 'CreateAccount';
+      const initialRoute = !appOnboarded
+        ? 'AppOnboarding'
+        : auth.encrypted
+        ? 'Login'
+        : auth.token
+        ? 'Home'
+        : 'CreateAccount';
 
       if (initialRoute === 'Login') {
         const url = await Linking.getInitialURL();
@@ -131,6 +142,8 @@ export const linking: AppLinking = (initialRouteName, currentRoute) => {
         }
       } else if (initialRoute === 'CreateAccount') {
         return `${APP_LINK}createaccount`;
+      } else if (initialRoute === 'AppOnboarding') {
+        return `${APP_LINK}apponboarding`;
       } else {
         return Linking.getInitialURL();
       }

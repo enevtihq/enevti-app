@@ -50,8 +50,12 @@ import { EventRegister } from 'react-native-event-listeners';
 import IncomingCall from '@bob.hardcoder/react-native-incoming-call';
 import AppReadyInstance from 'enevti-app/utils/app/ready';
 import NavigationReady from 'enevti-app/utils/app/navigationReady';
+import AppOnboarding from 'enevti-app/screen/onboard/AppOnboarding';
+import { selectAppOnboarded } from 'enevti-app/store/slices/entities/onboarding/app';
+import RequestOverlayPermission from 'enevti-app/screen/onboard/RequestOverlayPermission';
 
 export type RootStackParamList = {
+  AppOnboarding: undefined;
   CreateAccount: undefined;
   SetupLocalPassword: undefined;
   SetupGoogleBinderPassword: undefined;
@@ -119,6 +123,7 @@ export type RootStackParamList = {
     isAnswering?: boolean;
     callId?: string;
   };
+  RequestOverlayPermission: undefined;
 };
 
 const Stack = createStackNavigator();
@@ -139,8 +144,15 @@ export default function AppNavigationContainer() {
     [styles.fallbackLoading],
   );
 
+  const appOnboarded = useSelector(selectAppOnboarded);
   const auth = useSelector(selectAuthState);
-  const initialRoute = auth.encrypted ? 'Login' : auth.token ? 'Home' : 'CreateAccount';
+  const initialRoute = !appOnboarded
+    ? 'AppOnboarding'
+    : auth.encrypted
+    ? 'Login'
+    : auth.token
+    ? 'Home'
+    : 'CreateAccount';
   const navLinking = React.useMemo(() => linking(initialRoute, currentRoute), [initialRoute, currentRoute]);
 
   useLockScreen();
@@ -217,6 +229,14 @@ export default function AppNavigationContainer() {
       fallback={LinkingFallback}
       theme={getTheme(colorScheme!.toString())}>
       <Stack.Navigator initialRouteName={initialRoute} screenOptions={{ gestureEnabled: false }}>
+        <Stack.Screen
+          name="AppOnboarding"
+          component={AppOnboarding}
+          options={{
+            headerShown: false,
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          }}
+        />
         <Stack.Screen
           name="CreateAccount"
           component={CreateAccount}
@@ -404,6 +424,14 @@ export default function AppNavigationContainer() {
         <Stack.Screen
           name="RedeemVideoCall"
           component={RedeemVideoCall}
+          options={{
+            headerShown: false,
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          }}
+        />
+        <Stack.Screen
+          name="RequestOverlayPermission"
+          component={RequestOverlayPermission}
           options={{
             headerShown: false,
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,

@@ -132,6 +132,7 @@ export const iconMap = {
   creatorAskToSetStatus: 'help-rhombus',
   setVideoCallAnswered: 'phone-check',
   setVideoCallRejected: 'phone-cancel',
+  cellphoneOff: 'phone-off',
 };
 
 interface AppIconComponentProps {

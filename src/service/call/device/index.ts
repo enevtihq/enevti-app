@@ -1,7 +1,6 @@
 import { handleError } from 'enevti-app/utils/error/handle';
 import { Platform } from 'react-native';
 import RNCallKeep, { IOptions, CONSTANTS } from 'react-native-callkeep';
-import OverlayPermissionModule from 'rn-android-overlay-permission';
 import IncomingCall from '@bob.hardcoder/react-native-incoming-call';
 import VoipPushNotification from 'react-native-voip-push-notification';
 import { StartVideoCallPayloadIOS } from 'enevti-app/types/core/service/call';
@@ -34,13 +33,6 @@ export async function setupCall() {
   try {
     if (Platform.OS === 'ios') {
       RNCallKeep.setup(options);
-    } else if (Platform.OS === 'android') {
-      OverlayPermissionModule.isRequestOverlayPermissionGranted((status: any) => {
-        if (status) {
-          // TODO: improve user experience to request overlay permission & autostart permission
-          OverlayPermissionModule.requestOverlayPermission();
-        }
-      });
     }
     RNCallKeep.addEventListener('didChangeAudioRoute', () => {});
   } catch (err) {

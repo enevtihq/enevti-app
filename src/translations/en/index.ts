@@ -16,6 +16,7 @@ import wallet from './wallet';
 import notification from './notification';
 import explorer from './explorer';
 import redeem from './redeem';
+import onboarding from './onboarding';
 
 export default {
   auth,
@@ -36,4 +37,5 @@ export default {
   notification,
   explorer,
   redeem,
+  onboarding,
 };
