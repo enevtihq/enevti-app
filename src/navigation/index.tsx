@@ -168,12 +168,6 @@ export default function AppNavigationContainer() {
     let answerCallListener: string = '';
 
     const run = async () => {
-      if (Platform.OS === 'android') {
-        const payload = await IncomingCall.getExtrasFromHeadlessMode();
-        if (payload) {
-          EventRegister.emit('answerVideoCall', JSON.parse(payload.uuid));
-        }
-      }
       answerCallListener = EventRegister.addEventListener(
         'answerVideoCall',
         (data: { nftId: string; isAnswering: boolean; callId: string }) => {
@@ -182,6 +176,12 @@ export default function AppNavigationContainer() {
       ).toString();
       await NavigationReady.awaitNavigationReady();
       AppReadyInstance.setReady();
+      if (Platform.OS === 'android') {
+        const payload = await IncomingCall.getExtrasFromHeadlessMode();
+        if (payload) {
+          EventRegister.emit('answerVideoCall', JSON.parse(payload.uuid));
+        }
+      }
     };
     run();
 
