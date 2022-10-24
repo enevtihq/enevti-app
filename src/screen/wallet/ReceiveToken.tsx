@@ -41,7 +41,9 @@ export default function ReceiveToken({ navigation }: Props) {
   const styles = React.useMemo(() => makeStyles(insets), [insets]);
   const myPersona = useSelector(selectMyPersonaCache);
 
-  const [qrValue, setQrValue] = React.useState<string>(() => getAppLink('send', { base32: myPersona.base32 }));
+  const [qrValue, setQrValue] = React.useState<string>(() =>
+    getAppLink('send', new URLSearchParams({ base32: myPersona.base32 }).toString()),
+  );
   const [requestAmountError, setRequestAmountError] = React.useState<string>('');
   const [requestAmountTouched, setRequestAmountTouched] = React.useState<boolean>(false);
 
@@ -69,7 +71,7 @@ export default function ReceiveToken({ navigation }: Props) {
   const onRequestAmountChanged = React.useCallback(
     (e: NativeSyntheticEvent<TextInputChangeEventData>) => {
       if (e.nativeEvent.text === '') {
-        const qr = getAppLink('send', { base32: myPersona.base32 });
+        const qr = getAppLink('send', new URLSearchParams({ base32: myPersona.base32 }).toString());
         setQrValue(qr);
         if (requestAmountError) {
           setRequestAmountError('');
@@ -78,7 +80,10 @@ export default function ReceiveToken({ navigation }: Props) {
         if (parseFloat(e.nativeEvent.text) < 0) {
           setRequestAmountError(t('wallet:amountMustBePositive'));
         } else {
-          const qr = getAppLink('send', { base32: myPersona.base32, amount: completeTokenUnit(e.nativeEvent.text) });
+          const qr = getAppLink(
+            'send',
+            new URLSearchParams({ base32: myPersona.base32, amount: completeTokenUnit(e.nativeEvent.text) }).toString(),
+          );
           setQrValue(qr);
           if (requestAmountError) {
             setRequestAmountError('');

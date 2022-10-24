@@ -17,7 +17,9 @@ export type HostnameToRoute = (hostname: string) => keyof RootStackParamList | u
 export type AppLinkNamespace =
   | ''
   | 'nft-serial'
+  | 'nft-serial-redeem'
   | 'nft-id'
+  | 'nft-id-redeem'
   | 'collection-serial'
   | 'collection-id'
   | 'stake-pool-base32'
@@ -32,7 +34,6 @@ export const APP_LINK = 'enevti://';
 export const UNIVERSAL_LINK_HTTP = 'http://app.enevti.com';
 export const UNIVERSAL_LINK_HTTPS = 'https://app.enevti.com';
 
-const KNOWN_LINK = ['nft', 'collection', 'stake', 'profile', 'login', 'createaccount', 'wallet', 'send'];
 const screens = {
   NFTDetails: {
     path: 'nft',
@@ -62,6 +63,7 @@ const screens = {
     path: 'send',
   },
 };
+const KNOWN_LINK = Object.keys(screens).map((key: any) => screens[key as keyof typeof screens].path);
 
 export const hostnameToRoute: HostnameToRoute = (hostname: string) => {
   const host = hostname.charAt(0) === '/' ? hostname.substring(1).toLowerCase() : hostname.toLowerCase();
@@ -168,47 +170,49 @@ export const linking: AppLinking = (initialRouteName, currentRoute) => {
   };
 };
 
-export function getAppLink(
-  namespace: AppLinkNamespace,
-  arg: string | Record<string, any>,
-  prefix: string = `${UNIVERSAL_LINK_HTTPS}/`,
-) {
+export function getAppLink(namespace: AppLinkNamespace, arg: string, prefix: string = `${UNIVERSAL_LINK_HTTPS}/`) {
   let ret: string = prefix;
   switch (namespace) {
     case '':
       return `${APP_LINK}/${arg}`;
     case 'nft-serial':
-      ret += `nft?mode=s&arg=${encodeURIComponent(arg.toString())}`;
+      ret += `nft?mode=s&arg=${arg}`;
+      break;
+    case 'nft-serial-redeem':
+      ret += `nft?mode=s&redeem=true&arg=${arg}`;
       break;
     case 'nft-id':
-      ret += `nft?mode=id&arg=${encodeURIComponent(arg.toString())}`;
+      ret += `nft?mode=id&arg=${arg}`;
+      break;
+    case 'nft-id-redeem':
+      ret += `nft?mode=id&redeem=true&arg=${arg}`;
       break;
     case 'collection-serial':
-      ret += `collection?mode=s&arg=${encodeURIComponent(arg.toString())}`;
+      ret += `collection?mode=s&arg=${arg}`;
       break;
     case 'collection-id':
-      ret += `collection?mode=id&arg=${encodeURIComponent(arg.toString())}`;
+      ret += `collection?mode=id&arg=${arg}`;
       break;
     case 'stake-pool-base32':
-      ret += `stake?mode=b&arg=${encodeURIComponent(arg.toString())}`;
+      ret += `stake?mode=b&arg=${arg}`;
       break;
     case 'stake-pool-address':
-      ret += `stake?mode=a&arg=${encodeURIComponent(arg.toString())}`;
+      ret += `stake?mode=a&arg=${arg}`;
       break;
     case 'stake-pool-username':
-      ret += `stake?mode=u&arg=${encodeURIComponent(arg.toString())}`;
+      ret += `stake?mode=u&arg=${arg}`;
       break;
     case 'profile-base32':
-      ret += `profile?mode=b&arg=${encodeURIComponent(arg.toString())}`;
+      ret += `profile?mode=b&arg=${arg}`;
       break;
     case 'profile-address':
-      ret += `profile?mode=a&arg=${encodeURIComponent(arg.toString())}`;
+      ret += `profile?mode=a&arg=${arg}`;
       break;
     case 'profile-username':
-      ret += `profile?mode=u&arg=${encodeURIComponent(arg.toString())}`;
+      ret += `profile?mode=u&arg=${arg}`;
       break;
     case 'send':
-      ret += `send?${new URLSearchParams(arg).toString()}`;
+      ret += `send?${arg}`;
       break;
     default:
       break;

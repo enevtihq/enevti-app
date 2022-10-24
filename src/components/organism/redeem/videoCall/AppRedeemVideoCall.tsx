@@ -457,7 +457,7 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
 
   const onSomeoneIsCallingYes = React.useCallback(async () => {
     await onEndButtonPress();
-    navigation.navigate('NFTDetails', { mode: 'id', arg: someoneIsCallingNftId.current, redeem: true });
+    navigation.navigate('NFTDetails', { mode: 'id', arg: someoneIsCallingNftId.current, redeem: 'true' });
   }, [navigation, onEndButtonPress]);
 
   const onSomeoneIsCallingNo = React.useCallback(async () => {

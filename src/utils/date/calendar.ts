@@ -82,8 +82,8 @@ export const addRedeemCalendarEvent = async (nft: NFT) => {
   const recurrence = nft.redeem.schedule.recurring === 'once' ? undefined : nft.redeem.schedule.recurring;
 
   const redeemEvent: CalendarEventWritable = {
-    url: getAppLink('nft-serial', `${nft.symbol}#${nft.serial}`),
-    description: `${getAppLink('nft-serial', `${nft.symbol}#${nft.serial}`)}\n\n${i18n.t(
+    url: getAppLink('nft-serial-redeem', encodeURIComponent(`${nft.symbol}#${nft.serial}`)),
+    description: `${getAppLink('nft-serial-redeem', encodeURIComponent(`${nft.symbol}#${nft.serial}`))}\n\n${i18n.t(
       'nftDetails:calendarDescription',
     )}`,
     notes: i18n.t('nftDetails:calendarDescription'),
