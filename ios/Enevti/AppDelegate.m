@@ -57,7 +57,7 @@ static void ClearKeychainIfNecessary() {
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  ClearKeychainIfNecessary();
+  // ClearKeychainIfNecessary();
   NSDictionary *appProperties = [RNFBMessagingModule addCustomPropsToUserProps:nil withLaunchOptions:launchOptions];
 
   [FIRApp configure];
