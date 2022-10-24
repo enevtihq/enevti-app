@@ -54,13 +54,13 @@ export default async function startVideoCallFCMHandler(remoteMessage: FirebaseMe
 
     if (!callInteracted) {
       if (Platform.OS === 'ios') {
-        setupIOSVideoCallHandler(socket, iosPayload, publicKey, signature, display);
         RNCallKeep.removeEventListener('answerCall');
         RNCallKeep.removeEventListener('endCall');
+        setupIOSVideoCallHandler(socket, iosPayload, publicKey, signature, display);
       }
       if (Platform.OS === 'android') {
-        setupAndroidVideoCallHandler(socket, payload, publicKey, signature, display);
         EventRegister.emit('cancelSetupAndroidVideoCallHandlerWithAwait');
+        setupAndroidVideoCallHandler(socket, payload, publicKey, signature, display);
       }
     } else {
       if (Platform.OS === 'ios') {

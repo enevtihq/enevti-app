@@ -72,9 +72,9 @@ async function onVoipNotificationReceived(notification: StartVideoCallPayloadIOS
   socket.emit('ringing', { nftId: notification.data.id, callId: notification.uuid, emitter: publicKey, signature });
 
   if (!callInteracted) {
-    setupIOSVideoCallHandler(socket, notification, publicKey, signature, display);
     RNCallKeep.removeEventListener('answerCall');
     RNCallKeep.removeEventListener('endCall');
+    setupIOSVideoCallHandler(socket, notification, publicKey, signature, display);
   } else {
     EventRegister.emit('iosVideoCallReady', { socket, publicKey, signature });
   }
