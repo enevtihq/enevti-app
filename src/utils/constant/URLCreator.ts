@@ -164,7 +164,7 @@ export function urlGetNFTActivityById(
 }
 
 export function urlGetNFTBySerial(serial: string, viewer: string, host: string = ENEVTI_DEFAULT_API) {
-  return encodeURI(`${host}/nft/s/${serial}?viewer=${viewer}`);
+  return encodeURI(`${host}/nft/s/${encodeURIComponent(serial)}?viewer=${viewer}`);
 }
 
 export function urlGetNFTTemplateById(id: string, host: string = ENEVTI_DEFAULT_API) {

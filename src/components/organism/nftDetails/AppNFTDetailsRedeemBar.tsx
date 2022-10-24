@@ -25,6 +25,7 @@ import { NFT } from 'enevti-app/types/core/chain/nft';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { RouteProp } from '@react-navigation/native';
+import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 
 interface AppNFTDetailsRedeemBarProps {
   nft: NFT;
@@ -50,6 +51,14 @@ export default function AppNFTDetailsRedeemBar({ nft, navigation, route }: AppNF
   const [redeemError, setRedeemError] = React.useState<string>();
   const [redeemButtonDisabled, setRedeemButtonDisabled] = React.useState<boolean>(false);
 
+  const onRedeem = React.useCallback(() => {
+    dispatch(reduceRedeem(nft, navigation, route));
+  }, [dispatch, nft, navigation, route]);
+
+  const onAddEvent = React.useCallback(async () => {
+    await addRedeemCalendarEvent(nft);
+  }, [nft]);
+
   const onLoaded = React.useCallback(async () => {
     const addr = await getMyAddress();
     const isTime = isRedeemTimeUTC(nft);
@@ -72,19 +81,19 @@ export default function AppNFTDetailsRedeemBar({ nft, navigation, route }: AppNF
 
     setRedeemButtonDisabled(isExceeded || isNotOwner || isPending || isNotTime);
     setRedeemError(error);
-  }, [nft, t]);
+
+    if (route.params.redeem === 'true') {
+      if (isExceeded || isNotOwner || isPending || isNotTime) {
+        dispatch(showSnackbar({ mode: 'info', text: t('nftDetails:redeemFailed') }));
+      } else {
+        onRedeem();
+      }
+    }
+  }, [dispatch, nft, onRedeem, route.params.redeem, t]);
 
   React.useEffect(() => {
     onLoaded();
   }, [onLoaded]);
-
-  const onRedeem = React.useCallback(() => {
-    dispatch(reduceRedeem(nft, navigation, route));
-  }, [dispatch, nft, navigation, route]);
-
-  const onAddEvent = React.useCallback(async () => {
-    await addRedeemCalendarEvent(nft);
-  }, [nft]);
 
   const RedeemScheduleView = canAddCalendar ? TouchableRipple : View;
 

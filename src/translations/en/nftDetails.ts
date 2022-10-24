@@ -25,4 +25,5 @@ export default {
   downloading: 'Downloading content...',
   verifyingOwnership: 'Verifying ownership...',
   redeemingSecretContent: 'Opening content...',
+  redeemFailed: 'Redeem failed!',
 };
