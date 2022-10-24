@@ -1,6 +1,7 @@
 import { combineReducers } from '@reduxjs/toolkit';
 import personaEntitySliceReducer from './myPersona';
 import profileEntitySliceReducer from './myProfile';
+import myPublicKeyEntitySliceReducer from './myPublicKey';
 import feedCacheSliceReducer from './feed';
 import momentCacheSliceReducer from './moment';
 import transactionNonceCacheSliceReducer from './transactionNonce';
@@ -10,6 +11,7 @@ import apnTokenCacheSliceReducer from './apn';
 export default combineReducers({
   myProfile: profileEntitySliceReducer,
   myPersona: personaEntitySliceReducer,
+  myPublicKey: myPublicKeyEntitySliceReducer,
   feed: feedCacheSliceReducer,
   moment: momentCacheSliceReducer,
   transactionNonce: transactionNonceCacheSliceReducer,

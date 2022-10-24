@@ -21,6 +21,7 @@ import { urlGetPersonaByAddress, urlGetPersonaByUsername } from 'enevti-app/util
 import { isErrorResponse } from 'enevti-app/utils/error/handle';
 import { APIResponse } from 'enevti-app/types/core/service/api';
 import i18n from 'enevti-app/translations/i18n';
+import { selectMyPublicKeyCache, setMyPublicKeyCache } from 'enevti-app/store/slices/entities/cache/myPublicKey';
 
 type ProfileRoute = StackScreenProps<RootStackParamList, 'Profile'>['route']['params'];
 
@@ -162,8 +163,16 @@ export async function getMyPassphrase() {
 }
 
 export async function getMyPublicKey() {
-  const passphrase = await getMyPassphrase();
-  return Lisk.cryptography.getAddressAndPublicKeyFromPassphrase(passphrase).publicKey.toString('hex');
+  const myPublicKey: string = selectMyPublicKeyCache(store.getState());
+  if (myPublicKey) {
+    return myPublicKey;
+  } else {
+    const passphrase = await getMyPassphrase();
+    const publicKey = Lisk.cryptography.getAddressAndPublicKeyFromPassphrase(passphrase).publicKey.toString('hex');
+
+    store.dispatch(setMyPublicKeyCache(publicKey));
+    return publicKey;
+  }
 }
 
 export async function getMyBase32() {
