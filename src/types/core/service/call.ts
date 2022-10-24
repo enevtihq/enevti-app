@@ -4,7 +4,7 @@ import { NFTActivityName } from '../chain/nft/NFTActivity';
 export type StartVideoCallHandlerPayload = {
   id: string;
   serial: string;
-  rejectData: string;
+  signatureFormat: string;
   callerPersona: Persona;
   avatarUrl: string;
 };

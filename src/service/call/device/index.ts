@@ -7,16 +7,14 @@ import { StartVideoCallPayloadIOS } from 'enevti-app/types/core/service/call';
 import { store } from 'enevti-app/store/state';
 import { initAPNToken } from 'enevti-app/store/middleware/thunk/session/apn';
 import { AnyAction } from '@reduxjs/toolkit';
-import {
-  setupIOSVideoCallHandler,
-  setupIOSVideoCallHandlerWithAwait,
-} from 'enevti-app/service/firebase/fcm/startVideoCall';
 import { selectDisplayState } from 'enevti-app/store/slices/ui/screen/display';
 import { videoCallSocketBase } from 'enevti-app/utils/network';
 import { getMyPublicKey } from 'enevti-app/service/enevti/persona';
 import { createSignature } from 'enevti-app/utils/cryptography';
 import { EventRegister } from 'react-native-event-listeners';
+import { setupIOSVideoCallHandler, setupIOSVideoCallHandlerWithAwait } from './ios';
 
+export const CALL_AWAIT_TIME = 150;
 const ENEVTI_LOGO_URL = 'https://pbs.twimg.com/profile_images/1399393541294415873/83l_AT9i_400x400.jpg';
 
 const options: IOptions = {
@@ -68,18 +66,17 @@ async function onVoipNotificationReceived(notification: StartVideoCallPayloadIOS
 
   const socket = videoCallSocketBase();
   const publicKey = await getMyPublicKey();
-  const signature = await createSignature(notification.data.id);
+  const signatureFormat = notification.data.signatureFormat;
+  const signature = await createSignature(signatureFormat);
+  socket.on('callRinged', () => {});
   socket.emit('ringing', { nftId: notification.data.id, callId: notification.uuid, emitter: publicKey, signature });
 
-  const rejectData = notification.data.rejectData;
-  const rejectSignature = await createSignature(rejectData);
-
   if (!callInteracted) {
+    setupIOSVideoCallHandler(socket, notification, publicKey, signature, display);
     RNCallKeep.removeEventListener('answerCall');
     RNCallKeep.removeEventListener('endCall');
-    setupIOSVideoCallHandler(socket, notification, publicKey, signature, rejectSignature, display, false);
   } else {
-    EventRegister.emit('iosVideoCallReady', { socket, publicKey, signature, rejectSignature });
+    EventRegister.emit('iosVideoCallReady', { socket, publicKey, signature });
   }
 }
 
