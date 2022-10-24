@@ -1,4 +1,5 @@
 import { FirebaseMessagingTypes } from '@react-native-firebase/messaging';
+import cancelVideoCallFCMHandler from './cancelVideoCall';
 import deliverSecretNotifFCMHandler from './deliverSecretNotif';
 import newRaffledFCMHandler from './newRaffled';
 import startVideoCallFCMHandler from './startVideoCall';
@@ -18,6 +19,9 @@ export default async function handleFCM(remoteMessage: FirebaseMessagingTypes.Re
         break;
       case 'startVideoCall':
         await startVideoCallFCMHandler(remoteMessage);
+        break;
+      case 'cancelVideoCall':
+        await cancelVideoCallFCMHandler(remoteMessage);
         break;
       default:
         break;

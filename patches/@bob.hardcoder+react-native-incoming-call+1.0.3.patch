@@ -1,5 +1,32 @@
+diff --git a/node_modules/@bob.hardcoder/react-native-incoming-call/android/src/main/java/com/incomingcall/IncomingCallModule.java b/node_modules/@bob.hardcoder/react-native-incoming-call/android/src/main/java/com/incomingcall/IncomingCallModule.java
+index 5989ad0..abef6a1 100644
+--- a/node_modules/@bob.hardcoder/react-native-incoming-call/android/src/main/java/com/incomingcall/IncomingCallModule.java
++++ b/node_modules/@bob.hardcoder/react-native-incoming-call/android/src/main/java/com/incomingcall/IncomingCallModule.java
+@@ -13,6 +13,7 @@ import com.facebook.react.bridge.Callback;
+ import com.facebook.react.bridge.Promise;
+ import com.facebook.react.bridge.WritableMap;
+ import com.facebook.react.bridge.WritableNativeMap;
++import com.facebook.react.modules.core.DeviceEventManagerModule;
+ 
+ public class IncomingCallModule extends ReactContextBaseJavaModule {
+ 
+@@ -57,6 +58,14 @@ public class IncomingCallModule extends ReactContextBaseJavaModule {
+         }
+     }
+ 
++    @ReactMethod
++    public void dismiss() {
++        if (UnlockScreenActivity.active) {
++            UnlockScreenActivity.dismiss();
++        }
++        return;
++    }
++
+     private Context getAppContext() {
+         return this.reactContext.getApplicationContext();
+     }
 diff --git a/node_modules/@bob.hardcoder/react-native-incoming-call/android/src/main/java/com/incomingcall/UnlockScreenActivity.java b/node_modules/@bob.hardcoder/react-native-incoming-call/android/src/main/java/com/incomingcall/UnlockScreenActivity.java
-index 5d1d0aa..3b73345 100644
+index 5d1d0aa..a18e590 100644
 --- a/node_modules/@bob.hardcoder/react-native-incoming-call/android/src/main/java/com/incomingcall/UnlockScreenActivity.java
 +++ b/node_modules/@bob.hardcoder/react-native-incoming-call/android/src/main/java/com/incomingcall/UnlockScreenActivity.java
 @@ -11,8 +11,10 @@ import android.widget.TextView;
@@ -34,6 +61,22 @@ index 5d1d0aa..3b73345 100644
          player.start();
  
          AnimateImage acceptCallBtn = findViewById(R.id.ivAcceptCall);
+@@ -157,6 +171,15 @@ public class UnlockScreenActivity extends AppCompatActivity implements UnlockScr
+         dismissDialing();
+     }
+ 
++    public static void dismiss() {
++        WritableMap params = Arguments.createMap();
++        v.cancel();
++        player.stop();
++        player.prepareAsync();
++        IncomingCallModule.reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("endCall", params);
++        fa.finish();
++    }
++
+     private void acceptDialing() {
+         WritableMap params = Arguments.createMap();
+         params.putBoolean("accept", true);
 diff --git a/node_modules/@bob.hardcoder/react-native-incoming-call/android/src/main/res/values/colors.xml b/node_modules/@bob.hardcoder/react-native-incoming-call/android/src/main/res/values/colors.xml
 index 104b062..c580c9c 100644
 --- a/node_modules/@bob.hardcoder/react-native-incoming-call/android/src/main/res/values/colors.xml

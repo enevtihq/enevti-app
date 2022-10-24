@@ -355,6 +355,14 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
         return;
       }
     } else {
+      if (['starting', 'ringing'].includes(status)) {
+        socket.current?.emit('cancel', {
+          nftId: route.params.nftId,
+          callId: callId.current,
+          emitter: myPublicKeyRef.current,
+          signature: signature.current,
+        });
+      }
       setStatus('exited');
     }
     await onExitCall();
