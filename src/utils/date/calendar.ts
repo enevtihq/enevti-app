@@ -51,7 +51,7 @@ export const addRedeemCalendarEvent = async (nft: NFT) => {
       }
       break;
     case 'weekly':
-      startTime = dateOfNearestDayUTC(now, nftTime.day).getTime();
+      startTime = dateOfNearestDayUTC(new Date(baseTime), nftTime.day).getTime();
       if (startTime > now.getTime()) {
         nextTime = i18n.t('date:week');
       }
@@ -88,8 +88,8 @@ export const addRedeemCalendarEvent = async (nft: NFT) => {
     )}`,
     notes: i18n.t('nftDetails:calendarDescription'),
     alarms: [{ date: 60 }],
-    startDate: new Date(startTime).toISOString(),
-    endDate: new Date(startTime + nft.redeem.schedule.until).toISOString(),
+    startDate: new Date(startTime).toLocaleString(),
+    endDate: new Date(startTime + nft.redeem.schedule.until).toLocaleString(),
     recurrence: recurrence,
   };
 
