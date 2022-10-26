@@ -34,15 +34,15 @@ export const reducePayCreateNFTOneKind = (): AppThunk => async (dispatch, getSta
       cover = payload.asset.cover,
       content = payload.asset.content;
 
-    // if (meta.state.storageProtocol === 'ipfs') {
-    //   const provider = meta.state.storageProtocol;
-    //   dispatch(setModalLoaderText(i18n.t('payment:uploadingTo', { file: 'data', provider })));
-    //   data = await uploadURItoIPFS(meta.data.uri);
-    //   dispatch(setModalLoaderText(i18n.t('payment:uploadingTo', { file: 'cover', provider })));
-    //   cover = meta.state.coverUri ? await uploadURItoIPFS(meta.state.coverUri) : data;
-    //   dispatch(setModalLoaderText(i18n.t('payment:uploadingTo', { file: 'content', provider })));
-    //   content = meta.state.utility === 'content' ? await uploadURItoIPFS(meta.state.contentUri) : '';
-    // }
+    if (meta.state.storageProtocol === 'ipfs') {
+      const provider = meta.state.storageProtocol;
+      dispatch(setModalLoaderText(i18n.t('payment:uploadingTo', { file: 'data', provider })));
+      data = await uploadURItoIPFS(meta.data.uri);
+      dispatch(setModalLoaderText(i18n.t('payment:uploadingTo', { file: 'cover', provider })));
+      cover = meta.state.coverUri ? await uploadURItoIPFS(meta.state.coverUri) : data;
+      dispatch(setModalLoaderText(i18n.t('payment:uploadingTo', { file: 'content', provider })));
+      content = meta.state.utility === 'content' ? await uploadURItoIPFS(meta.state.contentUri) : '';
+    }
 
     transactionPayload.asset.data = data;
     transactionPayload.asset.cover = cover;
