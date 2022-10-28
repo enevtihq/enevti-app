@@ -88,8 +88,8 @@ export const addRedeemCalendarEvent = async (nft: NFT) => {
     )}`,
     notes: i18n.t('nftDetails:calendarDescription'),
     alarms: [{ date: 60 }],
-    startDate: new Date(startTime).toLocaleString(),
-    endDate: new Date(startTime + nft.redeem.schedule.until).toLocaleString(),
+    startDate: new Date(startTime).toISOString(),
+    endDate: new Date(startTime + nft.redeem.schedule.until).toISOString(),
     recurrence: recurrence,
   };
 
