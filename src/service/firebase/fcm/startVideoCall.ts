@@ -1,7 +1,7 @@
 import { FirebaseMessagingTypes } from '@react-native-firebase/messaging';
 import runInBackground from 'enevti-app/utils/background/task/runInBackground';
 import { getMyPublicKey, parsePersonaLabel } from 'enevti-app/service/enevti/persona';
-import { displayIncomingCall } from 'enevti-app/service/call/device';
+import { CALL_AWAIT_TIME, displayIncomingCall } from 'enevti-app/service/call/device';
 import { makeUrl } from 'enevti-app/utils/constant/URLCreator';
 import i18n from 'enevti-app/translations/i18n';
 import { StartVideoCallPayload } from 'enevti-app/types/core/service/call';
@@ -17,10 +17,47 @@ import {
   setupAndroidVideoCallHandler,
   setupAndroidVideoCallHandlerWithAwait,
 } from 'enevti-app/service/call/device/android';
+import OverlayPermissionModule from 'rn-android-overlay-permission';
+import { showNotification } from 'enevti-app/utils/notification';
+import sleep from 'enevti-app/utils/dummy/sleep';
 
 export default async function startVideoCallFCMHandler(remoteMessage: FirebaseMessagingTypes.RemoteMessage) {
   await runInBackground(async () => {
     const payload = JSON.parse(remoteMessage.data!.payload) as StartVideoCallPayload;
+
+    if (Platform.OS === 'android') {
+      const overlayAvailable = await new Promise<boolean>(res => {
+        OverlayPermissionModule.isRequestOverlayPermissionGranted((status: any) => {
+          if (status) {
+            res(false);
+          } else {
+            res(true);
+          }
+        });
+      });
+      if (!overlayAvailable) {
+        await showNotification({
+          id: 'VCFailNoOverlay',
+          actionId: 'VCFailNoOverlay',
+          title: i18n.t('redeem:VCAndroidNoOverlayPermissionTitle', { serial: payload.data.serial }),
+          body: i18n.t('redeem:VCAndroidNoOverlayPermissionDesc'),
+        });
+        const socket = videoCallSocketBase();
+        const publicKey = await getMyPublicKey();
+        const signatureFormat = payload.data.signatureFormat;
+        const signature = await createSignature(signatureFormat);
+        await sleep(CALL_AWAIT_TIME);
+        socket.emit('rejected', {
+          nftId: payload.data.id,
+          callId: payload.uuid,
+          emitter: publicKey,
+          signature: signature,
+        });
+        socket.disconnect();
+        return;
+      }
+    }
+
     const avatarUrl = makeUrl(payload.data.avatarUrl);
     displayIncomingCall(
       payload.uuid,

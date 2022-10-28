@@ -172,6 +172,7 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
 
   const onVideoCallStatusChanged = React.useCallback(
     async (_param: VideoCallStatusChangedParams) => {
+      setCallStatusActionLoading(false);
       const nftResponse = await getNFTbyId(route.params.nftId, abortController.current?.signal);
       if (nftResponse.status === 200) {
         setNft(nftResponse.data);
@@ -724,8 +725,13 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
         navigation.goBack();
       }
       if (paymentStatus.action === 'setVideoCallAnswered') {
-        if (paymentStatus.key === route.key && status === 'ended') {
-          navigation.goBack();
+        if (paymentStatus.key === route.key) {
+          if (status === 'ended') {
+            navigation.goBack();
+          } else {
+            setCallStatusActionLoading(true);
+            setCallStatusChainLabel(t('redeem:VCLoadingStatusFinalized'));
+          }
         }
         if (paymentStatus.key === `CA:${route.key}`) {
           socket.current?.emit('respondToCreatorStatusAsk', {

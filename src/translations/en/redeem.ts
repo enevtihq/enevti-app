@@ -36,6 +36,7 @@ export default {
   VCOwnerAlreadySetStatus: "Owner already set this call on-chain status as '{{status}}'",
   VCYouAvailableSetStatus: "You can set this call on-chain status as '{{status}}'",
   VCOwnerHasntSetStatus: "Owner hasn't set any on-chain status yet",
+  VCLoadingStatusFinalized: 'Please wait for status to be finalized on-chain',
   VCMarkAsAcceptedButton: 'Mark as Answered',
   VCAskOwnerToAcceptButton: 'Ask Owner to Mark as Answered',
   VCTimesUp: "Time's Up!",
@@ -70,4 +71,6 @@ export default {
   VCSendTipButton: 'Send Tip',
   VCTipTooLow: 'Minimum tip is {{minTip}} {{currency}}',
   VCTipReceived: 'You get a tip of {{amount}} {{currency}}',
+  VCAndroidNoOverlayPermissionTitle: 'Failed to Redeem {{serial}}',
+  VCAndroidNoOverlayPermissionDesc: 'Someone is calling, but no overlay permission!',
 };
