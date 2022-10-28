@@ -44,6 +44,7 @@ import { useTranslation } from 'react-i18next';
 import NetInfo from '@react-native-community/netinfo';
 import {
   cleanCallSound,
+  initCallSound,
   playCallAnswerSound,
   playCallBusySound,
   playCallEndSound,
@@ -865,6 +866,7 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
 
     const run = async () => {
       try {
+        await initCallSound();
         const now = Date.now();
         const myAddress = await getMyAddress();
         const nftResponse = await getNFTbyId(route.params.nftId, abortController.current?.signal);
