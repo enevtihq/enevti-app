@@ -34,6 +34,15 @@ export async function initCallSound() {
   }
 }
 
+export async function stopCallSound() {
+  await CallAnswerSound.stop();
+  await CallBusySound.stop();
+  await CallEndSound.stop();
+  await CallingSound.stop();
+  await MessageReceivedSound.stop();
+  await MessageSentSound.stop();
+}
+
 export async function cleanCallSound() {
   await CallAnswerSound.release();
   await CallBusySound.release();

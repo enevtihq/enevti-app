@@ -51,6 +51,7 @@ import {
   playCallingSound,
   stopCallBusySound,
   stopCallingSound,
+  stopCallSound,
 } from 'enevti-app/service/call/device/sound';
 import { NFT } from 'enevti-app/types/core/chain/nft';
 import {
@@ -970,6 +971,7 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
       dispatch(setStatusBarTint('system'));
       unsubscribeFocus();
       unsubscribeNetInfo();
+      stopCallSound();
       cleanCallSound();
       socket.current?.disconnect();
       nftSocket.current?.disconnect();
