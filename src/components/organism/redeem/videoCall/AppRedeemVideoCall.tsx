@@ -256,12 +256,20 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
     stopCallBusySound();
   }, [dispatch]);
 
-  const onExitCall = React.useCallback(async () => {
-    cleanCall();
-    playCallEndSound(() => {
-      navigation.goBack();
-    });
-  }, [cleanCall, navigation]);
+  const onExitCall = React.useCallback(
+    async (param?: { someoneIsCalling?: boolean }) => {
+      cleanCall();
+      playCallEndSound(() => {
+        navigation.goBack();
+        if (param && param.someoneIsCalling) {
+          sleep(500).then(() => {
+            navigation.navigate('NFTDetails', { mode: 'id', arg: someoneIsCallingNftId.current, redeem: 'true' });
+          });
+        }
+      });
+    },
+    [cleanCall, navigation],
+  );
 
   const onCallRejected = React.useCallback(
     async (_param: CallRejectedParam) => {
@@ -341,34 +349,37 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
     [dispatch, onExitCall, t],
   );
 
-  const onEndButtonPress = React.useCallback(async () => {
-    if (status === 'answered') {
-      socket.current?.emit('ended', {
-        nftId: route.params.nftId,
-        callId: callId.current,
-        emitter: myPublicKeyRef.current,
-        signature: signature.current,
-      });
-      setStatus('ended');
-      if (callModeRef.current === 'owner' && nftRef.current?.redeem.count === 0) {
-        cleanCall();
-        playCallEndSound();
-        setAnsweredModalShow(true);
-        return;
-      }
-    } else {
-      if (['starting', 'ringing'].includes(status)) {
-        socket.current?.emit('cancel', {
+  const onEndButtonPress = React.useCallback(
+    async (param?: { someoneIsCalling?: boolean }) => {
+      if (status === 'answered') {
+        socket.current?.emit('ended', {
           nftId: route.params.nftId,
           callId: callId.current,
           emitter: myPublicKeyRef.current,
           signature: signature.current,
         });
+        setStatus('ended');
+        if (callModeRef.current === 'owner' && nftRef.current?.redeem.count === 0) {
+          cleanCall();
+          playCallEndSound();
+          setAnsweredModalShow(true);
+          return;
+        }
+      } else {
+        if (['starting', 'ringing'].includes(status)) {
+          socket.current?.emit('cancel', {
+            nftId: route.params.nftId,
+            callId: callId.current,
+            emitter: myPublicKeyRef.current,
+            signature: signature.current,
+          });
+        }
+        setStatus('exited');
       }
-      setStatus('exited');
-    }
-    await onExitCall();
-  }, [cleanCall, onExitCall, route.params.nftId, status]);
+      await onExitCall(param);
+    },
+    [cleanCall, onExitCall, route.params.nftId, status],
+  );
 
   const onSetStatusCallChainAnsweredCA = React.useCallback(() => {
     if (nftRef.current) {
@@ -458,9 +469,8 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
   }, []);
 
   const onSomeoneIsCallingYes = React.useCallback(async () => {
-    await onEndButtonPress();
-    navigation.navigate('NFTDetails', { mode: 'id', arg: someoneIsCallingNftId.current, redeem: 'true' });
-  }, [navigation, onEndButtonPress]);
+    await onEndButtonPress({ someoneIsCalling: true });
+  }, [onEndButtonPress]);
 
   const onSomeoneIsCallingNo = React.useCallback(async () => {
     setSomeoneIsCalling(false);

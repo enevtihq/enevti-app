@@ -25,12 +25,33 @@ import { NFT } from 'enevti-app/types/core/chain/nft';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { RouteProp } from '@react-navigation/native';
-import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
+import i18n from 'enevti-app/translations/i18n';
 
 interface AppNFTDetailsRedeemBarProps {
   nft: NFT;
   navigation: StackNavigationProp<RootStackParamList>;
   route: RouteProp<RootStackParamList, 'NFTDetails'>;
+}
+
+export async function getRedeemErrors(nft: NFT): Promise<[boolean, string]> {
+  const addr = await getMyAddress();
+  const isTime = isRedeemTimeUTC(nft);
+
+  let error: string = i18n.t('nftDetails:redeemError');
+  let errorCount: number = 1;
+
+  const isExceeded = nft.redeem.status === 'limit-exceeded';
+  const isNotOwner =
+    nft.utility === 'videocall' ? ![nft.owner.address, nft.creator.address].includes(addr) : nft.owner.address !== addr;
+  const isPending = nft.redeem.status === 'pending-secret';
+  const isNotTime = !isTime;
+
+  isExceeded ? (error += `\n${errorCount++}. ${i18n.t('error:redeemExceeded')}`) : {};
+  isNotOwner ? (error += `\n${errorCount++}. ${i18n.t('error:notTheOwner')}`) : {};
+  isPending ? (error += `\n${errorCount++}. ${i18n.t('error:isPending')}`) : {};
+  isNotTime ? (error += `\n${errorCount++}. ${i18n.t('error:notTheTime')}`) : {};
+
+  return [isExceeded || isNotOwner || isPending || isNotTime, error];
 }
 
 export default function AppNFTDetailsRedeemBar({ nft, navigation, route }: AppNFTDetailsRedeemBarProps) {
@@ -60,36 +81,10 @@ export default function AppNFTDetailsRedeemBar({ nft, navigation, route }: AppNF
   }, [nft]);
 
   const onLoaded = React.useCallback(async () => {
-    const addr = await getMyAddress();
-    const isTime = isRedeemTimeUTC(nft);
-
-    let error: string = t('nftDetails:redeemError');
-    let errorCount: number = 1;
-
-    const isExceeded = nft.redeem.status === 'limit-exceeded';
-    const isNotOwner =
-      nft.utility === 'videocall'
-        ? ![nft.owner.address, nft.creator.address].includes(addr)
-        : nft.owner.address !== addr;
-    const isPending = nft.redeem.status === 'pending-secret';
-    const isNotTime = !isTime;
-
-    isExceeded ? (error += `\n${errorCount++}. ${t('error:redeemExceeded')}`) : {};
-    isNotOwner ? (error += `\n${errorCount++}. ${t('error:notTheOwner')}`) : {};
-    isPending ? (error += `\n${errorCount++}. ${t('error:isPending')}`) : {};
-    isNotTime ? (error += `\n${errorCount++}. ${t('error:notTheTime')}`) : {};
-
-    setRedeemButtonDisabled(isExceeded || isNotOwner || isPending || isNotTime);
-    setRedeemError(error);
-
-    if (route.params.redeem === 'true') {
-      if (isExceeded || isNotOwner || isPending || isNotTime) {
-        dispatch(showSnackbar({ mode: 'info', text: t('nftDetails:redeemFailed') }));
-      } else {
-        onRedeem();
-      }
-    }
-  }, [dispatch, nft, onRedeem, route.params.redeem, t]);
+    const [redeemNotAvailable, redeemErrors] = await getRedeemErrors(nft);
+    setRedeemButtonDisabled(redeemNotAvailable);
+    setRedeemError(redeemErrors);
+  }, [nft]);
 
   React.useEffect(() => {
     onLoaded();

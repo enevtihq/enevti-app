@@ -40,6 +40,9 @@ import { reduceNewNFTUpdates } from 'enevti-app/store/middleware/thunk/socket/nf
 import { useTranslation } from 'react-i18next';
 import AppFloatingNotifButton from 'enevti-app/components/molecules/button/AppFloatingNotifButton';
 import { reduceNewNFTLike } from 'enevti-app/store/middleware/thunk/socket/nftDetails/newLike';
+import { getRedeemErrors } from './AppNFTDetailsRedeemBar';
+import { reduceRedeem } from 'enevti-app/store/middleware/thunk/redeem';
+import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 
 const noDisplay = 'none';
 const visible = 1;
@@ -60,6 +63,7 @@ export default function AppNFTDetails({ onScrollWorklet, navigation, route }: Ap
   const headerHeight = hp(HEADER_HEIGHT_PERCENTAGE) + insets.top;
   const styles = React.useMemo(() => makeStyles(hp, wp), [hp, wp]);
 
+  const autoRedeemedRef = React.useRef<boolean>(false);
   const nftDetails = useSelector((state: RootState) => selectNFTDetailsView(state, route.key));
   const nftDetailsUndefined = useSelector((state: RootState) => isNFTDetailsUndefined(state, route.key));
   const newUpdate = useSelector((state: RootState) => isThereAnyNewNFTUpdates(state, route.key));
@@ -68,6 +72,22 @@ export default function AppNFTDetails({ onScrollWorklet, navigation, route }: Ap
   const onUpdateClose = React.useCallback(() => {
     dispatch(setNFTDetailsVersion({ key: route.key, value: Date.now() }));
   }, [dispatch, route.key]);
+
+  const onCheckRouteAutoRedeem = React.useCallback(async () => {
+    if (nftDetails.loaded && route.params.redeem === 'true' && !autoRedeemedRef.current) {
+      autoRedeemedRef.current = true;
+      const redeemErrors = await getRedeemErrors(nftDetails);
+      if (redeemErrors[0]) {
+        dispatch(showSnackbar({ mode: 'info', text: t('nftDetails:redeemFailed') }));
+      } else {
+        dispatch(reduceRedeem(nftDetails, navigation, route));
+      }
+    }
+  }, [dispatch, navigation, nftDetails, route, t]);
+
+  React.useEffect(() => {
+    onCheckRouteAutoRedeem();
+  }, [onCheckRouteAutoRedeem]);
 
   React.useEffect(() => {
     if (nftDetails.loaded && nftDetails.id) {
