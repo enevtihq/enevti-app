@@ -7,6 +7,7 @@
 package com.enevti;
 
 import android.content.Context;
+import android.os.Build;
 import com.facebook.flipper.android.AndroidFlipperClient;
 import com.facebook.flipper.android.utils.FlipperUtils;
 import com.facebook.flipper.core.FlipperClient;
@@ -26,7 +27,8 @@ import okhttp3.OkHttpClient;
 
 public class ReactNativeFlipper {
   public static void initializeFlipper(Context context, ReactInstanceManager reactInstanceManager) {
-    if (FlipperUtils.shouldEnableFlipper(context)) {
+    // https://github.com/facebook/flipper/issues/3572
+    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1 && FlipperUtils.shouldEnableFlipper(context)) {
       final FlipperClient client = AndroidFlipperClient.getInstance(context);
 
       client.addPlugin(new InspectorFlipperPlugin(context, DescriptorMapping.withDefaults()));
