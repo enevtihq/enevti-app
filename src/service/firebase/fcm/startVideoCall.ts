@@ -17,24 +17,16 @@ import {
   setupAndroidVideoCallHandler,
   setupAndroidVideoCallHandlerWithAwait,
 } from 'enevti-app/service/call/device/android';
-import OverlayPermissionModule from 'rn-android-overlay-permission';
 import { showNotification } from 'enevti-app/utils/notification';
 import sleep from 'enevti-app/utils/dummy/sleep';
+import { isOverlayPermissionGranted } from 'enevti-app/utils/permission';
 
 export default async function startVideoCallFCMHandler(remoteMessage: FirebaseMessagingTypes.RemoteMessage) {
   await runInBackground(async () => {
     const payload = JSON.parse(remoteMessage.data!.payload) as StartVideoCallPayload;
 
     if (Platform.OS === 'android') {
-      const overlayAvailable = await new Promise<boolean>(res => {
-        OverlayPermissionModule.isRequestOverlayPermissionGranted((status: any) => {
-          if (status) {
-            res(false);
-          } else {
-            res(true);
-          }
-        });
-      });
+      const overlayAvailable = await isOverlayPermissionGranted();
       if (!overlayAvailable) {
         await showNotification({
           id: 'VCFailNoOverlay',
