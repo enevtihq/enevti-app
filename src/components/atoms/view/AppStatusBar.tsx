@@ -1,4 +1,4 @@
-import { Dimensions, StatusBar } from 'react-native';
+import { Dimensions, Platform, StatusBar } from 'react-native';
 import React from 'react';
 import { useTheme } from 'react-native-paper';
 import { useSelector } from 'react-redux';
@@ -22,18 +22,32 @@ export default function AppStatusBar() {
         : undefined,
     [statusbarState.tint, theme.dark],
   );
+
+  const isAndroidLolipopLight = React.useMemo(
+    () => Platform.OS === 'android' && Platform.constants.Version < 23 && !theme.dark,
+    [theme.dark],
+  );
+  const themeBackgroundColor = React.useMemo(
+    () => (isAndroidLolipopLight ? 'black' : theme.colors.background),
+    [isAndroidLolipopLight, theme.colors.background],
+  );
+  const lightBackgroundColor = React.useMemo(
+    () => (isAndroidLolipopLight ? 'black' : lightTheme.colors.background),
+    [isAndroidLolipopLight],
+  );
+  const darkBackgroundColor = React.useMemo(() => darkTheme.colors.background, []);
   const backgroundColor = React.useMemo(
     () =>
       statusbarState.background === 'system'
-        ? theme.colors.background
+        ? themeBackgroundColor
         : statusbarState.background === 'dark'
-        ? darkTheme.colors.background
+        ? darkBackgroundColor
         : statusbarState.background === 'light'
-        ? lightTheme.colors.background
+        ? lightBackgroundColor
         : statusbarState.background === 'transparent'
         ? 'transparent'
         : undefined,
-    [statusbarState.background, theme.colors.background],
+    [darkBackgroundColor, lightBackgroundColor, statusbarState.background, themeBackgroundColor],
   );
 
   return <StatusBar animated translucent={true} barStyle={barStyle} backgroundColor={backgroundColor} />;
