@@ -10,12 +10,12 @@ import AppTextHeading1 from 'enevti-app/components/atoms/text/AppTextHeading1';
 import AppTextBody3 from 'enevti-app/components/atoms/text/AppTextBody3';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from 'react-native-paper';
-import OverlayPermissionModule from 'rn-android-overlay-permission';
 import { Theme } from 'enevti-app/theme/default';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { useDispatch } from 'react-redux';
 import { touchAppOnboarded } from 'enevti-app/store/slices/entities/onboarding/app';
+import { isOverlayPermissionGranted } from 'enevti-app/utils/permission';
 
 type Props = StackScreenProps<RootStackParamList, 'AppOnboarding'>;
 
@@ -105,16 +105,15 @@ export default function AppOnboarding({ navigation }: Props) {
 
   const onSnapToItem = React.useCallback(slideIndex => setIndex(slideIndex), []);
 
-  const onActionButtonPress = React.useCallback(() => {
+  const onActionButtonPress = React.useCallback(async () => {
     dispatch(touchAppOnboarded());
     if (Platform.OS === 'android') {
-      OverlayPermissionModule.isRequestOverlayPermissionGranted((status: any) => {
-        if (status) {
-          navigation.replace('RequestOverlayPermission');
-        } else {
-          navigation.replace('CreateAccount');
-        }
-      });
+      const isOverlayPermission = await isOverlayPermissionGranted();
+      if (isOverlayPermission) {
+        navigation.replace('CreateAccount');
+      } else {
+        navigation.replace('RequestOverlayPermission');
+      }
     } else {
       navigation.replace('CreateAccount');
     }
@@ -168,8 +167,8 @@ const makeStyles = () =>
       marginBottom: hp(5),
     },
     onboardingComponent: {
-      width: wp(80),
-      height: wp(80),
+      width: '100%',
+      height: '100%',
     },
     componentImage: {
       width: '100%',
@@ -186,6 +185,7 @@ const makeStyles = () =>
     },
     itemDescription: {
       textAlign: 'center',
+      marginBottom: hp(3),
     },
     itemComponent: {
       justifyContent: 'center',
