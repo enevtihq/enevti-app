@@ -14,6 +14,7 @@ import AppConfirmationModal from 'enevti-app/components/organism/menu/AppConfirm
 import { Theme } from 'enevti-app/theme/default';
 import { useTheme } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
+import { isOverlayPermissionGranted } from 'enevti-app/utils/permission';
 
 type Props = StackScreenProps<RootStackParamList, 'RequestOverlayPermission'>;
 
@@ -27,18 +28,22 @@ export default function RequestOverlayPermission({ navigation }: Props) {
   const onActionButtonPress = React.useCallback(async () => {
     if (Platform.OS === 'android') {
       setModalVisible(false);
-      OverlayPermissionModule.requestOverlayPermission();
+      if (Platform.constants.Version >= 23) {
+        OverlayPermissionModule.requestOverlayPermission();
+      } else {
+        navigation.replace('CreateAccount');
+      }
     }
-  }, []);
+  }, [navigation]);
 
   const handleChange = React.useCallback(
     (nextState: string) => {
       if (!display.maximized && nextState === 'active') {
-        OverlayPermissionModule.isRequestOverlayPermissionGranted((status: any) => {
-          if (status) {
-            setModalVisible(true);
-          } else {
+        isOverlayPermissionGranted().then(isGranted => {
+          if (isGranted) {
             navigation.replace('CreateAccount');
+          } else {
+            setModalVisible(true);
           }
         });
       }
@@ -98,8 +103,8 @@ export default function RequestOverlayPermission({ navigation }: Props) {
 const makeStyles = () =>
   StyleSheet.create({
     image: {
-      width: wp(80),
-      height: wp(80),
+      width: '100%',
+      height: '100%',
     },
     componentImage: {
       width: '100%',
