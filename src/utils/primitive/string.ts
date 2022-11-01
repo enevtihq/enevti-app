@@ -39,3 +39,8 @@ export function isNumeric(str: string): boolean {
   }
   return !isNaN(str as unknown as number) && !isNaN(parseFloat(str));
 }
+
+export function chunkString(str: string, size: number): string[] {
+  const regex = `.{1,${size}}`;
+  return str.match(new RegExp(regex, 'g')) as string[];
+}

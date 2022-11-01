@@ -12,7 +12,7 @@ const LATEST_VERSION = 1;
 const SUPPORTED_VERSION = [1];
 
 export const ENCRYPTED_FILE_EXTENSION = 'enc';
-export const PBKDF2_ITERATION = 1000;
+export const PBKDF2_ITERATION = 65536;
 
 export async function encryptWithPassword(
   text: string,
