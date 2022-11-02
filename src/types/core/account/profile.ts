@@ -1,9 +1,10 @@
 import { NFTBase } from '../chain/nft';
 import { CollectionBase } from '../chain/collection';
 import { SocialProfile } from './social';
-import { CollectionIdAsset, NFTIdAsset } from '../chain/id';
+import { CollectionIdAsset, MomentIdAsset, NFTIdAsset } from '../chain/id';
 import { Persona, PersonaAsset } from './persona';
 import { ActivityBase, ActivityChainBase } from '../chain/activity';
+import { MomentBase } from '../chain/moment';
 
 export type ProfileView = Profile & { persona: Persona };
 
@@ -22,7 +23,7 @@ export type Profile = {
   likeSent: number;
   commentSent: number;
   momentSlot: number;
-  momentCreated: number;
+  momentCreated: MomentBase[];
 };
 
 export type RedeemableNFTAccountStatsChain = {
@@ -30,7 +31,6 @@ export type RedeemableNFTAccountStatsChain = {
   treasuryAct: Buffer[];
   raffled: Buffer[];
   momentSlot: Buffer[];
-  momentCreated: Buffer[];
   serveRate: {
     score: number;
     items: {
@@ -68,12 +68,12 @@ export type RedeemableNFTAccountProps = {
     serveRate: number;
     raffled: number;
     momentSlot: number;
-    momentCreated: number;
     likeSent: number;
     commentSent: number;
     commentClubsSent: number;
     owned: NFTIdAsset[];
     onSale: NFTIdAsset[];
+    momentCreated: MomentIdAsset[];
     collection: CollectionIdAsset[];
     pending: NFTIdAsset[];
   };

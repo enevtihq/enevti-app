@@ -25,7 +25,7 @@ export async function encryptText_v1(
     iv: encrypted.iv,
     salt: encrypted.salt,
     tag: '',
-    version: 1,
+    version: VERSION,
   };
   const base64Reps = base64.encode(JSON.stringify(ret));
   return {

@@ -38,7 +38,7 @@ const initialState: Profile & {
   owned: [],
   onSale: [],
   collection: [],
-  momentCreated: 0,
+  momentCreated: [],
   momentSlot: 0,
   pending: 0,
   raffled: 0,
