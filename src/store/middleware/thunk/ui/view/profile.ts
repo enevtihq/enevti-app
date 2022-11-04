@@ -3,32 +3,22 @@ import { getMyProfile, getProfile, getProfileCollection, getProfileOwned } from 
 import { handleError, isErrorResponse } from 'enevti-app/utils/error/handle';
 import { hideModalLoader, showModalLoader } from 'enevti-app/store/slices/ui/global/modalLoader';
 import {
-  pushMyProfileViewCollection,
-  pushMyProfileViewOwnedNFT,
   resetMyProfileView,
   selectMyProfileView,
   selectMyProfileViewCollection,
   selectMyProfileViewOwned,
   setMyProfileView,
-  setMyProfileViewCollectionPagination,
   setMyProfileViewLoaded,
-  setMyProfileViewOwnedPagination,
-  setMyProfileViewReqStatus,
 } from 'enevti-app/store/slices/ui/view/myProfile';
 import {
   clearProfileByKey,
   initProfileView,
-  pushProfileViewCollection,
-  pushProfileViewOwnedNFT,
   selectProfileView,
   selectProfileViewCollection,
   selectProfileViewOwned,
   setProfileView,
-  setProfileViewCollectionPagination,
   setProfileViewLoaded,
-  setProfileViewOwnedPagination,
   setProfileViewReqStatus,
-  setProfileViewVersion,
 } from 'enevti-app/store/slices/ui/view/profile';
 import { AppThunk, AsyncThunkAPI } from 'enevti-app/store/state';
 import { AnyAction, createAsyncThunk } from '@reduxjs/toolkit';
@@ -78,22 +68,21 @@ export const loadMoreOwned = createAsyncThunk<void, LoadProfileArgs, AsyncThunkA
     try {
       if (isMyProfile) {
         const myProfileOwned = selectMyProfileViewOwned(getState());
-        const offset = selectMyProfileView(getState()).ownedPagination.checkpoint;
-        const version = selectMyProfileView(getState()).ownedPagination.version;
+        const myProfileView = selectMyProfileView(getState());
+        const offset = myProfileView.ownedPagination.checkpoint;
+        const version = myProfileView.ownedPagination.version;
         if (myProfileOwned.length !== version) {
           const myAddress = await getMyAddress();
           const ownedResponse = await getProfileOwned(myAddress, offset, PROFILE_OWNED_RESPONSE_LIMIT, version, signal);
           dispatch(
             setMyProfileView({
-              ...selectMyProfileView(getState()),
+              ...myProfileView,
               version: Date.now(),
-            }),
-          );
-          dispatch(pushMyProfileViewOwnedNFT(ownedResponse.data.data));
-          dispatch(
-            setMyProfileViewOwnedPagination({
-              checkpoint: ownedResponse.data.checkpoint,
-              version: ownedResponse.data.version,
+              ownedPagination: {
+                checkpoint: ownedResponse.data.checkpoint,
+                version: ownedResponse.data.version,
+              },
+              owned: myProfileView.owned.concat(ownedResponse.data.data),
             }),
           );
         }
@@ -112,14 +101,17 @@ export const loadMoreOwned = createAsyncThunk<void, LoadProfileArgs, AsyncThunkA
               version,
               signal,
             );
-            dispatch(setProfileViewVersion({ key: route.key, value: Date.now() }));
-            dispatch(pushProfileViewOwnedNFT({ key: route.key, value: ownedResponse.data.data }));
             dispatch(
-              setProfileViewOwnedPagination({
+              setProfileView({
                 key: route.key,
                 value: {
-                  checkpoint: ownedResponse.data.checkpoint,
-                  version: ownedResponse.data.version,
+                  ...profile,
+                  version: Date.now(),
+                  owned: profile.owned.concat(ownedResponse.data.data),
+                  ownedPagination: {
+                    checkpoint: ownedResponse.data.checkpoint,
+                    version: ownedResponse.data.version,
+                  },
                 },
               }),
             );
@@ -138,8 +130,9 @@ export const loadMoreCollection = createAsyncThunk<void, LoadProfileArgs, AsyncT
     try {
       if (isMyProfile) {
         const myProfileCollection = selectMyProfileViewCollection(getState());
-        const offset = selectMyProfileView(getState()).collectionPagination.checkpoint;
-        const version = selectMyProfileView(getState()).collectionPagination.version;
+        const myProfileView = selectMyProfileView(getState());
+        const offset = myProfileView.collectionPagination.checkpoint;
+        const version = myProfileView.collectionPagination.version;
         if (myProfileCollection.length !== version) {
           const myAddress = await getMyAddress();
           const collectionResponse = await getProfileCollection(
@@ -151,15 +144,13 @@ export const loadMoreCollection = createAsyncThunk<void, LoadProfileArgs, AsyncT
           );
           dispatch(
             setMyProfileView({
-              ...selectMyProfileView(getState()),
+              ...myProfileView,
               version: Date.now(),
-            }),
-          );
-          dispatch(pushMyProfileViewCollection(collectionResponse.data.data));
-          dispatch(
-            setMyProfileViewCollectionPagination({
-              checkpoint: collectionResponse.data.checkpoint,
-              version: collectionResponse.data.version,
+              collection: myProfileView.collection.concat(collectionResponse.data.data),
+              collectionPagination: {
+                checkpoint: collectionResponse.data.checkpoint,
+                version: collectionResponse.data.version,
+              },
             }),
           );
         }
@@ -178,14 +169,17 @@ export const loadMoreCollection = createAsyncThunk<void, LoadProfileArgs, AsyncT
               version,
               signal,
             );
-            dispatch(setProfileViewVersion({ key: route.key, value: Date.now() }));
-            dispatch(pushProfileViewCollection({ key: route.key, value: collectionResponse.data.data }));
             dispatch(
-              setProfileViewCollectionPagination({
+              setProfileView({
                 key: route.key,
                 value: {
-                  checkpoint: collectionResponse.data.checkpoint,
-                  version: collectionResponse.data.version,
+                  ...profile,
+                  version: Date.now(),
+                  collection: profile.collection.concat(collectionResponse.data.data),
+                  collectionPagination: {
+                    checkpoint: collectionResponse.data.checkpoint,
+                    version: collectionResponse.data.version,
+                  },
                 },
               }),
             );
@@ -238,21 +232,17 @@ export const loadMyProfile = async (reload: boolean, dispatch: any, signal?: Abo
     setMyProfileView({
       ...profileResponse.data,
       version: Date.now(),
+      ownedPagination: {
+        checkpoint: PROFILE_OWNED_INITIAL_LENGTH,
+        version: profileResponse.data.versions.owned,
+      },
+      collectionPagination: {
+        checkpoint: PROFILE_COLLECTION_INITIAL_LENGTH,
+        version: profileResponse.data.versions.collection,
+      },
+      reqStatus: profileResponse.status,
     }),
   );
-  dispatch(
-    setMyProfileViewOwnedPagination({
-      checkpoint: PROFILE_OWNED_INITIAL_LENGTH,
-      version: profileResponse.data.versions.owned,
-    }),
-  );
-  dispatch(
-    setMyProfileViewCollectionPagination({
-      checkpoint: PROFILE_COLLECTION_INITIAL_LENGTH,
-      version: profileResponse.data.versions.collection,
-    }),
-  );
-  dispatch(setMyProfileViewReqStatus(profileResponse.status));
 };
 
 export const loadProfileBase = async (
@@ -279,24 +269,14 @@ export const loadProfileBase = async (
             ...profileResponse.data,
             persona: personaBase.data,
             version: Date.now(),
-          },
-        }),
-      );
-      dispatch(
-        setProfileViewOwnedPagination({
-          key: route.key,
-          value: {
-            checkpoint: PROFILE_OWNED_INITIAL_LENGTH,
-            version: profileResponse.data.versions.owned,
-          },
-        }),
-      );
-      dispatch(
-        setProfileViewCollectionPagination({
-          key: route.key,
-          value: {
-            checkpoint: PROFILE_COLLECTION_INITIAL_LENGTH,
-            version: profileResponse.data.versions.collection,
+            ownedPagination: {
+              checkpoint: PROFILE_OWNED_INITIAL_LENGTH,
+              version: profileResponse.data.versions.owned,
+            },
+            collectionPagination: {
+              checkpoint: PROFILE_COLLECTION_INITIAL_LENGTH,
+              version: profileResponse.data.versions.collection,
+            },
           },
         }),
       );

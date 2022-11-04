@@ -55,7 +55,7 @@ const myProfileViewSlice = createSlice({
   name: 'myProfileView',
   initialState,
   reducers: {
-    setMyProfileView: (profile, action: PayloadAction<Record<string, any>>) => {
+    setMyProfileView: (profile, action: PayloadAction<Partial<MyProfileViewState>>) => {
       Object.assign(profile, action.payload);
     },
     unshiftMyProfileViewOwnedNFT: (profile, action: PayloadAction<NFTBase[]>) => {

@@ -64,7 +64,7 @@ const profileViewSlice = createSlice({
     initProfileView: (profile, action: PayloadAction<string>) => {
       Object.assign(profile, { [action.payload]: initialStateItem });
     },
-    setProfileView: (profile, action: PayloadAction<{ key: string; value: Record<string, any> }>) => {
+    setProfileView: (profile, action: PayloadAction<{ key: string; value: Partial<ProfileViewState> }>) => {
       Object.assign(profile, {
         [action.payload.key]: action.payload.value,
       });
