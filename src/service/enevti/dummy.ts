@@ -37,8 +37,13 @@ export const requestFaucet = async (address: string) => {
 export const getDummyMomentItem = (): MomentItem => {
   return {
     id: Math.random().toString(),
-    photo: 'bafybeif42jbs3t3pxjbz4635siv2u5nzxp5h7ffcsrwwvixgsclcn7rgza',
-    username: '@aldhosutra',
+    cover: {
+      cid: 'bafybeif42jbs3t3pxjbz4635siv2u5nzxp5h7ffcsrwwvixgsclcn7rgza',
+      mime: 'image/jpeg',
+      extension: 'jpg',
+      size: 0,
+      protocol: 'ipfs',
+    },
   };
 };
 

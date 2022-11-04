@@ -18,6 +18,10 @@ export const redeemableNftModule = {
   likeCommentClubs: 15,
   setVideoCallRejected: 16,
   setVideoCallAnswered: 17,
+  mintMoment: 18,
+  commentMoment: 19,
+  commentMomentClubs: 20,
+  likeMoment: 21,
 };
 
 export const personaModule = {
