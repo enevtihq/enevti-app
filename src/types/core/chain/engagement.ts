@@ -40,7 +40,7 @@ export type LikedAsset = Liked;
 
 export type Comment = {
   id: string;
-  type: 'nft' | 'collection';
+  type: 'nft' | 'collection' | 'moment';
   date: number;
   owner: Persona;
   text?: string;
