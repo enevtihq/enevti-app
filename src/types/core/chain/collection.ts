@@ -17,7 +17,8 @@ export type CollectionActivityName =
   | 'raffled'
   | 'secretDelivered'
   | 'videoCallAnswered'
-  | 'videoCallRejected';
+  | 'videoCallRejected'
+  | 'momentCreated';
 
 export type CollectionActivity = Omit<ActivityBase, 'name'> & {
   name: CollectionActivityName;

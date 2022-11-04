@@ -2,6 +2,8 @@ import { NFTBase } from '../chain/nft';
 import { NFTPrice } from '../chain/nft/NFTPrice';
 import { Persona } from '../account/persona';
 import { NFTType } from '../chain/nft/NFTType';
+import { MomentBase } from '../chain/moment';
+import { ResponseVersioned } from './api';
 
 export interface FeedItem {
   type: NFTType | 'nft';
@@ -24,10 +26,11 @@ export interface FeedItem {
 
 export type Feeds = FeedItem[];
 
-export interface MomentItem {
-  id: string;
-  username: string;
-  photo: string;
-}
+export type MomentItem = MomentBase;
 
 export type Moments = MomentItem[];
+
+export type FeedsAndMoments = {
+  feed: ResponseVersioned<Feeds>;
+  moment: ResponseVersioned<Moments>;
+};

@@ -6,7 +6,8 @@ export type NFTActivityName =
   | 'redeem'
   | 'secretDelivered'
   | 'videoCallAnswered'
-  | 'videoCallRejected';
+  | 'videoCallRejected'
+  | 'momentCreated';
 
 export type NFTActivity = Omit<ActivityBase, 'name'> & {
   name: NFTActivityName;
