@@ -1,9 +1,9 @@
-export const ENEVTI_DEFAULT_API = 'http://3.145.141.12:8880';
-export const ENEVTI_FAUCET_API = 'http://3.145.141.12:8881';
-export const ENEVTI_SOCKET_IO = 'ws://3.145.141.12:8882';
-export const ENEVTI_VIDEOCALL_SOCKET = 'ws://3.145.141.12:8883';
-export const ENEVTI_SERVICE_API = 'http://3.145.141.12:9901';
-export const ENEVTI_CORE_WS = 'ws://3.145.141.12:8082/ws';
+export const ENEVTI_DEFAULT_API = 'http://192.168.0.105:8880';
+export const ENEVTI_FAUCET_API = 'http://192.168.0.105:8881';
+export const ENEVTI_SOCKET_IO = 'ws://192.168.0.105:8882';
+export const ENEVTI_VIDEOCALL_SOCKET = 'ws://192.168.0.105:8883';
+export const ENEVTI_SERVICE_API = 'http://192.168.0.105:9901';
+export const ENEVTI_CORE_WS = 'ws://192.168.0.105:8082/ws';
 export const IPFS_GATEWAY = '.ipfs.nftstorage.link';
 export const NFT_STORAGE_URL = 'https://api.nft.storage/upload';
 export const WEB3_STORAGE_URL = 'https://api.web3.storage/upload';
@@ -179,8 +179,15 @@ export function urlGetPersonaByUsername(username: string, host: string = ENEVTI_
   return encodeURI(`${host}/persona/u/${username}`);
 }
 
-export function urlGetProfile(address: string, host: string = ENEVTI_DEFAULT_API) {
-  return encodeURI(`${host}/profile/${address}`);
+export function urlGetProfile(
+  address: string,
+  withPersona: boolean = false,
+  withInitialData: boolean = false,
+  host: string = ENEVTI_DEFAULT_API,
+) {
+  return encodeURI(
+    `${host}/profile/${address}?persona=${withPersona}&owned=${withInitialData}&onsale=${withInitialData}&moment=${withInitialData}&collection=${withInitialData}`,
+  );
 }
 
 export function urlGetProfileOwned(

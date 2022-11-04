@@ -12,7 +12,7 @@ import {
   setMyProfileCacheOwnedPagination,
 } from 'enevti-app/store/slices/entities/cache/myProfile';
 import { lastFetchTimeout } from 'enevti-app/utils/constant/lastFetch';
-import { base32ToAddress, getMyAddress, usernameToAddress } from './persona';
+import { base32ToAddress, getMyAddress, getMyBasePersona, usernameToAddress } from './persona';
 import { completeTokenUnit } from 'enevti-app/utils/format/amount';
 import { apiFetch, apiFetchVersioned } from 'enevti-app/utils/network';
 import {
@@ -31,9 +31,14 @@ import { RootStackParamList } from 'enevti-app/navigation';
 import { StackScreenProps } from '@react-navigation/stack';
 import { PROFILE_OWNED_INITIAL_LENGTH, PROFILE_COLLECTION_INITIAL_LENGTH } from 'enevti-app/utils/constant/limit';
 import { NFTBase } from 'enevti-app/types/core/chain/nft';
+import { Persona } from 'enevti-app/types/core/account/persona';
 
 export const MINIMUM_BASIC_UNIT_STAKE_ELIGIBILITY = 1000;
 type ProfileRoute = StackScreenProps<RootStackParamList, 'Profile'>['route']['params'];
+type ProfileAPIResponse = Profile & {
+  persona: Persona;
+  versions: { owned: number; onSale: number; momentCreated: number; collection: number };
+};
 
 async function fetchProfileBalance(address: string, signal?: AbortController['signal']): Promise<APIResponse<string>> {
   return await apiFetch<string>(urlGetProfileBalance(address), signal);
@@ -60,8 +65,13 @@ async function fetchProfilePendingDelivery(
   );
 }
 
-async function fetchProfile(address: string, signal?: AbortController['signal']): Promise<APIResponse<Profile>> {
-  return await apiFetch<Profile>(urlGetProfile(address), signal);
+async function fetchProfile(
+  address: string,
+  withPersona: boolean = false,
+  withInitialData: boolean = false,
+  signal?: AbortController['signal'],
+): Promise<APIResponse<ProfileAPIResponse>> {
+  return await apiFetch<ProfileAPIResponse>(urlGetProfile(address, withPersona, withInitialData), signal);
 }
 
 async function fetchProfileAddressFromUsername(
@@ -190,31 +200,73 @@ export async function getProfilePendingDelivery(
   return await fetchProfilePendingDelivery(address, signal, silent);
 }
 
-export async function getProfile(address: string, signal?: AbortController['signal']): Promise<APIResponse<Profile>> {
-  return await fetchProfile(address, signal);
+export async function getProfile(
+  address: string,
+  withPersona: boolean = false,
+  withInitialData: boolean = false,
+  signal?: AbortController['signal'],
+): Promise<APIResponse<ProfileAPIResponse>> {
+  return await fetchProfile(address, withPersona, withInitialData, signal);
 }
 
 export async function getMyProfile(
   force: boolean = false,
+  withPersona: boolean = false,
+  withInitialData: boolean = false,
   signal?: AbortController['signal'],
-): Promise<APIResponse<Profile>> {
+): Promise<APIResponse<ProfileAPIResponse>> {
   await sleep(1);
   const now = Date.now();
   const myAddress = await getMyAddress();
-  const lastFetch = selectMyProfileCache(store.getState()).lastFetch.profile ?? 0;
-  let response: APIResponse<Profile> = {
+  const myProfileCache = selectMyProfileCache(store.getState());
+  const lastFetch = myProfileCache.lastFetch.profile ?? 0;
+  const myPersona = await getMyBasePersona(force, signal);
+  let response: APIResponse<ProfileAPIResponse> = {
     status: 200,
-    data: selectMyProfileCache(store.getState()),
+    data: {
+      ...myProfileCache,
+      persona: myPersona.data,
+      versions: {
+        collection: myProfileCache.collectionPagination.version,
+        momentCreated: 0,
+        onSale: myProfileCache.onSalePagination.version,
+        owned: myProfileCache.ownedPagination.version,
+      },
+    },
     meta: {},
   };
 
   try {
     if (force || now - lastFetch > lastFetchTimeout.profile) {
-      const profileResponse = await getProfile(myAddress, signal);
+      const profileResponse = await getProfile(myAddress, withPersona, withInitialData, signal);
       if (profileResponse.status === 200 && !isErrorResponse(profileResponse)) {
         response.data = profileResponse.data;
         store.dispatch(setLastFetchMyProfileCache(now));
         store.dispatch(setMyProfileCache(parseProfileCache(profileResponse.data as Profile)));
+
+        if (withInitialData) {
+          const ownedLastFetch = selectMyProfileCache(store.getState()).lastFetch.owned ?? 0;
+          if (force || now - ownedLastFetch > lastFetchTimeout.profileOwned) {
+            store.dispatch(setLastFetchMyProfileOwnedCache(now));
+            store.dispatch(
+              setMyProfileCacheOwnedPagination({
+                checkpoint: PROFILE_OWNED_INITIAL_LENGTH,
+                version: profileResponse.data.versions.owned,
+              }),
+            );
+          }
+
+          const collectionLastFetch = selectMyProfileCache(store.getState()).lastFetch.collection ?? 0;
+          if (force || now - collectionLastFetch > lastFetchTimeout.profileCollection) {
+            store.dispatch(setLastFetchMyProfileCollectionCache(now));
+            store.dispatch(
+              setMyProfileCacheCollectionPagination({
+                checkpoint: PROFILE_COLLECTION_INITIAL_LENGTH,
+                version: profileResponse.data.versions.collection,
+              }),
+            );
+          }
+        }
       } else {
         response.status = profileResponse.status;
         response.data = profileResponse.data;
