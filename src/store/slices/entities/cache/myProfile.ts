@@ -6,7 +6,7 @@ import { NFTBase } from 'enevti-app/types/core/chain/nft';
 import { CollectionBase } from 'enevti-app/types/core/chain/collection';
 import { PaginationStore } from 'enevti-app/types/ui/store/PaginationStore';
 
-const initialState: Profile & {
+type MyProfileCacheState = Profile & {
   ownedPagination: PaginationStore;
   onSalePagination: PaginationStore;
   collectionPagination: PaginationStore;
@@ -16,7 +16,9 @@ const initialState: Profile & {
     onSale: number;
     collection: number;
   };
-} = {
+};
+
+const initialState: MyProfileCacheState = {
   ownedPagination: {
     version: 0,
     checkpoint: 0,
@@ -51,7 +53,7 @@ const profileEntitySlice = createSlice({
   name: 'myProfileCache',
   initialState,
   reducers: {
-    setMyProfileCache: (profile, action: PayloadAction<Profile>) => {
+    setMyProfileCache: (profile, action: PayloadAction<Partial<MyProfileCacheState>>) => {
       Object.assign(profile, action.payload);
     },
     unshiftMyProfileCacheOwnedNFT: (profile, action: PayloadAction<NFTBase[]>) => {

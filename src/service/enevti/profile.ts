@@ -4,7 +4,6 @@ import { store } from 'enevti-app/store/state';
 import sleep from 'enevti-app/utils/dummy/sleep';
 import {
   selectMyProfileCache,
-  setLastFetchMyProfileCache,
   setLastFetchMyProfileCollectionCache,
   setLastFetchMyProfileOwnedCache,
   setMyProfileCache,
@@ -12,7 +11,7 @@ import {
   setMyProfileCacheOwnedPagination,
 } from 'enevti-app/store/slices/entities/cache/myProfile';
 import { lastFetchTimeout } from 'enevti-app/utils/constant/lastFetch';
-import { base32ToAddress, getMyAddress, getMyBasePersona, usernameToAddress } from './persona';
+import { base32ToAddress, getMyAddress, usernameToAddress } from './persona';
 import { completeTokenUnit } from 'enevti-app/utils/format/amount';
 import { apiFetch, apiFetchVersioned } from 'enevti-app/utils/network';
 import {
@@ -31,6 +30,7 @@ import { RootStackParamList } from 'enevti-app/navigation';
 import { StackScreenProps } from '@react-navigation/stack';
 import { PROFILE_OWNED_INITIAL_LENGTH, PROFILE_COLLECTION_INITIAL_LENGTH } from 'enevti-app/utils/constant/limit';
 import { NFTBase } from 'enevti-app/types/core/chain/nft';
+import { selectMyPersonaCache } from 'enevti-app/store/slices/entities/cache/myPersona';
 
 export const MINIMUM_BASIC_UNIT_STAKE_ELIGIBILITY = 1000;
 type ProfileRoute = StackScreenProps<RootStackParamList, 'Profile'>['route']['params'];
@@ -215,12 +215,12 @@ export async function getMyProfile(
   const myAddress = await getMyAddress();
   const myProfileCache = selectMyProfileCache(store.getState());
   const lastFetch = myProfileCache.lastFetch.profile ?? 0;
-  const myPersona = await getMyBasePersona(force, signal);
+  const myPersona = selectMyPersonaCache(store.getState());
   let response: APIResponse<ProfileAPIResponse> = {
     status: 200,
     data: {
       ...myProfileCache,
-      persona: myPersona.data,
+      persona: myPersona,
       versions: {
         collection: myProfileCache.collectionPagination.version,
         momentCreated: 0,
@@ -236,31 +236,33 @@ export async function getMyProfile(
       const profileResponse = await getProfile(myAddress, withPersona, withInitialData, signal);
       if (profileResponse.status === 200 && !isErrorResponse(profileResponse)) {
         response.data = profileResponse.data;
-        store.dispatch(setLastFetchMyProfileCache(now));
-        store.dispatch(setMyProfileCache(parseProfileCache(profileResponse.data as Profile)));
 
         if (withInitialData) {
-          const ownedLastFetch = selectMyProfileCache(store.getState()).lastFetch.owned ?? 0;
-          if (force || now - ownedLastFetch > lastFetchTimeout.profileOwned) {
-            store.dispatch(setLastFetchMyProfileOwnedCache(now));
-            store.dispatch(
-              setMyProfileCacheOwnedPagination({
+          store.dispatch(
+            setMyProfileCache({
+              ...parseProfileCache(profileResponse.data as Profile),
+              lastFetch: {
+                profile: now,
+                owned: now,
+                collection: now,
+                onSale: now,
+              },
+              ownedPagination: {
                 checkpoint: PROFILE_OWNED_INITIAL_LENGTH,
                 version: profileResponse.data.versions.owned,
-              }),
-            );
-          }
-
-          const collectionLastFetch = selectMyProfileCache(store.getState()).lastFetch.collection ?? 0;
-          if (force || now - collectionLastFetch > lastFetchTimeout.profileCollection) {
-            store.dispatch(setLastFetchMyProfileCollectionCache(now));
-            store.dispatch(
-              setMyProfileCacheCollectionPagination({
+              },
+              collectionPagination: {
                 checkpoint: PROFILE_COLLECTION_INITIAL_LENGTH,
                 version: profileResponse.data.versions.collection,
-              }),
-            );
-          }
+              },
+            }),
+          );
+        } else {
+          store.dispatch(
+            setMyProfileCache({
+              ...parseProfileCache(profileResponse.data as Profile),
+            }),
+          );
         }
       } else {
         response.status = profileResponse.status;
