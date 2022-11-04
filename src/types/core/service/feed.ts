@@ -30,7 +30,7 @@ export type MomentItem = MomentBase;
 
 export type Moments = MomentItem[];
 
-export type FeedsAndMoments = {
+export type HomeFeeds = {
   feed: ResponseVersioned<Feeds>;
   moment: ResponseVersioned<Moments>;
 };

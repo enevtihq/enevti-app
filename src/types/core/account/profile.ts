@@ -6,6 +6,11 @@ import { Persona, PersonaAsset } from './persona';
 import { ActivityBase, ActivityChainBase } from '../chain/activity';
 import { MomentBase } from '../chain/moment';
 
+export type ProfileAPIResponse = Profile & {
+  persona?: Persona;
+  versions: { owned: number; onSale: number; momentCreated: number; collection: number };
+};
+
 export type ProfileView = Profile & { persona: Persona };
 
 export type Profile = {

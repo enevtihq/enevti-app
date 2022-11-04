@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js';
-import { Profile } from 'enevti-app/types/core/account/profile';
+import { Profile, ProfileAPIResponse } from 'enevti-app/types/core/account/profile';
 import { store } from 'enevti-app/store/state';
 import sleep from 'enevti-app/utils/dummy/sleep';
 import {
@@ -31,14 +31,9 @@ import { RootStackParamList } from 'enevti-app/navigation';
 import { StackScreenProps } from '@react-navigation/stack';
 import { PROFILE_OWNED_INITIAL_LENGTH, PROFILE_COLLECTION_INITIAL_LENGTH } from 'enevti-app/utils/constant/limit';
 import { NFTBase } from 'enevti-app/types/core/chain/nft';
-import { Persona } from 'enevti-app/types/core/account/persona';
 
 export const MINIMUM_BASIC_UNIT_STAKE_ELIGIBILITY = 1000;
 type ProfileRoute = StackScreenProps<RootStackParamList, 'Profile'>['route']['params'];
-type ProfileAPIResponse = Profile & {
-  persona: Persona;
-  versions: { owned: number; onSale: number; momentCreated: number; collection: number };
-};
 
 async function fetchProfileBalance(address: string, signal?: AbortController['signal']): Promise<APIResponse<string>> {
   return await apiFetch<string>(urlGetProfileBalance(address), signal);
