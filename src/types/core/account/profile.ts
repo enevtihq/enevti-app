@@ -43,6 +43,7 @@ export type RedeemableNFTAccountStatsChain = {
   likeSent: {
     total: number;
     nft: Buffer[];
+    moment: Buffer[];
     collection: Buffer[];
     comment: Buffer[];
     reply: Buffer[];
@@ -122,14 +123,17 @@ export type EngagementActivityName =
   | 'likeCollection'
   | 'likeComment'
   | 'likeReply'
+  | 'likeMoment'
   | 'likeCommentClubs'
   | 'likeReplyClubs'
   | 'commentNft'
   | 'commentCollection'
+  | 'commentMoment'
   | 'replyComment'
   | 'replyCommentClubs'
   | 'commentCollectionClubs'
   | 'commentNftClubs'
+  | 'commentMomentClubs'
   | 'setVideoCallAnswered'
   | 'setVideoCallRejected';
 
