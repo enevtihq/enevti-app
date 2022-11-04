@@ -11,6 +11,7 @@ import { COLLECTION_MENTION_TRIGGER, NFT_MENTION_TRIGGER, PROFILE_MENTION_TRIGGE
 import { useDispatch } from 'react-redux';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 import { useTranslation } from 'react-i18next';
+import { MentionData } from 'react-native-controlled-mentions/dist/types';
 
 interface AppMentionRendererProps {
   navigation: StackNavigationProp<RootStackParamList>;
@@ -26,9 +27,31 @@ export default function AppMentionRenderer({ navigation, text, style, title, onT
   const theme = useTheme() as Theme;
 
   const profileMentionOnPress = React.useCallback(
-    (arg?: string) => {
-      if (arg) {
-        navigation.push('Profile', { mode: 'a', arg });
+    (data?: MentionData) => {
+      if (data) {
+        navigation.push('Profile', { mode: 'u', arg: data.id });
+      } else {
+        dispatch(showSnackbar({ mode: 'info', text: t('error:dataUnavailable') }));
+      }
+    },
+    [dispatch, navigation, t],
+  );
+
+  const collectionMentionOnPress = React.useCallback(
+    (data?: MentionData) => {
+      if (data) {
+        navigation.push('Collection', { mode: 's', arg: data.id });
+      } else {
+        dispatch(showSnackbar({ mode: 'info', text: t('error:dataUnavailable') }));
+      }
+    },
+    [dispatch, navigation, t],
+  );
+
+  const nftMentionOnPress = React.useCallback(
+    (data?: MentionData) => {
+      if (data) {
+        navigation.push('NFTDetails', { mode: 's', arg: data.id });
       } else {
         dispatch(showSnackbar({ mode: 'info', text: t('error:dataUnavailable') }));
       }
@@ -48,7 +71,7 @@ export default function AppMentionRenderer({ navigation, text, style, title, onT
             <AppTextBody4
               key={`${index}-${part.data?.trigger}`}
               style={{ color: theme.colors.link }}
-              onPress={() => profileMentionOnPress(part.data!.id)}>
+              onPress={() => profileMentionOnPress(part.data)}>
               {part.text}
             </AppTextBody4>
           );
@@ -57,7 +80,7 @@ export default function AppMentionRenderer({ navigation, text, style, title, onT
             <AppTextBody4
               key={`${index}-${part.data?.trigger}`}
               style={{ color: theme.colors.link }}
-              onPress={() => navigation.push('Collection', { mode: 'id', arg: part.data!.id })}>
+              onPress={() => collectionMentionOnPress(part.data)}>
               {part.text}
             </AppTextBody4>
           );
@@ -66,7 +89,7 @@ export default function AppMentionRenderer({ navigation, text, style, title, onT
             <AppTextBody4
               key={`${index}-${part.data?.trigger}`}
               style={{ color: theme.colors.link }}
-              onPress={() => navigation.push('NFTDetails', { mode: 'id', arg: part.data!.id })}>
+              onPress={() => nftMentionOnPress(part.data)}>
               {part.text}
             </AppTextBody4>
           );
@@ -75,7 +98,7 @@ export default function AppMentionRenderer({ navigation, text, style, title, onT
 
       return <AppTextBody4 key={`${index}-pattern`}>{part.text}</AppTextBody4>;
     },
-    [navigation, profileMentionOnPress, theme.colors.link],
+    [collectionMentionOnPress, nftMentionOnPress, profileMentionOnPress, theme.colors.link],
   );
 
   const renderValue = React.useCallback(

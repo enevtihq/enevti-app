@@ -407,7 +407,7 @@ export default function AppCommentBox({ route, type, target, inputRef }: AppComm
           {usernameSuggestion.map(suggestion => (
             <AppListItem
               key={suggestion.address}
-              onPress={() => onSuggestionPress({ id: suggestion.address, name: suggestion.username })}
+              onPress={() => onSuggestionPress({ id: suggestion.username, name: suggestion.username })}
               containerStyle={styles.accountCard}
               leftContent={
                 <View style={styles.collectionCoverContainer}>
@@ -486,7 +486,7 @@ export default function AppCommentBox({ route, type, target, inputRef }: AppComm
           {collectionSuggestion.map(suggestion => (
             <AppListItem
               key={suggestion.id}
-              onPress={() => onSuggestionPress({ id: suggestion.id, name: suggestion.name })}
+              onPress={() => onSuggestionPress({ id: suggestion.symbol, name: suggestion.name })}
               containerStyle={styles.accountCard}
               leftContent={
                 <View style={styles.collectionCoverContainer}>
@@ -569,7 +569,10 @@ export default function AppCommentBox({ route, type, target, inputRef }: AppComm
             <AppListItem
               key={suggestion.id}
               onPress={() =>
-                onSuggestionPress({ id: suggestion.id, name: `${suggestion.symbol}#${suggestion.serial}` })
+                onSuggestionPress({
+                  id: `${suggestion.symbol}#${suggestion.serial}`,
+                  name: `${suggestion.symbol}#${suggestion.serial}`,
+                })
               }
               containerStyle={styles.accountCard}
               leftContent={
