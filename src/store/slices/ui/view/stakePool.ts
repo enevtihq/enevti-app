@@ -16,7 +16,7 @@ type StakePoolViewStore = {
   [key: string]: StakePoolViewState;
 };
 
-const initialStateItem: StakePoolViewState = {
+export const stakePoolInitialStateItem: StakePoolViewState = {
   stakerPagination: {
     checkpoint: 0,
     version: 0,
@@ -29,6 +29,8 @@ const initialStateItem: StakePoolViewState = {
   staker: [],
 };
 
+const initialStateItem = stakePoolInitialStateItem;
+
 const initialState: StakePoolViewStore = {};
 
 const stakePoolViewSlice = createSlice({
@@ -36,9 +38,9 @@ const stakePoolViewSlice = createSlice({
   initialState,
   reducers: {
     initStakePoolView: (stakePool, action: PayloadAction<string>) => {
-      Object.assign(stakePool, { [action.payload]: {} });
+      Object.assign(stakePool, { [action.payload]: initialStateItem });
     },
-    setStakePoolView: (stakePool, action: PayloadAction<{ key: string; value: Record<string, any> }>) => {
+    setStakePoolView: (stakePool, action: PayloadAction<{ key: string; value: Partial<StakePoolViewState> }>) => {
       Object.assign(stakePool, {
         [action.payload.key]: action.payload.value,
       });
@@ -46,8 +48,12 @@ const stakePoolViewSlice = createSlice({
     setStakePoolFetchedVersion: (stakePool, action: PayloadAction<{ key: string; value: number }>) => {
       stakePool[action.payload.key].fetchedVersion = action.payload.value;
     },
-    pushStakePoolStaker: (stakePool, action: PayloadAction<{ key: string; value: StakerItem[] }>) => {
+    pushStakePoolStaker: (
+      stakePool,
+      action: PayloadAction<{ key: string; value: StakerItem[]; pagination: PaginationStore }>,
+    ) => {
       stakePool[action.payload.key].staker = stakePool[action.payload.key].staker.concat(action.payload.value);
+      stakePool[action.payload.key].stakerPagination = { ...action.payload.pagination };
     },
     setStakePoolStakerPagination: (stakePool, action: PayloadAction<{ key: string; value: PaginationStore }>) => {
       stakePool[action.payload.key].stakerPagination = { ...action.payload.value };

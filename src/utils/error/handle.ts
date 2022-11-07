@@ -2,7 +2,7 @@ import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 import { store } from 'enevti-app/store/state';
 import { ABORT_ERROR_MESSAGE } from './message';
 import i18n from 'enevti-app/translations/i18n';
-import { APIResponse, ResponseJSON } from 'enevti-app/types/core/service/api';
+import { APIResponse, APIResponseVersionRoot, ResponseJSON } from 'enevti-app/types/core/service/api';
 
 const silentError = [ABORT_ERROR_MESSAGE, 'Abort', 'NFT status is not pending-secret'];
 const substractErrorString = ['Error: '];
@@ -44,11 +44,17 @@ export function handleResponseCode(res: Response, ret: ResponseJSON<any>) {
   }
 }
 
-export function responseError(status: number, data: any = {}, meta: any = {}): APIResponse<any, any, any> {
+export function responseError(
+  status: number,
+  data: any = {},
+  meta: any = {},
+  version: any = {},
+): APIResponse<any, any, any> | APIResponseVersionRoot<any, any> {
   return {
     status,
     data,
     meta,
+    version,
   };
 }
 

@@ -6,7 +6,6 @@ import { ERRORCODE } from 'enevti-app/utils/error/code';
 import { lastFetchTimeout } from 'enevti-app/utils/constant/lastFetch';
 import {
   setMyPersonaCache,
-  setLastFetchMyPersonaCache,
   selectMyPersonaCache,
   setMyPersonaBase32Cache,
   setMyPersonaAddressCache,
@@ -251,9 +250,8 @@ export async function getMyBasePersona(
     if (force || now - lastFetch > lastFetchTimeout.persona) {
       const res = await getBasePersona(my.address, signal);
       if (res.status === 200 && !isErrorResponse(res)) {
-        response.data = res.data;
-        store.dispatch(setLastFetchMyPersonaCache(now));
-        store.dispatch(setMyPersonaCache(res.data as Persona));
+        response.data = res.data as Persona;
+        store.dispatch(setMyPersonaCache({ ...response.data, lastFetch: now }));
       } else {
         response.status = res.status;
         response.data = res.data;

@@ -5,9 +5,7 @@ import {
   selectFeedItemsCache,
   selectLastFetchFeedCache,
   selectReqVersionFeedItemsCache,
-  setFeedCacheReqVersion,
-  setFeedItemsCache,
-  setLastFetchFeedCache,
+  setFeedCacheState,
 } from 'enevti-app/store/slices/entities/cache/feed';
 import {
   addFeedView,
@@ -15,18 +13,22 @@ import {
   selectFeedView,
   selectFeedViewCheckpoint,
   selectFeedViewReqVersion,
-  setFeedView,
   setFeedViewLoaded,
-  setFeedViewCheckpoint,
-  setFeedViewReqStatus,
-  setFeedViewReqVersion,
   setFeedViewVersion,
+  setFeedViewState,
 } from 'enevti-app/store/slices/ui/view/feed';
 import { lastFetchTimeout } from 'enevti-app/utils/constant/lastFetch';
-import { getFeeds, getMoreFeeds, parseFeedCache } from 'enevti-app/service/enevti/feed';
-import { Feeds } from 'enevti-app/types/core/service/feed';
-import { loadMyProfile } from './profile';
+import { getHome, getMoreFeeds, parseFeedCache } from 'enevti-app/service/enevti/feed';
 import i18n from 'enevti-app/translations/i18n';
+import {
+  HOME_FEED_LIMIT,
+  HOME_MOMENT_LIMIT,
+  PROFILE_COLLECTION_INITIAL_LENGTH,
+  PROFILE_OWNED_INITIAL_LENGTH,
+} from 'enevti-app/utils/constant/limit';
+import { setMyProfileView } from 'enevti-app/store/slices/ui/view/myProfile';
+import { setMomentViewLoaded, setMomentViewState, setMomentViewVersion } from 'enevti-app/store/slices/ui/view/moment';
+import { selectMomentItemsCache, setMomentItemsCache } from 'enevti-app/store/slices/entities/cache/moment';
 
 type loadFeedsArgs = { reload: boolean };
 
@@ -36,33 +38,78 @@ export const loadFeeds = createAsyncThunk<void, loadFeedsArgs, AsyncThunkAPI>(
     try {
       const now = Date.now();
       dispatch(setFeedViewVersion(now));
+      dispatch(setMomentViewVersion(now));
 
-      if (reload || now - selectLastFetchFeedCache(getState()) > lastFetchTimeout.feed) {
-        const feedResponse = await getFeeds(signal, !reload);
-        dispatch(setFeedViewCheckpoint(feedResponse.data.checkpoint));
+      if (reload || now - selectLastFetchFeedCache(getState()) > lastFetchTimeout.home) {
+        const homeResponse = await getHome(signal, !reload);
+        dispatch(
+          setFeedViewState({
+            checkpoint: HOME_FEED_LIMIT,
+            items: homeResponse.data.feed,
+            reqStatus: homeResponse.status,
+            reqVersion: homeResponse.version.feed,
+            loaded: true,
+          }),
+        );
+        dispatch(
+          setMomentViewState({
+            checkpoint: HOME_MOMENT_LIMIT,
+            items: homeResponse.data.moment,
+            reqStatus: homeResponse.status,
+            reqVersion: homeResponse.version.moment,
+            loaded: true,
+          }),
+        );
+        dispatch(
+          setMyProfileView({
+            ...homeResponse.data,
+            version: Date.now(),
+            ownedPagination: {
+              checkpoint: PROFILE_OWNED_INITIAL_LENGTH,
+              version: homeResponse.version.profile.owned,
+            },
+            collectionPagination: {
+              checkpoint: PROFILE_COLLECTION_INITIAL_LENGTH,
+              version: homeResponse.version.profile.collection,
+            },
+            reqStatus: homeResponse.status,
+          }),
+        );
 
-        dispatch(setFeedView(feedResponse.data.data as Feeds));
-        dispatch(setFeedViewReqStatus(feedResponse.status));
-        dispatch(setFeedViewReqVersion(feedResponse.data.version));
-
-        if (feedResponse.status === 200 && !isErrorResponse(feedResponse)) {
-          dispatch(setLastFetchFeedCache(now));
-          dispatch(setFeedItemsCache(parseFeedCache(feedResponse.data.data as Feeds)));
-          dispatch(setFeedCacheReqVersion(feedResponse.data.version));
+        if (homeResponse.status === 200 && !isErrorResponse(homeResponse)) {
+          dispatch(
+            setFeedCacheState({
+              lastFetch: now,
+              items: parseFeedCache(homeResponse.data.feed),
+              reqVersion: homeResponse.version.feed,
+            }),
+          );
+          dispatch(setMomentItemsCache(homeResponse.data.moment));
         } else {
           throw Error(i18n.t('error:clientError'));
         }
       } else {
-        dispatch(setFeedView(selectFeedItemsCache(getState())));
-        dispatch(setFeedViewReqStatus(200));
-        dispatch(setFeedViewReqVersion(selectReqVersionFeedItemsCache(getState())));
+        dispatch(
+          setFeedViewState({
+            items: selectFeedItemsCache(getState()),
+            reqStatus: 200,
+            reqVersion: selectReqVersionFeedItemsCache(getState()),
+            loaded: true,
+          }),
+        );
+        dispatch(
+          setMomentViewState({
+            items: selectMomentItemsCache(getState()),
+            reqStatus: 200,
+            reqVersion: selectReqVersionFeedItemsCache(getState()),
+            loaded: true,
+          }),
+        );
       }
-
-      await loadMyProfile(reload, dispatch, signal);
     } catch (err: any) {
       handleError(err);
-    } finally {
       dispatch(setFeedViewLoaded(true));
+      dispatch(setMomentViewLoaded(true));
     }
   },
 );
@@ -76,15 +123,21 @@ export const loadMoreFeeds = createAsyncThunk<void, undefined, AsyncThunkAPI>(
       const version = selectFeedViewReqVersion(getState());
       if (feedItem.length !== version) {
         const feedResponse = await getMoreFeeds(offset, version, signal);
-        dispatch(addFeedView(feedResponse.data.data as Feeds));
-        dispatch(setFeedViewCheckpoint(feedResponse.data.checkpoint));
-        dispatch(setFeedViewReqVersion(feedResponse.data.version));
+        dispatch(
+          addFeedView({
+            feed: feedResponse.data.data,
+            checkpoint: feedResponse.data.checkpoint,
+            reqVersion: feedResponse.data.version,
+          }),
+        );
       }
     } catch (err: any) {
       handleError(err);
     }
   },
 );
+
+// TODO: load more moments
 
 export const unloadFeeds = (): AppThunk => dispatch => {
   dispatch(resetFeedView());

@@ -2,20 +2,18 @@ import { handleError } from 'enevti-app/utils/error/handle';
 import { hideModalLoader, showModalLoader } from 'enevti-app/store/slices/ui/global/modalLoader';
 import { AppThunk, AsyncThunkAPI } from 'enevti-app/store/state';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { getNFTbyRouteParam, getNFTInitialActivity, getNFTActivity } from 'enevti-app/service/enevti/nft';
+import { getNFTbyRouteParam, getNFTActivity } from 'enevti-app/service/enevti/nft';
 import {
   clearNFTDetailsByKey,
-  initNFTDetailsView,
   selectNFTDetailsView,
   setNFTDetailsLoaded,
-  setNFTDetailsReqStatus,
   setNFTDetailsView,
-  setNFTDetailsViewActivityPagination,
   pushNFTDetailsViewActivity,
+  nftDetailsInitialStateItem,
 } from 'enevti-app/store/slices/ui/view/nftDetails';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
-import { NFT_ACTIVITY_RESPONSE_LIMIT } from 'enevti-app/utils/constant/limit';
+import { NFT_ACTIVITY_INITIAL_LENGTH, NFT_ACTIVITY_RESPONSE_LIMIT } from 'enevti-app/utils/constant/limit';
 import { Platform } from 'react-native';
 import { IOS_MIN_RELOAD_TIME } from 'enevti-app/utils/constant/reload';
 import sleep from 'enevti-app/utils/dummy/sleep';
@@ -32,30 +30,31 @@ export const loadNFTDetails = createAsyncThunk<void, loadNFTArgs, AsyncThunkAPI>
         Platform.OS === 'ios' ? (reloadTime = Date.now()) : {};
         dispatch(showModalLoader());
       }
-      const nftResponse = await getNFTbyRouteParam(route.params, signal);
-      const activityResponse = await getNFTInitialActivity(nftResponse.data.id, signal);
+      const nftResponse = await getNFTbyRouteParam(route.params, true, signal);
       if (reload && Platform.OS === 'ios') {
         reloadTime = Date.now() - reloadTime;
         await sleep(IOS_MIN_RELOAD_TIME - reloadTime);
       }
-      dispatch(initNFTDetailsView(route.key));
       dispatch(
         setNFTDetailsView({
           key: route.key,
-          value: { ...nftResponse.data, activity: activityResponse.data.data, version: Date.now() },
+          value: {
+            ...nftDetailsInitialStateItem,
+            ...nftResponse.data,
+            version: Date.now(),
+            activityPagination: {
+              checkpoint: NFT_ACTIVITY_INITIAL_LENGTH,
+              version: nftResponse.version.activity,
+            },
+            reqStatus: nftResponse.status,
+            loaded: true,
+          },
         }),
       );
-      dispatch(
-        setNFTDetailsViewActivityPagination({
-          key: route.key,
-          value: { checkpoint: activityResponse.data.checkpoint, version: activityResponse.data.version },
-        }),
-      );
-      dispatch(setNFTDetailsReqStatus({ key: route.key, value: nftResponse.status }));
     } catch (err: any) {
       handleError(err);
-    } finally {
       dispatch(setNFTDetailsLoaded({ key: route.key, value: true }));
+    } finally {
       reload && dispatch(hideModalLoader());
     }
   },
@@ -70,11 +69,11 @@ export const loadMoreActivity = createAsyncThunk<void, loadNFTArgs, AsyncThunkAP
       const version = nftView.activityPagination.version;
       if (nftView.activity.length !== version) {
         const activityResponse = await getNFTActivity(nftView.id, offset, NFT_ACTIVITY_RESPONSE_LIMIT, version, signal);
-        dispatch(pushNFTDetailsViewActivity({ key: route.key, value: activityResponse.data.data }));
         dispatch(
-          setNFTDetailsViewActivityPagination({
+          pushNFTDetailsViewActivity({
             key: route.key,
-            value: { checkpoint: activityResponse.data.checkpoint, version: activityResponse.data.version },
+            value: activityResponse.data.data,
+            pagination: { checkpoint: activityResponse.data.checkpoint, version: activityResponse.data.version },
           }),
         );
       }

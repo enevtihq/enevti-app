@@ -1,12 +1,27 @@
-import { APIResponse } from 'enevti-app/types/core/service/api';
-import { Feeds } from 'enevti-app/types/core/service/feed';
-import { urlGetFeeds } from 'enevti-app/utils/constant/URLCreator';
-import { apiFetch } from 'enevti-app/utils/network';
+import { ProfileAPIVersion } from 'enevti-app/types/core/account/profile';
+import { APIResponse, APIResponseVersionRoot } from 'enevti-app/types/core/service/api';
+import { Feeds, HomeFeeds } from 'enevti-app/types/core/service/feed';
+import { HOME_FEED_LIMIT } from 'enevti-app/utils/constant/limit';
+import { urlGetFeeds, urlGetHome } from 'enevti-app/utils/constant/URLCreator';
+import { apiFetch, apiFetchVersionRoot } from 'enevti-app/utils/network';
 import { getMyAddress } from './persona';
 
 type FeedResponse = { data: Feeds; checkpoint: number; version: number };
-export const FEED_CACHE_MAX_LENGTH = 10;
-const FEED_LIMIT_PER_REQ = 10;
+export const FEED_CACHE_MAX_LENGTH = HOME_FEED_LIMIT;
+const FEED_LIMIT_PER_REQ = HOME_FEED_LIMIT;
+
+async function fetchHome(
+  signal?: AbortController['signal'],
+  silent?: boolean,
+): Promise<APIResponseVersionRoot<HomeFeeds, { profile: ProfileAPIVersion; feed: number; moment: number }>> {
+  const myAddress = await getMyAddress();
+  return await apiFetchVersionRoot<HomeFeeds, { profile: ProfileAPIVersion; feed: number; moment: number }>(
+    urlGetHome(myAddress),
+    signal,
+    silent,
+    { data: [], offset: 0, version: 0 },
+  );
+}
 
 async function fetchFeeds(
   signal?: AbortController['signal'],
@@ -25,6 +40,13 @@ async function fetchFeeds(
 
 export function parseFeedCache(feeds: Feeds) {
   return feeds.slice(0, FEED_CACHE_MAX_LENGTH);
+}
+
+export async function getHome(
+  signal?: AbortController['signal'],
+  silent?: boolean,
+): Promise<APIResponseVersionRoot<HomeFeeds, { profile: ProfileAPIVersion; feed: number; moment: number }>> {
+  return await fetchHome(signal, silent);
 }
 
 export async function getFeeds(

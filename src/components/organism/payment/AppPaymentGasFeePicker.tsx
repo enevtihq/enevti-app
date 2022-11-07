@@ -7,7 +7,6 @@ import {
   selectPaymentFeePriority,
   selectPaymentActionPayload,
   setPaymentFee,
-  setPaymentPriority,
 } from 'enevti-app/store/slices/payment';
 import { completeTokenUnit, parseAmount } from 'enevti-app/utils/format/amount';
 import AppTextBodyCustom from 'enevti-app/components/atoms/text/AppTextBodyCustom';
@@ -142,11 +141,9 @@ export default function AppPaymentGasFeePicker({ visible, onDismiss, onSave }: A
 
   const handleSave = React.useCallback(() => {
     if (advancedSettingCollapsed) {
-      dispatch(setPaymentFee({ ...paymentFee, gas: completeTokenUnit(customFee) }));
-      dispatch(setPaymentPriority('custom'));
+      dispatch(setPaymentFee({ ...paymentFee, gas: completeTokenUnit(customFee), priority: 'custom' }));
     } else {
-      dispatch(setPaymentFee({ ...paymentFee, gas: fee }));
-      dispatch(setPaymentPriority(priority));
+      dispatch(setPaymentFee({ ...paymentFee, gas: fee, priority }));
     }
     onSave();
   }, [advancedSettingCollapsed, customFee, fee, priority, paymentFee, dispatch, onSave]);

@@ -79,11 +79,8 @@ const paymentSlice = createSlice({
     resetPaymentAction: payment => {
       Object.assign(payment.action, initialState.action);
     },
-    setPaymentFee: (payment, action: PayloadAction<Omit<PaymentFee, 'loaded' | 'priority'>>) => {
-      payment.fee.loaded = true;
-      payment.fee.gas = action.payload.gas;
-      payment.fee.platform = action.payload.platform;
-      payment.fee.base = action.payload.base;
+    setPaymentFee: (payment, action: PayloadAction<Partial<PaymentFee>>) => {
+      Object.assign(payment.fee, { ...action.payload, loaded: true });
     },
     setPaymentFeeLoaded: (payment, action: PayloadAction<boolean>) => {
       payment.fee.loaded = action.payload;
@@ -103,6 +100,9 @@ const paymentSlice = createSlice({
     resetPaymentState: payment => {
       return { ...initialState, status: payment.status };
     },
+    hideAndResetPaymentState: payment => {
+      return { ...initialState, show: false, status: payment.status };
+    },
     resetAllPaymentState: () => {
       return initialState;
     },
@@ -116,6 +116,7 @@ export const {
   resetPaymentStatusType,
   setPaymentStatus,
   setPaymentStatusInReducer,
+  hideAndResetPaymentState,
   resetPaymentStatus,
   setPaymentActionType,
   setPaymentAction,

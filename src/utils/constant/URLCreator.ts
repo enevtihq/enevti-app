@@ -1,9 +1,11 @@
-export const ENEVTI_DEFAULT_API = 'http://192.168.0.105:8880';
-export const ENEVTI_FAUCET_API = 'http://192.168.0.105:8881';
-export const ENEVTI_SOCKET_IO = 'ws://192.168.0.105:8882';
-export const ENEVTI_VIDEOCALL_SOCKET = 'ws://192.168.0.105:8883';
-export const ENEVTI_SERVICE_API = 'http://192.168.0.105:9901';
-export const ENEVTI_CORE_WS = 'ws://192.168.0.105:8082/ws';
+import { HOME_FEED_LIMIT, HOME_MOMENT_LIMIT } from './limit';
+
+export const ENEVTI_DEFAULT_API = 'http://192.168.249.142:8880';
+export const ENEVTI_FAUCET_API = 'http://192.168.249.142:8881';
+export const ENEVTI_SOCKET_IO = 'ws://192.168.249.142:8882';
+export const ENEVTI_VIDEOCALL_SOCKET = 'ws://192.168.249.142:8883';
+export const ENEVTI_SERVICE_API = 'http://192.168.249.142:9901';
+export const ENEVTI_CORE_WS = 'ws://192.168.249.142:8082/ws';
 export const IPFS_GATEWAY = '.ipfs.nftstorage.link';
 export const NFT_STORAGE_URL = 'https://api.nft.storage/upload';
 export const WEB3_STORAGE_URL = 'https://api.web3.storage/upload';
@@ -103,8 +105,15 @@ export function urlGetIsCollectionOwnerOrCreator(id: string, address: string, ho
   return encodeURI(`${host}/authorized/collection/${id}?address=${address}`);
 }
 
-export function urlGetCollectionById(id: string, viewer: string, host: string = ENEVTI_DEFAULT_API) {
-  return encodeURI(`${host}/collection/id/${id}?viewer=${viewer}`);
+export function urlGetCollectionById(
+  id: string,
+  viewer: string,
+  withInitialData: boolean = false,
+  host: string = ENEVTI_DEFAULT_API,
+) {
+  return encodeURI(
+    `${host}/collection/id/${id}?viewer=${viewer}&minted=${withInitialData}&activity=${withInitialData}`,
+  );
 }
 
 export function urlGetCollectionMintedNFTById(
@@ -127,12 +136,26 @@ export function urlGetCollectionActivityById(
   return encodeURI(`${host}/collection/id/${id}/activity?offset=${offset}&limit=${limit}&version=${version}`);
 }
 
-export function urlGetCollectionByName(name: string, viewer: string, host: string = ENEVTI_DEFAULT_API) {
-  return encodeURI(`${host}/collection/n/${name}?viewer=${viewer}`);
+export function urlGetCollectionByName(
+  name: string,
+  viewer: string,
+  withInitialData: boolean = false,
+  host: string = ENEVTI_DEFAULT_API,
+) {
+  return encodeURI(
+    `${host}/collection/n/${name}?viewer=${viewer}&minted=${withInitialData}&activity=${withInitialData}`,
+  );
 }
 
-export function urlGetCollectionBySymbol(symbol: string, viewer: string, host: string = ENEVTI_DEFAULT_API) {
-  return encodeURI(`${host}/collection/s/${symbol}?viewer=${viewer}`);
+export function urlGetCollectionBySymbol(
+  symbol: string,
+  viewer: string,
+  withInitialData: boolean = false,
+  host: string = ENEVTI_DEFAULT_API,
+) {
+  return encodeURI(
+    `${host}/collection/s/${symbol}?viewer=${viewer}&minted=${withInitialData}&activity=${withInitialData}`,
+  );
 }
 
 export function urlGetFeeds(
@@ -145,12 +168,23 @@ export function urlGetFeeds(
   return encodeURI(`${host}/feeds/available?offset=${offset}&limit=${limit}&version=${version}&viewer=${viewer}`);
 }
 
+export function urlGetHome(viewer: string, host: string = ENEVTI_DEFAULT_API) {
+  return encodeURI(
+    `${host}/feeds/address/${viewer}?collection=${HOME_FEED_LIMIT}&moment=${HOME_MOMENT_LIMIT}&viewer=${viewer}`,
+  );
+}
+
 export function urlGetIsNFTOwnerOrCreator(id: string, address: string, host: string = ENEVTI_DEFAULT_API) {
   return encodeURI(`${host}/authorized/nft/${id}?address=${address}`);
 }
 
-export function urlGetNFTById(id: string, viewer: string, host: string = ENEVTI_DEFAULT_API) {
-  return encodeURI(`${host}/nft/id/${id}?viewer=${viewer}`);
+export function urlGetNFTById(
+  id: string,
+  viewer: string,
+  withInitialData: boolean = false,
+  host: string = ENEVTI_DEFAULT_API,
+) {
+  return encodeURI(`${host}/nft/id/${id}?viewer=${viewer}&activity=${withInitialData}`);
 }
 
 export function urlGetNFTActivityById(
@@ -163,8 +197,13 @@ export function urlGetNFTActivityById(
   return encodeURI(`${host}/nft/id/${id}/activity?offset=${offset}&limit=${limit}&version=${version}`);
 }
 
-export function urlGetNFTBySerial(serial: string, viewer: string, host: string = ENEVTI_DEFAULT_API) {
-  return encodeURI(`${host}/nft/s/${encodeURIComponent(serial)}?viewer=${viewer}`);
+export function urlGetNFTBySerial(
+  serial: string,
+  viewer: string,
+  withInitialData: boolean = false,
+  host: string = ENEVTI_DEFAULT_API,
+) {
+  return encodeURI(`${host}/nft/s/${encodeURIComponent(serial)}?viewer=${viewer}&activity=${withInitialData}`);
 }
 
 export function urlGetNFTTemplateById(id: string, host: string = ENEVTI_DEFAULT_API) {
@@ -222,8 +261,12 @@ export function urlGetProfilePendingDelivery(address: string, host: string = ENE
   return encodeURI(`${host}/profile/${address}/pending`);
 }
 
-export function urlGetStakePoolByAddress(address: string, host: string = ENEVTI_DEFAULT_API) {
-  return encodeURI(`${host}/stake/a/${address}`);
+export function urlGetStakePoolByAddress(
+  address: string,
+  withInitialData: boolean = false,
+  host: string = ENEVTI_DEFAULT_API,
+) {
+  return encodeURI(`${host}/stake/a/${address}?staker=${withInitialData}`);
 }
 
 export function urlGetStaker(
@@ -236,8 +279,12 @@ export function urlGetStaker(
   return encodeURI(`${host}/stake/a/${address}/staker?offset=${offset}&limit=${limit}&version=${version}`);
 }
 
-export function urlGetStakePoolByUsername(username: string, host: string = ENEVTI_DEFAULT_API) {
-  return encodeURI(`${host}/stake/u/${username}`);
+export function urlGetStakePoolByUsername(
+  username: string,
+  withInitialData: boolean = false,
+  host: string = ENEVTI_DEFAULT_API,
+) {
+  return encodeURI(`${host}/stake/u/${username}?staker=${withInitialData}`);
 }
 
 export function urlGetIsNameExists(name: string, host: string = ENEVTI_DEFAULT_API) {
@@ -306,8 +353,8 @@ export function urlGetActivityProfile(
   return encodeURI(`${host}/activity/profile/${address}?offset=${offset}&limit=${limit}&version=${version}`);
 }
 
-export function urlGetWallet(address: string, host: string = ENEVTI_DEFAULT_API) {
-  return encodeURI(`${host}/wallet/${address}`);
+export function urlGetWallet(address: string, withInitialData: boolean = false, host: string = ENEVTI_DEFAULT_API) {
+  return encodeURI(`${host}/wallet/${address}?history=${withInitialData}`);
 }
 
 export function urlGetCommentCollection(

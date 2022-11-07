@@ -21,7 +21,7 @@ type CollectionViewStore = {
   [key: string]: CollectionViewState;
 };
 
-const initialStateItem: CollectionViewState = {
+export const collectionInitialStateItem: CollectionViewState = {
   mintedPagination: {
     checkpoint: 0,
     version: 0,
@@ -76,6 +76,8 @@ const initialStateItem: CollectionViewState = {
   activity: [],
 };
 
+const initialStateItem = collectionInitialStateItem;
+
 const initialState: CollectionViewStore = {};
 
 const collectionViewSlice = createSlice({
@@ -83,9 +85,9 @@ const collectionViewSlice = createSlice({
   initialState,
   reducers: {
     initCollectionView: (collection, action: PayloadAction<string>) => {
-      Object.assign(collection, { [action.payload]: {} });
+      Object.assign(collection, { [action.payload]: initialStateItem });
     },
-    setCollectionView: (collection, action: PayloadAction<{ key: string; value: Record<string, any> }>) => {
+    setCollectionView: (collection, action: PayloadAction<{ key: string; value: Partial<CollectionViewState> }>) => {
       Object.assign(collection, { [action.payload.key]: action.payload.value });
     },
     setCollectionViewLike: (collection, action: PayloadAction<{ key: string; value: number }>) => {
@@ -104,11 +106,19 @@ const collectionViewSlice = createSlice({
     ) => {
       collection[action.payload.key].activity = action.payload.value.concat(collection[action.payload.key].activity);
     },
-    pushCollectionViewMinted: (collection, action: PayloadAction<{ key: string; value: NFTBase[] }>) => {
+    pushCollectionViewMinted: (
+      collection,
+      action: PayloadAction<{ key: string; value: NFTBase[]; pagination: PaginationStore }>,
+    ) => {
       collection[action.payload.key].minted = collection[action.payload.key].minted.concat(action.payload.value);
+      collection[action.payload.key].mintedPagination = { ...action.payload.pagination };
     },
-    pushCollectionViewActivity: (collection, action: PayloadAction<{ key: string; value: CollectionActivity[] }>) => {
+    pushCollectionViewActivity: (
+      collection,
+      action: PayloadAction<{ key: string; value: CollectionActivity[]; pagination: PaginationStore }>,
+    ) => {
       collection[action.payload.key].activity = collection[action.payload.key].activity.concat(action.payload.value);
+      collection[action.payload.key].activityPagination = { ...action.payload.pagination };
     },
     setCollectionViewMintedPagination: (collection, action: PayloadAction<{ key: string; value: PaginationStore }>) => {
       collection[action.payload.key].mintedPagination = { ...action.payload.value };

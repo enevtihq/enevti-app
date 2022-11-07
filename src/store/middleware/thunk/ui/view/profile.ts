@@ -12,7 +12,7 @@ import {
 } from 'enevti-app/store/slices/ui/view/myProfile';
 import {
   clearProfileByKey,
-  initProfileView,
+  profileInitialStateItem,
   selectProfileView,
   selectProfileViewCollection,
   selectProfileViewOwned,
@@ -234,11 +234,11 @@ export const loadMyProfile = async (reload: boolean, dispatch: any, signal?: Abo
       version: Date.now(),
       ownedPagination: {
         checkpoint: PROFILE_OWNED_INITIAL_LENGTH,
-        version: profileResponse.data.versions.owned,
+        version: profileResponse.version.owned,
       },
       collectionPagination: {
         checkpoint: PROFILE_COLLECTION_INITIAL_LENGTH,
-        version: profileResponse.data.versions.collection,
+        version: profileResponse.version.collection,
       },
       reqStatus: profileResponse.status,
     }),
@@ -252,8 +252,8 @@ export const loadProfileBase = async (
   signal?: AbortController['signal'],
 ) => {
   let reloadTime = 0;
+  const initialProfileState = !reload ? profileInitialStateItem : {};
   reload && Platform.OS === 'ios' ? (reloadTime = Date.now()) : {};
-  !reload && dispatch(initProfileView(route.key));
   const personaBase = await getBasePersonaByRouteParam(route.params, signal);
   if (personaBase.status === 200 && !isErrorResponse(personaBase)) {
     const profileResponse = await getProfile(personaBase.data.address, false, true, signal);
@@ -266,16 +266,17 @@ export const loadProfileBase = async (
         setProfileView({
           key: route.key,
           value: {
+            ...initialProfileState,
             ...profileResponse.data,
             persona: personaBase.data,
             version: Date.now(),
             ownedPagination: {
               checkpoint: PROFILE_OWNED_INITIAL_LENGTH,
-              version: profileResponse.data.versions.owned,
+              version: profileResponse.version.owned,
             },
             collectionPagination: {
               checkpoint: PROFILE_COLLECTION_INITIAL_LENGTH,
-              version: profileResponse.data.versions.collection,
+              version: profileResponse.version.collection,
             },
           },
         }),

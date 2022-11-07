@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js';
-import { Profile, ProfileAPIResponse } from 'enevti-app/types/core/account/profile';
+import { Profile, ProfileAPIResponse, ProfileAPIVersion } from 'enevti-app/types/core/account/profile';
 import { store } from 'enevti-app/store/state';
 import sleep from 'enevti-app/utils/dummy/sleep';
 import {
@@ -7,13 +7,11 @@ import {
   setLastFetchMyProfileCollectionCache,
   setLastFetchMyProfileOwnedCache,
   setMyProfileCache,
-  setMyProfileCacheCollectionPagination,
-  setMyProfileCacheOwnedPagination,
 } from 'enevti-app/store/slices/entities/cache/myProfile';
 import { lastFetchTimeout } from 'enevti-app/utils/constant/lastFetch';
 import { base32ToAddress, getMyAddress, usernameToAddress } from './persona';
 import { completeTokenUnit } from 'enevti-app/utils/format/amount';
-import { apiFetch, apiFetchVersioned } from 'enevti-app/utils/network';
+import { apiFetch, apiFetchVersioned, apiFetchVersionRoot } from 'enevti-app/utils/network';
 import {
   urlGetProfile,
   urlGetProfileBalance,
@@ -24,7 +22,7 @@ import {
   urlGetUsernameToAddress,
 } from 'enevti-app/utils/constant/URLCreator';
 import { isErrorResponse } from 'enevti-app/utils/error/handle';
-import { APIResponse, APIResponseVersioned } from 'enevti-app/types/core/service/api';
+import { APIResponse, APIResponseVersioned, APIResponseVersionRoot } from 'enevti-app/types/core/service/api';
 import { NFTSecret } from 'enevti-app/types/core/chain/nft/NFTSecret';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -65,8 +63,11 @@ async function fetchProfile(
   withPersona: boolean = false,
   withInitialData: boolean = false,
   signal?: AbortController['signal'],
-): Promise<APIResponse<ProfileAPIResponse>> {
-  return await apiFetch<ProfileAPIResponse>(urlGetProfile(address, withPersona, withInitialData), signal);
+): Promise<APIResponseVersionRoot<ProfileAPIResponse, ProfileAPIVersion>> {
+  return await apiFetchVersionRoot<ProfileAPIResponse, ProfileAPIVersion>(
+    urlGetProfile(address, withPersona, withInitialData),
+    signal,
+  );
 }
 
 async function fetchProfileAddressFromUsername(
@@ -200,7 +201,7 @@ export async function getProfile(
   withPersona: boolean = false,
   withInitialData: boolean = false,
   signal?: AbortController['signal'],
-): Promise<APIResponse<ProfileAPIResponse>> {
+): Promise<APIResponseVersionRoot<ProfileAPIResponse, ProfileAPIVersion>> {
   return await fetchProfile(address, withPersona, withInitialData, signal);
 }
 
@@ -209,24 +210,24 @@ export async function getMyProfile(
   withPersona: boolean = false,
   withInitialData: boolean = false,
   signal?: AbortController['signal'],
-): Promise<APIResponse<ProfileAPIResponse>> {
+): Promise<APIResponseVersionRoot<ProfileAPIResponse, ProfileAPIVersion>> {
   await sleep(1);
   const now = Date.now();
   const myAddress = await getMyAddress();
   const myProfileCache = selectMyProfileCache(store.getState());
   const lastFetch = myProfileCache.lastFetch.profile ?? 0;
   const myPersona = selectMyPersonaCache(store.getState());
-  let response: APIResponse<ProfileAPIResponse> = {
+  let response: APIResponseVersionRoot<ProfileAPIResponse, ProfileAPIVersion> = {
     status: 200,
     data: {
       ...myProfileCache,
       persona: myPersona,
-      versions: {
-        collection: myProfileCache.collectionPagination.version,
-        momentCreated: 0,
-        onSale: myProfileCache.onSalePagination.version,
-        owned: myProfileCache.ownedPagination.version,
-      },
+    },
+    version: {
+      collection: myProfileCache.collectionPagination.version,
+      momentCreated: 0,
+      onSale: myProfileCache.onSalePagination.version,
+      owned: myProfileCache.ownedPagination.version,
     },
     meta: {},
   };
@@ -249,11 +250,11 @@ export async function getMyProfile(
               },
               ownedPagination: {
                 checkpoint: PROFILE_OWNED_INITIAL_LENGTH,
-                version: profileResponse.data.versions.owned,
+                version: profileResponse.version.owned,
               },
               collectionPagination: {
                 checkpoint: PROFILE_COLLECTION_INITIAL_LENGTH,
-                version: profileResponse.data.versions.collection,
+                version: profileResponse.version.collection,
               },
             }),
           );
@@ -299,10 +300,11 @@ export async function getMyProfileInitialOwned(
         response.data = ownedResponse.data;
         store.dispatch(setLastFetchMyProfileOwnedCache(now));
         store.dispatch(
-          setMyProfileCacheOwnedPagination({ checkpoint: response.data.checkpoint, version: response.data.version }),
-        );
-        store.dispatch(
-          setMyProfileCache({ ...selectMyProfileCache(store.getState()), owned: ownedResponse.data.data }),
+          setMyProfileCache({
+            ...selectMyProfileCache(store.getState()),
+            owned: ownedResponse.data.data,
+            ownedPagination: { checkpoint: response.data.checkpoint, version: response.data.version },
+          }),
         );
       } else {
         response.status = ownedResponse.status;
@@ -339,13 +341,14 @@ export async function getMyProfileInitialCollection(
         response.data = collectionResponse.data;
         store.dispatch(setLastFetchMyProfileCollectionCache(now));
         store.dispatch(
-          setMyProfileCacheCollectionPagination({
-            checkpoint: response.data.checkpoint,
-            version: response.data.version,
+          setMyProfileCache({
+            ...selectMyProfileCache(store.getState()),
+            collection: collectionResponse.data.data,
+            collectionPagination: {
+              checkpoint: response.data.checkpoint,
+              version: response.data.version,
+            },
           }),
-        );
-        store.dispatch(
-          setMyProfileCache({ ...selectMyProfileCache(store.getState()), collection: collectionResponse.data.data }),
         );
       } else {
         response.status = collectionResponse.status;

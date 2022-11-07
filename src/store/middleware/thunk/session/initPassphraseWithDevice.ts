@@ -1,10 +1,6 @@
 import { AppThunk } from 'enevti-app/store/state';
 import { setUnencryptedPassphraseAuth } from 'enevti-app/store/slices/auth';
-import {
-  resetMyPersonaCache,
-  setMyPersonaAddressCache,
-  setMyPersonaBase32Cache,
-} from 'enevti-app/store/slices/entities/cache/myPersona';
+import { resetMyPersonaCache, setMyPersonaCache } from 'enevti-app/store/slices/entities/cache/myPersona';
 import { resetMyProfileCache } from 'enevti-app/store/slices/entities/cache/myProfile';
 import {
   passphraseToBase32,
@@ -23,8 +19,9 @@ export const initPassphraseWithDevice =
     dispatch(resetMyPersonaCache());
     dispatch(resetMyProfileCache());
     dispatch(setUnencryptedPassphraseAuth(encryptedPassphrase));
-    dispatch(setMyPersonaBase32Cache(passphraseToBase32(plainPassphrase)));
-    dispatch(setMyPersonaAddressCache(passphraseToAddress(plainPassphrase)));
+    dispatch(
+      setMyPersonaCache({ base32: passphraseToBase32(plainPassphrase), address: passphraseToAddress(plainPassphrase) }),
+    );
 
     const publicKey = passphraseToPublicAndPrivateKey(plainPassphrase).publicKey;
     dispatch(setMyPublicKeyCache(publicKey));

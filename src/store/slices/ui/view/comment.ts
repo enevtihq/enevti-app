@@ -34,7 +34,7 @@ type CommentViewStore = {
   [key: string]: CommentViewState;
 };
 
-const initialStateItem: CommentViewState = {
+export const commentInitialStateItem: CommentViewState = {
   authorized: true,
   commentPagination: {
     checkpoint: 0,
@@ -47,6 +47,8 @@ const initialStateItem: CommentViewState = {
   comment: [],
 };
 
+const initialStateItem = commentInitialStateItem;
+
 const initialState: CommentViewStore = {};
 
 const commentViewSlice = createSlice({
@@ -56,7 +58,7 @@ const commentViewSlice = createSlice({
     initCommentView: (comment, action: PayloadAction<string>) => {
       Object.assign(comment, { [action.payload]: {} });
     },
-    setCommentView: (comment, action: PayloadAction<{ key: string; value: Record<string, any> }>) => {
+    setCommentView: (comment, action: PayloadAction<{ key: string; value: Partial<CommentViewState> }>) => {
       Object.assign(comment, {
         [action.payload.key]: action.payload.value,
       });
@@ -94,8 +96,12 @@ const commentViewSlice = createSlice({
     setCommentText: (comment, action: PayloadAction<{ key: string; value: string; commentIndex: number }>) => {
       comment[action.payload.key].comment[action.payload.commentIndex].text = action.payload.value;
     },
-    pushComment: (comment, action: PayloadAction<{ key: string; value: CommentItem[] }>) => {
+    pushComment: (
+      comment,
+      action: PayloadAction<{ key: string; value: CommentItem[]; pagination: PaginationStore }>,
+    ) => {
       comment[action.payload.key].comment = comment[action.payload.key].comment.concat(action.payload.value);
+      comment[action.payload.key].commentPagination = { ...action.payload.pagination };
     },
     popComment: (comment, action: PayloadAction<{ key: string; value: CommentItem[] }>) => {
       comment[action.payload.key].comment = comment[action.payload.key].comment.slice(0, -1);
@@ -158,10 +164,16 @@ const commentViewSlice = createSlice({
       comment[action.payload.key].comment[action.payload.commentIndex].replies[action.payload.replyIndex].text =
         action.payload.value;
     },
-    pushReply: (comment, action: PayloadAction<{ key: string; commentIndex: number; value: ReplyItem[] }>) => {
+    pushReply: (
+      comment,
+      action: PayloadAction<{ key: string; commentIndex: number; value: ReplyItem[]; pagination: PaginationStore }>,
+    ) => {
       comment[action.payload.key].comment[action.payload.commentIndex].replies = comment[action.payload.key].comment[
         action.payload.commentIndex
       ].replies.concat(action.payload.value);
+      comment[action.payload.key].comment[action.payload.commentIndex].replyPagination = {
+        ...action.payload.pagination,
+      };
     },
     popReply: (comment, action: PayloadAction<{ key: string; commentIndex: number }>) => {
       comment[action.payload.key].comment[action.payload.commentIndex].replies = comment[action.payload.key].comment[

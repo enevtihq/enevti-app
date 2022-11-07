@@ -4,7 +4,6 @@ import {
   setPaymentStatus,
   setPaymentAction,
   showPayment,
-  setPaymentPriority,
   hidePayment,
 } from 'enevti-app/store/slices/payment';
 import { AsyncThunkAPI } from 'enevti-app/store/state';
@@ -30,7 +29,7 @@ export const payMintCollectionByQR = createAsyncThunk<void, PayMintCollectionByQ
       if (payload.collection.id !== id) {
         throw Error(i18n.t('error:invalidTransactionPayload'));
       }
-      const collection = await getCollectionById(id, signal);
+      const collection = await getCollectionById(id, false, signal);
       if (collection.status !== 200 || collection.data.stat.minted !== nonce) {
         throw Error(i18n.t('collection:invalidQRCode'));
       }
@@ -62,8 +61,7 @@ export const payMintCollectionByQR = createAsyncThunk<void, PayMintCollectionByQ
         throw Error(i18n.t('error:transactionPreparationFailed'));
       }
 
-      dispatch(setPaymentFee({ gas: gasFee, base: baseFee, platform: '0' }));
-      dispatch(setPaymentPriority('normal'));
+      dispatch(setPaymentFee({ gas: gasFee, base: baseFee, platform: '0', priority: 'normal' }));
       dispatch(
         setPaymentAction({
           type: 'mintCollectionByQR',

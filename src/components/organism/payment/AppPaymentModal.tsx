@@ -32,6 +32,7 @@ import {
   setPaymentAction,
   resetPaymentStatusType,
   hidePayment,
+  hideAndResetPaymentState,
 } from 'enevti-app/store/slices/payment';
 import { selectMyProfileCache } from 'enevti-app/store/slices/entities/cache/myProfile';
 import AppPaymentItem from './AppPaymentItem';
@@ -122,8 +123,7 @@ export default function AppPaymentModal() {
       if (dismissRef.current) {
         dispatch(setPaymentStatusInReducer({ type: 'dismissed' }));
       }
-      dispatch(hidePayment());
-      dispatch(resetPaymentState());
+      dispatch(hideAndResetPaymentState());
       dispatch(resetPaymentStatusType());
       dismissRef.current = true;
     }

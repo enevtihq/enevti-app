@@ -6,11 +6,7 @@ import { EventRegister } from 'react-native-event-listeners';
 import { Camera, useCameraDevices } from 'react-native-vision-camera';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
 import AppView from 'enevti-app/components/atoms/view/AppView';
-import {
-  resetStatusBarState,
-  setStatusBarBackground,
-  setStatusBarTint,
-} from 'enevti-app/store/slices/ui/global/statusbar';
+import { resetStatusBarState, setStatusBarState } from 'enevti-app/store/slices/ui/global/statusbar';
 import { useDispatch } from 'react-redux';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 import { useTranslation } from 'react-i18next';
@@ -51,8 +47,7 @@ export default function QRScanner({ navigation, route }: Props) {
     const unsubscribeFocus = navigation.addListener('focus', () => {
       route.params.focusEvent && EventRegister.emit('onQRScannerFocus');
       if (route.params.fullscreen) {
-        dispatch(setStatusBarBackground('transparent'));
-        dispatch(setStatusBarTint('light'));
+        dispatch(setStatusBarState({ background: 'transparent', tint: 'light' }));
       }
     });
 

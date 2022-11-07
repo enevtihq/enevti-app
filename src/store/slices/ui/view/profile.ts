@@ -20,7 +20,7 @@ type ProfileViewStore = {
   [key: string]: ProfileViewState;
 };
 
-const initialStateItem: ProfileViewState = {
+export const profileInitialStateItem: ProfileViewState = {
   ownedPagination: {
     version: 0,
     checkpoint: 0,
@@ -54,6 +54,8 @@ const initialStateItem: ProfileViewState = {
   likeSent: 0,
   commentSent: 0,
 };
+
+const initialStateItem = profileInitialStateItem;
 
 const initialState: ProfileViewStore = {};
 

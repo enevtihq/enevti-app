@@ -11,6 +11,9 @@ const feedCacheSlice = createSlice({
   name: 'feedCache',
   initialState,
   reducers: {
+    setFeedCacheState: (feed, action: PayloadAction<Partial<FeedCacheState>>) => {
+      Object.assign(feed, action.payload);
+    },
     setFeedItemsCache: (feed, action: PayloadAction<Feeds>) => {
       feed.items = action.payload.slice();
     },
@@ -34,6 +37,7 @@ const feedCacheSlice = createSlice({
 });
 
 export const {
+  setFeedCacheState,
   setFeedItemsCache,
   addFeedItemsCacheLike,
   setLastFetchFeedCache,

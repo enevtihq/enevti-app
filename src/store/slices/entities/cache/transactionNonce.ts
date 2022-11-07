@@ -11,6 +11,9 @@ const transactionNonceEntitySlice = createSlice({
   name: 'transactionNonce',
   initialState,
   reducers: {
+    setTransactionNonceCacheState: (transactionNonce, action: PayloadAction<Partial<typeof initialState>>) => {
+      Object.assign(transactionNonce, action.payload);
+    },
     setTransactionNonceCache: (transactionNonce, action: PayloadAction<number>) => {
       transactionNonce.value = action.payload;
     },
@@ -30,6 +33,7 @@ const transactionNonceEntitySlice = createSlice({
 });
 
 export const {
+  setTransactionNonceCacheState,
   setTransactionNonceCache,
   resetTransactionNonceCache,
   addTransactionNonceCache,

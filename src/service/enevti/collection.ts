@@ -10,8 +10,8 @@ import {
   urlGetNameToCollectionId,
   urlGetSymbolToCollectionId,
 } from 'enevti-app/utils/constant/URLCreator';
-import { apiFetch, apiFetchVersioned } from 'enevti-app/utils/network';
-import { APIResponse, APIResponseVersioned } from 'enevti-app/types/core/service/api';
+import { apiFetch, apiFetchVersioned, apiFetchVersionRoot } from 'enevti-app/utils/network';
+import { APIResponse, APIResponseVersioned, APIResponseVersionRoot } from 'enevti-app/types/core/service/api';
 import { NFTBase } from 'enevti-app/types/core/chain/nft';
 import { COLLECTION_ACTIVITY_INITIAL_LENGTH, COLLECTION_MINTED_INITIAL_LENGTH } from 'enevti-app/utils/constant/limit';
 import { getMyAddress } from './persona';
@@ -27,17 +27,28 @@ async function fetchIsCollectionOwnerOrCreator(
   return await apiFetch<boolean>(urlGetIsCollectionOwnerOrCreator(id, myAddress), signal);
 }
 
-async function fetchCollectionById(id: string, signal?: AbortController['signal']): Promise<APIResponse<Collection>> {
+async function fetchCollectionById(
+  id: string,
+  withInitialData: boolean,
+  signal?: AbortController['signal'],
+): Promise<APIResponseVersionRoot<Collection, { activity: number; minted: number }>> {
   const myAddress = await getMyAddress();
-  return await apiFetch<Collection>(urlGetCollectionById(id, myAddress), signal);
+  return await apiFetchVersionRoot<Collection, { activity: number; minted: number }>(
+    urlGetCollectionById(id, myAddress, withInitialData),
+    signal,
+  );
 }
 
 async function fetchCollectionBySymbol(
   symbol: string,
+  withInitialData: boolean,
   signal?: AbortController['signal'],
-): Promise<APIResponse<Collection>> {
+): Promise<APIResponseVersionRoot<Collection, { activity: number; minted: number }>> {
   const myAddress = await getMyAddress();
-  return await apiFetch<Collection>(urlGetCollectionBySymbol(symbol, myAddress), signal);
+  return await apiFetchVersionRoot<Collection, { activity: number; minted: number }>(
+    urlGetCollectionBySymbol(symbol, myAddress, withInitialData),
+    signal,
+  );
 }
 
 async function fetchCollectionIdFromSymbol(
@@ -144,19 +155,24 @@ export async function getCollectionIdFromRouteParam(routeParam: CollectionRoute,
 
 export async function getCollectionById(
   id: string,
+  withInitialData: boolean,
   signal?: AbortController['signal'],
-): Promise<APIResponse<Collection>> {
-  return await fetchCollectionById(id, signal);
+): Promise<APIResponseVersionRoot<Collection, { activity: number; minted: number }>> {
+  return await fetchCollectionById(id, withInitialData, signal);
 }
 
-export async function getCollectionByRouteParam(routeParam: CollectionRoute, signal?: AbortController['signal']) {
+export async function getCollectionByRouteParam(
+  routeParam: CollectionRoute,
+  withInitialData: boolean,
+  signal?: AbortController['signal'],
+) {
   switch (routeParam.mode) {
     case 's':
-      return await fetchCollectionBySymbol(routeParam.arg, signal);
+      return await fetchCollectionBySymbol(routeParam.arg, withInitialData, signal);
     case 'id':
-      return await fetchCollectionById(routeParam.arg, signal);
+      return await fetchCollectionById(routeParam.arg, withInitialData, signal);
     default:
-      return await fetchCollectionById(routeParam.arg, signal);
+      return await fetchCollectionById(routeParam.arg, withInitialData, signal);
   }
 }
 

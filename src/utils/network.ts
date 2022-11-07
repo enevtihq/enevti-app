@@ -6,7 +6,12 @@ import io from 'socket.io-client';
 import { urlSocketIO, urlVideoCallSocketIO } from './constant/URLCreator';
 import ReactNativeBlobUtil, { ReactNativeBlobUtilConfig } from 'react-native-blob-util';
 import { checkPermissionStorage } from './permission';
-import { APIResponse, APIResponseVersioned, ResponseJSON } from 'enevti-app/types/core/service/api';
+import {
+  APIResponse,
+  APIResponseVersioned,
+  APIResponseVersionRoot,
+  ResponseJSON,
+} from 'enevti-app/types/core/service/api';
 import { handleError, handleResponseCode, responseError } from './error/handle';
 
 export async function isInternetReachable(): Promise<boolean> {
@@ -171,8 +176,7 @@ async function apiFetchBase<T>(
     handleResponseCode(res, ret);
     return {
       status: res.status,
-      data: ret.data,
-      meta: ret.meta,
+      ...ret,
     };
   } catch (err: any) {
     handleError(err, undefined, silent);
@@ -196,4 +200,15 @@ export async function apiFetchVersioned<T>(
   errorReturn?: any,
 ): Promise<APIResponseVersioned<T>> {
   return (await apiFetchBase<T>(url, signal, silent, errorReturn)) as unknown as Promise<APIResponseVersioned<T>>;
+}
+
+export async function apiFetchVersionRoot<T, V>(
+  url: string,
+  signal?: AbortController['signal'],
+  silent?: boolean,
+  errorReturn?: any,
+): Promise<APIResponseVersionRoot<T, V>> {
+  return (await apiFetchBase<any>(url, signal, silent, errorReturn)) as unknown as Promise<
+    APIResponseVersionRoot<T, V>
+  >;
 }

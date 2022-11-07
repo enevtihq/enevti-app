@@ -20,7 +20,6 @@ import { hp, wp } from 'enevti-app/utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 import { loadFeeds, loadMoreFeeds } from 'enevti-app/store/middleware/thunk/ui/view/feed';
-import { loadMoments } from 'enevti-app/store/middleware/thunk/ui/view/moment';
 import { AppAsyncThunk } from 'enevti-app/types/ui/store/AppAsyncThunk';
 import {
   isFeedUndefined,
@@ -62,13 +61,6 @@ export default function Feed({ navigation, onScroll, headerHeight }: FeedProps) 
   const momentsUndefined = useSelector(isMomentUndefined);
   const newMoments = useSelector(isThereAnyNewMomentView);
 
-  const handleLoadMoment = React.useCallback(
-    (reload: boolean = false) => {
-      return dispatch(loadMoments({ reload }));
-    },
-    [dispatch],
-  ) as AppAsyncThunk;
-
   const handleLoadFeed = React.useCallback(
     (reload: boolean = false) => {
       return dispatch(loadFeeds({ reload }));
@@ -84,11 +76,10 @@ export default function Feed({ navigation, onScroll, headerHeight }: FeedProps) 
     async (reload: boolean = false) => {
       setRefreshing(true);
       await handleLoadFeed(reload).unwrap();
-      await handleLoadMoment(reload).unwrap();
       reload && feedRef.current?.scrollToOffset({ offset: 0 });
       setRefreshing(false);
     },
-    [handleLoadFeed, handleLoadMoment, feedRef],
+    [handleLoadFeed, feedRef],
   );
 
   const handleRefresh = React.useCallback(async () => {
@@ -138,8 +129,11 @@ export default function Feed({ navigation, onScroll, headerHeight }: FeedProps) 
   const emptyComponent = React.useMemo(() => <AppMessageEmpty />, []);
 
   const contentContainerStyle = React.useMemo(
-    () => (feeds.length > 0 || moments.length > 0 ? styles.listContentContainer : styles.listContentEmptyContainer),
-    [feeds.length, moments.length, styles.listContentContainer, styles.listContentEmptyContainer],
+    () =>
+      (feeds && feeds.length > 0) || (moments && moments.length > 0)
+        ? styles.listContentContainer
+        : styles.listContentEmptyContainer,
+    [feeds, moments, styles.listContentContainer, styles.listContentEmptyContainer],
   );
 
   const newUpdate = React.useMemo(() => newFeeds || newMoments, [newFeeds, newMoments]);

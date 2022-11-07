@@ -4,7 +4,6 @@ import {
   setPaymentStatus,
   setPaymentAction,
   showPayment,
-  setPaymentPriority,
   hidePayment,
 } from 'enevti-app/store/slices/payment';
 import { AsyncThunkAPI } from 'enevti-app/store/state';
@@ -53,8 +52,7 @@ export const payMintCollection = createAsyncThunk<void, PayMintCollectionPayload
         throw Error(i18n.t('error:transactionPreparationFailed'));
       }
 
-      dispatch(setPaymentFee({ gas: gasFee, base: baseFee, platform: '0' }));
-      dispatch(setPaymentPriority('normal'));
+      dispatch(setPaymentFee({ gas: gasFee, base: baseFee, platform: '0', priority: 'normal' }));
       dispatch(
         setPaymentAction({
           type: 'mintCollection',

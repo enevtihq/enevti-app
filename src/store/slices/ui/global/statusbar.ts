@@ -13,6 +13,9 @@ const statusBarSlice = createSlice({
   name: 'statusbar',
   initialState,
   reducers: {
+    setStatusBarState: (statusbar, action: PayloadAction<Partial<StatusBarState>>) => {
+      Object.assign(statusbar, action.payload);
+    },
     setStatusBarBackground: (statusbar, action: PayloadAction<StatusBarState['background']>) => {
       statusbar.background = action.payload;
     },
@@ -25,7 +28,8 @@ const statusBarSlice = createSlice({
   },
 });
 
-export const { setStatusBarBackground, setStatusBarTint, resetStatusBarState } = statusBarSlice.actions;
+export const { setStatusBarState, setStatusBarBackground, setStatusBarTint, resetStatusBarState } =
+  statusBarSlice.actions;
 export default statusBarSlice.reducer;
 
 export const selectStatusBarState = createSelector(

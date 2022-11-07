@@ -4,7 +4,6 @@ import {
   setPaymentStatus,
   setPaymentAction,
   showPayment,
-  setPaymentPriority,
   setPaymentMode,
   hidePayment,
 } from 'enevti-app/store/slices/payment';
@@ -45,8 +44,7 @@ export const payReplyCommentClubs = createAsyncThunk<void, PayReplyCommentClubsP
         throw Error(i18n.t('error:transactionPreparationFailed'));
       }
 
-      dispatch(setPaymentFee({ gas: gasFee, base: baseFee, platform: '0' }));
-      dispatch(setPaymentPriority('normal'));
+      dispatch(setPaymentFee({ gas: gasFee, base: baseFee, platform: '0', priority: 'normal' }));
       dispatch(
         setPaymentAction({
           type: 'replyCommentClubs',

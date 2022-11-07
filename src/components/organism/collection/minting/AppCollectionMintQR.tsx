@@ -38,7 +38,7 @@ export default function AppCollectionMintQR({ collectionId, onDismiss }: AppColl
   const [value, setValue] = React.useState<string>('');
 
   const onLoad = React.useCallback(async () => {
-    const collection = await getCollectionById(collectionId);
+    const collection = await getCollectionById(collectionId, false);
     if (collection.status === 200 && !isErrorResponse(collection)) {
       const myPublicKey = await getMyPublicKey();
       const bodyObj: MintNFTByQR = {

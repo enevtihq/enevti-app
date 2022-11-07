@@ -129,7 +129,7 @@ export default function AppFeedAction({ feed, index, navigation }: AppFeedAction
   const onBuy = React.useCallback(async () => {
     setBuyLoading(true);
     if (feed.type !== 'nft') {
-      const collectionResponse = await getCollectionById(feed.id);
+      const collectionResponse = await getCollectionById(feed.id, false);
       if (collectionResponse.status === 200) {
         if (isMintingAvailable(collectionResponse.data)) {
           if (['normal', ''].includes(collectionResponse.data.mintingType)) {

@@ -2,11 +2,7 @@ import React from 'react';
 import { StackScreenProps } from '@react-navigation/stack';
 import { useDispatch } from 'react-redux';
 import AppView from 'enevti-app/components/atoms/view/AppView';
-import {
-  resetStatusBarState,
-  setStatusBarBackground,
-  setStatusBarTint,
-} from 'enevti-app/store/slices/ui/global/statusbar';
+import { resetStatusBarState, setStatusBarState, setStatusBarTint } from 'enevti-app/store/slices/ui/global/statusbar';
 import { RootStackParamList } from 'enevti-app/navigation';
 import AppCollection from 'enevti-app/components/organism/collection/AppCollection';
 import AppHeader, { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
@@ -32,13 +28,11 @@ export default function Collection({ navigation, route }: Props) {
   const collectionScroll = useSharedValue(0);
 
   const onLoaded = React.useCallback(() => {
-    dispatch(setStatusBarBackground('transparent'));
-    dispatch(setStatusBarTint('light'));
+    dispatch(setStatusBarState({ background: 'transparent', tint: 'light' }));
   }, [dispatch]);
 
   const onLoadedAbove = React.useCallback(() => {
-    dispatch(setStatusBarBackground('transparent'));
-    dispatch(setStatusBarTint('system'));
+    dispatch(setStatusBarState({ background: 'transparent', tint: 'system' }));
   }, [dispatch]);
 
   React.useEffect(() => {

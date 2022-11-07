@@ -12,7 +12,7 @@ import { getMyAddress, getMyPublicKey, parsePersonaLabel, publicKeyToBase32 } fr
 import { createSignature, decryptAsymmetric, encryptAsymmetric } from 'enevti-app/utils/cryptography';
 import { answerVideoCall, appSocket, startVideoCall } from 'enevti-app/utils/network';
 import { useDispatch, useSelector } from 'react-redux';
-import { setStatusBarBackground, setStatusBarTint } from 'enevti-app/store/slices/ui/global/statusbar';
+import { setStatusBarState, setStatusBarTint } from 'enevti-app/store/slices/ui/global/statusbar';
 import { StackNavigationProp } from '@react-navigation/stack';
 import Color from 'color';
 import AppVideoCallLocalView from './AppVideoCallLocalView';
@@ -175,7 +175,7 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
   const onVideoCallStatusChanged = React.useCallback(
     async (_param: VideoCallStatusChangedParams) => {
       setCallStatusActionLoading(false);
-      const nftResponse = await getNFTbyId(route.params.nftId, abortController.current?.signal);
+      const nftResponse = await getNFTbyId(route.params.nftId, false, abortController.current?.signal);
       if (nftResponse.status === 200) {
         setNft(nftResponse.data);
         nftRef.current = nftResponse.data;
@@ -880,7 +880,7 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
         await initCallSound();
         const now = Date.now();
         const myAddress = await getMyAddress();
-        const nftResponse = await getNFTbyId(route.params.nftId, abortController.current?.signal);
+        const nftResponse = await getNFTbyId(route.params.nftId, false, abortController.current?.signal);
         if (nftResponse.status === 200) {
           setNft(nftResponse.data);
           nftRef.current = nftResponse.data;
@@ -958,8 +958,7 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
     // twilioRef.current?.connect({ accessToken: '' });
 
     const unsubscribeFocus = navigation.addListener('focus', () => {
-      dispatch(setStatusBarBackground('transparent'));
-      dispatch(setStatusBarTint('light'));
+      dispatch(setStatusBarState({ background: 'transparent', tint: 'light' }));
     });
 
     const unsubscribeNetInfo = NetInfo.addEventListener(async state => {

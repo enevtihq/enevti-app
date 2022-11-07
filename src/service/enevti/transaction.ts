@@ -17,8 +17,7 @@ import {
   selectTransactionNonce,
   addTransactionNonceCache,
   isTransactionNonceSynced,
-  setTransactionNonceCache,
-  setTransactionNonceCacheSynced,
+  setTransactionNonceCacheState,
 } from 'enevti-app/store/slices/entities/cache/transactionNonce';
 import { getProfileNonce } from './profile';
 import { selectProcessedTransactionThisBlock } from 'enevti-app/store/slices/session/transaction/processedThisBlock';
@@ -322,8 +321,7 @@ export async function updateNonceCache(signal?: AbortController['signal'], silen
   const profileNonce = await getProfileNonce(myAddress, signal, silent);
   if (profileNonce.status === 200) {
     nonce = profileNonce.data;
-    store.dispatch(setTransactionNonceCache(Number(profileNonce.data)));
-    store.dispatch(setTransactionNonceCacheSynced());
+    store.dispatch(setTransactionNonceCacheState({ value: Number(profileNonce.data), synced: true }));
   } else {
     throw Error(i18n.t('error:requestNonceFailed'));
   }

@@ -26,6 +26,10 @@ export interface ResponseVersioned<T, S = T> {
 
 export type APIResponseVersioned<T, S = T> = APIResponse<ResponseVersioned<T, S>>;
 
+export interface APIResponseVersionRoot<T, V = Record<string, number>> extends APIResponse<T> {
+  version: V;
+}
+
 export interface APIServiceResponse<T, S = T> extends APIResponse<T, S, ServiceMeta> {
   meta: {
     count: number;

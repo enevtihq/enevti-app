@@ -1,7 +1,5 @@
 import {
   getCollectionByRouteParam,
-  getCollectionInitialMinted,
-  getCollectionInitialActivity,
   getCollectionMinted,
   getCollectionActivity,
 } from 'enevti-app/service/enevti/collection';
@@ -10,20 +8,22 @@ import {
   setCollectionViewLoaded,
   setCollectionView,
   clearCollectionByKey,
-  setCollectionViewReqStatus,
-  initCollectionView,
-  setCollectionViewMintedPagination,
-  setCollectionViewActivityPagination,
   selectCollectionView,
   pushCollectionViewMinted,
   pushCollectionViewActivity,
+  collectionInitialStateItem,
 } from 'enevti-app/store/slices/ui/view/collection';
 import { hideModalLoader, showModalLoader } from 'enevti-app/store/slices/ui/global/modalLoader';
 import { AppThunk, AsyncThunkAPI } from 'enevti-app/store/state';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
-import { COLLECTION_MINTED_RESPONSE_LIMIT, COLLECTION_ACTIVITY_RESPONSE_LIMIT } from 'enevti-app/utils/constant/limit';
+import {
+  COLLECTION_MINTED_RESPONSE_LIMIT,
+  COLLECTION_ACTIVITY_RESPONSE_LIMIT,
+  COLLECTION_MINTED_INITIAL_LENGTH,
+  COLLECTION_ACTIVITY_INITIAL_LENGTH,
+} from 'enevti-app/utils/constant/limit';
 import sleep from 'enevti-app/utils/dummy/sleep';
 import { Platform } from 'react-native';
 import { IOS_MIN_RELOAD_TIME } from 'enevti-app/utils/constant/reload';
@@ -40,42 +40,35 @@ export const loadCollection = createAsyncThunk<void, LoadCollectionArgs, AsyncTh
         Platform.OS === 'ios' ? (reloadTime = Date.now()) : {};
         dispatch(showModalLoader());
       }
-      const collectionResponse = await getCollectionByRouteParam(route.params, signal);
-      const mintedResponse = await getCollectionInitialMinted(collectionResponse.data.id, signal);
-      const activityResponse = await getCollectionInitialActivity(collectionResponse.data.id, signal);
+      const collectionResponse = await getCollectionByRouteParam(route.params, true, signal);
       if (reload && Platform.OS === 'ios') {
         reloadTime = Date.now() - reloadTime;
         await sleep(IOS_MIN_RELOAD_TIME - reloadTime);
       }
-      dispatch(initCollectionView(route.key));
       dispatch(
         setCollectionView({
           key: route.key,
           value: {
+            ...collectionInitialStateItem,
             ...collectionResponse.data,
-            minted: mintedResponse.data.data,
-            activity: activityResponse.data.data,
             version: Date.now(),
+            mintedPagination: {
+              checkpoint: COLLECTION_MINTED_INITIAL_LENGTH,
+              version: collectionResponse.version.minted,
+            },
+            activityPagination: {
+              checkpoint: COLLECTION_ACTIVITY_INITIAL_LENGTH,
+              version: collectionResponse.version.activity,
+            },
+            reqStatus: collectionResponse.status,
+            loaded: true,
           },
         }),
       );
-      dispatch(
-        setCollectionViewMintedPagination({
-          key: route.key,
-          value: { checkpoint: mintedResponse.data.checkpoint, version: mintedResponse.data.version },
-        }),
-      );
-      dispatch(
-        setCollectionViewActivityPagination({
-          key: route.key,
-          value: { checkpoint: activityResponse.data.checkpoint, version: activityResponse.data.version },
-        }),
-      );
-      dispatch(setCollectionViewReqStatus({ key: route.key, value: collectionResponse.status }));
     } catch (err: any) {
       handleError(err);
-    } finally {
       dispatch(setCollectionViewLoaded({ key: route.key, value: true }));
+    } finally {
       reload && dispatch(hideModalLoader());
     }
   },
@@ -96,11 +89,11 @@ export const loadMoreMinted = createAsyncThunk<void, LoadCollectionArgs, AsyncTh
           version,
           signal,
         );
-        dispatch(pushCollectionViewMinted({ key: route.key, value: mintedResponse.data.data }));
         dispatch(
-          setCollectionViewMintedPagination({
+          pushCollectionViewMinted({
             key: route.key,
-            value: { checkpoint: mintedResponse.data.checkpoint, version: mintedResponse.data.version },
+            value: mintedResponse.data.data,
+            pagination: { checkpoint: mintedResponse.data.checkpoint, version: mintedResponse.data.version },
           }),
         );
       }
@@ -125,11 +118,11 @@ export const loadMoreActivity = createAsyncThunk<void, LoadCollectionArgs, Async
           version,
           signal,
         );
-        dispatch(pushCollectionViewActivity({ key: route.key, value: activityResponse.data.data }));
         dispatch(
-          setCollectionViewActivityPagination({
+          pushCollectionViewActivity({
             key: route.key,
-            value: { checkpoint: activityResponse.data.checkpoint, version: activityResponse.data.version },
+            value: activityResponse.data.data,
+            pagination: { checkpoint: activityResponse.data.checkpoint, version: activityResponse.data.version },
           }),
         );
       }

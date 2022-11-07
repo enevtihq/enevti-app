@@ -17,7 +17,6 @@ export const lastFetchTimeout = {
   profileOwned: defaultTimeout,
   profileCollection: defaultTimeout,
   display: parseLastFetch(15, 'minute'),
-  feed: defaultTimeout,
-  moment: defaultTimeout,
+  home: defaultTimeout,
   request: parseLastFetch(10, 'second'),
 };

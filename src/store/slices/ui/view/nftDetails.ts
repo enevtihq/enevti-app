@@ -18,7 +18,7 @@ type NFTDetailsViewStore = {
   [key: string]: NFTDetailsViewState;
 };
 
-const initialStateItem: NFTDetailsViewState = {
+export const nftDetailsInitialStateItem: NFTDetailsViewState = {
   activityPagination: {
     checkpoint: 0,
     version: 0,
@@ -128,6 +128,8 @@ const initialStateItem: NFTDetailsViewState = {
   activity: [],
 };
 
+const initialStateItem = nftDetailsInitialStateItem;
+
 const initialState: NFTDetailsViewStore = {};
 
 const nftDetailsViewSlice = createSlice({
@@ -135,9 +137,9 @@ const nftDetailsViewSlice = createSlice({
   initialState,
   reducers: {
     initNFTDetailsView: (nftDetails, action: PayloadAction<string>) => {
-      Object.assign(nftDetails, { [action.payload]: {} });
+      Object.assign(nftDetails, { [action.payload]: initialStateItem });
     },
-    setNFTDetailsView: (nftDetails, action: PayloadAction<{ key: string; value: Record<string, any> }>) => {
+    setNFTDetailsView: (nftDetails, action: PayloadAction<{ key: string; value: Partial<NFTDetailsViewState> }>) => {
       Object.assign(nftDetails, { [action.payload.key]: action.payload.value });
     },
     setNFTDetailsViewLike: (nftDetails, action: PayloadAction<{ key: string; value: number }>) => {
@@ -150,8 +152,12 @@ const nftDetailsViewSlice = createSlice({
     unshiftNFTDetailsViewActivity: (nftDetails, action: PayloadAction<{ key: string; value: NFTActivity[] }>) => {
       nftDetails[action.payload.key].activity = nftDetails[action.payload.key].activity.concat(action.payload.value);
     },
-    pushNFTDetailsViewActivity: (nftDetails, action: PayloadAction<{ key: string; value: NFTActivity[] }>) => {
+    pushNFTDetailsViewActivity: (
+      nftDetails,
+      action: PayloadAction<{ key: string; value: NFTActivity[]; pagination: PaginationStore }>,
+    ) => {
       nftDetails[action.payload.key].activity = action.payload.value.concat(nftDetails[action.payload.key].activity);
+      nftDetails[action.payload.key].activityPagination = { ...action.payload.pagination };
     },
     setNFTDetailsViewActivityPagination: (
       nftDetails,

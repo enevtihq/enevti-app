@@ -3,7 +3,6 @@ import {
   resetPaymentStatusType,
   setPaymentAction,
   setPaymentFee,
-  setPaymentPriority,
   setPaymentStatus,
 } from 'enevti-app/store/slices/payment';
 import { AsyncThunkAPI } from 'enevti-app/store/state';
@@ -69,8 +68,7 @@ export const directPayLikeReply = createAsyncThunk<void, PayLikeReplyPayload, As
         throw Error(i18n.t('error:transactionPreparationFailed'));
       }
 
-      dispatch(setPaymentFee({ gas: gasFee, base: baseFee, platform: '0' }));
-      dispatch(setPaymentPriority('normal'));
+      dispatch(setPaymentFee({ gas: gasFee, base: baseFee, platform: '0', priority: 'normal' }));
       dispatch(
         setPaymentAction({
           type: 'likeReply',

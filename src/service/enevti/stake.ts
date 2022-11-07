@@ -2,29 +2,37 @@ import { StakePoolData, StakerItem } from 'enevti-app/types/core/chain/stake';
 import { base32ToAddress } from 'enevti-app/service/enevti/persona';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
-import { apiFetch, apiFetchVersioned } from 'enevti-app/utils/network';
+import { apiFetchVersioned, apiFetchVersionRoot } from 'enevti-app/utils/network';
 import {
   urlGetStakePoolByAddress,
   urlGetStakePoolByUsername,
   urlGetStaker,
 } from 'enevti-app/utils/constant/URLCreator';
-import { APIResponse, APIResponseVersioned } from 'enevti-app/types/core/service/api';
+import { APIResponseVersioned, APIResponseVersionRoot } from 'enevti-app/types/core/service/api';
 import { STAKER_INITIAL_LENGTH } from 'enevti-app/utils/constant/limit';
 
 type StakePoolRoute = StackScreenProps<RootStackParamList, 'StakePool'>['route']['params'];
 
 async function fetchStakePool(
   address: string,
+  withInitialData: boolean,
   signal?: AbortController['signal'],
-): Promise<APIResponse<StakePoolData>> {
-  return await apiFetch<StakePoolData>(urlGetStakePoolByAddress(address), signal);
+): Promise<APIResponseVersionRoot<StakePoolData, { stakePool: number }>> {
+  return await apiFetchVersionRoot<StakePoolData, { stakePool: number }>(
+    urlGetStakePoolByAddress(address, withInitialData),
+    signal,
+  );
 }
 
 async function fetchStakePoolByUsername(
   username: string,
+  withInitialData: boolean,
   signal?: AbortController['signal'],
-): Promise<APIResponse<StakePoolData>> {
-  return await apiFetch<StakePoolData>(urlGetStakePoolByUsername(username), signal);
+): Promise<APIResponseVersionRoot<StakePoolData, { stakePool: number }>> {
+  return await apiFetchVersionRoot<StakePoolData, { stakePool: number }>(
+    urlGetStakePoolByUsername(username, withInitialData),
+    signal,
+  );
 }
 
 async function fetchStakePoolStaker(
@@ -39,9 +47,10 @@ async function fetchStakePoolStaker(
 
 export async function getStakePoolData(
   address: string,
+  withInitialData: boolean,
   signal?: AbortController['signal'],
-): Promise<APIResponse<StakePoolData>> {
-  return await fetchStakePool(address, signal);
+): Promise<APIResponseVersionRoot<StakePoolData, { stakePool: number }>> {
+  return await fetchStakePool(address, withInitialData, signal);
 }
 
 export async function getStakePoolStaker(
@@ -63,21 +72,26 @@ export async function getStakePoolInitialStaker(
 
 export async function getStakePoolDataByUsername(
   username: string,
+  withInitialData: boolean,
   signal?: AbortController['signal'],
-): Promise<APIResponse<StakePoolData>> {
-  return await fetchStakePoolByUsername(username, signal);
+): Promise<APIResponseVersionRoot<StakePoolData, { stakePool: number }>> {
+  return await fetchStakePoolByUsername(username, withInitialData, signal);
 }
 
-export async function getStakePoolDataByRouteParam(routeParam: StakePoolRoute, signal?: AbortController['signal']) {
+export async function getStakePoolDataByRouteParam(
+  routeParam: StakePoolRoute,
+  withInitialData: boolean,
+  signal?: AbortController['signal'],
+) {
   switch (routeParam.mode) {
     case 'a':
-      return await fetchStakePool(routeParam.arg, signal);
+      return await fetchStakePool(routeParam.arg, withInitialData, signal);
     case 'b':
       const address = base32ToAddress(routeParam.arg);
-      return await fetchStakePool(address, signal);
+      return await fetchStakePool(address, withInitialData, signal);
     case 'u':
-      return await fetchStakePoolByUsername(routeParam.arg, signal);
+      return await fetchStakePoolByUsername(routeParam.arg, withInitialData, signal);
     default:
-      return await fetchStakePool(routeParam.arg, signal);
+      return await fetchStakePool(routeParam.arg, withInitialData, signal);
   }
 }

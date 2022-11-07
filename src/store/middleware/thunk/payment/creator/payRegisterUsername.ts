@@ -5,7 +5,6 @@ import {
   setPaymentAction,
   showPayment,
   hidePayment,
-  setPaymentPriority,
 } from 'enevti-app/store/slices/payment';
 import { AsyncThunkAPI } from 'enevti-app/store/state';
 import { attachFee, calculateBaseFee, calculateGasFee, createTransaction } from 'enevti-app/service/enevti/transaction';
@@ -50,8 +49,7 @@ export const payRegisterUsername = createAsyncThunk<void, PayRegisterUsernamePay
         throw Error(i18n.t('error:transactionPreparationFailed'));
       }
 
-      dispatch(setPaymentFee({ gas: gasFee, base: baseFee, platform: '0' }));
-      dispatch(setPaymentPriority('normal'));
+      dispatch(setPaymentFee({ gas: gasFee, base: baseFee, platform: '0', priority: 'normal' }));
       dispatch(
         setPaymentAction({
           type: 'registerUsername',

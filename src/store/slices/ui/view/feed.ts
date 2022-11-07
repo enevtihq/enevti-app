@@ -27,6 +27,9 @@ const feedViewSlice = createSlice({
   name: 'feedView',
   initialState,
   reducers: {
+    setFeedViewState: (feed, action: PayloadAction<Partial<FeedViewState>>) => {
+      Object.assign(feed, action.payload);
+    },
     setFeedView: (feed, action: PayloadAction<Feeds>) => {
       feed.items = action.payload.slice();
     },
@@ -34,8 +37,10 @@ const feedViewSlice = createSlice({
       feed.items[action.payload.index].liked = true;
       feed.items[action.payload.index].like++;
     },
-    addFeedView: (feed, action: PayloadAction<Feeds>) => {
-      feed.items.concat(action.payload);
+    addFeedView: (feed, action: PayloadAction<{ feed: Feeds; reqVersion: number; checkpoint: number }>) => {
+      feed.items.concat(action.payload.feed);
+      feed.checkpoint = action.payload.checkpoint;
+      feed.reqVersion = action.payload.reqVersion;
     },
     setFeedViewCheckpoint: (feed, action: PayloadAction<number>) => {
       feed.checkpoint = action.payload;
@@ -62,6 +67,7 @@ const feedViewSlice = createSlice({
 });
 
 export const {
+  setFeedViewState,
   setFeedView,
   addFeedViewLike,
   addFeedView,

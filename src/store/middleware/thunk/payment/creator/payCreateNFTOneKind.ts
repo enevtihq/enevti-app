@@ -5,7 +5,6 @@ import {
   setPaymentStatus,
   setPaymentAction,
   showPayment,
-  setPaymentPriority,
   hidePayment,
 } from 'enevti-app/store/slices/payment';
 import { CreateNFTOneKindMeta } from 'enevti-app/types/ui/store/CreateNFTQueue';
@@ -193,8 +192,7 @@ export const payCreateNFTOneKind = createAsyncThunk<void, CreateNFTOneKindMeta, 
         throw Error(i18n.t('error:transactionPreparationFailed'));
       }
 
-      dispatch(setPaymentFee({ gas: gasFee, base: baseFee, platform: '0' }));
-      dispatch(setPaymentPriority('normal'));
+      dispatch(setPaymentFee({ gas: gasFee, base: baseFee, platform: '0', priority: 'normal' }));
       dispatch(
         setPaymentAction({
           type: 'createNFTOneKind',

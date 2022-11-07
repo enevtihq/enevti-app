@@ -17,8 +17,10 @@ const notificationViewSlice = createSlice({
     setNotificationView: (notification, action: PayloadAction<Partial<NotificationState>>) => {
       Object.assign(notification, action.payload);
     },
-    readAllNotificationItems: notification => {
+    readAllNotificationItems: (notification, action: PayloadAction<{ lastRead: number; unread: number }>) => {
       notification.items = notification.items.map(item => ({ ...item, read: true }));
+      notification.lastRead = action.payload.lastRead;
+      notification.unread = action.payload.unread;
     },
     setNotificationVersion: (notification, action: PayloadAction<number>) => {
       notification.version = action.payload;

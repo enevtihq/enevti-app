@@ -25,17 +25,13 @@ import {
 } from 'enevti-app/service/enevti/comment';
 import {
   initCommentView,
-  setCommentViewVersion,
   pushComment,
-  setCommentViewPagination,
   setCommentViewReqStatus,
   setCommentViewLoaded,
   clearCommentViewByKey,
   selectCommentView,
   pushReply,
   selectCommentByIndex,
-  setReplyPagination,
-  resetCommentViewByKey,
   setComment,
   CommentItem,
   deleteComment,
@@ -49,6 +45,8 @@ import {
   setCommentReplyingOnReply,
   resetCommentReplyingOnReply,
   setCommentAuthorized,
+  setCommentView,
+  commentInitialStateItem,
 } from 'enevti-app/store/slices/ui/view/comment';
 import i18n from 'enevti-app/translations/i18n';
 import { COMMENT_LIMIT, REPLY_LIMIT } from 'enevti-app/utils/constant/limit';
@@ -116,28 +114,27 @@ export const loadComment = createAsyncThunk<void, LoadCommentArgs, AsyncThunkAPI
 
       status = commentResponse.status;
 
-      dispatch(resetCommentViewByKey(key));
       dispatch(
-        pushComment({
-          key,
-          value: initCommentViewState(commentData),
-        }),
-      );
-      dispatch(setCommentViewVersion({ key, value: Date.now() }));
-      dispatch(
-        setCommentViewPagination({
+        setCommentView({
           key,
           value: {
-            checkpoint: commentResponse.data.checkpoint,
-            version: commentResponse.data.version,
+            ...commentInitialStateItem,
+            comment: initCommentViewState(commentData),
+            version: Date.now(),
+            commentPagination: {
+              checkpoint: commentResponse.data.checkpoint,
+              version: commentResponse.data.version,
+            },
+            reqStatus: status,
+            loaded: true,
           },
         }),
       );
     } catch (err: any) {
       handleError(err);
-    } finally {
       dispatch(setCommentViewReqStatus({ key, value: status }));
       dispatch(setCommentViewLoaded({ key, value: true }));
+    } finally {
       reload && dispatch(hideModalLoader());
     }
   },
@@ -200,12 +197,7 @@ export const loadMoreComment = createAsyncThunk<void, LoadCommentArgs, AsyncThun
           pushComment({
             key,
             value: initCommentViewState(commentData),
-          }),
-        );
-        dispatch(
-          setCommentViewPagination({
-            key,
-            value: {
+            pagination: {
               checkpoint: commentResponse.data.checkpoint,
               version: commentResponse.data.version,
             },
@@ -236,12 +228,12 @@ export const loadReply = createAsyncThunk<void, LoadReplyArgs, AsyncThunkAPI>(
       if (replyResponse === undefined || replyResponse.status !== 200) {
         throw Error(i18n.t('error:clientError'));
       }
-      dispatch(pushReply({ key, commentIndex: index, value: initReplyState(replyResponse.data.data.reply) }));
       dispatch(
-        setReplyPagination({
+        pushReply({
           key,
           commentIndex: index,
-          value: {
+          value: initReplyState(replyResponse.data.data.reply),
+          pagination: {
             checkpoint: replyResponse.data.checkpoint,
             version: replyResponse.data.version,
           },
@@ -281,13 +273,7 @@ export const loadMoreReply = createAsyncThunk<void, LoadReplyArgs, AsyncThunkAPI
             key,
             commentIndex: index,
             value: initReplyState(replyResponse.data.data.reply),
-          }),
-        );
-        dispatch(
-          setReplyPagination({
-            key,
-            commentIndex: index,
-            value: {
+            pagination: {
               checkpoint: replyResponse.data.checkpoint,
               version: replyResponse.data.version,
             },

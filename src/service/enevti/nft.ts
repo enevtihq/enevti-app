@@ -3,7 +3,13 @@ import { handleError, handleResponseCode } from 'enevti-app/utils/error/handle';
 import { NFT } from 'enevti-app/types/core/chain/nft';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
-import { apiFetch, apiFetchVersioned, appFetch, isInternetReachable } from 'enevti-app/utils/network';
+import {
+  apiFetch,
+  apiFetchVersioned,
+  apiFetchVersionRoot,
+  appFetch,
+  isInternetReachable,
+} from 'enevti-app/utils/network';
 import {
   urlGetIsNameExists,
   urlGetIsSymbolExists,
@@ -13,7 +19,12 @@ import {
   urlGetNFTActivityById,
   urlGetIsNFTOwnerOrCreator,
 } from 'enevti-app/utils/constant/URLCreator';
-import { APIResponse, APIResponseVersioned, ResponseJSON } from 'enevti-app/types/core/service/api';
+import {
+  APIResponse,
+  APIResponseVersioned,
+  APIResponseVersionRoot,
+  ResponseJSON,
+} from 'enevti-app/types/core/service/api';
 import { NFTActivity } from 'enevti-app/types/core/chain/nft/NFTActivity';
 import { NFT_ACTIVITY_INITIAL_LENGTH } from 'enevti-app/utils/constant/limit';
 import { getMyAddress } from './persona';
@@ -60,18 +71,26 @@ export async function isSymbolAvailable(symbol: string, signal?: AbortController
   }
 }
 
-async function fetchNFTbyId(id: string, signal?: AbortController['signal']): Promise<APIResponse<NFT>> {
+async function fetchNFTbyId(
+  id: string,
+  withInitialData: boolean,
+  signal?: AbortController['signal'],
+): Promise<APIResponseVersionRoot<NFT, { activity: number }>> {
   const myAddress = await getMyAddress();
-  return await apiFetch<NFT>(urlGetNFTById(id, myAddress), signal);
+  return await apiFetchVersionRoot<NFT, { activity: number }>(urlGetNFTById(id, myAddress, withInitialData), signal);
 }
 
 async function fetchNFTbySerial(
   symbol: string,
   serial: string,
+  withInitialData: boolean,
   signal?: AbortController['signal'],
-): Promise<APIResponse<NFT>> {
+): Promise<APIResponseVersionRoot<NFT, { activity: number }>> {
   const myAddress = await getMyAddress();
-  return await apiFetch<NFT>(urlGetNFTBySerial(`${symbol}#${serial}`, myAddress), signal);
+  return await apiFetchVersionRoot<NFT, { activity: number }>(
+    urlGetNFTBySerial(`${symbol}#${serial}`, myAddress, withInitialData),
+    signal,
+  );
 }
 
 async function fetchNFTIdFromSerial(serial: string, signal?: AbortController['signal']): Promise<APIResponse<string>> {
@@ -129,20 +148,28 @@ export async function getNFTIdFromRouteParam(routeParam: NFTDetailsRoute, signal
   }
 }
 
-export async function getNFTbyId(id: string, signal?: AbortController['signal']): Promise<APIResponse<NFT>> {
-  return await fetchNFTbyId(id, signal);
+export async function getNFTbyId(
+  id: string,
+  withInitialData: boolean,
+  signal?: AbortController['signal'],
+): Promise<APIResponse<NFT>> {
+  return await fetchNFTbyId(id, withInitialData, signal);
 }
 
-export async function getNFTbyRouteParam(routeParam: NFTDetailsRoute, signal?: AbortController['signal']) {
+export async function getNFTbyRouteParam(
+  routeParam: NFTDetailsRoute,
+  withInitialData: boolean,
+  signal?: AbortController['signal'],
+) {
   switch (routeParam.mode) {
     case 's':
       const symbol = routeParam.arg.split('#')[0];
       const serial = routeParam.arg.split('#')[1];
-      return await fetchNFTbySerial(symbol, serial, signal);
+      return await fetchNFTbySerial(symbol, serial, withInitialData, signal);
     case 'id':
-      return await fetchNFTbyId(routeParam.arg, signal);
+      return await fetchNFTbyId(routeParam.arg, withInitialData, signal);
     default:
-      return await fetchNFTbyId(routeParam.arg, signal);
+      return await fetchNFTbyId(routeParam.arg, withInitialData, signal);
   }
 }
 

@@ -14,7 +14,7 @@ type WalletViewStore = {
   [key: string]: WalletViewState;
 };
 
-const initialStateItem: WalletViewState = {
+export const walletInitialStateItem: WalletViewState = {
   historyPagination: {
     version: 0,
     checkpoint: 0,
@@ -28,6 +28,8 @@ const initialStateItem: WalletViewState = {
   history: [],
 };
 
+const initialStateItem = walletInitialStateItem;
+
 const initialState: WalletViewStore = {};
 
 const walletViewSlice = createSlice({
@@ -37,12 +39,12 @@ const walletViewSlice = createSlice({
     initWalletView: (wallet, action: PayloadAction<string>) => {
       Object.assign(wallet, { [action.payload]: initialStateItem });
     },
-    setWalletView: (wallet, action: PayloadAction<{ key: string; value: Record<string, any> }>) => {
+    setWalletView: (wallet, action: PayloadAction<{ key: string; value: Partial<WalletViewState> }>) => {
       Object.assign(wallet, {
         [action.payload.key]: action.payload.value,
       });
     },
-    assignWalletView: (wallet, action: PayloadAction<{ key: string; value: Record<string, any> }>) => {
+    assignWalletView: (wallet, action: PayloadAction<{ key: string; value: Partial<WalletViewState> }>) => {
       Object.assign(wallet, {
         [action.payload.key]: Object.assign(wallet[action.payload.key], action.payload.value),
       });
@@ -53,8 +55,12 @@ const walletViewSlice = createSlice({
     unshiftWalletHistory: (wallet, action: PayloadAction<{ key: string; value: WalletView['history'] }>) => {
       wallet[action.payload.key].history = action.payload.value.concat(wallet[action.payload.key].history);
     },
-    pushWalletHistory: (wallet, action: PayloadAction<{ key: string; value: WalletView['history'] }>) => {
+    pushWalletHistory: (
+      wallet,
+      action: PayloadAction<{ key: string; value: WalletView['history']; pagination: PaginationStore }>,
+    ) => {
       wallet[action.payload.key].history = wallet[action.payload.key].history.concat(action.payload.value);
+      wallet[action.payload.key].historyPagination = { ...action.payload.pagination };
     },
     setWalletViewHistoryPagination: (wallet, action: PayloadAction<{ key: string; value: PaginationStore }>) => {
       wallet[action.payload.key].historyPagination = { ...action.payload.value };

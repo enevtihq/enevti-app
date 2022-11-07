@@ -4,22 +4,16 @@ import { AppThunk, AsyncThunkAPI } from 'enevti-app/store/state';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
-import {
-  getStakePoolDataByRouteParam,
-  getStakePoolInitialStaker,
-  getStakePoolStaker,
-} from 'enevti-app/service/enevti/stake';
+import { getStakePoolDataByRouteParam, getStakePoolStaker } from 'enevti-app/service/enevti/stake';
 import {
   clearStakePoolByKey,
   setStakePoolLoaded,
   setStakePoolView,
-  setStakePoolReqStatus,
-  initStakePoolView,
-  setStakePoolStakerPagination,
   selectStakePoolView,
   pushStakePoolStaker,
+  stakePoolInitialStateItem,
 } from 'enevti-app/store/slices/ui/view/stakePool';
-import { STAKER_RESPONSE_LIMIT } from 'enevti-app/utils/constant/limit';
+import { STAKER_INITIAL_LENGTH, STAKER_RESPONSE_LIMIT } from 'enevti-app/utils/constant/limit';
 
 type StakePoolRoute = StackScreenProps<RootStackParamList, 'StakePool'>['route'];
 type loadStakePoolArgs = { route: StakePoolRoute; reload: boolean };
@@ -30,26 +24,24 @@ export const loadStakePool = createAsyncThunk<void, loadStakePoolArgs, AsyncThun
     try {
       reload && dispatch(showModalLoader());
       const now = Date.now();
-      const stakePoolResponse = await getStakePoolDataByRouteParam(route.params, signal);
-      const staker = await getStakePoolInitialStaker(stakePoolResponse.data.owner.address, signal);
-      dispatch(initStakePoolView(route.key));
+      const stakePoolResponse = await getStakePoolDataByRouteParam(route.params, true, signal);
       dispatch(
         setStakePoolView({
           key: route.key,
-          value: { ...stakePoolResponse.data, staker: staker.data.data, version: now },
+          value: {
+            ...stakePoolInitialStateItem,
+            ...stakePoolResponse.data,
+            version: now,
+            stakerPagination: { checkpoint: STAKER_INITIAL_LENGTH, version: stakePoolResponse.version.stakePool },
+            reqStatus: stakePoolResponse.status,
+            loaded: true,
+          },
         }),
       );
-      dispatch(
-        setStakePoolStakerPagination({
-          key: route.key,
-          value: { checkpoint: staker.data.checkpoint, version: staker.data.version },
-        }),
-      );
-      dispatch(setStakePoolReqStatus({ key: route.key, value: stakePoolResponse.status }));
     } catch (err: any) {
       handleError(err);
-    } finally {
       dispatch(setStakePoolLoaded({ key: route.key, value: true }));
+    } finally {
       reload && dispatch(hideModalLoader());
     }
   },
@@ -70,11 +62,11 @@ export const loadMoreStaker = createAsyncThunk<void, loadStakePoolArgs, AsyncThu
           version,
           signal,
         );
-        dispatch(pushStakePoolStaker({ key: route.key, value: stakerResponse.data.data }));
         dispatch(
-          setStakePoolStakerPagination({
+          pushStakePoolStaker({
             key: route.key,
-            value: { checkpoint: stakerResponse.data.checkpoint, version: stakerResponse.data.version },
+            value: stakerResponse.data.data,
+            pagination: { checkpoint: stakerResponse.data.checkpoint, version: stakerResponse.data.version },
           }),
         );
       }

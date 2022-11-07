@@ -17,7 +17,7 @@ const personaEntitySlice = createSlice({
   name: 'myPersonaCache',
   initialState,
   reducers: {
-    setMyPersonaCache: (persona, action: PayloadAction<Persona>) => {
+    setMyPersonaCache: (persona, action: PayloadAction<Partial<PersonaCacheState>>) => {
       Object.assign(persona, action.payload);
     },
     setLastFetchMyPersonaCache: (persona, action: PayloadAction<number>) => {

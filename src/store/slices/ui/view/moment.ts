@@ -3,13 +3,23 @@ import { createSelector } from 'reselect';
 import { RootState } from 'enevti-app/store/state';
 import { Moments } from 'enevti-app/types/core/service/feed';
 
-type MomentViewState = { version: number; fetchedVersion: number; reqStatus: number; loaded: boolean; items: Moments };
+type MomentViewState = {
+  checkpoint: number;
+  version: number;
+  fetchedVersion: number;
+  reqStatus: number;
+  reqVersion: number;
+  loaded: boolean;
+  items: Moments;
+};
 
 const initialState: MomentViewState = {
+  checkpoint: 0,
   version: 0,
   fetchedVersion: 0,
   loaded: false,
   reqStatus: 0,
+  reqVersion: 0,
   items: [],
 };
 
@@ -17,6 +27,9 @@ const momentViewSlice = createSlice({
   name: 'momentView',
   initialState,
   reducers: {
+    setMomentViewState: (moment, action: PayloadAction<Partial<MomentViewState>>) => {
+      Object.assign(moment, action.payload);
+    },
     setMomentView: (moment, action: PayloadAction<Moments>) => {
       moment.items = action.payload.slice();
     },
@@ -39,6 +52,7 @@ const momentViewSlice = createSlice({
 });
 
 export const {
+  setMomentViewState,
   setMomentView,
   setMomentViewVersion,
   setMomentViewFetchedVersion,
