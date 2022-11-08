@@ -1,12 +1,5 @@
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
-import {
-  setPaymentFee,
-  setPaymentStatus,
-  setPaymentAction,
-  showPayment,
-  setPaymentMode,
-  hidePayment,
-} from 'enevti-app/store/slices/payment';
+import { setPaymentStatus, showPayment, hidePayment, setPaymentState } from 'enevti-app/store/slices/payment';
 import { AsyncThunkAPI } from 'enevti-app/store/state';
 import { attachFee, calculateBaseFee, calculateGasFee, createTransaction } from 'enevti-app/service/enevti/transaction';
 import i18n from 'enevti-app/translations/i18n';
@@ -44,20 +37,23 @@ export const payReplyCommentClubs = createAsyncThunk<void, PayReplyCommentClubsP
         throw Error(i18n.t('error:transactionPreparationFailed'));
       }
 
-      dispatch(setPaymentFee({ gas: gasFee, base: baseFee, platform: '0', priority: 'normal' }));
       dispatch(
-        setPaymentAction({
-          type: 'replyCommentClubs',
-          icon: iconMap.commentFill,
-          name: i18n.t('payment:payReplyCommentClubs'),
-          description: i18n.t('payment:payReplyCommentClubsDescription'),
-          amount: '0',
-          currency: COIN_NAME,
-          payload: JSON.stringify(attachFee(transactionPayload, (BigInt(gasFee) + BigInt(baseFee)).toString())),
-          meta: payload.reply,
+        setPaymentState({
+          fee: { gas: gasFee, base: baseFee, platform: '0', priority: 'normal', loaded: true },
+          action: {
+            loaded: true,
+            type: 'replyCommentClubs',
+            icon: iconMap.commentFill,
+            name: i18n.t('payment:payReplyCommentClubs'),
+            description: i18n.t('payment:payReplyCommentClubsDescription'),
+            amount: '0',
+            currency: COIN_NAME,
+            payload: JSON.stringify(attachFee(transactionPayload, (BigInt(gasFee) + BigInt(baseFee)).toString())),
+            meta: payload.reply,
+          },
+          mode: 'compact',
         }),
       );
-      dispatch(setPaymentMode('compact'));
       dispatch(showPayment());
 
       dispatch(

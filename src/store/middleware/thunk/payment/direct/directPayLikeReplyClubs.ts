@@ -1,8 +1,7 @@
 import {
   resetPaymentState,
   resetPaymentStatusType,
-  setPaymentAction,
-  setPaymentFee,
+  setPaymentState,
   setPaymentStatus,
 } from 'enevti-app/store/slices/payment';
 import { AsyncThunkAPI } from 'enevti-app/store/state';
@@ -68,17 +67,20 @@ export const directPayLikeReplyClubs = createAsyncThunk<void, PayLikeReplyClubsP
         throw Error(i18n.t('error:transactionPreparationFailed'));
       }
 
-      dispatch(setPaymentFee({ gas: gasFee, base: baseFee, platform: '0', priority: 'normal' }));
       dispatch(
-        setPaymentAction({
-          type: 'likeReplyClubs',
-          icon: iconMap.likeActive,
-          name: i18n.t('payment:payLikeReplyClubsName'),
-          description: i18n.t('payment:payLikeReplyClubsDescription', { name: payload.target }),
-          amount: '0',
-          currency: COIN_NAME,
-          payload: '',
-          meta: '',
+        setPaymentState({
+          fee: { gas: gasFee, base: baseFee, platform: '0', priority: 'normal', loaded: true },
+          action: {
+            loaded: true,
+            type: 'likeReplyClubs',
+            icon: iconMap.likeActive,
+            name: i18n.t('payment:payLikeReplyClubsName'),
+            description: i18n.t('payment:payLikeReplyClubsDescription', { name: payload.target }),
+            amount: '0',
+            currency: COIN_NAME,
+            payload: '',
+            meta: '',
+          },
         }),
       );
 

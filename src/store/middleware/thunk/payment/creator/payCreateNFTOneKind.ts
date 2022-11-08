@@ -1,12 +1,6 @@
 import { COIN_NAME } from 'enevti-app/utils/constant/identifier';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
-import {
-  setPaymentFee,
-  setPaymentStatus,
-  setPaymentAction,
-  showPayment,
-  hidePayment,
-} from 'enevti-app/store/slices/payment';
+import { setPaymentStatus, showPayment, hidePayment, setPaymentState } from 'enevti-app/store/slices/payment';
 import { CreateNFTOneKindMeta } from 'enevti-app/types/ui/store/CreateNFTQueue';
 import { AsyncThunkAPI } from 'enevti-app/store/state';
 import { attachFee, calculateBaseFee, calculateGasFee, createTransaction } from 'enevti-app/service/enevti/transaction';
@@ -192,17 +186,20 @@ export const payCreateNFTOneKind = createAsyncThunk<void, CreateNFTOneKindMeta, 
         throw Error(i18n.t('error:transactionPreparationFailed'));
       }
 
-      dispatch(setPaymentFee({ gas: gasFee, base: baseFee, platform: '0', priority: 'normal' }));
       dispatch(
-        setPaymentAction({
-          type: 'createNFTOneKind',
-          icon: iconMap.nftOneKind,
-          name: i18n.t('payment:payCreateNFTOneKindName'),
-          description: i18n.t('payment:payCreateNFTOneKindDescription'),
-          amount: '0',
-          currency: COIN_NAME,
-          payload: JSON.stringify(attachFee(transactionPayload, (BigInt(gasFee) + BigInt(baseFee)).toString())),
-          meta: JSON.stringify(Object.assign(payload, { state: Object.assign(payload.state, { contentUri }) })),
+        setPaymentState({
+          fee: { gas: gasFee, base: baseFee, platform: '0', priority: 'normal', loaded: true },
+          action: {
+            loaded: true,
+            type: 'createNFTOneKind',
+            icon: iconMap.nftOneKind,
+            name: i18n.t('payment:payCreateNFTOneKindName'),
+            description: i18n.t('payment:payCreateNFTOneKindDescription'),
+            amount: '0',
+            currency: COIN_NAME,
+            payload: JSON.stringify(attachFee(transactionPayload, (BigInt(gasFee) + BigInt(baseFee)).toString())),
+            meta: JSON.stringify(Object.assign(payload, { state: Object.assign(payload.state, { contentUri }) })),
+          },
         }),
       );
     } catch (err) {

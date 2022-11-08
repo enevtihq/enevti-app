@@ -1,8 +1,7 @@
 import {
   resetPaymentState,
   resetPaymentStatusType,
-  setPaymentAction,
-  setPaymentFee,
+  setPaymentState,
   setPaymentStatus,
 } from 'enevti-app/store/slices/payment';
 import { AsyncThunkAPI } from 'enevti-app/store/state';
@@ -61,17 +60,20 @@ export const directPayLikeComment = createAsyncThunk<void, PayLikeCommentPayload
         throw Error(i18n.t('error:transactionPreparationFailed'));
       }
 
-      dispatch(setPaymentFee({ gas: gasFee, base: baseFee, platform: '0', priority: 'normal' }));
       dispatch(
-        setPaymentAction({
-          type: 'likeComment',
-          icon: iconMap.likeActive,
-          name: i18n.t('payment:payLikeCommentName'),
-          description: i18n.t('payment:payLikeCommentDescription', { name: payload.target }),
-          amount: '0',
-          currency: COIN_NAME,
-          payload: '',
-          meta: '',
+        setPaymentState({
+          fee: { gas: gasFee, base: baseFee, platform: '0', priority: 'normal', loaded: true },
+          action: {
+            loaded: true,
+            type: 'likeComment',
+            icon: iconMap.likeActive,
+            name: i18n.t('payment:payLikeCommentName'),
+            description: i18n.t('payment:payLikeCommentDescription', { name: payload.target }),
+            amount: '0',
+            currency: COIN_NAME,
+            payload: '',
+            meta: '',
+          },
         }),
       );
 

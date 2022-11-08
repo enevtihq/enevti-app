@@ -1,11 +1,5 @@
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
-import {
-  setPaymentFee,
-  setPaymentStatus,
-  setPaymentAction,
-  showPayment,
-  hidePayment,
-} from 'enevti-app/store/slices/payment';
+import { setPaymentStatus, showPayment, hidePayment, setPaymentState } from 'enevti-app/store/slices/payment';
 import { AsyncThunkAPI } from 'enevti-app/store/state';
 import { attachFee, calculateBaseFee, calculateGasFee, createTransaction } from 'enevti-app/service/enevti/transaction';
 import i18n from 'enevti-app/translations/i18n';
@@ -51,20 +45,23 @@ export const paySetVideoCallRejected = createAsyncThunk<void, PaySetVideoCallRej
         throw Error(i18n.t('error:transactionPreparationFailed'));
       }
 
-      dispatch(setPaymentFee({ gas: gasFee, base: baseFee, platform: '0', priority: 'normal' }));
       dispatch(
-        setPaymentAction({
-          type: 'setVideoCallRejected',
-          icon: iconMap.setVideoCallRejected,
-          name: i18n.t('payment:setVideoCallRejected'),
-          description: i18n.t('payment:setVideoCallRejectedDescription', {
-            nft: `${payload.nft.symbol}#${payload.nft.serial}`,
-          }),
-          details: i18n.t('payment:setVideoCallRejectedDetails'),
-          amount: '0',
-          currency: COIN_NAME,
-          payload: JSON.stringify(attachFee(transactionPayload, (BigInt(gasFee) + BigInt(baseFee)).toString())),
-          meta: '',
+        setPaymentState({
+          fee: { gas: gasFee, base: baseFee, platform: '0', priority: 'normal', loaded: true },
+          action: {
+            loaded: true,
+            type: 'setVideoCallRejected',
+            icon: iconMap.setVideoCallRejected,
+            name: i18n.t('payment:setVideoCallRejected'),
+            description: i18n.t('payment:setVideoCallRejectedDescription', {
+              nft: `${payload.nft.symbol}#${payload.nft.serial}`,
+            }),
+            details: i18n.t('payment:setVideoCallRejectedDetails'),
+            amount: '0',
+            currency: COIN_NAME,
+            payload: JSON.stringify(attachFee(transactionPayload, (BigInt(gasFee) + BigInt(baseFee)).toString())),
+            meta: '',
+          },
         }),
       );
     } catch (err) {

@@ -1,12 +1,5 @@
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
-import {
-  setPaymentFee,
-  setPaymentStatus,
-  setPaymentAction,
-  showPayment,
-  setPaymentMode,
-  hidePayment,
-} from 'enevti-app/store/slices/payment';
+import { setPaymentStatus, showPayment, hidePayment, setPaymentState } from 'enevti-app/store/slices/payment';
 import { AsyncThunkAPI } from 'enevti-app/store/state';
 import { attachFee, calculateBaseFee, calculateGasFee, createTransaction } from 'enevti-app/service/enevti/transaction';
 import i18n from 'enevti-app/translations/i18n';
@@ -47,20 +40,23 @@ export const payCommentCollectionClubs = createAsyncThunk<void, PayCommentCollec
         throw Error(i18n.t('error:transactionPreparationFailed'));
       }
 
-      dispatch(setPaymentFee({ gas: gasFee, base: baseFee, platform: '0', priority: 'normal' }));
       dispatch(
-        setPaymentAction({
-          type: 'commentCollectionClubs',
-          icon: iconMap.commentFill,
-          name: i18n.t('payment:payCommentCollectionClubs'),
-          description: i18n.t('payment:payCommentCollectionClubsDescription'),
-          amount: '0',
-          currency: COIN_NAME,
-          payload: JSON.stringify(attachFee(transactionPayload, (BigInt(gasFee) + BigInt(baseFee)).toString())),
-          meta: payload.comment,
+        setPaymentState({
+          fee: { gas: gasFee, base: baseFee, platform: '0', priority: 'normal', loaded: true },
+          action: {
+            loaded: true,
+            type: 'commentCollectionClubs',
+            icon: iconMap.commentFill,
+            name: i18n.t('payment:payCommentCollectionClubs'),
+            description: i18n.t('payment:payCommentCollectionClubsDescription'),
+            amount: '0',
+            currency: COIN_NAME,
+            payload: JSON.stringify(attachFee(transactionPayload, (BigInt(gasFee) + BigInt(baseFee)).toString())),
+            meta: payload.comment,
+          },
+          mode: 'compact',
         }),
       );
-      dispatch(setPaymentMode('compact'));
       dispatch(showPayment());
 
       dispatch(

@@ -1,11 +1,5 @@
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
-import {
-  setPaymentFee,
-  setPaymentStatus,
-  setPaymentAction,
-  showPayment,
-  hidePayment,
-} from 'enevti-app/store/slices/payment';
+import { setPaymentStatus, showPayment, hidePayment, setPaymentState } from 'enevti-app/store/slices/payment';
 import { AsyncThunkAPI } from 'enevti-app/store/state';
 import { attachFee, calculateBaseFee, calculateGasFee, createTransaction } from 'enevti-app/service/enevti/transaction';
 import i18n from 'enevti-app/translations/i18n';
@@ -49,19 +43,22 @@ export const payRegisterUsername = createAsyncThunk<void, PayRegisterUsernamePay
         throw Error(i18n.t('error:transactionPreparationFailed'));
       }
 
-      dispatch(setPaymentFee({ gas: gasFee, base: baseFee, platform: '0', priority: 'normal' }));
       dispatch(
-        setPaymentAction({
-          type: 'registerUsername',
-          icon: iconMap.username,
-          name: i18n.t('payment:payRegisterUsernameName'),
-          description: i18n.t('payment:payRegisterUsernameDescription', {
-            username: payload.username,
-          }),
-          amount: BigInt(baseFee).toString(),
-          currency: COIN_NAME,
-          payload: JSON.stringify(attachFee(transactionPayload, (BigInt(gasFee) + BigInt(baseFee)).toString())),
-          meta: '',
+        setPaymentState({
+          fee: { gas: gasFee, base: baseFee, platform: '0', priority: 'normal', loaded: true },
+          action: {
+            loaded: true,
+            type: 'registerUsername',
+            icon: iconMap.username,
+            name: i18n.t('payment:payRegisterUsernameName'),
+            description: i18n.t('payment:payRegisterUsernameDescription', {
+              username: payload.username,
+            }),
+            amount: BigInt(baseFee).toString(),
+            currency: COIN_NAME,
+            payload: JSON.stringify(attachFee(transactionPayload, (BigInt(gasFee) + BigInt(baseFee)).toString())),
+            meta: '',
+          },
         }),
       );
     } catch (err) {

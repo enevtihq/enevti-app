@@ -1,5 +1,5 @@
 import { UNDEFINED_ICON } from 'enevti-app/components/atoms/icon/AppIconComponent';
-import { setPaymentFee, setPaymentAction } from 'enevti-app/store/slices/payment';
+import { setPaymentState } from 'enevti-app/store/slices/payment';
 import { AsyncThunkAPI } from 'enevti-app/store/state';
 import { createSilentTransaction, updateNonceCache } from 'enevti-app/service/enevti/transaction';
 import { createAsyncThunk, AnyAction } from '@reduxjs/toolkit';
@@ -68,17 +68,20 @@ export const payDeliverSecret = createAsyncThunk<void, PayDeliverSecretPayload, 
         dispatch(addTransactionNonceCache());
       }
 
-      dispatch(setPaymentFee({ gas: '0', base: '0', platform: '0', priority: 'normal' }));
       dispatch(
-        setPaymentAction({
-          type: 'deliverSecret',
-          icon: UNDEFINED_ICON,
-          name: i18n.t('payment:payDeliverSecretName'),
-          description: i18n.t('payment:payDeliverSecretDescription'),
-          amount: '0',
-          currency: COIN_NAME,
-          payload: JSON.stringify(transactionPayload),
-          meta: '',
+        setPaymentState({
+          fee: { gas: '0', base: '0', platform: '0', priority: 'normal', loaded: true },
+          action: {
+            loaded: true,
+            type: 'deliverSecret',
+            icon: UNDEFINED_ICON,
+            name: i18n.t('payment:payDeliverSecretName'),
+            description: i18n.t('payment:payDeliverSecretDescription'),
+            amount: '0',
+            currency: COIN_NAME,
+            payload: JSON.stringify(transactionPayload),
+            meta: '',
+          },
         }),
       );
       dispatch(reducePayment());

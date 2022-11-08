@@ -1,11 +1,5 @@
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
-import {
-  setPaymentFee,
-  setPaymentStatus,
-  setPaymentAction,
-  showPayment,
-  hidePayment,
-} from 'enevti-app/store/slices/payment';
+import { setPaymentStatus, showPayment, hidePayment, setPaymentState } from 'enevti-app/store/slices/payment';
 import { AsyncThunkAPI } from 'enevti-app/store/state';
 import { attachFee, calculateBaseFee, calculateGasFee, createTransaction } from 'enevti-app/service/enevti/transaction';
 import i18n from 'enevti-app/translations/i18n';
@@ -51,19 +45,22 @@ export const payAddStake = createAsyncThunk<void, PayAddStakePayload, AsyncThunk
         throw Error(i18n.t('error:transactionPreparationFailed'));
       }
 
-      dispatch(setPaymentFee({ gas: gasFee, base: baseFee, platform: '0', priority: 'normal' }));
       dispatch(
-        setPaymentAction({
-          type: 'addStake',
-          icon: iconMap.stake,
-          name: i18n.t('payment:payAddStakeName'),
-          description: i18n.t('payment:payAddStakeDescription', {
-            account: parsePersonaLabel(payload.persona),
-          }),
-          amount: (BigInt(transactionPayload.asset.votes[0].amount) + BigInt(baseFee)).toString(),
-          currency: payload.stake.currency,
-          payload: JSON.stringify(attachFee(transactionPayload, (BigInt(gasFee) + BigInt(baseFee)).toString())),
-          meta: '',
+        setPaymentState({
+          fee: { gas: gasFee, base: baseFee, platform: '0', priority: 'normal', loaded: true },
+          action: {
+            loaded: true,
+            type: 'addStake',
+            icon: iconMap.stake,
+            name: i18n.t('payment:payAddStakeName'),
+            description: i18n.t('payment:payAddStakeDescription', {
+              account: parsePersonaLabel(payload.persona),
+            }),
+            amount: (BigInt(transactionPayload.asset.votes[0].amount) + BigInt(baseFee)).toString(),
+            currency: payload.stake.currency,
+            payload: JSON.stringify(attachFee(transactionPayload, (BigInt(gasFee) + BigInt(baseFee)).toString())),
+            meta: '',
+          },
         }),
       );
     } catch (err) {
