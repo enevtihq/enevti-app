@@ -14,10 +14,14 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import AppMessageEmpty from 'enevti-app/components/molecules/message/AppMessageEmpty';
 import { loadMoreMinted } from 'enevti-app/store/middleware/thunk/ui/view/collection';
-import { RouteProp } from '@react-navigation/native';
+import { RouteProp, useFocusEffect } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'enevti-app/store/state';
-import { selectCollectionView, selectCollectionViewMinted } from 'enevti-app/store/slices/ui/view/collection';
+import {
+  selectCollectionView,
+  selectCollectionViewMinted,
+  setCollectionRender,
+} from 'enevti-app/store/slices/ui/view/collection';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
 
 const AnimatedFlatGrid = Animated.createAnimatedComponent<FlatGridProps<NFTBase>>(FlatGrid);
@@ -58,6 +62,14 @@ function Component(
   const collection = useSelector((state: RootState) => selectCollectionView(state, route.key));
   const nfts = useSelector((state: RootState) => selectCollectionViewMinted(state, route.key));
 
+  useFocusEffect(
+    React.useCallback(() => {
+      if (!collection.render.minted) {
+        dispatch(setCollectionRender({ key: route.key, value: { minted: true } }));
+      }
+    }, [collection.render.minted, dispatch, route.key]),
+  );
+
   const styles = React.useMemo(
     () => makeStyles(hp, displayed, collectionHeaderHeight, insets),
     [hp, displayed, collectionHeaderHeight, insets],
@@ -71,16 +83,18 @@ function Component(
   );
 
   const listFooter = React.useMemo(
-    () =>
-      mintingAvailable ? (
-        <View>
-          {collection.mintedPagination && collection.mintedPagination.version !== nfts.length && nfts.length !== 0 ? (
-            <AppActivityIndicator style={{ marginVertical: hp('3%') }} />
-          ) : null}
-          <View style={{ height: hp(MINT_BUTTON_HEIGHT) }} />
-        </View>
-      ) : undefined,
-    [hp, mintingAvailable, collection.mintedPagination, nfts.length],
+    () => (
+      <View>
+        {collection.render.minted &&
+        collection.mintedPagination &&
+        collection.mintedPagination.version !== nfts.length &&
+        nfts.length !== 0 ? (
+          <AppActivityIndicator style={{ marginVertical: hp('3%') }} />
+        ) : null}
+        {mintingAvailable ? <View style={{ height: hp(MINT_BUTTON_HEIGHT) }} /> : null}
+      </View>
+    ),
+    [collection.render.minted, collection.mintedPagination, nfts.length, hp, mintingAvailable],
   );
 
   const handleRefresh = React.useCallback(() => {
@@ -96,7 +110,17 @@ function Component(
     [handleRefresh, progressViewOffset],
   );
 
-  const emptyComponent = React.useMemo(() => <AppMessageEmpty />, []);
+  const emptyComponent = React.useMemo(
+    () =>
+      collection.render.minted ? (
+        <AppMessageEmpty />
+      ) : (
+        <View style={styles.loaderContainer}>
+          <AppActivityIndicator animating />
+        </View>
+      ),
+    [collection.render.minted, styles.loaderContainer],
+  );
 
   const renderItem = React.useCallback(
     ({ item }) => <AppNFTCard nft={item} width={itemDimension} navigation={navigation} />,
@@ -129,7 +153,7 @@ function Component(
       spacing={spacing}
       showsVerticalScrollIndicator={false}
       itemDimension={itemDimension}
-      data={nfts}
+      data={collection.render.minted ? nfts : []}
       renderItem={renderItem}
       refreshControl={refreshControl}
       ListEmptyComponent={emptyComponent}
@@ -152,6 +176,12 @@ const makeStyles = (
   insets: SafeAreaInsets,
 ) =>
   StyleSheet.create({
+    loaderContainer: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: '100%',
+      height: '20%',
+    },
     contentContainerStyle: {
       paddingTop: hp(TOP_TABBAR_HEIGHT_PERCENTAGE) + collectionHeaderHeight,
       minHeight:

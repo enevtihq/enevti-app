@@ -15,9 +15,15 @@ export type MyProfileViewState = ProfileView & {
   fetchedVersion: number;
   reqStatus: number;
   loaded: boolean;
+  render: Record<'owned' | 'onsale' | 'collection', boolean>;
 };
 
 const initialState: MyProfileViewState = {
+  render: {
+    owned: false,
+    onsale: false,
+    collection: false,
+  },
   ownedPagination: {
     version: 0,
     checkpoint: 0,
@@ -58,6 +64,9 @@ const myProfileViewSlice = createSlice({
   reducers: {
     setMyProfileView: (profile, action: PayloadAction<Partial<MyProfileViewState>>) => {
       assignDeep(profile, action.payload);
+    },
+    setMyProfileRender: (profile, action: PayloadAction<Partial<MyProfileViewState['render']>>) => {
+      assignDeep(profile.render, action.payload);
     },
     unshiftMyProfileViewOwnedNFT: (profile, action: PayloadAction<NFTBase[]>) => {
       profile.owned = action.payload.concat(profile.owned);
@@ -109,6 +118,7 @@ const myProfileViewSlice = createSlice({
 
 export const {
   setMyProfileView,
+  setMyProfileRender,
   unshiftMyProfileViewOwnedNFT,
   unshiftMyProfileViewOnsaleNFT,
   unshiftMyProfileViewCollection,
@@ -155,4 +165,9 @@ export const isMyProfileUndefined = createSelector(
 export const isThereAnyNewMyProfileUpdates = createSelector(
   (state: RootState) => state.ui.view.myProfile,
   (profile: MyProfileViewState) => profile.fetchedVersion > profile.version,
+);
+
+export const selectMyProfileViewRender = createSelector(
+  (state: RootState) => state.ui.view.myProfile,
+  (profile: MyProfileViewState) => profile.render,
 );

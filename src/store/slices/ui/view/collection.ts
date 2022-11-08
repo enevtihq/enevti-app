@@ -16,6 +16,7 @@ type CollectionViewState = Omit<Collection, 'collectionType'> & {
   loaded: boolean;
   reqStatus: number;
   liked: boolean;
+  render: Record<'minted' | 'activity', boolean>;
 };
 
 type CollectionViewStore = {
@@ -23,6 +24,10 @@ type CollectionViewStore = {
 };
 
 export const collectionInitialStateItem: CollectionViewState = {
+  render: {
+    minted: false,
+    activity: false,
+  },
   mintedPagination: {
     checkpoint: 0,
     version: 0,
@@ -87,6 +92,12 @@ const collectionViewSlice = createSlice({
   reducers: {
     initCollectionView: (collection, action: PayloadAction<string>) => {
       assignDeep(collection, { [action.payload]: initialStateItem });
+    },
+    setCollectionRender: (
+      collection,
+      action: PayloadAction<{ key: string; value: Partial<CollectionViewState['render']> }>,
+    ) => {
+      assignDeep(collection[action.payload.key].render, action.payload.value);
     },
     setCollectionView: (collection, action: PayloadAction<{ key: string; value: Partial<CollectionViewState> }>) => {
       assignDeep(collection, { [action.payload.key]: action.payload.value });
@@ -155,6 +166,7 @@ const collectionViewSlice = createSlice({
 });
 
 export const {
+  setCollectionRender,
   initCollectionView,
   setCollectionView,
   setCollectionViewLike,

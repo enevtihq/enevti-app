@@ -22,9 +22,19 @@ import { useTranslation } from 'react-i18next';
 import AppMessageEmpty from 'enevti-app/components/molecules/message/AppMessageEmpty';
 import { loadMoreCollection } from 'enevti-app/store/middleware/thunk/ui/view/profile';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectMyProfileView, selectMyProfileViewCollection } from 'enevti-app/store/slices/ui/view/myProfile';
-import { selectProfileView, selectProfileViewCollection } from 'enevti-app/store/slices/ui/view/profile';
-import { RouteProp } from '@react-navigation/native';
+import {
+  selectMyProfileView,
+  selectMyProfileViewCollection,
+  selectMyProfileViewRender,
+  setMyProfileRender,
+} from 'enevti-app/store/slices/ui/view/myProfile';
+import {
+  selectProfileView,
+  selectProfileViewCollection,
+  selectProfileViewRender,
+  setProfileRender,
+} from 'enevti-app/store/slices/ui/view/profile';
+import { RouteProp, useFocusEffect } from '@react-navigation/native';
 import { RootState } from 'enevti-app/store/state';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
 import { isMintingAvailable } from 'enevti-app/utils/collection';
@@ -80,6 +90,19 @@ function Component(
   const data = useSelector((state: RootState) =>
     isMyProfile ? selectMyProfileViewCollection(state) : selectProfileViewCollection(state, route.key),
   );
+  const render = useSelector((state: RootState) =>
+    isMyProfile ? selectMyProfileViewRender(state) : selectProfileViewRender(state, route.key),
+  );
+
+  useFocusEffect(
+    React.useCallback(() => {
+      if (!render.collection) {
+        isMyProfile
+          ? dispatch(setMyProfileRender({ collection: true }))
+          : dispatch(setProfileRender({ key: route.key, value: { collection: true } }));
+      }
+    }, [dispatch, isMyProfile, render.collection, route.key]),
+  );
 
   const styles = React.useMemo(
     () => makeStyles(insets, headerHeight, displayed, disableHeaderAnimation),
@@ -111,7 +134,17 @@ function Component(
     [handleRefresh, progressViewOffset],
   );
 
-  const emptyComponent = React.useMemo(() => <AppMessageEmpty />, []);
+  const emptyComponent = React.useMemo(
+    () =>
+      render.collection ? (
+        <AppMessageEmpty />
+      ) : (
+        <View style={styles.loaderContainer}>
+          <AppActivityIndicator animating />
+        </View>
+      ),
+    [render.collection, styles.loaderContainer],
+  );
 
   const keyExtractor = React.useCallback((item: CollectionBase) => item.id, []);
 
@@ -138,12 +171,12 @@ function Component(
   const footerComponent = React.useMemo(
     () => (
       <View style={{ marginBottom: withFooterSpace ? hp(TABBAR_HEIGHT_PERCENTAGE) : hp(0) }}>
-        {total !== data.length && data.length !== 0 ? (
+        {render.collection && total !== data.length && data.length !== 0 ? (
           <AppActivityIndicator style={{ marginVertical: hp('3%') }} />
         ) : null}
       </View>
     ),
-    [total, data.length, withFooterSpace],
+    [withFooterSpace, render.collection, total, data.length],
   );
 
   const renderItem = React.useCallback(
@@ -209,7 +242,7 @@ function Component(
       contentContainerStyle={styles.contentContainerStyle}
       showsVerticalScrollIndicator={false}
       getItemLayout={getItemLayout}
-      data={data}
+      data={render.collection ? data : []}
       renderItem={renderItem}
       refreshControl={refreshControl}
       ListEmptyComponent={emptyComponent}
@@ -232,6 +265,12 @@ const makeStyles = (
   disableHeaderAnimation: boolean,
 ) =>
   StyleSheet.create({
+    loaderContainer: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: '100%',
+      height: '20%',
+    },
     contentContainerStyle: {
       paddingTop: hp(PROFILE_HEADER_HEIGHT_PERCENTAGE + TOP_TABBAR_HEIGHT_PERCENTAGE, insets) + headerHeight,
       minHeight:

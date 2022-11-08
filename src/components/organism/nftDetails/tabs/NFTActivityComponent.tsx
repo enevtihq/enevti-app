@@ -20,10 +20,14 @@ import { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHe
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { parsePersonaLabel } from 'enevti-app/service/enevti/persona';
 import AppMessageEmpty from 'enevti-app/components/molecules/message/AppMessageEmpty';
-import { RouteProp } from '@react-navigation/native';
+import { RouteProp, useFocusEffect } from '@react-navigation/native';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectNFTDetailsView, selectNFTDetailsViewActivity } from 'enevti-app/store/slices/ui/view/nftDetails';
+import {
+  selectNFTDetailsView,
+  selectNFTDetailsViewActivity,
+  setNFTDetailsRender,
+} from 'enevti-app/store/slices/ui/view/nftDetails';
 import { RootState } from 'enevti-app/store/state';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
 import { loadMoreActivity } from 'enevti-app/store/middleware/thunk/ui/view/nftDetails';
@@ -65,6 +69,14 @@ function Component(
   const nftDetails = useSelector((state: RootState) => selectNFTDetailsView(state, route.key));
   const activities = useSelector((state: RootState) => selectNFTDetailsViewActivity(state, route.key));
 
+  useFocusEffect(
+    React.useCallback(() => {
+      if (!nftDetails.render.activity) {
+        dispatch(setNFTDetailsRender({ key: route.key, value: { activity: true } }));
+      }
+    }, [dispatch, nftDetails.render.activity, route.key]),
+  );
+
   const styles = React.useMemo(
     () => makeStyles(hp, wp, displayed, collectionHeaderHeight, insets),
     [hp, wp, displayed, collectionHeaderHeight, insets],
@@ -92,7 +104,17 @@ function Component(
     [handleRefresh, progressViewOffset],
   );
 
-  const emptyComponent = React.useMemo(() => <AppMessageEmpty />, []);
+  const emptyComponent = React.useMemo(
+    () =>
+      nftDetails.render.activity ? (
+        <AppMessageEmpty />
+      ) : (
+        <View style={styles.loaderContainer}>
+          <AppActivityIndicator animating />
+        </View>
+      ),
+    [nftDetails.render.activity, styles.loaderContainer],
+  );
 
   const renderItem = React.useCallback(
     ({ item }: { item: NFT['activity'][0] }) => (
@@ -136,7 +158,8 @@ function Component(
   const listFooter = React.useMemo(
     () => (
       <View>
-        {nftDetails.activityPagination &&
+        {nftDetails.render.activity &&
+        nftDetails.activityPagination &&
         nftDetails.activity &&
         nftDetails.activityPagination.version !== nftDetails.activity.length &&
         nftDetails.activity.length !== 0 ? (
@@ -145,7 +168,7 @@ function Component(
         <View style={{ height: hp(5) }} />
       </View>
     ),
-    [hp, nftDetails.activityPagination, nftDetails.activity],
+    [nftDetails.render.activity, nftDetails.activityPagination, nftDetails.activity, hp],
   );
 
   React.useEffect(() => {
@@ -174,7 +197,7 @@ function Component(
       contentContainerStyle={styles.contentContainerStyle}
       showsVerticalScrollIndicator={false}
       getItemLayout={getItemLayout}
-      data={activities}
+      data={nftDetails.render.activity ? activities : []}
       renderItem={renderItem}
       refreshControl={refreshControl}
       ListEmptyComponent={emptyComponent}
@@ -198,6 +221,12 @@ const makeStyles = (
   insets: SafeAreaInsets,
 ) =>
   StyleSheet.create({
+    loaderContainer: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: '100%',
+      height: '20%',
+    },
     contentContainerStyle: {
       paddingTop: hp(NFT_DETAILS_TOP_TABBAR_HEIGHT_PERCENTAGE) + collectionHeaderHeight,
       minHeight:

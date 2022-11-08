@@ -200,6 +200,7 @@ const makeStyles = (hp: DimensionFunction, wp: DimensionFunction, theme: Theme) 
   StyleSheet.create({
     actionContainer: {
       position: 'absolute',
+      zIndex: 999,
       width: '100%',
       height: hp(MINT_BUTTON_HEIGHT),
       bottom: hp(Platform.OS === 'ios' ? 0 : 2),

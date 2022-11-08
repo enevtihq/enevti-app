@@ -51,6 +51,10 @@ export const loadCollection = createAsyncThunk<void, LoadCollectionArgs, AsyncTh
           value: {
             ...collectionInitialStateItem,
             ...collectionResponse.data,
+            render: {
+              minted: true,
+              activity: false,
+            },
             version: Date.now(),
             mintedPagination: {
               checkpoint: COLLECTION_MINTED_INITIAL_LENGTH,

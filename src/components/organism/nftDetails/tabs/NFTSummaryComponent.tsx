@@ -25,9 +25,13 @@ import Color from 'color';
 import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 import { useDispatch, useSelector } from 'react-redux';
-import { RouteProp } from '@react-navigation/native';
+import { RouteProp, useFocusEffect } from '@react-navigation/native';
 import { RootState } from 'enevti-app/store/state';
-import { addNFTDetailsViewLike, selectNFTDetailsView } from 'enevti-app/store/slices/ui/view/nftDetails';
+import {
+  addNFTDetailsViewLike,
+  selectNFTDetailsView,
+  setNFTDetailsRender,
+} from 'enevti-app/store/slices/ui/view/nftDetails';
 import { directPayLikeNFT } from 'enevti-app/store/middleware/thunk/payment/direct/directPayLikeNFT';
 import { PaymentStatus } from 'enevti-app/types/ui/store/Payment';
 import usePaymentCallback from 'enevti-app/utils/hook/usePaymentCallback';
@@ -69,6 +73,14 @@ function Component(
   const [refreshing, setRefreshing] = React.useState<boolean>(false);
 
   const nft = useSelector((state: RootState) => selectNFTDetailsView(state, route.key));
+
+  useFocusEffect(
+    React.useCallback(() => {
+      if (!nft.render.summary) {
+        dispatch(setNFTDetailsRender({ key: route.key, value: { summary: true } }));
+      }
+    }, [dispatch, nft.render.summary, route.key]),
+  );
 
   const styles = React.useMemo(
     () => makeStyles(hp, wp, displayed, collectionHeaderHeight, insets, theme),

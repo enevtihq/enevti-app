@@ -41,6 +41,10 @@ export const loadNFTDetails = createAsyncThunk<void, loadNFTArgs, AsyncThunkAPI>
           value: {
             ...nftDetailsInitialStateItem,
             ...nftResponse.data,
+            render: {
+              summary: true,
+              activity: false,
+            },
             version: Date.now(),
             activityPagination: {
               checkpoint: NFT_ACTIVITY_INITIAL_LENGTH,

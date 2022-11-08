@@ -231,6 +231,11 @@ export const loadMyProfile = async (reload: boolean, dispatch: any, signal?: Abo
   dispatch(
     setMyProfileView({
       ...profileResponse.data,
+      render: {
+        owned: true,
+        onsale: true,
+        collection: false,
+      },
       version: Date.now(),
       ownedPagination: {
         checkpoint: PROFILE_OWNED_INITIAL_LENGTH,
@@ -268,6 +273,11 @@ export const loadProfileBase = async (
           value: {
             ...initialProfileState,
             ...profileResponse.data,
+            render: {
+              owned: true,
+              onsale: true,
+              collection: false,
+            },
             persona: personaBase.data,
             version: Date.now(),
             ownedPagination: {

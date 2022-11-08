@@ -13,10 +13,20 @@ import { RootStackParamList } from 'enevti-app/navigation';
 import AppMessageEmpty from 'enevti-app/components/molecules/message/AppMessageEmpty';
 import { loadMoreOwned } from 'enevti-app/store/middleware/thunk/ui/view/profile';
 import { useDispatch, useSelector } from 'react-redux';
-import { RouteProp } from '@react-navigation/native';
+import { RouteProp, useFocusEffect } from '@react-navigation/native';
 import { RootState } from 'enevti-app/store/state';
-import { selectMyProfileView, selectMyProfileViewOwned } from 'enevti-app/store/slices/ui/view/myProfile';
-import { selectProfileView, selectProfileViewOwned } from 'enevti-app/store/slices/ui/view/profile';
+import {
+  selectMyProfileView,
+  selectMyProfileViewOwned,
+  selectMyProfileViewRender,
+  setMyProfileRender,
+} from 'enevti-app/store/slices/ui/view/myProfile';
+import {
+  selectProfileView,
+  selectProfileViewOwned,
+  selectProfileViewRender,
+  setProfileRender,
+} from 'enevti-app/store/slices/ui/view/profile';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
 import { TABBAR_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppTabBar';
 
@@ -66,6 +76,19 @@ function Component(
   const data = useSelector((state: RootState) =>
     isMyProfile ? selectMyProfileViewOwned(state) : selectProfileViewOwned(state, route.key),
   );
+  const render = useSelector((state: RootState) =>
+    isMyProfile ? selectMyProfileViewRender(state) : selectProfileViewRender(state, route.key),
+  );
+
+  useFocusEffect(
+    React.useCallback(() => {
+      if (!render.owned) {
+        isMyProfile
+          ? dispatch(setMyProfileRender({ owned: true }))
+          : dispatch(setProfileRender({ key: route.key, value: { owned: true } }));
+      }
+    }, [dispatch, isMyProfile, render.owned, route.key]),
+  );
 
   const styles = React.useMemo(
     () => makeStyles(insets, headerHeight, displayed, disableHeaderAnimation),
@@ -95,7 +118,17 @@ function Component(
     [handleRefresh, progressViewOffset],
   );
 
-  const emptyComponent = React.useMemo(() => <AppMessageEmpty />, []);
+  const emptyComponent = React.useMemo(
+    () =>
+      render.owned ? (
+        <AppMessageEmpty />
+      ) : (
+        <View style={styles.loaderContainer}>
+          <AppActivityIndicator animating />
+        </View>
+      ),
+    [render.owned, styles.loaderContainer],
+  );
 
   const renderItem = React.useCallback(
     ({ item }) => <AppNFTRenderer nft={item} width={itemDimension} navigation={navigation} />,
@@ -120,12 +153,12 @@ function Component(
   const footerComponent = React.useMemo(
     () => (
       <View style={{ marginBottom: withFooterSpace ? hp(TABBAR_HEIGHT_PERCENTAGE) : hp(0) }}>
-        {total !== data.length && data.length !== 0 ? (
+        {render.owned && total !== data.length && data.length !== 0 ? (
           <AppActivityIndicator style={{ marginVertical: hp('3%') }} />
         ) : null}
       </View>
     ),
-    [total, data.length, withFooterSpace],
+    [withFooterSpace, render.owned, total, data.length],
   );
 
   return (
@@ -139,7 +172,7 @@ function Component(
       spacing={spacing}
       showsVerticalScrollIndicator={false}
       itemDimension={itemDimension}
-      data={data}
+      data={render.owned ? data : []}
       renderItem={renderItem}
       refreshControl={refreshControl}
       ListEmptyComponent={emptyComponent}
@@ -157,6 +190,12 @@ const makeStyles = (
   disableHeaderAnimation: boolean,
 ) =>
   StyleSheet.create({
+    loaderContainer: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: '100%',
+      height: '20%',
+    },
     contentContainerStyle: {
       paddingTop: hp(PROFILE_HEADER_HEIGHT_PERCENTAGE + TOP_TABBAR_HEIGHT_PERCENTAGE, insets) + headerHeight,
       minHeight:

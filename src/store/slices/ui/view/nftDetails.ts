@@ -13,6 +13,7 @@ type NFTDetailsViewState = NFT & {
   reqStatus: number;
   loaded: boolean;
   liked: boolean;
+  render: Record<'summary' | 'activity', boolean>;
 };
 
 type NFTDetailsViewStore = {
@@ -20,6 +21,10 @@ type NFTDetailsViewStore = {
 };
 
 export const nftDetailsInitialStateItem: NFTDetailsViewState = {
+  render: {
+    summary: false,
+    activity: false,
+  },
   activityPagination: {
     checkpoint: 0,
     version: 0,
@@ -140,6 +145,12 @@ const nftDetailsViewSlice = createSlice({
     initNFTDetailsView: (nftDetails, action: PayloadAction<string>) => {
       assignDeep(nftDetails, { [action.payload]: initialStateItem });
     },
+    setNFTDetailsRender: (
+      nftDetails,
+      action: PayloadAction<{ key: string; value: Partial<NFTDetailsViewState['render']> }>,
+    ) => {
+      assignDeep(nftDetails[action.payload.key].render, action.payload.value);
+    },
     setNFTDetailsView: (nftDetails, action: PayloadAction<{ key: string; value: Partial<NFTDetailsViewState> }>) => {
       assignDeep(nftDetails, { [action.payload.key]: action.payload.value });
     },
@@ -195,6 +206,7 @@ const nftDetailsViewSlice = createSlice({
 
 export const {
   initNFTDetailsView,
+  setNFTDetailsRender,
   setNFTDetailsView,
   addNFTDetailsViewLike,
   setNFTDetailsViewLike,

@@ -15,7 +15,6 @@ import { RootStackParamList } from 'enevti-app/navigation';
 import { RootState } from 'enevti-app/store/state';
 import { selectProfileView } from 'enevti-app/store/slices/ui/view/profile';
 import { selectMyProfileView } from 'enevti-app/store/slices/ui/view/myProfile';
-import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -92,12 +91,6 @@ export default function AppProfileBody({
                 {t('profile:onSale')} ({profile.onSalePagination ? profile.onSalePagination.version : 0})
               </AppTextBody4>
             ),
-            lazy: true,
-            lazyPlaceholder: () => (
-              <View style={styles.loaderContainer}>
-                <AppActivityIndicator animating />
-              </View>
-            ),
           }}
           name={t('profile:onSale')}
           component={onSaleNFTScreen}
@@ -108,12 +101,6 @@ export default function AppProfileBody({
               <AppTextBody4 style={{ color: color }}>
                 {t('profile:collection')} ({profile.collectionPagination ? profile.collectionPagination.version : 0})
               </AppTextBody4>
-            ),
-            lazy: true,
-            lazyPlaceholder: () => (
-              <View style={styles.loaderContainer}>
-                <AppActivityIndicator animating />
-              </View>
             ),
           }}
           name={t('profile:collection')}

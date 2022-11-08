@@ -23,11 +23,11 @@ import { MINT_BUTTON_HEIGHT } from 'enevti-app/components/organism/collection/Ap
 import AppMessageEmpty from 'enevti-app/components/molecules/message/AppMessageEmpty';
 import AppActivityIcon from 'enevti-app/components/molecules/activity/AppActivityIcon';
 import { loadMoreActivity } from 'enevti-app/store/middleware/thunk/ui/view/collection';
-import { RouteProp } from '@react-navigation/native';
+import { RouteProp, useFocusEffect } from '@react-navigation/native';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'enevti-app/store/state';
-import { selectCollectionView } from 'enevti-app/store/slices/ui/view/collection';
+import { selectCollectionView, setCollectionRender } from 'enevti-app/store/slices/ui/view/collection';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
 
 const COLLECTION_ACTIVITY_ITEM_HEIGHT = 9;
@@ -68,6 +68,14 @@ function Component(
 
   const collection = useSelector((state: RootState) => selectCollectionView(state, route.key));
 
+  useFocusEffect(
+    React.useCallback(() => {
+      if (!collection.render.activity) {
+        dispatch(setCollectionRender({ key: route.key, value: { activity: true } }));
+      }
+    }, [collection.render.activity, dispatch, route.key]),
+  );
+
   const styles = React.useMemo(
     () => makeStyles(hp, wp, displayed, collectionHeaderHeight, insets),
     [hp, wp, displayed, collectionHeaderHeight, insets],
@@ -95,7 +103,17 @@ function Component(
     [handleRefresh, progressViewOffset],
   );
 
-  const emptyComponent = React.useMemo(() => <AppMessageEmpty />, []);
+  const emptyComponent = React.useMemo(
+    () =>
+      collection.render.activity ? (
+        <AppMessageEmpty />
+      ) : (
+        <View style={styles.loaderContainer}>
+          <AppActivityIndicator animating />
+        </View>
+      ),
+    [collection.render.activity, styles.loaderContainer],
+  );
 
   const renderItem = React.useCallback(
     ({ item }: { item: Collection['activity'][0] }) => (
@@ -154,18 +172,18 @@ function Component(
   );
 
   const listFooter = React.useMemo(
-    () =>
-      mintingAvailable ? (
-        <View>
-          {collection.activityPagination &&
-          collection.activityPagination.version !== collection.activity.length &&
-          collection.activity.length !== 0 ? (
-            <AppActivityIndicator style={{ marginVertical: hp('3%') }} />
-          ) : null}
-          <View style={{ height: hp(MINT_BUTTON_HEIGHT) }} />
-        </View>
-      ) : undefined,
-    [hp, mintingAvailable, collection.activityPagination, collection.activity.length],
+    () => (
+      <View>
+        {collection.render.activity &&
+        collection.activityPagination &&
+        collection.activityPagination.version !== collection.activity.length &&
+        collection.activity.length !== 0 ? (
+          <AppActivityIndicator style={{ marginVertical: hp('3%') }} />
+        ) : null}
+        {mintingAvailable ? <View style={{ height: hp(MINT_BUTTON_HEIGHT) }} /> : null}
+      </View>
+    ),
+    [collection.render.activity, collection.activityPagination, collection.activity.length, hp, mintingAvailable],
   );
 
   React.useEffect(() => {
@@ -194,7 +212,7 @@ function Component(
       contentContainerStyle={styles.contentContainerStyle}
       showsVerticalScrollIndicator={false}
       getItemLayout={getItemLayout}
-      data={collection.activity}
+      data={collection.render.activity ? collection.activity : []}
       renderItem={renderItem}
       refreshControl={refreshControl}
       ListEmptyComponent={emptyComponent}
@@ -218,6 +236,12 @@ const makeStyles = (
   insets: SafeAreaInsets,
 ) =>
   StyleSheet.create({
+    loaderContainer: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: '100%',
+      height: '20%',
+    },
     contentContainerStyle: {
       paddingTop: hp(TOP_TABBAR_HEIGHT_PERCENTAGE) + collectionHeaderHeight,
       minHeight:
