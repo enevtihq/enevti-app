@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
 import useDimension from 'enevti-app/utils/hook/useDimension';
 import { BackgroundColorContext } from 'enevti-app/context';
+import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -65,6 +66,12 @@ export default function AppCollectionBody({
             tabBarLabel: ({ color }) => (
               <AppTextBody4 style={{ color: color }}>{t('collection:activity')}</AppTextBody4>
             ),
+            lazy: true,
+            lazyPlaceholder: () => (
+              <View style={styles.loaderContainer}>
+                <AppActivityIndicator animating />
+              </View>
+            ),
           }}
           name={t('collection:activity')}
           component={activityScreen}
@@ -76,6 +83,12 @@ export default function AppCollectionBody({
 
 const makeStyles = () =>
   StyleSheet.create({
+    loaderContainer: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: '100%',
+      height: '100%',
+    },
     tabBarContainer: {
       top: 0,
       left: 0,
