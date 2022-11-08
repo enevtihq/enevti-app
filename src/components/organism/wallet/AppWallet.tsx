@@ -73,7 +73,7 @@ export default function AppWallet({ navigation, route }: AppWalletProps) {
     };
   }, [onWalletLoaded, dispatch, route]);
 
-  const keyExtractor = React.useCallback((item: ProfileActivity) => item.transaction, []);
+  const keyExtractor = React.useCallback((item: ProfileActivity, index: number) => `${item.transaction}-${index}`, []);
 
   const getItemLayout = React.useCallback(
     (_, index) => ({
