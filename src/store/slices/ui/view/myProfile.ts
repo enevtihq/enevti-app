@@ -5,6 +5,7 @@ import { RootState } from 'enevti-app/store/state';
 import { NFTBase } from 'enevti-app/types/core/chain/nft';
 import { CollectionBase } from 'enevti-app/types/core/chain/collection';
 import { PaginationStore } from 'enevti-app/types/ui/store/PaginationStore';
+import { assignDeep } from 'enevti-app/utils/primitive/object';
 
 export type MyProfileViewState = ProfileView & {
   ownedPagination: PaginationStore;
@@ -56,7 +57,7 @@ const myProfileViewSlice = createSlice({
   initialState,
   reducers: {
     setMyProfileView: (profile, action: PayloadAction<Partial<MyProfileViewState>>) => {
-      Object.assign(profile, action.payload);
+      assignDeep(profile, action.payload);
     },
     unshiftMyProfileViewOwnedNFT: (profile, action: PayloadAction<NFTBase[]>) => {
       profile.owned = action.payload.concat(profile.owned);

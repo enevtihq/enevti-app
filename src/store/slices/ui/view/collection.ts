@@ -5,6 +5,7 @@ import { RootState } from 'enevti-app/store/state';
 import { NFTType } from 'enevti-app/types/core/chain/nft/NFTType';
 import { NFTBase } from 'enevti-app/types/core/chain/nft';
 import { PaginationStore } from 'enevti-app/types/ui/store/PaginationStore';
+import { assignDeep } from 'enevti-app/utils/primitive/object';
 
 type CollectionViewState = Omit<Collection, 'collectionType'> & {
   mintedPagination: PaginationStore;
@@ -85,10 +86,10 @@ const collectionViewSlice = createSlice({
   initialState,
   reducers: {
     initCollectionView: (collection, action: PayloadAction<string>) => {
-      Object.assign(collection, { [action.payload]: initialStateItem });
+      assignDeep(collection, { [action.payload]: initialStateItem });
     },
     setCollectionView: (collection, action: PayloadAction<{ key: string; value: Partial<CollectionViewState> }>) => {
-      Object.assign(collection, { [action.payload.key]: action.payload.value });
+      assignDeep(collection, { [action.payload.key]: action.payload.value });
     },
     setCollectionViewLike: (collection, action: PayloadAction<{ key: string; value: number }>) => {
       collection[action.payload.key].like = action.payload.value;
@@ -145,7 +146,7 @@ const collectionViewSlice = createSlice({
       delete collection[action.payload];
     },
     resetCollectionByKey: (collection, action: PayloadAction<string>) => {
-      Object.assign(collection[action.payload], initialStateItem);
+      assignDeep(collection[action.payload], initialStateItem);
     },
     resetCollectionView: () => {
       return initialState;

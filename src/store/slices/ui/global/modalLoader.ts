@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
 import { RootState } from 'enevti-app/store/state';
+import { assignDeep } from 'enevti-app/utils/primitive/object';
 
 interface ModalLoaderState {
   mode: 'activity' | 'progress';
@@ -55,7 +56,7 @@ const modalLoaderSlice = createSlice({
       loader.subtext = initialState.subtext;
     },
     setModalLoaderState: (loader, action: PayloadAction<Partial<ModalLoaderState>>) => {
-      Object.assign(loader, action.payload);
+      assignDeep(loader, action.payload);
     },
     resetModalLoaderState: () => {
       return initialState;

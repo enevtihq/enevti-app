@@ -3,6 +3,7 @@ import { createSelector } from 'reselect';
 import { RootState } from 'enevti-app/store/state';
 import { PaginationStore } from 'enevti-app/types/ui/store/PaginationStore';
 import { WalletView } from 'enevti-app/types/core/service/wallet';
+import { assignDeep } from 'enevti-app/utils/primitive/object';
 
 export type WalletViewState = WalletView & {
   historyPagination: PaginationStore;
@@ -37,16 +38,16 @@ const walletViewSlice = createSlice({
   initialState,
   reducers: {
     initWalletView: (wallet, action: PayloadAction<string>) => {
-      Object.assign(wallet, { [action.payload]: initialStateItem });
+      assignDeep(wallet, { [action.payload]: initialStateItem });
     },
     setWalletView: (wallet, action: PayloadAction<{ key: string; value: Partial<WalletViewState> }>) => {
-      Object.assign(wallet, {
+      assignDeep(wallet, {
         [action.payload.key]: action.payload.value,
       });
     },
     assignWalletView: (wallet, action: PayloadAction<{ key: string; value: Partial<WalletViewState> }>) => {
-      Object.assign(wallet, {
-        [action.payload.key]: Object.assign(wallet[action.payload.key], action.payload.value),
+      assignDeep(wallet, {
+        [action.payload.key]: assignDeep(wallet[action.payload.key], action.payload.value),
       });
     },
     setWalletViewStaked: (wallet, action: PayloadAction<{ key: string; value: string }>) => {
@@ -81,15 +82,15 @@ const walletViewSlice = createSlice({
       wallet[action.payload.key].version = action.payload.value;
     },
     setWalletViewHistory: (wallet, action: PayloadAction<{ key: string; value: WalletView['history'] }>) => {
-      Object.assign(wallet, {
-        [action.payload.key]: Object.assign(wallet[action.payload.key], { history: action.payload.value }),
+      assignDeep(wallet, {
+        [action.payload.key]: assignDeep(wallet[action.payload.key], { history: action.payload.value }),
       });
     },
     clearWalletByKey: (wallet, action: PayloadAction<string>) => {
       delete wallet[action.payload];
     },
     resetWalletByKey: (wallet, action: PayloadAction<string>) => {
-      Object.assign(wallet[action.payload], initialStateItem);
+      assignDeep(wallet[action.payload], initialStateItem);
     },
     resetWalletView: () => {
       return initialState;

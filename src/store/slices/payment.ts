@@ -9,6 +9,7 @@ import {
   PaymentStatusInReducer,
 } from 'enevti-app/types/ui/store/Payment';
 import { RootState } from 'enevti-app/store/state';
+import { assignDeep } from 'enevti-app/utils/primitive/object';
 
 const initialState: PaymentState = {
   show: false,
@@ -55,10 +56,10 @@ const paymentSlice = createSlice({
       payment.mode = action.payload;
     },
     setPaymentStatus: (payment, action: PayloadAction<PaymentStatus>) => {
-      Object.assign(payment.status, action.payload);
+      assignDeep(payment.status, action.payload);
     },
     setPaymentStatusInReducer: (payment, action: PayloadAction<PaymentStatusInReducer>) => {
-      Object.assign(payment.status, action.payload);
+      assignDeep(payment.status, action.payload);
     },
     resetPaymentStatusType: payment => {
       payment.status.type = initialState.status.type;
@@ -73,14 +74,14 @@ const paymentSlice = createSlice({
       payment.action.type = action.payload;
     },
     setPaymentAction: (payment, action: PayloadAction<Omit<PaymentAction, 'loaded'>>) => {
-      Object.assign(payment.action, action.payload);
+      assignDeep(payment.action, action.payload);
       payment.action.loaded = true;
     },
     resetPaymentAction: payment => {
-      Object.assign(payment.action, initialState.action);
+      assignDeep(payment.action, initialState.action);
     },
     setPaymentFee: (payment, action: PayloadAction<Partial<PaymentFee>>) => {
-      Object.assign(payment.fee, { ...action.payload, loaded: true });
+      assignDeep(payment.fee, { ...action.payload, loaded: true });
     },
     setPaymentFeeLoaded: (payment, action: PayloadAction<boolean>) => {
       payment.fee.loaded = action.payload;
@@ -94,8 +95,8 @@ const paymentSlice = createSlice({
       payment.fee.platform = initialState.fee.platform;
       payment.fee.base = initialState.fee.base;
     },
-    setPaymentState: (payment, action: PayloadAction<PaymentState>) => {
-      Object.assign(payment, action.payload);
+    setPaymentState: (payment, action: PayloadAction<Partial<PaymentState>>) => {
+      assignDeep(payment, action.payload);
     },
     resetPaymentState: payment => {
       return { ...initialState, status: payment.status };

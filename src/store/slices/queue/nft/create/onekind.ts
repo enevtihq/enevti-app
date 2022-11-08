@@ -5,6 +5,7 @@ import { NFTTemplateAsset } from 'enevti-app/types/core/chain/nft/NFTTemplate';
 import { OneKindContractForm, OneKindContractStatusForm } from 'enevti-app/types/ui/screen/CreateOneKindContract';
 import { CreateNFTOneKindMeta } from 'enevti-app/types/ui/store/CreateNFTQueue';
 import { RootState } from 'enevti-app/store/state';
+import { assignDeep } from 'enevti-app/utils/primitive/object';
 
 export const createNFTOneKindQueueInitialState: CreateNFTOneKindMeta = {
   key: '',
@@ -70,22 +71,22 @@ const createNFTOneKindQueueSlice = createSlice({
   initialState: createNFTOneKindQueueInitialState,
   reducers: {
     setCreateNFTOneKindData: (onekind, action: PayloadAction<CreateNFTOneKindMeta['data']>) => {
-      Object.assign(onekind.data, action.payload);
+      assignDeep(onekind.data, action.payload);
     },
     setCreateNFTOneKindChosenTemplate: (onekind, action: PayloadAction<NFTTemplateAsset>) => {
-      Object.assign(onekind.choosenTemplate, action.payload);
+      assignDeep(onekind.choosenTemplate, action.payload);
     },
     setCreateNFTOneKindState: (onekind, action: PayloadAction<OneKindContractForm>) => {
-      Object.assign(onekind.state, action.payload);
+      assignDeep(onekind.state, action.payload);
     },
     setCreateNFTOneKindStateItem: (onekind, action: PayloadAction<{ key: keyof OneKindContractForm; value: any }>) => {
-      Object.assign(onekind.state, { [action.payload.key]: action.payload.value });
+      assignDeep(onekind.state, { [action.payload.key]: action.payload.value });
     },
     setCreateNFTOneKindKey: (onekind, action: PayloadAction<string>) => {
       onekind.key = action.payload;
     },
     setCreateNFTOneKindStatus: (onekind, action: PayloadAction<OneKindContractStatusForm>) => {
-      Object.assign(onekind.status, action.payload);
+      assignDeep(onekind.status, action.payload);
     },
     clearCreateNFTOneKindQueue: () => {
       return createNFTOneKindQueueInitialState;

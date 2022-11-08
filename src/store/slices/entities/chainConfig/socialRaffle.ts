@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
 import { RootState } from 'enevti-app/store/state';
 import { SocialRaffleGenesisConfig } from 'enevti-app/types/core/chain/config/SocialRaffleGenesisConfig';
+import { assignDeep } from 'enevti-app/utils/primitive/object';
 
 const initialState: SocialRaffleGenesisConfig['socialRaffle'] = {
   blockInterval: 0,
@@ -19,7 +20,7 @@ const socialRaffleChainConfigEntitySlice = createSlice({
       socialRaffleConfig,
       action: PayloadAction<SocialRaffleGenesisConfig['socialRaffle']>,
     ) => {
-      Object.assign(socialRaffleConfig, action.payload);
+      assignDeep(socialRaffleConfig, action.payload);
     },
   },
 });

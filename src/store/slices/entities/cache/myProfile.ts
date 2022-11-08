@@ -5,6 +5,7 @@ import { RootState } from 'enevti-app/store/state';
 import { NFTBase } from 'enevti-app/types/core/chain/nft';
 import { CollectionBase } from 'enevti-app/types/core/chain/collection';
 import { PaginationStore } from 'enevti-app/types/ui/store/PaginationStore';
+import { assignDeep } from 'enevti-app/utils/primitive/object';
 
 type MyProfileCacheState = Profile & {
   ownedPagination: PaginationStore;
@@ -54,7 +55,7 @@ const profileEntitySlice = createSlice({
   initialState,
   reducers: {
     setMyProfileCache: (profile, action: PayloadAction<Partial<MyProfileCacheState>>) => {
-      Object.assign(profile, action.payload);
+      assignDeep(profile, action.payload);
     },
     unshiftMyProfileCacheOwnedNFT: (profile, action: PayloadAction<NFTBase[]>) => {
       profile.owned = action.payload.concat(profile.owned);
@@ -87,16 +88,16 @@ const profileEntitySlice = createSlice({
       profile.pending = action.payload;
     },
     setLastFetchMyProfileCache: (profile, action: PayloadAction<number>) => {
-      Object.assign(profile, { lastFetch: { ...profile.lastFetch, profile: action.payload } });
+      assignDeep(profile, { lastFetch: { ...profile.lastFetch, profile: action.payload } });
     },
     setLastFetchMyProfileOwnedCache: (profile, action: PayloadAction<number>) => {
-      Object.assign(profile, { lastFetch: { ...profile.lastFetch, owned: action.payload } });
+      assignDeep(profile, { lastFetch: { ...profile.lastFetch, owned: action.payload } });
     },
     setLastFetchMyProfileOnSaleCache: (profile, action: PayloadAction<number>) => {
-      Object.assign(profile, { lastFetch: { ...profile.lastFetch, onSale: action.payload } });
+      assignDeep(profile, { lastFetch: { ...profile.lastFetch, onSale: action.payload } });
     },
     setLastFetchMyProfileCollectionCache: (profile, action: PayloadAction<number>) => {
-      Object.assign(profile, { lastFetch: { ...profile.lastFetch, collection: action.payload } });
+      assignDeep(profile, { lastFetch: { ...profile.lastFetch, collection: action.payload } });
     },
     resetMyProfileCache: () => {
       return initialState;

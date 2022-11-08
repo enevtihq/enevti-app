@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
 import { RootState } from 'enevti-app/store/state';
+import { assignDeep } from 'enevti-app/utils/primitive/object';
 
 const initialState = {
   value: 0,
@@ -12,7 +13,7 @@ const transactionNonceEntitySlice = createSlice({
   initialState,
   reducers: {
     setTransactionNonceCacheState: (transactionNonce, action: PayloadAction<Partial<typeof initialState>>) => {
-      Object.assign(transactionNonce, action.payload);
+      assignDeep(transactionNonce, action.payload);
     },
     setTransactionNonceCache: (transactionNonce, action: PayloadAction<number>) => {
       transactionNonce.value = action.payload;

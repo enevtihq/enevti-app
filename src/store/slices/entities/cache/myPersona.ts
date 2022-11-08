@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
 import { Persona } from 'enevti-app/types/core/account/persona';
 import { RootState } from 'enevti-app/store/state';
+import { assignDeep } from 'enevti-app/utils/primitive/object';
 
 type PersonaCacheState = Persona & { lastFetch: number };
 
@@ -18,7 +19,7 @@ const personaEntitySlice = createSlice({
   initialState,
   reducers: {
     setMyPersonaCache: (persona, action: PayloadAction<Partial<PersonaCacheState>>) => {
-      Object.assign(persona, action.payload);
+      assignDeep(persona, action.payload);
     },
     setLastFetchMyPersonaCache: (persona, action: PayloadAction<number>) => {
       persona.lastFetch = action.payload;

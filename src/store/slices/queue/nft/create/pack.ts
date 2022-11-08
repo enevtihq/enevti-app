@@ -3,6 +3,7 @@ import { createSelector } from 'reselect';
 import { NFTTemplateAsset } from 'enevti-app/types/core/chain/nft/NFTTemplate';
 import { CreateNFTPack, CreateNFTPackItemData, CreateNFTPackState } from 'enevti-app/types/ui/store/CreateNFTQueue';
 import { RootState } from 'enevti-app/store/state';
+import { assignDeep } from 'enevti-app/utils/primitive/object';
 
 export const createNFTPackQueueInitialState: CreateNFTPack = {
   data: [],
@@ -35,10 +36,10 @@ const createNFTPackQueueSlice = createSlice({
       pack.data = action.payload.slice();
     },
     setCreateNFTPackChosenTemplate: (pack, action: PayloadAction<NFTTemplateAsset>) => {
-      Object.assign(pack.choosenTemplate, action.payload);
+      assignDeep(pack.choosenTemplate, action.payload);
     },
     setCreateNFTPackState: (pack, action: PayloadAction<CreateNFTPackState>) => {
-      Object.assign(pack.state, action.payload);
+      assignDeep(pack.state, action.payload);
     },
     clearCreateNFTPackQueue: () => {
       return createNFTPackQueueInitialState;

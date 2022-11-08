@@ -4,6 +4,7 @@ import { RootState } from 'enevti-app/store/state';
 import { NFT } from 'enevti-app/types/core/chain/nft';
 import { NFTActivity } from 'enevti-app/types/core/chain/nft/NFTActivity';
 import { PaginationStore } from 'enevti-app/types/ui/store/PaginationStore';
+import { assignDeep } from 'enevti-app/utils/primitive/object';
 
 type NFTDetailsViewState = NFT & {
   activityPagination: PaginationStore;
@@ -137,10 +138,10 @@ const nftDetailsViewSlice = createSlice({
   initialState,
   reducers: {
     initNFTDetailsView: (nftDetails, action: PayloadAction<string>) => {
-      Object.assign(nftDetails, { [action.payload]: initialStateItem });
+      assignDeep(nftDetails, { [action.payload]: initialStateItem });
     },
     setNFTDetailsView: (nftDetails, action: PayloadAction<{ key: string; value: Partial<NFTDetailsViewState> }>) => {
-      Object.assign(nftDetails, { [action.payload.key]: action.payload.value });
+      assignDeep(nftDetails, { [action.payload.key]: action.payload.value });
     },
     setNFTDetailsViewLike: (nftDetails, action: PayloadAction<{ key: string; value: number }>) => {
       nftDetails[action.payload.key].like = action.payload.value;
@@ -184,7 +185,7 @@ const nftDetailsViewSlice = createSlice({
       delete nftDetails[action.payload];
     },
     resetNFTDetailsByKey: (nftDetails, action: PayloadAction<string>) => {
-      Object.assign(nftDetails[action.payload], initialStateItem);
+      assignDeep(nftDetails[action.payload], initialStateItem);
     },
     resetNFTDetailsView: () => {
       return initialState;

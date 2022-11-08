@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
 import { RootState } from 'enevti-app/store/state';
 import { NotificationItem, NotificationState } from 'enevti-app/types/ui/store/Notification';
+import { assignDeep } from 'enevti-app/utils/primitive/object';
 
 const initialState: NotificationState = {
   version: 0,
@@ -15,7 +16,7 @@ const notificationViewSlice = createSlice({
   initialState,
   reducers: {
     setNotificationView: (notification, action: PayloadAction<Partial<NotificationState>>) => {
-      Object.assign(notification, action.payload);
+      assignDeep(notification, action.payload);
     },
     readAllNotificationItems: (notification, action: PayloadAction<{ lastRead: number; unread: number }>) => {
       notification.items = notification.items.map(item => ({ ...item, read: true }));

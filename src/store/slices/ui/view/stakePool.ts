@@ -3,6 +3,7 @@ import { createSelector } from 'reselect';
 import { RootState } from 'enevti-app/store/state';
 import { StakePoolData, StakerItem } from 'enevti-app/types/core/chain/stake';
 import { PaginationStore } from 'enevti-app/types/ui/store/PaginationStore';
+import { assignDeep } from 'enevti-app/utils/primitive/object';
 
 type StakePoolViewState = StakePoolData & {
   stakerPagination: PaginationStore;
@@ -38,10 +39,10 @@ const stakePoolViewSlice = createSlice({
   initialState,
   reducers: {
     initStakePoolView: (stakePool, action: PayloadAction<string>) => {
-      Object.assign(stakePool, { [action.payload]: initialStateItem });
+      assignDeep(stakePool, { [action.payload]: initialStateItem });
     },
     setStakePoolView: (stakePool, action: PayloadAction<{ key: string; value: Partial<StakePoolViewState> }>) => {
-      Object.assign(stakePool, {
+      assignDeep(stakePool, {
         [action.payload.key]: action.payload.value,
       });
     },
@@ -71,7 +72,7 @@ const stakePoolViewSlice = createSlice({
       delete stakePool[action.payload];
     },
     resetStakePoolByKey: (stakePool, action: PayloadAction<string>) => {
-      Object.assign(stakePool[action.payload], initialStateItem);
+      assignDeep(stakePool[action.payload], initialStateItem);
     },
     resetStakePoolView: () => {
       return initialState;

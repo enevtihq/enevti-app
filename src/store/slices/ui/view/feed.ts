@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
 import { RootState } from 'enevti-app/store/state';
 import { Feeds } from 'enevti-app/types/core/service/feed';
+import { assignDeep } from 'enevti-app/utils/primitive/object';
 
 type FeedViewState = {
   checkpoint: number;
@@ -28,7 +29,7 @@ const feedViewSlice = createSlice({
   initialState,
   reducers: {
     setFeedViewState: (feed, action: PayloadAction<Partial<FeedViewState>>) => {
-      Object.assign(feed, action.payload);
+      assignDeep(feed, action.payload);
     },
     setFeedView: (feed, action: PayloadAction<Feeds>) => {
       feed.items = action.payload.slice();

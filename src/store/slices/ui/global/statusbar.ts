@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
 import { RootState } from 'enevti-app/store/state';
+import { assignDeep } from 'enevti-app/utils/primitive/object';
 
 interface StatusBarState {
   background: 'system' | 'light' | 'dark' | 'transparent';
@@ -14,7 +15,7 @@ const statusBarSlice = createSlice({
   initialState,
   reducers: {
     setStatusBarState: (statusbar, action: PayloadAction<Partial<StatusBarState>>) => {
-      Object.assign(statusbar, action.payload);
+      assignDeep(statusbar, action.payload);
     },
     setStatusBarBackground: (statusbar, action: PayloadAction<StatusBarState['background']>) => {
       statusbar.background = action.payload;

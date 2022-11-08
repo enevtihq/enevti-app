@@ -3,6 +3,7 @@ import { createSelector } from 'reselect';
 import { RootState } from 'enevti-app/store/state';
 import { PaginationStore } from 'enevti-app/types/ui/store/PaginationStore';
 import { Comment, Reply } from 'enevti-app/types/core/chain/engagement';
+import { assignDeep } from 'enevti-app/utils/primitive/object';
 
 type EngagementItemBase = {
   isPosting: boolean;
@@ -56,10 +57,10 @@ const commentViewSlice = createSlice({
   initialState,
   reducers: {
     initCommentView: (comment, action: PayloadAction<string>) => {
-      Object.assign(comment, { [action.payload]: {} });
+      assignDeep(comment, { [action.payload]: {} });
     },
     setCommentView: (comment, action: PayloadAction<{ key: string; value: Partial<CommentViewState> }>) => {
-      Object.assign(comment, {
+      assignDeep(comment, {
         [action.payload.key]: action.payload.value,
       });
     },
@@ -85,10 +86,10 @@ const commentViewSlice = createSlice({
       comment,
       action: PayloadAction<{ key: string; commentIndex: number; value: Partial<CommentItem> }>,
     ) => {
-      Object.assign(comment, {
-        [action.payload.key]: Object.assign({}, comment[action.payload.key], {
+      assignDeep(comment, {
+        [action.payload.key]: assignDeep({}, comment[action.payload.key], {
           comment: comment[action.payload.key].comment.map((c, i) =>
-            i === action.payload.commentIndex ? Object.assign({}, c, action.payload.value) : c,
+            i === action.payload.commentIndex ? assignDeep({}, c, action.payload.value) : c,
           ),
         }),
       });
@@ -143,13 +144,13 @@ const commentViewSlice = createSlice({
       comment,
       action: PayloadAction<{ key: string; commentIndex: number; replyIndex: number; value: Partial<ReplyItem> }>,
     ) => {
-      Object.assign(comment, {
-        [action.payload.key]: Object.assign(comment[action.payload.key], {
+      assignDeep(comment, {
+        [action.payload.key]: assignDeep(comment[action.payload.key], {
           comment: comment[action.payload.key].comment.map((c, i) =>
             i === action.payload.commentIndex
-              ? Object.assign({}, c, {
+              ? assignDeep({}, c, {
                   replies: comment[action.payload.key].comment[i].replies.map((r, i2) =>
-                    i2 === action.payload.replyIndex ? Object.assign({}, r, action.payload.value) : r,
+                    i2 === action.payload.replyIndex ? assignDeep({}, r, action.payload.value) : r,
                   ),
                 })
               : c,
@@ -235,7 +236,7 @@ const commentViewSlice = createSlice({
       delete comment[action.payload];
     },
     resetCommentViewByKey: (comment, action: PayloadAction<string>) => {
-      Object.assign(comment[action.payload], initialStateItem);
+      assignDeep(comment[action.payload], initialStateItem);
     },
     resetCommentView: () => {
       return initialState;

@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
 import { RootState } from 'enevti-app/store/state';
 import { Moments } from 'enevti-app/types/core/service/feed';
+import { assignDeep } from 'enevti-app/utils/primitive/object';
 
 type MomentViewState = {
   checkpoint: number;
@@ -28,7 +29,7 @@ const momentViewSlice = createSlice({
   initialState,
   reducers: {
     setMomentViewState: (moment, action: PayloadAction<Partial<MomentViewState>>) => {
-      Object.assign(moment, action.payload);
+      assignDeep(moment, action.payload);
     },
     setMomentView: (moment, action: PayloadAction<Moments>) => {
       moment.items = action.payload.slice();

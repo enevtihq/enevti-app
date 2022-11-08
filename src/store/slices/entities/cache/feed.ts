@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
 import { RootState } from 'enevti-app/store/state';
 import { Feeds } from 'enevti-app/types/core/service/feed';
+import { assignDeep } from 'enevti-app/utils/primitive/object';
 
 type FeedCacheState = { reqVersion: number; checkpoint: number; lastFetch: number; items: Feeds };
 
@@ -12,7 +13,7 @@ const feedCacheSlice = createSlice({
   initialState,
   reducers: {
     setFeedCacheState: (feed, action: PayloadAction<Partial<FeedCacheState>>) => {
-      Object.assign(feed, action.payload);
+      assignDeep(feed, action.payload);
     },
     setFeedItemsCache: (feed, action: PayloadAction<Feeds>) => {
       feed.items = action.payload.slice();
