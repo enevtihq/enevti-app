@@ -7,16 +7,16 @@ import UIReducer from './slices/ui';
 import queueReducer from './slices/queue';
 import paymentReducer from './slices/payment';
 import { persistReducer } from 'redux-persist';
-import { asyncStoragePersistConfig, sensitiveStoragePersistConfig } from './persist/config';
+import { mmkvStoragePersistConfig, sensitiveStoragePersistConfig } from './persist/config';
 
 const rootReducer = combineReducers({
   ui: UIReducer,
   payment: paymentReducer,
   auth: persistReducer(sensitiveStoragePersistConfig('auth'), authReducer),
-  queue: persistReducer(asyncStoragePersistConfig('queue'), queueReducer),
-  entities: persistReducer(asyncStoragePersistConfig('entities'), entitiesReducer),
+  queue: persistReducer(mmkvStoragePersistConfig('queue'), queueReducer),
+  entities: persistReducer(mmkvStoragePersistConfig('entities'), entitiesReducer),
   session: sessionReducer,
-  userSetting: persistReducer(asyncStoragePersistConfig('userSetting'), userSettingReducer),
+  userSetting: persistReducer(mmkvStoragePersistConfig('userSetting'), userSettingReducer),
 });
 
-export default persistReducer(asyncStoragePersistConfig('root', ['session', 'ui', 'payment']), rootReducer);
+export default persistReducer(mmkvStoragePersistConfig('root', ['session', 'ui', 'payment']), rootReducer);
