@@ -1,4 +1,16 @@
-import { HOME_FEED_LIMIT, HOME_MOMENT_LIMIT } from './limit';
+import {
+  COLLECTION_ACTIVITY_INITIAL_LENGTH,
+  COLLECTION_MINTED_INITIAL_LENGTH,
+  HOME_FEED_LIMIT,
+  HOME_MOMENT_LIMIT,
+  NFT_ACTIVITY_INITIAL_LENGTH,
+  PROFILE_COLLECTION_INITIAL_LENGTH,
+  PROFILE_MOMENT_INITIAL_LENGTH,
+  PROFILE_ONSALE_INITIAL_LENGTH,
+  PROFILE_OWNED_INITIAL_LENGTH,
+  STAKER_INITIAL_LENGTH,
+  WALLET_HISTORY_INITIAL_LENGTH,
+} from './limit';
 
 export const ENEVTI_DEFAULT_API = 'http://192.168.0.105:8880';
 export const ENEVTI_FAUCET_API = 'http://192.168.0.105:8881';
@@ -111,9 +123,13 @@ export function urlGetCollectionById(
   withInitialData: boolean = false,
   host: string = ENEVTI_DEFAULT_API,
 ) {
-  return encodeURI(
-    `${host}/collection/id/${id}?viewer=${viewer}&minted=${withInitialData}&activity=${withInitialData}`,
-  );
+  const url = new URL(`${host}/collection/id/${id}`);
+  url.searchParams.append('viewer', viewer);
+  if (withInitialData) {
+    url.searchParams.append('minted', COLLECTION_MINTED_INITIAL_LENGTH.toString());
+    url.searchParams.append('activity', COLLECTION_ACTIVITY_INITIAL_LENGTH.toString());
+  }
+  return encodeURI(url.href);
 }
 
 export function urlGetCollectionMintedNFTById(
@@ -142,9 +158,13 @@ export function urlGetCollectionByName(
   withInitialData: boolean = false,
   host: string = ENEVTI_DEFAULT_API,
 ) {
-  return encodeURI(
-    `${host}/collection/n/${name}?viewer=${viewer}&minted=${withInitialData}&activity=${withInitialData}`,
-  );
+  const url = new URL(`${host}/collection/n/${name}`);
+  url.searchParams.append('viewer', viewer);
+  if (withInitialData) {
+    url.searchParams.append('minted', COLLECTION_MINTED_INITIAL_LENGTH.toString());
+    url.searchParams.append('activity', COLLECTION_ACTIVITY_INITIAL_LENGTH.toString());
+  }
+  return encodeURI(url.href);
 }
 
 export function urlGetCollectionBySymbol(
@@ -153,9 +173,13 @@ export function urlGetCollectionBySymbol(
   withInitialData: boolean = false,
   host: string = ENEVTI_DEFAULT_API,
 ) {
-  return encodeURI(
-    `${host}/collection/s/${symbol}?viewer=${viewer}&minted=${withInitialData}&activity=${withInitialData}`,
-  );
+  const url = new URL(`${host}/collection/s/${symbol}`);
+  url.searchParams.append('viewer', viewer);
+  if (withInitialData) {
+    url.searchParams.append('minted', COLLECTION_MINTED_INITIAL_LENGTH.toString());
+    url.searchParams.append('activity', COLLECTION_ACTIVITY_INITIAL_LENGTH.toString());
+  }
+  return encodeURI(url.href);
 }
 
 export function urlGetFeeds(
@@ -184,7 +208,12 @@ export function urlGetNFTById(
   withInitialData: boolean = false,
   host: string = ENEVTI_DEFAULT_API,
 ) {
-  return encodeURI(`${host}/nft/id/${id}?viewer=${viewer}&activity=${withInitialData}`);
+  const url = new URL(`${host}/nft/id/${id}`);
+  url.searchParams.append('viewer', viewer);
+  if (withInitialData) {
+    url.searchParams.append('activity', NFT_ACTIVITY_INITIAL_LENGTH.toString());
+  }
+  return encodeURI(url.href);
 }
 
 export function urlGetNFTActivityById(
@@ -203,7 +232,12 @@ export function urlGetNFTBySerial(
   withInitialData: boolean = false,
   host: string = ENEVTI_DEFAULT_API,
 ) {
-  return encodeURI(`${host}/nft/s/${encodeURIComponent(serial)}?viewer=${viewer}&activity=${withInitialData}`);
+  const url = new URL(`${host}/nft/s/${encodeURIComponent(serial)}`);
+  url.searchParams.append('viewer', viewer);
+  if (withInitialData) {
+    url.searchParams.append('activity', NFT_ACTIVITY_INITIAL_LENGTH.toString());
+  }
+  return encodeURI(url.href);
 }
 
 export function urlGetNFTTemplateById(id: string, host: string = ENEVTI_DEFAULT_API) {
@@ -224,9 +258,17 @@ export function urlGetProfile(
   withInitialData: boolean = false,
   host: string = ENEVTI_DEFAULT_API,
 ) {
-  return encodeURI(
-    `${host}/profile/${address}?persona=${withPersona}&owned=${withInitialData}&onsale=${withInitialData}&moment=${withInitialData}&collection=${withInitialData}`,
-  );
+  const url = new URL(`${host}/profile/${address}`);
+  if (withPersona) {
+    url.searchParams.append('persona', 'true');
+  }
+  if (withInitialData) {
+    url.searchParams.append('owned', PROFILE_OWNED_INITIAL_LENGTH.toString());
+    url.searchParams.append('onsale', PROFILE_ONSALE_INITIAL_LENGTH.toString());
+    url.searchParams.append('moment', PROFILE_MOMENT_INITIAL_LENGTH.toString());
+    url.searchParams.append('collection', PROFILE_COLLECTION_INITIAL_LENGTH.toString());
+  }
+  return encodeURI(url.href);
 }
 
 export function urlGetProfileOwned(
@@ -266,7 +308,11 @@ export function urlGetStakePoolByAddress(
   withInitialData: boolean = false,
   host: string = ENEVTI_DEFAULT_API,
 ) {
-  return encodeURI(`${host}/stake/a/${address}?staker=${withInitialData}`);
+  const url = new URL(`${host}/stake/a/${address}`);
+  if (withInitialData) {
+    url.searchParams.append('staker', STAKER_INITIAL_LENGTH.toString());
+  }
+  return encodeURI(url.href);
 }
 
 export function urlGetStaker(
@@ -284,7 +330,11 @@ export function urlGetStakePoolByUsername(
   withInitialData: boolean = false,
   host: string = ENEVTI_DEFAULT_API,
 ) {
-  return encodeURI(`${host}/stake/u/${username}?staker=${withInitialData}`);
+  const url = new URL(`${host}/stake/u/${username}`);
+  if (withInitialData) {
+    url.searchParams.append('staker', STAKER_INITIAL_LENGTH.toString());
+  }
+  return encodeURI(url.href);
 }
 
 export function urlGetIsNameExists(name: string, host: string = ENEVTI_DEFAULT_API) {
@@ -354,7 +404,11 @@ export function urlGetActivityProfile(
 }
 
 export function urlGetWallet(address: string, withInitialData: boolean = false, host: string = ENEVTI_DEFAULT_API) {
-  return encodeURI(`${host}/wallet/${address}?history=${withInitialData}`);
+  const url = new URL(`${host}/wallet/${address}`);
+  if (withInitialData) {
+    url.searchParams.append('history', WALLET_HISTORY_INITIAL_LENGTH.toString());
+  }
+  return encodeURI(url.href);
 }
 
 export function urlGetCommentCollection(
