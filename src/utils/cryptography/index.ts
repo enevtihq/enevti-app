@@ -12,7 +12,10 @@ const LATEST_VERSION = 1;
 const SUPPORTED_VERSION = [1];
 
 export const ENCRYPTED_FILE_EXTENSION = 'enc';
-export const PBKDF2_ITERATION = 10000;
+
+export async function getPbkdf2Iteration() {
+  return 10000;
+}
 
 export async function encryptWithPassword(
   text: string,
@@ -22,7 +25,7 @@ export async function encryptWithPassword(
   if (!SUPPORTED_VERSION.includes(version)) {
     throw Error(i18n.t('error:unsupportedCryptoVersion'));
   }
-  return await appCrypto[version].encryptText(text, password, PBKDF2_ITERATION);
+  return await appCrypto[version].encryptText(text, password, await getPbkdf2Iteration());
 }
 
 export async function decryptWithPassword(
@@ -49,7 +52,7 @@ export async function encryptWithDevice(text: string, version: number = LATEST_V
     throw Error(i18n.t('error:unsupportedCryptoVersion'));
   }
   const password = DeviceInfo.getUniqueId();
-  return await appCrypto[version].encryptText(text, password, PBKDF2_ITERATION);
+  return await appCrypto[version].encryptText(text, password, await getPbkdf2Iteration());
 }
 
 export async function decryptWithDevice(encryptedBase64: string, version: number): Promise<DecryptedData> {
@@ -78,7 +81,7 @@ export async function encryptFile(
     throw Error(i18n.t('error:unsupportedCryptoVersion'));
   }
   const outputPath = outputFile ? outputFile : `${inputFile}.${ENCRYPTED_FILE_EXTENSION}`;
-  return await appCrypto[version].encryptFile(inputFile, outputPath, password, PBKDF2_ITERATION);
+  return await appCrypto[version].encryptFile(inputFile, outputPath, password, await getPbkdf2Iteration());
 }
 
 export async function decryptFile(
@@ -93,7 +96,7 @@ export async function decryptFile(
     throw Error(i18n.t('error:unsupportedCryptoVersion'));
   }
   const outputPath = outputFile ? outputFile : `${trimExtension(inputFile, ENCRYPTED_FILE_EXTENSION)}`;
-  return await appCrypto[version].decryptFile(inputFile, outputPath, password, iv, salt, PBKDF2_ITERATION);
+  return await appCrypto[version].decryptFile(inputFile, outputPath, password, iv, salt, await getPbkdf2Iteration());
 }
 
 export async function createSignature(data: string): Promise<string> {
