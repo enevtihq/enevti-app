@@ -28,9 +28,7 @@ export type CreateOneKindNFTProps = {
   contentExtension: string;
   contentSize: number;
   contentProtocol: string;
-  contentIv: string;
-  contentSalt: string;
-  contentSecurityVersion: number;
+  contentSecurity: string;
   recurring: NFTRecurring;
   time: {
     day: number;

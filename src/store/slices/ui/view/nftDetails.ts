@@ -95,9 +95,7 @@ export const nftDetailsInitialStateItem: NFTDetailsViewState = {
       extension: '',
       size: -1,
       protocol: 'ipfs',
-      iv: '',
-      salt: '',
-      version: 0,
+      security: '',
     },
     schedule: {
       recurring: '',

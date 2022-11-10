@@ -87,16 +87,25 @@ export async function encryptFile(
 export async function decryptFile(
   inputFile: string,
   password: string,
-  iv: string,
-  salt: string,
-  version: number,
+  security: string,
   outputFile?: string,
 ): Promise<DecryptedFile> {
-  if (!SUPPORTED_VERSION.includes(version)) {
+  if (security.split(':').length !== 4) {
+    throw Error(i18n.t('error:unsupportedFileSecurityFormat'));
+  }
+  const [iv, salt, iterations, version] = security.split(':');
+  if (!SUPPORTED_VERSION.includes(parseInt(version, 10))) {
     throw Error(i18n.t('error:unsupportedCryptoVersion'));
   }
   const outputPath = outputFile ? outputFile : `${trimExtension(inputFile, ENCRYPTED_FILE_EXTENSION)}`;
-  return await appCrypto[version].decryptFile(inputFile, outputPath, password, iv, salt, await getPbkdf2Iteration());
+  return await appCrypto[parseInt(version, 10)].decryptFile(
+    inputFile,
+    outputPath,
+    password,
+    iv,
+    salt,
+    parseInt(iterations, 10),
+  );
 }
 
 export async function createSignature(data: string): Promise<string> {

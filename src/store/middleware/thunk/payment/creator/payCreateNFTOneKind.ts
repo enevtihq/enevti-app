@@ -55,9 +55,7 @@ export const payCreateNFTOneKind = createAsyncThunk<void, CreateNFTOneKindMeta, 
         cipher = '',
         plainSignature = '',
         cipherSignature = '',
-        contentIv = '',
-        contentSalt = '',
-        contentSecurityVersion = 0,
+        contentSecurity = '',
         contentUri = payload.state.contentUri;
       let contentSize: number = 0;
 
@@ -80,9 +78,7 @@ export const payCreateNFTOneKind = createAsyncThunk<void, CreateNFTOneKindMeta, 
         contentMime = payload.state.contentType;
         contentExtension = payload.state.contentExtension;
         contentSize = (await RNFS.stat(encryptedFile.output)).size;
-        contentIv = encryptedFile.iv;
-        contentSalt = encryptedFile.salt;
-        contentSecurityVersion = encryptedFile.version;
+        contentSecurity = encryptedFile.security;
         contentUri = encryptedFile.output;
       }
 
@@ -145,9 +141,7 @@ export const payCreateNFTOneKind = createAsyncThunk<void, CreateNFTOneKindMeta, 
           contentExtension: contentExtension,
           contentSize: contentSize,
           contentProtocol: payload.state.storageProtocol,
-          contentIv: contentIv,
-          contentSalt: contentSalt,
-          contentSecurityVersion: contentSecurityVersion,
+          contentSecurity: contentSecurity,
           recurring: payload.state.recurring,
           time: {
             day: payload.state.timeDay,

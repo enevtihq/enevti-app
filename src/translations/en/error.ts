@@ -12,6 +12,7 @@ export default {
   unknownUtility: 'unknown utility type',
   unknownRecurring: 'unknown recurring type',
   unsupportedCryptoVersion: 'Unsupported App Cryptography Version',
+  unsupportedFileSecurityFormat: 'Unsupported File Security Format',
   unauthorizedCalendar: 'Access calendar not authorized',
   invalidRecurring: 'invalid recurring type',
   noData: 'Nothing here yet!',

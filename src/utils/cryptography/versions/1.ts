@@ -65,19 +65,13 @@ export async function encryptFile_v1(
     return {
       status: 'success',
       output: outputFile,
-      iv: ret.iv,
-      salt: ret.salt,
-      iterations: iterations,
-      version: VERSION,
+      security: `${ret.iv}:${ret.salt}:${iterations}:${VERSION}`,
     };
   } else {
     return {
       status: 'error',
       output: '',
-      iv: '',
-      salt: '',
-      iterations: iterations,
-      version: VERSION,
+      security: '',
     };
   }
 }

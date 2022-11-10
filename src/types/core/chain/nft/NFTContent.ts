@@ -7,7 +7,5 @@ export type NFTContent = {
 };
 
 export interface NFTContentSecure extends NFTContent {
-  iv: string;
-  salt: string;
-  version: number;
+  security: string;
 }

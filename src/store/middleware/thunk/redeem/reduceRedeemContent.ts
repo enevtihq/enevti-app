@@ -100,9 +100,7 @@ export const reduceRedeemContent =
       const decryptedFile = await decryptFile(
         localEncryptedFile,
         decryptedSecret.data,
-        nft.redeem.content.iv,
-        nft.redeem.content.salt,
-        nft.redeem.content.version,
+        nft.redeem.content.security,
         localDecryptedFile,
       );
       if (decryptedFile.status === 'error') {

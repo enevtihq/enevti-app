@@ -375,9 +375,7 @@ export const getDummyNFTFullData = (): NFT => {
         extension: 'mp3',
         size: 3548243,
         protocol: 'ipfs',
-        iv: '5899c28e12159a2b65c097054a58c0c3',
-        salt: '9136de3e95f38b5207be8ef9d8fd322a',
-        version: 1,
+        security: '5899c28e12159a2b65c097054a58c0c3:9136de3e95f38b5207be8ef9d8fd322a:1:10000',
       },
       schedule: {
         recurring: 'monthly',
