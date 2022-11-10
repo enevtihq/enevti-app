@@ -141,14 +141,14 @@ index 5f56fc8..cde584a 100644
                      val response = WritableNativeMap()
                      response.putString("status", "success")
 diff --git a/node_modules/@dhairyasharma/react-native-encryption/ios/RNEncryptionModule.m b/node_modules/@dhairyasharma/react-native-encryption/ios/RNEncryptionModule.m
-index 068ca97..4550ef0 100644
+index 068ca97..8237737 100644
 --- a/node_modules/@dhairyasharma/react-native-encryption/ios/RNEncryptionModule.m
 +++ b/node_modules/@dhairyasharma/react-native-encryption/ios/RNEncryptionModule.m
 @@ -13,6 +13,7 @@ RCT_EXTERN_METHOD(decryptText:(NSString *)cipherText
                    withPassword:(NSString *)password
                    iv:(NSString *)iv
                    salt:(NSString *)salt
-+                  iterations:(NSNumber *)iteration
++                  iterations:(NSInteger)iterations
                    withResolver:(RCTPromiseResolveBlock)resolve
                    withRejecter:(RCTPromiseRejectBlock)reject)
  
@@ -156,21 +156,21 @@ index 068ca97..4550ef0 100644
                    withPassword:(NSString *)password
                    iv:(NSString *)iv
                    salt:(NSString *)salt
-+                  iterations:(NSNumber *)iteration
++                  iterations:(NSInteger)iterations
                    withResolver:(RCTPromiseResolveBlock)resolve
                    withRejecter:(RCTPromiseRejectBlock)reject)
  
  
  RCT_EXTERN_METHOD(encryptText:(NSString *)plainText
                    withPassword:(NSString *)password
-+                  iterations:(NSNumber *)iteration
++                  iterations:(NSInteger)iterations
                    withResolver:(RCTPromiseResolveBlock)resolve
                    withRejecter:(RCTPromiseRejectBlock)reject)
  
  RCT_EXTERN_METHOD(encryptFile:(NSString *)inputFilePath
                    encryptedFilePath:(NSString *)encryptedFilePath
                    withPassword:(NSString *)password
-+                  iterations:(NSNumber *)iteration
++                  iterations:(NSInteger)iterations
                    withResolver:(RCTPromiseResolveBlock)resolve
                    withRejecter:(RCTPromiseRejectBlock)reject)
  
