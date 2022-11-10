@@ -12,7 +12,7 @@ const LATEST_VERSION = 1;
 const SUPPORTED_VERSION = [1];
 
 export const ENCRYPTED_FILE_EXTENSION = 'enc';
-export const PBKDF2_ITERATION = 65536;
+export const PBKDF2_ITERATION = 10000;
 
 export async function encryptWithPassword(
   text: string,
@@ -78,7 +78,7 @@ export async function encryptFile(
     throw Error(i18n.t('error:unsupportedCryptoVersion'));
   }
   const outputPath = outputFile ? outputFile : `${inputFile}.${ENCRYPTED_FILE_EXTENSION}`;
-  return await appCrypto[version].encryptFile(inputFile, outputPath, password);
+  return await appCrypto[version].encryptFile(inputFile, outputPath, password, PBKDF2_ITERATION);
 }
 
 export async function decryptFile(
@@ -93,7 +93,7 @@ export async function decryptFile(
     throw Error(i18n.t('error:unsupportedCryptoVersion'));
   }
   const outputPath = outputFile ? outputFile : `${trimExtension(inputFile, ENCRYPTED_FILE_EXTENSION)}`;
-  return await appCrypto[version].decryptFile(inputFile, outputPath, password, iv, salt);
+  return await appCrypto[version].decryptFile(inputFile, outputPath, password, iv, salt, PBKDF2_ITERATION);
 }
 
 export async function createSignature(data: string): Promise<string> {

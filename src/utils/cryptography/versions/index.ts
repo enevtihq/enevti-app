@@ -1,11 +1,24 @@
+import { DecryptedData, DecryptedFile, EncryptedData, EncryptedFile } from 'enevti-app/types/core/service/cryptography';
 import { encryptText_v1, decryptText_v1, encryptFile_v1, decryptFile_v1 } from './1';
 
 interface AppCrypto {
   [key: number]: {
-    encryptText: (...rest: any) => any;
-    decryptText: (...rest: any) => any;
-    encryptFile: (...rest: any) => any;
-    decryptFile: (...rest: any) => any;
+    encryptText: (plainText: string, password: string, iterations: number) => Promise<EncryptedData>;
+    decryptText: (encryptedBase64: string, password: string) => Promise<DecryptedData>;
+    encryptFile: (
+      inputFile: string,
+      outputFile: string,
+      password: string,
+      iterations: number,
+    ) => Promise<EncryptedFile>;
+    decryptFile: (
+      inputFile: string,
+      outputFile: string,
+      password: string,
+      iv: string,
+      salt: string,
+      iterations: number,
+    ) => Promise<DecryptedFile>;
   };
 }
 

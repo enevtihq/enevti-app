@@ -1,0 +1,326 @@
+diff --git a/node_modules/@dhairyasharma/react-native-encryption/android/src/main/java/com/dhairyasharma/reactnativeencryption/RNEncryptionModule.kt b/node_modules/@dhairyasharma/react-native-encryption/android/src/main/java/com/dhairyasharma/reactnativeencryption/RNEncryptionModule.kt
+index 5f56fc8..cde584a 100644
+--- a/node_modules/@dhairyasharma/react-native-encryption/android/src/main/java/com/dhairyasharma/reactnativeencryption/RNEncryptionModule.kt
++++ b/node_modules/@dhairyasharma/react-native-encryption/android/src/main/java/com/dhairyasharma/reactnativeencryption/RNEncryptionModule.kt
+@@ -40,18 +40,18 @@ class RNEncryptionModule(reactContext: ReactApplicationContext) :
+     }
+ 
+     @Throws(NoSuchAlgorithmException::class, InvalidKeySpecException::class)
+-    fun getAESKeyFromPassword(password: CharArray?, salt: ByteArray?): SecretKey {
++    fun getAESKeyFromPassword(password: CharArray?, salt: ByteArray?, iteration: Int): SecretKey {
+         val factory: SecretKeyFactory =
+             SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512", "RNEBC")
+-        val spec: KeySpec = PBEKeySpec(password, salt, 65536, 256)
++        val spec: KeySpec = PBEKeySpec(password, salt, iteration, 256)
+         return SecretKeySpec(factory.generateSecret(spec).getEncoded(), "AES")
+     }
+ 
+     @Throws(java.lang.Exception::class)
+-    fun textDecryption(cipherText: String, password: String?, iv: String?, salt: String?): String {
++    fun textDecryption(cipherText: String, password: String?, iv: String?, salt: String?, iteration: Int): String {
+         val iv = iv?.hexStringToByteArray()
+         val salt = salt?.hexStringToByteArray()
+-        val aesKeyFromPassword = getAESKeyFromPassword(password?.toCharArray(), salt)
++        val aesKeyFromPassword = getAESKeyFromPassword(password?.toCharArray(), salt, iteration)
+         val cipher: Cipher = Cipher.getInstance(ENCRYPT_ALGO, "RNEBC")
+ 
+         cipher.init(Cipher.DECRYPT_MODE, aesKeyFromPassword, IvParameterSpec(iv))
+@@ -67,11 +67,12 @@ class RNEncryptionModule(reactContext: ReactApplicationContext) :
+         decryptedFilePath: File?,
+         password: String?,
+         iv: String?,
+-        salt: String?
++        salt: String?,
++        iteration: Int
+     ) {
+         val iv = iv?.hexStringToByteArray()
+         val salt = salt?.hexStringToByteArray()
+-        val aesKeyFromPassword = getAESKeyFromPassword(password?.toCharArray(), salt)
++        val aesKeyFromPassword = getAESKeyFromPassword(password?.toCharArray(), salt, iteration)
+         val cipher: Cipher = Cipher.getInstance(ENCRYPT_ALGO, "RNEBC")
+ 
+         cipher.init(Cipher.DECRYPT_MODE, aesKeyFromPassword, IvParameterSpec(iv))
+@@ -101,10 +102,11 @@ class RNEncryptionModule(reactContext: ReactApplicationContext) :
+     fun textEncryption(
+         plainText: String,
+         password: String?,
++        iteration: Int
+     ): textEncryptionOutput {
+         val salt = getRandomNonce(SALT_LENGTH_BYTE)
+         val iv = getRandomNonce(IV_LENGTH_BYTE)
+-        val aesKeyFromPassword = getAESKeyFromPassword(password?.toCharArray(), salt)
++        val aesKeyFromPassword = getAESKeyFromPassword(password?.toCharArray(), salt, iteration)
+         val cipher: Cipher = Cipher.getInstance(ENCRYPT_ALGO, "RNEBC")
+ 
+         cipher.init(Cipher.DECRYPT_MODE, aesKeyFromPassword, IvParameterSpec(iv))
+@@ -118,12 +120,13 @@ class RNEncryptionModule(reactContext: ReactApplicationContext) :
+     fun fileEncryption(
+         inputFilePath: File?,
+         encryptedFilePath: File?,
+-        password: String?
++        password: String?,
++        iteration: Int
+     ): fileEncryptionOutput {
+ 
+         val salt = getRandomNonce(SALT_LENGTH_BYTE)
+         val iv = getRandomNonce(IV_LENGTH_BYTE)
+-        val aesKeyFromPassword = getAESKeyFromPassword(password?.toCharArray(), salt)
++        val aesKeyFromPassword = getAESKeyFromPassword(password?.toCharArray(), salt, iteration)
+         val cipher: Cipher = Cipher.getInstance(ENCRYPT_ALGO, "RNEBC")
+ 
+         cipher.init(Cipher.ENCRYPT_MODE, aesKeyFromPassword, IvParameterSpec(iv))
+@@ -158,6 +161,7 @@ class RNEncryptionModule(reactContext: ReactApplicationContext) :
+         password: String,
+         iv: String,
+         salt: String,
++        iteration: Int,
+         promise: Promise
+     ) {
+         try {
+@@ -194,7 +198,7 @@ class RNEncryptionModule(reactContext: ReactApplicationContext) :
+                 response.putString("error", "Length of salt must be 32")
+                 promise.resolve(response)
+             } else {
+-                val decryptedText = textDecryption(cipherText, password, iv, salt)
++                val decryptedText = textDecryption(cipherText, password, iv, salt, iteration)
+                 val response = WritableNativeMap()
+                 response.putString("status", "success")
+                 response.putString("decryptedText", decryptedText)
+@@ -214,6 +218,7 @@ class RNEncryptionModule(reactContext: ReactApplicationContext) :
+         password: String,
+         iv: String,
+         salt: String,
++        iteration: Int,
+         promise: Promise
+     ) {
+         try {
+@@ -282,7 +287,8 @@ class RNEncryptionModule(reactContext: ReactApplicationContext) :
+                         File(finalDecryptedFilePath),
+                         password,
+                         iv,
+-                        salt
++                        salt,
++                        iteration
+                     )
+                     val response = WritableNativeMap()
+                     response.putString("status", "success")
+@@ -299,7 +305,7 @@ class RNEncryptionModule(reactContext: ReactApplicationContext) :
+     }
+ 
+     @ReactMethod
+-    fun encryptText(plainText: String, password: String, promise: Promise) {
++    fun encryptText(plainText: String, password: String, iteration: Int, promise: Promise) {
+         try {
+             Security.addProvider(BouncyCastleProvider())
+ 
+@@ -314,7 +320,7 @@ class RNEncryptionModule(reactContext: ReactApplicationContext) :
+                 response.putString("error", "Password is required")
+                 promise.resolve(response)
+             } else {
+-                val sealed = textEncryption(plainText, password)
++                val sealed = textEncryption(plainText, password, iteration)
+                 val response = WritableNativeMap()
+                 response.putString("status", "success")
+                 response.putString("iv", sealed.iv?.toHex())
+@@ -334,6 +340,7 @@ class RNEncryptionModule(reactContext: ReactApplicationContext) :
+         inputFilePath: String,
+         encryptedFilePath: String,
+         password: String,
++        iteration: Int,
+         promise: Promise
+     ) {
+         try {
+@@ -379,7 +386,8 @@ class RNEncryptionModule(reactContext: ReactApplicationContext) :
+                         fileEncryption(
+                             File(finalInputFilePath),
+                             File(finalEncryptedFilePath),
+-                            password
++                            password,
++                            iteration
+                         )
+                     val response = WritableNativeMap()
+                     response.putString("status", "success")
+diff --git a/node_modules/@dhairyasharma/react-native-encryption/ios/RNEncryptionModule.m b/node_modules/@dhairyasharma/react-native-encryption/ios/RNEncryptionModule.m
+index 068ca97..4550ef0 100644
+--- a/node_modules/@dhairyasharma/react-native-encryption/ios/RNEncryptionModule.m
++++ b/node_modules/@dhairyasharma/react-native-encryption/ios/RNEncryptionModule.m
+@@ -13,6 +13,7 @@ RCT_EXTERN_METHOD(decryptText:(NSString *)cipherText
+                   withPassword:(NSString *)password
+                   iv:(NSString *)iv
+                   salt:(NSString *)salt
++                  iterations:(NSNumber *)iteration
+                   withResolver:(RCTPromiseResolveBlock)resolve
+                   withRejecter:(RCTPromiseRejectBlock)reject)
+ 
+@@ -21,18 +22,21 @@ RCT_EXTERN_METHOD(decryptFile:(NSString *)encryptedFilePath
+                   withPassword:(NSString *)password
+                   iv:(NSString *)iv
+                   salt:(NSString *)salt
++                  iterations:(NSNumber *)iteration
+                   withResolver:(RCTPromiseResolveBlock)resolve
+                   withRejecter:(RCTPromiseRejectBlock)reject)
+ 
+ 
+ RCT_EXTERN_METHOD(encryptText:(NSString *)plainText
+                   withPassword:(NSString *)password
++                  iterations:(NSNumber *)iteration
+                   withResolver:(RCTPromiseResolveBlock)resolve
+                   withRejecter:(RCTPromiseRejectBlock)reject)
+ 
+ RCT_EXTERN_METHOD(encryptFile:(NSString *)inputFilePath
+                   encryptedFilePath:(NSString *)encryptedFilePath
+                   withPassword:(NSString *)password
++                  iterations:(NSNumber *)iteration
+                   withResolver:(RCTPromiseResolveBlock)resolve
+                   withRejecter:(RCTPromiseRejectBlock)reject)
+ 
+diff --git a/node_modules/@dhairyasharma/react-native-encryption/ios/RNEncryptionModule.swift b/node_modules/@dhairyasharma/react-native-encryption/ios/RNEncryptionModule.swift
+index cb435b6..a2b1761 100644
+--- a/node_modules/@dhairyasharma/react-native-encryption/ios/RNEncryptionModule.swift
++++ b/node_modules/@dhairyasharma/react-native-encryption/ios/RNEncryptionModule.swift
+@@ -37,26 +37,26 @@ class RNEncryptionModule: NSObject {
+     {
+         return KeyGeneration.pbkdf2(
+             hash: CCPBKDFAlgorithm(kCCPRFHmacAlgSHA512), password: password, salt: salt,
+-            keyByteCount: keyByteCount, rounds: rounds)
++            keyByteCount: keyByteCount, rounds: rounds < 1 ? 1 : rounds)
+     }
+     
+-    func decryptText(cipherText: String, password: String, iv: String, salt: String) -> [String:String?]
++    func decryptText(cipherText: String, password: String, iv: String, salt: String, iterations: Int) -> [String:String?]
+     {
+         let salt = salt.hexadecimaltodata
+         let iv = iv.hexadecimaltodata
+-        let aesKeyFromPassword = self.getAESKeyFromPassword(password: password, salt: salt!, keyByteCount: 32, rounds: 65536)
++        let aesKeyFromPassword = self.getAESKeyFromPassword(password: password, salt: salt!, keyByteCount: 32, rounds: iterations)
+         let decryptedText = TextEncryptionDecryption.crypt(text: cipherText , keyData: aesKeyFromPassword!, ivData: iv!, operation:"decryption")
+         
+         return ["status" : "success", "decryptedText" :String(bytes: decryptedText!, encoding: .utf8)]
+     }
+     
+-    func decryptFile(encryptedFilePath: String, decryptedFilePath: String, password: String, iv: String, salt: String) -> [String:String?]
++    func decryptFile(encryptedFilePath: String, decryptedFilePath: String, password: String, iv: String, salt: String, iterations: Int) -> [String:String?]
+     {
+         do {
+             
+             let salt = salt.hexadecimaltodata
+             let iv = iv.hexadecimaltodata
+-            let aesKeyFromPassword = self.getAESKeyFromPassword(password: password, salt: salt!, keyByteCount: 32, rounds: 65536)
++            let aesKeyFromPassword = self.getAESKeyFromPassword(password: password, salt: salt!, keyByteCount: 32, rounds: iterations)
+             guard let encryptedFileStream = InputStream(fileAtPath: encryptedFilePath) else
+             {
+                 return ["status" : "Fail", "error" : "File for decryption not found"]
+@@ -78,13 +78,13 @@ class RNEncryptionModule: NSObject {
+     }
+     
+     
+-    func encryptText(plainText: String, password: String) -> [String:String?]
++    func encryptText(plainText: String, password: String, iterations: Int) -> [String:String?]
+     {
+         var response = [String: String?]()
+         
+         let salt = getRandomNonce(numBytes: SALT_LENGTH_BYTE)
+         let iv = getRandomNonce(numBytes: IV_LENGTH_BYTE)
+-        let aesKeyFromPassword = self.getAESKeyFromPassword(password: password, salt: salt!, keyByteCount: 32, rounds: 65536)
++        let aesKeyFromPassword = self.getAESKeyFromPassword(password: password, salt: salt!, keyByteCount: 32, rounds: iterations)
+         let encryptedText = TextEncryptionDecryption.crypt(text: plainText , keyData: aesKeyFromPassword!, ivData: iv!, operation:"encryption")
+         
+         response = [
+@@ -97,7 +97,7 @@ class RNEncryptionModule: NSObject {
+         return response
+     }
+     
+-    func encryptFile(inputFilePath: String, encryptedFilePath: String, password: String) -> [String:String?]
++    func encryptFile(inputFilePath: String, encryptedFilePath: String, password: String, iterations: Int) -> [String:String?]
+     {
+         var response = [String: String?]()
+         
+@@ -105,7 +105,7 @@ class RNEncryptionModule: NSObject {
+             
+             let salt = getRandomNonce(numBytes: SALT_LENGTH_BYTE)
+             let iv = getRandomNonce(numBytes: IV_LENGTH_BYTE)
+-            let aesKeyFromPassword = self.getAESKeyFromPassword(password: password, salt: salt!, keyByteCount: 32, rounds: 65536)
++            let aesKeyFromPassword = self.getAESKeyFromPassword(password: password, salt: salt!, keyByteCount: 32, rounds: iterations)
+             guard let inputFileStream = InputStream(fileAtPath: inputFilePath) else {
+                 return ["status" : "Fail", "error" : "File for encryption not found"]
+             }
+@@ -133,9 +133,9 @@ class RNEncryptionModule: NSObject {
+         return response
+     }
+     
+-    @objc(decryptText:withPassword:iv:salt:withResolver:withRejecter:)
++    @objc(decryptText:withPassword:iv:salt:iterations:withResolver:withRejecter:)
+     func decryptText(
+-        cipherText: String?, password: String?, iv : String?, salt : String?,
++        cipherText: String?, password: String?, iv : String?, salt : String?, iterations: Int,
+         resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock
+     ) {
+         if(cipherText == nil || cipherText == "")
+@@ -164,14 +164,14 @@ class RNEncryptionModule: NSObject {
+         }
+         else
+         {
+-            let response = self.decryptText(cipherText: cipherText ?? "" ,password: password ?? "", iv: iv ?? "", salt: salt ?? "")
++            let response = self.decryptText(cipherText: cipherText ?? "" ,password: password ?? "", iv: iv ?? "", salt: salt ?? "", iterations: iterations)
+             resolve(response)
+         }
+     }
+     
+-    @objc(decryptFile:decryptedFilePath:withPassword:iv:salt:withResolver:withRejecter:)
++    @objc(decryptFile:decryptedFilePath:withPassword:iv:salt:iterations:withResolver:withRejecter:)
+     func decryptFile(
+-        encryptedFilePath: String?, decryptedFilePath: String?, password: String?, iv : String?, salt : String?,
++        encryptedFilePath: String?, decryptedFilePath: String?, password: String?, iv : String?, salt : String?, iterations: Int,
+         resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock
+     ) {
+         if(encryptedFilePath == nil || encryptedFilePath == "")
+@@ -216,16 +216,16 @@ class RNEncryptionModule: NSObject {
+             }
+             do
+             {
+-                let response = self.decryptFile(encryptedFilePath: finalEncryptedFilePath ?? "", decryptedFilePath: finalDecryptedFilePath ?? "", password: password ?? "", iv: iv ?? "", salt: salt ?? "")
++                let response = self.decryptFile(encryptedFilePath: finalEncryptedFilePath ?? "", decryptedFilePath: finalDecryptedFilePath ?? "", password: password ?? "", iv: iv ?? "", salt: salt ?? "", iterations: iterations)
+                 resolve(response)
+             }
+         }
+     }
+     
+     
+-    @objc(encryptText:withPassword:withResolver:withRejecter:)
++    @objc(encryptText:withPassword:iterations:withResolver:withRejecter:)
+     func encryptText(
+-        plainText: String?, password: String?,
++        plainText: String?, password: String?, iterations: Int,
+         resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock
+     ) {
+         if(plainText == nil || plainText == "")
+@@ -238,14 +238,14 @@ class RNEncryptionModule: NSObject {
+         }
+         else
+         {
+-            let response = self.encryptText(plainText: plainText ?? "" ,password: password ?? "")
++            let response = self.encryptText(plainText: plainText ?? "" ,password: password ?? "", iterations: iterations)
+             resolve(response)
+         }
+     }
+     
+-    @objc(encryptFile:encryptedFilePath:withPassword:withResolver:withRejecter:)
++    @objc(encryptFile:encryptedFilePath:withPassword:iterations:withResolver:withRejecter:)
+     func encryptFile(
+-        inputFilePath: String?, encryptedFilePath: String?, password: String?,
++        inputFilePath: String?, encryptedFilePath: String?, password: String?, iterations: Int,
+         resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock
+     ) {
+         if(inputFilePath == nil || inputFilePath == "")
+@@ -272,10 +272,9 @@ class RNEncryptionModule: NSObject {
+             {
+                 finalEncryptedFilePath = String(finalEncryptedFilePath!.dropFirst(8))
+             }
+-            let response = self.encryptFile(inputFilePath: finalInputFilePath ?? "" , encryptedFilePath: finalEncryptedFilePath ?? "" , password: password ?? "" )
++            let response = self.encryptFile(inputFilePath: finalInputFilePath ?? "" , encryptedFilePath: finalEncryptedFilePath ?? "" , password: password ?? "" , iterations: iterations )
+             resolve(response)
+         }
+     }
+     
+ }
+-

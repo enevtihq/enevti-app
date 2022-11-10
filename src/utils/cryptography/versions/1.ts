@@ -11,16 +11,11 @@ import sleep from 'enevti-app/utils/dummy/sleep';
 
 const VERSION = 1;
 
-export async function encryptText_v1(
-  plainText: string,
-  password: string,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  iterations: number,
-): Promise<EncryptedData> {
+export async function encryptText_v1(plainText: string, password: string, iterations: number): Promise<EncryptedData> {
   await sleep(1);
-  const encrypted = await RNEncryptionModule.encryptText(plainText, password);
+  const encrypted = await RNEncryptionModule.encryptText(plainText, password, iterations);
   const ret: EncryptedBase = {
-    iterations: 65536,
+    iterations: iterations,
     cipherText: encrypted.encryptedText,
     iv: encrypted.iv,
     salt: encrypted.salt,
@@ -43,6 +38,7 @@ export async function decryptText_v1(encryptedBase64: string, password: string):
     password,
     fromBase64.iv,
     fromBase64.salt,
+    fromBase64.iterations,
   );
   if (decrypted.status === 'success' && decrypted.decryptedText) {
     return {
@@ -57,15 +53,21 @@ export async function decryptText_v1(encryptedBase64: string, password: string):
   }
 }
 
-export async function encryptFile_v1(inputFile: string, outputFile: string, password: string): Promise<EncryptedFile> {
+export async function encryptFile_v1(
+  inputFile: string,
+  outputFile: string,
+  password: string,
+  iterations: number,
+): Promise<EncryptedFile> {
   await sleep(1);
-  const ret = await RNEncryptionModule.encryptFile(inputFile, outputFile, password);
+  const ret = await RNEncryptionModule.encryptFile(inputFile, outputFile, password, iterations);
   if (ret.status === 'success') {
     return {
       status: 'success',
       output: outputFile,
       iv: ret.iv,
       salt: ret.salt,
+      iterations: iterations,
       version: VERSION,
     };
   } else {
@@ -74,6 +76,7 @@ export async function encryptFile_v1(inputFile: string, outputFile: string, pass
       output: '',
       iv: '',
       salt: '',
+      iterations: iterations,
       version: VERSION,
     };
   }
@@ -85,9 +88,10 @@ export async function decryptFile_v1(
   password: string,
   iv: string,
   salt: string,
+  iterations: number,
 ): Promise<DecryptedFile> {
   await sleep(1);
-  const ret = await RNEncryptionModule.decryptFile(inputFile, outputFile, password, iv, salt);
+  const ret = await RNEncryptionModule.decryptFile(inputFile, outputFile, password, iv, salt, iterations);
   if (ret.status === 'success') {
     return {
       status: 'success',

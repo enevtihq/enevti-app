@@ -24,6 +24,7 @@ export interface EncryptedFile {
   iv: string;
   salt: string;
   version: number;
+  iterations: number;
 }
 
 export type DecryptedFile = DecryptedData;
