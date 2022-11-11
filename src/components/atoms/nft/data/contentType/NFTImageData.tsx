@@ -5,6 +5,9 @@ import AppNetworkImage from 'enevti-app/components/atoms/image/AppNetworkImage';
 import { IPFSImagetoURL } from 'enevti-app/service/ipfs';
 import { shallowEqual } from 'react-redux';
 import { SizeCode } from 'enevti-app/types/core/service/api';
+import AppIconComponent, { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
+import { useTheme } from 'react-native-paper';
+import { Theme } from 'enevti-app/theme/default';
 
 interface NFTImageDataProps {
   nft: NFTBase;
@@ -12,23 +15,37 @@ interface NFTImageDataProps {
   dataUri?: string;
   blurRadius?: number;
   realRatio?: boolean;
+  width?: number;
 }
 
 export default React.memo(
-  function NFTImageData({ nft, imageSize, dataUri, blurRadius, realRatio }: NFTImageDataProps) {
+  function NFTImageData({ nft, imageSize, dataUri, blurRadius, realRatio, width }: NFTImageDataProps) {
+    const theme = useTheme() as Theme;
     const [aspectRatio, setAspectRatio] = React.useState<number>();
+    const [isError, setIsError] = React.useState<boolean>(false);
     const styles = React.useMemo(() => makeStyles(aspectRatio, realRatio), [aspectRatio, realRatio]);
 
+    const onError = React.useCallback(() => {
+      setIsError(true);
+    }, []);
+
     const onLoad = React.useCallback(
-      (width: number, height: number) => {
+      (w: number, h: number) => {
         if (realRatio) {
-          setAspectRatio(width / height);
+          setAspectRatio(w / h);
         }
       },
       [realRatio],
     );
 
-    return dataUri ? (
+    return isError ? (
+      <AppIconComponent
+        name={iconMap.error}
+        size={width ? width / 4 : 30}
+        color={theme.colors.placeholder}
+        style={[styles.imageContainer, styles.errorContainer]}
+      />
+    ) : dataUri ? (
       <Image
         onLoad={t => onLoad(t.nativeEvent.source.width, t.nativeEvent.source.height)}
         style={styles.imageContainer}
@@ -36,7 +53,12 @@ export default React.memo(
         blurRadius={blurRadius}
       />
     ) : (
-      <AppNetworkImage onLoad={onLoad} url={IPFSImagetoURL(nft.data.cid, imageSize)} style={styles.imageContainer} />
+      <AppNetworkImage
+        onLoad={onLoad}
+        onError={onError}
+        url={IPFSImagetoURL(nft.data.cid, imageSize)}
+        style={styles.imageContainer}
+      />
     );
   },
   (props, nextProps) => {
@@ -46,6 +68,10 @@ export default React.memo(
 
 const makeStyles = (aspectRatio?: number, realRatio?: boolean) =>
   StyleSheet.create({
+    errorContainer: {
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
     imageContainer: {
       position: 'absolute',
       width: !realRatio ? '100%' : aspectRatio ? (aspectRatio >= 1 ? '100%' : undefined) : '100%',

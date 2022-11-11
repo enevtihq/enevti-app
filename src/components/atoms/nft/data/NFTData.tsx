@@ -14,11 +14,13 @@ interface NFTDataProps {
   dataUri?: string;
   blurRadius?: number;
   realRatio?: boolean;
+  width?: number;
 }
 
 const handleRenderNFTData = (
   nftObject: NFTBase,
   size: SizeCode,
+  width?: number,
   dataUri?: string,
   blurRadius?: number,
   realRatio?: boolean,
@@ -28,6 +30,7 @@ const handleRenderNFTData = (
       return (
         <NFTImageData
           nft={nftObject}
+          width={width}
           imageSize={size}
           dataUri={dataUri}
           blurRadius={blurRadius}
@@ -39,11 +42,22 @@ const handleRenderNFTData = (
   }
 };
 
-export default function NFTData({ nft, args, box = false, dataUri, blurRadius, realRatio, imageSize }: NFTDataProps) {
+export default function NFTData({
+  nft,
+  args,
+  width,
+  box = false,
+  dataUri,
+  blurRadius,
+  realRatio,
+  imageSize,
+}: NFTDataProps) {
   const styles = React.useMemo(() => makeStyles(box, args), [box, args]);
 
   return (
-    <View style={styles.nftDataContainer}>{handleRenderNFTData(nft, imageSize, dataUri, blurRadius, realRatio)}</View>
+    <View style={styles.nftDataContainer}>
+      {handleRenderNFTData(nft, imageSize, width, dataUri, blurRadius, realRatio)}
+    </View>
   );
 }
 

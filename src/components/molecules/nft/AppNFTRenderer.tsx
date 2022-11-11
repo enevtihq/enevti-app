@@ -68,6 +68,7 @@ export default React.memo(
             return (
               <NFTData
                 key={key}
+                width={canvasWidth}
                 imageSize={imgSize}
                 nft={nftObject}
                 args={templateItem.args}
@@ -80,6 +81,7 @@ export default React.memo(
               <NFTData
                 box
                 key={key}
+                width={canvasWidth}
                 imageSize={imgSize}
                 nft={nftObject}
                 args={templateItem.args}
