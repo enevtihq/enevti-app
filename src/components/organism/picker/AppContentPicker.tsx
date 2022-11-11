@@ -21,6 +21,8 @@ import getPath from '@flyerhq/react-native-android-uri-path';
 export const IMAGE_CROP_PICKER_OPTION = {
   compressImageQuality: 1,
   cropping: true,
+  freeStyleCropEnabled: true,
+  enableRotationGesture: true,
   cropperToolbarColor: darkTheme.colors.background,
   cropperStatusBarColor: darkTheme.colors.background,
   cropperActiveWidgetColor: darkTheme.colors.primary,

@@ -13,13 +13,15 @@ interface AppNetworkImageProps {
   url: string;
   style?: StyleProp<ImageStyle>;
   loaderSize?: number;
+  onLoad?: (width: number, height: number) => void;
 }
 
-export default function AppNetworkImage({ url, style, loaderSize = 30 }: AppNetworkImageProps) {
+export default function AppNetworkImage({ url, style, onLoad, loaderSize = 30 }: AppNetworkImageProps) {
   const theme = useTheme() as Theme;
 
   return (
     <FastImage
+      onLoad={t => onLoad && onLoad(t.nativeEvent.width, t.nativeEvent.height)}
       style={style}
       source={{
         uri: url,

@@ -71,7 +71,7 @@ export default function AppNFTDetailsHeader({ nft }: AppNFTDetailsHeaderProps) {
             padding: wp('10%'),
             paddingTop: nftContainerPaddingTop + wp('2.5%'),
           }}>
-          <AppNFTRenderer nft={nft} width={nftWidth} />
+          <AppNFTRenderer realRatio nft={nft} width={nftWidth} />
         </View>
       </View>
     </View>
