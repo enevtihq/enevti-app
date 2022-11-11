@@ -13,15 +13,13 @@ import { shallowEqual } from 'react-redux';
 import { Theme } from 'enevti-app/theme/default';
 import Color from 'color';
 import { useTheme } from 'react-native-paper';
-import { NFT_RESOLUTION } from 'enevti-app/service/enevti/nft';
 import i18n from 'enevti-app/translations/i18n';
 import darkTheme from 'enevti-app/theme/dark';
 import ImageCropPicker from 'react-native-image-crop-picker';
 import getPath from '@flyerhq/react-native-android-uri-path';
 
 export const IMAGE_CROP_PICKER_OPTION = {
-  width: NFT_RESOLUTION,
-  height: NFT_RESOLUTION,
+  compressImageQuality: 1,
   cropping: true,
   cropperToolbarColor: darkTheme.colors.background,
   cropperStatusBarColor: darkTheme.colors.background,

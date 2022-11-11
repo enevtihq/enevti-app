@@ -23,7 +23,7 @@ export default function AppNetworkImage({ url, style, loaderSize = 30 }: AppNetw
       style={style}
       source={{
         uri: url,
-        priority: FI.priority.normal,
+        priority: FI.priority.high,
       }}
       resizeMode={FI.resizeMode.cover}
       indicator={Progress.Circle}
