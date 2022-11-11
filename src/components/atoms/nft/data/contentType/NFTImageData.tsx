@@ -22,11 +22,16 @@ export default React.memo(
   function NFTImageData({ nft, imageSize, dataUri, blurRadius, realRatio, width }: NFTImageDataProps) {
     const theme = useTheme() as Theme;
     const [aspectRatio, setAspectRatio] = React.useState<number>();
-    const [isError, setIsError] = React.useState<boolean>(false);
+    const [firstError, setFirstError] = React.useState<boolean>(false);
+    const [secondError, setSecondError] = React.useState<boolean>(false);
     const styles = React.useMemo(() => makeStyles(aspectRatio, realRatio), [aspectRatio, realRatio]);
 
-    const onError = React.useCallback(() => {
-      setIsError(true);
+    const onSecondError = React.useCallback(() => {
+      setSecondError(true);
+    }, []);
+
+    const onFirstError = React.useCallback(() => {
+      setFirstError(true);
     }, []);
 
     const onLoad = React.useCallback(
@@ -38,12 +43,19 @@ export default React.memo(
       [realRatio],
     );
 
-    return isError ? (
+    return secondError ? (
       <AppIconComponent
         name={iconMap.error}
         size={width ? width / 4 : 30}
         color={theme.colors.placeholder}
         style={[styles.imageContainer, styles.errorContainer]}
+      />
+    ) : firstError ? (
+      <AppNetworkImage
+        onLoad={onLoad}
+        onError={onSecondError}
+        url={IPFSImagetoURL(nft.data.cid, 'og')}
+        style={styles.imageContainer}
       />
     ) : dataUri ? (
       <Image
@@ -55,7 +67,7 @@ export default React.memo(
     ) : (
       <AppNetworkImage
         onLoad={onLoad}
-        onError={onError}
+        onError={onFirstError}
         url={IPFSImagetoURL(nft.data.cid, imageSize)}
         style={styles.imageContainer}
       />
