@@ -13,25 +13,23 @@ import { shallowEqual } from 'react-redux';
 import { Theme } from 'enevti-app/theme/default';
 import Color from 'color';
 import { useTheme } from 'react-native-paper';
-import i18n from 'enevti-app/translations/i18n';
-import darkTheme from 'enevti-app/theme/dark';
 import ImageCropPicker from 'react-native-image-crop-picker';
 import getPath from '@flyerhq/react-native-android-uri-path';
 
 export const IMAGE_CROP_PICKER_OPTION = {
-  compressImageQuality: 1,
-  cropping: true,
-  freeStyleCropEnabled: true,
-  enableRotationGesture: true,
-  cropperToolbarColor: darkTheme.colors.background,
-  cropperStatusBarColor: darkTheme.colors.background,
-  cropperActiveWidgetColor: darkTheme.colors.primary,
-  cropperToolbarWidgetColor: darkTheme.colors.text,
-  hideBottomControls: true,
-  cropperRotateButtonsHidden: true,
-  cropperToolbarTitle: i18n.t('createNFT:editImage'),
-  cropperCancelText: i18n.t('createNFT:cancelEdit'),
-  cropperChooseText: i18n.t('createNFT:continue'),
+  // compressImageQuality: 1,
+  // cropping: true,
+  // freeStyleCropEnabled: true,
+  // enableRotationGesture: true,
+  // cropperToolbarColor: darkTheme.colors.background,
+  // cropperStatusBarColor: darkTheme.colors.background,
+  // cropperActiveWidgetColor: darkTheme.colors.primary,
+  // cropperToolbarWidgetColor: darkTheme.colors.text,
+  // hideBottomControls: true,
+  // cropperRotateButtonsHidden: true,
+  // cropperToolbarTitle: i18n.t('createNFT:editImage'),
+  // cropperCancelText: i18n.t('createNFT:cancelEdit'),
+  // cropperChooseText: i18n.t('createNFT:continue'),
 };
 
 interface AppContentPickerProps {
