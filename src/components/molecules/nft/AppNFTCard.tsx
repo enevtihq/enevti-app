@@ -37,7 +37,7 @@ export default function AppNFTCard({ nft, width, style, navigation }: AppNFTCard
   return (
     <View style={[style, { width: width }]}>
       <View style={[styles.container]}>
-        <AppNFTRenderer nft={nft} width={nftWidth} />
+        <AppNFTRenderer imageSize={'m'} nft={nft} width={nftWidth} />
         <AppTextBody4 numberOfLines={1} style={styles.collectionName}>
           {nft.name}
         </AppTextBody4>

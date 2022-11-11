@@ -8,7 +8,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { CollectionBase } from 'enevti-app/types/core/chain/collection';
 import AppListItem, { LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE } from 'enevti-app/components/molecules/list/AppListItem';
 import AppNetworkImage from 'enevti-app/components/atoms/image/AppNetworkImage';
-import { IPFStoURL } from 'enevti-app/service/ipfs';
+import { IPFSImagetoURL } from 'enevti-app/service/ipfs';
 import AppTextHeading4 from 'enevti-app/components/atoms/text/AppTextHeading4';
 import { parseAmount } from 'enevti-app/utils/format/amount';
 import AppTextHeading5 from 'enevti-app/components/atoms/text/AppTextHeading5';
@@ -186,7 +186,7 @@ function Component(
         style={styles.collectionItem}
         leftContent={
           <View style={styles.collectionCoverContainer}>
-            <AppNetworkImage url={IPFStoURL(item.cover.cid)} style={styles.collectionCover} />
+            <AppNetworkImage url={IPFSImagetoURL(item.cover.cid, 's')} style={styles.collectionCover} />
           </View>
         }
         rightContent={

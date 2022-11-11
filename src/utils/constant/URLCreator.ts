@@ -1,3 +1,4 @@
+import { SizeCode } from 'enevti-app/types/core/service/api';
 import {
   COLLECTION_ACTIVITY_INITIAL_LENGTH,
   COLLECTION_MINTED_INITIAL_LENGTH,
@@ -72,6 +73,19 @@ export function urlVideoCallSocketIO() {
 
 export function urlGetIPFS(hash: string, gateway: string = IPFS_GATEWAY) {
   return encodeURI(`https://${hash}${gateway}`);
+}
+
+export function urlGetIPFSImageResized(
+  hash: string,
+  size: SizeCode,
+  gateway: string = IPFS_GATEWAY,
+  host: string = ENEVTI_DEFAULT_API,
+) {
+  if (size === 'og') {
+    return urlGetIPFS(hash, gateway);
+  } else {
+    return encodeURI(`${host}/ipfs-resized/${hash}/${size}.jpg`);
+  }
 }
 
 export function urlGetStakeSent(

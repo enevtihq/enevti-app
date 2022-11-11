@@ -2,18 +2,20 @@ import { StyleSheet, Image } from 'react-native';
 import React from 'react';
 import { NFTBase } from 'enevti-app/types/core/chain/nft';
 import AppNetworkImage from 'enevti-app/components/atoms/image/AppNetworkImage';
-import { IPFStoURL } from 'enevti-app/service/ipfs';
+import { IPFSImagetoURL } from 'enevti-app/service/ipfs';
 import { shallowEqual } from 'react-redux';
+import { SizeCode } from 'enevti-app/types/core/service/api';
 
 interface NFTImageDataProps {
   nft: NFTBase;
+  imageSize: SizeCode;
   dataUri?: string;
   blurRadius?: number;
   realRatio?: boolean;
 }
 
 export default React.memo(
-  function NFTImageData({ nft, dataUri, blurRadius, realRatio }: NFTImageDataProps) {
+  function NFTImageData({ nft, imageSize, dataUri, blurRadius, realRatio }: NFTImageDataProps) {
     const [aspectRatio, setAspectRatio] = React.useState<number>();
     const styles = React.useMemo(() => makeStyles(aspectRatio, realRatio), [aspectRatio, realRatio]);
 
@@ -34,7 +36,7 @@ export default React.memo(
         blurRadius={blurRadius}
       />
     ) : (
-      <AppNetworkImage onLoad={onLoad} url={IPFStoURL(nft.data.cid)} style={styles.imageContainer} />
+      <AppNetworkImage onLoad={onLoad} url={IPFSImagetoURL(nft.data.cid, imageSize)} style={styles.imageContainer} />
     );
   },
   (props, nextProps) => {

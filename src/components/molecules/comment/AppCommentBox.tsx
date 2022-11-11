@@ -578,7 +578,7 @@ export default function AppCommentBox({ route, type, target, inputRef }: AppComm
               leftContent={
                 <View style={styles.collectionCoverContainer}>
                   <View style={{ height: hp(5, insets), width: hp(5, insets) }}>
-                    <AppNFTRenderer nft={suggestion} width={hp(5, insets)} />
+                    <AppNFTRenderer imageSize={'s'} nft={suggestion} width={hp(5, insets)} />
                   </View>
                 </View>
               }>

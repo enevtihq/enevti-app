@@ -20,9 +20,10 @@ export default function AppFeedBody({ canvasWidth, navigation, feed }: AppFeedBo
   }, [feed.id, navigation]);
 
   return feed.nft.length > 1 ? (
-    <AppNFTListRenderer nft={feed.nft} width={canvasWidth} itemWidth={canvasWidth} onPress={onPress} />
+    <AppNFTListRenderer imageSize={'l'} nft={feed.nft} width={canvasWidth} itemWidth={canvasWidth} onPress={onPress} />
   ) : (
     <AppNFTRenderer
+      imageSize={'l'}
       nft={feed.nft[0]}
       width={canvasWidth}
       style={{ marginBottom: hp('1%', insets) }}

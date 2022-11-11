@@ -131,7 +131,7 @@ function Component(
   );
 
   const renderItem = React.useCallback(
-    ({ item }) => <AppNFTRenderer nft={item} width={itemDimension} navigation={navigation} />,
+    ({ item }) => <AppNFTRenderer imageSize={'m'} nft={item} width={itemDimension} navigation={navigation} />,
     [itemDimension, navigation],
   );
 

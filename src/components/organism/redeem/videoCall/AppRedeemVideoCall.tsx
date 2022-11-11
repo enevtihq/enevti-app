@@ -1245,7 +1245,7 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
                 <View style={styles.nftInfoContainer}>
                   <View style={styles.nftInfoRow}>
                     <View style={styles.nftInfoIMG}>
-                      <AppNFTRenderer nft={nft} width={wp(25)} />
+                      <AppNFTRenderer imageSize={'m'} nft={nft} width={wp(25)} />
                     </View>
                     <View style={styles.nftInfoTextContainer}>
                       <View style={{ height: hp(2.8) }}>

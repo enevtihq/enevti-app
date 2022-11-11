@@ -7,17 +7,26 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { NFTBase } from 'enevti-app/types/core/chain/nft';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
+import { SizeCode } from 'enevti-app/types/core/service/api';
 
 interface AppNFTListRedererProps {
   nft: NFTBase[];
   width: number;
   itemWidth: number;
   navigation?: StackNavigationProp<RootStackParamList>;
+  imageSize?: SizeCode;
   onPress?: () => void;
 }
 
 export default React.memo(
-  function AppNFTListRenderer({ nft, width, navigation, onPress, itemWidth }: AppNFTListRedererProps) {
+  function AppNFTListRenderer({
+    nft,
+    width,
+    navigation,
+    onPress,
+    itemWidth,
+    imageSize = 'og',
+  }: AppNFTListRedererProps) {
     const insets = useSafeAreaInsets();
     const [currentPage, setCurrentPage] = React.useState<number>(0);
 
@@ -31,10 +40,10 @@ export default React.memo(
     const renderItem = React.useCallback(
       ({ item }: any) => (
         <View style={{ width: width }}>
-          <AppNFTRenderer nft={item} width={width} navigation={navigation} onPress={onPress} />
+          <AppNFTRenderer imageSize={imageSize} nft={item} width={width} navigation={navigation} onPress={onPress} />
         </View>
       ),
-      [width, navigation, onPress],
+      [width, imageSize, navigation, onPress],
     );
 
     const keyExtractor = React.useCallback(item => item.id, []);

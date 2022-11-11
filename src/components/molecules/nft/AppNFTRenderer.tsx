@@ -17,6 +17,7 @@ import UtilityLabel from 'enevti-app/components/atoms/nft/utility/UtilityLabel';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { TouchableRipple } from 'react-native-paper';
+import { SizeCode } from 'enevti-app/types/core/service/api';
 
 interface AppNFTRendererProps {
   nft: NFTBase;
@@ -25,13 +26,23 @@ interface AppNFTRendererProps {
   dataUri?: string;
   realRatio?: boolean;
   navigation?: StackNavigationProp<RootStackParamList>;
+  imageSize?: SizeCode;
   onPress?: () => void;
 }
 
 const THUMBNAIL_TRESHOLD = 0.33;
 
 export default React.memo(
-  function AppNFTRenderer({ nft, width, style, dataUri, realRatio, navigation, onPress }: AppNFTRendererProps) {
+  function AppNFTRenderer({
+    nft,
+    width,
+    style,
+    dataUri,
+    realRatio,
+    navigation,
+    onPress,
+    imageSize = 'og',
+  }: AppNFTRendererProps) {
     const styles = React.useMemo(() => makeStyles(), []);
     const onNavigate = React.useCallback(
       () => (onPress ? onPress() : navigation ? navigation.push('NFTDetails', { arg: nft.id, mode: 'id' }) : undefined),
@@ -44,6 +55,7 @@ export default React.memo(
         nftObject: NFTBase,
         index: number,
         canvasWidth: number,
+        imgSize: SizeCode,
         data?: string,
         ratio?: boolean,
       ) => {
@@ -53,9 +65,28 @@ export default React.memo(
           case 'utility-background':
             return <UtilityBackground key={key} nft={nftObject} args={templateItem.args} />;
           case 'data':
-            return <NFTData key={key} nft={nftObject} args={templateItem.args} dataUri={data} realRatio={ratio} />;
+            return (
+              <NFTData
+                key={key}
+                imageSize={imgSize}
+                nft={nftObject}
+                args={templateItem.args}
+                dataUri={data}
+                realRatio={ratio}
+              />
+            );
           case 'data-box':
-            return <NFTData box key={key} nft={nftObject} args={templateItem.args} dataUri={data} realRatio={ratio} />;
+            return (
+              <NFTData
+                box
+                key={key}
+                imageSize={imgSize}
+                nft={nftObject}
+                args={templateItem.args}
+                dataUri={data}
+                realRatio={ratio}
+              />
+            );
           case 'box':
             return <Box key={key} args={templateItem.args} />;
           case 'rarity-icon':
@@ -87,10 +118,10 @@ export default React.memo(
       <View style={[styles.nftContainer, style]}>
         {width < Dimensions.get('window').width * THUMBNAIL_TRESHOLD && nft.template.thumbnail.length > 0
           ? nft.template.thumbnail.map((templateItem, index) =>
-              handleRenderNFTTemplate(templateItem, nft, index, width, dataUri, realRatio),
+              handleRenderNFTTemplate(templateItem, nft, index, width, imageSize, dataUri, realRatio),
             )
           : nft.template.main.map((templateItem, index) =>
-              handleRenderNFTTemplate(templateItem, nft, index, width, dataUri, realRatio),
+              handleRenderNFTTemplate(templateItem, nft, index, width, imageSize, dataUri, realRatio),
             )}
         {navigation || onPress ? (
           <TouchableRipple style={styles.rippleOverlay} onPress={onNavigate}>

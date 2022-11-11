@@ -4,29 +4,47 @@ import { NFTBase } from 'enevti-app/types/core/chain/nft';
 import NFTImageData from './contentType/NFTImageData';
 import { TemplateArgs } from 'enevti-app/types/core/chain/nft/NFTTemplate';
 import mimeMapping from 'enevti-app/utils/mime/mimeMapping';
+import { SizeCode } from 'enevti-app/types/core/service/api';
 
 interface NFTDataProps {
   nft: NFTBase;
   args: TemplateArgs;
+  imageSize: SizeCode;
   box?: boolean;
   dataUri?: string;
   blurRadius?: number;
   realRatio?: boolean;
 }
 
-const handleRenderNFTData = (nftObject: NFTBase, dataUri?: string, blurRadius?: number, realRatio?: boolean) => {
+const handleRenderNFTData = (
+  nftObject: NFTBase,
+  size: SizeCode,
+  dataUri?: string,
+  blurRadius?: number,
+  realRatio?: boolean,
+) => {
   switch (mimeMapping(nftObject.data.mime)) {
     case 'image':
-      return <NFTImageData nft={nftObject} dataUri={dataUri} blurRadius={blurRadius} realRatio={realRatio} />;
+      return (
+        <NFTImageData
+          nft={nftObject}
+          imageSize={size}
+          dataUri={dataUri}
+          blurRadius={blurRadius}
+          realRatio={realRatio}
+        />
+      );
     default:
       return <View />;
   }
 };
 
-export default function NFTData({ nft, args, box = false, dataUri, blurRadius, realRatio }: NFTDataProps) {
+export default function NFTData({ nft, args, box = false, dataUri, blurRadius, realRatio, imageSize }: NFTDataProps) {
   const styles = React.useMemo(() => makeStyles(box, args), [box, args]);
 
-  return <View style={styles.nftDataContainer}>{handleRenderNFTData(nft, dataUri, blurRadius, realRatio)}</View>;
+  return (
+    <View style={styles.nftDataContainer}>{handleRenderNFTData(nft, imageSize, dataUri, blurRadius, realRatio)}</View>
+  );
 }
 
 const makeStyles = (box: boolean, args: TemplateArgs) =>

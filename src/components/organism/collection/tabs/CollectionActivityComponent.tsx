@@ -121,7 +121,7 @@ function Component(
         style={styles.collectionItem}
         leftContent={
           item.nfts.length ? (
-            <AppNFTRenderer nft={item.nfts[0]} width={wp('13%')} style={styles.nftRenderer} />
+            <AppNFTRenderer imageSize={'s'} nft={item.nfts[0]} width={wp('13%')} style={styles.nftRenderer} />
           ) : (
             <AppActivityIcon activityName={item.name} />
           )

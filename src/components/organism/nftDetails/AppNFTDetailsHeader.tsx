@@ -55,8 +55,9 @@ export default function AppNFTDetailsHeader({ nft }: AppNFTDetailsHeaderProps) {
         <View style={styles.nftBackground}>
           <NFTData
             nft={nft}
+            imageSize={'xxs'}
             dataUri={IPFStoURL(nft.data.cid)}
-            blurRadius={10}
+            blurRadius={50}
             args={{
               x: '0%',
               y: '0%',

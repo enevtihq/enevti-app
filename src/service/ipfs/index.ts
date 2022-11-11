@@ -1,11 +1,19 @@
-import { urlGetIPFS, urlNFTStorage, urlWeb3Storage } from 'enevti-app/utils/constant/URLCreator';
+import {
+  urlGetIPFS,
+  urlGetIPFSImageResized,
+  urlNFTStorage,
+  urlWeb3Storage,
+} from 'enevti-app/utils/constant/URLCreator';
 import Config from 'react-native-config';
 import { appFetch, appFetchBlob, isInternetReachable } from 'enevti-app/utils/network';
 import i18n from 'enevti-app/translations/i18n';
 import * as Hash from 'ipfs-only-hash';
 import { handleError } from 'enevti-app/utils/error/handle';
+import { SizeCode } from 'enevti-app/types/core/service/api';
 
 export const IPFStoURL = (hash: string) => urlGetIPFS(hash);
+
+export const IPFSImagetoURL = (hash: string, size: SizeCode = 'og') => urlGetIPFSImageResized(hash, size);
 
 export const getIPFSCID = async (input: string | Buffer) => {
   const cid = await Hash.of(input, { cidVersion: 1, rawLeaves: true });

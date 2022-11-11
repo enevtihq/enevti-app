@@ -37,3 +37,5 @@ export interface APIServiceResponse<T, S = T> extends APIResponse<T, S, ServiceM
     offset?: number;
   };
 }
+
+export type SizeCode = 'xxs' | 'xs' | 's' | 'm' | 'l' | 'og';
