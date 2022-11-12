@@ -1,4 +1,4 @@
-export type MintMomentAssetProps = {
+export type MintMomentProps = {
   nftId: string;
   data: string;
   dataMime: string;
@@ -13,4 +13,4 @@ export type MintMomentAssetProps = {
   text: string;
 };
 
-export type MintMomentAssetUI = MintMomentAssetProps;
+export type MintMomentUI = MintMomentProps;
