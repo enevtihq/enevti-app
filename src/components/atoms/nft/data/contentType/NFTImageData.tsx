@@ -23,17 +23,7 @@ export default React.memo(
   function NFTImageData({ nft, imageSize, lazy, dataUri, blurRadius, realRatio, width }: NFTImageDataProps) {
     const theme = useTheme() as Theme;
     const [aspectRatio, setAspectRatio] = React.useState<number>();
-    const [firstError, setFirstError] = React.useState<boolean>(false);
-    const [secondError, setSecondError] = React.useState<boolean>(false);
     const styles = React.useMemo(() => makeStyles(aspectRatio, realRatio), [aspectRatio, realRatio]);
-
-    const onSecondError = React.useCallback(() => {
-      setSecondError(true);
-    }, []);
-
-    const onFirstError = React.useCallback(() => {
-      setFirstError(true);
-    }, []);
 
     const onLoad = React.useCallback(
       (w: number, h: number) => {
@@ -44,21 +34,7 @@ export default React.memo(
       [realRatio],
     );
 
-    return secondError ? (
-      <AppIconComponent
-        name={iconMap.error}
-        size={width ? width / 4 : 30}
-        color={theme.colors.placeholder}
-        style={[styles.imageContainer, styles.errorContainer]}
-      />
-    ) : firstError ? (
-      <AppNetworkImage
-        onLoad={onLoad}
-        onError={onSecondError}
-        url={IPFSImagetoURL(nft.data.cid, 'og')}
-        style={styles.imageContainer}
-      />
-    ) : dataUri ? (
+    return dataUri ? (
       <Image
         onLoad={t => onLoad(t.nativeEvent.source.width, t.nativeEvent.source.height)}
         style={styles.imageContainer}
@@ -67,10 +43,18 @@ export default React.memo(
       />
     ) : (
       <AppNetworkImage
+        errorComponent={
+          <AppIconComponent
+            name={iconMap.error}
+            size={width ? width / 4 : 30}
+            color={theme.colors.placeholder}
+            style={[styles.imageContainer, styles.errorContainer]}
+          />
+        }
         thumb={lazy ? IPFSImagetoURL(nft.data.cid, 'xxs') : undefined}
         onLoad={onLoad}
-        onError={onFirstError}
         url={IPFSImagetoURL(nft.data.cid, imageSize)}
+        fallbackUrl={IPFSImagetoURL(nft.data.cid, 'og')}
         style={styles.imageContainer}
       />
     );

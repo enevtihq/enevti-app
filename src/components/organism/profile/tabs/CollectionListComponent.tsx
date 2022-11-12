@@ -186,7 +186,11 @@ function Component(
         style={styles.collectionItem}
         leftContent={
           <View style={styles.collectionCoverContainer}>
-            <AppNetworkImage url={IPFSImagetoURL(item.cover.cid, 's')} style={styles.collectionCover} />
+            <AppNetworkImage
+              url={IPFSImagetoURL(item.cover.cid, 's')}
+              fallbackUrl={IPFSImagetoURL(item.cover.cid, 'og')}
+              style={styles.collectionCover}
+            />
           </View>
         }
         rightContent={
