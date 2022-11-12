@@ -20,9 +20,17 @@ export default function AppFeedBody({ canvasWidth, navigation, feed }: AppFeedBo
   }, [feed.id, navigation]);
 
   return feed.nft.length > 1 ? (
-    <AppNFTListRenderer imageSize={'l'} nft={feed.nft} width={canvasWidth} itemWidth={canvasWidth} onPress={onPress} />
+    <AppNFTListRenderer
+      lazy
+      imageSize={'l'}
+      nft={feed.nft}
+      width={canvasWidth}
+      itemWidth={canvasWidth}
+      onPress={onPress}
+    />
   ) : (
     <AppNFTRenderer
+      lazy
       imageSize={'l'}
       nft={feed.nft[0]}
       width={canvasWidth}

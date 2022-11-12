@@ -12,6 +12,7 @@ import { Theme } from 'enevti-app/theme/default';
 interface NFTImageDataProps {
   nft: NFTBase;
   imageSize: SizeCode;
+  lazy?: boolean;
   dataUri?: string;
   blurRadius?: number;
   realRatio?: boolean;
@@ -19,7 +20,7 @@ interface NFTImageDataProps {
 }
 
 export default React.memo(
-  function NFTImageData({ nft, imageSize, dataUri, blurRadius, realRatio, width }: NFTImageDataProps) {
+  function NFTImageData({ nft, imageSize, lazy, dataUri, blurRadius, realRatio, width }: NFTImageDataProps) {
     const theme = useTheme() as Theme;
     const [aspectRatio, setAspectRatio] = React.useState<number>();
     const [firstError, setFirstError] = React.useState<boolean>(false);
@@ -66,6 +67,7 @@ export default React.memo(
       />
     ) : (
       <AppNetworkImage
+        thumb={lazy ? IPFSImagetoURL(nft.data.cid, 'xxs') : undefined}
         onLoad={onLoad}
         onError={onFirstError}
         url={IPFSImagetoURL(nft.data.cid, imageSize)}

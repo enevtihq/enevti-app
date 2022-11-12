@@ -13,6 +13,7 @@ interface AppNFTListRedererProps {
   nft: NFTBase[];
   width: number;
   itemWidth: number;
+  lazy?: boolean;
   navigation?: StackNavigationProp<RootStackParamList>;
   imageSize?: SizeCode;
   onPress?: () => void;
@@ -22,6 +23,7 @@ export default React.memo(
   function AppNFTListRenderer({
     nft,
     width,
+    lazy,
     navigation,
     onPress,
     itemWidth,
@@ -40,10 +42,17 @@ export default React.memo(
     const renderItem = React.useCallback(
       ({ item }: any) => (
         <View style={{ width: width }}>
-          <AppNFTRenderer imageSize={imageSize} nft={item} width={width} navigation={navigation} onPress={onPress} />
+          <AppNFTRenderer
+            lazy={lazy}
+            imageSize={imageSize}
+            nft={item}
+            width={width}
+            navigation={navigation}
+            onPress={onPress}
+          />
         </View>
       ),
-      [width, imageSize, navigation, onPress],
+      [width, imageSize, navigation, onPress, lazy],
     );
 
     const keyExtractor = React.useCallback(item => item.id, []);

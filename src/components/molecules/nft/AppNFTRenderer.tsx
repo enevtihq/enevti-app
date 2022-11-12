@@ -22,6 +22,7 @@ import { SizeCode } from 'enevti-app/types/core/service/api';
 interface AppNFTRendererProps {
   nft: NFTBase;
   width: number;
+  lazy?: boolean;
   style?: StyleProp<ViewStyle>;
   dataUri?: string;
   realRatio?: boolean;
@@ -36,6 +37,7 @@ export default React.memo(
   function AppNFTRenderer({
     nft,
     width,
+    lazy,
     style,
     dataUri,
     realRatio,
@@ -58,6 +60,7 @@ export default React.memo(
         imgSize: SizeCode,
         data?: string,
         ratio?: boolean,
+        isLazy?: boolean,
       ) => {
         const key = nftObject.id + templateItem.type + '-' + index.toString();
 
@@ -68,6 +71,7 @@ export default React.memo(
             return (
               <NFTData
                 key={key}
+                lazy={isLazy}
                 width={canvasWidth}
                 imageSize={imgSize}
                 nft={nftObject}
@@ -120,10 +124,10 @@ export default React.memo(
       <View style={[styles.nftContainer, style]}>
         {width < Dimensions.get('window').width * THUMBNAIL_TRESHOLD && nft.template.thumbnail.length > 0
           ? nft.template.thumbnail.map((templateItem, index) =>
-              handleRenderNFTTemplate(templateItem, nft, index, width, imageSize, dataUri, realRatio),
+              handleRenderNFTTemplate(templateItem, nft, index, width, imageSize, dataUri, realRatio, lazy),
             )
           : nft.template.main.map((templateItem, index) =>
-              handleRenderNFTTemplate(templateItem, nft, index, width, imageSize, dataUri, realRatio),
+              handleRenderNFTTemplate(templateItem, nft, index, width, imageSize, dataUri, realRatio, lazy),
             )}
         {navigation || onPress ? (
           <TouchableRipple style={styles.rippleOverlay} onPress={onNavigate}>

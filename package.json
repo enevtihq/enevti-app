@@ -92,6 +92,7 @@
     "react-native-file-viewer": "^2.1.5",
     "react-native-fs": "^2.19.0",
     "react-native-gesture-handler": "^2.2.0",
+    "react-native-image-blur-loading": "^1.2.0",
     "react-native-image-crop-picker": "^0.37.3",
     "react-native-image-progress": "^1.2.0",
     "react-native-job-queue": "^0.4.2",

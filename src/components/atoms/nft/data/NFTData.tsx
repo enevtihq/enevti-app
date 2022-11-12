@@ -15,6 +15,7 @@ interface NFTDataProps {
   blurRadius?: number;
   realRatio?: boolean;
   width?: number;
+  lazy?: boolean;
 }
 
 const handleRenderNFTData = (
@@ -24,11 +25,13 @@ const handleRenderNFTData = (
   dataUri?: string,
   blurRadius?: number,
   realRatio?: boolean,
+  isLazy?: boolean,
 ) => {
   switch (mimeMapping(nftObject.data.mime)) {
     case 'image':
       return (
         <NFTImageData
+          lazy={isLazy}
           nft={nftObject}
           width={width}
           imageSize={size}
@@ -51,12 +54,13 @@ export default function NFTData({
   blurRadius,
   realRatio,
   imageSize,
+  lazy,
 }: NFTDataProps) {
   const styles = React.useMemo(() => makeStyles(box, args), [box, args]);
 
   return (
     <View style={styles.nftDataContainer}>
-      {handleRenderNFTData(nft, imageSize, width, dataUri, blurRadius, realRatio)}
+      {handleRenderNFTData(nft, imageSize, width, dataUri, blurRadius, realRatio, lazy)}
     </View>
   );
 }
