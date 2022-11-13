@@ -2,7 +2,7 @@ import { Image, Platform, StyleSheet, View } from 'react-native';
 import React from 'react';
 import AppView from 'enevti-app/components/atoms/view/AppView';
 import { hp, wp } from 'enevti-app/utils/imageRatio';
-import AppBrandBanner from 'enevti-app/components/molecules/AppBrandBanner';
+import AppBrandBanner from 'enevti-app/components/molecules/brand/AppBrandBanner';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';

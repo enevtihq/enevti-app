@@ -1,7 +1,7 @@
 import React from 'react';
 import AppFormSecureTextInput, {
   AppFormSecureTextInputProps,
-} from 'enevti-app/components/organism/AppFormSecureTextInput';
+} from 'enevti-app/components/organism/form/AppFormSecureTextInput';
 import { useBottomSheetInternal } from '@gorhom/bottom-sheet';
 import { ModalContext } from 'enevti-app/context';
 

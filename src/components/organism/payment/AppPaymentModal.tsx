@@ -12,7 +12,7 @@ import AppListItem from 'enevti-app/components/molecules/list/AppListItem';
 import { Divider, Portal, Snackbar, useTheme } from 'react-native-paper';
 import { Theme } from 'enevti-app/theme/default';
 import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
-import AppIconGradient from 'enevti-app/components/molecules/AppIconGradient';
+import AppIconGradient from 'enevti-app/components/molecules/icon/AppIconGradient';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import { COIN_NAME } from 'enevti-app/utils/constant/identifier';
 import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';

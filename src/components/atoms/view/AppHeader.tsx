@@ -8,7 +8,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { Theme } from 'enevti-app/theme/default';
 import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
-import AppBrandBanner from 'enevti-app/components/molecules/AppBrandBanner';
+import AppBrandBanner from 'enevti-app/components/molecules/brand/AppBrandBanner';
 import AppIconButton from 'enevti-app/components/atoms/icon/AppIconButton';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 

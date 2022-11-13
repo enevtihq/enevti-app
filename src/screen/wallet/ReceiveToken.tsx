@@ -3,7 +3,7 @@ import React from 'react';
 import AppView from 'enevti-app/components/atoms/view/AppView';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
-import AppHeaderWizard from 'enevti-app/components/molecules/AppHeaderWizard';
+import AppHeaderWizard from 'enevti-app/components/molecules/view/AppHeaderWizard';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import { useTranslation } from 'react-i18next';
 import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
@@ -22,7 +22,7 @@ import AppAvatarRenderer from 'enevti-app/components/molecules/avatar/AppAvatarR
 import AppIconButton from 'enevti-app/components/atoms/icon/AppIconButton';
 import { parsePersonaLabel } from 'enevti-app/service/enevti/persona';
 import { COIN_NAME, getCoinName } from 'enevti-app/utils/constant/identifier';
-import AppFormTextInputWithError from 'enevti-app/components/molecules/AppFormTextInputWithError';
+import AppFormTextInputWithError from 'enevti-app/components/molecules/form/AppFormTextInputWithError';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { handleError } from 'enevti-app/utils/error/handle';

@@ -1,7 +1,7 @@
 import { StyleSheet, View } from 'react-native';
 import React from 'react';
 import AppView from 'enevti-app/components/atoms/view/AppView';
-import AppHeaderWizard from 'enevti-app/components/molecules/AppHeaderWizard';
+import AppHeaderWizard from 'enevti-app/components/molecules/view/AppHeaderWizard';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -10,7 +10,7 @@ import AppListItem from 'enevti-app/components/molecules/list/AppListItem';
 import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import { useTheme } from 'react-native-paper';
-import AppIconGradient from 'enevti-app/components/molecules/AppIconGradient';
+import AppIconGradient from 'enevti-app/components/molecules/icon/AppIconGradient';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import { Theme } from 'enevti-app/theme/default';
 import { useTranslation } from 'react-i18next';

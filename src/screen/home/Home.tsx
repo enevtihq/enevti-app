@@ -21,7 +21,7 @@ import { selectMyProfileCache } from 'enevti-app/store/slices/entities/cache/myP
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { Linking, Platform, View } from 'react-native';
 import Color from 'color';
-import AppIconGradient from 'enevti-app/components/molecules/AppIconGradient';
+import AppIconGradient from 'enevti-app/components/molecules/icon/AppIconGradient';
 import { Theme } from 'enevti-app/theme/default';
 import { isProfileCanCreateNFT, MINIMUM_BASIC_UNIT_STAKE_ELIGIBILITY } from 'enevti-app/service/enevti/profile';
 import { selectOnceEligible, touchOnceEligible } from 'enevti-app/store/slices/entities/once/eligible';

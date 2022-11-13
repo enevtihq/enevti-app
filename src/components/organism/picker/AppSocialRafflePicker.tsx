@@ -3,7 +3,7 @@ import AppIconComponent, { iconMap } from 'enevti-app/components/atoms/icon/AppI
 import { useTranslation } from 'react-i18next';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import AppMenuContainer from 'enevti-app/components/atoms/menu/AppMenuContainer';
-import AppHeaderWizard from 'enevti-app/components/molecules/AppHeaderWizard';
+import AppHeaderWizard from 'enevti-app/components/molecules/view/AppHeaderWizard';
 import { StyleSheet, View } from 'react-native';
 import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';

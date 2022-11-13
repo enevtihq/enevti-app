@@ -2,7 +2,7 @@ import React from 'react';
 import { shallowEqual } from 'react-redux';
 import AppFormTextInputWithError, {
   AppFormTextInputWithErrorProps,
-} from 'enevti-app/components/molecules/AppFormTextInputWithError';
+} from 'enevti-app/components/molecules/form/AppFormTextInputWithError';
 import { useBottomSheetInternal } from '@gorhom/bottom-sheet';
 import { ModalContext } from 'enevti-app/context';
 

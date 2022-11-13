@@ -5,7 +5,7 @@ import AppFloatingActionButton from 'enevti-app/components/atoms/view/AppFloatin
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import AppHeaderWizard from 'enevti-app/components/molecules/AppHeaderWizard';
+import AppHeaderWizard from 'enevti-app/components/molecules/view/AppHeaderWizard';
 import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
 import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectMyPersonaCache } from 'enevti-app/store/slices/entities/cache/myPersona';
 import { Persona } from 'enevti-app/types/core/account/persona';
 import { useTranslation } from 'react-i18next';
-import AppCoinChipsPicker from 'enevti-app/components/organism/AppCoinChipsPicker';
+import AppCoinChipsPicker from 'enevti-app/components/organism/coin/AppCoinChipsPicker';
 import AppMenuFormTextInputWithError from 'enevti-app/components/molecules/menu/AppMenuFormTextInputWithError';
 import { TextInput, useTheme } from 'react-native-paper';
 import i18n from 'enevti-app/translations/i18n';

@@ -12,7 +12,7 @@ import AppView from 'enevti-app/components/atoms/view/AppView';
 
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
-import AppRecentMoments from 'enevti-app/components/organism/AppRecentMoments';
+import AppRecentMoments from 'enevti-app/components/organism/moment/AppRecentMoments';
 import AppFeedItem from 'enevti-app/components/molecules/feed/AppFeedItem';
 import Animated, { useAnimatedRef } from 'react-native-reanimated';
 import { handleError } from 'enevti-app/utils/error/handle';

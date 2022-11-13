@@ -24,7 +24,7 @@ import { useTheme } from 'react-native-paper';
 import { Theme } from 'enevti-app/theme/default';
 import AppAccordion from 'enevti-app/components/atoms/accordion/AppAccordion';
 import AppListItem from 'enevti-app/components/molecules/list/AppListItem';
-import AppIconGradient from 'enevti-app/components/molecules/AppIconGradient';
+import AppIconGradient from 'enevti-app/components/molecules/icon/AppIconGradient';
 import AppMenuFormTextInputWithError from 'enevti-app/components/molecules/menu/AppMenuFormTextInputWithError';
 import { useTranslation } from 'react-i18next';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';

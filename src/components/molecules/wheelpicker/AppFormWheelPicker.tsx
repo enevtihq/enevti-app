@@ -1,7 +1,7 @@
 import { StyleSheet, View } from 'react-native';
 import React from 'react';
 import AppIconComponent, { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
-import AppFormTextInputWithError from 'enevti-app/components/molecules/AppFormTextInputWithError';
+import AppFormTextInputWithError from 'enevti-app/components/molecules/form/AppFormTextInputWithError';
 import { TouchableRipple, useTheme } from 'react-native-paper';
 import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';

@@ -6,8 +6,8 @@ import { useTranslation } from 'react-i18next';
 import { StackScreenProps } from '@react-navigation/stack';
 
 import { Theme } from 'enevti-app/theme/default';
-import AppBrandBanner from 'enevti-app/components/molecules/AppBrandBanner';
-import AppHeaderWizard from 'enevti-app/components/molecules/AppHeaderWizard';
+import AppBrandBanner from 'enevti-app/components/molecules/brand/AppBrandBanner';
+import AppHeaderWizard from 'enevti-app/components/molecules/view/AppHeaderWizard';
 import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
 import { hp, wp, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
 import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';

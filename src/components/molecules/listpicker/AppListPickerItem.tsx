@@ -7,7 +7,7 @@ import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
 import AppIconComponent, { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
-import AppIconGradient from 'enevti-app/components/molecules/AppIconGradient';
+import AppIconGradient from 'enevti-app/components/molecules/icon/AppIconGradient';
 import AppListItem from 'enevti-app/components/molecules/list/AppListItem';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
 

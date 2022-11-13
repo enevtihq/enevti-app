@@ -9,7 +9,7 @@ import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivit
 import { Platform, StyleSheet, View } from 'react-native';
 import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
 import AppListItem from 'enevti-app/components/molecules/list/AppListItem';
-import AppIconGradient from 'enevti-app/components/molecules/AppIconGradient';
+import AppIconGradient from 'enevti-app/components/molecules/icon/AppIconGradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Theme } from 'enevti-app/theme/default';
 import { useTheme } from 'react-native-paper';

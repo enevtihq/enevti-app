@@ -8,9 +8,9 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 
 import { Theme } from 'enevti-app/theme/default';
-import AppHeaderWizard from 'enevti-app/components/molecules/AppHeaderWizard';
+import AppHeaderWizard from 'enevti-app/components/molecules/view/AppHeaderWizard';
 import { RootStackParamList } from 'enevti-app/navigation';
-import AppFormTextInputWithError from 'enevti-app/components/molecules/AppFormTextInputWithError';
+import AppFormTextInputWithError from 'enevti-app/components/molecules/form/AppFormTextInputWithError';
 import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
 import AppView from 'enevti-app/components/atoms/view/AppView';
 import { hp, wp, SafeAreaInsets } from 'enevti-app/utils/imageRatio';

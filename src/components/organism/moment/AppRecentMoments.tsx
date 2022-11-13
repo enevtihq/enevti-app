@@ -3,12 +3,12 @@ import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
 import { hp, wp } from 'enevti-app/utils/imageRatio';
-import AppPortraitOverlayBox from 'enevti-app/components/molecules/AppPortraitOverlayBox';
+import AppPortraitOverlayBox from 'enevti-app/components/molecules/list/AppPortraitOverlayBox';
 import { useTranslation } from 'react-i18next';
 import { Divider } from 'react-native-paper';
 import { Moments } from 'enevti-app/types/core/service/feed';
 import { IPFStoURL } from 'enevti-app/service/ipfs';
-import AppActivityIndicator from '../atoms/loading/AppActivityIndicator';
+import AppActivityIndicator from '../../atoms/loading/AppActivityIndicator';
 
 const center = 'center';
 

@@ -16,7 +16,7 @@ import { ChatMessage } from 'enevti-app/types/core/service/call';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
 import moment from 'moment';
-import AppFormTextInputWithError from 'enevti-app/components/molecules/AppFormTextInputWithError';
+import AppFormTextInputWithError from 'enevti-app/components/molecules/form/AppFormTextInputWithError';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';

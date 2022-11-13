@@ -10,9 +10,9 @@ import YupPassword from 'yup-password';
 
 import { encryptWithPassword } from 'enevti-app/utils/cryptography';
 import { Theme } from 'enevti-app/theme/default';
-import AppHeaderWizard from 'enevti-app/components/molecules/AppHeaderWizard';
+import AppHeaderWizard from 'enevti-app/components/molecules/view/AppHeaderWizard';
 import { RootStackParamList } from 'enevti-app/navigation';
-import AppFormSecureTextInput from 'enevti-app/components/organism/AppFormSecureTextInput';
+import AppFormSecureTextInput from 'enevti-app/components/organism/form/AppFormSecureTextInput';
 import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
 import AppView from 'enevti-app/components/atoms/view/AppView';
 import AppCheckbox from 'enevti-app/components/atoms/form/AppCheckbox';

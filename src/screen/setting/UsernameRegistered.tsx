@@ -6,13 +6,13 @@ import { useTranslation } from 'react-i18next';
 import { StackScreenProps } from '@react-navigation/stack';
 
 import { Theme } from 'enevti-app/theme/default';
-import AppHeaderWizard from 'enevti-app/components/molecules/AppHeaderWizard';
+import AppHeaderWizard from 'enevti-app/components/molecules/view/AppHeaderWizard';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
 import AppView from 'enevti-app/components/atoms/view/AppView';
 import { hp, wp, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
-import AppIconBanner from 'enevti-app/components/molecules/AppIconBanner';
+import AppIconBanner from 'enevti-app/components/molecules/icon/AppIconBanner';
 import { MINIMUM_BASIC_UNIT_STAKE_ELIGIBILITY } from 'enevti-app/service/enevti/profile';
 import { getCoinName } from 'enevti-app/utils/constant/identifier';
 

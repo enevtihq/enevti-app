@@ -8,12 +8,12 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { useDispatch } from 'react-redux';
 
 import { Theme } from 'enevti-app/theme/default';
-import AppHeaderWizard from 'enevti-app/components/molecules/AppHeaderWizard';
+import AppHeaderWizard from 'enevti-app/components/molecules/view/AppHeaderWizard';
 import { RootStackParamList } from 'enevti-app/navigation';
 import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
 import AppView from 'enevti-app/components/atoms/view/AppView';
 import AppCheckbox from 'enevti-app/components/atoms/form/AppCheckbox';
-import AppPassphraseBox from 'enevti-app/components/organism/AppPassphraseBox';
+import AppPassphraseBox from 'enevti-app/components/organism/auth/AppPassphraseBox';
 import { hp, wp, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
 import { initPassphrase } from 'enevti-app/store/middleware/thunk/session/initPassphrase';
 

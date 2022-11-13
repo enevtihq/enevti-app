@@ -32,7 +32,7 @@ import { handleError } from 'enevti-app/utils/error/handle';
 import { initPassphraseWithDevice } from 'enevti-app/store/middleware/thunk/session/initPassphraseWithDevice';
 import { isValidPassphrase } from 'enevti-app/utils/passphrase';
 import AppMenuContainer from 'enevti-app/components/atoms/menu/AppMenuContainer';
-import AppHeaderWizard from 'enevti-app/components/molecules/AppHeaderWizard';
+import AppHeaderWizard from 'enevti-app/components/molecules/view/AppHeaderWizard';
 import AppAlertModal from '../menu/AppAlertModal';
 import base64 from 'react-native-base64';
 import { EncryptedBase } from 'enevti-app/types/core/service/cryptography';

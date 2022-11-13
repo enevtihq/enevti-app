@@ -19,11 +19,11 @@ import {
 import * as Yup from 'yup';
 
 import { Theme } from 'enevti-app/theme/default';
-import AppHeaderWizard from 'enevti-app/components/molecules/AppHeaderWizard';
+import AppHeaderWizard from 'enevti-app/components/molecules/view/AppHeaderWizard';
 import { RootStackParamList } from 'enevti-app/navigation';
 import AppFormTextInputWithError, {
   AppFormTextInputWithErrorProps,
-} from 'enevti-app/components/molecules/AppFormTextInputWithError';
+} from 'enevti-app/components/molecules/form/AppFormTextInputWithError';
 import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
 import AppView from 'enevti-app/components/atoms/view/AppView';
 import { hp, wp, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
@@ -31,7 +31,7 @@ import AppIconComponent, { iconMap } from 'enevti-app/components/atoms/icon/AppI
 import { ScrollView } from 'react-native-gesture-handler';
 import AppTextBody3 from 'enevti-app/components/atoms/text/AppTextBody3';
 import { OneKindContractForm } from 'enevti-app/types/ui/screen/CreateOneKindContract';
-import AppCoinChipsPicker from 'enevti-app/components/organism/AppCoinChipsPicker';
+import AppCoinChipsPicker from 'enevti-app/components/organism/coin/AppCoinChipsPicker';
 import { cleanTMPImage, isNameAvailable, isSymbolAvailable } from 'enevti-app/service/enevti/nft';
 import AppUtilityPicker from 'enevti-app/components/organism/picker/AppUtilityPicker';
 import AppRecurringPicker from 'enevti-app/components/organism/picker/AppRecurringPicker.tsx';
@@ -64,7 +64,7 @@ import timezoneOffsetLabel from 'enevti-app/utils/date/timezoneOffsetLabel';
 import AppConfirmationModal from 'enevti-app/components/organism/menu/AppConfirmationModal';
 import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
 import AppListItem from 'enevti-app/components/molecules/list/AppListItem';
-import AppIconGradient from 'enevti-app/components/molecules/AppIconGradient';
+import AppIconGradient from 'enevti-app/components/molecules/icon/AppIconGradient';
 import AppTextHeading5 from 'enevti-app/components/atoms/text/AppTextHeading5';
 import AppMintingTypePicker from 'enevti-app/components/organism/picker/AppMintingTypePicker';
 import { ImageOrVideoToDocument } from 'enevti-app/utils/format/documentPicker';

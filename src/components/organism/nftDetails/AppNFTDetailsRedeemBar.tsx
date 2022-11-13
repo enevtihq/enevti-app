@@ -5,7 +5,7 @@ import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
 import Color from 'color';
 import { Divider, TouchableRipple, useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import AppIconGradient from 'enevti-app/components/molecules/AppIconGradient';
+import AppIconGradient from 'enevti-app/components/molecules/icon/AppIconGradient';
 import utilityToIcon from 'enevti-app/utils/icon/utilityToIcon';
 import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
 import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';

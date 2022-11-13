@@ -7,14 +7,14 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { CommonActions } from '@react-navigation/native';
 
 import { Theme } from 'enevti-app/theme/default';
-import AppHeaderWizard from 'enevti-app/components/molecules/AppHeaderWizard';
+import AppHeaderWizard from 'enevti-app/components/molecules/view/AppHeaderWizard';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
 import AppView from 'enevti-app/components/atoms/view/AppView';
 import { hp, wp, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
-import AppIconBanner from 'enevti-app/components/molecules/AppIconBanner';
+import AppIconBanner from 'enevti-app/components/molecules/icon/AppIconBanner';
 import { COMMUNITY_IDENTIFIER } from 'enevti-app/utils/constant/identifier';
 
 type Props = StackScreenProps<RootStackParamList, 'AccountCreated'>;
