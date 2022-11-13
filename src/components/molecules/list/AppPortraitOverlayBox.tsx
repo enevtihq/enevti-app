@@ -3,9 +3,9 @@ import React from 'react';
 import { TouchableRipple, useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { wp, SafeAreaInsets } from 'enevti-app/utils/layout/imageRatio';
-import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import { Theme } from 'enevti-app/theme/default';
 import { BlurView } from '@react-native-community/blur';
+import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
 
 interface AppPortraitOverlayBoxProps {
   title: string;
@@ -33,9 +33,9 @@ export default function AppPortraitOverlayBox({
       {background ? <View style={styles.content}>{background}</View> : null}
       {blurBackground ? <BlurView blurAmount={10} style={styles.overlay} /> : <View style={styles.overlayColor} />}
       {foreground ? <View style={styles.content}>{foreground}</View> : null}
-      <AppTextBody4 numberOfLines={1} style={styles.textOverlay}>
+      <AppTextBody5 numberOfLines={1} style={styles.textOverlay}>
         {title}
-      </AppTextBody4>
+      </AppTextBody5>
       <TouchableRipple style={styles.rippleOverlay} onPress={onPress}>
         <View />
       </TouchableRipple>
@@ -68,5 +68,6 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
       color: 'white',
       padding: 3,
       top: wp('25%', insets) * 1.35,
+      left: wp('1%'),
     },
   });
