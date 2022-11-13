@@ -142,12 +142,11 @@ export const getShape = (chunk: any, size: number, gradient: any, sizeScale = 1)
   };
 };
 
-export const getBackgroundCircle = (size: number, gradient: any) => ({
-  component: Circle,
+export const getBackground = (size: number, gradient: any) => ({
+  component: Rect,
   props: {
-    cx: size / 2,
-    cy: size / 2,
-    r: size / 2,
+    height: size,
+    width: size,
     fill: gradient.url,
   },
 });

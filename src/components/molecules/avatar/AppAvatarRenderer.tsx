@@ -13,6 +13,7 @@ import { Persona } from 'enevti-app/types/core/account/persona';
 
 interface AppAvatarRendererProps {
   size: number;
+  full?: boolean;
   persona?: Persona;
   base32?: string;
   photo?: string;
@@ -20,9 +21,17 @@ interface AppAvatarRendererProps {
   color?: string;
 }
 
-export default function AppAvatarRenderer({ size, persona, photo, base32, style, color }: AppAvatarRendererProps) {
+export default function AppAvatarRenderer({
+  size,
+  persona,
+  full,
+  photo,
+  base32,
+  style,
+  color,
+}: AppAvatarRendererProps) {
   const theme = useTheme();
-  const styles = React.useMemo(() => makeStyles(size, color), [size, color]);
+  const styles = React.useMemo(() => makeStyles(size, color, full), [size, color, full]);
 
   const mode = React.useMemo(
     () =>
@@ -66,13 +75,13 @@ export default function AppAvatarRenderer({ size, persona, photo, base32, style,
   );
 }
 
-const makeStyles = (size: number, color?: string) =>
+const makeStyles = (size: number, color?: string, full?: boolean) =>
   StyleSheet.create({
     container: {
       justifyContent: 'center',
       width: size,
       aspectRatio: 1,
-      borderRadius: size / 2,
+      borderRadius: full ? undefined : size / 2,
       borderColor: color,
       borderWidth: color ? size / 30 : undefined,
       overflow: 'hidden',

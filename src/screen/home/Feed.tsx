@@ -28,7 +28,7 @@ import {
   selectFeedViewReqStatus,
   setFeedViewVersion,
 } from 'enevti-app/store/slices/ui/view/feed';
-import { isMomentUndefined, isThereAnyNewMomentView, selectMomentView } from 'enevti-app/store/slices/ui/view/moment';
+import { isThereAnyNewMomentView, selectMomentView } from 'enevti-app/store/slices/ui/view/moment';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
 import AppMessageEmpty from 'enevti-app/components/molecules/message/AppMessageEmpty';
 import AppResponseView from 'enevti-app/components/organism/view/AppResponseView';
@@ -58,7 +58,6 @@ export default function Feed({ navigation, onScroll, headerHeight }: FeedProps) 
   const newFeeds = useSelector(isThereAnyNewFeedView);
   const feedsReqStatus = useSelector(selectFeedViewReqStatus);
   const moments = useSelector(selectMomentView);
-  const momentsUndefined = useSelector(isMomentUndefined);
   const newMoments = useSelector(isThereAnyNewMomentView);
 
   const handleLoadFeed = React.useCallback(
@@ -98,12 +97,9 @@ export default function Feed({ navigation, onScroll, headerHeight }: FeedProps) 
     onLoaded();
   }, [onLoaded, dispatch]);
 
-  const ListHeaderComponent = React.useCallback(
-    () => <AppRecentMoments moments={moments} isUndefined={momentsUndefined} />,
-    [moments, momentsUndefined],
-  );
+  const ListHeaderComponent = React.useMemo(() => <AppRecentMoments />, []);
 
-  const ListFooterComponent = React.useCallback(() => <View style={{ height: hp(10) }} />, []);
+  const ListFooterComponent = React.useMemo(() => <View style={{ height: hp(10) }} />, []);
 
   const renderItem = React.useCallback(
     ({ item, index }: any) => <AppFeedItem feed={item} navigation={navigation} index={index} />,

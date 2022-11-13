@@ -3,101 +3,96 @@ import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
 import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
-import AppPortraitOverlayBox from 'enevti-app/components/molecules/list/AppPortraitOverlayBox';
 import { useTranslation } from 'react-i18next';
 import { Divider } from 'react-native-paper';
-import { Moments } from 'enevti-app/types/core/service/feed';
 import { IPFStoURL } from 'enevti-app/service/ipfs';
 import AppActivityIndicator from '../../atoms/loading/AppActivityIndicator';
+import { useSelector } from 'react-redux';
+import { isMomentUndefined, selectMomentView } from 'enevti-app/store/slices/ui/view/moment';
+import { selectFeedView } from 'enevti-app/store/slices/ui/view/feed';
+import AppAddMoment from './AppAddMoment';
+import AppMomentItem from './AppMomentItem';
 
 const center = 'center';
 
-interface AppRecentMomentsProps {
-  moments?: Moments;
-  isUndefined?: boolean;
-}
+interface AppRecentMomentsProps {}
 
-export default React.memo(
-  function AppRecentMoments({ moments, isUndefined }: AppRecentMomentsProps) {
-    const insets = useSafeAreaInsets();
-    const { t } = useTranslation();
+export default function AppRecentMoments({}: AppRecentMomentsProps) {
+  const { t } = useTranslation();
+  const insets = useSafeAreaInsets();
 
-    const onMomentsPress = (_id: string) => {};
+  const feeds = useSelector(selectFeedView);
+  const moments = useSelector(selectMomentView);
+  const momentsUndefined = useSelector(isMomentUndefined);
 
-    const renderItem = React.useCallback(
-      ({ item }: any) => (
-        <AppPortraitOverlayBox
-          url={IPFStoURL(item.photo)}
-          title={item.username}
-          style={{ marginRight: wp('2%', insets) }}
-          onPress={() => onMomentsPress(item.id)}
-        />
-      ),
-      [insets],
-    );
+  const onMomentsPress = (_id: string) => {};
 
-    const listHeaderComponent = React.useCallback(() => <View style={{ width: wp('5%', insets) }} />, [insets]);
+  const renderItem = React.useCallback(
+    ({ item }: any) => (
+      <AppMomentItem
+        url={IPFStoURL(item.photo)}
+        title={item.username}
+        style={{ marginRight: wp('2%', insets) }}
+        onPress={() => onMomentsPress(item.id)}
+      />
+    ),
+    [insets],
+  );
 
-    const listFooterComponent = React.useCallback(() => <View style={{ width: wp('3%', insets) }} />, [insets]);
+  const listHeaderComponent = React.useCallback(() => <AppAddMoment />, []);
 
-    const keyExtractor = React.useCallback(item => item.id, []);
+  const listFooterComponent = React.useCallback(() => <View style={{ width: wp('3%', insets) }} />, [insets]);
 
-    const getItemLayout = React.useCallback(
-      (_, index) => ({
-        length: wp('27%', insets),
-        offset: wp('27%', insets) * index,
-        index,
-      }),
-      [insets],
-    );
+  const keyExtractor = React.useCallback(item => item.id, []);
 
-    return !isUndefined ? (
-      moments && moments.length > 0 ? (
-        <View style={{ height: hp('32.75%', insets) }}>
-          <View
-            style={{
-              paddingHorizontal: wp('5%', insets),
-              marginVertical: hp('2%', insets),
-            }}>
-            <AppTextHeading3>{t('home:recentMoments')}</AppTextHeading3>
-          </View>
-          <FlatList
-            horizontal
-            data={moments}
-            ListHeaderComponent={listHeaderComponent}
-            ListFooterComponent={listFooterComponent}
-            renderItem={renderItem}
-            keyExtractor={keyExtractor}
-            showsHorizontalScrollIndicator={false}
-            removeClippedSubviews={true}
-            initialNumToRender={4}
-            maxToRenderPerBatch={1}
-            updateCellsBatchingPeriod={500}
-            windowSize={7}
-            getItemLayout={getItemLayout}
-          />
-          <Divider
-            style={{
-              marginHorizontal: wp('5%', insets),
-              marginTop: hp('2%', insets),
-              marginBottom: wp('5%', insets),
-            }}
-          />
+  const getItemLayout = React.useCallback(
+    (_, index) => ({
+      length: wp('27%', insets),
+      offset: wp('27%', insets) * index,
+      index,
+    }),
+    [insets],
+  );
+
+  return !momentsUndefined ? (
+    feeds && feeds.length > 0 ? (
+      <View>
+        <View
+          style={{
+            paddingHorizontal: wp('5%', insets),
+            marginVertical: hp('2%', insets),
+          }}>
+          <AppTextHeading3>{t('home:recentMoments')}</AppTextHeading3>
         </View>
-      ) : (
-        <View style={{ marginBottom: wp('5%', insets) }} />
-      )
-    ) : (
-      <View style={{ height: hp('32.75%', insets), justifyContent: center }}>
-        <AppActivityIndicator animating />
+        <FlatList
+          horizontal
+          data={moments}
+          ListHeaderComponent={listHeaderComponent}
+          ListFooterComponent={listFooterComponent}
+          renderItem={renderItem}
+          keyExtractor={keyExtractor}
+          showsHorizontalScrollIndicator={false}
+          removeClippedSubviews={true}
+          initialNumToRender={4}
+          maxToRenderPerBatch={1}
+          updateCellsBatchingPeriod={500}
+          windowSize={7}
+          getItemLayout={getItemLayout}
+        />
+        <Divider
+          style={{
+            marginHorizontal: wp('5%', insets),
+            marginTop: hp('2%', insets),
+            marginBottom: wp('5%', insets),
+          }}
+        />
       </View>
-    );
-  },
-  (props, nextProps) => {
-    if (props.moments === nextProps.moments) {
-      return true;
-    } else {
-      return false;
-    }
-  },
-);
+    ) : (
+      <View style={{ marginBottom: wp('5%', insets) }} />
+    )
+  ) : (
+    <View style={{ height: hp('32.75%', insets), justifyContent: center }}>
+      <AppActivityIndicator animating />
+    </View>
+  );
+}

@@ -34,4 +34,6 @@ export default {
     'At Enevti.com, like are stored on-chain, therefore fee is needed, and undoable! By giving like, you will also participate in collection\'s "Social Raffle"!',
   likeOnceButton: "That's Cool!",
   free: 'FREE',
+  addMoment: 'Add Moment',
+  noSlot: 'No Slot!',
 };
