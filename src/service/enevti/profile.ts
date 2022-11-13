@@ -235,9 +235,8 @@ export async function getMyProfile(
   try {
     if (force || now - lastFetch > lastFetchTimeout.profile) {
       const profileResponse = await getProfile(myAddress, withPersona, withInitialData, signal);
+      response = profileResponse;
       if (profileResponse.status === 200 && !isErrorResponse(profileResponse)) {
-        response.data = profileResponse.data;
-
         if (withInitialData) {
           store.dispatch(
             setMyProfileCache({
@@ -265,9 +264,6 @@ export async function getMyProfile(
             }),
           );
         }
-      } else {
-        response.status = profileResponse.status;
-        response.data = profileResponse.data;
       }
     }
   } catch {}
@@ -296,8 +292,8 @@ export async function getMyProfileInitialOwned(
   try {
     if (force || now - lastFetch > lastFetchTimeout.profileOwned) {
       const ownedResponse = await getProfileInitialOwned(myAddress, signal);
+      response = ownedResponse;
       if (ownedResponse.status === 200 && !isErrorResponse(ownedResponse)) {
-        response.data = ownedResponse.data;
         store.dispatch(setLastFetchMyProfileOwnedCache(now));
         store.dispatch(
           setMyProfileCache({
@@ -306,9 +302,6 @@ export async function getMyProfileInitialOwned(
             ownedPagination: { checkpoint: response.data.checkpoint, version: response.data.version },
           }),
         );
-      } else {
-        response.status = ownedResponse.status;
-        response.data = ownedResponse.data;
       }
     }
   } catch {}
@@ -337,8 +330,8 @@ export async function getMyProfileInitialCollection(
   try {
     if (force || now - lastFetch > lastFetchTimeout.profileCollection) {
       const collectionResponse = await getProfileInitialCollection(myAddress, signal);
+      response = collectionResponse;
       if (collectionResponse.status === 200 && !isErrorResponse(collectionResponse)) {
-        response.data = collectionResponse.data;
         store.dispatch(setLastFetchMyProfileCollectionCache(now));
         store.dispatch(
           setMyProfileCache({
@@ -350,9 +343,6 @@ export async function getMyProfileInitialCollection(
             },
           }),
         );
-      } else {
-        response.status = collectionResponse.status;
-        response.data = collectionResponse.data;
       }
     }
   } catch {}

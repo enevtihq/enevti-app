@@ -18,7 +18,7 @@ export type MyProfileViewState = ProfileView & {
   render: Record<'owned' | 'onsale' | 'collection', boolean>;
 };
 
-const initialState: MyProfileViewState = {
+export const myProfileInitialState: MyProfileViewState = {
   render: {
     owned: false,
     onsale: false,
@@ -57,6 +57,8 @@ const initialState: MyProfileViewState = {
   likeSent: 0,
   commentSent: 0,
 };
+
+const initialState = myProfileInitialState;
 
 const myProfileViewSlice = createSlice({
   name: 'myProfileView',

@@ -3,12 +3,12 @@ import { getMyProfile, getProfile, getProfileCollection, getProfileOwned } from 
 import { handleError, isErrorResponse } from 'enevti-app/utils/error/handle';
 import { hideModalLoader, showModalLoader } from 'enevti-app/store/slices/ui/global/modalLoader';
 import {
+  myProfileInitialState,
   resetMyProfileView,
   selectMyProfileView,
   selectMyProfileViewCollection,
   selectMyProfileViewOwned,
   setMyProfileView,
-  setMyProfileViewLoaded,
 } from 'enevti-app/store/slices/ui/view/myProfile';
 import {
   clearProfileByKey,
@@ -17,8 +17,6 @@ import {
   selectProfileViewCollection,
   selectProfileViewOwned,
   setProfileView,
-  setProfileViewLoaded,
-  setProfileViewReqStatus,
 } from 'enevti-app/store/slices/ui/view/profile';
 import { AppThunk, AsyncThunkAPI } from 'enevti-app/store/state';
 import { AnyAction, createAsyncThunk } from '@reduxjs/toolkit';
@@ -31,7 +29,6 @@ import {
   PROFILE_OWNED_INITIAL_LENGTH,
   PROFILE_OWNED_RESPONSE_LIMIT,
 } from 'enevti-app/utils/constant/limit';
-import i18n from 'enevti-app/translations/i18n';
 import { Platform } from 'react-native';
 import { IOS_MIN_RELOAD_TIME } from 'enevti-app/utils/constant/reload';
 import sleep from 'enevti-app/utils/dummy/sleep';
@@ -52,11 +49,6 @@ export const loadProfile = createAsyncThunk<void, LoadProfileArgs, AsyncThunkAPI
     } catch (err: any) {
       handleError(err);
     } finally {
-      if (isMyProfile) {
-        dispatch(setMyProfileViewLoaded(true));
-      } else {
-        dispatch(setProfileViewLoaded({ key: route.key, value: true }));
-      }
       reload && dispatch(hideModalLoader());
     }
   },
@@ -92,30 +84,27 @@ export const loadMoreOwned = createAsyncThunk<void, LoadProfileArgs, AsyncThunkA
         const offset = profile.ownedPagination.checkpoint;
         const version = profile.ownedPagination.version;
         if (profileOwned.length !== version) {
-          const personaBase = await getBasePersonaByRouteParam(route.params, signal);
-          if (personaBase.status === 200 && !isErrorResponse(personaBase)) {
-            const ownedResponse = await getProfileOwned(
-              personaBase.data.address,
-              offset,
-              PROFILE_OWNED_RESPONSE_LIMIT,
-              version,
-              signal,
-            );
-            dispatch(
-              setProfileView({
-                key: route.key,
-                value: {
-                  ...profile,
-                  version: Date.now(),
-                  owned: profile.owned.concat(ownedResponse.data.data),
-                  ownedPagination: {
-                    checkpoint: ownedResponse.data.checkpoint,
-                    version: ownedResponse.data.version,
-                  },
+          const ownedResponse = await getProfileOwned(
+            profile.persona.address,
+            offset,
+            PROFILE_OWNED_RESPONSE_LIMIT,
+            version,
+            signal,
+          );
+          dispatch(
+            setProfileView({
+              key: route.key,
+              value: {
+                ...profile,
+                version: Date.now(),
+                owned: profile.owned.concat(ownedResponse.data.data),
+                ownedPagination: {
+                  checkpoint: ownedResponse.data.checkpoint,
+                  version: ownedResponse.data.version,
                 },
-              }),
-            );
-          }
+              },
+            }),
+          );
         }
       }
     } catch (err: any) {
@@ -160,30 +149,27 @@ export const loadMoreCollection = createAsyncThunk<void, LoadProfileArgs, AsyncT
         const offset = profile.collectionPagination.checkpoint;
         const version = profile.collectionPagination.version;
         if (profileCollection.length !== version) {
-          const personaBase = await getBasePersonaByRouteParam(route.params, signal);
-          if (personaBase.status === 200 && !isErrorResponse(personaBase)) {
-            const collectionResponse = await getProfileCollection(
-              personaBase.data.address,
-              offset,
-              PROFILE_COLLECTION_RESPONSE_LIMIT,
-              version,
-              signal,
-            );
-            dispatch(
-              setProfileView({
-                key: route.key,
-                value: {
-                  ...profile,
-                  version: Date.now(),
-                  collection: profile.collection.concat(collectionResponse.data.data),
-                  collectionPagination: {
-                    checkpoint: collectionResponse.data.checkpoint,
-                    version: collectionResponse.data.version,
-                  },
+          const collectionResponse = await getProfileCollection(
+            profile.persona.address,
+            offset,
+            PROFILE_COLLECTION_RESPONSE_LIMIT,
+            version,
+            signal,
+          );
+          dispatch(
+            setProfileView({
+              key: route.key,
+              value: {
+                ...profile,
+                version: Date.now(),
+                collection: profile.collection.concat(collectionResponse.data.data),
+                collectionPagination: {
+                  checkpoint: collectionResponse.data.checkpoint,
+                  version: collectionResponse.data.version,
                 },
-              }),
-            );
-          }
+              },
+            }),
+          );
         }
       }
     } catch (err: any) {
@@ -220,16 +206,15 @@ export const unloadProfile =
 export const loadMyProfile = async (reload: boolean, dispatch: any, signal?: AbortController['signal']) => {
   let reloadTime = 0;
   reload && Platform.OS === 'ios' ? (reloadTime = Date.now()) : {};
+  const initialProfileState = !reload ? myProfileInitialState : {};
   const profileResponse = await getMyProfile(reload, true, true, signal);
-  if (profileResponse.status !== 200) {
-    throw Error(i18n.t('profile:errorLoadingMyProfile'));
-  }
   if (reload && Platform.OS === 'ios') {
     reloadTime = Date.now() - reloadTime;
     await sleep(IOS_MIN_RELOAD_TIME - reloadTime);
   }
   dispatch(
     setMyProfileView({
+      ...initialProfileState,
       ...profileResponse.data,
       render: {
         owned: true,
@@ -246,6 +231,7 @@ export const loadMyProfile = async (reload: boolean, dispatch: any, signal?: Abo
         version: profileResponse.version.collection,
       },
       reqStatus: profileResponse.status,
+      loaded: true,
     }),
   );
 };
@@ -262,36 +248,42 @@ export const loadProfileBase = async (
   const personaBase = await getBasePersonaByRouteParam(route.params, signal);
   if (personaBase.status === 200 && !isErrorResponse(personaBase)) {
     const profileResponse = await getProfile(personaBase.data.address, false, true, signal);
-    if (profileResponse.status === 200 && !isErrorResponse(profileResponse)) {
-      if (reload && Platform.OS === 'ios') {
-        reloadTime = Date.now() - reloadTime;
-        await sleep(IOS_MIN_RELOAD_TIME - reloadTime);
-      }
-      dispatch(
-        setProfileView({
-          key: route.key,
-          value: {
-            ...initialProfileState,
-            ...profileResponse.data,
-            render: {
-              owned: true,
-              onsale: true,
-              collection: false,
-            },
-            persona: personaBase.data,
-            version: Date.now(),
-            ownedPagination: {
-              checkpoint: PROFILE_OWNED_INITIAL_LENGTH,
-              version: profileResponse.version.owned,
-            },
-            collectionPagination: {
-              checkpoint: PROFILE_COLLECTION_INITIAL_LENGTH,
-              version: profileResponse.version.collection,
-            },
-          },
-        }),
-      );
+    if (reload && Platform.OS === 'ios') {
+      reloadTime = Date.now() - reloadTime;
+      await sleep(IOS_MIN_RELOAD_TIME - reloadTime);
     }
+    dispatch(
+      setProfileView({
+        key: route.key,
+        value: {
+          ...initialProfileState,
+          ...profileResponse.data,
+          render: {
+            owned: true,
+            onsale: true,
+            collection: false,
+          },
+          persona: personaBase.data,
+          version: Date.now(),
+          ownedPagination: {
+            checkpoint: PROFILE_OWNED_INITIAL_LENGTH,
+            version: profileResponse.version.owned,
+          },
+          collectionPagination: {
+            checkpoint: PROFILE_COLLECTION_INITIAL_LENGTH,
+            version: profileResponse.version.collection,
+          },
+          loaded: true,
+          reqStatus: personaBase.status,
+        },
+      }),
+    );
+  } else {
+    dispatch(
+      setProfileView({
+        key: route.key,
+        value: { ...initialProfileState, loaded: true, reqStatus: personaBase.status },
+      }),
+    );
   }
-  dispatch(setProfileViewReqStatus({ key: route.key, value: personaBase.status }));
 };
