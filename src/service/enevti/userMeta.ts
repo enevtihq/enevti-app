@@ -2,7 +2,7 @@ import { APIResponse, ResponseJSON } from 'enevti-app/types/core/service/api';
 import { urlPostUserMeta } from 'enevti-app/utils/constant/URLCreator';
 import { createSignature } from 'enevti-app/utils/cryptography';
 import { handleError, handleResponseCode, responseError } from 'enevti-app/utils/error/handle';
-import { appFetch, isInternetReachable } from 'enevti-app/utils/network';
+import { appFetch, isInternetReachable } from 'enevti-app/utils/app/network';
 import { Platform } from 'react-native';
 import { getMyPublicKey } from './persona';
 

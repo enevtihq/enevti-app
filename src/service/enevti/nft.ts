@@ -9,7 +9,7 @@ import {
   apiFetchVersionRoot,
   appFetch,
   isInternetReachable,
-} from 'enevti-app/utils/network';
+} from 'enevti-app/utils/app/network';
 import {
   urlGetIsNameExists,
   urlGetIsSymbolExists,

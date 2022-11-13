@@ -17,7 +17,7 @@ import RNFS from 'react-native-fs';
 import { IPFStoURL } from 'enevti-app/service/ipfs';
 import FileViewer from 'react-native-file-viewer';
 import { NFT } from 'enevti-app/types/core/chain/nft';
-import { appFetchBlob } from 'enevti-app/utils/network';
+import { appFetchBlob } from 'enevti-app/utils/app/network';
 import i18n from 'enevti-app/translations/i18n';
 
 function downloadError(nft: NFT) {

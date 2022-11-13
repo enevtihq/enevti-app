@@ -3,7 +3,7 @@ import React from 'react';
 import AppIconComponent from 'enevti-app/components/atoms/icon/AppIconComponent';
 import { useTheme } from 'react-native-paper';
 import useDimension from 'enevti-app/utils/hook/useDimension';
-import { DimensionFunction } from 'enevti-app/utils/imageRatio';
+import { DimensionFunction } from 'enevti-app/utils/layout/imageRatio';
 import activityToIcon from 'enevti-app/utils/icon/activityToIcon';
 import { Theme } from 'enevti-app/theme/default';
 import Color from 'color';

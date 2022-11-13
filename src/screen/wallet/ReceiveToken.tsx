@@ -6,7 +6,7 @@ import { RootStackParamList } from 'enevti-app/navigation';
 import AppHeaderWizard from 'enevti-app/components/molecules/view/AppHeaderWizard';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import { useTranslation } from 'react-i18next';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
+import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AppQRCode from 'enevti-app/components/atoms/qr/AppQRCode';
 import AppQuaternaryButton from 'enevti-app/components/atoms/button/AppQuaternaryButton';

@@ -14,7 +14,7 @@ import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButto
 import AppView from 'enevti-app/components/atoms/view/AppView';
 import AppCheckbox from 'enevti-app/components/atoms/form/AppCheckbox';
 import AppPassphraseBox from 'enevti-app/components/organism/auth/AppPassphraseBox';
-import { hp, wp, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
+import { hp, wp, SafeAreaInsets } from 'enevti-app/utils/layout/imageRatio';
 import { initPassphrase } from 'enevti-app/store/middleware/thunk/session/initPassphrase';
 
 type Props = StackScreenProps<RootStackParamList, 'ConfirmPassphrase'>;

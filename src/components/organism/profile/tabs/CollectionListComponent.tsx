@@ -3,7 +3,7 @@ import { FlatList, FlatListProps, Platform, RefreshControl, StyleSheet, View } f
 import Animated from 'react-native-reanimated';
 import { PROFILE_HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/organism/profile/AppProfileHeader';
 import { TOP_TABBAR_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppTopTabBar';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
+import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { CollectionBase } from 'enevti-app/types/core/chain/collection';
 import AppListItem, { LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE } from 'enevti-app/components/molecules/list/AppListItem';

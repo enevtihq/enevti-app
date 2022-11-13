@@ -9,7 +9,7 @@ import { Theme } from 'enevti-app/theme/default';
 import AppBrandBanner from 'enevti-app/components/molecules/brand/AppBrandBanner';
 import AppHeaderWizard from 'enevti-app/components/molecules/view/AppHeaderWizard';
 import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
-import { hp, wp, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
+import { hp, wp, SafeAreaInsets } from 'enevti-app/utils/layout/imageRatio';
 import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
 import AppSecondaryButton from 'enevti-app/components/atoms/button/AppSecondaryButton';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';

@@ -1,7 +1,7 @@
 import { SocialRaffleGenesisConfig } from 'enevti-app/types/core/chain/config/SocialRaffleGenesisConfig';
 import { APIResponse } from 'enevti-app/types/core/service/api';
 import { urlGetConfigSocialRaffle } from 'enevti-app/utils/constant/URLCreator';
-import { apiFetch } from 'enevti-app/utils/network';
+import { apiFetch } from 'enevti-app/utils/app/network';
 
 async function fetchConfigSocialRaffle(
   signal?: AbortController['signal'],

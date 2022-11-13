@@ -2,7 +2,7 @@ import React from 'react';
 import AppQuaternaryButton from 'enevti-app/components/atoms/button/AppQuaternaryButton';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { hp, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
+import { hp, SafeAreaInsets } from 'enevti-app/utils/layout/imageRatio';
 import Animated, { runOnJS, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import { useTheme } from 'react-native-paper';

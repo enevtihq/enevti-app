@@ -7,7 +7,7 @@ import { getMyPublicKey } from 'enevti-app/service/enevti/persona';
 import { createSignature } from 'enevti-app/utils/cryptography';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
 import { Platform, StyleSheet, View } from 'react-native';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
+import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
 import AppListItem from 'enevti-app/components/molecules/list/AppListItem';
 import AppIconGradient from 'enevti-app/components/molecules/icon/AppIconGradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';

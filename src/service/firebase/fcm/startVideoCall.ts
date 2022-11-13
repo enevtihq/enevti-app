@@ -6,7 +6,7 @@ import { makeUrl } from 'enevti-app/utils/constant/URLCreator';
 import i18n from 'enevti-app/translations/i18n';
 import { StartVideoCallPayload } from 'enevti-app/types/core/service/call';
 import { Platform } from 'react-native';
-import { videoCallSocketBase } from 'enevti-app/utils/network';
+import { videoCallSocketBase } from 'enevti-app/utils/app/network';
 import { EventRegister } from 'react-native-event-listeners';
 import { selectDisplayState } from 'enevti-app/store/slices/ui/screen/display';
 import { store } from 'enevti-app/store/state';
@@ -19,7 +19,7 @@ import {
 } from 'enevti-app/service/call/device/android';
 import { showNotification } from 'enevti-app/utils/notification';
 import sleep from 'enevti-app/utils/dummy/sleep';
-import { isOverlayPermissionGranted } from 'enevti-app/utils/permission';
+import { isOverlayPermissionGranted } from 'enevti-app/utils/app/permission';
 
 export default async function startVideoCallFCMHandler(remoteMessage: FirebaseMessagingTypes.RemoteMessage) {
   await runInBackground(async () => {

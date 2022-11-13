@@ -5,7 +5,7 @@ import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import AppMenuContainer from 'enevti-app/components/atoms/menu/AppMenuContainer';
 import AppHeaderWizard from 'enevti-app/components/molecules/view/AppHeaderWizard';
 import { StyleSheet, View } from 'react-native';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
+import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Carousel from 'react-native-snap-carousel';
 import { NativeViewGestureHandler } from 'react-native-gesture-handler';

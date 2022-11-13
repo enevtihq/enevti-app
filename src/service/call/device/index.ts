@@ -8,7 +8,7 @@ import { store } from 'enevti-app/store/state';
 import { initAPNToken } from 'enevti-app/store/middleware/thunk/session/apn';
 import { AnyAction } from '@reduxjs/toolkit';
 import { selectDisplayState } from 'enevti-app/store/slices/ui/screen/display';
-import { videoCallSocketBase } from 'enevti-app/utils/network';
+import { videoCallSocketBase } from 'enevti-app/utils/app/network';
 import { getMyPublicKey } from 'enevti-app/service/enevti/persona';
 import { createSignature } from 'enevti-app/utils/cryptography';
 import { EventRegister } from 'react-native-event-listeners';

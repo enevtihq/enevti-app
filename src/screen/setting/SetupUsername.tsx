@@ -13,7 +13,7 @@ import { RootStackParamList } from 'enevti-app/navigation';
 import AppFormTextInputWithError from 'enevti-app/components/molecules/form/AppFormTextInputWithError';
 import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
 import AppView from 'enevti-app/components/atoms/view/AppView';
-import { hp, wp, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
+import { hp, wp, SafeAreaInsets } from 'enevti-app/utils/layout/imageRatio';
 import i18n from 'enevti-app/translations/i18n';
 import { isUsernameAvailable } from 'enevti-app/service/enevti/setting';
 import AppCheckbox from 'enevti-app/components/atoms/form/AppCheckbox';

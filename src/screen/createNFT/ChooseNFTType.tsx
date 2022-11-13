@@ -5,7 +5,7 @@ import AppHeaderWizard from 'enevti-app/components/molecules/view/AppHeaderWizar
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
+import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
 import AppListItem from 'enevti-app/components/molecules/list/AppListItem';
 import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';

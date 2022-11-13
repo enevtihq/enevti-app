@@ -5,7 +5,7 @@ import AppHeader, { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms
 import AppIconButton from 'enevti-app/components/atoms/icon/AppIconButton';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import { TouchableRipple, useTheme } from 'react-native-paper';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
+import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
 import { Theme } from 'enevti-app/theme/default';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Persona } from 'enevti-app/types/core/account/persona';

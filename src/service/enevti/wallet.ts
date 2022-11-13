@@ -1,7 +1,7 @@
 import { base32ToAddress, usernameToAddress } from 'enevti-app/service/enevti/persona';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
-import { apiFetchVersioned, apiFetchVersionRoot } from 'enevti-app/utils/network';
+import { apiFetchVersioned, apiFetchVersionRoot } from 'enevti-app/utils/app/network';
 import { urlGetActivityProfile, urlGetWallet } from 'enevti-app/utils/constant/URLCreator';
 import { APIResponseVersioned, APIResponseVersionRoot } from 'enevti-app/types/core/service/api';
 import { WALLET_HISTORY_INITIAL_LENGTH } from 'enevti-app/utils/constant/limit';

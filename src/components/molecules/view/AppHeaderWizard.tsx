@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet, StyleProp, ViewStyle, Platform, TextStyle } from 'react-native';
 import { useTheme } from 'react-native-paper';
 
-import { hp, wp, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
+import { hp, wp, SafeAreaInsets } from 'enevti-app/utils/layout/imageRatio';
 import AppTextHeading1 from 'enevti-app/components/atoms/text/AppTextHeading1';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';

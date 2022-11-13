@@ -1,6 +1,6 @@
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { Platform } from 'react-native';
-import { isInternetReachable } from 'enevti-app/utils/network';
+import { isInternetReachable } from 'enevti-app/utils/app/network';
 import i18n from 'enevti-app/translations/i18n';
 import { ERRORCODE } from 'enevti-app/utils/error/code';
 

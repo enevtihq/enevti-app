@@ -4,7 +4,7 @@ import AppListItem from 'enevti-app/components/molecules/list/AppListItem';
 import AppActivityIndicator from './AppActivityIndicator';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import { useTranslation } from 'react-i18next';
-import { wp, hp, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
+import { wp, hp, SafeAreaInsets } from 'enevti-app/utils/layout/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
 import {

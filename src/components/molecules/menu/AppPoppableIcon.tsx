@@ -1,6 +1,6 @@
 import React from 'react';
 import AppPoppable from 'enevti-app/components/atoms/menu/AppPoppable';
-import { hp } from 'enevti-app/utils/imageRatio';
+import { hp } from 'enevti-app/utils/layout/imageRatio';
 import { useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AppIconComponent, { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';

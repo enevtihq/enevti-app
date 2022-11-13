@@ -8,7 +8,7 @@ import AppCollection from 'enevti-app/components/organism/collection/AppCollecti
 import AppHeader, { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
 import { interpolateColor, runOnJS, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { useTheme } from 'react-native-paper';
-import { hp, wp } from 'enevti-app/utils/imageRatio';
+import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 import { useTranslation } from 'react-i18next';
 import { RouteProp } from '@react-navigation/native';
 

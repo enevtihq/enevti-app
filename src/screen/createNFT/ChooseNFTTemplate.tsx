@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from 'react-native-paper';
 import { Theme } from 'enevti-app/theme/default';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
+import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
 import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
 import { getBuiltInNFTTemplate } from 'enevti-app/service/enevti/template';
 import { NFTTemplateAsset } from 'enevti-app/types/core/chain/nft/NFTTemplate';

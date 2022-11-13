@@ -8,7 +8,7 @@ import {
 } from 'enevti-app/utils/constant/URLCreator';
 import { createSignature } from 'enevti-app/utils/cryptography';
 import { handleError, handleResponseCode, responseError } from 'enevti-app/utils/error/handle';
-import { apiFetch, appFetch, isInternetReachable } from 'enevti-app/utils/network';
+import { apiFetch, appFetch, isInternetReachable } from 'enevti-app/utils/app/network';
 
 async function fetchFCMIsReady(signal?: AbortController['signal']): Promise<APIResponse<boolean>> {
   return await apiFetch<boolean>(urlGetFCMIsReady(), signal);

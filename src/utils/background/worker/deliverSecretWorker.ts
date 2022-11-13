@@ -10,7 +10,7 @@ import { BLOCK_TIME } from 'enevti-app/utils/constant/identifier';
 import { redeemableNftModule } from 'enevti-app/utils/constant/transaction';
 import { createSignature, decryptAsymmetric, encryptAsymmetric } from 'enevti-app/utils/cryptography';
 import sleep from 'enevti-app/utils/dummy/sleep';
-import { isInternetReachable } from 'enevti-app/utils/network';
+import { isInternetReachable } from 'enevti-app/utils/app/network';
 import { showOngoingNotification } from 'enevti-app/utils/notification';
 import queue from 'react-native-job-queue';
 import { Job } from 'react-native-job-queue/lib/typescript/src/models/Job';

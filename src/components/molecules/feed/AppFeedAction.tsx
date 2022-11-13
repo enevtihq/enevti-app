@@ -2,7 +2,7 @@ import { StyleSheet, View } from 'react-native';
 import React from 'react';
 import AppQuaternaryButton from 'enevti-app/components/atoms/button/AppQuaternaryButton';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
+import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import AppTextHeading4 from 'enevti-app/components/atoms/text/AppTextHeading4';
 import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';

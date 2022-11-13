@@ -5,7 +5,7 @@ import { SnackbarProps } from 'react-native-paper/lib/typescript/components/Snac
 import { Theme } from 'react-native-paper/lib/typescript/types';
 import { useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
+import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
 
 interface AppSnackbarProps extends Omit<SnackbarProps, 'theme'> {
   mode?: 'info' | 'error';

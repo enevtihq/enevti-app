@@ -3,7 +3,7 @@ import React from 'react';
 import { Popable } from 'react-native-popable';
 import AppTextBody4 from '../text/AppTextBody4';
 import { Theme } from 'enevti-app/theme/default';
-import { SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
+import { SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
 import Color from 'color';
 import { useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';

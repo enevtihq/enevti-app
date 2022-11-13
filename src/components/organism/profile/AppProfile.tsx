@@ -9,11 +9,11 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import AppProfileHeader, { PROFILE_HEADER_HEIGHT_PERCENTAGE } from './AppProfileHeader';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
+import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
-import { diffClamp } from 'enevti-app/utils/animation';
+import { diffClamp } from 'enevti-app/utils/layout/animation';
 import OwnedNFTComponent from './tabs/OwnedNFTComponent';
 import OnSaleNFTComponent from './tabs/OnSaleNFTComponent';
 import AppProfileBody from './AppProfileBody';
@@ -52,7 +52,7 @@ import { reduceNewUsername } from 'enevti-app/store/middleware/thunk/socket/prof
 import { reduceTotalNFTSoldChanged } from 'enevti-app/store/middleware/thunk/socket/profile/totalNFTSoldChanged';
 import { reduceTotalServeRateChanged } from 'enevti-app/store/middleware/thunk/socket/profile/totalServeRateChanged';
 import { reduceTotalStakeChanged } from 'enevti-app/store/middleware/thunk/socket/profile/totalStakeChanged';
-import { appSocket } from 'enevti-app/utils/network';
+import { appSocket } from 'enevti-app/utils/app/network';
 
 const noDisplay = 'none';
 const visible = 1;

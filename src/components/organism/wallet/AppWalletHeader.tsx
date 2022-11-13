@@ -1,6 +1,6 @@
 import { View, StyleSheet } from 'react-native';
 import React from 'react';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
+import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
 import { Theme } from 'enevti-app/theme/default';
 import { RouteProp, useTheme } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';

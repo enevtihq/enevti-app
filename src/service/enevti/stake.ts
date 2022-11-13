@@ -2,7 +2,7 @@ import { StakePoolData, StakerItem } from 'enevti-app/types/core/chain/stake';
 import { base32ToAddress } from 'enevti-app/service/enevti/persona';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
-import { apiFetchVersioned, apiFetchVersionRoot } from 'enevti-app/utils/network';
+import { apiFetchVersioned, apiFetchVersionRoot } from 'enevti-app/utils/app/network';
 import {
   urlGetStakePoolByAddress,
   urlGetStakePoolByUsername,

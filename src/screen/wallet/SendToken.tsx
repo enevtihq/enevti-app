@@ -9,7 +9,7 @@ import { getCoinName } from 'enevti-app/utils/constant/identifier';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import AppFormTextInputWithError from 'enevti-app/components/molecules/form/AppFormTextInputWithError';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
+import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from 'react-native-paper';
 import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';

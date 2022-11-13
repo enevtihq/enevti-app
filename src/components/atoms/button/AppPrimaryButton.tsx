@@ -7,7 +7,7 @@ import Color from 'color';
 import { IconSource } from 'react-native-paper/lib/typescript/components/Icon';
 
 import { Theme } from 'enevti-app/theme/default';
-import { hp, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
+import { hp, SafeAreaInsets } from 'enevti-app/utils/layout/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
 

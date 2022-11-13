@@ -16,7 +16,7 @@ import AppFormSecureTextInput from 'enevti-app/components/organism/form/AppFormS
 import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
 import AppView from 'enevti-app/components/atoms/view/AppView';
 import AppCheckbox from 'enevti-app/components/atoms/form/AppCheckbox';
-import { hp, wp, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
+import { hp, wp, SafeAreaInsets } from 'enevti-app/utils/layout/imageRatio';
 import { COMMUNITY_IDENTIFIER } from 'enevti-app/utils/constant/identifier';
 import { setSecretAppData } from 'enevti-app/service/google/appData';
 import { useDispatch } from 'react-redux';

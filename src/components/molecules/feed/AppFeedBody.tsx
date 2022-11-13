@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { FeedItem } from 'enevti-app/types/core/service/feed';
-import { hp } from 'enevti-app/utils/imageRatio';
+import { hp } from 'enevti-app/utils/layout/imageRatio';
 import AppNFTListRenderer from 'enevti-app/components/molecules/nft/AppNFTListRenderer';
 import AppNFTRenderer from 'enevti-app/components/molecules/nft/AppNFTRenderer';
 import { StackNavigationProp } from '@react-navigation/stack';

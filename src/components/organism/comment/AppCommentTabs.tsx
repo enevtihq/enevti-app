@@ -26,7 +26,7 @@ import {
 } from 'enevti-app/store/slices/ui/view/comment';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
 import AppMessageEmpty from 'enevti-app/components/molecules/message/AppMessageEmpty';
-import { hp } from 'enevti-app/utils/imageRatio';
+import { hp } from 'enevti-app/utils/layout/imageRatio';
 import Animated from 'react-native-reanimated';
 import { getCollectionIdFromRouteParam } from 'enevti-app/service/enevti/collection';
 import { getNFTIdFromRouteParam } from 'enevti-app/service/enevti/nft';

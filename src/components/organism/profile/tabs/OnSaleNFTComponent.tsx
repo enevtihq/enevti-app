@@ -5,7 +5,7 @@ import { FlatGrid, FlatGridProps } from 'react-native-super-grid';
 import { NFTBase } from 'enevti-app/types/core/chain/nft';
 import { PROFILE_HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/organism/profile/AppProfileHeader';
 import { TOP_TABBAR_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppTopTabBar';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
+import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AppNFTCard from 'enevti-app/components/molecules/nft/AppNFTCard';
 import { StackNavigationProp } from '@react-navigation/stack';

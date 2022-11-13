@@ -1,9 +1,9 @@
 import NetInfo from '@react-native-community/netinfo';
 import i18n from 'enevti-app/translations/i18n';
-import { lastFetchTimeout } from './constant/lastFetch';
-import { ERRORCODE } from './error/code';
+import { lastFetchTimeout } from '../constant/lastFetch';
+import { ERRORCODE } from '../error/code';
 import io from 'socket.io-client';
-import { urlSocketIO, urlVideoCallSocketIO } from './constant/URLCreator';
+import { urlSocketIO, urlVideoCallSocketIO } from '../constant/URLCreator';
 import ReactNativeBlobUtil, { ReactNativeBlobUtilConfig } from 'react-native-blob-util';
 import { checkPermissionStorage } from './permission';
 import {
@@ -12,7 +12,7 @@ import {
   APIResponseVersionRoot,
   ResponseJSON,
 } from 'enevti-app/types/core/service/api';
-import { handleError, handleResponseCode, responseError } from './error/handle';
+import { handleError, handleResponseCode, responseError } from '../error/handle';
 
 export async function isInternetReachable(): Promise<boolean> {
   await i18n.loadNamespaces('network');

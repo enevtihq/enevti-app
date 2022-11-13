@@ -7,7 +7,7 @@ import { RootStackParamList } from 'enevti-app/navigation';
 import { RouteProp } from '@react-navigation/native';
 import AppCommentItemBase from './AppCommentItemBase';
 import AppReplyList from './AppReplyList';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
+import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
 import { clearReplying, getCommentKey, setReplying } from 'enevti-app/store/middleware/thunk/ui/view/comment';

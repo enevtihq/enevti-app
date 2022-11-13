@@ -5,7 +5,7 @@ import {
   urlWeb3Storage,
 } from 'enevti-app/utils/constant/URLCreator';
 import Config from 'react-native-config';
-import { appFetch, appFetchBlob, isInternetReachable } from 'enevti-app/utils/network';
+import { appFetch, appFetchBlob, isInternetReachable } from 'enevti-app/utils/app/network';
 import i18n from 'enevti-app/translations/i18n';
 import * as Hash from 'ipfs-only-hash';
 import { handleError } from 'enevti-app/utils/error/handle';

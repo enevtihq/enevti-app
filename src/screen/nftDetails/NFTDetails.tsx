@@ -7,7 +7,7 @@ import { RootStackParamList } from 'enevti-app/navigation';
 import AppHeader, { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
 import { interpolateColor, runOnJS, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { useTheme } from 'react-native-paper';
-import { hp } from 'enevti-app/utils/imageRatio';
+import { hp } from 'enevti-app/utils/layout/imageRatio';
 import { useTranslation } from 'react-i18next';
 import AppNFTDetails from 'enevti-app/components/organism/nftDetails/AppNFTDetails';
 import { getStatusBarHeight } from 'react-native-status-bar-height';

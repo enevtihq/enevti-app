@@ -6,7 +6,7 @@ import AppNotificationItem from './AppNotificationItem';
 import { NotificationItem, NotificationState } from 'enevti-app/types/ui/store/Notification';
 import { useDispatch, useSelector } from 'react-redux';
 import { readAllNotificationItems, selectNotificationView } from 'enevti-app/store/slices/entities/notification';
-import { hp } from 'enevti-app/utils/imageRatio';
+import { hp } from 'enevti-app/utils/layout/imageRatio';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 

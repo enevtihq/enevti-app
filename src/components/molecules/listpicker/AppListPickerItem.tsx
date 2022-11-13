@@ -3,7 +3,7 @@ import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Theme } from 'enevti-app/theme/default';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
+import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
 import AppIconComponent, { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';

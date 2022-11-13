@@ -1,7 +1,7 @@
 import { setGoogleAPIToken, selectGoogleAPITokenState } from 'enevti-app/store/slices/session/google';
 import { store } from 'enevti-app/store/state';
 import { EncryptedData } from 'enevti-app/types/core/service/cryptography';
-import { appFetch, isInternetReachable } from 'enevti-app/utils/network';
+import { appFetch, isInternetReachable } from 'enevti-app/utils/app/network';
 import { getGoogleAccessToken, googleInit, googleSignIn } from './signIn';
 
 const url = 'https://www.googleapis.com/drive/v3';

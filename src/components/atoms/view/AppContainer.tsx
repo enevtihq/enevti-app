@@ -5,7 +5,7 @@ import { Theme } from 'enevti-app/theme/default';
 import { useTheme } from 'react-native-paper';
 import AppStatusBar from './AppStatusBar';
 import Color from 'color';
-import { hp } from 'enevti-app/utils/imageRatio';
+import { hp } from 'enevti-app/utils/layout/imageRatio';
 import { HEADER_HEIGHT_PERCENTAGE } from './AppHeader';
 import { BackgroundColorContext, EdgeContext } from 'enevti-app/context';
 

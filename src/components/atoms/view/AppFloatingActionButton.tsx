@@ -2,7 +2,7 @@ import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import React from 'react';
 import { AnimatedFAB, useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
+import { SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
 
 interface AppFloatingActionButtonProps {
   label: string;

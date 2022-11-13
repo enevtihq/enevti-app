@@ -1,6 +1,6 @@
 import { View, StyleSheet, Platform } from 'react-native';
 import React from 'react';
-import { DimensionFunction } from 'enevti-app/utils/imageRatio';
+import { DimensionFunction } from 'enevti-app/utils/layout/imageRatio';
 import { Theme } from 'enevti-app/theme/default';
 import useDimension from 'enevti-app/utils/hook/useDimension';
 import { useTheme } from 'react-native-paper';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, ViewStyle, StyleProp } from 'react-native';
 import { TouchableRipple, useTheme } from 'react-native-paper';
-import { SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
+import { SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
 import Color from 'color';
 
 import { Theme } from 'enevti-app/theme/default';

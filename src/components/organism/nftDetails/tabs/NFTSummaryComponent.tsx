@@ -13,7 +13,7 @@ import AppAvatarRenderer from 'enevti-app/components/molecules/avatar/AppAvatarR
 import AppPersonaLabel from 'enevti-app/components/molecules/avatar/AppPersonaLabel';
 import useDimension from 'enevti-app/utils/hook/useDimension';
 import { Theme } from 'enevti-app/theme/default';
-import { DimensionFunction, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
+import { DimensionFunction, SafeAreaInsets } from 'enevti-app/utils/layout/imageRatio';
 import Animated from 'react-native-reanimated';
 import { NFT_DETAILS_TOP_TABBAR_HEIGHT_PERCENTAGE } from '../AppNFTDetailsBody';
 import { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';

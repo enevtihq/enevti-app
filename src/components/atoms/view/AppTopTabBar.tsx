@@ -4,7 +4,7 @@ import { MaterialTopTabBar, MaterialTopTabBarProps } from '@react-navigation/mat
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { hp, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
+import { hp, SafeAreaInsets } from 'enevti-app/utils/layout/imageRatio';
 
 interface AppTopTabBarProps extends MaterialTopTabBarProps {
   safeBackgroundBarHeight?: number;

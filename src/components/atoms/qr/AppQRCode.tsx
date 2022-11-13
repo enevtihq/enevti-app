@@ -1,6 +1,6 @@
 import { View, StyleSheet } from 'react-native';
 import React from 'react';
-import { wp } from 'enevti-app/utils/imageRatio';
+import { wp } from 'enevti-app/utils/layout/imageRatio';
 import Color from 'color';
 import { Theme } from 'enevti-app/theme/default';
 import { useTheme } from 'react-native-paper';

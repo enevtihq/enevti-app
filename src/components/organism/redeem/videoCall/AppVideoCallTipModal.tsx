@@ -1,7 +1,7 @@
 import { NativeSyntheticEvent, Platform, StyleSheet, TextInputChangeEventData, View } from 'react-native';
 import React from 'react';
 import AppMenuContainer from 'enevti-app/components/atoms/menu/AppMenuContainer';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
+import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
 import AppTextHeading1 from 'enevti-app/components/atoms/text/AppTextHeading1';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';

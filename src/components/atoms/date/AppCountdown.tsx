@@ -3,7 +3,7 @@ import { AppState, NativeEventSubscription, StyleProp, StyleSheet, ViewStyle } f
 import ReactNativeCountdownComponent from 'react-native-countdown-component';
 import { useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { hp, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
+import { hp, SafeAreaInsets } from 'enevti-app/utils/layout/imageRatio';
 import { Theme } from 'enevti-app/theme/default';
 import { useTranslation } from 'react-i18next';
 

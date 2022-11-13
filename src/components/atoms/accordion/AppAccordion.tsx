@@ -2,7 +2,7 @@ import React from 'react';
 import { List } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { shallowEqual } from 'react-redux';
-import { wp } from 'enevti-app/utils/imageRatio';
+import { wp } from 'enevti-app/utils/layout/imageRatio';
 import { StyleProp, TextStyle } from 'react-native';
 
 interface AppAccordionProps {

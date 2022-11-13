@@ -6,7 +6,7 @@ import { NFTUtility } from 'enevti-app/types/core/chain/nft/NFTUtility';
 import { shuffleArray } from 'enevti-app/utils/primitive/array';
 import { StakePoolData } from 'enevti-app/types/core/chain/stake';
 import { FeedItem, MomentItem } from 'enevti-app/types/core/service/feed';
-import { appFetch, isInternetReachable } from 'enevti-app/utils/network';
+import { appFetch, isInternetReachable } from 'enevti-app/utils/app/network';
 import { urlPostRequestFaucet } from 'enevti-app/utils/constant/URLCreator';
 import { ResponseJSON } from 'enevti-app/types/core/service/api';
 import { handleError, handleResponseCode, responseError } from 'enevti-app/utils/error/handle';

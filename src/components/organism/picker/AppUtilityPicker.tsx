@@ -6,7 +6,7 @@ import { shallowEqual } from 'react-redux';
 import utilityToIcon from 'enevti-app/utils/icon/utilityToIcon';
 import AppIconComponent from 'enevti-app/components/atoms/icon/AppIconComponent';
 import { StyleSheet, View } from 'react-native';
-import { SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
+import { SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import UtilityBackground from 'enevti-app/components/atoms/nft/utility/UtilityBackground';
 import { makeDummyNFT } from 'enevti-app/utils/dummy/nft';

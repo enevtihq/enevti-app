@@ -4,7 +4,7 @@ import { CommentItem, ReplyItem, setReplyText } from 'enevti-app/store/slices/ui
 import AppTextHeading4 from 'enevti-app/components/atoms/text/AppTextHeading4';
 import { t } from 'i18next';
 import Color from 'color';
-import { SafeAreaInsets, hp, wp } from 'enevti-app/utils/imageRatio';
+import { SafeAreaInsets, hp, wp } from 'enevti-app/utils/layout/imageRatio';
 import { TouchableRipple, useTheme } from 'react-native-paper';
 import { Theme } from 'enevti-app/theme/default';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';

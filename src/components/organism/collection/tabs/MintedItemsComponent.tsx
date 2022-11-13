@@ -6,7 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { NFTBase } from 'enevti-app/types/core/chain/nft';
 import { TOP_TABBAR_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppTopTabBar';
 import { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
-import { DimensionFunction, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
+import { DimensionFunction, SafeAreaInsets } from 'enevti-app/utils/layout/imageRatio';
 import useDimension from 'enevti-app/utils/hook/useDimension';
 import AppNFTCard from 'enevti-app/components/molecules/nft/AppNFTCard';
 import { MINT_BUTTON_HEIGHT } from 'enevti-app/components/organism/collection/AppCollectionMintButton';

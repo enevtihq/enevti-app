@@ -6,7 +6,7 @@ import Animated, { runOnJS, useAnimatedScrollHandler, useSharedValue } from 'rea
 import { StakerItem } from 'enevti-app/types/core/chain/stake';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { hp } from 'enevti-app/utils/imageRatio';
+import { hp } from 'enevti-app/utils/layout/imageRatio';
 import { RootState } from 'enevti-app/store/state';
 import {
   isStakePoolUndefined,
@@ -28,7 +28,7 @@ import { useTranslation } from 'react-i18next';
 import AppResponseView from '../view/AppResponseView';
 import AppMessageEmpty from 'enevti-app/components/molecules/message/AppMessageEmpty';
 import AppFloatingNotifButton from 'enevti-app/components/molecules/button/AppFloatingNotifButton';
-import { appSocket } from 'enevti-app/utils/network';
+import { appSocket } from 'enevti-app/utils/app/network';
 import { routeParamToAddress } from 'enevti-app/service/enevti/persona';
 import { reduceStakerUpdates } from 'enevti-app/store/middleware/thunk/socket/stakePool/stakerUpdates';
 import { Socket } from 'socket.io-client';

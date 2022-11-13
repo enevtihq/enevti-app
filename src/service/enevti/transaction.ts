@@ -6,7 +6,7 @@ import {
   urlPostTransactionFee,
 } from 'enevti-app/utils/constant/URLCreator';
 import { getMyAddress, getMyPassphrase, getMyPublicKey } from './persona';
-import { appFetch, isInternetReachable } from 'enevti-app/utils/network';
+import { appFetch, isInternetReachable } from 'enevti-app/utils/app/network';
 import { handleError, handleResponseCode, responseError } from 'enevti-app/utils/error/handle';
 import { APIResponse, ResponseJSON } from 'enevti-app/types/core/service/api';
 import base64 from 'react-native-base64';

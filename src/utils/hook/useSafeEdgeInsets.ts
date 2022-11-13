@@ -1,7 +1,7 @@
 import React from 'react';
 import { Edge, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { EdgeContext } from 'enevti-app/context';
-import { SafeAreaInsets } from 'enevti-app/utils/imageRatio';
+import { SafeAreaInsets } from 'enevti-app/utils/layout/imageRatio';
 
 export default function useSafeEdgeInsets(): SafeAreaInsets {
   const insets = useSafeAreaInsets();

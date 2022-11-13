@@ -2,7 +2,7 @@ import { StyleSheet, View } from 'react-native';
 import React from 'react';
 import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { hp, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
+import { hp, SafeAreaInsets } from 'enevti-app/utils/layout/imageRatio';
 import { parseAmount } from 'enevti-app/utils/format/amount';
 import AppTextBody3 from 'enevti-app/components/atoms/text/AppTextBody3';
 import { useTheme } from 'react-native-paper';

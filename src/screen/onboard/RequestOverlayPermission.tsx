@@ -1,7 +1,7 @@
 import { AppState, Image, Platform, StyleSheet, View } from 'react-native';
 import React from 'react';
 import AppView from 'enevti-app/components/atoms/view/AppView';
-import { hp, wp } from 'enevti-app/utils/imageRatio';
+import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 import AppTextHeading1 from 'enevti-app/components/atoms/text/AppTextHeading1';
 import AppTextBody3 from 'enevti-app/components/atoms/text/AppTextBody3';
 import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
@@ -14,7 +14,7 @@ import AppConfirmationModal from 'enevti-app/components/organism/menu/AppConfirm
 import { Theme } from 'enevti-app/theme/default';
 import { useTheme } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
-import { isOverlayPermissionGranted } from 'enevti-app/utils/permission';
+import { isOverlayPermissionGranted } from 'enevti-app/utils/app/permission';
 
 type Props = StackScreenProps<RootStackParamList, 'RequestOverlayPermission'>;
 

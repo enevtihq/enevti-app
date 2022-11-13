@@ -15,7 +15,7 @@ import { selectLocalSession } from 'enevti-app/store/slices/session/local';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { COIN_NAME } from 'enevti-app/utils/constant/identifier';
-import { apiFetch } from 'enevti-app/utils/network';
+import { apiFetch } from 'enevti-app/utils/app/network';
 import { urlGetPersonaByAddress, urlGetPersonaByUsername } from 'enevti-app/utils/constant/URLCreator';
 import { isErrorResponse } from 'enevti-app/utils/error/handle';
 import { APIResponse } from 'enevti-app/types/core/service/api';

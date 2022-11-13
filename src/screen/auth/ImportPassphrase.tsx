@@ -16,7 +16,7 @@ import AppFormSecureTextInput from 'enevti-app/components/organism/form/AppFormS
 import AppFormTextInputWithError from 'enevti-app/components/molecules/form/AppFormTextInputWithError';
 import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
 import AppView from 'enevti-app/components/atoms/view/AppView';
-import { hp, wp, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
+import { hp, wp, SafeAreaInsets } from 'enevti-app/utils/layout/imageRatio';
 import YupBIP39 from 'enevti-app/utils/yup/bip39';
 import { useDispatch } from 'react-redux';
 import { initPassphrase } from 'enevti-app/store/middleware/thunk/session/initPassphrase';

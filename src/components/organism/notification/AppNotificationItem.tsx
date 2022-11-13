@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTheme } from '@react-navigation/native';
 import { Theme } from 'enevti-app/theme/default';
-import { hp, wp } from 'enevti-app/utils/imageRatio';
+import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 import AppIconButton from 'enevti-app/components/atoms/icon/AppIconButton';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';

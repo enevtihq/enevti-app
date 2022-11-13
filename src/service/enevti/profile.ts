@@ -11,7 +11,7 @@ import {
 import { lastFetchTimeout } from 'enevti-app/utils/constant/lastFetch';
 import { base32ToAddress, getMyAddress, usernameToAddress } from './persona';
 import { completeTokenUnit } from 'enevti-app/utils/format/amount';
-import { apiFetch, apiFetchVersioned, apiFetchVersionRoot } from 'enevti-app/utils/network';
+import { apiFetch, apiFetchVersioned, apiFetchVersionRoot } from 'enevti-app/utils/app/network';
 import {
   urlGetProfile,
   urlGetProfileBalance,

@@ -2,7 +2,7 @@ import React from 'react';
 import Dots from 'react-native-dots-pagination';
 import { useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { wp } from 'enevti-app/utils/imageRatio';
+import { wp } from 'enevti-app/utils/layout/imageRatio';
 
 interface AppPaginationIndicatorProps {
   length: number;

@@ -8,7 +8,7 @@ import AppHeader, { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import AppTabBar, { TABBAR_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppTabBar';
-import { hp } from 'enevti-app/utils/imageRatio';
+import { hp } from 'enevti-app/utils/layout/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AppHeaderAction from 'enevti-app/components/atoms/view/AppHeaderAction';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
@@ -37,7 +37,7 @@ import { cleanTMPImage } from 'enevti-app/service/enevti/nft';
 import { clearCreateNFTPackQueue } from 'enevti-app/store/slices/queue/nft/create/pack';
 import AppAlertModal from 'enevti-app/components/organism/menu/AppAlertModal';
 import AppConfirmationModal from 'enevti-app/components/organism/menu/AppConfirmationModal';
-import { appSocket } from 'enevti-app/utils/network';
+import { appSocket } from 'enevti-app/utils/app/network';
 import { Socket } from 'socket.io-client';
 import { reduceFeedsUpdates } from 'enevti-app/store/middleware/thunk/socket/feeds/feedsUpdates';
 import { payDeliverSecret } from 'enevti-app/store/middleware/thunk/payment/creator/payDeliverSecret';

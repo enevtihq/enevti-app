@@ -40,7 +40,7 @@ import SendToken from 'enevti-app/screen/wallet/SendToken';
 import { onNotificationForegroundHandler } from 'enevti-app/utils/notification/events';
 import notifee from '@notifee/react-native';
 import { Socket } from 'socket.io-client';
-import { appSocket } from 'enevti-app/utils/network';
+import { appSocket } from 'enevti-app/utils/app/network';
 import { reduceNewBlock } from 'enevti-app/store/middleware/thunk/socket/chain/newBlock';
 import Comment from 'enevti-app/screen/explorer/Comment';
 import { setKeyboardShow, setKeyboardHide } from 'enevti-app/store/slices/ui/global/keyboard';

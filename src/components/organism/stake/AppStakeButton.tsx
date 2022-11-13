@@ -7,7 +7,7 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import AppHeaderWizard from 'enevti-app/components/molecules/view/AppHeaderWizard';
 import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
+import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectMyPersonaCache } from 'enevti-app/store/slices/entities/cache/myPersona';

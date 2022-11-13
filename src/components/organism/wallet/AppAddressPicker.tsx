@@ -8,7 +8,7 @@ import Color from 'color';
 import { Divider, TextInput, useTheme } from 'react-native-paper';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import AppIconButton from 'enevti-app/components/atoms/icon/AppIconButton';
-import { wp, SafeAreaInsets, hp } from 'enevti-app/utils/imageRatio';
+import { wp, SafeAreaInsets, hp } from 'enevti-app/utils/layout/imageRatio';
 import AppFormTextInputWithError from 'enevti-app/components/molecules/form/AppFormTextInputWithError';
 import { useTranslation } from 'react-i18next';
 import { useDebounce } from 'use-debounce';

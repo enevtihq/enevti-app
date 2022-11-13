@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { hideSnackbar, selectSnackBarState } from 'enevti-app/store/slices/ui/global/snackbar';
 import AppSnackbar from 'enevti-app/components/atoms/snackbar/AppSnackbar';
-import { SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
+import { SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
 import AppKeyboardDismissOnClickView from './AppKeyboardDismissOnClickView';
 import AppContainer from './AppContainer';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';

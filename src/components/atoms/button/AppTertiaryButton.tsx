@@ -3,7 +3,7 @@ import { StyleProp, ViewStyle, StyleSheet, View } from 'react-native';
 import { Button } from 'react-native-paper';
 import { IconSource } from 'react-native-paper/lib/typescript/components/Icon';
 import { useTheme } from 'react-native-paper';
-import { hp, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
+import { hp, SafeAreaInsets } from 'enevti-app/utils/layout/imageRatio';
 import Color from 'color';
 
 import { Theme } from 'enevti-app/theme/default';

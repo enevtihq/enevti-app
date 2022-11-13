@@ -5,7 +5,7 @@ import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import { useTheme } from 'react-native-paper';
 import { Theme } from 'enevti-app/theme/default';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
+import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
 import { useTranslation } from 'react-i18next';
 import { FeedItem } from 'enevti-app/types/core/service/feed';
 import AppTextHeading5 from 'enevti-app/components/atoms/text/AppTextHeading5';

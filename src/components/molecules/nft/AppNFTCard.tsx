@@ -1,7 +1,7 @@
 import { View, ViewStyle, StyleProp, StyleSheet } from 'react-native';
 import React from 'react';
 import { NFTBase } from 'enevti-app/types/core/chain/nft';
-import { wp, SafeAreaInsets, hp } from 'enevti-app/utils/imageRatio';
+import { wp, SafeAreaInsets, hp } from 'enevti-app/utils/layout/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { TouchableRipple, useTheme } from 'react-native-paper';
 import { Theme } from 'enevti-app/theme/default';

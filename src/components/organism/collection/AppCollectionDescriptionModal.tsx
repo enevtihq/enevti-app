@@ -6,7 +6,7 @@ import { useTheme } from 'react-native-paper';
 import { Theme } from 'enevti-app/theme/default';
 import AppTextBody3 from 'enevti-app/components/atoms/text/AppTextBody3';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
+import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Color from 'color';
 import { useTranslation } from 'react-i18next';

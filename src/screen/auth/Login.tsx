@@ -17,7 +17,7 @@ import AppFormSecureTextInput from 'enevti-app/components/organism/form/AppFormS
 import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
 import AppView from 'enevti-app/components/atoms/view/AppView';
 import AppCheckbox from 'enevti-app/components/atoms/form/AppCheckbox';
-import { hp, wp, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
+import { hp, wp, SafeAreaInsets } from 'enevti-app/utils/layout/imageRatio';
 import AppBrandLogo from 'enevti-app/components/atoms/brand/AppBrandLogo';
 import { setLocalSessionKey, selectLocalSession } from 'enevti-app/store/slices/session/local';
 import { selectAuthState, setUnencryptedPassphraseAuth } from 'enevti-app/store/slices/auth';

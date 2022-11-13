@@ -11,7 +11,7 @@ import { RootStackParamList } from 'enevti-app/navigation';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
 import AppView from 'enevti-app/components/atoms/view/AppView';
-import { hp, wp, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
+import { hp, wp, SafeAreaInsets } from 'enevti-app/utils/layout/imageRatio';
 import AppIconBanner from 'enevti-app/components/molecules/icon/AppIconBanner';
 import { MINIMUM_BASIC_UNIT_STAKE_ELIGIBILITY } from 'enevti-app/service/enevti/profile';
 import { getCoinName } from 'enevti-app/utils/constant/identifier';

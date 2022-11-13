@@ -6,7 +6,7 @@ import { RootStackParamList } from 'enevti-app/navigation';
 import AppProfile from 'enevti-app/components/organism/profile/AppProfile';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AppHeader, { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
-import { hp } from 'enevti-app/utils/imageRatio';
+import { hp } from 'enevti-app/utils/layout/imageRatio';
 import { useTranslation } from 'react-i18next';
 import { RouteProp } from '@react-navigation/native';
 

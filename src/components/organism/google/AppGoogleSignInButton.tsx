@@ -18,7 +18,7 @@ import {
   SecretAppData,
   updateSecretAppData,
 } from 'enevti-app/service/google/appData';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
+import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
 import AppTertiaryButton from 'enevti-app/components/atoms/button/AppTertiaryButton';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import {

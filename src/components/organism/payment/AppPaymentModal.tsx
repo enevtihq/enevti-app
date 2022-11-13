@@ -5,7 +5,7 @@ import Color from 'color';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AppMenuContainer from 'enevti-app/components/atoms/menu/AppMenuContainer';
-import { hp, wp, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
+import { hp, wp, SafeAreaInsets } from 'enevti-app/utils/layout/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AppTextHeading2 from 'enevti-app/components/atoms/text/AppTextHeading2';
 import AppListItem from 'enevti-app/components/molecules/list/AppListItem';

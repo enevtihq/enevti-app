@@ -3,7 +3,7 @@ import AppIconComponent, { iconMap } from 'enevti-app/components/atoms/icon/AppI
 import AppAvatarRenderer from 'enevti-app/components/molecules/avatar/AppAvatarRenderer';
 import darkTheme from 'enevti-app/theme/dark';
 import { Persona } from 'enevti-app/types/core/account/persona';
-import { hp, wp } from 'enevti-app/utils/imageRatio';
+import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, interpolate, withTiming } from 'react-native-reanimated';

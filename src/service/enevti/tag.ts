@@ -3,7 +3,7 @@ import { Collection } from 'enevti-app/types/core/chain/collection';
 import { NFTBase } from 'enevti-app/types/core/chain/nft';
 import { APIResponse } from 'enevti-app/types/core/service/api';
 import { urlGetTagCollection, urlGetTagNFT, urlGetTagUsername } from 'enevti-app/utils/constant/URLCreator';
-import { apiFetch } from 'enevti-app/utils/network';
+import { apiFetch } from 'enevti-app/utils/app/network';
 
 export type CollectionTag = {
   name: Collection['name'];

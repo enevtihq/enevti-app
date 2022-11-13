@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import AppAvatarRenderer from 'enevti-app/components/molecules/avatar/AppAvatarRenderer';
 import AppTextBody3 from 'enevti-app/components/atoms/text/AppTextBody3';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { hp, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
+import { hp, SafeAreaInsets } from 'enevti-app/utils/layout/imageRatio';
 import Animated, { interpolate, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 interface AppVideoCallHeaderProps {

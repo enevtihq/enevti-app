@@ -5,7 +5,7 @@ import { ProgressBar, useTheme } from 'react-native-paper';
 import { Theme } from 'enevti-app/theme/default';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Color from 'color';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
+import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
 import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import AppCountdown from 'enevti-app/components/atoms/date/AppCountdown';

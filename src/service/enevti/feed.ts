@@ -3,7 +3,7 @@ import { APIResponse, APIResponseVersionRoot } from 'enevti-app/types/core/servi
 import { Feeds, HomeFeeds } from 'enevti-app/types/core/service/feed';
 import { HOME_FEED_LIMIT } from 'enevti-app/utils/constant/limit';
 import { urlGetFeeds, urlGetHome } from 'enevti-app/utils/constant/URLCreator';
-import { apiFetch, apiFetchVersionRoot } from 'enevti-app/utils/network';
+import { apiFetch, apiFetchVersionRoot } from 'enevti-app/utils/app/network';
 import { getMyAddress } from './persona';
 
 type FeedResponse = { data: Feeds; checkpoint: number; version: number };

@@ -16,7 +16,7 @@ import { parseAppLink } from 'enevti-app/utils/linking';
 import { Linking } from 'react-native';
 import { handleError } from 'enevti-app/utils/error/handle';
 import { Socket } from 'socket.io-client';
-import { appSocket } from 'enevti-app/utils/network';
+import { appSocket } from 'enevti-app/utils/app/network';
 import { reduceWalletBalanceChanged } from 'enevti-app/store/middleware/thunk/socket/wallet/walletBalanceChanged';
 import { routeParamToAddress } from 'enevti-app/service/enevti/persona';
 import { reduceNewWalletUpdates } from 'enevti-app/store/middleware/thunk/socket/wallet/newWalletActivity';

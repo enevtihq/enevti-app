@@ -2,7 +2,7 @@ import { View, StyleSheet, Dimensions } from 'react-native';
 import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from 'react-native-paper';
-import { SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
+import { SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
 import { Theme } from 'enevti-app/theme/default';
 import Color from 'color';
 import AppFeedHeader from './AppFeedHeader';

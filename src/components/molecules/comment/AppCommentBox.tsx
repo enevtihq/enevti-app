@@ -4,7 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectMyPersonaCache } from 'enevti-app/store/slices/entities/cache/myPersona';
 import AppAvatarRenderer from '../avatar/AppAvatarRenderer';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
+import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
 import { useTheme } from 'react-native-paper';
 import { Theme } from 'enevti-app/theme/default';
 import { MentionInput, MentionSuggestionsProps } from 'react-native-controlled-mentions';
@@ -51,7 +51,7 @@ import {
 } from 'enevti-app/store/slices/ui/view/comment';
 import { makeDummyComment } from 'enevti-app/utils/dummy/comment';
 import { Socket } from 'socket.io-client';
-import { appSocket } from 'enevti-app/utils/network';
+import { appSocket } from 'enevti-app/utils/app/network';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 import {
   clearCommentSessionByKey,

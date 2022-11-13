@@ -2,7 +2,7 @@ import { View, StyleSheet } from 'react-native';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import AppAvatarRenderer from 'enevti-app/components/molecules/avatar/AppAvatarRenderer';
-import { hp, wp, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
+import { hp, wp, SafeAreaInsets } from 'enevti-app/utils/layout/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Persona } from 'enevti-app/types/core/account/persona';
 import AppTextHeading2 from 'enevti-app/components/atoms/text/AppTextHeading2';

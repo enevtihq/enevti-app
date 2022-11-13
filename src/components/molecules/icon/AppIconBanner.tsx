@@ -2,7 +2,7 @@ import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import React from 'react';
 import { useTheme } from 'react-native-paper';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
-import { SafeAreaInsets, wp, hp } from 'enevti-app/utils/imageRatio';
+import { SafeAreaInsets, wp, hp } from 'enevti-app/utils/layout/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AppIconGradient from './AppIconGradient';
 import { Theme } from 'enevti-app/theme/default';

@@ -13,7 +13,7 @@ import AppTextBodyCustom from 'enevti-app/components/atoms/text/AppTextBodyCusto
 import { getCoinName } from 'enevti-app/utils/constant/identifier';
 import AppTextBody3 from 'enevti-app/components/atoms/text/AppTextBody3';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { hp, wp, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
+import { hp, wp, SafeAreaInsets } from 'enevti-app/utils/layout/imageRatio';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
 import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';

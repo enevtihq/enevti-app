@@ -4,7 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '@react-navigation/native';
 import Color from 'color';
 import { Theme } from 'enevti-app/theme/default';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
+import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
 import { TouchableRipple } from 'react-native-paper';
 
 export const LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE = 1;

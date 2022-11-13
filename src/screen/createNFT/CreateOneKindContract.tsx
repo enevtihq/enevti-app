@@ -26,7 +26,7 @@ import AppFormTextInputWithError, {
 } from 'enevti-app/components/molecules/form/AppFormTextInputWithError';
 import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
 import AppView from 'enevti-app/components/atoms/view/AppView';
-import { hp, wp, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
+import { hp, wp, SafeAreaInsets } from 'enevti-app/utils/layout/imageRatio';
 import AppIconComponent, { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import { ScrollView } from 'react-native-gesture-handler';
 import AppTextBody3 from 'enevti-app/components/atoms/text/AppTextBody3';

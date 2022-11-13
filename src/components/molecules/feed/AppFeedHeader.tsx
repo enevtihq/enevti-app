@@ -5,7 +5,7 @@ import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
 import AppQuaternaryButton from 'enevti-app/components/atoms/button/AppQuaternaryButton';
 import AppIconButton from 'enevti-app/components/atoms/icon/AppIconButton';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
+import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getCoinName } from 'enevti-app/utils/constant/identifier';
 import { useTranslation } from 'react-i18next';

@@ -20,7 +20,7 @@ import { AppAsyncThunk } from 'enevti-app/types/ui/store/AppAsyncThunk';
 import Animated from 'react-native-reanimated';
 import { LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE } from 'enevti-app/components/molecules/list/AppListItem';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
+import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
 import AppMessageEmpty from 'enevti-app/components/molecules/message/AppMessageEmpty';
 import AppWalletTransactionHistoryItem from './AppWalletTransactionHistoryItem';
 import { ProfileActivity } from 'enevti-app/types/core/account/profile';

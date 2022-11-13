@@ -2,7 +2,7 @@ import React from 'react';
 import { Platform, RefreshControl, StyleSheet, FlatList, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import Animated from 'react-native-reanimated';
-import { DimensionFunction, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
+import { DimensionFunction, SafeAreaInsets } from 'enevti-app/utils/layout/imageRatio';
 import useDimension from 'enevti-app/utils/hook/useDimension';
 import AppListItem, { LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE } from 'enevti-app/components/molecules/list/AppListItem';
 import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';

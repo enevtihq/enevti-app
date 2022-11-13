@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image, ImageStyle, StyleProp } from 'react-native';
-import { resizeImageRatio, resizeImageRatioHeight } from 'enevti-app/utils/imageRatio';
+import { resizeImageRatio, resizeImageRatioHeight } from 'enevti-app/utils/layout/imageRatio';
 
 interface AppLightBrandBannerProps {
   widthPercentage?: number;

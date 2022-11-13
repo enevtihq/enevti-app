@@ -5,7 +5,7 @@ import Animated from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { TOP_TABBAR_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppTopTabBar';
 import { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
-import { DimensionFunction, SafeAreaInsets } from 'enevti-app/utils/imageRatio';
+import { DimensionFunction, SafeAreaInsets } from 'enevti-app/utils/layout/imageRatio';
 import useDimension from 'enevti-app/utils/hook/useDimension';
 import AppListItem, { LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE } from 'enevti-app/components/molecules/list/AppListItem';
 import AppNFTRenderer from 'enevti-app/components/molecules/nft/AppNFTRenderer';

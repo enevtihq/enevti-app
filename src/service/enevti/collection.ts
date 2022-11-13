@@ -10,7 +10,7 @@ import {
   urlGetNameToCollectionId,
   urlGetSymbolToCollectionId,
 } from 'enevti-app/utils/constant/URLCreator';
-import { apiFetch, apiFetchVersioned, apiFetchVersionRoot } from 'enevti-app/utils/network';
+import { apiFetch, apiFetchVersioned, apiFetchVersionRoot } from 'enevti-app/utils/app/network';
 import { APIResponse, APIResponseVersioned, APIResponseVersionRoot } from 'enevti-app/types/core/service/api';
 import { NFTBase } from 'enevti-app/types/core/chain/nft';
 import { COLLECTION_ACTIVITY_INITIAL_LENGTH, COLLECTION_MINTED_INITIAL_LENGTH } from 'enevti-app/utils/constant/limit';

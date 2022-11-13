@@ -1,6 +1,6 @@
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
-import { apiFetchVersioned } from 'enevti-app/utils/network';
+import { apiFetchVersioned } from 'enevti-app/utils/app/network';
 import {
   urlGetCommentClubsCollection,
   urlGetCommentClubsNFT,

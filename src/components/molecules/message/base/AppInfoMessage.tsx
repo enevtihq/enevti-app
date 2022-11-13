@@ -4,7 +4,7 @@ import { Theme } from 'enevti-app/theme/default';
 import Color from 'color';
 import { useTheme } from 'react-native-paper';
 import AppIconComponent from 'enevti-app/components/atoms/icon/AppIconComponent';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
+import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';

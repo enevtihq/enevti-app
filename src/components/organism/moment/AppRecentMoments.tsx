@@ -2,7 +2,7 @@ import { View, FlatList } from 'react-native';
 import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
-import { hp, wp } from 'enevti-app/utils/imageRatio';
+import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 import AppPortraitOverlayBox from 'enevti-app/components/molecules/list/AppPortraitOverlayBox';
 import { useTranslation } from 'react-i18next';
 import { Divider } from 'react-native-paper';

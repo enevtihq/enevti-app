@@ -16,7 +16,7 @@ import AppRecentMoments from 'enevti-app/components/organism/moment/AppRecentMom
 import AppFeedItem from 'enevti-app/components/molecules/feed/AppFeedItem';
 import Animated, { useAnimatedRef } from 'react-native-reanimated';
 import { handleError } from 'enevti-app/utils/error/handle';
-import { hp, wp } from 'enevti-app/utils/imageRatio';
+import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 import { loadFeeds, loadMoreFeeds } from 'enevti-app/store/middleware/thunk/ui/view/feed';

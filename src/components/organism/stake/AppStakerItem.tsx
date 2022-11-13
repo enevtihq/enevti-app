@@ -2,7 +2,7 @@ import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '@react-navigation/native';
 import { Theme } from 'enevti-app/theme/default';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
+import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
 import AppAvatarRenderer from 'enevti-app/components/molecules/avatar/AppAvatarRenderer';
 import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
 import AppIconButton from 'enevti-app/components/atoms/icon/AppIconButton';

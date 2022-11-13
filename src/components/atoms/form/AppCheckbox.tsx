@@ -2,7 +2,7 @@ import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import React from 'react';
 import { Checkbox, TouchableRipple, useTheme } from 'react-native-paper';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
-import { SafeAreaInsets, wp } from 'enevti-app/utils/imageRatio';
+import { SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface AppCheckboxProps {
