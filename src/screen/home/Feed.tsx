@@ -35,6 +35,7 @@ import AppResponseView from 'enevti-app/components/organism/view/AppResponseView
 import AppFloatingNotifButton from 'enevti-app/components/molecules/button/AppFloatingNotifButton';
 import { useTranslation } from 'react-i18next';
 import { store } from 'enevti-app/store/state';
+import { useFocusEffect } from '@react-navigation/native';
 
 const AnimatedFlatList = Animated.createAnimatedComponent<FlatListProps<any>>(FlatList);
 
@@ -57,6 +58,7 @@ export default function Feed({ navigation, onScroll, headerHeight }: FeedProps) 
   const feedHeight = hp('24%', insets) + wp('95%', insets);
   const [refreshing, setRefreshing] = React.useState<boolean>(false);
   const feedRef = useAnimatedRef<FlatList>();
+  const newUpdateRef = React.useRef<boolean>(false);
 
   const feeds = useSelector(selectFeedView);
   const feedsUndefined = useSelector(isFeedUndefined);
@@ -135,6 +137,18 @@ export default function Feed({ navigation, onScroll, headerHeight }: FeedProps) 
   );
 
   const newUpdate = React.useMemo(() => newFeeds || newMoments, [newFeeds, newMoments]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      if (newUpdateRef.current) {
+        handleRefresh();
+      }
+    }, [handleRefresh]),
+  );
+
+  React.useEffect(() => {
+    newUpdateRef.current = newUpdate;
+  }, [newUpdate]);
 
   return (
     <AppView darken withLoader withPaymentOnly>

@@ -23,7 +23,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loadProfile, unloadProfile } from 'enevti-app/store/middleware/thunk/ui/view/profile';
 import CollectionListComponent from './tabs/CollectionListComponent';
 import { AppAsyncThunk } from 'enevti-app/types/ui/store/AppAsyncThunk';
-import { RouteProp } from '@react-navigation/native';
+import { RouteProp, useFocusEffect } from '@react-navigation/native';
 import AppResponseView from '../view/AppResponseView';
 import { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
 import AppFloatingNotifButton from 'enevti-app/components/molecules/button/AppFloatingNotifButton';
@@ -87,6 +87,7 @@ export default function AppProfile({
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const theme = useTheme();
+  const newUpdateRef = React.useRef<boolean>(false);
   const socket = React.useRef<Socket | undefined>();
 
   const profile = useSelector((state: RootState) =>
@@ -306,6 +307,18 @@ export default function AppProfile({
     onEndDragWorklet,
     onMomentumEndWorklet,
   ]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      if (newUpdateRef.current) {
+        onProfileScreenLoaded(true);
+      }
+    }, [onProfileScreenLoaded]),
+  );
+
+  React.useEffect(() => {
+    newUpdateRef.current = newUpdate;
+  }, [newUpdate]);
 
   const onSaleData = React.useMemo(() => (!profileUndefined ? profile.onSale : []), [profile, profileUndefined]);
 
