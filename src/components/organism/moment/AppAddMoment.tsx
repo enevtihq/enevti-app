@@ -30,7 +30,6 @@ export default function AppAddMoment() {
   return (
     <LinearGradient colors={[primary, secondary]} style={styles.gradientBox}>
       <AppPortraitOverlayBox
-        blurBackground
         title={t('home:addMoment')}
         style={styles.box}
         onPress={() => {}}
@@ -44,7 +43,11 @@ export default function AppAddMoment() {
             </View>
           </View>
         }
-        background={<AppAvatarRenderer full persona={myPersonaCache} size={hp(6)} style={styles.background} />}
+        background={
+          <View style={styles.backgroundContainer}>
+            <AppAvatarRenderer full persona={myPersonaCache} size={hp(6)} style={styles.background} />
+          </View>
+        }
       />
     </LinearGradient>
   );
@@ -71,7 +74,11 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
       borderRadius: theme.roundness,
     },
     background: {
+      opacity: 0.25,
       alignSelf: 'center',
       height: '100%',
+    },
+    backgroundContainer: {
+      backgroundColor: 'black',
     },
   });

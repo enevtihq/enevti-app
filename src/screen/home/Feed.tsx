@@ -34,6 +34,7 @@ import AppMessageEmpty from 'enevti-app/components/molecules/message/AppMessageE
 import AppResponseView from 'enevti-app/components/organism/view/AppResponseView';
 import AppFloatingNotifButton from 'enevti-app/components/molecules/button/AppFloatingNotifButton';
 import { useTranslation } from 'react-i18next';
+import { store } from 'enevti-app/store/state';
 
 const AnimatedFlatList = Animated.createAnimatedComponent<FlatListProps<any>>(FlatList);
 
@@ -43,6 +44,10 @@ interface FeedProps extends Props {
   headerHeight: number;
   onScroll?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
 }
+
+export const onLoadFeed = (reload: boolean = false) => {
+  return store.dispatch(loadFeeds({ reload }) as unknown as AppAsyncThunk);
+};
 
 export default function Feed({ navigation, onScroll, headerHeight }: FeedProps) {
   const { t } = useTranslation();
@@ -60,12 +65,9 @@ export default function Feed({ navigation, onScroll, headerHeight }: FeedProps) 
   const moments = useSelector(selectMomentView);
   const newMoments = useSelector(isThereAnyNewMomentView);
 
-  const handleLoadFeed = React.useCallback(
-    (reload: boolean = false) => {
-      return dispatch(loadFeeds({ reload }));
-    },
-    [dispatch],
-  ) as AppAsyncThunk;
+  const handleLoadFeed = React.useCallback((reload: boolean = false) => {
+    return onLoadFeed(reload);
+  }, []);
 
   const handleUpdateClosed = React.useCallback(() => {
     dispatch(setFeedViewVersion(Date.now()));
@@ -94,7 +96,7 @@ export default function Feed({ navigation, onScroll, headerHeight }: FeedProps) 
   }, [dispatch]);
 
   React.useEffect(() => {
-    onLoaded();
+    onLoaded(true);
   }, [onLoaded, dispatch]);
 
   const ListHeaderComponent = React.useMemo(() => <AppRecentMoments />, []);

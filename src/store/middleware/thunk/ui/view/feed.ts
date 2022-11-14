@@ -26,9 +26,12 @@ import {
   PROFILE_COLLECTION_INITIAL_LENGTH,
   PROFILE_OWNED_INITIAL_LENGTH,
 } from 'enevti-app/utils/constant/limit';
-import { setMyProfileView } from 'enevti-app/store/slices/ui/view/myProfile';
+import { myProfileInitialState, setMyProfileView } from 'enevti-app/store/slices/ui/view/myProfile';
 import { setMomentViewLoaded, setMomentViewState, setMomentViewVersion } from 'enevti-app/store/slices/ui/view/moment';
 import { selectMomentItemsCache, setMomentItemsCache } from 'enevti-app/store/slices/entities/cache/moment';
+import { setMyProfileCache } from 'enevti-app/store/slices/entities/cache/myProfile';
+import { parseProfileCache } from 'enevti-app/service/enevti/profile';
+import { Profile } from 'enevti-app/types/core/account/profile';
 
 type loadFeedsArgs = { reload: boolean };
 
@@ -37,6 +40,7 @@ export const loadFeeds = createAsyncThunk<void, loadFeedsArgs, AsyncThunkAPI>(
   async ({ reload = false }, { dispatch, getState, signal }) => {
     try {
       const now = Date.now();
+      const initialProfileState = !reload ? myProfileInitialState : {};
       dispatch(setFeedViewVersion(now));
       dispatch(setMomentViewVersion(now));
 
@@ -62,7 +66,13 @@ export const loadFeeds = createAsyncThunk<void, loadFeedsArgs, AsyncThunkAPI>(
         );
         dispatch(
           setMyProfileView({
-            ...homeResponse.data,
+            ...initialProfileState,
+            ...homeResponse.data.profile,
+            render: {
+              owned: true,
+              onsale: true,
+              collection: false,
+            },
             version: Date.now(),
             ownedPagination: {
               checkpoint: PROFILE_OWNED_INITIAL_LENGTH,
@@ -73,6 +83,7 @@ export const loadFeeds = createAsyncThunk<void, loadFeedsArgs, AsyncThunkAPI>(
               version: homeResponse.version.profile.collection,
             },
             reqStatus: homeResponse.status,
+            loaded: true,
           }),
         );
 
@@ -85,6 +96,25 @@ export const loadFeeds = createAsyncThunk<void, loadFeedsArgs, AsyncThunkAPI>(
             }),
           );
           dispatch(setMomentItemsCache(homeResponse.data.moment));
+          dispatch(
+            setMyProfileCache({
+              ...parseProfileCache(homeResponse.data.profile as Profile),
+              lastFetch: {
+                profile: now,
+                owned: now,
+                collection: now,
+                onSale: now,
+              },
+              ownedPagination: {
+                checkpoint: PROFILE_OWNED_INITIAL_LENGTH,
+                version: homeResponse.version.profile.owned,
+              },
+              collectionPagination: {
+                checkpoint: PROFILE_COLLECTION_INITIAL_LENGTH,
+                version: homeResponse.version.profile.collection,
+              },
+            }),
+          );
         } else {
           throw Error(i18n.t('error:clientError'));
         }

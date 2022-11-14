@@ -58,7 +58,9 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
       ...StyleSheet.absoluteFillObject,
     },
     overlayColor: {
-      backgroundColor: 'rgba(0,0,0,0.3)',
+      ...StyleSheet.absoluteFillObject,
+      backgroundColor: 'black',
+      opacity: 0.3,
     },
     rippleOverlay: {
       ...StyleSheet.absoluteFillObject,
