@@ -88,6 +88,7 @@ export default function AppProfile({
   const insets = useSafeAreaInsets();
   const theme = useTheme();
   const newUpdateRef = React.useRef<boolean>(false);
+  const headerCollapsedRef = React.useRef<boolean>(false);
   const socket = React.useRef<Socket | undefined>();
 
   const profile = useSelector((state: RootState) =>
@@ -310,11 +311,15 @@ export default function AppProfile({
 
   useFocusEffect(
     React.useCallback(() => {
-      if (newUpdateRef.current) {
+      if (newUpdateRef.current && headerCollapsedRef.current) {
         onProfileScreenLoaded(true);
       }
     }, [onProfileScreenLoaded]),
   );
+
+  React.useEffect(() => {
+    headerCollapsedRef.current = headerCollapsed.value;
+  }, [headerCollapsed.value]);
 
   React.useEffect(() => {
     newUpdateRef.current = newUpdate;

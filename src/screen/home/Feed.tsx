@@ -58,6 +58,7 @@ export default function Feed({ navigation, onScroll, headerHeight }: FeedProps) 
   const feedHeight = hp('24%', insets) + wp('95%', insets);
   const [refreshing, setRefreshing] = React.useState<boolean>(false);
   const feedRef = useAnimatedRef<FlatList>();
+  const isOnTopRef = React.useRef<boolean>(false);
   const newUpdateRef = React.useRef<boolean>(false);
 
   const feeds = useSelector(selectFeedView);
@@ -74,6 +75,14 @@ export default function Feed({ navigation, onScroll, headerHeight }: FeedProps) 
   const handleUpdateClosed = React.useCallback(() => {
     dispatch(setFeedViewVersion(Date.now()));
   }, [dispatch]);
+
+  const handleUpdateRef = React.useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    if (event.nativeEvent.contentOffset.y > hp(80)) {
+      isOnTopRef.current = false;
+    } else {
+      isOnTopRef.current = true;
+    }
+  }, []);
 
   const onLoaded = React.useCallback(
     async (reload: boolean = false) => {
@@ -140,7 +149,7 @@ export default function Feed({ navigation, onScroll, headerHeight }: FeedProps) 
 
   useFocusEffect(
     React.useCallback(() => {
-      if (newUpdateRef.current) {
+      if (newUpdateRef.current && isOnTopRef.current) {
         handleRefresh();
       }
     }, [handleRefresh]),
@@ -171,6 +180,7 @@ export default function Feed({ navigation, onScroll, headerHeight }: FeedProps) 
               ref={feedRef}
               onScroll={onScroll}
               onMomentumScrollBegin={handleUpdateClosed}
+              onMomentumScrollEnd={handleUpdateRef}
               scrollEventThrottle={16}
               data={feeds}
               ListHeaderComponent={ListHeaderComponent}
