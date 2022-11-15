@@ -74,6 +74,7 @@ import { initUserMeta } from 'enevti-app/store/middleware/thunk/session/userMeta
 import { initFCMToken, refreshFCMToken } from 'enevti-app/store/middleware/thunk/session/fcm';
 import BackgroundFetch from 'react-native-background-fetch';
 import { initAPNToken } from 'enevti-app/store/middleware/thunk/session/apn';
+import { reduceMyTotalMomentSlotChanged } from 'enevti-app/store/middleware/thunk/socket/profile/totalMomentSlotChanged';
 
 const Tab = createBottomTabNavigator();
 
@@ -168,6 +169,9 @@ export default function Home({ navigation }: Props) {
     myProfileSocket.current.on('balanceChanged', (payload: any) => dispatch(reduceMyBalanceChanged(payload)));
     myProfileSocket.current.on('totalStakeChanged', (payload: any) => dispatch(reduceMyTotalStakeChanged(payload)));
     myProfileSocket.current.on('totalNFTSoldChanged', (payload: any) => dispatch(reduceMyTotalNFTSoldChanged(payload)));
+    myProfileSocket.current.on('totalMomentSlotChanged', (payload: any) =>
+      dispatch(reduceMyTotalMomentSlotChanged(payload)),
+    );
     myProfileSocket.current.on('totalServeRateChanged', (payload: any) =>
       dispatch(reduceMyTotalServeRateChanged(payload)),
     );

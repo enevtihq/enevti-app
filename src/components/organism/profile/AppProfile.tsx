@@ -53,6 +53,7 @@ import { reduceTotalNFTSoldChanged } from 'enevti-app/store/middleware/thunk/soc
 import { reduceTotalServeRateChanged } from 'enevti-app/store/middleware/thunk/socket/profile/totalServeRateChanged';
 import { reduceTotalStakeChanged } from 'enevti-app/store/middleware/thunk/socket/profile/totalStakeChanged';
 import { appSocket } from 'enevti-app/utils/app/network';
+import { reduceTotalMomentSlotChanged } from 'enevti-app/store/middleware/thunk/socket/profile/totalMomentSlotChanged';
 
 const noDisplay = 'none';
 const visible = 1;
@@ -161,6 +162,9 @@ export default function AppProfile({
         socket.current.on('balanceChanged', (payload: any) => dispatch(reduceBalanceChanged(payload, key)));
         socket.current.on('totalStakeChanged', (payload: any) => dispatch(reduceTotalStakeChanged(payload, key)));
         socket.current.on('totalNFTSoldChanged', (payload: any) => dispatch(reduceTotalNFTSoldChanged(payload, key)));
+        socket.current.on('totalMomentSlotChanged', (payload: any) =>
+          dispatch(reduceTotalMomentSlotChanged(payload, key)),
+        );
         socket.current.on('totalServeRateChanged', (payload: any) =>
           dispatch(reduceTotalServeRateChanged(payload, key)),
         );
