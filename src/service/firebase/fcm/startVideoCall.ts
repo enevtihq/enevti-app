@@ -50,7 +50,7 @@ export default async function startVideoCallFCMHandler(remoteMessage: FirebaseMe
       }
     }
 
-    const avatarUrl = makeUrl(payload.data.avatarUrl);
+    const avatarUrl = makeUrl(payload.data.avatarUrl, { width: '128' });
     displayIncomingCall(
       payload.uuid,
       parsePersonaLabel(payload.data.callerPersona),

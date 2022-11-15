@@ -47,8 +47,14 @@ type UrlGetTransactionsParam = {
   sort?: 'amount:asc' | 'amount:desc' | 'timestamp:asc' | 'timestamp:desc';
 };
 
-export function makeUrl(url: string, host: string = ENEVTI_DEFAULT_API) {
-  return encodeURI(`${host}${url}`);
+export function makeUrl(uri: string, param?: Record<string, string>, host: string = ENEVTI_DEFAULT_API) {
+  const url = new URL(`${host}${uri}`);
+  if (param) {
+    for (const key of Object.keys(param)) {
+      url.searchParams.append(key, param[key]);
+    }
+  }
+  return encodeURI(url.href);
 }
 
 export function urlNFTStorage() {
