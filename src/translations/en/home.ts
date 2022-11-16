@@ -3,7 +3,7 @@ export default {
   statistics: 'Statistics',
   createNFT: 'Create NFT',
   eligible: 'eligible',
-  notEligible: "You can't create NFT, yet!",
+  notEligible: "You Can't Create NFT, Yet!",
   notEligibleDescription:
     'Get at least {{minimumStake}} {{coin}} stake to proof yourself as a community-driven NFT creator!',
   notEligibleOKButton: 'Got It',
@@ -36,4 +36,7 @@ export default {
   free: 'FREE',
   addMoment: 'Add Moment',
   noSlot: 'No Slot!',
+  momentAlertTitle: "You Can't Add a Moment, Yet!",
+  momentAlertDescription: "You'll need a moment slot, which you can get by redeeming an NFT! Trust us, it's fun!",
+  momentAlertOkButton: 'Got It',
 };

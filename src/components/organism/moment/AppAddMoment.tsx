@@ -2,7 +2,7 @@ import React from 'react';
 import AppPortraitOverlayBox from 'enevti-app/components/molecules/list/AppPortraitOverlayBox';
 import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectMyPersonaCache } from 'enevti-app/store/slices/entities/cache/myPersona';
 import AppAvatarRenderer from 'enevti-app/components/molecules/avatar/AppAvatarRenderer';
 import { StyleSheet, View } from 'react-native';
@@ -13,26 +13,41 @@ import LinearGradient from 'react-native-linear-gradient';
 import { useTheme } from 'react-native-paper';
 import { Theme } from 'enevti-app/theme/default';
 import Color from 'color';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from 'enevti-app/navigation';
+import { setMomentAlertShow } from 'enevti-app/store/slices/ui/view/moment';
 
-export default function AppAddMoment() {
+interface AppAddMomentProps {
+  navigation: StackNavigationProp<RootStackParamList>;
+}
+
+export default function AppAddMoment({ navigation }: AppAddMomentProps) {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
   const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
 
   const myPersonaCache = useSelector(selectMyPersonaCache);
   const myProfileCache = useSelector(selectMyProfileCache);
-  const primary =
-    myProfileCache.momentSlot > 0 ? theme.colors.primary : Color(theme.colors.text).alpha(0.4).rgb().string();
-  const secondary =
-    myProfileCache.momentSlot > 0 ? theme.colors.secondary : Color(theme.colors.text).alpha(0.4).rgb().string();
+  const isEligibile = React.useMemo(() => myProfileCache.momentSlot > 0, [myProfileCache.momentSlot]);
+  const primary = isEligibile ? theme.colors.primary : Color(theme.colors.text).alpha(0.4).rgb().string();
+  const secondary = isEligibile ? theme.colors.secondary : Color(theme.colors.text).alpha(0.4).rgb().string();
+
+  const onAddMomentPress = React.useCallback(() => {
+    if (isEligibile) {
+      navigation.navigate('ChooseNFTforMoment');
+    } else {
+      dispatch(setMomentAlertShow(true));
+    }
+  }, [dispatch, isEligibile, navigation]);
 
   return (
     <LinearGradient colors={[primary, secondary]} style={styles.gradientBox}>
       <AppPortraitOverlayBox
         title={t('home:addMoment')}
         style={styles.box}
-        onPress={() => {}}
+        onPress={onAddMomentPress}
         foreground={
           <View style={styles.foreground}>
             <View>

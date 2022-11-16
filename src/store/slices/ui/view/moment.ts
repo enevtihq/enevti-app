@@ -5,6 +5,7 @@ import { Moments } from 'enevti-app/types/core/service/feed';
 import { assignDeep } from 'enevti-app/utils/primitive/object';
 
 type MomentViewState = {
+  momentAlertShow: boolean;
   checkpoint: number;
   version: number;
   fetchedVersion: number;
@@ -15,6 +16,7 @@ type MomentViewState = {
 };
 
 const initialState: MomentViewState = {
+  momentAlertShow: false,
   checkpoint: 0,
   version: 0,
   fetchedVersion: 0,
@@ -28,6 +30,9 @@ const momentViewSlice = createSlice({
   name: 'momentView',
   initialState,
   reducers: {
+    setMomentAlertShow: (moment, action: PayloadAction<boolean>) => {
+      moment.momentAlertShow = action.payload;
+    },
     setMomentViewState: (moment, action: PayloadAction<Partial<MomentViewState>>) => {
       assignDeep(moment, action.payload);
     },
@@ -53,6 +58,7 @@ const momentViewSlice = createSlice({
 });
 
 export const {
+  setMomentAlertShow,
   setMomentViewState,
   setMomentView,
   setMomentViewVersion,
@@ -66,6 +72,11 @@ export default momentViewSlice.reducer;
 export const selectMomentView = createSelector(
   (state: RootState) => state.ui.view.moment,
   (moment: MomentViewState) => moment.items,
+);
+
+export const selectMomentAlertShow = createSelector(
+  (state: RootState) => state.ui.view.moment,
+  (moment: MomentViewState) => moment.momentAlertShow,
 );
 
 export const isMomentUndefined = createSelector(

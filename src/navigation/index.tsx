@@ -53,6 +53,7 @@ import NavigationReady from 'enevti-app/utils/app/navigationReady';
 import AppOnboarding from 'enevti-app/screen/onboard/AppOnboarding';
 import { selectAppOnboarded } from 'enevti-app/store/slices/entities/onboarding/app';
 import RequestOverlayPermission from 'enevti-app/screen/onboard/RequestOverlayPermission';
+import ChooseNFTforMoment from 'enevti-app/screen/createMoment/ChooseNFTforMoment';
 
 export type RootStackParamList = {
   AppOnboarding: undefined;
@@ -124,6 +125,7 @@ export type RootStackParamList = {
     callId?: string;
   };
   RequestOverlayPermission: undefined;
+  ChooseNFTforMoment: undefined;
 };
 
 const Stack = createStackNavigator();
@@ -432,6 +434,14 @@ export default function AppNavigationContainer() {
         <Stack.Screen
           name="RequestOverlayPermission"
           component={RequestOverlayPermission}
+          options={{
+            headerShown: false,
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          }}
+        />
+        <Stack.Screen
+          name="ChooseNFTforMoment"
+          component={ChooseNFTforMoment}
           options={{
             headerShown: false,
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,

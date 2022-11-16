@@ -12,12 +12,16 @@ import { isMomentUndefined, selectMomentView } from 'enevti-app/store/slices/ui/
 import { selectFeedView } from 'enevti-app/store/slices/ui/view/feed';
 import AppAddMoment from './AppAddMoment';
 import AppMomentItem from './AppMomentItem';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from 'enevti-app/navigation';
 
 const center = 'center';
 
-interface AppRecentMomentsProps {}
+interface AppRecentMomentsProps {
+  navigation: StackNavigationProp<RootStackParamList>;
+}
 
-export default function AppRecentMoments({}: AppRecentMomentsProps) {
+export default function AppRecentMoments({ navigation }: AppRecentMomentsProps) {
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
 
@@ -39,7 +43,7 @@ export default function AppRecentMoments({}: AppRecentMomentsProps) {
     [insets],
   );
 
-  const listHeaderComponent = React.useCallback(() => <AppAddMoment />, []);
+  const listHeaderComponent = React.useCallback(() => <AppAddMoment navigation={navigation} />, [navigation]);
 
   const listFooterComponent = React.useCallback(() => <View style={{ width: wp('3%', insets) }} />, [insets]);
 

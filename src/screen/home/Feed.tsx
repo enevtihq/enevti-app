@@ -110,7 +110,7 @@ export default function Feed({ navigation, onScroll, headerHeight }: FeedProps) 
     onLoaded(true);
   }, [onLoaded, dispatch]);
 
-  const ListHeaderComponent = React.useMemo(() => <AppRecentMoments />, []);
+  const ListHeaderComponent = React.useMemo(() => <AppRecentMoments navigation={navigation} />, [navigation]);
 
   const ListFooterComponent = React.useMemo(() => <View style={{ height: hp(10) }} />, []);
 

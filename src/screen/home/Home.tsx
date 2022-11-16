@@ -75,6 +75,7 @@ import { initFCMToken, refreshFCMToken } from 'enevti-app/store/middleware/thunk
 import BackgroundFetch from 'react-native-background-fetch';
 import { initAPNToken } from 'enevti-app/store/middleware/thunk/session/apn';
 import { reduceMyTotalMomentSlotChanged } from 'enevti-app/store/middleware/thunk/socket/profile/totalMomentSlotChanged';
+import { selectMomentAlertShow, setMomentAlertShow } from 'enevti-app/store/slices/ui/view/moment';
 
 const Tab = createBottomTabNavigator();
 
@@ -88,6 +89,7 @@ export default function Home({ navigation }: Props) {
 
   const myPersona = useSelector(selectMyPersonaCache);
   const myProfile = useSelector(selectMyProfileCache);
+  const momentAlertShow = useSelector(selectMomentAlertShow);
   const onceEligible = useSelector(selectOnceEligible);
   const onceLike = useSelector(selectOnceLike);
   const onceLikeShow = useSelector(selectOnceLikeShow);
@@ -244,19 +246,12 @@ export default function Home({ navigation }: Props) {
     dispatch(hideOnceLike());
   }, [dispatch]);
 
+  const momentAlertOnDismiss = React.useCallback(() => {
+    dispatch(setMomentAlertShow(false));
+  }, [dispatch]);
+
   return (
     <BottomSheetModalProvider>
-      {!onceLike ? (
-        <AppAlertModal
-          iconName={'likeActive'}
-          visible={onceLikeShow}
-          onDismiss={onceLikeOnDismiss}
-          title={t('home:likeOnceTitle')}
-          description={t('home:likeOnceDescription')}
-          secondaryButtonText={t('home:likeOnceButton')}
-          secondaryButtonOnPress={onceLikeOnDismiss}
-        />
-      ) : null}
       {!welcome ? (
         <AppAlertModal
           visible={!welcome}
@@ -279,6 +274,28 @@ export default function Home({ navigation }: Props) {
           secondaryButtonOnPress={() => {
             Linking.openURL('https://link.enevti.com/mvp-feedback-en');
           }}
+        />
+      ) : null}
+      {myProfile.momentSlot === 0 ? (
+        <AppAlertModal
+          iconName={'notEligibleMoment'}
+          visible={momentAlertShow}
+          onDismiss={momentAlertOnDismiss}
+          title={t('home:momentAlertTitle')}
+          description={t('home:momentAlertDescription')}
+          secondaryButtonText={t('home:momentAlertOkButton')}
+          secondaryButtonOnPress={momentAlertOnDismiss}
+        />
+      ) : null}
+      {!onceLike ? (
+        <AppAlertModal
+          iconName={'likeActive'}
+          visible={onceLikeShow}
+          onDismiss={onceLikeOnDismiss}
+          title={t('home:likeOnceTitle')}
+          description={t('home:likeOnceDescription')}
+          secondaryButtonText={t('home:likeOnceButton')}
+          secondaryButtonOnPress={onceLikeOnDismiss}
         />
       ) : null}
       {canCreateNFT ? null : (
