@@ -12,7 +12,7 @@ export default {
   apps: 'Apps',
   profile: 'Profile',
   myProfile: 'My Profile',
-  recentMoments: 'Recent Moments',
+  recentMoments: 'Recent Redeem Moments',
   promotedByCommunity: 'Promoted By Community',
   pack: 'Bundle',
   oneKind: 'One of a Kind',

@@ -17,6 +17,7 @@ import notification from './notification';
 import explorer from './explorer';
 import redeem from './redeem';
 import onboarding from './onboarding';
+import createMoment from './createMoment';
 
 export default {
   auth,
@@ -38,4 +39,5 @@ export default {
   explorer,
   redeem,
   onboarding,
+  createMoment,
 };
