@@ -9,10 +9,13 @@ import { IMAGE_CROP_PICKER_OPTION } from './AppContentPicker';
 import { handleError } from 'enevti-app/utils/error/handle';
 import { shallowEqual } from 'react-redux';
 
+type AppCameraGalleryType = 'photoCamera' | 'videoCamera' | 'photoGallery' | 'videoGallery' | 'anyGallery';
+
 interface AppCameraGalleryPickerProps {
   visible: boolean;
   onSelected: (image: ImageOrVideo) => void;
   onDismiss?: () => void;
+  type?: AppCameraGalleryType[];
   memoKey?: (keyof AppCameraGalleryPickerProps)[];
 }
 
@@ -20,31 +23,91 @@ function Component({
   visible,
   onSelected,
   onDismiss,
+  type = ['photoCamera', 'photoGallery'],
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   memoKey,
 }: AppCameraGalleryPickerProps) {
   const { t } = useTranslation();
-  const nothing = React.useCallback(() => {}, []);
+  const snapPoints = React.useMemo(() => [`${menuItemHeigtPercentage(type.length)}%`], [type]);
 
-  const snapPoints = React.useMemo(() => [`${menuItemHeigtPercentage(2)}%`], []);
+  const galleryHandler = React.useCallback(
+    (mediaType: 'photo' | 'video' | 'any') => () => {
+      ImageCropPicker.openPicker({ ...IMAGE_CROP_PICKER_OPTION, mediaType })
+        .then(image => {
+          onSelected(image);
+          onDismiss && onDismiss();
+        })
+        .catch(err => handleError(err));
+    },
+    [onSelected, onDismiss],
+  );
 
-  const pickFromGallery = React.useCallback(() => {
-    ImageCropPicker.openPicker(IMAGE_CROP_PICKER_OPTION)
-      .then(image => {
-        onSelected(image);
-        onDismiss && onDismiss();
-      })
-      .catch(err => handleError(err));
-  }, [onSelected, onDismiss]);
+  const cameraHandler = React.useCallback(
+    (mediaType: 'photo' | 'video') => () => {
+      ImageCropPicker.openCamera({ ...IMAGE_CROP_PICKER_OPTION, mediaType })
+        .then(image => {
+          onSelected(image);
+          onDismiss && onDismiss();
+        })
+        .catch(err => handleError(err));
+    },
+    [onSelected, onDismiss],
+  );
 
-  const openCamera = React.useCallback(() => {
-    ImageCropPicker.openCamera(IMAGE_CROP_PICKER_OPTION)
-      .then(image => {
-        onSelected(image);
-        onDismiss && onDismiss();
-      })
-      .catch(err => handleError(err));
-  }, [onSelected, onDismiss]);
+  const handleRender = React.useCallback(
+    (tp: AppCameraGalleryType) => {
+      switch (tp) {
+        case 'photoCamera':
+          return (
+            <AppMenuItem
+              key={tp}
+              onPress={cameraHandler('photo')}
+              icon={iconMap.cameraPhoto}
+              title={t('createNFT:photoCamera')}
+            />
+          );
+        case 'photoGallery':
+          return (
+            <AppMenuItem
+              key={tp}
+              onPress={galleryHandler('photo')}
+              icon={iconMap.galleryPhoto}
+              title={t('createNFT:photoGallery')}
+            />
+          );
+        case 'videoCamera':
+          return (
+            <AppMenuItem
+              key={tp}
+              onPress={cameraHandler('video')}
+              icon={iconMap.cameraVideo}
+              title={t('createNFT:videoCamera')}
+            />
+          );
+        case 'videoGallery':
+          return (
+            <AppMenuItem
+              key={tp}
+              onPress={galleryHandler('video')}
+              icon={iconMap.galleryPhoto}
+              title={t('createNFT:videoGallery')}
+            />
+          );
+        case 'anyGallery':
+          return (
+            <AppMenuItem
+              key={tp}
+              onPress={galleryHandler('any')}
+              icon={iconMap.gallery}
+              title={t('createNFT:anyGallery')}
+            />
+          );
+        default:
+          return null;
+      }
+    },
+    [cameraHandler, galleryHandler, t],
+  );
 
   return (
     <AppMenuContainer
@@ -52,9 +115,8 @@ function Component({
       visible={visible}
       snapPoints={snapPoints}
       tapEverywhereToDismiss={true}
-      onDismiss={onDismiss ? onDismiss : nothing}>
-      <AppMenuItem onPress={openCamera} icon={iconMap.camera} title={t('createNFT:openCamera')} />
-      <AppMenuItem onPress={pickFromGallery} icon={iconMap.gallery} title={t('createNFT:pickFromGallery')} />
+      onDismiss={onDismiss ? onDismiss : () => {}}>
+      {type.map(handleRender)}
     </AppMenuContainer>
   );
 }

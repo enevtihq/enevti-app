@@ -1,4 +1,4 @@
-import { View, StyleSheet, FlatList, FlatListProps, RefreshControl } from 'react-native';
+import { View, StyleSheet, FlatList, FlatListProps, RefreshControl, Platform } from 'react-native';
 import React from 'react';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
@@ -27,6 +27,7 @@ import { hideModalLoader, showModalLoader } from 'enevti-app/store/slices/ui/glo
 import { selectMyPersonaCache } from 'enevti-app/store/slices/entities/cache/myPersona';
 import { PROFILE_MOMENT_SLOT_RESPONSE_LIMIT } from 'enevti-app/utils/constant/limit';
 import AppRadioButton from 'enevti-app/components/atoms/form/AppRadioButton';
+import AppCameraGalleryPicker from 'enevti-app/components/organism/picker/AppCameraGalleryPicker';
 
 const MOMENT_SLOT_ITEM_HEIGHT = 9;
 type Props = StackScreenProps<RootStackParamList, 'ChooseNFTforMoment'>;
@@ -45,6 +46,7 @@ export default function ChooseNFTforMoment({ navigation }: Props) {
   const [selectedNFT, setSelectedNFT] = React.useState<string>('');
   const [momentSlot, setMomentSlot] = React.useState<NFTBase[]>();
   const [momentSlotPagination, setMomentSlotPagination] = React.useState<PaginationStore>();
+  const [pickerVisible, setPickerVisible] = React.useState<boolean>(false);
 
   const itemHeight = React.useMemo(() => hp(MOMENT_SLOT_ITEM_HEIGHT + LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE), []);
 
@@ -125,12 +127,20 @@ export default function ChooseNFTforMoment({ navigation }: Props) {
     dispatch(hideModalLoader());
   }, [dispatch, onLoad]);
 
+  const onNFTSelected = React.useCallback(() => {
+    setPickerVisible(old => !old);
+  }, []);
+
+  const onPickerDismissed = React.useCallback(() => {
+    setPickerVisible(false);
+  }, []);
+
   const refreshControl = React.useMemo(
     () => (
       <RefreshControl
         refreshing={false}
         onRefresh={onRefresh}
-        progressViewOffset={hp(HEADER_HEIGHT_COMPACT_PERCENTAGE, insets)}
+        progressViewOffset={hp(HEADER_HEIGHT_COMPACT_PERCENTAGE * (Platform.OS === 'android' ? 2 : 1), insets)}
       />
     ),
     [insets, onRefresh],
@@ -183,10 +193,17 @@ export default function ChooseNFTforMoment({ navigation }: Props) {
       )}
       <View style={styles.actionContainer}>
         <View style={{ height: hp('2%', insets) }} />
-        <AppPrimaryButton disabled={selectedNFT === ''} onPress={() => {}} style={styles.actionButton}>
+        <AppPrimaryButton disabled={selectedNFT === ''} onPress={onNFTSelected} style={styles.actionButton}>
           {selectedNFT === '' ? t('createMoment:pleaseSelectNFT') : t('createMoment:attachToThis')}
         </AppPrimaryButton>
+        <View style={{ height: Platform.OS === 'ios' ? undefined : hp('2%', insets) }} />
       </View>
+      <AppCameraGalleryPicker
+        type={['videoCamera', 'videoGallery']}
+        visible={pickerVisible}
+        onSelected={() => {}}
+        onDismiss={onPickerDismissed}
+      />
     </AppView>
   );
 }

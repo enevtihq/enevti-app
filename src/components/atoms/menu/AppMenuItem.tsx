@@ -38,6 +38,7 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
       fontFamily: theme.fonts.regular.fontFamily,
       fontWeight: theme.fonts.regular.fontWeight,
       fontSize: wp('4.0%', insets),
+      width: '200%',
     },
     menuItem: {
       maxWidth: '100%',
