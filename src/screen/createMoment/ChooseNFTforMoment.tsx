@@ -3,7 +3,7 @@ import React from 'react';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import AppView from 'enevti-app/components/atoms/view/AppView';
-import AppHeader from 'enevti-app/components/atoms/view/AppHeader';
+import AppHeader, { HEADER_HEIGHT_COMPACT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Theme } from 'enevti-app/theme/default';
@@ -125,7 +125,16 @@ export default function ChooseNFTforMoment({ navigation }: Props) {
     dispatch(hideModalLoader());
   }, [dispatch, onLoad]);
 
-  const refreshControl = React.useMemo(() => <RefreshControl refreshing={false} onRefresh={onRefresh} />, [onRefresh]);
+  const refreshControl = React.useMemo(
+    () => (
+      <RefreshControl
+        refreshing={false}
+        onRefresh={onRefresh}
+        progressViewOffset={hp(HEADER_HEIGHT_COMPACT_PERCENTAGE, insets)}
+      />
+    ),
+    [insets, onRefresh],
+  );
 
   React.useEffect(() => {
     abortController.current = new AbortController();

@@ -23,6 +23,7 @@ interface AppHeaderProps {
   backIconSize?: number;
   navigation?: StackNavigationProp<RootStackParamList>;
   style?: StyleProp<ViewStyle>;
+  headerStyle?: StyleProp<ViewStyle>;
   backgroundStyle?: StyleProp<ViewStyle>;
   textStyle?: StyleProp<TextStyle>;
   subtitleStyle?: StyleProp<TextStyle>;
@@ -38,6 +39,7 @@ interface AppHeaderProps {
 
 export default function AppHeader({
   style,
+  headerStyle,
   backComponent,
   leftComponent,
   backgroundStyle,
@@ -70,7 +72,7 @@ export default function AppHeader({
 
   return (
     <Animated.View style={[styles.headerContainer, style]}>
-      <Appbar.Header statusBarHeight={0} style={styles.header}>
+      <Appbar.Header statusBarHeight={0} style={[styles.header, headerStyle]}>
         {back && navigation ? (
           <AppIconButton
             icon={backIcon ?? iconMap.arrowBack}
