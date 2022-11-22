@@ -18,7 +18,7 @@ import {
   setFeedViewState,
 } from 'enevti-app/store/slices/ui/view/feed';
 import { lastFetchTimeout } from 'enevti-app/utils/constant/lastFetch';
-import { getHome, getMoreFeeds, parseFeedCache } from 'enevti-app/service/enevti/feed';
+import { getHome, getMoreFeeds, parseFeedCache, parseMomentCache } from 'enevti-app/service/enevti/feed';
 import i18n from 'enevti-app/translations/i18n';
 import {
   HOME_FEED_LIMIT,
@@ -95,7 +95,7 @@ export const loadFeeds = createAsyncThunk<void, loadFeedsArgs, AsyncThunkAPI>(
               reqVersion: homeResponse.version.feed,
             }),
           );
-          dispatch(setMomentItemsCache(homeResponse.data.moment));
+          dispatch(setMomentItemsCache(parseMomentCache(homeResponse.data.moment)));
           dispatch(
             setMyProfileCache({
               ...parseProfileCache(homeResponse.data.profile as Profile),

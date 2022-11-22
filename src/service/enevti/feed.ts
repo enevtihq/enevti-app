@@ -1,6 +1,6 @@
 import { ProfileAPIVersion } from 'enevti-app/types/core/account/profile';
 import { APIResponse, APIResponseVersionRoot } from 'enevti-app/types/core/service/api';
-import { Feeds, HomeFeeds } from 'enevti-app/types/core/service/feed';
+import { Feeds, HomeFeeds, Moments } from 'enevti-app/types/core/service/feed';
 import { HOME_FEED_LIMIT } from 'enevti-app/utils/constant/limit';
 import { urlGetFeeds, urlGetHome } from 'enevti-app/utils/constant/URLCreator';
 import { apiFetch, apiFetchVersionRoot } from 'enevti-app/utils/app/network';
@@ -40,6 +40,10 @@ async function fetchFeeds(
 
 export function parseFeedCache(feeds: Feeds) {
   return feeds.slice(0, FEED_CACHE_MAX_LENGTH);
+}
+
+export function parseMomentCache(moments: Moments) {
+  return moments.slice(0, 10);
 }
 
 export async function getHome(

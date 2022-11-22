@@ -16,6 +16,7 @@ import {
   urlGetProfile,
   urlGetProfileBalance,
   urlGetProfileCollection,
+  urlGetProfileMomentSlot,
   urlGetProfileNonce,
   urlGetProfileOwned,
   urlGetProfilePendingDelivery,
@@ -26,7 +27,11 @@ import { APIResponse, APIResponseVersioned, APIResponseVersionRoot } from 'enevt
 import { NFTSecret } from 'enevti-app/types/core/chain/nft/NFTSecret';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { StackScreenProps } from '@react-navigation/stack';
-import { PROFILE_OWNED_INITIAL_LENGTH, PROFILE_COLLECTION_INITIAL_LENGTH } from 'enevti-app/utils/constant/limit';
+import {
+  PROFILE_OWNED_INITIAL_LENGTH,
+  PROFILE_COLLECTION_INITIAL_LENGTH,
+  PROFILE_MOMENT_SLOT_INITIAL_LENGTH,
+} from 'enevti-app/utils/constant/limit';
 import { NFTBase } from 'enevti-app/types/core/chain/nft';
 import { selectMyPersonaCache } from 'enevti-app/store/slices/entities/cache/myPersona';
 
@@ -77,6 +82,16 @@ async function fetchProfileAddressFromUsername(
   return await apiFetch<string>(urlGetUsernameToAddress(username), signal);
 }
 
+async function fetchProfileMomentSlot(
+  address: string,
+  offset: number,
+  limit: number,
+  version: number,
+  signal?: AbortController['signal'],
+): Promise<APIResponseVersioned<NFTBase[]>> {
+  return await apiFetchVersioned<NFTBase[]>(urlGetProfileMomentSlot(address, offset, limit, version), signal);
+}
+
 async function fetchProfileOwned(
   address: string,
   offset: number,
@@ -112,6 +127,23 @@ export async function getProfileInitialCollection(
   signal?: AbortController['signal'],
 ): Promise<APIResponseVersioned<Profile['collection']>> {
   return await fetchProfileCollection(address, 0, PROFILE_COLLECTION_INITIAL_LENGTH, 0, signal);
+}
+
+export async function getProfileInitialMomentSlot(
+  address: string,
+  signal?: AbortController['signal'],
+): Promise<APIResponseVersioned<NFTBase[]>> {
+  return await fetchProfileMomentSlot(address, 0, PROFILE_MOMENT_SLOT_INITIAL_LENGTH, 0, signal);
+}
+
+export async function getProfileMomentSlot(
+  address: string,
+  offset: number,
+  limit: number,
+  version: number,
+  signal?: AbortController['signal'],
+): Promise<APIResponseVersioned<NFTBase[]>> {
+  return await fetchProfileMomentSlot(address, offset, limit, version, signal);
 }
 
 export async function getProfileOwned(
