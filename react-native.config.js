@@ -4,4 +4,11 @@ module.exports = {
     android: {},
   },
   assets: ['./src/assets/fonts/'],
+  dependencies: {
+    'react-native-video-processing': {
+      platforms: {
+        ios: null,
+      },
+    },
+  },
 };
