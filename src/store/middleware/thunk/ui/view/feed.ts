@@ -1,6 +1,6 @@
 import { handleError, isErrorResponse } from 'enevti-app/utils/error/handle';
 import { AppThunk, AsyncThunkAPI } from 'enevti-app/store/state';
-import { createAsyncThunk } from '@reduxjs/toolkit';
+import { AnyAction, createAsyncThunk } from '@reduxjs/toolkit';
 import {
   selectFeedItemsCache,
   selectLastFetchFeedCache,
@@ -13,7 +13,6 @@ import {
   selectFeedView,
   selectFeedViewCheckpoint,
   selectFeedViewReqVersion,
-  setFeedViewLoaded,
   setFeedViewVersion,
   setFeedViewState,
 } from 'enevti-app/store/slices/ui/view/feed';
@@ -27,9 +26,9 @@ import {
   PROFILE_OWNED_INITIAL_LENGTH,
 } from 'enevti-app/utils/constant/limit';
 import { myProfileInitialState, setMyProfileView } from 'enevti-app/store/slices/ui/view/myProfile';
-import { setMomentViewLoaded, setMomentViewState, setMomentViewVersion } from 'enevti-app/store/slices/ui/view/moment';
+import { setMomentViewState, setMomentViewVersion } from 'enevti-app/store/slices/ui/view/moment';
 import { selectMomentItemsCache, setMomentItemsCache } from 'enevti-app/store/slices/entities/cache/moment';
-import { setMyProfileCache } from 'enevti-app/store/slices/entities/cache/myProfile';
+import { selectMyProfileCache, setMyProfileCache } from 'enevti-app/store/slices/entities/cache/myProfile';
 import { parseProfileCache } from 'enevti-app/service/enevti/profile';
 import { Profile } from 'enevti-app/types/core/account/profile';
 
@@ -116,31 +115,44 @@ export const loadFeeds = createAsyncThunk<void, loadFeedsArgs, AsyncThunkAPI>(
             }),
           );
         } else {
-          throw Error(i18n.t('error:clientError'));
+          throw { message: i18n.t('error:clientError'), code: homeResponse.status };
         }
       } else {
-        dispatch(
-          setFeedViewState({
-            items: selectFeedItemsCache(getState()),
-            reqStatus: 200,
-            reqVersion: selectReqVersionFeedItemsCache(getState()),
-            loaded: true,
-          }),
-        );
-        dispatch(
-          setMomentViewState({
-            items: selectMomentItemsCache(getState()),
-            reqStatus: 200,
-            reqVersion: selectReqVersionFeedItemsCache(getState()),
-            loaded: true,
-          }),
-        );
+        dispatch(loadFeedFromCache() as unknown as AnyAction);
       }
     } catch (err: any) {
       handleError(err);
-      dispatch(setFeedViewLoaded(true));
-      dispatch(setMomentViewLoaded(true));
+      dispatch(loadFeedFromCache() as unknown as AnyAction);
     }
+  },
+);
+
+export const loadFeedFromCache = createAsyncThunk<void, undefined, AsyncThunkAPI>(
+  'feedView/loadFeedFromCache',
+  async (_, { dispatch, getState }) => {
+    dispatch(
+      setFeedViewState({
+        items: selectFeedItemsCache(getState()),
+        reqStatus: 200,
+        reqVersion: selectReqVersionFeedItemsCache(getState()),
+        loaded: true,
+      }),
+    );
+    dispatch(
+      setMomentViewState({
+        items: selectMomentItemsCache(getState()),
+        reqStatus: 200,
+        reqVersion: selectReqVersionFeedItemsCache(getState()),
+        loaded: true,
+      }),
+    );
+    dispatch(
+      setMyProfileView({
+        ...selectMyProfileCache(getState()),
+        reqStatus: 200,
+        loaded: true,
+      }),
+    );
   },
 );
 
