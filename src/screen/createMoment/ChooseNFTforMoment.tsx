@@ -28,6 +28,10 @@ import { selectMyPersonaCache } from 'enevti-app/store/slices/entities/cache/myP
 import { PROFILE_MOMENT_SLOT_RESPONSE_LIMIT } from 'enevti-app/utils/constant/limit';
 import AppRadioButton from 'enevti-app/components/atoms/form/AppRadioButton';
 import AppCameraGalleryPicker from 'enevti-app/components/organism/picker/AppCameraGalleryPicker';
+import { ImageOrVideo, Video } from 'react-native-image-crop-picker';
+import { openVideoEditor } from 'enevti-app/utils/editor/openVideoEditor';
+import AppResponseView from 'enevti-app/components/organism/view/AppResponseView';
+import { MOMENT_MAXIMUM_DURATION } from 'enevti-app/utils/constant/moment';
 
 const MOMENT_SLOT_ITEM_HEIGHT = 9;
 type Props = StackScreenProps<RootStackParamList, 'ChooseNFTforMoment'>;
@@ -47,6 +51,11 @@ export default function ChooseNFTforMoment({ navigation }: Props) {
   const [momentSlot, setMomentSlot] = React.useState<NFTBase[]>();
   const [momentSlotPagination, setMomentSlotPagination] = React.useState<PaginationStore>();
   const [pickerVisible, setPickerVisible] = React.useState<boolean>(false);
+  const [responseCode, setResponseCode] = React.useState<number>(0);
+  const progressViewOffset = React.useMemo(
+    () => hp(HEADER_HEIGHT_COMPACT_PERCENTAGE * (Platform.OS === 'android' ? 2 : 1), insets),
+    [insets],
+  );
 
   const itemHeight = React.useMemo(() => hp(MOMENT_SLOT_ITEM_HEIGHT + LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE), []);
 
@@ -104,6 +113,7 @@ export default function ChooseNFTforMoment({ navigation }: Props) {
         version: momentSlotResponse.data.version,
       });
     }
+    setResponseCode(momentSlotResponse.status);
   }, [myPersona.address]);
 
   const onLoadMore = React.useCallback(async () => {
@@ -118,6 +128,7 @@ export default function ChooseNFTforMoment({ navigation }: Props) {
       if (momentSlotResponse.status === 200) {
         setMomentSlot(old => (old !== undefined ? [...old, ...momentSlotResponse.data.data] : undefined));
       }
+      setResponseCode(momentSlotResponse.status);
     }
   }, [momentSlot, momentSlotPagination, myPersona.address]);
 
@@ -128,22 +139,30 @@ export default function ChooseNFTforMoment({ navigation }: Props) {
   }, [dispatch, onLoad]);
 
   const onNFTSelected = React.useCallback(() => {
-    setPickerVisible(old => !old);
+    console.log('change this');
+    openVideoEditor({
+      navigation,
+      source:
+        'file:///private/var/mobile/Containers/Data/Application/804929CE-009D-498E-915B-2E7D2759CDA1/tmp/react-native-image-crop-picker/B43C8FFE-F623-4CD4-A001-0F72AE2F3361.mp4',
+      duration: 5,
+    });
+    // setPickerVisible(old => !old);
   }, []);
 
   const onPickerDismissed = React.useCallback(() => {
     setPickerVisible(false);
   }, []);
 
+  const onPickerPicked = React.useCallback(
+    (video: ImageOrVideo) => {
+      openVideoEditor({ navigation, source: video.path, duration: MOMENT_MAXIMUM_DURATION });
+    },
+    [navigation],
+  );
+
   const refreshControl = React.useMemo(
-    () => (
-      <RefreshControl
-        refreshing={false}
-        onRefresh={onRefresh}
-        progressViewOffset={hp(HEADER_HEIGHT_COMPACT_PERCENTAGE * (Platform.OS === 'android' ? 2 : 1), insets)}
-      />
-    ),
-    [insets, onRefresh],
+    () => <RefreshControl refreshing={false} onRefresh={onRefresh} progressViewOffset={progressViewOffset} />,
+    [onRefresh, progressViewOffset],
   );
 
   React.useEffect(() => {
@@ -165,51 +184,60 @@ export default function ChooseNFTforMoment({ navigation }: Props) {
         <AppHeader compact back backIcon={iconMap.close} backIconSize={23} navigation={navigation} title={' '} />
       }>
       {momentSlot !== undefined ? (
-        <AnimatedFlatList
-          ref={nftListRef}
-          keyExtractor={keyExtractor}
-          scrollEventThrottle={16}
-          showsVerticalScrollIndicator={false}
-          getItemLayout={getItemLayout}
-          data={momentSlot}
-          renderItem={renderItem}
-          refreshControl={refreshControl}
-          ListHeaderComponent={
-            <AppHeaderWizard
-              title={t('createMoment:addMoment')}
-              description={t('createMoment:addMomentDescription')}
-              style={styles.header}
-              memoKey={[]}
-            />
-          }
-          ListFooterComponent={listFooter}
-          onEndReachedThreshold={0.1}
-          onEndReached={onLoadMore}
-        />
+        <AppResponseView
+          onReload={onRefresh}
+          progressViewOffset={progressViewOffset}
+          status={responseCode}
+          style={styles.container}>
+          <AnimatedFlatList
+            ref={nftListRef}
+            keyExtractor={keyExtractor}
+            scrollEventThrottle={16}
+            showsVerticalScrollIndicator={false}
+            getItemLayout={getItemLayout}
+            data={momentSlot}
+            renderItem={renderItem}
+            refreshControl={refreshControl}
+            ListHeaderComponent={
+              <AppHeaderWizard
+                title={t('createMoment:addMoment')}
+                description={t('createMoment:addMomentDescription')}
+                style={styles.header}
+                memoKey={[]}
+              />
+            }
+            ListFooterComponent={listFooter}
+            onEndReachedThreshold={0.1}
+            onEndReached={onLoadMore}
+          />
+          <View style={styles.actionContainer}>
+            <View style={{ height: hp('2%', insets) }} />
+            <AppPrimaryButton disabled={selectedNFT === ''} onPress={onNFTSelected} style={styles.actionButton}>
+              {selectedNFT === '' ? t('createMoment:pleaseSelectNFT') : t('createMoment:attachToThis')}
+            </AppPrimaryButton>
+            <View style={{ height: Platform.OS === 'ios' ? undefined : hp('2%', insets) }} />
+          </View>
+          <AppCameraGalleryPicker
+            type={['videoCamera', 'videoGallery']}
+            visible={pickerVisible}
+            onSelected={onPickerPicked}
+            onDismiss={onPickerDismissed}
+          />
+        </AppResponseView>
       ) : (
         <View style={styles.loaderContainer}>
           <AppActivityIndicator animating />
         </View>
       )}
-      <View style={styles.actionContainer}>
-        <View style={{ height: hp('2%', insets) }} />
-        <AppPrimaryButton disabled={selectedNFT === ''} onPress={onNFTSelected} style={styles.actionButton}>
-          {selectedNFT === '' ? t('createMoment:pleaseSelectNFT') : t('createMoment:attachToThis')}
-        </AppPrimaryButton>
-        <View style={{ height: Platform.OS === 'ios' ? undefined : hp('2%', insets) }} />
-      </View>
-      <AppCameraGalleryPicker
-        type={['videoCamera', 'videoGallery']}
-        visible={pickerVisible}
-        onSelected={() => {}}
-        onDismiss={onPickerDismissed}
-      />
     </AppView>
   );
 }
 
 const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
   StyleSheet.create({
+    container: {
+      flex: 1,
+    },
     momentSlotRightContent: {
       justifyContent: 'center',
     },

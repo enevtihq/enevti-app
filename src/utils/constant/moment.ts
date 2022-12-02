@@ -1,0 +1,1 @@
+export const MOMENT_MAXIMUM_DURATION = 15000;

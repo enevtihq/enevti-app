@@ -12,7 +12,7 @@ import AppBrandBanner from 'enevti-app/components/molecules/brand/AppBrandBanner
 import AppIconButton from 'enevti-app/components/atoms/icon/AppIconButton';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 
-export const HEADER_HEIGHT_PERCENTAGE = 9.5;
+export const HEADER_HEIGHT_PERCENTAGE = 7.5;
 export const HEADER_HEIGHT_COMPACT_PERCENTAGE = 6;
 
 interface AppHeaderProps {
@@ -91,7 +91,7 @@ export default function AppHeader({
             {subtitle ? <Animated.Text style={[styles.subtitle, subtitleStyle]}>{subtitle}</Animated.Text> : null}
           </View>
         ) : (
-          <AppBrandBanner heightPercentage={0.05} style={styles.image} />
+          <AppBrandBanner heightPercentage={0.0425} style={styles.image} />
         )}
         <View style={styles.divider} />
         {children ? children : <View />}

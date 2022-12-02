@@ -138,6 +138,10 @@ export const iconMap = {
   setVideoCallRejected: 'phone-cancel',
   cellphoneOff: 'phone-off',
   notEligibleMoment: 'book-lock',
+  play: 'play',
+  pause: 'pause',
+  volumeOn: 'volume-high',
+  volumeOff: 'volume-off',
 };
 
 interface AppIconComponentProps {

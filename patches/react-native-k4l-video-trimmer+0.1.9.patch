@@ -1,0 +1,101 @@
+diff --git a/node_modules/react-native-k4l-video-trimmer/android/src/main/java/com/reactnativek4lvideotrimmer/K4lVideoTrimmerModule.java b/node_modules/react-native-k4l-video-trimmer/android/src/main/java/com/reactnativek4lvideotrimmer/K4lVideoTrimmerModule.java
+index 95f13d1..ce87613 100644
+--- a/node_modules/react-native-k4l-video-trimmer/android/src/main/java/com/reactnativek4lvideotrimmer/K4lVideoTrimmerModule.java
++++ b/node_modules/react-native-k4l-video-trimmer/android/src/main/java/com/reactnativek4lvideotrimmer/K4lVideoTrimmerModule.java
+@@ -54,13 +54,14 @@ public class K4lVideoTrimmerModule extends ReactContextBaseJavaModule implements
+   }
+ 
+   @ReactMethod
+-  void navigateToTrimmer(@NonNull String uri, @NonNull String duration, Promise promise) {
++  void navigateToTrimmer(@NonNull String uri, @NonNull String duration, @NonNull String title, Promise promise) {
+     this.promise = promise;
+     Activity activity = getCurrentActivity();
+     if (activity != null) {
+       Intent intent = new Intent(activity, TrimmerActivity.class);
+       intent.putExtra("EXTRA_VIDEO_PATH", uri);
+       intent.putExtra("VIDEO_TRIM_DURATION", duration);
++      intent.putExtra("TRIMMER_TITLE", title);
+       activity.startActivityForResult(intent, 1);
+     }
+   }
+diff --git a/node_modules/react-native-k4l-video-trimmer/android/src/main/java/com/reactnativek4lvideotrimmer/TrimmerActivity.java b/node_modules/react-native-k4l-video-trimmer/android/src/main/java/com/reactnativek4lvideotrimmer/TrimmerActivity.java
+index 7df6119..ee0026d 100644
+--- a/node_modules/react-native-k4l-video-trimmer/android/src/main/java/com/reactnativek4lvideotrimmer/TrimmerActivity.java
++++ b/node_modules/react-native-k4l-video-trimmer/android/src/main/java/com/reactnativek4lvideotrimmer/TrimmerActivity.java
+@@ -56,15 +56,15 @@ public class TrimmerActivity extends AppCompatActivity {
+     Uri path = Uri.parse(extraIntent.getStringExtra("EXTRA_VIDEO_PATH"));
+     Long duration = Long.valueOf(extraIntent.getStringExtra("VIDEO_TRIM_DURATION"));
+     this.videoUri = String.valueOf(path);
+-    openTrimActivity(this.videoUri, duration);
++    openTrimActivity(this.videoUri, duration, extraIntent.getStringExtra("TRIMMER_TITLE"));
+   }
+ 
+-  private void openTrimActivity(String path, Long duration) {
++  private void openTrimActivity(String path, Long duration, String title) {
+      TrimVideo.activity(String.valueOf(path))
+       .setTrimType(TrimType.FIXED_DURATION)
+       .setHideSeekBar(true)
+       .setFixedDuration(duration)
+-      .setTitle("select maximum " + duration + " seconds")
++      .setTitle(title)
+       .start(TrimmerActivity.this, startForResult);
+   }
+ }
+diff --git a/node_modules/react-native-k4l-video-trimmer/lib/commonjs/index.js b/node_modules/react-native-k4l-video-trimmer/lib/commonjs/index.js
+index 6c5f895..d384a7b 100644
+--- a/node_modules/react-native-k4l-video-trimmer/lib/commonjs/index.js
++++ b/node_modules/react-native-k4l-video-trimmer/lib/commonjs/index.js
+@@ -23,9 +23,9 @@ function multiply(a, b) {
+   return K4lVideoTrimmer.multiply(a, b);
+ }
+ 
+-function navigateToTrimmer(uri, duration) {
++function navigateToTrimmer(uri, duration, title) {
+   // try {
+-  return K4lVideoTrimmer.navigateToTrimmer(uri, duration); // } catch (error) {
++  return K4lVideoTrimmer.navigateToTrimmer(uri, duration, title); // } catch (error) {
+   //   console.log(JSON.stringify(error));
+   // }
+ }
+diff --git a/node_modules/react-native-k4l-video-trimmer/lib/module/index.js b/node_modules/react-native-k4l-video-trimmer/lib/module/index.js
+index 8d4eb2e..51a7e8c 100644
+--- a/node_modules/react-native-k4l-video-trimmer/lib/module/index.js
++++ b/node_modules/react-native-k4l-video-trimmer/lib/module/index.js
+@@ -12,9 +12,9 @@ const K4lVideoTrimmer = NativeModules.K4lVideoTrimmer ? NativeModules.K4lVideoTr
+ export function multiply(a, b) {
+   return K4lVideoTrimmer.multiply(a, b);
+ }
+-export function navigateToTrimmer(uri, duration) {
++export function navigateToTrimmer(uri, duration, title) {
+   // try {
+-  return K4lVideoTrimmer.navigateToTrimmer(uri, duration); // } catch (error) {
++  return K4lVideoTrimmer.navigateToTrimmer(uri, duration, title); // } catch (error) {
+   //   console.log(JSON.stringify(error));
+   // }
+ }
+diff --git a/node_modules/react-native-k4l-video-trimmer/lib/typescript/index.d.ts b/node_modules/react-native-k4l-video-trimmer/lib/typescript/index.d.ts
+index d1bb9ad..a48f49b 100644
+--- a/node_modules/react-native-k4l-video-trimmer/lib/typescript/index.d.ts
++++ b/node_modules/react-native-k4l-video-trimmer/lib/typescript/index.d.ts
+@@ -1,2 +1,2 @@
+ export declare function multiply(a: number, b: number): Promise<number>;
+-export declare function navigateToTrimmer(uri: string, duration: string): Promise<string>;
++export declare function navigateToTrimmer(uri: string, duration: string, title: string): Promise<string>;
+diff --git a/node_modules/react-native-k4l-video-trimmer/src/index.tsx b/node_modules/react-native-k4l-video-trimmer/src/index.tsx
+index 09c6247..f23abf8 100644
+--- a/node_modules/react-native-k4l-video-trimmer/src/index.tsx
++++ b/node_modules/react-native-k4l-video-trimmer/src/index.tsx
+@@ -23,10 +23,11 @@ export function multiply(a: number, b: number): Promise<number> {
+ 
+ export function navigateToTrimmer(
+   uri: string,
+-  duration: string
++  duration: string,
++  title: string,
+ ): Promise<string> {
+   // try {
+-  return K4lVideoTrimmer.navigateToTrimmer(uri, duration);
++  return K4lVideoTrimmer.navigateToTrimmer(uri, duration, title);
+   // } catch (error) {
+   //   console.log(JSON.stringify(error));
+   // }

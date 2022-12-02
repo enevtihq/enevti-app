@@ -34,19 +34,22 @@ export default function ChooseNFTType({ navigation }: Props) {
 
   const [oneKindSheetVisible, setOneKindSheetVisible] = React.useState<boolean>(false);
 
-  const onOneKindImagePicked = (image: ImageOrVideo) => {
-    dispatch(setCreateNFTQueueType('onekind'));
-    dispatch(
-      setCreateNFTOneKindData({
-        uri: image.path,
-        mime: image.mime,
-        extension: getFileExtension(ImageOrVideoToDocument(image)),
-        size: image.size,
-      }),
-    );
-    setOneKindSheetVisible(false);
-    navigation.replace('ChooseNFTTemplate', { mode: 'normal' });
-  };
+  const onOneKindImagePicked = React.useCallback(
+    (image: ImageOrVideo) => {
+      dispatch(setCreateNFTQueueType('onekind'));
+      dispatch(
+        setCreateNFTOneKindData({
+          uri: image.path,
+          mime: image.mime,
+          extension: getFileExtension(ImageOrVideoToDocument(image)),
+          size: image.size,
+        }),
+      );
+      setOneKindSheetVisible(false);
+      navigation.replace('ChooseNFTTemplate', { mode: 'normal' });
+    },
+    [dispatch, navigation],
+  );
 
   const onOneKindImagePressed = React.useCallback(() => setOneKindSheetVisible(visible => !visible), []);
 

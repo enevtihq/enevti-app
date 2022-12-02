@@ -96,6 +96,7 @@
     "react-native-image-crop-picker": "^0.37.3",
     "react-native-image-progress": "^1.2.0",
     "react-native-job-queue": "^0.4.2",
+    "react-native-k4l-video-trimmer": "^0.1.9",
     "react-native-level-fs": "^3.0.1",
     "react-native-linear-gradient": "^2.5.6",
     "react-native-localize": "^2.1.7",

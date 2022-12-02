@@ -209,7 +209,7 @@ const makeStyles = (hp: DimensionFunction, wp: DimensionFunction, theme: Theme) 
       marginBottom: hp('2%'),
       marginLeft: wp('5%'),
       marginRight: wp('5%'),
-      width: wp('70%'),
+      width: wp('90%'),
       alignSelf: 'center',
       shadowColor: '#000000',
       shadowOffset: { width: 0, height: 8 },
@@ -217,7 +217,8 @@ const makeStyles = (hp: DimensionFunction, wp: DimensionFunction, theme: Theme) 
       shadowRadius: theme.dark ? 10 : 7,
     },
     actionButtonGradient: {
-      borderRadius: theme.roundness * 2,
+      borderRadius: theme.roundness,
+      borderWidth: 0,
     },
     actionButtonContent: {
       flexDirection: 'row',

@@ -37,7 +37,7 @@ type TrimOptions = {
  */
 type iOSProcessingCallback = Function;
 
-type iOSPreviewMaxSize = {
+type PreviewMaxSize = {
   width: number;
   height: number;
 };
@@ -94,6 +94,26 @@ type VideoPlayerProps = {
   playerHeight?: number;
 };
 
+type VideoPlayerConstants = {
+  resizeMode: {
+    CONTAIN: string;
+    COVER: string;
+    STRETCH: string;
+    NONE: string;
+  };
+  quality: {
+    QUALITY_LOW: 'low';
+    QUALITY_MEDIUM: 'medium';
+    QUALITY_HIGHEST: 'highest';
+    QUALITY_640x480: '640x480';
+    QUALITY_960x540: '960x540';
+    QUALITY_1280x720: '1280x720';
+    QUALITY_1920x1080: '1920x1080';
+    QUALITY_3840x2160: '3840x2160';
+    QUALITY_PASS_THROUGH: 'passthrough';
+  };
+};
+
 declare module 'react-native-video-processing' {
   import { Component } from 'react';
   import { ViewProps } from 'react-native';
@@ -141,8 +161,18 @@ declare module 'react-native-video-processing' {
       startTime: number,
       endTime: number,
       step: number,
-      maximumSize?: iOSPreviewMaxSize,
+      maximumSize?: PreviewMaxSize,
     ): Promise<Array<{ image: string }>>;
+
+    /**
+     * Android and iOS
+     */
+    static getPreviewForSecond(
+      source: string,
+      second: number,
+      maximumSize: PreviewMaxSize,
+      format: Format,
+    ): Promise<Array<string>>;
 
     /**
      * Android and iOS
@@ -153,8 +183,20 @@ declare module 'react-native-video-processing' {
      * Android only
      */
     static merge(source: ArrayType, cmd: string): Promise<{ source: string }>;
+
+    /**
+     * Android and iOS
+     */
+    static reverse(source: string): Promise<any>;
+
+    /**
+     * Android and iOS
+     */
+    static boomerang(source: string): Promise<any>;
   }
 
   export class Trimmer extends Component<TrimmerViewProps> {}
-  export class VideoPlayer extends Component<ViewProps & VideoPlayerProps> {}
+  export class VideoPlayer extends Component<ViewProps & VideoPlayerProps> {
+    static Constants: VideoPlayerConstants;
+  }
 }
