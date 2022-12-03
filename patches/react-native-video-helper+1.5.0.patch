@@ -1,0 +1,12 @@
+diff --git a/node_modules/react-native-video-helper/react-native-video-helper.podspec b/node_modules/react-native-video-helper/react-native-video-helper.podspec
+index b647564..c3a21c1 100644
+--- a/node_modules/react-native-video-helper/react-native-video-helper.podspec
++++ b/node_modules/react-native-video-helper/react-native-video-helper.podspec
+@@ -15,6 +15,7 @@ Pod::Spec.new do |s|
+   s.source       = { :git => "https://github.com/classapp/react-native-video-helper.git", :tag => "#{s.version}" }
+ 
+   s.source_files = "ios/*.{h,m}"
++  s.exclude_files = "ios/SDAVAssetExportSession.{h,m}"
+   
+   s.dependency "React"
+ 

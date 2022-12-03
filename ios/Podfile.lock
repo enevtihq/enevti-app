@@ -197,6 +197,7 @@ PODS:
     - GoogleUtilities/Logger
   - GoogleUtilitiesComponents (1.1.0):
     - GoogleUtilities/Logger
+  - GPUImage (0.2.0)
   - GTMAppAuth (1.3.0):
     - AppAuth/Core (~> 1.4)
     - GTMSessionFetcher/Core (~> 1.5)
@@ -534,6 +535,8 @@ PODS:
   - react-native-video (5.1.1):
     - React-Core
     - react-native-video/Video (= 5.1.1)
+  - react-native-video-helper (1.5.0):
+    - React
   - react-native-video/Video (5.1.1):
     - React-Core
   - React-perflogger (0.66.4)
@@ -698,6 +701,8 @@ PODS:
     - React-Core
   - RNVectorIcons (9.0.0):
     - React-Core
+  - RNVideoProcessing (1.7.4):
+    - React
   - RNVoipPushNotification (3.3.0):
     - React-Core
   - RNWheelPicker (0.3.9):
@@ -750,6 +755,7 @@ DEPENDENCIES:
   - FlipperKit/FlipperKitUserDefaultsPlugin (= 0.146.0)
   - FlipperKit/SKIOSNetworkPlugin (= 0.146.0)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
+  - GPUImage (from `https://github.com/BunHouth/GPUImage.git`)
   - hermes-engine (~> 0.9.0)
   - libevent (~> 2.1.12)
   - lottie-react-native (from `../node_modules/lottie-react-native`)
@@ -788,6 +794,7 @@ DEPENDENCIES:
   - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
   - react-native-twilio-video-webrtc (from `../node_modules/react-native-twilio-video-webrtc`)
   - react-native-video (from `../node_modules/react-native-video`)
+  - react-native-video-helper (from `../node_modules/react-native-video-helper`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../node_modules/react-native/Libraries/NativeAnimation`)
@@ -825,6 +832,7 @@ DEPENDENCIES:
   - RNSound (from `../node_modules/react-native-sound`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
+  - RNVideoProcessing (from `../node_modules/react-native-video-processing`)
   - RNVoipPushNotification (from `../node_modules/react-native-voip-push-notification`)
   - "RNWheelPicker (from `../node_modules/@yz1311/react-native-wheel-picker`)"
   - vision-camera-code-scanner (from `../node_modules/vision-camera-code-scanner`)
@@ -894,6 +902,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/React/FBReactNativeSpec"
   glog:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
+  GPUImage:
+    :git: https://github.com/BunHouth/GPUImage.git
   lottie-react-native:
     :path: "../node_modules/lottie-react-native"
   RCT-Folly:
@@ -962,6 +972,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-twilio-video-webrtc"
   react-native-video:
     :path: "../node_modules/react-native-video"
+  react-native-video-helper:
+    :path: "../node_modules/react-native-video-helper"
   React-perflogger:
     :path: "../node_modules/react-native/ReactCommon/reactperflogger"
   React-RCTActionSheet:
@@ -1036,6 +1048,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-svg"
   RNVectorIcons:
     :path: "../node_modules/react-native-vector-icons"
+  RNVideoProcessing:
+    :path: "../node_modules/react-native-video-processing"
   RNVoipPushNotification:
     :path: "../node_modules/react-native-voip-push-notification"
   RNWheelPicker:
@@ -1046,6 +1060,11 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-vision-camera"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
+
+CHECKOUT OPTIONS:
+  GPUImage:
+    :commit: c0f80da9240a07fae7ec5119d2ef252b061e340f
+    :git: https://github.com/BunHouth/GPUImage.git
 
 SPEC CHECKSUMS:
   AppAuth: 80317d99ac7ff2801a2f18ff86b48cd315ed465d
@@ -1079,6 +1098,7 @@ SPEC CHECKSUMS:
   GoogleToolboxForMac: 8bef7c7c5cf7291c687cf5354f39f9db6399ad34
   GoogleUtilities: e0913149f6b0625b553d70dae12b49fc62914fd1
   GoogleUtilitiesComponents: 679b2c881db3b615a2777504623df6122dd20afe
+  GPUImage: d34c2d8ce12c9d7eb7e4f5017e1a7dd2eb0abc70
   GTMAppAuth: 4d8f864896f3646f0c33baf38a28362f4c601e15
   GTMSessionFetcher: 5595ec75acf5be50814f81e9189490412bad82ba
   hermes-engine: bf7577d12ac6ccf53ab8b5af3c6ccf0dd8458c5c
@@ -1129,6 +1149,7 @@ SPEC CHECKSUMS:
   react-native-splash-screen: 4312f786b13a81b5169ef346d76d33bc0c6dc457
   react-native-twilio-video-webrtc: b98a07e6a35c75e0dc4c74076d263e0b9d2656c3
   react-native-video: 1574074179ecaf6a9dd067116c8f31bf9fec15c8
+  react-native-video-helper: 00d949d79d602ebb43acb3c577285b11fff85098
   React-perflogger: 93075d8931c32cd1fce8a98c15d2d5ccc4d891bd
   React-RCTActionSheet: 7d3041e6761b4f3044a37079ddcb156575fb6d89
   React-RCTAnimation: 743e88b55ac62511ae5c2e22803d4f503f2a3a13
@@ -1166,6 +1187,7 @@ SPEC CHECKSUMS:
   RNSound: 1081cf2576b404ca804daf4934bb644cb506ff98
   RNSVG: 302bfc9905bd8122f08966dc2ce2d07b7b52b9f8
   RNVectorIcons: 4143ba35feebab8fdbe6bc43d1e776b393d47ac8
+  RNVideoProcessing: 7893712fd1e167ccf809215c6c1dd1c64c359957
   RNVoipPushNotification: 024d316cf810e8409132c520ab3dc23628e327c1
   RNWheelPicker: a109c3d1d13811955e34c4c83211cf9ce6826e73
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
@@ -1178,6 +1200,6 @@ SPEC CHECKSUMS:
   Yoga: e7dc4e71caba6472ff48ad7d234389b91dadc280
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: a50262166583df861916afbd834b5dddd8e096bc
+PODFILE CHECKSUM: 7e4f0d6cb82f83c7770f7483a9ef82b6fa2feedf
 
 COCOAPODS: 1.11.2

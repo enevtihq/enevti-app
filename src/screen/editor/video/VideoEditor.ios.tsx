@@ -17,8 +17,11 @@ import { useDebouncedCallback } from 'use-debounce';
 import { EventRegister } from 'react-native-event-listeners';
 import { useDispatch } from 'react-redux';
 import { hideModalLoader, showModalLoader } from 'enevti-app/store/slices/ui/global/modalLoader';
+import { cleanTMPImage } from 'enevti-app/service/enevti/nft';
+import RNVideoHelper from 'react-native-video-helper';
 
 const TRIMMER_HEIGHT_PERCENTAGE = 8;
+const TRIMMER_WIDTH_PERCENTAGE = 80;
 
 type Props = StackScreenProps<RootStackParamList, 'VideoEditor'>;
 
@@ -29,6 +32,7 @@ export default function VideoEditor({ navigation, route }: Props) {
   const styles = React.useMemo(() => makeStyles(theme), [theme]);
 
   const [play, setPlay] = React.useState<boolean>(true);
+  const [portrait, setPortrait] = React.useState<boolean>(false);
   const [muted, setMuted] = React.useState<boolean>(false);
   const [videoMounted, setVideoMounted] = React.useState<boolean>(true);
 
@@ -44,13 +48,23 @@ export default function VideoEditor({ navigation, route }: Props) {
 
   const initPlayerTime = React.useCallback(async () => {
     const result = await ProcessingManager.getVideoInfo(route.params.source);
+    if (result.size.height > result.size.width) {
+      setPortrait(true);
+    }
     setPlayerEndTime(result.duration);
     setTrimmerEndTime(result.duration);
   }, [route.params.source]);
 
+  const clearTempFile = React.useCallback(() => {
+    cleanTMPImage();
+  }, []);
+
   React.useEffect(() => {
     initPlayerTime();
-  }, [initPlayerTime]);
+    return () => {
+      clearTempFile();
+    };
+  }, [initPlayerTime, clearTempFile]);
 
   const remountVideo = React.useCallback(async () => {
     setVideoMounted(false);
@@ -89,45 +103,43 @@ export default function VideoEditor({ navigation, route }: Props) {
     clearEventRegister();
   }, [clearEventRegister, navigation]);
 
-  // TODO: error on trims
   const trimVideo = React.useCallback(
     async (startTime: number, endTime: number) => {
-      try {
-        dispatch(showModalLoader());
-        const options = {
-          startTime,
-          endTime,
-        };
-        const result = await ProcessingManager.trim(route.params.source, options);
-        dispatch(hideModalLoader());
-        return result;
-      } catch {
-        EventRegister.emit('onVideoEditorFailed');
-        dispatch(hideModalLoader());
-        clearEventRegister();
-      }
+      const result = await RNVideoHelper.compress(route.params.source, {
+        startTime,
+        endTime,
+        quality: 'low',
+      });
+      return result;
     },
-    [clearEventRegister, dispatch, route.params.source],
+    [route.params.source],
   );
 
   const onContinue = React.useCallback(async () => {
-    const result = await trimVideo(trimmerStartTime, trimmerEndTime);
-    navigation.goBack();
-    EventRegister.emit('onVideoEditorSuccess', result);
-    clearEventRegister();
-  }, [clearEventRegister, navigation, trimVideo, trimmerEndTime, trimmerStartTime]);
+    try {
+      dispatch(showModalLoader());
+      const result = await trimVideo(trimmerStartTime, trimmerEndTime);
+      EventRegister.emit('onVideoEditorSuccess', result);
+    } catch (err: any) {
+      EventRegister.emit('onVideoEditorFailed', Error(err));
+    } finally {
+      dispatch(hideModalLoader());
+      navigation.goBack();
+      clearEventRegister();
+    }
+  }, [clearEventRegister, dispatch, navigation, trimVideo, trimmerEndTime, trimmerStartTime]);
 
   return (
     <AppView withModal contentContainerStyle={styles.container}>
       <View style={styles.videoContainer}>
         {videoMounted ? (
           <VideoPlayer
-            volume={muted ? 0 : 100}
+            volume={muted ? 0 : 1}
             startTime={playerStartTime}
             endTime={playerEndTime}
             play={play}
             replay={true}
-            rotate={true}
+            rotate={portrait}
             source={route.params.source}
             playerWidth={wp(100)}
             playerHeight={hp(70)}
@@ -140,7 +152,7 @@ export default function VideoEditor({ navigation, route }: Props) {
         <Trimmer
           source={route.params.source}
           height={hp(TRIMMER_HEIGHT_PERCENTAGE) * 0.7}
-          width={wp(93)}
+          width={wp(TRIMMER_WIDTH_PERCENTAGE)}
           themeColor={'white'}
           thumbWidth={20}
           trackerColor={'transparent'}
@@ -173,7 +185,7 @@ export default function VideoEditor({ navigation, route }: Props) {
         <View style={styles.actionItem}>
           <AppQuaternaryButton disabled={!canContinue} onPress={onContinue} contentStyle={styles.continueStyle}>
             <AppTextBody3 style={styles.actionText}>
-              {canContinue ? 'Continue' : `Pick max ${route.params.duration}s`}
+              {canContinue ? 'Continue' : `Pick max ${Math.floor(route.params.duration / 1000)}s`}
             </AppTextBody3>
           </AppQuaternaryButton>
         </View>
@@ -197,7 +209,7 @@ const makeStyles = (theme: Theme) =>
     },
     trimmer: {
       height: hp(TRIMMER_HEIGHT_PERCENTAGE),
-      width: wp(93),
+      width: wp(TRIMMER_WIDTH_PERCENTAGE),
       alignSelf: 'center',
     },
     space: {

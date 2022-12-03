@@ -32,28 +32,6 @@
 		A632D9472795C35F00911BB7 /* Poppins-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CE4EB9FAFECC4606AF6CB99C /* Poppins-SemiBoldItalic.ttf */; };
 		A632D9482795C35F00911BB7 /* Poppins-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D1C139A68B0249189AE8A8D9 /* Poppins-Thin.ttf */; };
 		A632D9492795C35F00911BB7 /* Poppins-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 76F38305BE9743178AD709FF /* Poppins-ThinItalic.ttf */; };
-		A6553D172931A87E00053DCE /* RNVideoProcessingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6553D102931A87C00053DCE /* RNVideoProcessingManager.swift */; };
-		A6553D182931A87E00053DCE /* VideoProcessingGPUFilters.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6553D132931A87D00053DCE /* VideoProcessingGPUFilters.swift */; };
-		A6553D192931A87E00053DCE /* RNVideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6553D142931A87D00053DCE /* RNVideoPlayer.swift */; };
-		A6553D1A2931A87E00053DCE /* RNVideoProcessingBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = A6553D162931A87E00053DCE /* RNVideoProcessingBridge.m */; };
-		A6553D222931A8C000053DCE /* RNVideoTrimmerBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = A6553D1C2931A8BD00053DCE /* RNVideoTrimmerBridge.m */; };
-		A6553D232931A8C000053DCE /* RNVideoTrimmer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6553D1D2931A8BD00053DCE /* RNVideoTrimmer.swift */; };
-		A6553D242931A8C000053DCE /* AVUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6553D1F2931A8BE00053DCE /* AVUtilities.swift */; };
-		A6553D252931A8C000053DCE /* SDAVAssetExportSession.m in Sources */ = {isa = PBXBuildFile; fileRef = A6553D212931A8BF00053DCE /* SDAVAssetExportSession.m */; };
-		A6553D2C2931A8DF00053DCE /* RNTrimmerViewBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = A6553D292931A8DE00053DCE /* RNTrimmerViewBridge.m */; };
-		A6553D2D2931A8E000053DCE /* RNTrimmerViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6553D2A2931A8DF00053DCE /* RNTrimmerViewManager.swift */; };
-		A6553D2E2931A8E000053DCE /* RNTrimmerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6553D2B2931A8DF00053DCE /* RNTrimmerView.swift */; };
-		A6553D372931A8FD00053DCE /* ICGVideoTrimmerView.m in Sources */ = {isa = PBXBuildFile; fileRef = A6553D302931A8FA00053DCE /* ICGVideoTrimmerView.m */; };
-		A6553D382931A8FD00053DCE /* ICGRulerView.m in Sources */ = {isa = PBXBuildFile; fileRef = A6553D312931A8FA00053DCE /* ICGRulerView.m */; };
-		A6553D392931A8FD00053DCE /* ICGThumbView.m in Sources */ = {isa = PBXBuildFile; fileRef = A6553D362931A8FD00053DCE /* ICGThumbView.m */; };
-		A6553D452931A99200053DCE /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6553D442931A99200053DCE /* CoreMedia.framework */; };
-		A6553D472931A99A00053DCE /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6553D462931A99900053DCE /* CoreVideo.framework */; };
-		A6553D492931A9A000053DCE /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6553D482931A9A000053DCE /* OpenGLES.framework */; };
-		A6553D4B2931A9A700053DCE /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6553D4A2931A9A700053DCE /* AVFoundation.framework */; };
-		A6553D4D2931A9AE00053DCE /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6553D4C2931A9AE00053DCE /* QuartzCore.framework */; };
-		A6553D4F2931A9B700053DCE /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6553D4E2931A9B700053DCE /* MobileCoreServices.framework */; };
-		A6553D502931A9C700053DCE /* GPUImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6553D432931A90F00053DCE /* GPUImage.framework */; };
-		A6553D512931A9C700053DCE /* GPUImage.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A6553D432931A90F00053DCE /* GPUImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A65CBC6727E846B600D0F767 /* RNLockDetection.m in Sources */ = {isa = PBXBuildFile; fileRef = A65CBC6627E846B600D0F767 /* RNLockDetection.m */; };
 		A6ABE9F928CB97F100E7FEF0 /* calling.aac in Resources */ = {isa = PBXBuildFile; fileRef = A6ABE9F328CB97ED00E7FEF0 /* calling.aac */; };
 		A6ABE9FA28CB97F100E7FEF0 /* message_sent.aac in Resources */ = {isa = PBXBuildFile; fileRef = A6ABE9F428CB97EE00E7FEF0 /* message_sent.aac */; };
@@ -75,20 +53,6 @@
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
 			remoteInfo = Enevti;
 		};
-		A6553D402931A90F00053DCE /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A6553D3A2931A90D00053DCE /* GPUImage.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = BCF1A33414DDB1EC00852800;
-			remoteInfo = GPUImage;
-		};
-		A6553D422931A90F00053DCE /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A6553D3A2931A90D00053DCE /* GPUImage.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = BCE209E51943F20C002FEED8;
-			remoteInfo = GPUImageFramework;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -98,7 +62,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				A6553D512931A9C700053DCE /* GPUImage.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -140,33 +103,6 @@
 		954E974AF6B441B194781AC6 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 		A61FAA702870B0BD003EF149 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A61FAA7228715336003EF149 /* Enevti.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Enevti.entitlements; path = Enevti/Enevti.entitlements; sourceTree = "<group>"; };
-		A6553D0F2931A87B00053DCE /* Enevti-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Enevti-Bridging-Header.h"; sourceTree = "<group>"; };
-		A6553D102931A87C00053DCE /* RNVideoProcessingManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RNVideoProcessingManager.swift; path = "../../node_modules/react-native-video-processing/ios/RNVideoProcessing/RNVideoProcessingManager.swift"; sourceTree = "<group>"; };
-		A6553D112931A87D00053DCE /* RNVideoProcessing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RNVideoProcessing.h; path = "../../node_modules/react-native-video-processing/ios/RNVideoProcessing/RNVideoProcessing.h"; sourceTree = "<group>"; };
-		A6553D122931A87D00053DCE /* RNVideoProcessing-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "RNVideoProcessing-Bridging-Header.h"; path = "../../node_modules/react-native-video-processing/ios/RNVideoProcessing/RNVideoProcessing-Bridging-Header.h"; sourceTree = "<group>"; };
-		A6553D132931A87D00053DCE /* VideoProcessingGPUFilters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VideoProcessingGPUFilters.swift; path = "../../node_modules/react-native-video-processing/ios/RNVideoProcessing/VideoProcessingGPUFilters.swift"; sourceTree = "<group>"; };
-		A6553D142931A87D00053DCE /* RNVideoPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RNVideoPlayer.swift; path = "../../node_modules/react-native-video-processing/ios/RNVideoProcessing/RNVideoPlayer.swift"; sourceTree = "<group>"; };
-		A6553D152931A87E00053DCE /* RCTSwiftBridgeModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCTSwiftBridgeModule.h; path = "../../node_modules/react-native-video-processing/ios/RNVideoProcessing/RCTSwiftBridgeModule.h"; sourceTree = "<group>"; };
-		A6553D162931A87E00053DCE /* RNVideoProcessingBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RNVideoProcessingBridge.m; path = "../../node_modules/react-native-video-processing/ios/RNVideoProcessing/RNVideoProcessingBridge.m"; sourceTree = "<group>"; };
-		A6553D1C2931A8BD00053DCE /* RNVideoTrimmerBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RNVideoTrimmerBridge.m; path = "../../../node_modules/react-native-video-processing/ios/RNVideoProcessing/RNVideoTrimmer/RNVideoTrimmerBridge.m"; sourceTree = "<group>"; };
-		A6553D1D2931A8BD00053DCE /* RNVideoTrimmer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RNVideoTrimmer.swift; path = "../../../node_modules/react-native-video-processing/ios/RNVideoProcessing/RNVideoTrimmer/RNVideoTrimmer.swift"; sourceTree = "<group>"; };
-		A6553D1E2931A8BE00053DCE /* SDAVAssetExportSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SDAVAssetExportSession.h; path = "../../../node_modules/react-native-video-processing/ios/RNVideoProcessing/RNVideoTrimmer/SDAVAssetExportSession.h"; sourceTree = "<group>"; };
-		A6553D1F2931A8BE00053DCE /* AVUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AVUtilities.swift; path = "../../../node_modules/react-native-video-processing/ios/RNVideoProcessing/RNVideoTrimmer/AVUtilities.swift"; sourceTree = "<group>"; };
-		A6553D202931A8BF00053DCE /* RNVideoTrimmer-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "RNVideoTrimmer-Bridging-Header.h"; path = "../../../node_modules/react-native-video-processing/ios/RNVideoProcessing/RNVideoTrimmer/RNVideoTrimmer-Bridging-Header.h"; sourceTree = "<group>"; };
-		A6553D212931A8BF00053DCE /* SDAVAssetExportSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SDAVAssetExportSession.m; path = "../../../node_modules/react-native-video-processing/ios/RNVideoProcessing/RNVideoTrimmer/SDAVAssetExportSession.m"; sourceTree = "<group>"; };
-		A6553D272931A8DE00053DCE /* RNTrimmerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RNTrimmerView.h; path = "../../../node_modules/react-native-video-processing/ios/RNVideoProcessing/RNTrimmerView/RNTrimmerView.h"; sourceTree = "<group>"; };
-		A6553D282931A8DE00053DCE /* RNTrimmerView-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "RNTrimmerView-Bridging-Header.h"; path = "../../../node_modules/react-native-video-processing/ios/RNVideoProcessing/RNTrimmerView/RNTrimmerView-Bridging-Header.h"; sourceTree = "<group>"; };
-		A6553D292931A8DE00053DCE /* RNTrimmerViewBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RNTrimmerViewBridge.m; path = "../../../node_modules/react-native-video-processing/ios/RNVideoProcessing/RNTrimmerView/RNTrimmerViewBridge.m"; sourceTree = "<group>"; };
-		A6553D2A2931A8DF00053DCE /* RNTrimmerViewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RNTrimmerViewManager.swift; path = "../../../node_modules/react-native-video-processing/ios/RNVideoProcessing/RNTrimmerView/RNTrimmerViewManager.swift"; sourceTree = "<group>"; };
-		A6553D2B2931A8DF00053DCE /* RNTrimmerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RNTrimmerView.swift; path = "../../../node_modules/react-native-video-processing/ios/RNVideoProcessing/RNTrimmerView/RNTrimmerView.swift"; sourceTree = "<group>"; };
-		A6553D302931A8FA00053DCE /* ICGVideoTrimmerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ICGVideoTrimmerView.m; path = "../../../../node_modules/react-native-video-processing/ios/RNVideoProcessing/RNTrimmerView/ICGVideoTrimmer/ICGVideoTrimmerView.m"; sourceTree = "<group>"; };
-		A6553D312931A8FA00053DCE /* ICGRulerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ICGRulerView.m; path = "../../../../node_modules/react-native-video-processing/ios/RNVideoProcessing/RNTrimmerView/ICGVideoTrimmer/ICGRulerView.m"; sourceTree = "<group>"; };
-		A6553D322931A8FB00053DCE /* ICGRulerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ICGRulerView.h; path = "../../../../node_modules/react-native-video-processing/ios/RNVideoProcessing/RNTrimmerView/ICGVideoTrimmer/ICGRulerView.h"; sourceTree = "<group>"; };
-		A6553D332931A8FB00053DCE /* ICGVideoTrimmerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ICGVideoTrimmerView.h; path = "../../../../node_modules/react-native-video-processing/ios/RNVideoProcessing/RNTrimmerView/ICGVideoTrimmer/ICGVideoTrimmerView.h"; sourceTree = "<group>"; };
-		A6553D342931A8FC00053DCE /* ICGVideoTrimmer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ICGVideoTrimmer.h; path = "../../../../node_modules/react-native-video-processing/ios/RNVideoProcessing/RNTrimmerView/ICGVideoTrimmer/ICGVideoTrimmer.h"; sourceTree = "<group>"; };
-		A6553D352931A8FC00053DCE /* ICGThumbView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ICGThumbView.h; path = "../../../../node_modules/react-native-video-processing/ios/RNVideoProcessing/RNTrimmerView/ICGVideoTrimmer/ICGThumbView.h"; sourceTree = "<group>"; };
-		A6553D362931A8FD00053DCE /* ICGThumbView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ICGThumbView.m; path = "../../../../node_modules/react-native-video-processing/ios/RNVideoProcessing/RNTrimmerView/ICGVideoTrimmer/ICGThumbView.m"; sourceTree = "<group>"; };
-		A6553D3A2931A90D00053DCE /* GPUImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GPUImage.xcodeproj; path = "../node_modules/react-native-video-processing/ios/GPUImage/framework/GPUImage.xcodeproj"; sourceTree = "<group>"; };
 		A6553D442931A99200053DCE /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		A6553D462931A99900053DCE /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		A6553D482931A9A000053DCE /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -218,16 +154,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A6553D4D2931A9AE00053DCE /* QuartzCore.framework in Frameworks */,
-				A6553D502931A9C700053DCE /* GPUImage.framework in Frameworks */,
-				A6553D452931A99200053DCE /* CoreMedia.framework in Frameworks */,
 				A6CB3EAC28B9BC1A003624EB /* Intents.framework in Frameworks */,
 				A6CB3EAA28B9BC11003624EB /* CallKit.framework in Frameworks */,
 				B1600D67257D9BAB021ECA08 /* libPods-Enevti.a in Frameworks */,
-				A6553D472931A99A00053DCE /* CoreVideo.framework in Frameworks */,
-				A6553D4F2931A9B700053DCE /* MobileCoreServices.framework in Frameworks */,
-				A6553D4B2931A9A700053DCE /* AVFoundation.framework in Frameworks */,
-				A6553D492931A9A000053DCE /* OpenGLES.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -337,8 +266,6 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				A6553D3A2931A90D00053DCE /* GPUImage.xcodeproj */,
-				A6553D0E2931A7BB00053DCE /* RNVideoProcessing */,
 				A6ABEA0B28CBA45000E7FEF0 /* call_answer.aac */,
 				A6ABE9F628CB97EF00E7FEF0 /* call_busy.aac */,
 				A6ABE9F528CB97EE00E7FEF0 /* call_end.aac */,
@@ -364,72 +291,6 @@
 			children = (
 				13B07F961A680F5B00A75B9A /* Enevti.app */,
 				00E356EE1AD99517003FC87E /* EnevtiTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		A6553D0E2931A7BB00053DCE /* RNVideoProcessing */ = {
-			isa = PBXGroup;
-			children = (
-				A6553D262931A8D000053DCE /* RNTrimmerView */,
-				A6553D1B2931A8AA00053DCE /* RNVideoTrimmer */,
-				A6553D152931A87E00053DCE /* RCTSwiftBridgeModule.h */,
-				A6553D142931A87D00053DCE /* RNVideoPlayer.swift */,
-				A6553D122931A87D00053DCE /* RNVideoProcessing-Bridging-Header.h */,
-				A6553D112931A87D00053DCE /* RNVideoProcessing.h */,
-				A6553D162931A87E00053DCE /* RNVideoProcessingBridge.m */,
-				A6553D102931A87C00053DCE /* RNVideoProcessingManager.swift */,
-				A6553D132931A87D00053DCE /* VideoProcessingGPUFilters.swift */,
-				A6553D0F2931A87B00053DCE /* Enevti-Bridging-Header.h */,
-			);
-			path = RNVideoProcessing;
-			sourceTree = "<group>";
-		};
-		A6553D1B2931A8AA00053DCE /* RNVideoTrimmer */ = {
-			isa = PBXGroup;
-			children = (
-				A6553D1F2931A8BE00053DCE /* AVUtilities.swift */,
-				A6553D202931A8BF00053DCE /* RNVideoTrimmer-Bridging-Header.h */,
-				A6553D1D2931A8BD00053DCE /* RNVideoTrimmer.swift */,
-				A6553D1C2931A8BD00053DCE /* RNVideoTrimmerBridge.m */,
-				A6553D1E2931A8BE00053DCE /* SDAVAssetExportSession.h */,
-				A6553D212931A8BF00053DCE /* SDAVAssetExportSession.m */,
-			);
-			path = RNVideoTrimmer;
-			sourceTree = "<group>";
-		};
-		A6553D262931A8D000053DCE /* RNTrimmerView */ = {
-			isa = PBXGroup;
-			children = (
-				A6553D2F2931A8EE00053DCE /* ICGVideoTrimmer */,
-				A6553D282931A8DE00053DCE /* RNTrimmerView-Bridging-Header.h */,
-				A6553D272931A8DE00053DCE /* RNTrimmerView.h */,
-				A6553D2B2931A8DF00053DCE /* RNTrimmerView.swift */,
-				A6553D292931A8DE00053DCE /* RNTrimmerViewBridge.m */,
-				A6553D2A2931A8DF00053DCE /* RNTrimmerViewManager.swift */,
-			);
-			path = RNTrimmerView;
-			sourceTree = "<group>";
-		};
-		A6553D2F2931A8EE00053DCE /* ICGVideoTrimmer */ = {
-			isa = PBXGroup;
-			children = (
-				A6553D322931A8FB00053DCE /* ICGRulerView.h */,
-				A6553D312931A8FA00053DCE /* ICGRulerView.m */,
-				A6553D352931A8FC00053DCE /* ICGThumbView.h */,
-				A6553D362931A8FD00053DCE /* ICGThumbView.m */,
-				A6553D342931A8FC00053DCE /* ICGVideoTrimmer.h */,
-				A6553D332931A8FB00053DCE /* ICGVideoTrimmerView.h */,
-				A6553D302931A8FA00053DCE /* ICGVideoTrimmerView.m */,
-			);
-			path = ICGVideoTrimmer;
-			sourceTree = "<group>";
-		};
-		A6553D3B2931A90D00053DCE /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				A6553D412931A90F00053DCE /* libGPUImage.a */,
-				A6553D432931A90F00053DCE /* GPUImage.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -521,12 +382,6 @@
 			mainGroup = 83CBB9F61A601CBA00E9B192;
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = A6553D3B2931A90D00053DCE /* Products */;
-					ProjectRef = A6553D3A2931A90D00053DCE /* GPUImage.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				13B07F861A680F5B00A75B9A /* Enevti */,
@@ -534,23 +389,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		A6553D412931A90F00053DCE /* libGPUImage.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libGPUImage.a;
-			remoteRef = A6553D402931A90F00053DCE /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		A6553D432931A90F00053DCE /* GPUImage.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = GPUImage.framework;
-			remoteRef = A6553D422931A90F00053DCE /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		00E356EC1AD99517003FC87E /* Resources */ = {
@@ -771,23 +609,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
-				A6553D2D2931A8E000053DCE /* RNTrimmerViewManager.swift in Sources */,
-				A6553D182931A87E00053DCE /* VideoProcessingGPUFilters.swift in Sources */,
-				A6553D192931A87E00053DCE /* RNVideoPlayer.swift in Sources */,
-				A6553D2C2931A8DF00053DCE /* RNTrimmerViewBridge.m in Sources */,
-				A6553D372931A8FD00053DCE /* ICGVideoTrimmerView.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
-				A6553D222931A8C000053DCE /* RNVideoTrimmerBridge.m in Sources */,
-				A6553D172931A87E00053DCE /* RNVideoProcessingManager.swift in Sources */,
-				A6553D242931A8C000053DCE /* AVUtilities.swift in Sources */,
-				A6553D252931A8C000053DCE /* SDAVAssetExportSession.m in Sources */,
-				A6553D382931A8FD00053DCE /* ICGRulerView.m in Sources */,
-				A6553D2E2931A8E000053DCE /* RNTrimmerView.swift in Sources */,
-				A6553D232931A8C000053DCE /* RNVideoTrimmer.swift in Sources */,
-				A6553D1A2931A87E00053DCE /* RNVideoProcessingBridge.m in Sources */,
 				A65CBC6727E846B600D0F767 /* RNLockDetection.m in Sources */,
 				A6FBAFC728FFD2020045775F /* RNBackgroundFetch+AppDelegate.m in Sources */,
-				A6553D392931A8FD00053DCE /* ICGThumbView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -806,7 +630,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 6C97AB639B58BBB4B15BBE30 /* Pods-Enevti-EnevtiTests.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -834,7 +657,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 1D0AE47A65C8663E3B452821 /* Pods-Enevti-EnevtiTests.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = EnevtiTests/Info.plist;

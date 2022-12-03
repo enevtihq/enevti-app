@@ -28,10 +28,11 @@ import { selectMyPersonaCache } from 'enevti-app/store/slices/entities/cache/myP
 import { PROFILE_MOMENT_SLOT_RESPONSE_LIMIT } from 'enevti-app/utils/constant/limit';
 import AppRadioButton from 'enevti-app/components/atoms/form/AppRadioButton';
 import AppCameraGalleryPicker from 'enevti-app/components/organism/picker/AppCameraGalleryPicker';
-import { ImageOrVideo, Video } from 'react-native-image-crop-picker';
+import { ImageOrVideo } from 'react-native-image-crop-picker';
 import { openVideoEditor } from 'enevti-app/utils/editor/openVideoEditor';
 import AppResponseView from 'enevti-app/components/organism/view/AppResponseView';
 import { MOMENT_MAXIMUM_DURATION } from 'enevti-app/utils/constant/moment';
+import { handleError } from 'enevti-app/utils/error/handle';
 
 const MOMENT_SLOT_ITEM_HEIGHT = 9;
 type Props = StackScreenProps<RootStackParamList, 'ChooseNFTforMoment'>;
@@ -139,25 +140,32 @@ export default function ChooseNFTforMoment({ navigation }: Props) {
   }, [dispatch, onLoad]);
 
   const onNFTSelected = React.useCallback(() => {
-    console.log('change this');
-    openVideoEditor({
-      navigation,
-      source:
-        'file:///private/var/mobile/Containers/Data/Application/804929CE-009D-498E-915B-2E7D2759CDA1/tmp/react-native-image-crop-picker/B43C8FFE-F623-4CD4-A001-0F72AE2F3361.mp4',
-      duration: 5,
-    });
-    // setPickerVisible(old => !old);
+    setPickerVisible(old => !old);
   }, []);
 
   const onPickerDismissed = React.useCallback(() => {
     setPickerVisible(false);
   }, []);
 
+  const onVideoEditorSuccess = React.useCallback((data: string) => {
+    console.log(data);
+  }, []);
+
+  const onVideoEditorFailed = React.useCallback((err: any) => {
+    handleError(err);
+  }, []);
+
   const onPickerPicked = React.useCallback(
     (video: ImageOrVideo) => {
-      openVideoEditor({ navigation, source: video.path, duration: MOMENT_MAXIMUM_DURATION });
+      openVideoEditor({
+        navigation,
+        source: video.path,
+        onSuccess: onVideoEditorSuccess,
+        onFailed: onVideoEditorFailed,
+        duration: MOMENT_MAXIMUM_DURATION,
+      });
     },
-    [navigation],
+    [navigation, onVideoEditorFailed, onVideoEditorSuccess],
   );
 
   const refreshControl = React.useMemo(
