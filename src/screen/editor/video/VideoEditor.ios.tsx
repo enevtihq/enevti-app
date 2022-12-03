@@ -19,6 +19,7 @@ import { useDispatch } from 'react-redux';
 import { hideModalLoader, showModalLoader } from 'enevti-app/store/slices/ui/global/modalLoader';
 import { cleanTMPImage } from 'enevti-app/service/enevti/nft';
 import RNVideoHelper from 'react-native-video-helper';
+import { useTranslation } from 'react-i18next';
 
 const TRIMMER_HEIGHT_PERCENTAGE = 8;
 const TRIMMER_WIDTH_PERCENTAGE = 80;
@@ -26,7 +27,7 @@ const TRIMMER_WIDTH_PERCENTAGE = 80;
 type Props = StackScreenProps<RootStackParamList, 'VideoEditor'>;
 
 export default function VideoEditor({ navigation, route }: Props) {
-  // TODO: localize
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const theme = useTheme() as Theme;
   const styles = React.useMemo(() => makeStyles(theme), [theme]);
@@ -169,7 +170,7 @@ export default function VideoEditor({ navigation, route }: Props) {
       <View style={styles.actionContainer}>
         <View style={styles.actionItem}>
           <AppQuaternaryButton onPress={onCancel} contentStyle={styles.cancelContent}>
-            <AppTextBody3 style={styles.actionText}>Cancel</AppTextBody3>
+            <AppTextBody3 style={styles.actionText}>{t('editor:cancel')}</AppTextBody3>
           </AppQuaternaryButton>
         </View>
         <View style={styles.actionItem}>
@@ -185,7 +186,9 @@ export default function VideoEditor({ navigation, route }: Props) {
         <View style={styles.actionItem}>
           <AppQuaternaryButton disabled={!canContinue} onPress={onContinue} contentStyle={styles.continueStyle}>
             <AppTextBody3 style={styles.actionText}>
-              {canContinue ? 'Continue' : `Pick max ${Math.floor(route.params.duration / 1000)}s`}
+              {canContinue
+                ? t('editor:continue')
+                : t('editor:pickMax', { duration: Math.floor(route.params.duration / 1000) })}
             </AppTextBody3>
           </AppQuaternaryButton>
         </View>

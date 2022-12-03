@@ -55,6 +55,7 @@ import { selectAppOnboarded } from 'enevti-app/store/slices/entities/onboarding/
 import RequestOverlayPermission from 'enevti-app/screen/onboard/RequestOverlayPermission';
 import ChooseNFTforMoment from 'enevti-app/screen/createMoment/ChooseNFTforMoment';
 import VideoEditor from 'enevti-app/screen/editor/video/VideoEditor';
+import CreateMoment from 'enevti-app/screen/createMoment/CreateMoment';
 
 export type RootStackParamList = {
   AppOnboarding: undefined;
@@ -132,6 +133,9 @@ export type RootStackParamList = {
     duration: number;
     successEvent?: string;
     failedEvent?: string;
+  };
+  CreateMoment: {
+    normal?: boolean;
   };
 };
 
@@ -457,6 +461,14 @@ export default function AppNavigationContainer() {
         <Stack.Screen
           name="VideoEditor"
           component={VideoEditor}
+          options={{
+            headerShown: false,
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          }}
+        />
+        <Stack.Screen
+          name="CreateMoment"
+          component={CreateMoment}
           options={{
             headerShown: false,
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,

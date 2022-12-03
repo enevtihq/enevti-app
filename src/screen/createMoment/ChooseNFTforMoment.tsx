@@ -28,11 +28,15 @@ import { selectMyPersonaCache } from 'enevti-app/store/slices/entities/cache/myP
 import { PROFILE_MOMENT_SLOT_RESPONSE_LIMIT } from 'enevti-app/utils/constant/limit';
 import AppRadioButton from 'enevti-app/components/atoms/form/AppRadioButton';
 import AppCameraGalleryPicker from 'enevti-app/components/organism/picker/AppCameraGalleryPicker';
-import { ImageOrVideo } from 'react-native-image-crop-picker';
+import { ImageOrVideo, Video } from 'react-native-image-crop-picker';
 import { openVideoEditor } from 'enevti-app/utils/editor/openVideoEditor';
 import AppResponseView from 'enevti-app/components/organism/view/AppResponseView';
 import { MOMENT_MAXIMUM_DURATION } from 'enevti-app/utils/constant/moment';
 import { handleError } from 'enevti-app/utils/error/handle';
+import { setCreateMomentQueue } from 'enevti-app/store/slices/queue/moment/create';
+import { getFileExtensionFromPath } from 'enevti-app/utils/mime/getFileExtension';
+import RNFS from 'react-native-fs';
+import * as mime from 'react-native-mime-types';
 
 const MOMENT_SLOT_ITEM_HEIGHT = 9;
 type Props = StackScreenProps<RootStackParamList, 'ChooseNFTforMoment'>;
@@ -147,9 +151,23 @@ export default function ChooseNFTforMoment({ navigation }: Props) {
     setPickerVisible(false);
   }, []);
 
-  const onVideoEditorSuccess = React.useCallback((data: string) => {
-    console.log(data);
-  }, []);
+  const onVideoEditorSuccess = React.useCallback(
+    async (data: string) => {
+      // TODO: here set thumbnail cover
+      const dataSize = (await RNFS.stat(data)).size;
+      dispatch(
+        setCreateMomentQueue({
+          nftId: selectedNFT,
+          data,
+          dataMime: mime.lookup(data) as string,
+          dataExtension: getFileExtensionFromPath(data),
+          dataSize,
+        }),
+      );
+      navigation.navigate('CreateMoment', { normal: true });
+    },
+    [dispatch, navigation, selectedNFT],
+  );
 
   const onVideoEditorFailed = React.useCallback((err: any) => {
     handleError(err);
@@ -157,13 +175,17 @@ export default function ChooseNFTforMoment({ navigation }: Props) {
 
   const onPickerPicked = React.useCallback(
     (video: ImageOrVideo) => {
-      openVideoEditor({
-        navigation,
-        source: video.path,
-        onSuccess: onVideoEditorSuccess,
-        onFailed: onVideoEditorFailed,
-        duration: MOMENT_MAXIMUM_DURATION,
-      });
+      if ((video as Video).duration! > MOMENT_MAXIMUM_DURATION) {
+        openVideoEditor({
+          navigation,
+          source: video.path,
+          onSuccess: onVideoEditorSuccess,
+          onFailed: onVideoEditorFailed,
+          duration: MOMENT_MAXIMUM_DURATION,
+        });
+      } else {
+        onVideoEditorSuccess(video.path);
+      }
     },
     [navigation, onVideoEditorFailed, onVideoEditorSuccess],
   );

@@ -1,5 +1,6 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
+import i18n from 'enevti-app/translations/i18n';
 import { Platform } from 'react-native';
 import { EventRegister } from 'react-native-event-listeners';
 import { navigateToTrimmer } from 'react-native-k4l-video-trimmer';
@@ -15,9 +16,12 @@ interface OpenVideoEditorProps {
 
 export function openVideoEditor({ navigation, source, duration, onSuccess, onFailed }: OpenVideoEditorProps) {
   if (Platform.OS === 'android') {
-    // TODO: localize trimmer title
     const timeDuration = Math.floor(duration / 1000);
-    navigateToTrimmer(source, timeDuration.toString(), `Select Max ${timeDuration}s`).then(res => {
+    navigateToTrimmer(
+      source,
+      timeDuration.toString(),
+      i18n.t('editor:videoEditorMaxDuration', { duration: timeDuration }),
+    ).then(res => {
       if (res !== null) {
         RNVideoHelper.compress(res, {
           quality: 'low',

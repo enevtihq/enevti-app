@@ -18,6 +18,7 @@ import explorer from './explorer';
 import redeem from './redeem';
 import onboarding from './onboarding';
 import createMoment from './createMoment';
+import editor from './editor';
 
 export default {
   auth,
@@ -40,4 +41,5 @@ export default {
   redeem,
   onboarding,
   createMoment,
+  editor,
 };
