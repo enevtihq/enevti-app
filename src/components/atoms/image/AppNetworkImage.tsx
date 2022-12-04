@@ -54,7 +54,12 @@ export default function AppNetworkImage({
     errorComponent ? (
       errorComponent
     ) : (
-      <AppIconComponent name={iconMap.error} size={30} color={theme.colors.placeholder} style={styles.errorComponent} />
+      <AppIconComponent
+        name={iconMap.error}
+        size={30}
+        color={theme.colors.placeholder}
+        style={[styles.errorComponent, style]}
+      />
     )
   ) : fallbackError ? (
     <AppFastImage url={fallbackUrl!} style={style} onLoad={onLoad} onError={onShowError} loaderSize={loaderSize} />

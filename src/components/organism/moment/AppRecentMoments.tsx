@@ -5,7 +5,6 @@ import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
 import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 import { useTranslation } from 'react-i18next';
 import { Divider } from 'react-native-paper';
-import { IPFStoURL } from 'enevti-app/service/ipfs';
 import AppActivityIndicator from '../../atoms/loading/AppActivityIndicator';
 import { useSelector } from 'react-redux';
 import { isMomentUndefined, selectMomentView } from 'enevti-app/store/slices/ui/view/moment';
@@ -14,6 +13,7 @@ import AppAddMoment from './AppAddMoment';
 import AppMomentItem from './AppMomentItem';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
+import { Moment } from 'enevti-app/types/core/chain/moment';
 
 const center = 'center';
 
@@ -32,13 +32,8 @@ export default function AppRecentMoments({ navigation }: AppRecentMomentsProps) 
   const onMomentsPress = (_id: string) => {};
 
   const renderItem = React.useCallback(
-    ({ item }: any) => (
-      <AppMomentItem
-        url={IPFStoURL(item.photo)}
-        title={item.username}
-        style={{ marginRight: wp('2%', insets) }}
-        onPress={() => onMomentsPress(item.id)}
-      />
+    ({ item }: { item: Moment }) => (
+      <AppMomentItem moment={item} style={{ marginRight: wp('2%', insets) }} onPress={() => onMomentsPress(item.id)} />
     ),
     [insets],
   );

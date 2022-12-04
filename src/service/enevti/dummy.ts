@@ -37,6 +37,19 @@ export const requestFaucet = async (address: string) => {
 export const getDummyMomentItem = (): MomentItem => {
   return {
     id: Math.random().toString(),
+    nftId: Math.random().toString(),
+    owner: {
+      username: '',
+      base32: 'envt7opy8ksve7npbr32dtqxwpvg5u6aa3vtje5qtd',
+      address: '730917d362b38e434918d4ea1b905f5c159ca053',
+      photo: '',
+    },
+    creator: {
+      username: '',
+      base32: 'envt7opy8ksve7npbr32dtqxwpvg5u6aa3vtje5qtd',
+      address: '730917d362b38e434918d4ea1b905f5c159ca053',
+      photo: '',
+    },
     cover: {
       cid: 'bafybeif42jbs3t3pxjbz4635siv2u5nzxp5h7ffcsrwwvixgsclcn7rgza',
       mime: 'image/jpeg',
@@ -44,6 +57,20 @@ export const getDummyMomentItem = (): MomentItem => {
       size: 0,
       protocol: 'ipfs',
     },
+    clubs: 0,
+    comment: 0,
+    createdOn: 1648256392852,
+    data: {
+      cid: 'bafybeif42jbs3t3pxjbz4635siv2u5nzxp5h7ffcsrwwvixgsclcn7rgza',
+      mime: 'image/jpeg',
+      extension: 'jpg',
+      size: 0,
+      protocol: 'ipfs',
+    },
+    like: 0,
+    text: 'sample text',
+    activity: [],
+    textPlain: 'bafkreid27m2e2yjaaqkbiyjtxgpoyipiatrj7yd5ummrir7j6vqx2uvztm',
   };
 };
 

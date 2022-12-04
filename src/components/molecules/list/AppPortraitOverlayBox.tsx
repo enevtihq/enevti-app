@@ -5,7 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { wp, SafeAreaInsets } from 'enevti-app/utils/layout/imageRatio';
 import { Theme } from 'enevti-app/theme/default';
 import { BlurView } from '@react-native-community/blur';
-import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
+import AppMentionRenderer from '../comment/AppMentionRenderer';
 
 interface AppPortraitOverlayBoxProps {
   title: string;
@@ -33,9 +33,7 @@ export default function AppPortraitOverlayBox({
       {background ? <View style={styles.content}>{background}</View> : null}
       {blurBackground ? <BlurView blurAmount={10} style={styles.overlay} /> : <View style={styles.overlayColor} />}
       {foreground ? <View style={styles.content}>{foreground}</View> : null}
-      <AppTextBody5 numberOfLines={1} style={styles.textOverlay}>
-        {title}
-      </AppTextBody5>
+      <AppMentionRenderer disabled size={2.2} text={title} style={styles.textOverlay} color={'white'} />
       <TouchableRipple style={styles.rippleOverlay} onPress={onPress}>
         <View />
       </TouchableRipple>

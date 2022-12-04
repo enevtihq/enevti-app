@@ -37,12 +37,14 @@ export const reducePayMintMoment = (): AppThunk => async (dispatch, getState) =>
     }
 
     if (meta.coverProtocol === 'ipfs') {
-      dispatch(setModalLoaderText(i18n.t('payment:uploadingTo', { file: 'data', provider: meta.coverProtocol })));
+      dispatch(setModalLoaderText(i18n.t('payment:uploadingTo', { file: 'cover', provider: meta.coverProtocol })));
       cover = await uploadURItoIPFS(meta.cover);
     }
 
     transactionPayload.asset.data = data;
     transactionPayload.asset.cover = cover;
+
+    dispatch(setModalLoaderText(i18n.t('payment:uploadingTo', { file: 'caption', provider: 'ipfs' })));
     transactionPayload.asset.text = await uploadTextToIPFS(meta.text);
 
     dispatch(setModalLoaderText(i18n.t('payment:postingTransaction')));
