@@ -28,7 +28,7 @@ import { selectMyPersonaCache } from 'enevti-app/store/slices/entities/cache/myP
 import { PROFILE_MOMENT_SLOT_RESPONSE_LIMIT } from 'enevti-app/utils/constant/limit';
 import AppRadioButton from 'enevti-app/components/atoms/form/AppRadioButton';
 import AppCameraGalleryPicker from 'enevti-app/components/organism/picker/AppCameraGalleryPicker';
-import { ImageOrVideo, Video } from 'react-native-image-crop-picker';
+import { ImageOrVideo } from 'react-native-image-crop-picker';
 import { openVideoEditor } from 'enevti-app/utils/editor/openVideoEditor';
 import AppResponseView from 'enevti-app/components/organism/view/AppResponseView';
 import { MOMENT_MAXIMUM_DURATION } from 'enevti-app/utils/constant/moment';
@@ -37,6 +37,7 @@ import { setCreateMomentQueue } from 'enevti-app/store/slices/queue/moment/creat
 import { getFileExtensionFromPath } from 'enevti-app/utils/mime/getFileExtension';
 import RNFS from 'react-native-fs';
 import * as mime from 'react-native-mime-types';
+import { createThumbnail } from 'react-native-create-thumbnail';
 
 const MOMENT_SLOT_ITEM_HEIGHT = 9;
 type Props = StackScreenProps<RootStackParamList, 'ChooseNFTforMoment'>;
@@ -52,6 +53,7 @@ export default function ChooseNFTforMoment({ navigation }: Props) {
   const nftListRef = useAnimatedRef<FlatList>();
   const myPersona = useSelector(selectMyPersonaCache);
   const abortController = React.useRef<AbortController>();
+  const selectedNFTRef = React.useRef<NFTBase>();
   const [selectedNFT, setSelectedNFT] = React.useState<string>('');
   const [momentSlot, setMomentSlot] = React.useState<NFTBase[]>();
   const [momentSlotPagination, setMomentSlotPagination] = React.useState<PaginationStore>();
@@ -82,10 +84,20 @@ export default function ChooseNFTforMoment({ navigation }: Props) {
         leftContent={<AppNFTRenderer imageSize={'s'} nft={item} width={wp('13%')} style={styles.nftRenderer} />}
         rightContent={
           <View style={styles.momentSlotRightContent}>
-            <AppRadioButton value={item.id} checked={selectedNFT} onPress={id => setSelectedNFT(id)} />
+            <AppRadioButton
+              value={item.id}
+              checked={selectedNFT}
+              onPress={id => {
+                setSelectedNFT(id);
+                selectedNFTRef.current = item;
+              }}
+            />
           </View>
         }
-        onPress={() => setSelectedNFT(item.id)}>
+        onPress={() => {
+          setSelectedNFT(item.id);
+          selectedNFTRef.current = item;
+        }}>
         <AppTextHeading3 numberOfLines={1}>{`${item.symbol}#${item.serial}`}</AppTextHeading3>
         <AppTextBody4 style={{ color: theme.colors.placeholder }} numberOfLines={1}>
           {utilityToLabel(item.utility)}
@@ -153,18 +165,28 @@ export default function ChooseNFTforMoment({ navigation }: Props) {
 
   const onVideoEditorSuccess = React.useCallback(
     async (data: string) => {
-      // TODO: here set thumbnail cover
-      const dataSize = (await RNFS.stat(data)).size;
-      dispatch(
-        setCreateMomentQueue({
-          nftId: selectedNFT,
-          data,
-          dataMime: mime.lookup(data) as string,
-          dataExtension: getFileExtensionFromPath(data),
-          dataSize,
-        }),
-      );
-      navigation.navigate('CreateMoment', { normal: true });
+      try {
+        const thumbnail = await createThumbnail({ url: data, timeStamp: 0, cacheName: selectedNFT });
+        const dataSize = (await RNFS.stat(data)).size;
+        dispatch(
+          setCreateMomentQueue({
+            nft: selectedNFTRef.current,
+            data,
+            dataMime: mime.lookup(data) as string,
+            dataExtension: getFileExtensionFromPath(data),
+            dataSize,
+            dataProtocol: 'ipfs',
+            cover: thumbnail.path,
+            coverMime: thumbnail.mime,
+            coverExtension: getFileExtensionFromPath(thumbnail.path),
+            coverSize: thumbnail.size,
+            coverProtocol: 'ipfs',
+          }),
+        );
+        navigation.replace('CreateMoment', { normal: true });
+      } catch (err) {
+        handleError(err);
+      }
     },
     [dispatch, navigation, selectedNFT],
   );
@@ -175,17 +197,13 @@ export default function ChooseNFTforMoment({ navigation }: Props) {
 
   const onPickerPicked = React.useCallback(
     (video: ImageOrVideo) => {
-      if ((video as Video).duration! > MOMENT_MAXIMUM_DURATION) {
-        openVideoEditor({
-          navigation,
-          source: video.path,
-          onSuccess: onVideoEditorSuccess,
-          onFailed: onVideoEditorFailed,
-          duration: MOMENT_MAXIMUM_DURATION,
-        });
-      } else {
-        onVideoEditorSuccess(video.path);
-      }
+      openVideoEditor({
+        navigation,
+        source: video.path,
+        onSuccess: onVideoEditorSuccess,
+        onFailed: onVideoEditorFailed,
+        duration: MOMENT_MAXIMUM_DURATION,
+      });
     },
     [navigation, onVideoEditorFailed, onVideoEditorSuccess],
   );

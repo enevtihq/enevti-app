@@ -46,3 +46,8 @@ export function hp(heightPercent: string | number, insets?: SafeAreaInsets) {
   const elemHeight = typeof heightPercent === 'number' ? heightPercent : parseFloat(heightPercent);
   return PixelRatio.roundToNearestPixel(((screenHeight - insetsSize) * elemHeight) / 100);
 }
+
+export function screenAspectRatio() {
+  const win = Dimensions.get('window');
+  return win.width / win.height;
+}

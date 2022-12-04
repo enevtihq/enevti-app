@@ -27,6 +27,7 @@ export default {
   restore: 'Restore',
   restoreDialog: 'Restore Previous Session?',
   restoreDialogDescription: 'You have a saved create NFT session. Do you want to recover it?',
+  restoreMomentDialogDescription: 'You have a saved create moment session. Do you want to recover it?',
   newFeedUpdate: 'New Updates!',
   cannotLike: 'Like is on-chain, therefore undoable!',
   likeOnceTitle: 'Beyond Likes!',

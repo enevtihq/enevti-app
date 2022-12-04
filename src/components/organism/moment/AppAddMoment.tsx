@@ -16,6 +16,9 @@ import Color from 'color';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { setMomentAlertShow } from 'enevti-app/store/slices/ui/view/moment';
+import { clearCreateMomentQueue, selectCreateMomentQueue } from 'enevti-app/store/slices/queue/moment/create';
+import { cleanTMPImage } from 'enevti-app/service/enevti/nft';
+import AppConfirmationModal from '../menu/AppConfirmationModal';
 
 interface AppAddMomentProps {
   navigation: StackNavigationProp<RootStackParamList>;
@@ -28,43 +31,79 @@ export default function AppAddMoment({ navigation }: AppAddMomentProps) {
   const insets = useSafeAreaInsets();
   const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
 
+  const createMomentQueue = useSelector(selectCreateMomentQueue);
   const myPersonaCache = useSelector(selectMyPersonaCache);
   const myProfileCache = useSelector(selectMyProfileCache);
+
+  const [restoreMomentVisible, setRestoreMomentVisible] = React.useState<boolean>(false);
   const isEligibile = React.useMemo(() => myProfileCache.momentSlot > 0, [myProfileCache.momentSlot]);
   const primary = isEligibile ? theme.colors.primary : Color(theme.colors.text).alpha(0.4).rgb().string();
   const secondary = isEligibile ? theme.colors.secondary : Color(theme.colors.text).alpha(0.4).rgb().string();
 
+  const restoreMomentOnDismiss = React.useCallback(() => setRestoreMomentVisible(false), []);
+
+  const createNewMomentCallback = React.useCallback(() => {
+    dispatch(clearCreateMomentQueue());
+    cleanTMPImage();
+    setRestoreMomentVisible(false);
+    navigation.navigate('ChooseNFTforMoment');
+  }, [dispatch, navigation]);
+
+  const restoreMomentCallback = React.useCallback(() => {
+    setRestoreMomentVisible(false);
+    navigation.navigate('CreateMoment', {});
+  }, [navigation]);
+
   const onAddMomentPress = React.useCallback(() => {
     if (isEligibile) {
-      navigation.navigate('ChooseNFTforMoment');
+      if (createMomentQueue.nft) {
+        setRestoreMomentVisible(true);
+      } else {
+        navigation.navigate('ChooseNFTforMoment');
+      }
     } else {
       dispatch(setMomentAlertShow(true));
     }
-  }, [dispatch, isEligibile, navigation]);
+  }, [createMomentQueue.nft, dispatch, isEligibile, navigation]);
 
   return (
-    <LinearGradient colors={[primary, secondary]} style={styles.gradientBox}>
-      <AppPortraitOverlayBox
-        title={t('home:addMoment')}
-        style={styles.box}
-        onPress={onAddMomentPress}
-        foreground={
-          <View style={styles.foreground}>
-            <View>
-              <AppAvatarRenderer persona={myPersonaCache} size={hp(6)} />
-              <AppBadge
-                content={myProfileCache.momentSlot > 0 ? myProfileCache.momentSlot.toString() : t('home:noSlot')}
-              />
+    <>
+      {createMomentQueue ? (
+        <AppConfirmationModal
+          iconName={'restore'}
+          visible={restoreMomentVisible}
+          onDismiss={restoreMomentOnDismiss}
+          title={t('home:restoreDialog')}
+          description={t('home:restoreMomentDialogDescription')}
+          cancelText={t('home:startNew')}
+          cancelOnPress={createNewMomentCallback}
+          okText={t('home:restore')}
+          okOnPress={restoreMomentCallback}
+        />
+      ) : null}
+      <LinearGradient colors={[primary, secondary]} style={styles.gradientBox}>
+        <AppPortraitOverlayBox
+          title={t('home:addMoment')}
+          style={styles.box}
+          onPress={onAddMomentPress}
+          foreground={
+            <View style={styles.foreground}>
+              <View>
+                <AppAvatarRenderer persona={myPersonaCache} size={hp(6)} />
+                <AppBadge
+                  content={myProfileCache.momentSlot > 0 ? myProfileCache.momentSlot.toString() : t('home:noSlot')}
+                />
+              </View>
             </View>
-          </View>
-        }
-        background={
-          <View style={styles.backgroundContainer}>
-            <AppAvatarRenderer full persona={myPersonaCache} size={hp(6)} style={styles.background} />
-          </View>
-        }
-      />
-    </LinearGradient>
+          }
+          background={
+            <View style={styles.backgroundContainer}>
+              <AppAvatarRenderer full persona={myPersonaCache} size={hp(6)} style={styles.background} />
+            </View>
+          }
+        />
+      </LinearGradient>
+    </>
   );
 }
 
