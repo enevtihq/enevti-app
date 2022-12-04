@@ -1,5 +1,5 @@
 diff --git a/node_modules/react-native-k4l-video-trimmer/android/src/main/java/com/reactnativek4lvideotrimmer/K4lVideoTrimmerModule.java b/node_modules/react-native-k4l-video-trimmer/android/src/main/java/com/reactnativek4lvideotrimmer/K4lVideoTrimmerModule.java
-index 95f13d1..ce87613 100644
+index 95f13d1..edcbf22 100644
 --- a/node_modules/react-native-k4l-video-trimmer/android/src/main/java/com/reactnativek4lvideotrimmer/K4lVideoTrimmerModule.java
 +++ b/node_modules/react-native-k4l-video-trimmer/android/src/main/java/com/reactnativek4lvideotrimmer/K4lVideoTrimmerModule.java
 @@ -54,13 +54,14 @@ public class K4lVideoTrimmerModule extends ReactContextBaseJavaModule implements
@@ -18,6 +18,15 @@ index 95f13d1..ce87613 100644
        activity.startActivityForResult(intent, 1);
      }
    }
+@@ -80,7 +81,7 @@ public class K4lVideoTrimmerModule extends ReactContextBaseJavaModule implements
+     if (dataString == "NULL") {
+       this.promise.resolve(null);
+     }
+-    if (dataString.isEmpty()) {
++    if (dataString == "") {
+       this.promise.resolve(null);
+     }
+     this.promise.resolve(dataString);
 diff --git a/node_modules/react-native-k4l-video-trimmer/android/src/main/java/com/reactnativek4lvideotrimmer/TrimmerActivity.java b/node_modules/react-native-k4l-video-trimmer/android/src/main/java/com/reactnativek4lvideotrimmer/TrimmerActivity.java
 index 7df6119..ee0026d 100644
 --- a/node_modules/react-native-k4l-video-trimmer/android/src/main/java/com/reactnativek4lvideotrimmer/TrimmerActivity.java

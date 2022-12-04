@@ -28,18 +28,20 @@ export function openVideoEditor({ navigation, source, duration, onSuccess, onFai
       source,
       timeDuration.toString(),
       i18n.t('editor:videoEditorMaxDuration', { duration: timeDuration }),
-    ).then(res => {
-      if (res !== null) {
-        store.dispatch(setModalLoaderMode('progress'));
-        store.dispatch(showModalLoader());
-        Video.compress(res, { compressionMethod: 'auto' }, progress => {
-          store.dispatch(setModalLoaderProgress(progress));
-        }).then(compressed => {
-          store.dispatch(hideModalLoader());
-          onSuccess && onSuccess(compressed);
-        });
-      }
-    });
+    )
+      .then(res => {
+        if (res !== null) {
+          store.dispatch(setModalLoaderMode('progress'));
+          store.dispatch(showModalLoader());
+          Video.compress(`file://${res}`, { compressionMethod: 'auto' }, progress => {
+            store.dispatch(setModalLoaderProgress(progress));
+          }).then(compressed => {
+            store.dispatch(hideModalLoader());
+            onSuccess && onSuccess(compressed);
+          });
+        }
+      })
+      .catch(err => onFailed && onFailed(err));
   }
   if (Platform.OS === 'ios') {
     const successEventId = onSuccess ? EventRegister.addEventListener('onVideoEditorSuccess', onSuccess) : false;
