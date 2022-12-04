@@ -5,7 +5,7 @@ import { assignDeep } from 'enevti-app/utils/primitive/object';
 import { MintMomentUI } from 'enevti-app/types/core/asset/redeemable_nft/mint_moment_asset';
 import { NFTBase } from 'enevti-app/types/core/chain/nft';
 
-type CreateMomentState = Omit<MintMomentUI, 'nftId'> & { nft?: NFTBase };
+export type CreateMomentState = Omit<MintMomentUI, 'nftId'> & { nft?: NFTBase };
 
 export const createMomentQueueInitialState: CreateMomentState = {
   nft: undefined,
@@ -29,16 +29,25 @@ const createMomentQueueSlice = createSlice({
     setCreateMomentQueue: (moment, action: PayloadAction<Partial<CreateMomentState>>) => {
       assignDeep(moment, action.payload);
     },
+    setCreateMomentQueueText: (moment, action: PayloadAction<string>) => {
+      moment.text = action.payload;
+    },
     clearCreateMomentQueue: () => {
       return createMomentQueueInitialState;
     },
   },
 });
 
-export const { setCreateMomentQueue, clearCreateMomentQueue } = createMomentQueueSlice.actions;
+export const { setCreateMomentQueue, clearCreateMomentQueue, setCreateMomentQueueText } =
+  createMomentQueueSlice.actions;
 export default createMomentQueueSlice.reducer;
 
 export const selectCreateMomentQueue = createSelector(
   (state: RootState) => state,
   (state: RootState) => state.queue.moment.create,
+);
+
+export const selectCreateMomentQueueText = createSelector(
+  (state: RootState) => state,
+  (state: RootState) => state.queue.moment.create.text,
 );

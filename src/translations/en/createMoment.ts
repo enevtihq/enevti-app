@@ -8,4 +8,8 @@ export default {
   captionPlaceholder: 'Write a caption...',
   attachedTo: 'Attached To:',
   captionRequired: 'Please Add a Caption',
+  saveSession: 'Save Session?',
+  saveSessionDescription: 'You have unsaved changes. Do you want to recover this form session later?',
+  save: 'Save',
+  discard: 'Discard',
 };

@@ -22,6 +22,10 @@ export type PaymentAction = {
     | 'replyCommentClubs'
     | 'setVideoCallAnswered'
     | 'setVideoCallRejected'
+    | 'mintMoment'
+    | 'commentMoment'
+    | 'commentMomentClubs'
+    | 'likeMoment'
     | 'cancel'
     | '';
   icon: string;

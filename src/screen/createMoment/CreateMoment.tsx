@@ -1,7 +1,12 @@
-import { View, Image, TextInput, StyleSheet, Platform } from 'react-native';
+import { View, Image, TextInput, StyleSheet, Platform, Keyboard } from 'react-native';
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { selectCreateMomentQueue } from 'enevti-app/store/slices/queue/moment/create';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  clearCreateMomentQueue,
+  selectCreateMomentQueue,
+  selectCreateMomentQueueText,
+  setCreateMomentQueueText,
+} from 'enevti-app/store/slices/queue/moment/create';
 import AppView from 'enevti-app/components/atoms/view/AppView';
 import AppHeader, { HEADER_HEIGHT_COMPACT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
@@ -18,18 +23,97 @@ import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
 import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
 import utilityToLabel from 'enevti-app/utils/format/utilityToLabel';
 import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
+import { PaymentStatus } from 'enevti-app/types/ui/store/Payment';
+import usePaymentCallback from 'enevti-app/utils/hook/usePaymentCallback';
+import { payMintMoment } from 'enevti-app/store/middleware/thunk/payment/creator/payMintMoment';
+import { hideModalLoader } from 'enevti-app/store/slices/ui/global/modalLoader';
+import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
+import { cleanTMPImage } from 'enevti-app/service/enevti/nft';
+import AppConfirmationModal from 'enevti-app/components/organism/menu/AppConfirmationModal';
 
 type Props = StackScreenProps<RootStackParamList, 'CreateMoment'>;
 
-export default function CreateMoment({ navigation }: Props) {
+export default function CreateMoment({ navigation, route }: Props) {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
   const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
 
   const inputRef = React.useRef<TextInput>(null);
+  const canGoBack = React.useRef<boolean>(false);
+  const paymentThunkRef = React.useRef<any>();
   const createMomentQueue = useSelector(selectCreateMomentQueue);
-  const [value, setValue] = React.useState<string>(() => (createMomentQueue.text ? createMomentQueue.text : ''));
+  const createMomentQueueText = useSelector(selectCreateMomentQueueText);
+  const [loading, setLoading] = React.useState<boolean>(false);
+  const [closeMenuVisible, setCloseMenuVisible] = React.useState<boolean>(false);
+
+  React.useEffect(
+    () =>
+      navigation.addListener('beforeRemove', e => {
+        if (canGoBack.current) {
+          setCloseMenuVisible(false);
+          navigation.dispatch(e.data.action);
+        } else {
+          e.preventDefault();
+          Keyboard.dismiss();
+          setCloseMenuVisible(visible => !visible);
+        }
+      }),
+    [navigation, canGoBack],
+  );
+
+  const discardFormState = React.useCallback(() => {
+    cleanTMPImage();
+    canGoBack.current = true;
+    setCloseMenuVisible(false);
+    navigation.goBack();
+    dispatch(clearCreateMomentQueue());
+  }, [dispatch, navigation]);
+
+  const saveFormState = React.useCallback(() => {
+    canGoBack.current = true;
+    setCloseMenuVisible(false);
+    navigation.goBack();
+  }, [navigation]);
+
+  const closeMenuOnDismiss = React.useCallback(() => setCloseMenuVisible(false), []);
+
+  const handleFormSubmit = async () => {
+    setLoading(true);
+    paymentThunkRef.current = dispatch(payMintMoment({ key: route.key, data: createMomentQueue }));
+  };
+
+  const paymentCondition = React.useCallback(
+    (paymentStatus: PaymentStatus) => {
+      return (
+        paymentStatus.action !== undefined &&
+        ['mintMoment'].includes(paymentStatus.action) &&
+        paymentStatus.key === route.key
+      );
+    },
+    [route.key],
+  );
+
+  const paymentIdleCallback = React.useCallback(() => {
+    setLoading(false);
+    paymentThunkRef.current?.abort();
+  }, []);
+
+  const paymentSuccessCallback = React.useCallback(() => {
+    dispatch(hideModalLoader());
+    dispatch(showSnackbar({ mode: 'info', text: t('payment:success') }));
+    discardFormState();
+  }, [dispatch, discardFormState, t]);
+
+  const paymentErrorCallback = React.useCallback(() => dispatch(hideModalLoader()), [dispatch]);
+
+  usePaymentCallback({
+    condition: paymentCondition,
+    onIdle: paymentIdleCallback,
+    onSuccess: paymentSuccessCallback,
+    onError: paymentErrorCallback,
+  });
 
   return (
     <AppView
@@ -50,9 +134,9 @@ export default function CreateMoment({ navigation }: Props) {
       <AppMentionInput
         bottom
         inputRef={inputRef}
-        value={value}
+        value={createMomentQueueText}
         onChange={e => {
-          setValue(e);
+          dispatch(setCreateMomentQueueText(e));
         }}
         placeholder={t('createMoment:captionPlaceholder')}
         style={styles.captionInput}
@@ -73,11 +157,26 @@ export default function CreateMoment({ navigation }: Props) {
       ) : null}
       <View style={styles.actionContainer}>
         <View style={{ height: hp('2%', insets) }} />
-        <AppPrimaryButton disabled={!value} style={styles.actionButton}>
-          {!value ? t('createMoment:captionRequired') : t('createMoment:mintMoment')}
+        <AppPrimaryButton
+          onPress={handleFormSubmit}
+          loading={loading}
+          disabled={!createMomentQueueText}
+          style={styles.actionButton}>
+          {!createMomentQueueText ? t('createMoment:captionRequired') : t('createMoment:mintMoment')}
         </AppPrimaryButton>
         <View style={{ height: Platform.OS === 'ios' ? insets.bottom : hp('2%', insets) }} />
       </View>
+      <AppConfirmationModal
+        iconName={'question'}
+        visible={closeMenuVisible}
+        onDismiss={closeMenuOnDismiss}
+        title={t('createMoment:saveSession')}
+        description={t('createMoment:saveSessionDescription')}
+        cancelText={t('createMoment:discard')}
+        cancelOnPress={discardFormState}
+        okText={t('createMoment:save')}
+        okOnPress={saveFormState}
+      />
     </AppView>
   );
 }

@@ -69,4 +69,6 @@ export default {
   setVideoCallRejected: 'Set as Rejected',
   setVideoCallRejectedDescription: 'For {{nft}} redeem video call utility',
   setVideoCallRejectedDetails: 'Set permanently video call on-chain status as rejected',
+  payMintMomentName: 'Mint Moment',
+  payMintMomentDescription: 'Attach Proof-of-Redeem to {{target}}',
 };
