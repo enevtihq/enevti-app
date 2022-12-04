@@ -8,6 +8,7 @@ import ImageCropPicker, { ImageOrVideo } from 'react-native-image-crop-picker';
 import { IMAGE_CROP_PICKER_OPTION } from './AppContentPicker';
 import { handleError } from 'enevti-app/utils/error/handle';
 import { shallowEqual } from 'react-redux';
+import { Platform } from 'react-native';
 
 type AppCameraGalleryType = 'photoCamera' | 'videoCamera' | 'photoGallery' | 'videoGallery' | 'anyGallery';
 
@@ -32,7 +33,8 @@ function Component({
 
   const galleryHandler = React.useCallback(
     (mediaType: 'photo' | 'video' | 'any') => () => {
-      ImageCropPicker.openPicker({ ...IMAGE_CROP_PICKER_OPTION, mediaType })
+      const compressVideoPreset = Platform.OS === 'ios' && mediaType === 'video' ? 'HighestQuality' : undefined;
+      ImageCropPicker.openPicker({ ...IMAGE_CROP_PICKER_OPTION, mediaType, compressVideoPreset })
         .then(image => {
           onSelected(image);
           onDismiss && onDismiss();
@@ -44,7 +46,8 @@ function Component({
 
   const cameraHandler = React.useCallback(
     (mediaType: 'photo' | 'video') => () => {
-      ImageCropPicker.openCamera({ ...IMAGE_CROP_PICKER_OPTION, mediaType })
+      const compressVideoPreset = Platform.OS === 'ios' && mediaType === 'video' ? 'HighestQuality' : undefined;
+      ImageCropPicker.openCamera({ ...IMAGE_CROP_PICKER_OPTION, mediaType, compressVideoPreset })
         .then(image => {
           onSelected(image);
           onDismiss && onDismiss();
