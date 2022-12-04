@@ -16,12 +16,7 @@ import sleep from 'enevti-app/utils/dummy/sleep';
 import { useDebouncedCallback } from 'use-debounce';
 import { EventRegister } from 'react-native-event-listeners';
 import { useDispatch } from 'react-redux';
-import {
-  hideModalLoader,
-  setModalLoaderMode,
-  setModalLoaderProgress,
-  showModalLoader,
-} from 'enevti-app/store/slices/ui/global/modalLoader';
+import { hideModalLoader, showModalLoader } from 'enevti-app/store/slices/ui/global/modalLoader';
 import { cleanTMPImage } from 'enevti-app/service/enevti/nft';
 import RNVideoHelper from 'react-native-video-helper';
 import { useTranslation } from 'react-i18next';
@@ -117,17 +112,14 @@ export default function VideoEditor({ navigation, route }: Props) {
         endTime,
         quality: 'high',
       });
-      const compressed = await Video.compress(result, { compressionMethod: 'auto' }, progress => {
-        dispatch(setModalLoaderProgress(progress));
-      });
+      const compressed = await Video.compress(result, { compressionMethod: 'auto' }, () => {});
       return compressed;
     },
-    [dispatch, route.params.source],
+    [route.params.source],
   );
 
   const onContinue = React.useCallback(async () => {
     try {
-      dispatch(setModalLoaderMode('progress'));
       dispatch(showModalLoader());
       const result = await trimVideo(trimmerStartTime, trimmerEndTime);
       EventRegister.emit('onVideoEditorSuccess', result);

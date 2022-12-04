@@ -6,12 +6,7 @@ import { EventRegister } from 'react-native-event-listeners';
 import { navigateToTrimmer } from 'react-native-k4l-video-trimmer';
 import { Video } from 'react-native-compressor';
 import { store } from 'enevti-app/store/state';
-import {
-  hideModalLoader,
-  setModalLoaderMode,
-  setModalLoaderProgress,
-  showModalLoader,
-} from 'enevti-app/store/slices/ui/global/modalLoader';
+import { hideModalLoader, showModalLoader } from 'enevti-app/store/slices/ui/global/modalLoader';
 
 interface OpenVideoEditorProps {
   navigation: StackNavigationProp<RootStackParamList>;
@@ -31,11 +26,8 @@ export function openVideoEditor({ navigation, source, duration, onSuccess, onFai
     )
       .then(res => {
         if (res !== null) {
-          store.dispatch(setModalLoaderMode('progress'));
           store.dispatch(showModalLoader());
-          Video.compress(`file://${res}`, { compressionMethod: 'auto' }, progress => {
-            store.dispatch(setModalLoaderProgress(progress));
-          }).then(compressed => {
+          Video.compress(`file://${res}`, { compressionMethod: 'auto' }, () => {}).then(compressed => {
             store.dispatch(hideModalLoader());
             onSuccess && onSuccess(compressed);
           });
