@@ -33,7 +33,7 @@ export default function AppMomentItem({ moment, style, onPress }: AppMomentItemP
       title={title}
       style={style}
       onPress={onPress}
-      background={<AppNetworkImage url={IPFStoURL(moment.data.cid)} style={styles.image} />}
+      background={<AppNetworkImage url={IPFStoURL(moment.cover.cid)} style={styles.image} />}
     />
   );
 }

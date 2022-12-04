@@ -41,7 +41,7 @@ export default function VideoEditor({ navigation, route }: Props) {
   const [play, setPlay] = React.useState<boolean>(true);
   const [portrait, setPortrait] = React.useState<boolean>(false);
   const [muted, setMuted] = React.useState<boolean>(false);
-  const [videoMounted, setVideoMounted] = React.useState<boolean>(true);
+  const [videoMounted, setVideoMounted] = React.useState<boolean>(false);
 
   const [playerStartTime, setPlayerStartTime] = React.useState<number>(0);
   const [playerEndTime, setPlayerEndTime] = React.useState<number>(0);
@@ -60,6 +60,7 @@ export default function VideoEditor({ navigation, route }: Props) {
     }
     setPlayerEndTime(result.duration);
     setTrimmerEndTime(result.duration);
+    setVideoMounted(true);
   }, [route.params.source]);
 
   const clearTempFile = React.useCallback(() => {
@@ -106,7 +107,6 @@ export default function VideoEditor({ navigation, route }: Props) {
 
   const onCancel = React.useCallback(() => {
     navigation.goBack();
-    EventRegister.emit('onVideoEditorFailed');
     clearEventRegister();
   }, [clearEventRegister, navigation]);
 

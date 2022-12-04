@@ -8,7 +8,7 @@ import {
   setCreateMomentQueueText,
 } from 'enevti-app/store/slices/queue/moment/create';
 import AppView from 'enevti-app/components/atoms/view/AppView';
-import AppHeader, { HEADER_HEIGHT_COMPACT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
+import AppHeader, { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
@@ -60,15 +60,15 @@ export default function CreateMoment({ navigation, route }: Props) {
           setCloseMenuVisible(visible => !visible);
         }
       }),
-    [navigation, canGoBack],
+    [navigation],
   );
 
   const discardFormState = React.useCallback(() => {
+    dispatch(clearCreateMomentQueue());
     cleanTMPImage();
     canGoBack.current = true;
     setCloseMenuVisible(false);
     navigation.goBack();
-    dispatch(clearCreateMomentQueue());
   }, [dispatch, navigation]);
 
   const saveFormState = React.useCallback(() => {
@@ -122,9 +122,9 @@ export default function CreateMoment({ navigation, route }: Props) {
       withPayment
       withLoader
       edges={['bottom', 'left', 'right']}
-      headerOffset={insets.top + hp(HEADER_HEIGHT_COMPACT_PERCENTAGE)}
+      headerOffset={insets.top + hp(HEADER_HEIGHT_PERCENTAGE)}
       header={
-        <AppHeader compact back backIcon={iconMap.close} backIconSize={23} navigation={navigation} title={' '} />
+        <AppHeader back backIcon={iconMap.close} backIconSize={23} navigation={navigation} title={'New Moment'} />
       }>
       <View style={styles.thumbnailContainer}>
         <View style={styles.thumbnailBox}>
@@ -187,6 +187,7 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
       height: hp(38),
       justifyContent: 'center',
       alignItems: 'center',
+      marginBottom: hp(2),
     },
     thumbnailBox: {
       height: hp(36),
@@ -205,6 +206,7 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
     nftContainer: {
       flexDirection: 'row',
       marginHorizontal: wp(3),
+      zIndex: -999,
     },
     attachedTo: {
       flex: 1,

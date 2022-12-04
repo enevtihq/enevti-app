@@ -167,7 +167,7 @@ export default function ChooseNFTforMoment({ navigation }: Props) {
   const onVideoEditorSuccess = React.useCallback(
     async (data: string) => {
       try {
-        const thumbnail = await createThumbnail({ url: data, timeStamp: 0, cacheName: selectedNFT });
+        const thumbnail = await createThumbnail({ url: data, timeStamp: 0 });
         const thumbnailCompressed = await Image.compress(thumbnail.path, {
           compressionMethod: 'auto',
         });
@@ -181,7 +181,7 @@ export default function ChooseNFTforMoment({ navigation }: Props) {
             dataExtension: getFileExtensionFromPath(data),
             dataSize,
             dataProtocol: 'ipfs',
-            cover: thumbnail.path,
+            cover: thumbnailCompressed,
             coverMime: thumbnail.mime,
             coverExtension: getFileExtensionFromPath(thumbnailCompressed),
             coverSize: thumbnailCompressedSize,
@@ -193,7 +193,7 @@ export default function ChooseNFTforMoment({ navigation }: Props) {
         handleError(err);
       }
     },
-    [dispatch, navigation, selectedNFT],
+    [dispatch, navigation],
   );
 
   const onVideoEditorFailed = React.useCallback((err: any) => {

@@ -351,7 +351,7 @@ export default function AppMentionInput({
         }}
         placeholder={placeholder}
         placeholderTextColor={theme.colors.placeholder}
-        style={style}
+        style={[{ color: theme.colors.text }, style]}
         partTypes={[
           {
             trigger: '@',
