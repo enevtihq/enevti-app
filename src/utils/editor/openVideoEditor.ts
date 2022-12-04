@@ -4,7 +4,14 @@ import i18n from 'enevti-app/translations/i18n';
 import { Platform } from 'react-native';
 import { EventRegister } from 'react-native-event-listeners';
 import { navigateToTrimmer } from 'react-native-k4l-video-trimmer';
-import RNVideoHelper from 'react-native-video-helper';
+import { Video } from 'react-native-compressor';
+import { store } from 'enevti-app/store/state';
+import {
+  hideModalLoader,
+  setModalLoaderMode,
+  setModalLoaderProgress,
+  showModalLoader,
+} from 'enevti-app/store/slices/ui/global/modalLoader';
 
 interface OpenVideoEditorProps {
   navigation: StackNavigationProp<RootStackParamList>;
@@ -23,9 +30,12 @@ export function openVideoEditor({ navigation, source, duration, onSuccess, onFai
       i18n.t('editor:videoEditorMaxDuration', { duration: timeDuration }),
     ).then(res => {
       if (res !== null) {
-        RNVideoHelper.compress(res, {
-          quality: 'low',
+        store.dispatch(setModalLoaderMode('progress'));
+        store.dispatch(showModalLoader());
+        Video.compress(res, { compressionMethod: 'auto' }, progress => {
+          store.dispatch(setModalLoaderProgress(progress));
         }).then(compressed => {
+          store.dispatch(hideModalLoader());
           onSuccess && onSuccess(compressed);
         });
       }

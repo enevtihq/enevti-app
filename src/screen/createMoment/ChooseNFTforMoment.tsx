@@ -38,6 +38,7 @@ import { getFileExtensionFromPath } from 'enevti-app/utils/mime/getFileExtension
 import RNFS from 'react-native-fs';
 import * as mime from 'react-native-mime-types';
 import { createThumbnail } from 'react-native-create-thumbnail';
+import { Image } from 'react-native-compressor';
 
 const MOMENT_SLOT_ITEM_HEIGHT = 9;
 type Props = StackScreenProps<RootStackParamList, 'ChooseNFTforMoment'>;
@@ -167,6 +168,10 @@ export default function ChooseNFTforMoment({ navigation }: Props) {
     async (data: string) => {
       try {
         const thumbnail = await createThumbnail({ url: data, timeStamp: 0, cacheName: selectedNFT });
+        const thumbnailCompressed = await Image.compress(thumbnail.path, {
+          compressionMethod: 'auto',
+        });
+        const thumbnailCompressedSize = (await RNFS.stat(thumbnailCompressed)).size;
         const dataSize = (await RNFS.stat(data)).size;
         dispatch(
           setCreateMomentQueue({
@@ -178,8 +183,8 @@ export default function ChooseNFTforMoment({ navigation }: Props) {
             dataProtocol: 'ipfs',
             cover: thumbnail.path,
             coverMime: thumbnail.mime,
-            coverExtension: getFileExtensionFromPath(thumbnail.path),
-            coverSize: thumbnail.size,
+            coverExtension: getFileExtensionFromPath(thumbnailCompressed),
+            coverSize: thumbnailCompressedSize,
             coverProtocol: 'ipfs',
           }),
         );
