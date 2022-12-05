@@ -11,11 +11,12 @@ export type MyProfileViewState = ProfileView & {
   ownedPagination: PaginationStore;
   onSalePagination: PaginationStore;
   collectionPagination: PaginationStore;
+  momentPagination: PaginationStore;
   version: number;
   fetchedVersion: number;
   reqStatus: number;
   loaded: boolean;
-  render: Record<'owned' | 'onsale' | 'collection', boolean>;
+  render: Record<'owned' | 'onsale' | 'collection' | 'momentCreated', boolean>;
 };
 
 export const myProfileInitialState: MyProfileViewState = {
@@ -23,6 +24,7 @@ export const myProfileInitialState: MyProfileViewState = {
     owned: false,
     onsale: false,
     collection: false,
+    momentCreated: false,
   },
   ownedPagination: {
     version: 0,
@@ -33,6 +35,10 @@ export const myProfileInitialState: MyProfileViewState = {
     checkpoint: 0,
   },
   collectionPagination: {
+    version: 0,
+    checkpoint: 0,
+  },
+  momentPagination: {
     version: 0,
     checkpoint: 0,
   },
@@ -97,6 +103,9 @@ const myProfileViewSlice = createSlice({
     setMyProfileViewCollectionPagination: (profile, action: PayloadAction<PaginationStore>) => {
       profile.collectionPagination = { ...action.payload };
     },
+    setMyProfileViewMomentPagination: (profile, action: PayloadAction<PaginationStore>) => {
+      profile.momentPagination = { ...action.payload };
+    },
     setMyProfileViewFetchedVersion: (profile, action: PayloadAction<number>) => {
       profile.fetchedVersion = action.payload;
     },
@@ -130,6 +139,7 @@ export const {
   setMyProfileViewOwnedPagination,
   setMyProfileViewOnsalePagination,
   setMyProfileViewCollectionPagination,
+  setMyProfileViewMomentPagination,
   setMyProfileViewPending,
   setMyProfileViewFetchedVersion,
   setMyProfileViewVersion,
@@ -157,6 +167,11 @@ export const selectMyProfileViewOnsale = createSelector(
 export const selectMyProfileViewCollection = createSelector(
   (state: RootState) => state.ui.view.myProfile,
   (profile: MyProfileViewState) => profile.collection,
+);
+
+export const selectMyProfileViewMomentCreated = createSelector(
+  (state: RootState) => state.ui.view.myProfile,
+  (profile: MyProfileViewState) => profile.momentCreated,
 );
 
 export const isMyProfileUndefined = createSelector(

@@ -4,6 +4,7 @@ export default {
   owned: 'Owned',
   onSale: 'On Sale',
   collection: 'Collections',
+  moment: 'Moments',
   nftSold: 'NFT Sold',
   treasuryAct: 'DAO Vote',
   serveRate: 'Serve Rate',

@@ -11,11 +11,13 @@ type MyProfileCacheState = Profile & {
   ownedPagination: PaginationStore;
   onSalePagination: PaginationStore;
   collectionPagination: PaginationStore;
+  momentPagination: PaginationStore;
   lastFetch: {
     profile: number;
     owned: number;
     onSale: number;
     collection: number;
+    momentCreated: number;
   };
 };
 
@@ -29,6 +31,10 @@ const initialState: MyProfileCacheState = {
     checkpoint: 0,
   },
   collectionPagination: {
+    version: 0,
+    checkpoint: 0,
+  },
+  momentPagination: {
     version: 0,
     checkpoint: 0,
   },
@@ -47,7 +53,7 @@ const initialState: MyProfileCacheState = {
   raffled: 0,
   likeSent: 0,
   commentSent: 0,
-  lastFetch: { profile: 0, owned: 0, onSale: 0, collection: 0 },
+  lastFetch: { profile: 0, owned: 0, onSale: 0, collection: 0, momentCreated: 0 },
 };
 
 const profileEntitySlice = createSlice({
@@ -84,6 +90,9 @@ const profileEntitySlice = createSlice({
     setMyProfileCacheCollectionPagination: (profile, action: PayloadAction<PaginationStore>) => {
       profile.collectionPagination = { ...action.payload };
     },
+    setMyProfileCacheMomentPagination: (profile, action: PayloadAction<PaginationStore>) => {
+      profile.momentPagination = { ...action.payload };
+    },
     setMyProfileCachePending: (profile, action: PayloadAction<number>) => {
       profile.pending = action.payload;
     },
@@ -116,6 +125,7 @@ export const {
   setMyProfileCacheCollectionPagination,
   setMyProfileCacheOnsalePagination,
   setMyProfileCacheOwnedPagination,
+  setMyProfileCacheMomentPagination,
   setMyProfileCachePending,
   setLastFetchMyProfileCache,
   setLastFetchMyProfileOwnedCache,

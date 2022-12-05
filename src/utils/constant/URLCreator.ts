@@ -323,6 +323,16 @@ export function urlGetProfilePendingDelivery(address: string, host: string = ENE
   return encodeURI(`${host}/profile/${address}/pending`);
 }
 
+export function urlGetProfileMoment(
+  address: string,
+  offset: number = 0,
+  limit: number = 10,
+  version: number = 0,
+  host: string = ENEVTI_DEFAULT_API,
+) {
+  return encodeURI(`${host}/profile/${address}/moment?offset=${offset}&limit=${limit}&version=${version}`);
+}
+
 export function urlGetProfileMomentSlot(
   address: string,
   offset: number = 0,

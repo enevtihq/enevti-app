@@ -11,11 +11,12 @@ export type ProfileViewState = ProfileView & {
   ownedPagination: PaginationStore;
   onSalePagination: PaginationStore;
   collectionPagination: PaginationStore;
+  momentPagination: PaginationStore;
   version: number;
   fetchedVersion: number;
   reqStatus: number;
   loaded: boolean;
-  render: Record<'owned' | 'onsale' | 'collection', boolean>;
+  render: Record<'owned' | 'onsale' | 'collection' | 'momentCreated', boolean>;
 };
 
 type ProfileViewStore = {
@@ -27,6 +28,7 @@ export const profileInitialStateItem: ProfileViewState = {
     owned: false,
     onsale: false,
     collection: false,
+    momentCreated: false,
   },
   ownedPagination: {
     version: 0,
@@ -37,6 +39,10 @@ export const profileInitialStateItem: ProfileViewState = {
     checkpoint: 0,
   },
   collectionPagination: {
+    version: 0,
+    checkpoint: 0,
+  },
+  momentPagination: {
     version: 0,
     checkpoint: 0,
   },
@@ -108,6 +114,9 @@ const profileViewSlice = createSlice({
     setProfileViewCollectionPagination: (profile, action: PayloadAction<{ key: string; value: PaginationStore }>) => {
       profile[action.payload.key].collectionPagination = { ...action.payload.value };
     },
+    setProfileViewMomentPagination: (profile, action: PayloadAction<{ key: string; value: PaginationStore }>) => {
+      profile[action.payload.key].momentPagination = { ...action.payload.value };
+    },
     setProfileViewFetchedVersion: (profile, action: PayloadAction<{ key: string; value: number }>) => {
       profile[action.payload.key].fetchedVersion = action.payload.value;
     },
@@ -148,6 +157,7 @@ export const {
   setProfileViewOwnedPagination,
   setProfileViewOnsalePagination,
   setProfileViewCollectionPagination,
+  setProfileViewMomentPagination,
   setProfileViewFetchedVersion,
   setProfileViewVersion,
   setProfileViewPending,
@@ -177,6 +187,11 @@ export const selectProfileViewOnsale = createSelector(
 export const selectProfileViewCollection = createSelector(
   [(state: RootState) => state.ui.view.profile, (state: RootState, key: string) => key],
   (profile: ProfileViewStore, key: string) => (profile.hasOwnProperty(key) ? profile[key].collection : []),
+);
+
+export const selectProfileViewMomentCreated = createSelector(
+  [(state: RootState) => state.ui.view.profile, (state: RootState, key: string) => key],
+  (profile: ProfileViewStore, key: string) => (profile.hasOwnProperty(key) ? profile[key].momentCreated : []),
 );
 
 export const isProfileUndefined = createSelector(

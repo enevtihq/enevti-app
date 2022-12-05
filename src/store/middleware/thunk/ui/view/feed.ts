@@ -23,6 +23,7 @@ import {
   HOME_FEED_LIMIT,
   HOME_MOMENT_LIMIT,
   PROFILE_COLLECTION_INITIAL_LENGTH,
+  PROFILE_MOMENT_INITIAL_LENGTH,
   PROFILE_OWNED_INITIAL_LENGTH,
 } from 'enevti-app/utils/constant/limit';
 import { myProfileInitialState, setMyProfileView } from 'enevti-app/store/slices/ui/view/myProfile';
@@ -71,6 +72,7 @@ export const loadFeeds = createAsyncThunk<void, loadFeedsArgs, AsyncThunkAPI>(
               owned: true,
               onsale: true,
               collection: false,
+              momentCreated: false,
             },
             version: Date.now(),
             ownedPagination: {
@@ -80,6 +82,10 @@ export const loadFeeds = createAsyncThunk<void, loadFeedsArgs, AsyncThunkAPI>(
             collectionPagination: {
               checkpoint: PROFILE_COLLECTION_INITIAL_LENGTH,
               version: homeResponse.version.profile.collection,
+            },
+            momentPagination: {
+              checkpoint: PROFILE_MOMENT_INITIAL_LENGTH,
+              version: homeResponse.version.profile.momentCreated,
             },
             reqStatus: homeResponse.status,
             loaded: true,
@@ -103,6 +109,7 @@ export const loadFeeds = createAsyncThunk<void, loadFeedsArgs, AsyncThunkAPI>(
                 owned: now,
                 collection: now,
                 onSale: now,
+                momentCreated: now,
               },
               ownedPagination: {
                 checkpoint: PROFILE_OWNED_INITIAL_LENGTH,
@@ -111,6 +118,10 @@ export const loadFeeds = createAsyncThunk<void, loadFeedsArgs, AsyncThunkAPI>(
               collectionPagination: {
                 checkpoint: PROFILE_COLLECTION_INITIAL_LENGTH,
                 version: homeResponse.version.profile.collection,
+              },
+              momentPagination: {
+                checkpoint: PROFILE_MOMENT_INITIAL_LENGTH,
+                version: homeResponse.version.profile.momentCreated,
               },
             }),
           );

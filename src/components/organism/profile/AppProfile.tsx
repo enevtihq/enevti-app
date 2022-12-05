@@ -54,6 +54,7 @@ import { reduceTotalServeRateChanged } from 'enevti-app/store/middleware/thunk/s
 import { reduceTotalStakeChanged } from 'enevti-app/store/middleware/thunk/socket/profile/totalStakeChanged';
 import { appSocket } from 'enevti-app/utils/app/network';
 import { reduceTotalMomentSlotChanged } from 'enevti-app/store/middleware/thunk/socket/profile/totalMomentSlotChanged';
+import MomentCreatedListComponent from './tabs/MomentCreatedListComponent';
 
 const noDisplay = 'none';
 const visible = 1;
@@ -107,6 +108,7 @@ export default function AppProfile({
 
   const [ownedMounted, setOwnedMounted] = React.useState<boolean>(false);
   const [onSaleMounted, setOnSaleMounted] = React.useState<boolean>(false);
+  const [momentMounted, setMomentMounted] = React.useState<boolean>(false);
   const [collectionMounted, setCollectionMouted] = React.useState<boolean>(false);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -114,6 +116,7 @@ export default function AppProfile({
 
   const ownedRef = useAnimatedRef<FlatList>();
   const onSaleRef = useAnimatedRef<FlatList>();
+  const momentRef = useAnimatedRef<FlatList>();
   const collectionRef = useAnimatedRef<FlatList>();
 
   const headerCollapsed = useSharedValue(true);
@@ -270,9 +273,10 @@ export default function AppProfile({
       },
     });
 
-  const ownedScrollHandler = useCustomAnimatedScrollHandler([onSaleRef, collectionRef]);
-  const onSaleScrollHandler = useCustomAnimatedScrollHandler([ownedRef, collectionRef]);
-  const collectionScrollHandler = useCustomAnimatedScrollHandler([ownedRef, onSaleRef]);
+  const ownedScrollHandler = useCustomAnimatedScrollHandler([onSaleRef, collectionRef, momentRef]);
+  const onSaleScrollHandler = useCustomAnimatedScrollHandler([ownedRef, collectionRef, momentRef]);
+  const momentScrollHandler = useCustomAnimatedScrollHandler([ownedRef, onSaleRef, collectionRef]);
+  const collectionScrollHandler = useCustomAnimatedScrollHandler([ownedRef, onSaleRef, momentRef]);
 
   const scrollStyle = useAnimatedStyle(() => {
     return {
@@ -287,8 +291,8 @@ export default function AppProfile({
   });
 
   const scrollEnabled = React.useMemo(
-    () => (ownedMounted && onSaleMounted && collectionMounted ? true : false),
-    [ownedMounted, onSaleMounted, collectionMounted],
+    () => (ownedMounted && onSaleMounted && collectionMounted && momentMounted ? true : false),
+    [ownedMounted, onSaleMounted, collectionMounted, momentMounted],
   );
 
   const onRefresh = React.useCallback(async () => {
@@ -333,6 +337,7 @@ export default function AppProfile({
 
   const ownedOnMounted = React.useCallback(() => setOwnedMounted(true), []);
   const onSaleOnMounted = React.useCallback(() => setOnSaleMounted(true), []);
+  const momentOnMounted = React.useCallback(() => setMomentMounted(true), []);
   const collectionOnMounted = React.useCallback(() => setCollectionMouted(true), []);
 
   const OwnedNFTScreen = React.useCallback(
@@ -397,6 +402,39 @@ export default function AppProfile({
     ],
   );
 
+  const MomentScreen = React.useCallback(
+    () => (
+      <MomentCreatedListComponent
+        ref={momentRef}
+        navigation={navigation}
+        route={route}
+        onScroll={momentScrollHandler}
+        onMomentumScroll={onUpdateClose}
+        scrollEnabled={scrollEnabled}
+        headerHeight={headerHeight}
+        onMounted={momentOnMounted}
+        onRefresh={onRefresh}
+        disableHeaderAnimation={disableHeaderAnimation}
+        isMyProfile={isMyProfile}
+        withFooterSpace={withFooterSpace}
+      />
+    ),
+    [
+      momentRef,
+      navigation,
+      route,
+      momentScrollHandler,
+      onUpdateClose,
+      scrollEnabled,
+      headerHeight,
+      momentOnMounted,
+      onRefresh,
+      disableHeaderAnimation,
+      isMyProfile,
+      withFooterSpace,
+    ],
+  );
+
   const CollectionScreen = React.useCallback(
     () => (
       <CollectionListComponent
@@ -456,6 +494,7 @@ export default function AppProfile({
         ownedNFTScreen={OwnedNFTScreen}
         onSaleNFTScreen={OnSaleNFTScreen}
         collectionScreen={CollectionScreen}
+        momentScreen={MomentScreen}
         style={{
           opacity: ownedMounted && onSaleMounted ? visible : notVisible,
         }}

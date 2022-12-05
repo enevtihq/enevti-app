@@ -1,5 +1,11 @@
 import { getBasePersonaByRouteParam, getMyAddress } from 'enevti-app/service/enevti/persona';
-import { getMyProfile, getProfile, getProfileCollection, getProfileOwned } from 'enevti-app/service/enevti/profile';
+import {
+  getMyProfile,
+  getProfile,
+  getProfileCollection,
+  getProfileMoment,
+  getProfileOwned,
+} from 'enevti-app/service/enevti/profile';
 import { handleError, isErrorResponse } from 'enevti-app/utils/error/handle';
 import { hideModalLoader, showModalLoader } from 'enevti-app/store/slices/ui/global/modalLoader';
 import {
@@ -7,6 +13,7 @@ import {
   resetMyProfileView,
   selectMyProfileView,
   selectMyProfileViewCollection,
+  selectMyProfileViewMomentCreated,
   selectMyProfileViewOwned,
   setMyProfileView,
 } from 'enevti-app/store/slices/ui/view/myProfile';
@@ -15,6 +22,7 @@ import {
   profileInitialStateItem,
   selectProfileView,
   selectProfileViewCollection,
+  selectProfileViewMomentCreated,
   selectProfileViewOwned,
   setProfileView,
 } from 'enevti-app/store/slices/ui/view/profile';
@@ -26,6 +34,8 @@ import { payManualDeliverSecret } from 'enevti-app/store/middleware/thunk/paymen
 import {
   PROFILE_COLLECTION_INITIAL_LENGTH,
   PROFILE_COLLECTION_RESPONSE_LIMIT,
+  PROFILE_MOMENT_INITIAL_LENGTH,
+  PROFILE_MOMENT_RESPONSE_LIMIT,
   PROFILE_OWNED_INITIAL_LENGTH,
   PROFILE_OWNED_RESPONSE_LIMIT,
 } from 'enevti-app/utils/constant/limit';
@@ -178,6 +188,71 @@ export const loadMoreCollection = createAsyncThunk<void, LoadProfileArgs, AsyncT
   },
 );
 
+export const loadMoreMoment = createAsyncThunk<void, LoadProfileArgs, AsyncThunkAPI>(
+  'profileView/loadMoreMoment',
+  async ({ route, isMyProfile }, { dispatch, getState, signal }) => {
+    try {
+      if (isMyProfile) {
+        const myProfileMoment = selectMyProfileViewMomentCreated(getState());
+        const myProfileView = selectMyProfileView(getState());
+        const offset = myProfileView.momentPagination.checkpoint;
+        const version = myProfileView.momentPagination.version;
+        if (myProfileMoment.length !== version) {
+          const myAddress = await getMyAddress();
+          const momentResponse = await getProfileMoment(
+            myAddress,
+            offset,
+            PROFILE_MOMENT_RESPONSE_LIMIT,
+            version,
+            signal,
+          );
+          dispatch(
+            setMyProfileView({
+              ...myProfileView,
+              version: Date.now(),
+              momentCreated: myProfileView.momentCreated.concat(momentResponse.data.data),
+              momentPagination: {
+                checkpoint: momentResponse.data.checkpoint,
+                version: momentResponse.data.version,
+              },
+            }),
+          );
+        }
+      } else {
+        const profile = selectProfileView(getState(), route.key);
+        const profileMoment = selectProfileViewMomentCreated(getState(), route.key);
+        const offset = profile.momentPagination.checkpoint;
+        const version = profile.momentPagination.version;
+        if (profileMoment.length !== version) {
+          const momentResponse = await getProfileMoment(
+            profile.persona.address,
+            offset,
+            PROFILE_MOMENT_RESPONSE_LIMIT,
+            version,
+            signal,
+          );
+          dispatch(
+            setProfileView({
+              key: route.key,
+              value: {
+                ...profile,
+                version: Date.now(),
+                momentCreated: profile.momentCreated.concat(momentResponse.data.data),
+                momentPagination: {
+                  checkpoint: momentResponse.data.checkpoint,
+                  version: momentResponse.data.version,
+                },
+              },
+            }),
+          );
+        }
+      }
+    } catch (err: any) {
+      handleError(err);
+    }
+  },
+);
+
 export const initProfile = createAsyncThunk<void, undefined, AsyncThunkAPI>(
   'home/initProfile',
   async (_, { dispatch, getState, signal }) => {
@@ -220,6 +295,7 @@ export const loadMyProfile = async (reload: boolean, dispatch: any, signal?: Abo
         owned: true,
         onsale: true,
         collection: false,
+        momentCreated: false,
       },
       version: Date.now(),
       ownedPagination: {
@@ -229,6 +305,10 @@ export const loadMyProfile = async (reload: boolean, dispatch: any, signal?: Abo
       collectionPagination: {
         checkpoint: PROFILE_COLLECTION_INITIAL_LENGTH,
         version: profileResponse.version.collection,
+      },
+      momentPagination: {
+        checkpoint: PROFILE_MOMENT_INITIAL_LENGTH,
+        version: profileResponse.version.momentCreated,
       },
       reqStatus: profileResponse.status,
       loaded: true,
@@ -262,6 +342,7 @@ export const loadProfileBase = async (
             owned: true,
             onsale: true,
             collection: false,
+            momentCreated: false,
           },
           persona: personaBase.data,
           version: Date.now(),
@@ -272,6 +353,10 @@ export const loadProfileBase = async (
           collectionPagination: {
             checkpoint: PROFILE_COLLECTION_INITIAL_LENGTH,
             version: profileResponse.version.collection,
+          },
+          momentPagination: {
+            checkpoint: PROFILE_MOMENT_INITIAL_LENGTH,
+            version: profileResponse.version.momentCreated,
           },
           loaded: true,
           reqStatus: personaBase.status,

@@ -16,6 +16,7 @@ import {
   urlGetProfile,
   urlGetProfileBalance,
   urlGetProfileCollection,
+  urlGetProfileMoment,
   urlGetProfileMomentSlot,
   urlGetProfileNonce,
   urlGetProfileOwned,
@@ -31,9 +32,11 @@ import {
   PROFILE_OWNED_INITIAL_LENGTH,
   PROFILE_COLLECTION_INITIAL_LENGTH,
   PROFILE_MOMENT_SLOT_INITIAL_LENGTH,
+  PROFILE_MOMENT_INITIAL_LENGTH,
 } from 'enevti-app/utils/constant/limit';
 import { NFTBase } from 'enevti-app/types/core/chain/nft';
-import { selectMyPersonaCache } from 'enevti-app/store/slices/entities/cache/myPersona';
+import { selectMyPersonaCache, setMyPersonaCache } from 'enevti-app/store/slices/entities/cache/myPersona';
+import { MomentBase } from 'enevti-app/types/core/chain/moment';
 
 export const MINIMUM_BASIC_UNIT_STAKE_ELIGIBILITY = 1000;
 type ProfileRoute = StackScreenProps<RootStackParamList, 'Profile'>['route']['params'];
@@ -92,6 +95,16 @@ async function fetchProfileMomentSlot(
   return await apiFetchVersioned<NFTBase[]>(urlGetProfileMomentSlot(address, offset, limit, version), signal);
 }
 
+async function fetchProfileMoment(
+  address: string,
+  offset: number,
+  limit: number,
+  version: number,
+  signal?: AbortController['signal'],
+): Promise<APIResponseVersioned<MomentBase[]>> {
+  return await apiFetchVersioned<MomentBase[]>(urlGetProfileMoment(address, offset, limit, version), signal);
+}
+
 async function fetchProfileOwned(
   address: string,
   offset: number,
@@ -144,6 +157,16 @@ export async function getProfileMomentSlot(
   signal?: AbortController['signal'],
 ): Promise<APIResponseVersioned<NFTBase[]>> {
   return await fetchProfileMomentSlot(address, offset, limit, version, signal);
+}
+
+export async function getProfileMoment(
+  address: string,
+  offset: number,
+  limit: number,
+  version: number,
+  signal?: AbortController['signal'],
+): Promise<APIResponseVersioned<MomentBase[]>> {
+  return await fetchProfileMoment(address, offset, limit, version, signal);
 }
 
 export async function getProfileOwned(
@@ -257,7 +280,7 @@ export async function getMyProfile(
     },
     version: {
       collection: myProfileCache.collectionPagination.version,
-      momentCreated: 0,
+      momentCreated: myProfileCache.momentPagination.version,
       onSale: myProfileCache.onSalePagination.version,
       owned: myProfileCache.ownedPagination.version,
     },
@@ -269,6 +292,9 @@ export async function getMyProfile(
       const profileResponse = await getProfile(myAddress, withPersona, withInitialData, signal);
       response = profileResponse;
       if (profileResponse.status === 200 && !isErrorResponse(profileResponse)) {
+        if (withPersona) {
+          store.dispatch(setMyPersonaCache({ ...profileResponse.data.persona }));
+        }
         if (withInitialData) {
           store.dispatch(
             setMyProfileCache({
@@ -278,6 +304,7 @@ export async function getMyProfile(
                 owned: now,
                 collection: now,
                 onSale: now,
+                momentCreated: now,
               },
               ownedPagination: {
                 checkpoint: PROFILE_OWNED_INITIAL_LENGTH,
@@ -286,6 +313,10 @@ export async function getMyProfile(
               collectionPagination: {
                 checkpoint: PROFILE_COLLECTION_INITIAL_LENGTH,
                 version: profileResponse.version.collection,
+              },
+              momentPagination: {
+                checkpoint: PROFILE_MOMENT_INITIAL_LENGTH,
+                version: profileResponse.version.momentCreated,
               },
             }),
           );

@@ -1,7 +1,7 @@
 import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import React, { ComponentType } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { hp } from 'enevti-app/utils/layout/imageRatio';
+import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import AppTopTabBar from 'enevti-app/components/atoms/view/AppTopTabBar';
 import { PROFILE_HEADER_HEIGHT_PERCENTAGE } from './AppProfileHeader';
@@ -24,6 +24,7 @@ interface AppProfileBodyProps {
   animatedTabBarStyle: StyleProp<ViewStyle>;
   ownedNFTScreen: ComponentType<any>;
   onSaleNFTScreen: ComponentType<any>;
+  momentScreen: ComponentType<any>;
   collectionScreen: ComponentType<any>;
   style?: StyleProp<ViewStyle>;
   isMyProfile?: boolean;
@@ -35,6 +36,7 @@ export default function AppProfileBody({
   animatedTabBarStyle,
   ownedNFTScreen,
   onSaleNFTScreen,
+  momentScreen,
   collectionScreen,
   style,
   isMyProfile = false,
@@ -67,6 +69,10 @@ export default function AppProfileBody({
         )}
         sceneContainerStyle={{ backgroundColor: backgroundColor }}
         screenOptions={{
+          tabBarScrollEnabled: true,
+          tabBarItemStyle: {
+            width: wp(32),
+          },
           tabBarStyle: {
             elevation: 0,
             shadowOpacity: 0,
@@ -76,7 +82,7 @@ export default function AppProfileBody({
         <Tab.Screen
           options={{
             tabBarLabel: ({ color }) => (
-              <AppTextBody4 style={{ color: color }}>
+              <AppTextBody4 numberOfLines={1} style={{ color: color }}>
                 {t('profile:owned')} ({profile.ownedPagination ? profile.ownedPagination.version : 0})
               </AppTextBody4>
             ),
@@ -87,7 +93,7 @@ export default function AppProfileBody({
         <Tab.Screen
           options={{
             tabBarLabel: ({ color }) => (
-              <AppTextBody4 style={{ color: color }}>
+              <AppTextBody4 numberOfLines={1} style={{ color: color }}>
                 {t('profile:onSale')} ({profile.onSalePagination ? profile.onSalePagination.version : 0})
               </AppTextBody4>
             ),
@@ -98,7 +104,18 @@ export default function AppProfileBody({
         <Tab.Screen
           options={{
             tabBarLabel: ({ color }) => (
-              <AppTextBody4 style={{ color: color }}>
+              <AppTextBody4 numberOfLines={1} style={{ color: color }}>
+                {t('profile:moment')} ({profile.momentPagination ? profile.momentPagination.version : 0})
+              </AppTextBody4>
+            ),
+          }}
+          name={t('profile:moment')}
+          component={momentScreen}
+        />
+        <Tab.Screen
+          options={{
+            tabBarLabel: ({ color }) => (
+              <AppTextBody4 numberOfLines={1} style={{ color: color }}>
                 {t('profile:collection')} ({profile.collectionPagination ? profile.collectionPagination.version : 0})
               </AppTextBody4>
             ),

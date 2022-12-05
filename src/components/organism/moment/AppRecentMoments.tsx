@@ -13,7 +13,7 @@ import AppAddMoment from './AppAddMoment';
 import AppMomentItem from './AppMomentItem';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
-import { Moment } from 'enevti-app/types/core/chain/moment';
+import { MomentBase } from 'enevti-app/types/core/chain/moment';
 
 const center = 'center';
 
@@ -32,7 +32,7 @@ export default function AppRecentMoments({ navigation }: AppRecentMomentsProps) 
   const onMomentsPress = (_id: string) => {};
 
   const renderItem = React.useCallback(
-    ({ item }: { item: Moment }) => (
+    ({ item }: { item: MomentBase }) => (
       <AppMomentItem moment={item} style={{ marginRight: wp('2%', insets) }} onPress={() => onMomentsPress(item.id)} />
     ),
     [insets],

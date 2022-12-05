@@ -10,4 +10,5 @@ __DEV__ &&
     "EventEmitter.removeListener('change', ...): Method has been deprecated. Please instead use `remove()` on the subscription returned by `EventEmitter.addListener`.",
     "AsyncStorage has been extracted from react-native core and will be removed in a future release. It can now be installed and imported from '@react-native-async-storage/async-storage' instead of 'react-native'. See https://github.com/react-native-async-storage/async-storage",
     '`new NativeEventEmitter()` was called with a non-null argument',
+    'source.uri should not be an empty string',
   ]);
