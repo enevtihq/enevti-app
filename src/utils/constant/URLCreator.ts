@@ -2,6 +2,7 @@ import { SizeCode } from 'enevti-app/types/core/service/api';
 import {
   COLLECTION_ACTIVITY_INITIAL_LENGTH,
   COLLECTION_MINTED_INITIAL_LENGTH,
+  COLLECTION_MOMENT_INITIAL_LENGTH,
   HOME_FEED_LIMIT,
   HOME_MOMENT_LIMIT,
   NFT_ACTIVITY_INITIAL_LENGTH,
@@ -148,6 +149,7 @@ export function urlGetCollectionById(
   if (withInitialData) {
     url.searchParams.append('minted', COLLECTION_MINTED_INITIAL_LENGTH.toString());
     url.searchParams.append('activity', COLLECTION_ACTIVITY_INITIAL_LENGTH.toString());
+    url.searchParams.append('moment', COLLECTION_MOMENT_INITIAL_LENGTH.toString());
   }
   return encodeURI(url.href);
 }
@@ -160,6 +162,16 @@ export function urlGetCollectionMintedNFTById(
   host: string = ENEVTI_DEFAULT_API,
 ) {
   return encodeURI(`${host}/collection/id/${id}/minted?offset=${offset}&limit=${limit}&version=${version}`);
+}
+
+export function urlGetCollectionMomentNFTById(
+  id: string,
+  offset: number = 0,
+  limit: number = 10,
+  version: number = 0,
+  host: string = ENEVTI_DEFAULT_API,
+) {
+  return encodeURI(`${host}/collection/id/${id}/moment?offset=${offset}&limit=${limit}&version=${version}`);
 }
 
 export function urlGetCollectionActivityById(
@@ -183,6 +195,7 @@ export function urlGetCollectionByName(
   if (withInitialData) {
     url.searchParams.append('minted', COLLECTION_MINTED_INITIAL_LENGTH.toString());
     url.searchParams.append('activity', COLLECTION_ACTIVITY_INITIAL_LENGTH.toString());
+    url.searchParams.append('moment', COLLECTION_MOMENT_INITIAL_LENGTH.toString());
   }
   return encodeURI(url.href);
 }
@@ -198,6 +211,7 @@ export function urlGetCollectionBySymbol(
   if (withInitialData) {
     url.searchParams.append('minted', COLLECTION_MINTED_INITIAL_LENGTH.toString());
     url.searchParams.append('activity', COLLECTION_ACTIVITY_INITIAL_LENGTH.toString());
+    url.searchParams.append('moment', COLLECTION_MOMENT_INITIAL_LENGTH.toString());
   }
   return encodeURI(url.href);
 }

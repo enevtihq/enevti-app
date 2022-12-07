@@ -299,6 +299,7 @@ export default function AppProfile({
     afterRefresh(false); // ios after refresh fix
     ownedRef.current?.scrollToOffset({ offset: 0 });
     onSaleRef.current?.scrollToOffset({ offset: 0 });
+    momentRef.current?.scrollToOffset({ offset: 0 });
     collectionRef.current?.scrollToOffset({ offset: 0 });
     onBeginDragWorklet && onBeginDragWorklet(0);
     onScrollWorklet && onScrollWorklet(0);
@@ -310,6 +311,7 @@ export default function AppProfile({
     onProfileScreenLoaded,
     ownedRef,
     onSaleRef,
+    momentRef,
     collectionRef,
     onScrollWorklet,
     onBeginDragWorklet,

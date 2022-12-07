@@ -190,6 +190,7 @@ export const getDummyCollectionFullData = (): Collection => {
       address: '730917d362b38e434918d4ea1b905f5c159ca053',
       username: '',
     },
+    moment: [],
     activity: [
       {
         transaction: 'fgagergdfsdf',

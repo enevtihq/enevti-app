@@ -6,6 +6,7 @@ import {
   urlGetCollectionById,
   urlGetCollectionBySymbol,
   urlGetCollectionMintedNFTById,
+  urlGetCollectionMomentNFTById,
   urlGetIsCollectionOwnerOrCreator,
   urlGetNameToCollectionId,
   urlGetSymbolToCollectionId,
@@ -13,11 +14,17 @@ import {
 import { apiFetch, apiFetchVersioned, apiFetchVersionRoot } from 'enevti-app/utils/app/network';
 import { APIResponse, APIResponseVersioned, APIResponseVersionRoot } from 'enevti-app/types/core/service/api';
 import { NFTBase } from 'enevti-app/types/core/chain/nft';
-import { COLLECTION_ACTIVITY_INITIAL_LENGTH, COLLECTION_MINTED_INITIAL_LENGTH } from 'enevti-app/utils/constant/limit';
+import {
+  COLLECTION_ACTIVITY_INITIAL_LENGTH,
+  COLLECTION_MINTED_INITIAL_LENGTH,
+  COLLECTION_MOMENT_INITIAL_LENGTH,
+} from 'enevti-app/utils/constant/limit';
 import { getMyAddress } from './persona';
 import i18n from 'enevti-app/translations/i18n';
+import { MomentBase } from 'enevti-app/types/core/chain/moment';
 
 type CollectionRoute = StackScreenProps<RootStackParamList, 'Collection'>['route']['params'];
+type CollectionVersions = { activity: number; minted: number; moment: number };
 
 async function fetchIsCollectionOwnerOrCreator(
   id: string,
@@ -31,9 +38,9 @@ async function fetchCollectionById(
   id: string,
   withInitialData: boolean,
   signal?: AbortController['signal'],
-): Promise<APIResponseVersionRoot<Collection, { activity: number; minted: number }>> {
+): Promise<APIResponseVersionRoot<Collection, CollectionVersions>> {
   const myAddress = await getMyAddress();
-  return await apiFetchVersionRoot<Collection, { activity: number; minted: number }>(
+  return await apiFetchVersionRoot<Collection, CollectionVersions>(
     urlGetCollectionById(id, myAddress, withInitialData),
     signal,
   );
@@ -43,9 +50,9 @@ async function fetchCollectionBySymbol(
   symbol: string,
   withInitialData: boolean,
   signal?: AbortController['signal'],
-): Promise<APIResponseVersionRoot<Collection, { activity: number; minted: number }>> {
+): Promise<APIResponseVersionRoot<Collection, CollectionVersions>> {
   const myAddress = await getMyAddress();
-  return await apiFetchVersionRoot<Collection, { activity: number; minted: number }>(
+  return await apiFetchVersionRoot<Collection, CollectionVersions>(
     urlGetCollectionBySymbol(symbol, myAddress, withInitialData),
     signal,
   );
@@ -75,6 +82,16 @@ async function fetchCollectionMinted(
   return await apiFetchVersioned<NFTBase[]>(urlGetCollectionMintedNFTById(id, offset, limit, version), signal);
 }
 
+async function fetchCollectionMoment(
+  id: string,
+  offset: number,
+  limit: number,
+  version: number,
+  signal?: AbortController['signal'],
+): Promise<APIResponseVersioned<MomentBase[]>> {
+  return await apiFetchVersioned<MomentBase[]>(urlGetCollectionMomentNFTById(id, offset, limit, version), signal);
+}
+
 async function fetchCollectionActivity(
   id: string,
   offset: number,
@@ -102,6 +119,16 @@ export async function getCollectionMinted(
   return await fetchCollectionMinted(id, offset, limit, version, signal);
 }
 
+export async function getCollectionMoment(
+  id: string,
+  offset: number,
+  limit: number,
+  version: number,
+  signal?: AbortController['signal'],
+): Promise<APIResponseVersioned<MomentBase[]>> {
+  return await fetchCollectionMoment(id, offset, limit, version, signal);
+}
+
 export async function getCollectionActivity(
   id: string,
   offset: number,
@@ -117,6 +144,13 @@ export async function getCollectionInitialMinted(
   signal?: AbortController['signal'],
 ): Promise<APIResponseVersioned<NFTBase[]>> {
   return await fetchCollectionMinted(id, 0, COLLECTION_MINTED_INITIAL_LENGTH, 0, signal);
+}
+
+export async function getCollectionInitialMoment(
+  id: string,
+  signal?: AbortController['signal'],
+): Promise<APIResponseVersioned<MomentBase[]>> {
+  return await fetchCollectionMoment(id, 0, COLLECTION_MOMENT_INITIAL_LENGTH, 0, signal);
 }
 
 export async function getCollectionInitialActivity(
@@ -157,7 +191,7 @@ export async function getCollectionById(
   id: string,
   withInitialData: boolean,
   signal?: AbortController['signal'],
-): Promise<APIResponseVersionRoot<Collection, { activity: number; minted: number }>> {
+): Promise<APIResponseVersionRoot<Collection, CollectionVersions>> {
   return await fetchCollectionById(id, withInitialData, signal);
 }
 

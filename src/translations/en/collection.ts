@@ -8,6 +8,7 @@ export default {
   statFloorPrice: 'Floor Price',
   statRedeemed: 'Redeemed',
   mintedItems: 'Minted Items',
+  moment: 'Moments',
   activity: 'Activity',
   activityName: '{{name}} · {{address}}',
   mintingClosedIn: 'Mint ends {{momentFromNow}}',

@@ -2,6 +2,7 @@ import {
   getCollectionByRouteParam,
   getCollectionMinted,
   getCollectionActivity,
+  getCollectionMoment,
 } from 'enevti-app/service/enevti/collection';
 import { handleError } from 'enevti-app/utils/error/handle';
 import {
@@ -12,6 +13,7 @@ import {
   pushCollectionViewMinted,
   pushCollectionViewActivity,
   collectionInitialStateItem,
+  pushCollectionViewMoment,
 } from 'enevti-app/store/slices/ui/view/collection';
 import { hideModalLoader, showModalLoader } from 'enevti-app/store/slices/ui/global/modalLoader';
 import { AppThunk, AsyncThunkAPI } from 'enevti-app/store/state';
@@ -23,6 +25,8 @@ import {
   COLLECTION_ACTIVITY_RESPONSE_LIMIT,
   COLLECTION_MINTED_INITIAL_LENGTH,
   COLLECTION_ACTIVITY_INITIAL_LENGTH,
+  COLLECTION_MOMENT_INITIAL_LENGTH,
+  COLLECTION_MOMENT_RESPONSE_LIMIT,
 } from 'enevti-app/utils/constant/limit';
 import sleep from 'enevti-app/utils/dummy/sleep';
 import { Platform } from 'react-native';
@@ -53,6 +57,7 @@ export const loadCollection = createAsyncThunk<void, LoadCollectionArgs, AsyncTh
             ...collectionResponse.data,
             render: {
               minted: true,
+              moment: false,
               activity: false,
             },
             version: Date.now(),
@@ -63,6 +68,10 @@ export const loadCollection = createAsyncThunk<void, LoadCollectionArgs, AsyncTh
             activityPagination: {
               checkpoint: COLLECTION_ACTIVITY_INITIAL_LENGTH,
               version: collectionResponse.version.activity,
+            },
+            momentPagination: {
+              checkpoint: COLLECTION_MOMENT_INITIAL_LENGTH,
+              version: collectionResponse.version.moment,
             },
             reqStatus: collectionResponse.status,
             loaded: true,
@@ -127,6 +136,35 @@ export const loadMoreActivity = createAsyncThunk<void, LoadCollectionArgs, Async
             key: route.key,
             value: activityResponse.data.data,
             pagination: { checkpoint: activityResponse.data.checkpoint, version: activityResponse.data.version },
+          }),
+        );
+      }
+    } catch (err: any) {
+      handleError(err);
+    }
+  },
+);
+
+export const loadMoreMoment = createAsyncThunk<void, LoadCollectionArgs, AsyncThunkAPI>(
+  'collectionView/loadMoreMoment',
+  async ({ route }, { dispatch, getState, signal }) => {
+    try {
+      const collectionView = selectCollectionView(getState(), route.key);
+      const offset = collectionView.momentPagination.checkpoint;
+      const version = collectionView.momentPagination.version;
+      if (collectionView.moment.length !== version) {
+        const momentResponse = await getCollectionMoment(
+          collectionView.id,
+          offset,
+          COLLECTION_MOMENT_RESPONSE_LIMIT,
+          version,
+          signal,
+        );
+        dispatch(
+          pushCollectionViewMoment({
+            key: route.key,
+            value: momentResponse.data.data,
+            pagination: { checkpoint: momentResponse.data.checkpoint, version: momentResponse.data.version },
           }),
         );
       }

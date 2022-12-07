@@ -6,17 +6,19 @@ import { NFTType } from 'enevti-app/types/core/chain/nft/NFTType';
 import { NFTBase } from 'enevti-app/types/core/chain/nft';
 import { PaginationStore } from 'enevti-app/types/ui/store/PaginationStore';
 import { assignDeep } from 'enevti-app/utils/primitive/object';
+import { MomentBase } from 'enevti-app/types/core/chain/moment';
 
 type CollectionViewState = Omit<Collection, 'collectionType'> & {
   mintedPagination: PaginationStore;
   activityPagination: PaginationStore;
+  momentPagination: PaginationStore;
   collectionType: NFTType | '';
   fetchedVersion: number;
   version: number;
   loaded: boolean;
   reqStatus: number;
   liked: boolean;
-  render: Record<'minted' | 'activity', boolean>;
+  render: Record<'minted' | 'activity' | 'moment', boolean>;
 };
 
 type CollectionViewStore = {
@@ -27,12 +29,17 @@ export const collectionInitialStateItem: CollectionViewState = {
   render: {
     minted: false,
     activity: false,
+    moment: false,
   },
   mintedPagination: {
     checkpoint: 0,
     version: 0,
   },
   activityPagination: {
+    checkpoint: 0,
+    version: 0,
+  },
+  momentPagination: {
     checkpoint: 0,
     version: 0,
   },
@@ -80,6 +87,7 @@ export const collectionInitialStateItem: CollectionViewState = {
   minted: [],
   creator: { photo: '', base32: '', username: '', address: '' },
   activity: [],
+  moment: [],
 };
 
 const initialStateItem = collectionInitialStateItem;
@@ -118,6 +126,9 @@ const collectionViewSlice = createSlice({
     ) => {
       collection[action.payload.key].activity = action.payload.value.concat(collection[action.payload.key].activity);
     },
+    unshiftCollectionViewMoment: (collection, action: PayloadAction<{ key: string; value: MomentBase[] }>) => {
+      collection[action.payload.key].moment = action.payload.value.concat(collection[action.payload.key].moment);
+    },
     pushCollectionViewMinted: (
       collection,
       action: PayloadAction<{ key: string; value: NFTBase[]; pagination: PaginationStore }>,
@@ -131,6 +142,13 @@ const collectionViewSlice = createSlice({
     ) => {
       collection[action.payload.key].activity = collection[action.payload.key].activity.concat(action.payload.value);
       collection[action.payload.key].activityPagination = { ...action.payload.pagination };
+    },
+    pushCollectionViewMoment: (
+      collection,
+      action: PayloadAction<{ key: string; value: MomentBase[]; pagination: PaginationStore }>,
+    ) => {
+      collection[action.payload.key].moment = collection[action.payload.key].moment.concat(action.payload.value);
+      collection[action.payload.key].momentPagination = { ...action.payload.pagination };
     },
     setCollectionViewMintedPagination: (collection, action: PayloadAction<{ key: string; value: PaginationStore }>) => {
       collection[action.payload.key].mintedPagination = { ...action.payload.value };
@@ -173,8 +191,10 @@ export const {
   addCollectionViewLike,
   unshiftCollectionViewMinted,
   unshiftCollectionViewActivity,
+  unshiftCollectionViewMoment,
   pushCollectionViewMinted,
   pushCollectionViewActivity,
+  pushCollectionViewMoment,
   setCollectionViewMintedPagination,
   setCollectionViewActivityPagination,
   setCollectionViewFetchedVersion,
@@ -201,6 +221,11 @@ export const selectCollectionViewMinted = createSelector(
 export const selectCollectionViewActivity = createSelector(
   [(state: RootState) => state.ui.view.collection, (state: RootState, key: string) => key],
   (collections: CollectionViewStore, key: string) => (collections.hasOwnProperty(key) ? collections[key].activity : []),
+);
+
+export const selectCollectionViewMoment = createSelector(
+  [(state: RootState) => state.ui.view.collection, (state: RootState, key: string) => key],
+  (collections: CollectionViewStore, key: string) => (collections.hasOwnProperty(key) ? collections[key].moment : []),
 );
 
 export const isCollectionUndefined = createSelector(

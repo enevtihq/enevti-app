@@ -15,6 +15,7 @@ interface AppCollectionBodyProps {
   collectionHeaderHeight: number;
   animatedTabBarStyle: StyleProp<ViewStyle>;
   mintedItemsScreen: ComponentType<any>;
+  momentScreen: ComponentType<any>;
   activityScreen: ComponentType<any>;
   style?: StyleProp<ViewStyle>;
 }
@@ -23,6 +24,7 @@ export default function AppCollectionBody({
   collectionHeaderHeight,
   animatedTabBarStyle,
   mintedItemsScreen,
+  momentScreen,
   activityScreen,
   style,
 }: AppCollectionBodyProps) {
@@ -59,6 +61,13 @@ export default function AppCollectionBody({
           }}
           name={t('collection:mintedItems')}
           component={mintedItemsScreen}
+        />
+        <Tab.Screen
+          options={{
+            tabBarLabel: ({ color }) => <AppTextBody4 style={{ color: color }}>{t('collection:moment')}</AppTextBody4>,
+          }}
+          name={t('collection:moment')}
+          component={momentScreen}
         />
         <Tab.Screen
           options={{

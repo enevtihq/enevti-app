@@ -55,6 +55,7 @@ import {
 } from 'enevti-app/store/slices/entities/once/like';
 import { reduceNewCollectionLike } from 'enevti-app/store/middleware/thunk/socket/collection/newLike';
 import { PaymentStatus } from 'enevti-app/types/ui/store/Payment';
+import MomentCreatedListComponent from './tabs/MomentCreatedListComponent';
 
 const noDisplay = 'none';
 const visible = 1;
@@ -111,12 +112,14 @@ export default function AppCollection({ onScrollWorklet, navigation, route }: Ap
 
   const [mintedItemsMounted, setMintedItemsMounted] = React.useState<boolean>(false);
   const [activityMounted, setActivityMounted] = React.useState<boolean>(false);
+  const [momentMounted, setMomentMounted] = React.useState<boolean>(false);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, afterRefresh] = React.useState<boolean>(false);
 
   const mintedRef = useAnimatedRef<FlatList>();
   const activityRef = useAnimatedRef<FlatList>();
+  const momentRef = useAnimatedRef<FlatList>();
 
   const headerCollapsed = useSharedValue(true);
   const rawScrollY = useSharedValue(0);
@@ -131,10 +134,11 @@ export default function AppCollection({ onScrollWorklet, navigation, route }: Ap
     afterRefresh(false); // ios after refresh fix
     mintedRef.current?.scrollToOffset({ offset: 0 });
     activityRef.current?.scrollToOffset({ offset: 0 });
+    momentRef.current?.scrollToOffset({ offset: 0 });
     onScrollWorklet && onScrollWorklet(0);
     await onCollectionScreenLoaded(true).unwrap();
     afterRefresh(true); // ios after refresh fix
-  }, [onCollectionScreenLoaded, mintedRef, activityRef, onScrollWorklet]);
+  }, [mintedRef, activityRef, momentRef, onScrollWorklet, onCollectionScreenLoaded]);
 
   React.useEffect(() => {
     const promise = onCollectionScreenLoaded();
@@ -147,6 +151,8 @@ export default function AppCollection({ onScrollWorklet, navigation, route }: Ap
   const mintedItemsOnMounted = React.useCallback(() => setMintedItemsMounted(true), []);
 
   const activityOnMounted = React.useCallback(() => setActivityMounted(true), []);
+
+  const momentOnMounted = React.useCallback(() => setMomentMounted(true), []);
 
   const onceLikeOnDismiss = React.useCallback(() => {
     dispatch(touchOnceLike());
@@ -244,8 +250,9 @@ export default function AppCollection({ onScrollWorklet, navigation, route }: Ap
       },
     });
 
-  const mintedItemsScrollHandler = useCustomAnimatedScrollHandler([activityRef]);
-  const collectionActivityScrollHandler = useCustomAnimatedScrollHandler([mintedRef]);
+  const mintedItemsScrollHandler = useCustomAnimatedScrollHandler([activityRef, momentRef]);
+  const collectionActivityScrollHandler = useCustomAnimatedScrollHandler([mintedRef, momentRef]);
+  const collectionMomentScrollHandler = useCustomAnimatedScrollHandler([activityRef, mintedRef]);
 
   const scrollStyle = useAnimatedStyle(() => {
     return {
@@ -260,8 +267,8 @@ export default function AppCollection({ onScrollWorklet, navigation, route }: Ap
   });
 
   const scrollEnabled = React.useMemo(
-    () => (mintedItemsMounted && activityMounted ? true : false),
-    [mintedItemsMounted, activityMounted],
+    () => (mintedItemsMounted && activityMounted && momentMounted ? true : false),
+    [mintedItemsMounted, activityMounted, momentMounted],
   );
 
   const MintedItemsScreen = React.useCallback(
@@ -320,6 +327,33 @@ export default function AppCollection({ onScrollWorklet, navigation, route }: Ap
     ],
   );
 
+  const MomentScreen = React.useCallback(
+    () => (
+      <MomentCreatedListComponent
+        ref={momentRef}
+        route={route}
+        collectionHeaderHeight={totalHeaderHeight}
+        scrollEnabled={scrollEnabled}
+        onScroll={collectionMomentScrollHandler}
+        onMomentumScroll={onUpdateClose}
+        onMounted={momentOnMounted}
+        onRefresh={onRefresh}
+        mintingAvailable={mintingAvailable}
+      />
+    ),
+    [
+      momentRef,
+      route,
+      totalHeaderHeight,
+      scrollEnabled,
+      collectionMomentScrollHandler,
+      onUpdateClose,
+      momentOnMounted,
+      onRefresh,
+      mintingAvailable,
+    ],
+  );
+
   const progressViewOffset = React.useMemo(() => hp(HEADER_HEIGHT_PERCENTAGE + STATUS_BAR_HEIGHT()), [hp]);
 
   return !collectionUndefined ? (
@@ -360,6 +394,7 @@ export default function AppCollection({ onScrollWorklet, navigation, route }: Ap
         animatedTabBarStyle={animatedTabBarStyle}
         mintedItemsScreen={MintedItemsScreen}
         activityScreen={ActivityScreen}
+        momentScreen={MomentScreen}
         style={{
           opacity: scrollEnabled ? visible : notVisible,
         }}
