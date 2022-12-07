@@ -43,6 +43,7 @@ import { reduceNewNFTLike } from 'enevti-app/store/middleware/thunk/socket/nftDe
 import { getRedeemErrors } from './AppNFTDetailsRedeemBar';
 import { reduceRedeem } from 'enevti-app/store/middleware/thunk/redeem';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
+import NFTMomentListComponent from './tabs/NFTMomentListComponent';
 
 const noDisplay = 'none';
 const visible = 1;
@@ -106,12 +107,14 @@ export default function AppNFTDetails({ onScrollWorklet, navigation, route }: Ap
 
   const [summaryMounted, setSummaryMounted] = React.useState<boolean>(false);
   const [activityMounted, setActivityMounted] = React.useState<boolean>(false);
+  const [momentMounted, setMomentMounted] = React.useState<boolean>(false);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, afterRefresh] = React.useState<boolean>(false);
 
   const summaryRef = useAnimatedRef<ScrollView>();
   const activityRef = useAnimatedRef<FlatList>();
+  const momentRef = useAnimatedRef<FlatList>();
 
   const headerCollapsed = useSharedValue(true);
   const rawScrollY = useSharedValue(0);
@@ -126,10 +129,11 @@ export default function AppNFTDetails({ onScrollWorklet, navigation, route }: Ap
     afterRefresh(false); // ios after refresh fix
     summaryRef.current?.scrollTo({ x: 0, y: 0 });
     activityRef.current?.scrollToOffset({ offset: 0 });
+    momentRef.current?.scrollToOffset({ offset: 0 });
     onScrollWorklet && onScrollWorklet(0);
     await onNFTDetailsScreenLoaded(true).unwrap();
     afterRefresh(true); // ios after refresh fix
-  }, [onNFTDetailsScreenLoaded, summaryRef, activityRef, onScrollWorklet]);
+  }, [onNFTDetailsScreenLoaded, summaryRef, activityRef, momentRef, onScrollWorklet]);
 
   React.useEffect(() => {
     const promise = onNFTDetailsScreenLoaded();
@@ -140,6 +144,8 @@ export default function AppNFTDetails({ onScrollWorklet, navigation, route }: Ap
   }, [dispatch, onNFTDetailsScreenLoaded, route.key]);
 
   const summaryOnMounted = React.useCallback(() => setSummaryMounted(true), []);
+
+  const momentOnMounted = React.useCallback(() => setMomentMounted(true), []);
 
   const activityOnMounted = React.useCallback(() => setActivityMounted(true), []);
 
@@ -210,8 +216,9 @@ export default function AppNFTDetails({ onScrollWorklet, navigation, route }: Ap
       },
     });
 
-  const nftSummaryScrollHandler = useCustomAnimatedScrollHandler([activityRef]);
-  const nftActivityScrollHandler = useCustomAnimatedScrollHandler([summaryRef]);
+  const nftSummaryScrollHandler = useCustomAnimatedScrollHandler([activityRef, momentRef]);
+  const nftMomentScrollHandler = useCustomAnimatedScrollHandler([activityRef, summaryRef]);
+  const nftActivityScrollHandler = useCustomAnimatedScrollHandler([summaryRef, momentRef]);
 
   const scrollStyle = useAnimatedStyle(() => {
     return {
@@ -226,8 +233,8 @@ export default function AppNFTDetails({ onScrollWorklet, navigation, route }: Ap
   });
 
   const scrollEnabled = React.useMemo(
-    () => (summaryMounted && activityMounted ? true : false),
-    [summaryMounted, activityMounted],
+    () => (summaryMounted && activityMounted && momentMounted ? true : false),
+    [summaryMounted, activityMounted, momentMounted],
   );
 
   const SummaryScreen = React.useCallback(
@@ -282,6 +289,31 @@ export default function AppNFTDetails({ onScrollWorklet, navigation, route }: Ap
     ],
   );
 
+  const MomentScreen = React.useCallback(
+    () => (
+      <NFTMomentListComponent
+        ref={momentRef}
+        route={route}
+        collectionHeaderHeight={totalHeaderHeight}
+        scrollEnabled={scrollEnabled}
+        onScroll={nftMomentScrollHandler}
+        onMomentumScroll={onUpdateClose}
+        onMounted={momentOnMounted}
+        onRefresh={onRefresh}
+      />
+    ),
+    [
+      momentRef,
+      route,
+      totalHeaderHeight,
+      scrollEnabled,
+      nftMomentScrollHandler,
+      onUpdateClose,
+      momentOnMounted,
+      onRefresh,
+    ],
+  );
+
   const progressViewOffset = React.useMemo(() => hp(HEADER_HEIGHT_PERCENTAGE), [hp]);
 
   return !nftDetailsUndefined ? (
@@ -305,6 +337,7 @@ export default function AppNFTDetails({ onScrollWorklet, navigation, route }: Ap
         animatedTabBarStyle={animatedTabBarStyle}
         activityScreen={ActivityScreen}
         summaryScreen={SummaryScreen}
+        momentScreen={MomentScreen}
         style={{
           opacity: scrollEnabled ? visible : notVisible,
         }}

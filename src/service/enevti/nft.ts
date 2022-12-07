@@ -18,6 +18,7 @@ import {
   urlGetSerialToNFTId,
   urlGetNFTActivityById,
   urlGetIsNFTOwnerOrCreator,
+  urlGetNFTMomentById,
 } from 'enevti-app/utils/constant/URLCreator';
 import {
   APIResponse,
@@ -26,11 +27,13 @@ import {
   ResponseJSON,
 } from 'enevti-app/types/core/service/api';
 import { NFTActivity } from 'enevti-app/types/core/chain/nft/NFTActivity';
-import { NFT_ACTIVITY_INITIAL_LENGTH } from 'enevti-app/utils/constant/limit';
+import { NFT_ACTIVITY_INITIAL_LENGTH, NFT_MOMENT_INITIAL_LENGTH } from 'enevti-app/utils/constant/limit';
 import { getMyAddress } from './persona';
 import i18n from 'enevti-app/translations/i18n';
+import { MomentBase } from 'enevti-app/types/core/chain/moment';
 
 type NFTDetailsRoute = StackScreenProps<RootStackParamList, 'NFTDetails'>['route']['params'];
+type NFTDetailsVersions = { activity: number; moment: number };
 
 export const NFT_RESOLUTION = 500;
 
@@ -75,9 +78,9 @@ async function fetchNFTbyId(
   id: string,
   withInitialData: boolean,
   signal?: AbortController['signal'],
-): Promise<APIResponseVersionRoot<NFT, { activity: number }>> {
+): Promise<APIResponseVersionRoot<NFT, NFTDetailsVersions>> {
   const myAddress = await getMyAddress();
-  return await apiFetchVersionRoot<NFT, { activity: number }>(urlGetNFTById(id, myAddress, withInitialData), signal);
+  return await apiFetchVersionRoot<NFT, NFTDetailsVersions>(urlGetNFTById(id, myAddress, withInitialData), signal);
 }
 
 async function fetchNFTbySerial(
@@ -85,9 +88,9 @@ async function fetchNFTbySerial(
   serial: string,
   withInitialData: boolean,
   signal?: AbortController['signal'],
-): Promise<APIResponseVersionRoot<NFT, { activity: number }>> {
+): Promise<APIResponseVersionRoot<NFT, NFTDetailsVersions>> {
   const myAddress = await getMyAddress();
-  return await apiFetchVersionRoot<NFT, { activity: number }>(
+  return await apiFetchVersionRoot<NFT, NFTDetailsVersions>(
     urlGetNFTBySerial(`${symbol}#${serial}`, myAddress, withInitialData),
     signal,
   );
@@ -107,6 +110,16 @@ async function fetchNFTActivity(
   return await apiFetchVersioned<NFTActivity[]>(urlGetNFTActivityById(id, offset, limit, version), signal);
 }
 
+async function fetchNFTMoment(
+  id: string,
+  offset: number,
+  limit: number,
+  version: number,
+  signal?: AbortController['signal'],
+): Promise<APIResponseVersioned<MomentBase[]>> {
+  return await apiFetchVersioned<MomentBase[]>(urlGetNFTMomentById(id, offset, limit, version), signal);
+}
+
 export async function getIsNFTOwnerOrCreator(id: string, signal?: AbortController['signal']) {
   return await fetchIsNFTOwnerOrCreator(id, signal);
 }
@@ -121,11 +134,28 @@ export async function getNFTActivity(
   return await fetchNFTActivity(id, offset, limit, version, signal);
 }
 
+export async function getNFTMoment(
+  id: string,
+  offset: number,
+  limit: number,
+  version: number,
+  signal?: AbortController['signal'],
+): Promise<APIResponseVersioned<MomentBase[]>> {
+  return await fetchNFTMoment(id, offset, limit, version, signal);
+}
+
 export async function getNFTInitialActivity(
   id: string,
   signal?: AbortController['signal'],
 ): Promise<APIResponseVersioned<NFTActivity[]>> {
   return await fetchNFTActivity(id, 0, NFT_ACTIVITY_INITIAL_LENGTH, 0, signal);
+}
+
+export async function getNFTInitialMoment(
+  id: string,
+  signal?: AbortController['signal'],
+): Promise<APIResponseVersioned<MomentBase[]>> {
+  return await fetchNFTMoment(id, 0, NFT_MOMENT_INITIAL_LENGTH, 0, signal);
 }
 
 export async function getNFTIdFromSerial(

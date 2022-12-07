@@ -10,6 +10,7 @@ import { NFTRoyalty } from './NFTRoyalty';
 import { NFTActivity } from './NFTActivity';
 import { NFTContent } from './NFTContent';
 import { CollectionIdAsset, NFTIdAsset } from '../id';
+import { MomentBase } from '../moment';
 
 export type AllNFT = {
   items: NFTIdAsset[];
@@ -43,6 +44,7 @@ export interface NFT extends NFTBase {
   networkIdentifier: string;
   royalty: NFTRoyalty;
   activity: NFTActivity[];
+  moment: MomentBase[];
 }
 
 export interface NFTAsset
@@ -59,6 +61,7 @@ export interface NFTAsset
     | 'partition'
     | 'networkIdentifier'
     | 'createdOn'
+    | 'moment'
   > {
   id: NFTIdAsset;
   collectionId: CollectionIdAsset;

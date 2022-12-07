@@ -6,6 +6,7 @@ import {
   HOME_FEED_LIMIT,
   HOME_MOMENT_LIMIT,
   NFT_ACTIVITY_INITIAL_LENGTH,
+  NFT_MOMENT_INITIAL_LENGTH,
   PROFILE_COLLECTION_INITIAL_LENGTH,
   PROFILE_MOMENT_INITIAL_LENGTH,
   PROFILE_ONSALE_INITIAL_LENGTH,
@@ -246,6 +247,7 @@ export function urlGetNFTById(
   url.searchParams.append('viewer', viewer);
   if (withInitialData) {
     url.searchParams.append('activity', NFT_ACTIVITY_INITIAL_LENGTH.toString());
+    url.searchParams.append('moment', NFT_MOMENT_INITIAL_LENGTH.toString());
   }
   return encodeURI(url.href);
 }
@@ -260,6 +262,16 @@ export function urlGetNFTActivityById(
   return encodeURI(`${host}/nft/id/${id}/activity?offset=${offset}&limit=${limit}&version=${version}`);
 }
 
+export function urlGetNFTMomentById(
+  id: string,
+  offset: number = 0,
+  limit: number = 10,
+  version: number = 0,
+  host: string = ENEVTI_DEFAULT_API,
+) {
+  return encodeURI(`${host}/nft/id/${id}/moment?offset=${offset}&limit=${limit}&version=${version}`);
+}
+
 export function urlGetNFTBySerial(
   serial: string,
   viewer: string,
@@ -270,6 +282,7 @@ export function urlGetNFTBySerial(
   url.searchParams.append('viewer', viewer);
   if (withInitialData) {
     url.searchParams.append('activity', NFT_ACTIVITY_INITIAL_LENGTH.toString());
+    url.searchParams.append('moment', NFT_MOMENT_INITIAL_LENGTH.toString());
   }
   return encodeURI(url.href);
 }

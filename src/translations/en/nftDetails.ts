@@ -2,6 +2,7 @@ export default {
   headerTitle: 'NFT Details',
   summary: 'Summary',
   activity: 'Activity',
+  moment: 'Moments',
   createdBy: 'Created By',
   ownedBy: 'Owned By',
   collectionDetail: 'Collection Detail',

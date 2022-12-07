@@ -17,6 +17,7 @@ const Tab = createMaterialTopTabNavigator();
 interface AppNFTDetailsBodyProps {
   collectionHeaderHeight: number;
   animatedTabBarStyle: StyleProp<ViewStyle>;
+  momentScreen: ComponentType<any>;
   activityScreen: ComponentType<any>;
   summaryScreen: ComponentType<any>;
   style?: StyleProp<ViewStyle>;
@@ -25,6 +26,7 @@ interface AppNFTDetailsBodyProps {
 export default function AppNFTDetailsBody({
   collectionHeaderHeight,
   animatedTabBarStyle,
+  momentScreen,
   activityScreen,
   summaryScreen,
   style,
@@ -60,6 +62,13 @@ export default function AppNFTDetailsBody({
           }}
           name={t('nftDetails:summary')}
           component={summaryScreen}
+        />
+        <Tab.Screen
+          options={{
+            tabBarLabel: ({ color }) => <AppTextBody4 style={{ color: color }}>{t('nftDetails:moment')}</AppTextBody4>,
+          }}
+          name={t('nftDetails:moment')}
+          component={momentScreen}
         />
         <Tab.Screen
           options={{

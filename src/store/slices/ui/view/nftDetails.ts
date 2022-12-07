@@ -5,15 +5,17 @@ import { NFT } from 'enevti-app/types/core/chain/nft';
 import { NFTActivity } from 'enevti-app/types/core/chain/nft/NFTActivity';
 import { PaginationStore } from 'enevti-app/types/ui/store/PaginationStore';
 import { assignDeep } from 'enevti-app/utils/primitive/object';
+import { MomentBase } from 'enevti-app/types/core/chain/moment';
 
 type NFTDetailsViewState = NFT & {
   activityPagination: PaginationStore;
+  momentPagination: PaginationStore;
   version: number;
   fetchedVersion: number;
   reqStatus: number;
   loaded: boolean;
   liked: boolean;
-  render: Record<'summary' | 'activity', boolean>;
+  render: Record<'summary' | 'activity' | 'moment', boolean>;
 };
 
 type NFTDetailsViewStore = {
@@ -24,8 +26,13 @@ export const nftDetailsInitialStateItem: NFTDetailsViewState = {
   render: {
     summary: false,
     activity: false,
+    moment: false,
   },
   activityPagination: {
+    checkpoint: 0,
+    version: 0,
+  },
+  momentPagination: {
     checkpoint: 0,
     version: 0,
   },
@@ -130,6 +137,7 @@ export const nftDetailsInitialStateItem: NFTDetailsViewState = {
     staker: -1,
   },
   activity: [],
+  moment: [],
 };
 
 const initialStateItem = nftDetailsInitialStateItem;
@@ -168,6 +176,16 @@ const nftDetailsViewSlice = createSlice({
     ) => {
       nftDetails[action.payload.key].activity = action.payload.value.concat(nftDetails[action.payload.key].activity);
       nftDetails[action.payload.key].activityPagination = { ...action.payload.pagination };
+    },
+    unshiftNFTDetailsViewMoment: (nftDetails, action: PayloadAction<{ key: string; value: MomentBase[] }>) => {
+      nftDetails[action.payload.key].moment = nftDetails[action.payload.key].moment.concat(action.payload.value);
+    },
+    pushNFTDetailsViewMoment: (
+      nftDetails,
+      action: PayloadAction<{ key: string; value: MomentBase[]; pagination: PaginationStore }>,
+    ) => {
+      nftDetails[action.payload.key].moment = action.payload.value.concat(nftDetails[action.payload.key].moment);
+      nftDetails[action.payload.key].momentPagination = { ...action.payload.pagination };
     },
     setNFTDetailsViewActivityPagination: (
       nftDetails,
@@ -210,6 +228,8 @@ export const {
   setNFTDetailsViewLike,
   unshiftNFTDetailsViewActivity,
   pushNFTDetailsViewActivity,
+  unshiftNFTDetailsViewMoment,
+  pushNFTDetailsViewMoment,
   setNFTDetailsViewActivityPagination,
   setNFTDetailsViewSecret,
   setNFTDetailsLoaded,
@@ -231,6 +251,11 @@ export const selectNFTDetailsView = createSelector(
 export const selectNFTDetailsViewActivity = createSelector(
   [(state: RootState) => state.ui.view.nftDetails, (state: RootState, key: string) => key],
   (nftDetails: NFTDetailsViewStore, key: string) => (nftDetails.hasOwnProperty(key) ? nftDetails[key].activity : []),
+);
+
+export const selectNFTDetailsViewMoment = createSelector(
+  [(state: RootState) => state.ui.view.nftDetails, (state: RootState, key: string) => key],
+  (nftDetails: NFTDetailsViewStore, key: string) => (nftDetails.hasOwnProperty(key) ? nftDetails[key].moment : []),
 );
 
 export const isNFTDetailsUndefined = createSelector(

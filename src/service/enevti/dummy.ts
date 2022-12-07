@@ -396,6 +396,7 @@ export const getDummyNFTFullData = (): NFT => {
         until: 3600000,
       },
     },
+    moment: [],
     activity: [
       {
         transaction: 'veavaefasdfff',
