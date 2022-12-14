@@ -20,7 +20,7 @@ import { payMintCollection } from 'enevti-app/store/middleware/thunk/payment/cre
 import { useTranslation } from 'react-i18next';
 import { PaymentStatus } from 'enevti-app/types/ui/store/Payment';
 import { directPayLikeCollection } from 'enevti-app/store/middleware/thunk/payment/direct/directPayLikeCollection';
-import { addFeedViewLike } from 'enevti-app/store/slices/ui/view/feed';
+import { addFeedViewLike, isFeedBuyDisabled, setFeedViewBuyDisabled } from 'enevti-app/store/slices/ui/view/feed';
 import { selectOnceLike, showOnceLike } from 'enevti-app/store/slices/entities/once/like';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
@@ -45,6 +45,7 @@ export default function AppFeedAction({ feed, index, navigation }: AppFeedAction
   const paymentThunkRef = React.useRef<any>();
   const likeThunkRef = React.useRef<any>();
   const onceLike = useSelector(selectOnceLike);
+  const buyDisabled = useSelector(isFeedBuyDisabled);
 
   const debouncedNavigateComment = useDebouncedCallback(
     () => {
@@ -71,15 +72,19 @@ export default function AppFeedAction({ feed, index, navigation }: AppFeedAction
     debouncedNavigateComment();
   }, [debouncedNavigateComment]);
 
-  const paymentIdleCallback = React.useCallback((paymentStatus: PaymentStatus) => {
-    if (paymentStatus.action === 'mintCollection') {
-      setBuyLoading(false);
-      paymentThunkRef.current?.abort();
-    } else if (paymentStatus.action === 'likeCollection') {
-      setLikeLoading(false);
-      likeThunkRef.current?.abort();
-    }
-  }, []);
+  const paymentIdleCallback = React.useCallback(
+    (paymentStatus: PaymentStatus) => {
+      if (paymentStatus.action === 'mintCollection') {
+        setBuyLoading(false);
+        dispatch(setFeedViewBuyDisabled(false));
+        paymentThunkRef.current?.abort();
+      } else if (paymentStatus.action === 'likeCollection') {
+        setLikeLoading(false);
+        likeThunkRef.current?.abort();
+      }
+    },
+    [dispatch],
+  );
 
   const paymentSuccessCallback = React.useCallback(
     (paymentStatus: PaymentStatus) => {
@@ -135,6 +140,7 @@ export default function AppFeedAction({ feed, index, navigation }: AppFeedAction
 
   const onBuy = React.useCallback(async () => {
     setBuyLoading(true);
+    dispatch(setFeedViewBuyDisabled(true));
     if (feed.type !== 'nft') {
       const collectionResponse = await getCollectionById(feed.id, false);
       if (collectionResponse.status === 200) {
@@ -180,6 +186,7 @@ export default function AppFeedAction({ feed, index, navigation }: AppFeedAction
 
       <AppQuaternaryButton
         box
+        disabled={buyDisabled}
         loading={buyLoading}
         icon={iconMap.buy}
         iconSize={wp('6%', insets)}

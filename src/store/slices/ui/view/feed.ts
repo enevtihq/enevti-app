@@ -6,6 +6,7 @@ import { assignDeep } from 'enevti-app/utils/primitive/object';
 
 type FeedViewState = {
   checkpoint: number;
+  buyDisabled: boolean;
   version: number;
   fetchedVersion: number;
   loaded: boolean;
@@ -16,6 +17,7 @@ type FeedViewState = {
 
 const initialState: FeedViewState = {
   checkpoint: 0,
+  buyDisabled: false,
   version: 0,
   fetchedVersion: 0,
   loaded: false,
@@ -30,6 +32,9 @@ const feedViewSlice = createSlice({
   reducers: {
     setFeedViewState: (feed, action: PayloadAction<Partial<FeedViewState>>) => {
       assignDeep(feed, action.payload);
+    },
+    setFeedViewBuyDisabled: (feed, action: PayloadAction<boolean>) => {
+      feed.buyDisabled = action.payload;
     },
     setFeedView: (feed, action: PayloadAction<Feeds>) => {
       feed.items = action.payload.slice();
@@ -69,6 +74,7 @@ const feedViewSlice = createSlice({
 
 export const {
   setFeedViewState,
+  setFeedViewBuyDisabled,
   setFeedView,
   addFeedViewLike,
   addFeedView,
@@ -110,4 +116,9 @@ export const isFeedUndefined = createSelector(
 export const isThereAnyNewFeedView = createSelector(
   (state: RootState) => state.ui.view.feed,
   (feed: FeedViewState) => feed.fetchedVersion > feed.version,
+);
+
+export const isFeedBuyDisabled = createSelector(
+  (state: RootState) => state.ui.view.feed,
+  (feed: FeedViewState) => feed.buyDisabled,
 );
