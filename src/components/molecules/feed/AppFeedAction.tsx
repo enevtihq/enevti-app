@@ -27,6 +27,7 @@ import { RootStackParamList } from 'enevti-app/navigation';
 import { FEED_CACHE_MAX_LENGTH } from 'enevti-app/service/enevti/feed';
 import { addFeedItemsCacheLike } from 'enevti-app/store/slices/entities/cache/feed';
 import { useDebouncedCallback } from 'use-debounce';
+import AppLikeReadyInstance from 'enevti-app/utils/app/likeReady';
 
 interface AppFeedActionProps {
   feed: FeedItem;
@@ -81,6 +82,7 @@ export default function AppFeedAction({ feed, index, navigation }: AppFeedAction
       } else if (paymentStatus.action === 'likeCollection') {
         setLikeLoading(false);
         likeThunkRef.current?.abort();
+        AppLikeReadyInstance.setReady();
       }
     },
     [dispatch],

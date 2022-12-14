@@ -42,6 +42,7 @@ import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import { directPayLikeCommentClubs } from 'enevti-app/store/middleware/thunk/payment/direct/directPayLikeCommentClubs';
 import { directPayLikeReplyClubs } from 'enevti-app/store/middleware/thunk/payment/direct/directPayLikeReplyClubs';
 import { useTranslation } from 'react-i18next';
+import AppLikeReadyInstance from 'enevti-app/utils/app/likeReady';
 
 const AnimatedFlatList = Animated.createAnimatedComponent<FlatListProps<CommentItem>>(FlatList);
 
@@ -152,6 +153,7 @@ export default function AppCommentTabs({ route, navigation, type }: AppCommentTa
         default:
           break;
       }
+      AppLikeReadyInstance.setReady();
     },
     [dispatch, route, type],
   );

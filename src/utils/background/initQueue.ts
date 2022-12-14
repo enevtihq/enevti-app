@@ -1,3 +1,4 @@
+import './initFastQ';
 import BackgroundService from 'react-native-background-actions';
 import queue, { Worker } from 'react-native-job-queue';
 import deliverSecretWorker, {
