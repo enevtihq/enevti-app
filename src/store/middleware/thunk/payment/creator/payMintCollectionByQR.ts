@@ -3,7 +3,7 @@ import { setPaymentStatus, showPayment, hidePayment, setPaymentState } from 'ene
 import { AsyncThunkAPI } from 'enevti-app/store/state';
 import { attachFee, calculateBaseFee, calculateGasFee, createTransaction } from 'enevti-app/service/enevti/transaction';
 import i18n from 'enevti-app/translations/i18n';
-import { createAsyncThunk } from '@reduxjs/toolkit';
+import { AnyAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { handleError } from 'enevti-app/utils/error/handle';
 import { Collection } from 'enevti-app/types/core/chain/collection';
 import { AppTransaction } from 'enevti-app/types/core/service/transaction';
@@ -11,6 +11,7 @@ import { redeemableNftModule } from 'enevti-app/utils/constant/transaction';
 import { MintNFTByQR, MintNFTByQRUI } from 'enevti-app/types/core/asset/redeemable_nft/mint_nft_type_qr_asset';
 import base64 from 'react-native-base64';
 import { getCollectionById } from 'enevti-app/service/enevti/collection';
+import { cleanPayment } from '../utils/cleanPayment';
 
 type PayMintCollectionByQRPayload = { key: string; collection: Collection; payload: string };
 
@@ -18,6 +19,7 @@ export const payMintCollectionByQR = createAsyncThunk<void, PayMintCollectionByQ
   'collection/payMintCollectionByQR',
   async (payload, { dispatch, signal }) => {
     try {
+      dispatch(cleanPayment() as unknown as AnyAction);
       const mintNftByQrUI = JSON.parse(payload.payload) as MintNFTByQRUI;
       const { id, quantity, nonce } = JSON.parse(base64.decode(mintNftByQrUI.body)) as MintNFTByQR;
       if (payload.collection.id !== id) {

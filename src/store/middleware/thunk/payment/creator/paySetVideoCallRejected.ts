@@ -3,13 +3,14 @@ import { setPaymentStatus, showPayment, hidePayment, setPaymentState } from 'ene
 import { AsyncThunkAPI } from 'enevti-app/store/state';
 import { attachFee, calculateBaseFee, calculateGasFee, createTransaction } from 'enevti-app/service/enevti/transaction';
 import i18n from 'enevti-app/translations/i18n';
-import { createAsyncThunk } from '@reduxjs/toolkit';
+import { AnyAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { handleError } from 'enevti-app/utils/error/handle';
 import { AppTransaction } from 'enevti-app/types/core/service/transaction';
 import { redeemableNftModule } from 'enevti-app/utils/constant/transaction';
 import { COIN_NAME } from 'enevti-app/utils/constant/identifier';
 import { NFT } from 'enevti-app/types/core/chain/nft';
 import { SetVideoCallRejectedUI } from 'enevti-app/types/core/asset/redeemable_nft/set_video_call_rejected_asset';
+import { cleanPayment } from '../utils/cleanPayment';
 
 type PaySetVideoCallRejectedPayload = { key: string; nft: NFT; signature: string; publicKey: string };
 
@@ -17,6 +18,7 @@ export const paySetVideoCallRejected = createAsyncThunk<void, PaySetVideoCallRej
   'videoCall/paySetVideoCallRejected',
   async (payload, { dispatch, signal }) => {
     try {
+      dispatch(cleanPayment() as unknown as AnyAction);
       dispatch(
         setPaymentStatus({
           id: payload.nft.id,

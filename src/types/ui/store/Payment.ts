@@ -50,7 +50,7 @@ export type PaymentStatus = {
   id: string;
   key: string;
   action: PaymentAction['type'];
-  type: 'idle' | 'initiated' | 'process' | 'success' | 'error' | 'dismissed' | 'cancel';
+  type: 'idle' | 'initiated' | 'process' | 'success' | 'error' | 'dismissed' | 'cancel' | 'cleaned';
   message: string;
 };
 

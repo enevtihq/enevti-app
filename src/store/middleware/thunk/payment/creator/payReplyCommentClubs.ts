@@ -3,7 +3,7 @@ import { setPaymentStatus, showPayment, hidePayment, setPaymentState } from 'ene
 import { AsyncThunkAPI } from 'enevti-app/store/state';
 import { attachFee, calculateBaseFee, calculateGasFee, createTransaction } from 'enevti-app/service/enevti/transaction';
 import i18n from 'enevti-app/translations/i18n';
-import { createAsyncThunk } from '@reduxjs/toolkit';
+import { AnyAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { handleError } from 'enevti-app/utils/error/handle';
 import { AppTransaction } from 'enevti-app/types/core/service/transaction';
 import { redeemableNftModule } from 'enevti-app/utils/constant/transaction';
@@ -13,6 +13,7 @@ import { COIN_NAME } from 'enevti-app/utils/constant/identifier';
 import { ReplyCommentClubsUI } from 'enevti-app/types/core/asset/redeemable_nft/reply_comment_clubs_asset';
 import { getCommentKey } from '../../ui/view/comment';
 import { makeDummyIPFS } from 'enevti-app/utils/dummy/ipfs';
+import { cleanPayment } from '../utils/cleanPayment';
 
 type CommentRoute = RouteProp<RootStackParamList, 'Comment'>;
 type PayReplyCommentClubsPayload = { route: CommentRoute; commentId: string; reply: string };
@@ -21,6 +22,7 @@ export const payReplyCommentClubs = createAsyncThunk<void, PayReplyCommentClubsP
   'commentView/payReplyCommentClubs',
   async (payload, { dispatch, signal }) => {
     try {
+      dispatch(cleanPayment() as unknown as AnyAction);
       const transactionPayload: AppTransaction<ReplyCommentClubsUI> = await createTransaction<ReplyCommentClubsUI>(
         redeemableNftModule.moduleID,
         redeemableNftModule.replyCommentClubs,

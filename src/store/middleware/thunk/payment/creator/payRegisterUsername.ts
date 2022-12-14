@@ -3,12 +3,13 @@ import { setPaymentStatus, showPayment, hidePayment, setPaymentState } from 'ene
 import { AsyncThunkAPI } from 'enevti-app/store/state';
 import { attachFee, calculateBaseFee, calculateGasFee, createTransaction } from 'enevti-app/service/enevti/transaction';
 import i18n from 'enevti-app/translations/i18n';
-import { createAsyncThunk } from '@reduxjs/toolkit';
+import { AnyAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { handleError } from 'enevti-app/utils/error/handle';
 import { AppTransaction } from 'enevti-app/types/core/service/transaction';
 import { stakingModule } from 'enevti-app/utils/constant/transaction';
 import { RegisterUsernameUI } from 'enevti-app/types/core/asset/chain/register_username';
 import { COIN_NAME } from 'enevti-app/utils/constant/identifier';
+import { cleanPayment } from '../utils/cleanPayment';
 
 type PayRegisterUsernamePayload = { key: string; username: string };
 
@@ -16,6 +17,7 @@ export const payRegisterUsername = createAsyncThunk<void, PayRegisterUsernamePay
   'setting/payRegisterUsername',
   async (payload, { dispatch, signal }) => {
     try {
+      dispatch(cleanPayment() as unknown as AnyAction);
       dispatch(
         setPaymentStatus({
           id: payload.username,

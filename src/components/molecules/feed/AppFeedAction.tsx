@@ -107,6 +107,12 @@ export default function AppFeedAction({ feed, index, navigation }: AppFeedAction
     [dispatch, index],
   );
 
+  const paymentCleanedCallback = React.useCallback((paymentStatus: PaymentStatus) => {
+    if (paymentStatus.action === 'mintCollection') {
+      setBuyLoading(false);
+    }
+  }, []);
+
   const paymentCondition = React.useCallback(
     (paymentStatus: PaymentStatus) => {
       return (
@@ -124,6 +130,7 @@ export default function AppFeedAction({ feed, index, navigation }: AppFeedAction
     onIdle: paymentIdleCallback,
     onSuccess: paymentSuccessCallback,
     onError: paymentErrorCallback,
+    onCleaned: paymentCleanedCallback,
   });
 
   const onBuy = React.useCallback(async () => {

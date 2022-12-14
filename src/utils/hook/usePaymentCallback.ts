@@ -17,6 +17,7 @@ interface PaymentCallbackHookProps {
   onError?: (paymentStatus: PaymentStatus) => void;
   onCancel?: (paymentStatus: PaymentStatus) => void;
   onDismissed?: (paymentStatus: PaymentStatus) => void;
+  onCleaned?: (paymentStatus: PaymentStatus) => void;
 }
 
 export default function usePaymentCallback({
@@ -28,6 +29,7 @@ export default function usePaymentCallback({
   onError,
   onCancel,
   onDismissed,
+  onCleaned,
 }: PaymentCallbackHookProps) {
   const dispatch = useDispatch();
   const lastPaymentType = React.useRef<string>('');
@@ -71,8 +73,23 @@ export default function usePaymentCallback({
         dispatch(resetPaymentState());
         dispatch(resetPaymentStatusType());
         break;
+      case 'cleaned':
+        onCleaned && onCleaned(paymentStatus);
+        break;
       default:
         break;
     }
-  }, [paymentStatus, dispatch, condition, onIdle, onInitiated, onProcess, onSuccess, onError, onCancel, onDismissed]);
+  }, [
+    paymentStatus,
+    dispatch,
+    condition,
+    onIdle,
+    onInitiated,
+    onProcess,
+    onSuccess,
+    onError,
+    onCancel,
+    onDismissed,
+    onCleaned,
+  ]);
 }

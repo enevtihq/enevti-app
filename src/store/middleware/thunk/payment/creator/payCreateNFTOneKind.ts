@@ -6,7 +6,7 @@ import { AsyncThunkAPI } from 'enevti-app/store/state';
 import { attachFee, calculateBaseFee, calculateGasFee, createTransaction } from 'enevti-app/service/enevti/transaction';
 import { makeDummyIPFS } from 'enevti-app/utils/dummy/ipfs';
 import i18n from 'enevti-app/translations/i18n';
-import { createAsyncThunk } from '@reduxjs/toolkit';
+import { AnyAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { handleError } from 'enevti-app/utils/error/handle';
 import { CreateOneKindNFTUI } from 'enevti-app/types/core/asset/redeemable_nft/create_onekind_nft_asset';
 import generateRandomKey from 'enevti-app/utils/passphrase';
@@ -16,11 +16,13 @@ import { AppTransaction } from 'enevti-app/types/core/service/transaction';
 import { redeemableNftModule } from 'enevti-app/utils/constant/transaction';
 import RNFS from 'react-native-fs';
 import { completeTokenUnit } from 'enevti-app/utils/format/amount';
+import { cleanPayment } from '../utils/cleanPayment';
 
 export const payCreateNFTOneKind = createAsyncThunk<void, CreateNFTOneKindMeta, AsyncThunkAPI>(
   'onekind/payCreateNFTOneKind',
   async (payload, { dispatch, signal }) => {
     try {
+      dispatch(cleanPayment() as unknown as AnyAction);
       dispatch(
         setPaymentStatus({
           id: payload.key,

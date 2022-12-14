@@ -22,6 +22,7 @@ import {
   setDeliverSecretProcessing,
 } from 'enevti-app/store/slices/session/transaction/processing';
 import { DeliverSecretPayload } from 'enevti-app/types/ui/task/deliverSecret';
+import { cleanPayment } from '../utils/cleanPayment';
 
 type PayDeliverSecretPayload = string;
 type PayManualDeliverSecret = undefined;
@@ -31,6 +32,7 @@ export const payDeliverSecret = createAsyncThunk<void, PayDeliverSecretPayload, 
   async (payload, { dispatch, getState, signal }) => {
     const transactionPayload = [];
     try {
+      dispatch(cleanPayment() as unknown as AnyAction);
       const isDeliverSecretProcessing = selectDeliverSecretProcessing(getState());
       if (isDeliverSecretProcessing) {
         return;

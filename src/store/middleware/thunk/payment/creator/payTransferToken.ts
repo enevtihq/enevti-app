@@ -3,7 +3,7 @@ import { setPaymentStatus, showPayment, hidePayment, setPaymentState } from 'ene
 import { AsyncThunkAPI } from 'enevti-app/store/state';
 import { attachFee, calculateBaseFee, calculateGasFee, createTransaction } from 'enevti-app/service/enevti/transaction';
 import i18n from 'enevti-app/translations/i18n';
-import { createAsyncThunk } from '@reduxjs/toolkit';
+import { AnyAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { handleError } from 'enevti-app/utils/error/handle';
 import { AppTransaction } from 'enevti-app/types/core/service/transaction';
 import { tokenModule } from 'enevti-app/utils/constant/transaction';
@@ -11,6 +11,7 @@ import { TransferTokenUI } from 'enevti-app/types/core/asset/token/transfer_asse
 import { base32ToAddress } from 'enevti-app/service/enevti/persona';
 import { COIN_NAME, getCoinName } from 'enevti-app/utils/constant/identifier';
 import { completeTokenUnit } from 'enevti-app/utils/format/amount';
+import { cleanPayment } from '../utils/cleanPayment';
 
 type PayTransferTokenPayload = { key: string; base32: string; amount: string };
 
@@ -18,6 +19,7 @@ export const payTransferToken = createAsyncThunk<void, PayTransferTokenPayload, 
   'wallet/payTransferToken',
   async (payload, { dispatch, signal }) => {
     try {
+      dispatch(cleanPayment() as unknown as AnyAction);
       dispatch(
         setPaymentStatus({
           id: payload.base32,

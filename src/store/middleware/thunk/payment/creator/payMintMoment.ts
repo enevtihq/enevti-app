@@ -3,7 +3,7 @@ import { setPaymentStatus, showPayment, hidePayment, setPaymentState } from 'ene
 import { AsyncThunkAPI } from 'enevti-app/store/state';
 import { attachFee, calculateBaseFee, calculateGasFee, createTransaction } from 'enevti-app/service/enevti/transaction';
 import i18n from 'enevti-app/translations/i18n';
-import { createAsyncThunk } from '@reduxjs/toolkit';
+import { AnyAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { handleError } from 'enevti-app/utils/error/handle';
 import { AppTransaction } from 'enevti-app/types/core/service/transaction';
 import { redeemableNftModule } from 'enevti-app/utils/constant/transaction';
@@ -11,6 +11,7 @@ import { CreateMomentState } from 'enevti-app/store/slices/queue/moment/create';
 import { MintMomentUI } from 'enevti-app/types/core/asset/redeemable_nft/mint_moment_asset';
 import { makeDummyIPFS } from 'enevti-app/utils/dummy/ipfs';
 import { COIN_NAME } from 'enevti-app/utils/constant/identifier';
+import { cleanPayment } from '../utils/cleanPayment';
 
 type PayMintMomentPayload = { key: string; data: CreateMomentState };
 
@@ -18,6 +19,7 @@ export const payMintMoment = createAsyncThunk<void, PayMintMomentPayload, AsyncT
   'moment/payMintMoment',
   async (payload, { dispatch, signal }) => {
     try {
+      dispatch(cleanPayment() as unknown as AnyAction);
       dispatch(
         setPaymentStatus({
           id: payload.data.nft!.id,

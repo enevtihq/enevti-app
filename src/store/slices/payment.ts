@@ -46,6 +46,9 @@ const paymentSlice = createSlice({
   name: 'payment',
   initialState: initialState as PaymentState,
   reducers: {
+    cancelPayment: payment => {
+      payment.status.type = 'cancel';
+    },
     showPayment: payment => {
       payment.show = true;
     },
@@ -69,6 +72,7 @@ const paymentSlice = createSlice({
       payment.status.action = initialState.status.action;
       payment.status.type = initialState.status.type;
       payment.status.message = initialState.status.message;
+      payment.status.key = initialState.status.key;
     },
     setPaymentActionType: (payment, action: PayloadAction<PaymentAction['type']>) => {
       payment.action.type = action.payload;
@@ -111,6 +115,7 @@ const paymentSlice = createSlice({
 });
 
 export const {
+  cancelPayment,
   showPayment,
   hidePayment,
   setPaymentMode,

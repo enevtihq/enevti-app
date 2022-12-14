@@ -3,7 +3,7 @@ import { setPaymentStatus, showPayment, hidePayment, setPaymentState } from 'ene
 import { AsyncThunkAPI } from 'enevti-app/store/state';
 import { attachFee, calculateBaseFee, calculateGasFee, createTransaction } from 'enevti-app/service/enevti/transaction';
 import i18n from 'enevti-app/translations/i18n';
-import { createAsyncThunk } from '@reduxjs/toolkit';
+import { AnyAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { handleError } from 'enevti-app/utils/error/handle';
 import { AppTransaction } from 'enevti-app/types/core/service/transaction';
 import { redeemableNftModule } from 'enevti-app/utils/constant/transaction';
@@ -14,6 +14,7 @@ import { getCollectionIdFromRouteParam } from 'enevti-app/service/enevti/collect
 import { COIN_NAME } from 'enevti-app/utils/constant/identifier';
 import { getCommentKey } from '../../ui/view/comment';
 import { makeDummyIPFS } from 'enevti-app/utils/dummy/ipfs';
+import { cleanPayment } from '../utils/cleanPayment';
 
 type CommentRoute = RouteProp<RootStackParamList, 'Comment'>;
 type PayCommentCollectionPayload = { route: CommentRoute; comment: string };
@@ -22,6 +23,7 @@ export const payCommentCollection = createAsyncThunk<void, PayCommentCollectionP
   'commentView/payCommentCollection',
   async (payload, { dispatch, signal }) => {
     try {
+      dispatch(cleanPayment() as unknown as AnyAction);
       const collectionId = await getCollectionIdFromRouteParam(payload.route.params, signal);
       const transactionPayload: AppTransaction<CommentCollectionUI> = await createTransaction<CommentCollectionUI>(
         redeemableNftModule.moduleID,
