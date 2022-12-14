@@ -20,7 +20,6 @@ import useDimension from 'enevti-app/utils/hook/useDimension';
 import AppPersonaLabel from 'enevti-app/components/molecules/avatar/AppPersonaLabel';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
-import { Collection } from 'enevti-app/types/core/chain/collection';
 import { STATUS_BAR_HEIGHT } from 'enevti-app/components/atoms/view/AppStatusBar';
 import { useDispatch, useSelector } from 'react-redux';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
@@ -29,13 +28,18 @@ import { directPayLikeCollection } from 'enevti-app/store/middleware/thunk/payme
 import { PaymentStatus } from 'enevti-app/types/ui/store/Payment';
 import usePaymentCallback from 'enevti-app/utils/hook/usePaymentCallback';
 import { RouteProp } from '@react-navigation/native';
-import { addCollectionViewLike } from 'enevti-app/store/slices/ui/view/collection';
+import {
+  addCollectionViewLike,
+  selectCollectionView,
+  selectCollectionViewLikeDisabled,
+} from 'enevti-app/store/slices/ui/view/collection';
+import AppLikeReadyInstance from 'enevti-app/utils/app/likeReady';
+import { RootState } from 'enevti-app/store/state';
 
 export const COLLECTION_HEADER_VIEW_HEIGHT =
   27 + (Dimensions.get('window').width * 0.5625 * 100) / Dimensions.get('window').height + STATUS_BAR_HEIGHT();
 
 interface AppCollectionHeaderProps {
-  collection: Collection & { liked: boolean };
   navigation: StackNavigationProp<RootStackParamList>;
   route: RouteProp<RootStackParamList, 'Collection'>;
   mintingAvailable: boolean;
@@ -43,7 +47,6 @@ interface AppCollectionHeaderProps {
 }
 
 export default function AppCollectionHeader({
-  collection,
   route,
   navigation,
   mintingAvailable,
@@ -60,6 +63,8 @@ export default function AppCollectionHeader({
   const [descriptionVisible, setDescriptionVisible] = React.useState<boolean>(false);
   const [likeLoading, setLikeLoading] = React.useState<boolean>(false);
   const onceLike = useSelector(selectOnceLike);
+  const collection = useSelector((state: RootState) => selectCollectionView(state, route.key));
+  const likeDisabled = useSelector((state: RootState) => selectCollectionViewLikeDisabled(state, route.key));
 
   const coverWidth = React.useMemo(() => wp('100%'), [wp]);
   const coverHeight = React.useMemo(() => insets.top + coverWidth * 0.5625, [coverWidth, insets]);
@@ -102,6 +107,7 @@ export default function AppCollectionHeader({
     if (paymentStatus.action === 'likeCollection') {
       setLikeLoading(false);
       likeThunkRef.current?.abort();
+      AppLikeReadyInstance.setReady();
     }
   }, []);
 
@@ -179,6 +185,7 @@ export default function AppCollectionHeader({
 
         <View style={styles.collectionChipsContainer}>
           <AppQuaternaryButton
+            disabled={likeDisabled}
             loading={likeLoading}
             loadingSize={15}
             loadingStyle={styles.likeButtonLoadingStyle}

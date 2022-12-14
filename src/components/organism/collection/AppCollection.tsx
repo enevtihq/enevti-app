@@ -377,7 +377,6 @@ export default function AppCollection({ onScrollWorklet, navigation, route }: Ap
         <AppCollectionHeader
           navigation={navigation}
           route={route}
-          collection={collection}
           mintingAvailable={mintingAvailable}
           onFinish={onRefresh}
         />

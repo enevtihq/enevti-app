@@ -18,6 +18,7 @@ type CollectionViewState = Omit<Collection, 'collectionType'> & {
   loaded: boolean;
   reqStatus: number;
   liked: boolean;
+  likeDisabled: boolean;
   render: Record<'minted' | 'activity' | 'moment', boolean>;
 };
 
@@ -26,6 +27,7 @@ type CollectionViewStore = {
 };
 
 export const collectionInitialStateItem: CollectionViewState = {
+  likeDisabled: false,
   render: {
     minted: false,
     activity: false,
@@ -113,6 +115,9 @@ const collectionViewSlice = createSlice({
     setCollectionViewLike: (collection, action: PayloadAction<{ key: string; value: number }>) => {
       collection[action.payload.key].like = action.payload.value;
     },
+    setCollectionViewLikeDisabled: (collection, action: PayloadAction<{ key: string; value: boolean }>) => {
+      collection[action.payload.key].likeDisabled = action.payload.value;
+    },
     addCollectionViewLike: (collection, action: PayloadAction<{ key: string }>) => {
       collection[action.payload.key].liked = true;
       collection[action.payload.key].like++;
@@ -188,6 +193,7 @@ export const {
   initCollectionView,
   setCollectionView,
   setCollectionViewLike,
+  setCollectionViewLikeDisabled,
   addCollectionViewLike,
   unshiftCollectionViewMinted,
   unshiftCollectionViewActivity,
@@ -216,6 +222,12 @@ export const selectCollectionView = createSelector(
 export const selectCollectionViewMinted = createSelector(
   [(state: RootState) => state.ui.view.collection, (state: RootState, key: string) => key],
   (collections: CollectionViewStore, key: string) => (collections.hasOwnProperty(key) ? collections[key].minted : []),
+);
+
+export const selectCollectionViewLikeDisabled = createSelector(
+  [(state: RootState) => state.ui.view.collection, (state: RootState, key: string) => key],
+  (collections: CollectionViewStore, key: string) =>
+    collections.hasOwnProperty(key) ? collections[key].likeDisabled : false,
 );
 
 export const selectCollectionViewActivity = createSelector(

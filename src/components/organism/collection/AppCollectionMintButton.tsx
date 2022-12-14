@@ -27,6 +27,7 @@ import { openQRScanner } from 'enevti-app/utils/qr/openQRScanner';
 import { handleError } from 'enevti-app/utils/error/handle';
 import { RouteProp } from '@react-navigation/native';
 import { PaymentStatus } from 'enevti-app/types/ui/store/Payment';
+import { setCollectionViewLikeDisabled } from 'enevti-app/store/slices/ui/view/collection';
 
 export const MINT_BUTTON_HEIGHT = 11.5;
 
@@ -68,7 +69,8 @@ export default function AppCollectionMintButton({
   const paymentIdleCallback = React.useCallback(() => {
     setLoading(false);
     paymentThunkRef.current?.abort();
-  }, []);
+    dispatch(setCollectionViewLikeDisabled({ key: route.key, value: false }));
+  }, [dispatch, route.key]);
 
   usePaymentCallback({
     condition: paymentCondition,
@@ -102,6 +104,7 @@ export default function AppCollectionMintButton({
   );
 
   const onMintPress = React.useCallback(() => {
+    dispatch(setCollectionViewLikeDisabled({ key: route.key, value: true }));
     if (collection.mintingType === 'qr') {
       if (collection.creator.address === myPersona.address) {
         setMintingOptionVisible(old => !old);

@@ -35,6 +35,7 @@ import {
 import { directPayLikeNFT } from 'enevti-app/store/middleware/thunk/payment/direct/directPayLikeNFT';
 import { PaymentStatus } from 'enevti-app/types/ui/store/Payment';
 import usePaymentCallback from 'enevti-app/utils/hook/usePaymentCallback';
+import AppLikeReadyInstance from 'enevti-app/utils/app/likeReady';
 
 interface NFTSummaryComponentProps {
   route: RouteProp<RootStackParamList, 'NFTDetails'>;
@@ -143,6 +144,7 @@ function Component(
     if (paymentStatus.action === 'likeNFT') {
       setLikeLoading(false);
       likeThunkRef.current?.abort();
+      AppLikeReadyInstance.setReady();
     }
   }, []);
 
