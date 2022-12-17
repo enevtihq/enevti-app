@@ -16,6 +16,9 @@ import { IPFStoURL } from 'enevti-app/service/ipfs';
 import { EventRegister } from 'react-native-event-listeners';
 import AppResponseView from '../view/AppResponseView';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import AppIconComponent, { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
+import Color from 'color';
 
 const MOMENT_HEIGHT = hp(100);
 
@@ -39,15 +42,37 @@ export default function AppMomentView({
   const [muted, setMuted] = React.useState<boolean>(false);
   const [currentVisibleIndex, setCurrentVisbleIndex] = React.useState<number>();
 
+  const showAudioIndicatorTimeout = React.useRef<any>();
   const momentListRef = React.useRef<FlatList>(null);
   const isLongPressRef = React.useRef<boolean>(false);
+  const videoRef = React.useRef<Record<number, any>>({});
+  const currentIndexRef = React.useRef<number>(route.params.index ?? 0);
   const momentView = useSelector((state: RootState) => selectMomentView(state, route.key));
+  const opacity = useSharedValue(0);
+
+  const audioIndicatorAnimatedStyle = useAnimatedStyle(() => {
+    return { opacity: opacity.value };
+  });
+
+  const muteCallback = React.useCallback(() => {
+    clearTimeout(showAudioIndicatorTimeout.current);
+    opacity.value = 1;
+    showAudioIndicatorTimeout.current = setTimeout(() => {
+      opacity.value = withTiming(0, { duration: 500 });
+      clearTimeout(showAudioIndicatorTimeout.current);
+    }, 1000);
+  }, [opacity]);
 
   const onLongPress = React.useCallback(() => {
     onLongPressWorklet();
     isLongPressRef.current = true;
     setControlVisible(false);
   }, [onLongPressWorklet]);
+
+  const onPress = React.useCallback(() => {
+    setMuted(old => !old);
+    muteCallback();
+  }, [muteCallback]);
 
   const onPressOut = React.useCallback(() => {
     if (isLongPressRef.current) {
@@ -56,7 +81,6 @@ export default function AppMomentView({
       isLongPressRef.current = false;
       return;
     }
-    setMuted(old => !old);
   }, [onLongPressOutWorklet]);
 
   const onMomentLoaded = React.useCallback(
@@ -83,19 +107,48 @@ export default function AppMomentView({
   const renderItem = React.useCallback(
     ({ item, index }: { item: Moment; index: number }) => {
       return (
-        <Pressable onLongPress={onLongPress} onPressOut={onPressOut} style={styles.momentItemContainer}>
+        <Pressable
+          onLongPress={onLongPress}
+          onPress={onPress}
+          onPressOut={onPressOut}
+          style={styles.momentItemContainer}>
+          <Animated.View style={[styles.audioIndicator, audioIndicatorAnimatedStyle]}>
+            <View style={styles.audioIndicatorItem}>
+              <AppIconComponent
+                name={muted ? iconMap.volumeOff : iconMap.volumeOn}
+                size={hp(3)}
+                color={'white'}
+                style={{ padding: hp(2) }}
+              />
+            </View>
+          </Animated.View>
           <Video
             repeat
+            ref={ref => {
+              videoRef.current[index] = ref;
+            }}
             poster={IPFStoURL(item.cover.cid)}
             paused={!controlVisible || currentVisibleIndex !== index}
             source={{ uri: IPFStoURL(item.data.cid) }}
             style={styles.momentItemContainer}
             resizeMode={'contain'}
+            muted={muted}
           />
         </Pressable>
       );
     },
-    [controlVisible, currentVisibleIndex, onLongPress, onPressOut, styles.momentItemContainer],
+    [
+      audioIndicatorAnimatedStyle,
+      controlVisible,
+      currentVisibleIndex,
+      muted,
+      onLongPress,
+      onPress,
+      onPressOut,
+      styles.audioIndicator,
+      styles.audioIndicatorItem,
+      styles.momentItemContainer,
+    ],
   );
 
   const keyExtractor = React.useCallback(item => item.id, []);
@@ -112,6 +165,10 @@ export default function AppMomentView({
   const onViewableItemsChanged = React.useCallback(({ viewableItems }) => {
     if (viewableItems.length > 0) {
       setCurrentVisbleIndex(viewableItems[0].index);
+
+      videoRef.current[currentIndexRef.current]?.setNativeProps({ paused: true });
+      videoRef.current[currentIndexRef.current]?.seek(0);
+      currentIndexRef.current = viewableItems[0].index;
     }
   }, []);
 
@@ -157,5 +214,17 @@ const makeStyles = () =>
       alignItems: 'center',
       width: '100%',
       height: '100%',
+    },
+    audioIndicator: {
+      position: 'absolute',
+      width: '100%',
+      height: '100%',
+      alignItems: 'center',
+      justifyContent: 'center',
+      zIndex: 1,
+    },
+    audioIndicatorItem: {
+      borderRadius: hp(5),
+      backgroundColor: Color('black').alpha(0.5).rgb().string(),
     },
   });
