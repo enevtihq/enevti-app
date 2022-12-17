@@ -162,15 +162,21 @@ export default function AppMomentView({
     [],
   );
 
-  const onViewableItemsChanged = React.useCallback(({ viewableItems }) => {
-    if (viewableItems.length > 0) {
-      setCurrentVisbleIndex(viewableItems[0].index);
+  const onViewableItemsChanged = React.useCallback(
+    ({ viewableItems }) => {
+      if (viewableItems.length > 0) {
+        opacity.value = 0;
+        clearTimeout(showAudioIndicatorTimeout.current);
+        setCurrentVisbleIndex(viewableItems[0].index);
 
-      videoRef.current[currentIndexRef.current]?.setNativeProps({ paused: true });
-      videoRef.current[currentIndexRef.current]?.seek(0);
-      currentIndexRef.current = viewableItems[0].index;
-    }
-  }, []);
+        videoRef.current[currentIndexRef.current]?.setNativeProps({ paused: true });
+        videoRef.current[currentIndexRef.current]?.seek(0);
+        currentIndexRef.current = viewableItems[0].index;
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
+  );
 
   return momentView.loaded ? (
     <AppResponseView color={'white'} status={momentView.reqStatus} style={styles.container}>
