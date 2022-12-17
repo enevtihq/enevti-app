@@ -27,7 +27,7 @@ import {
 } from 'enevti-app/store/slices/ui/view/profile';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
 import { TABBAR_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppTabBar';
-import { MomentBase } from 'enevti-app/types/core/chain/moment';
+import { Moment, MomentBase } from 'enevti-app/types/core/chain/moment';
 import AppMomentItem from '../../moment/AppMomentItem';
 
 const AnimatedFlatGrid = Animated.createAnimatedComponent<FlatGridProps<MomentBase>>(FlatGrid);
@@ -136,6 +136,8 @@ function Component(
     [styles.moment],
   );
 
+  const keyExtractor = React.useCallback((item: Moment) => item.id, []);
+
   React.useEffect(() => {
     if (ref && ref.current) {
       mounted.current = true;
@@ -175,6 +177,7 @@ function Component(
       itemDimension={itemDimension}
       data={render.momentCreated ? data : []}
       renderItem={renderItem}
+      keyExtractor={keyExtractor}
       refreshControl={refreshControl}
       ListEmptyComponent={emptyComponent}
       ListFooterComponent={footerComponent}

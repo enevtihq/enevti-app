@@ -75,7 +75,7 @@ import { initFCMToken, refreshFCMToken } from 'enevti-app/store/middleware/thunk
 import BackgroundFetch from 'react-native-background-fetch';
 import { initAPNToken } from 'enevti-app/store/middleware/thunk/session/apn';
 import { reduceMyTotalMomentSlotChanged } from 'enevti-app/store/middleware/thunk/socket/profile/totalMomentSlotChanged';
-import { selectMomentAlertShow, setMomentAlertShow } from 'enevti-app/store/slices/ui/view/moment';
+import { selectRecentMomentAlertShow, setRecentMomentAlertShow } from 'enevti-app/store/slices/ui/view/recentMoment';
 
 const Tab = createBottomTabNavigator();
 
@@ -89,7 +89,7 @@ export default function Home({ navigation }: Props) {
 
   const myPersona = useSelector(selectMyPersonaCache);
   const myProfile = useSelector(selectMyProfileCache);
-  const momentAlertShow = useSelector(selectMomentAlertShow);
+  const momentAlertShow = useSelector(selectRecentMomentAlertShow);
   const onceEligible = useSelector(selectOnceEligible);
   const onceLike = useSelector(selectOnceLike);
   const onceLikeShow = useSelector(selectOnceLikeShow);
@@ -247,7 +247,7 @@ export default function Home({ navigation }: Props) {
   }, [dispatch]);
 
   const momentAlertOnDismiss = React.useCallback(() => {
-    dispatch(setMomentAlertShow(false));
+    dispatch(setRecentMomentAlertShow(false));
   }, [dispatch]);
 
   return (

@@ -26,7 +26,9 @@ export default function AppNotificationScreen({ navigation }: AppNotificationScr
   }, [dispatch]);
 
   const renderItem = React.useCallback(
-    ({ item, index }: any) => <AppNotificationItem index={index} navigation={navigation} notification={item} />,
+    ({ item, index }: { item: NotificationItem; index: number }) => (
+      <AppNotificationItem index={index} navigation={navigation} notification={item} />
+    ),
     [navigation],
   );
 

@@ -28,7 +28,7 @@ import {
   selectFeedViewReqStatus,
   setFeedViewVersion,
 } from 'enevti-app/store/slices/ui/view/feed';
-import { isThereAnyNewMomentView, selectMomentView } from 'enevti-app/store/slices/ui/view/moment';
+import { isThereAnyNewRecentMoment, selectRecentMoment } from 'enevti-app/store/slices/ui/view/recentMoment';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
 import AppMessageEmpty from 'enevti-app/components/molecules/message/AppMessageEmpty';
 import AppResponseView from 'enevti-app/components/organism/view/AppResponseView';
@@ -65,8 +65,8 @@ export default function Feed({ navigation, onScroll, headerHeight }: FeedProps) 
   const feedsUndefined = useSelector(isFeedUndefined);
   const newFeeds = useSelector(isThereAnyNewFeedView);
   const feedsReqStatus = useSelector(selectFeedViewReqStatus);
-  const moments = useSelector(selectMomentView);
-  const newMoments = useSelector(isThereAnyNewMomentView);
+  const moments = useSelector(selectRecentMoment);
+  const newMoments = useSelector(isThereAnyNewRecentMoment);
 
   const handleLoadFeed = React.useCallback((reload: boolean = false) => {
     return onLoadFeed(reload);

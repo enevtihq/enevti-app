@@ -80,6 +80,8 @@ function Component(
     [itemDimension, navigation],
   );
 
+  const keyExtractor = React.useCallback((item: NFTBase) => item.id, []);
+
   React.useEffect(() => {
     if (ref && ref.current) {
       mounted.current = true;
@@ -104,6 +106,7 @@ function Component(
       itemDimension={itemDimension}
       data={data}
       renderItem={renderItem}
+      keyExtractor={keyExtractor}
       refreshControl={refreshControl}
       ListEmptyComponent={emptyComponent}
     />

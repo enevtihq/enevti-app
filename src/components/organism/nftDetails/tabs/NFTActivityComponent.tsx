@@ -144,7 +144,10 @@ function Component(
     [styles.collectionItem, styles.collectionRightContent, styles.collectionRightText, theme.colors.placeholder, t],
   );
 
-  const keyExtractor = React.useCallback((item: NFT['activity'][0]) => item.transaction, []);
+  const keyExtractor = React.useCallback(
+    (item: NFT['activity'][0]) => `${item.transaction}-${item.date}-${item.name}`,
+    [],
+  );
 
   const getItemLayout = React.useCallback(
     (_, index) => ({

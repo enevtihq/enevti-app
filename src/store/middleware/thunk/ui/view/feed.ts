@@ -27,7 +27,7 @@ import {
   PROFILE_OWNED_INITIAL_LENGTH,
 } from 'enevti-app/utils/constant/limit';
 import { myProfileInitialState, setMyProfileView } from 'enevti-app/store/slices/ui/view/myProfile';
-import { setMomentViewState, setMomentViewVersion } from 'enevti-app/store/slices/ui/view/moment';
+import { setRecentMomentState, setRecentMomentVersion } from 'enevti-app/store/slices/ui/view/recentMoment';
 import { selectMomentItemsCache, setMomentItemsCache } from 'enevti-app/store/slices/entities/cache/moment';
 import { selectMyProfileCache, setMyProfileCache } from 'enevti-app/store/slices/entities/cache/myProfile';
 import { parseProfileCache } from 'enevti-app/service/enevti/profile';
@@ -42,7 +42,7 @@ export const loadFeeds = createAsyncThunk<void, loadFeedsArgs, AsyncThunkAPI>(
       const now = Date.now();
       const initialProfileState = !reload ? myProfileInitialState : {};
       dispatch(setFeedViewVersion(now));
-      dispatch(setMomentViewVersion(now));
+      dispatch(setRecentMomentVersion(now));
 
       if (reload || now - selectLastFetchFeedCache(getState()) > lastFetchTimeout.home) {
         const homeResponse = await getHome(signal, !reload);
@@ -56,7 +56,7 @@ export const loadFeeds = createAsyncThunk<void, loadFeedsArgs, AsyncThunkAPI>(
           }),
         );
         dispatch(
-          setMomentViewState({
+          setRecentMomentState({
             checkpoint: HOME_MOMENT_LIMIT,
             items: homeResponse.data.moment,
             reqStatus: homeResponse.status,
@@ -150,7 +150,7 @@ export const loadFeedFromCache = createAsyncThunk<void, undefined, AsyncThunkAPI
       }),
     );
     dispatch(
-      setMomentViewState({
+      setRecentMomentState({
         items: selectMomentItemsCache(getState()),
         reqStatus: 200,
         reqVersion: selectReqVersionFeedItemsCache(getState()),

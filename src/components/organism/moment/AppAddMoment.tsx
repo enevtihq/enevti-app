@@ -15,7 +15,7 @@ import { Theme } from 'enevti-app/theme/default';
 import Color from 'color';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
-import { setMomentAlertShow } from 'enevti-app/store/slices/ui/view/moment';
+import { setRecentMomentAlertShow } from 'enevti-app/store/slices/ui/view/recentMoment';
 import { clearCreateMomentQueue, selectCreateMomentQueue } from 'enevti-app/store/slices/queue/moment/create';
 import { cleanTMPImage } from 'enevti-app/service/enevti/nft';
 import AppConfirmationModal from '../menu/AppConfirmationModal';
@@ -62,7 +62,7 @@ export default function AppAddMoment({ navigation }: AppAddMomentProps) {
         navigation.navigate('ChooseNFTforMoment');
       }
     } else {
-      dispatch(setMomentAlertShow(true));
+      dispatch(setRecentMomentAlertShow(true));
     }
   }, [createMomentQueue.nft, dispatch, isEligibile, navigation]);
 

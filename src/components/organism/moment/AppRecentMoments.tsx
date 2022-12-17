@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { Divider } from 'react-native-paper';
 import AppActivityIndicator from '../../atoms/loading/AppActivityIndicator';
 import { useSelector } from 'react-redux';
-import { isMomentUndefined, selectMomentView } from 'enevti-app/store/slices/ui/view/moment';
+import { isRecentMomentUndefined, selectRecentMoment } from 'enevti-app/store/slices/ui/view/recentMoment';
 import { selectFeedView } from 'enevti-app/store/slices/ui/view/feed';
 import AppAddMoment from './AppAddMoment';
 import AppMomentItem from './AppMomentItem';
@@ -26,16 +26,25 @@ export default function AppRecentMoments({ navigation }: AppRecentMomentsProps) 
   const insets = useSafeAreaInsets();
 
   const feeds = useSelector(selectFeedView);
-  const moments = useSelector(selectMomentView);
-  const momentsUndefined = useSelector(isMomentUndefined);
+  const moments = useSelector(selectRecentMoment);
+  const momentsUndefined = useSelector(isRecentMomentUndefined);
 
-  const onMomentsPress = (_id: string) => {};
+  const onMomentsPress = React.useCallback(
+    (arg: string, index: number) => {
+      navigation.navigate('Moment', { mode: 'feed', index, arg });
+    },
+    [navigation],
+  );
 
   const renderItem = React.useCallback(
-    ({ item }: { item: MomentBase }) => (
-      <AppMomentItem moment={item} style={{ marginRight: wp('2%', insets) }} onPress={() => onMomentsPress(item.id)} />
+    ({ item, index }: { item: MomentBase; index: number }) => (
+      <AppMomentItem
+        moment={item}
+        style={{ marginRight: wp('2%', insets) }}
+        onPress={() => onMomentsPress(item.id, index)}
+      />
     ),
-    [insets],
+    [onMomentsPress, insets],
   );
 
   const listHeaderComponent = React.useCallback(() => <AppAddMoment navigation={navigation} />, [navigation]);

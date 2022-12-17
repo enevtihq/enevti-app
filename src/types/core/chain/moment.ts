@@ -27,15 +27,13 @@ export type MomentAtAsset = {
   moment: MomentIdAsset[];
 };
 
-export type MomentBase = {
+export interface Moment {
   id: string;
   cover: NFTContent;
+  like: number;
   text: string;
   textPlain?: string;
-  like: number;
-};
 
-export interface Moment extends MomentBase {
   nftId: string;
   owner: Persona;
   creator: Persona;
@@ -45,6 +43,8 @@ export interface Moment extends MomentBase {
   createdOn: number;
   activity?: MomentActivity[];
 }
+
+export type MomentBase = Moment;
 
 export interface MomentAsset extends Omit<Moment, 'id' | 'nftId' | 'activity' | 'owner' | 'creator' | 'createdOn'> {
   id: MomentIdAsset;

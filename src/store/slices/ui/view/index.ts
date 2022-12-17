@@ -5,9 +5,10 @@ import collectionViewReducer from './collection';
 import nftDetailsViewReducer from './nftDetails';
 import stakePoolReducer from './stakePool';
 import feedViewReducer from './feed';
-import momentViewReducer from './moment';
+import recentMomentViewReducer from './recentMoment';
 import walletViewReducer from './wallet';
 import commentViewReducer from './comment';
+import momentViewReducer from './moment';
 
 export default combineReducers({
   profile: profileViewReducer,
@@ -16,7 +17,8 @@ export default combineReducers({
   nftDetails: nftDetailsViewReducer,
   stakePool: stakePoolReducer,
   feed: feedViewReducer,
-  moment: momentViewReducer,
+  recentMoment: recentMomentViewReducer,
   wallet: walletViewReducer,
   comment: commentViewReducer,
+  moment: momentViewReducer,
 });

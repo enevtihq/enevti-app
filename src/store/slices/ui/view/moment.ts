@@ -1,55 +1,64 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
 import { RootState } from 'enevti-app/store/state';
-import { Moments } from 'enevti-app/types/core/service/feed';
+import { PaginationStore } from 'enevti-app/types/ui/store/PaginationStore';
 import { assignDeep } from 'enevti-app/utils/primitive/object';
+import { Moment } from 'enevti-app/types/core/chain/moment';
 
 type MomentViewState = {
-  momentAlertShow: boolean;
-  checkpoint: number;
-  version: number;
-  fetchedVersion: number;
-  reqStatus: number;
-  reqVersion: number;
+  momentPagination: PaginationStore;
   loaded: boolean;
-  items: Moments;
+  reqStatus: number;
+  moments: Moment[];
 };
 
-const initialState: MomentViewState = {
-  momentAlertShow: false,
-  checkpoint: 0,
-  version: 0,
-  fetchedVersion: 0,
+type MomentViewStore = {
+  [key: string]: MomentViewState;
+};
+
+export const momentInitialStateItem: MomentViewState = {
+  momentPagination: {
+    checkpoint: 0,
+    version: 0,
+  },
   loaded: false,
   reqStatus: 0,
-  reqVersion: 0,
-  items: [],
+  moments: [],
 };
+
+const initialStateItem = momentInitialStateItem;
+
+const initialState: MomentViewStore = {};
 
 const momentViewSlice = createSlice({
   name: 'momentView',
   initialState,
   reducers: {
-    setMomentAlertShow: (moment, action: PayloadAction<boolean>) => {
-      moment.momentAlertShow = action.payload;
+    initMomentView: (moment, action: PayloadAction<string>) => {
+      assignDeep(moment, { [action.payload]: initialStateItem });
     },
-    setMomentViewState: (moment, action: PayloadAction<Partial<MomentViewState>>) => {
-      assignDeep(moment, action.payload);
+    setMomentView: (moment, action: PayloadAction<{ key: string; value: Partial<MomentViewState> }>) => {
+      assignDeep(moment, { [action.payload.key]: action.payload.value });
     },
-    setMomentView: (moment, action: PayloadAction<Moments>) => {
-      moment.items = action.payload.slice();
+    setMomentViewLoaded: (moment, action: PayloadAction<{ key: string; value: boolean }>) => {
+      moment[action.payload.key].loaded = action.payload.value;
     },
-    setMomentViewVersion: (moment, action: PayloadAction<number>) => {
-      moment.version = action.payload;
+    unshiftMomentView: (
+      moment,
+      action: PayloadAction<{ key: string; value: Moment[]; pagination: PaginationStore }>,
+    ) => {
+      moment[action.payload.key].moments = action.payload.value.concat(moment[action.payload.key].moments);
+      moment[action.payload.key].momentPagination = { ...action.payload.pagination };
     },
-    setMomentViewFetchedVersion: (moment, action: PayloadAction<number>) => {
-      moment.fetchedVersion = action.payload;
+    pushMomentView: (moment, action: PayloadAction<{ key: string; value: Moment[]; pagination: PaginationStore }>) => {
+      moment[action.payload.key].moments = moment[action.payload.key].moments.concat(action.payload.value);
+      moment[action.payload.key].momentPagination = { ...action.payload.pagination };
     },
-    setMomentViewLoaded: (moment, action: PayloadAction<boolean>) => {
-      moment.loaded = action.payload;
+    clearMomentByKey: (moment, action: PayloadAction<string>) => {
+      delete moment[action.payload];
     },
-    setMomentViewReqStatus: (moment, action: PayloadAction<number>) => {
-      moment.reqStatus = action.payload;
+    resetMomentByKey: (moment, action: PayloadAction<string>) => {
+      assignDeep(moment[action.payload], initialStateItem);
     },
     resetMomentView: () => {
       return initialState;
@@ -58,33 +67,18 @@ const momentViewSlice = createSlice({
 });
 
 export const {
-  setMomentAlertShow,
-  setMomentViewState,
-  setMomentView,
-  setMomentViewVersion,
-  setMomentViewFetchedVersion,
+  initMomentView,
   setMomentViewLoaded,
-  setMomentViewReqStatus,
+  setMomentView,
+  unshiftMomentView,
+  pushMomentView,
+  clearMomentByKey,
+  resetMomentByKey,
   resetMomentView,
 } = momentViewSlice.actions;
 export default momentViewSlice.reducer;
 
 export const selectMomentView = createSelector(
-  (state: RootState) => state.ui.view.moment,
-  (moment: MomentViewState) => moment.items,
-);
-
-export const selectMomentAlertShow = createSelector(
-  (state: RootState) => state.ui.view.moment,
-  (moment: MomentViewState) => moment.momentAlertShow,
-);
-
-export const isMomentUndefined = createSelector(
-  (state: RootState) => state.ui.view.moment,
-  (moment: MomentViewState) => !moment.loaded,
-);
-
-export const isThereAnyNewMomentView = createSelector(
-  (state: RootState) => state.ui.view.moment,
-  (moment: MomentViewState) => moment.fetchedVersion > moment.version,
+  [(state: RootState) => state.ui.view.moment, (state: RootState, key: string) => key],
+  (moments: MomentViewStore, key: string) => (moments.hasOwnProperty(key) ? moments[key] : initialStateItem),
 );

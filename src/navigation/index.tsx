@@ -56,6 +56,7 @@ import RequestOverlayPermission from 'enevti-app/screen/onboard/RequestOverlayPe
 import ChooseNFTforMoment from 'enevti-app/screen/createMoment/ChooseNFTforMoment';
 import VideoEditor from 'enevti-app/screen/editor/video/VideoEditor';
 import CreateMoment from 'enevti-app/screen/createMoment/CreateMoment';
+import Moment from 'enevti-app/screen/moment/Moment';
 
 export type RootStackParamList = {
   AppOnboarding: undefined;
@@ -136,6 +137,11 @@ export type RootStackParamList = {
   };
   CreateMoment: {
     normal?: boolean;
+  };
+  Moment: {
+    mode?: 'feed' | 'profile' | 'myProfile' | 'nft' | 'collection';
+    index?: number;
+    arg?: string;
   };
 };
 
@@ -469,6 +475,14 @@ export default function AppNavigationContainer() {
         <Stack.Screen
           name="CreateMoment"
           component={CreateMoment}
+          options={{
+            headerShown: false,
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          }}
+        />
+        <Stack.Screen
+          name="Moment"
+          component={Moment}
           options={{
             headerShown: false,
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,

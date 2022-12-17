@@ -123,9 +123,11 @@ function Component(
   );
 
   const renderItem = React.useCallback(
-    ({ item }) => <AppNFTCard nft={item} width={itemDimension} navigation={navigation} />,
+    ({ item }) => <AppNFTCard key={item.id} nft={item} width={itemDimension} navigation={navigation} />,
     [itemDimension, navigation],
   );
+
+  const keyExtractor = React.useCallback(item => item.id, []);
 
   React.useEffect(() => {
     if (ref && ref.current) {
@@ -155,6 +157,7 @@ function Component(
       itemDimension={itemDimension}
       data={collection.render.minted ? nfts : []}
       renderItem={renderItem}
+      keyExtractor={keyExtractor}
       refreshControl={refreshControl}
       ListEmptyComponent={emptyComponent}
       ListFooterComponent={listFooter}

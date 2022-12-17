@@ -144,6 +144,8 @@ function Component({
     ],
   );
 
+  const keyExtractor = React.useCallback(item => item.step, []);
+
   const socialRaffleStep = React.useMemo(() => {
     return [
       {
@@ -255,6 +257,7 @@ function Component({
               inactiveSlideOpacity={0.2}
               data={socialRaffleStep}
               renderItem={renderItem}
+              keyExtractor={keyExtractor}
               sliderWidth={sliderWidth}
               itemWidth={itemWidth}
               itemHeight={itemHeight}

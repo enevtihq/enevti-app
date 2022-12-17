@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectNFTDetailsView, setNFTDetailsRender } from 'enevti-app/store/slices/ui/view/nftDetails';
 import { RootState } from 'enevti-app/store/state';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
-import { loadMoreActivity } from 'enevti-app/store/middleware/thunk/ui/view/nftDetails';
+import { loadMoreMoment } from 'enevti-app/store/middleware/thunk/ui/view/nftDetails';
 import { FlatGrid, FlatGridProps } from 'react-native-super-grid';
 import { MomentBase } from 'enevti-app/types/core/chain/moment';
 import AppMomentItem from '../../moment/AppMomentItem';
@@ -133,7 +133,7 @@ function Component(
   }, [ref, onMounted, refreshing]);
 
   const handleLoadMore = React.useCallback(() => {
-    dispatch(loadMoreActivity({ route, reload: true }));
+    dispatch(loadMoreMoment({ route, reload: true }));
   }, [dispatch, route]);
 
   return (
