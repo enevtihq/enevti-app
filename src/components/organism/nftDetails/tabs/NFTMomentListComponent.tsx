@@ -103,7 +103,7 @@ function Component(
 
   const onMomentPress = React.useCallback(
     (index: number) => {
-      navigation.navigate('Moment', { mode: 'nft', index, arg: route.key });
+      navigation.push('Moment', { mode: 'nft', index, arg: route.key });
     },
     [navigation, route.key],
   );

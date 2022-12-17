@@ -31,7 +31,7 @@ export default function AppRecentMoments({ navigation }: AppRecentMomentsProps) 
 
   const onMomentsPress = React.useCallback(
     (index: number) => {
-      navigation.navigate('Moment', { mode: 'feed', index });
+      navigation.push('Moment', { mode: 'feed', index });
     },
     [navigation],
   );

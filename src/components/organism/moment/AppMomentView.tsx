@@ -52,11 +52,12 @@ export default function AppMomentView({
 
   const [controlVisible, setControlVisible] = React.useState<boolean>(true);
   const [muted, setMuted] = React.useState<boolean>(false);
-  const [currentVisibleIndex, setCurrentVisbleIndex] = React.useState<number>(route.params.index ?? 0);
+  const [currentVisibleIndex, setCurrentVisibleIndex] = React.useState<number>(route.params.index ?? 0);
 
   const showAudioIndicatorTimeout = React.useRef<any>();
   const momentListRef = React.useRef<FlatList>(null);
   const isLongPressRef = React.useRef<boolean>(false);
+  const touchedRef = React.useRef<boolean>(false);
   const videoRef = React.useRef<Record<number, any>>({});
   const currentIndexRef = React.useRef<number>(route.params.index ?? 0);
   const momentView = useSelector((state: RootState) => selectMomentView(state, route.key));
@@ -167,7 +168,7 @@ export default function AppMomentView({
           </Pressable>
           <Animated.View style={[styles.leftContainer, controlAnimatedStyle]}>
             <Pressable
-              onPress={() => navigation.navigate('Profile', { mode: 'a', arg: item.owner.address })}
+              onPress={() => navigation.push('Profile', { mode: 'a', arg: item.owner.address })}
               style={styles.ownerContainer}>
               <AppAvatarRenderer persona={item.owner} size={hp(3)} style={styles.ownerAvatar} />
               <AppTextHeading3 style={styles.ownerLabel}>{parsePersonaLabel(item.owner, true)}</AppTextHeading3>
@@ -182,7 +183,7 @@ export default function AppMomentView({
               />
             </View>
             <Pressable
-              onPress={() => navigation.navigate('Profile', { mode: 'a', arg: item.creator.address })}
+              onPress={() => navigation.push('Profile', { mode: 'a', arg: item.creator.address })}
               style={styles.creatorContainer}>
               <AppTextBody4 style={{ color: darkTheme.colors.placeholder }}>with :</AppTextBody4>
               <AppAvatarRenderer persona={item.creator} size={hp(2)} style={{ marginHorizontal: wp(1.5) }} />
@@ -216,7 +217,7 @@ export default function AppMomentView({
                 width={wp(12)}
                 imageSize={'xxs'}
                 onPress={() => {
-                  navigation.navigate('NFTDetails', { arg: item.nft!.id, mode: 'id' });
+                  navigation.push('NFTDetails', { arg: item.nft!.id, mode: 'id' });
                 }}
               />
               <AppTextBody5
@@ -267,10 +268,15 @@ export default function AppMomentView({
       if (viewableItems.length > 0) {
         opacity.value = 0;
         clearTimeout(showAudioIndicatorTimeout.current);
-        setCurrentVisbleIndex(viewableItems[0].index);
+        setCurrentVisibleIndex(viewableItems[0].index);
 
-        videoRef.current[currentIndexRef.current]?.setNativeProps({ paused: true });
-        videoRef.current[currentIndexRef.current]?.seek(0);
+        if (touchedRef.current) {
+          videoRef.current[currentIndexRef.current]?.setNativeProps({ paused: true });
+          videoRef.current[currentIndexRef.current]?.seek(0);
+        } else {
+          touchedRef.current = true;
+        }
+
         currentIndexRef.current = viewableItems[0].index;
       }
     },

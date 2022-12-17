@@ -133,9 +133,9 @@ function Component(
   const onMomentPress = React.useCallback(
     (index: number) => {
       if (isMyProfile) {
-        navigation.navigate('Moment', { mode: 'myProfile', index });
+        navigation.push('Moment', { mode: 'myProfile', index });
       } else {
-        navigation.navigate('Moment', { mode: 'profile', index, arg: route.key });
+        navigation.push('Moment', { mode: 'profile', index, arg: route.key });
       }
     },
     [isMyProfile, navigation, route.key],
