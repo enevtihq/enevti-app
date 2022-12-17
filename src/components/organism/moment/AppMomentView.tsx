@@ -11,7 +11,7 @@ import { AppAsyncThunk } from 'enevti-app/types/ui/store/AppAsyncThunk';
 import { selectMomentView } from 'enevti-app/store/slices/ui/view/moment';
 import { RootState } from 'enevti-app/store/state';
 import { Moment } from 'enevti-app/types/core/chain/moment';
-import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
+import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
 import { IPFStoURL } from 'enevti-app/service/ipfs';
 import { EventRegister } from 'react-native-event-listeners';
 import AppResponseView from '../view/AppResponseView';
@@ -19,6 +19,17 @@ import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivit
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import AppIconComponent, { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import Color from 'color';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import AppAvatarRenderer from 'enevti-app/components/molecules/avatar/AppAvatarRenderer';
+import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
+import { parsePersonaLabel } from 'enevti-app/service/enevti/persona';
+import AppMentionRenderer from 'enevti-app/components/molecules/comment/AppMentionRenderer';
+import AppTextHeading4 from 'enevti-app/components/atoms/text/AppTextHeading4';
+import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
+import darkTheme from 'enevti-app/theme/dark';
+import AppIconButton from 'enevti-app/components/atoms/icon/AppIconButton';
+import AppNFTRenderer from 'enevti-app/components/molecules/nft/AppNFTRenderer';
+import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
 
 const MOMENT_HEIGHT = hp(100);
 
@@ -36,11 +47,12 @@ export default function AppMomentView({
   onLongPressOutWorklet,
 }: AppMomentViewProps) {
   const dispatch = useDispatch();
-  const styles = React.useMemo(() => makeStyles(), []);
+  const insets = useSafeAreaInsets();
+  const styles = React.useMemo(() => makeStyles(insets), [insets]);
 
   const [controlVisible, setControlVisible] = React.useState<boolean>(true);
   const [muted, setMuted] = React.useState<boolean>(false);
-  const [currentVisibleIndex, setCurrentVisbleIndex] = React.useState<number>();
+  const [currentVisibleIndex, setCurrentVisbleIndex] = React.useState<number>(route.params.index ?? 0);
 
   const showAudioIndicatorTimeout = React.useRef<any>();
   const momentListRef = React.useRef<FlatList>(null);
@@ -49,9 +61,14 @@ export default function AppMomentView({
   const currentIndexRef = React.useRef<number>(route.params.index ?? 0);
   const momentView = useSelector((state: RootState) => selectMomentView(state, route.key));
   const opacity = useSharedValue(0);
+  const controlOpacity = useSharedValue(1);
 
   const audioIndicatorAnimatedStyle = useAnimatedStyle(() => {
     return { opacity: opacity.value };
+  });
+
+  const controlAnimatedStyle = useAnimatedStyle(() => {
+    return { opacity: controlOpacity.value };
   });
 
   const muteCallback = React.useCallback(() => {
@@ -64,10 +81,11 @@ export default function AppMomentView({
   }, [opacity]);
 
   const onLongPress = React.useCallback(() => {
+    controlOpacity.value = withTiming(0, { duration: 250 });
     onLongPressWorklet();
     isLongPressRef.current = true;
     setControlVisible(false);
-  }, [onLongPressWorklet]);
+  }, [controlOpacity, onLongPressWorklet]);
 
   const onPress = React.useCallback(() => {
     setMuted(old => !old);
@@ -76,12 +94,13 @@ export default function AppMomentView({
 
   const onPressOut = React.useCallback(() => {
     if (isLongPressRef.current) {
-      setControlVisible(true);
+      controlOpacity.value = withTiming(1, { duration: 250 });
       onLongPressOutWorklet();
       isLongPressRef.current = false;
+      setControlVisible(true);
       return;
     }
-  }, [onLongPressOutWorklet]);
+  }, [controlOpacity, onLongPressOutWorklet]);
 
   const onMomentLoaded = React.useCallback(
     (reload: boolean = false) => dispatch(loadMoment({ route, reload })),
@@ -104,50 +123,131 @@ export default function AppMomentView({
     };
   }, [dispatch, onMomentLoaded, route.key, route.params.index, route.params.mode]);
 
+  React.useEffect(() => {
+    const unsubscribeBlur = navigation.addListener('blur', () => {
+      videoRef.current[currentIndexRef.current]?.setNativeProps({ paused: true });
+      videoRef.current[currentIndexRef.current]?.seek(0);
+    });
+    const unsubscribeFocus = navigation.addListener('focus', () => {
+      videoRef.current[currentIndexRef.current]?.setNativeProps({ paused: false });
+    });
+    return () => {
+      unsubscribeBlur();
+      unsubscribeFocus();
+    };
+  }, [navigation, dispatch]);
+
   const renderItem = React.useCallback(
-    ({ item, index }: { item: Moment; index: number }) => {
+    ({ item, index }: { item: Moment & { liked?: boolean }; index: number }) => {
       return (
-        <Pressable
-          onLongPress={onLongPress}
-          onPress={onPress}
-          onPressOut={onPressOut}
-          style={styles.momentItemContainer}>
-          <Animated.View style={[styles.audioIndicator, audioIndicatorAnimatedStyle]}>
-            <View style={styles.audioIndicatorItem}>
-              <AppIconComponent
-                name={muted ? iconMap.volumeOff : iconMap.volumeOn}
-                size={hp(3)}
-                color={'white'}
-                style={{ padding: hp(2) }}
+        <View style={styles.momentItemContainer}>
+          <Pressable onLongPress={onLongPress} onPress={onPress} onPressOut={onPressOut}>
+            <Animated.View style={[styles.audioIndicator, audioIndicatorAnimatedStyle]}>
+              <View style={styles.audioIndicatorItem}>
+                <AppIconComponent
+                  name={muted ? iconMap.volumeOff : iconMap.volumeOn}
+                  size={hp(3)}
+                  color={darkTheme.colors.text}
+                  style={{ padding: hp(2) }}
+                />
+              </View>
+            </Animated.View>
+            <Video
+              repeat
+              ref={ref => {
+                videoRef.current[index] = ref;
+              }}
+              poster={IPFStoURL(item.cover.cid)}
+              paused={!controlVisible || currentVisibleIndex !== index}
+              source={{ uri: IPFStoURL(item.data.cid) }}
+              style={styles.momentItemContainer}
+              resizeMode={'contain'}
+              muted={muted}
+            />
+          </Pressable>
+          <Animated.View style={[styles.leftContainer, controlAnimatedStyle]}>
+            <Pressable
+              onPress={() => navigation.navigate('Profile', { mode: 'a', arg: item.owner.address })}
+              style={styles.ownerContainer}>
+              <AppAvatarRenderer persona={item.owner} size={hp(3)} style={styles.ownerAvatar} />
+              <AppTextHeading3 style={styles.ownerLabel}>{parsePersonaLabel(item.owner, true)}</AppTextHeading3>
+            </Pressable>
+            <View style={{ marginVertical: hp(2) }}>
+              <AppMentionRenderer
+                numberOfLines={2}
+                navigation={navigation}
+                text={item.textPlain!}
+                color={darkTheme.colors.text}
+                theme={'dark'}
               />
             </View>
+            <Pressable
+              onPress={() => navigation.navigate('Profile', { mode: 'a', arg: item.creator.address })}
+              style={styles.creatorContainer}>
+              <AppTextBody4 style={{ color: darkTheme.colors.placeholder }}>with :</AppTextBody4>
+              <AppAvatarRenderer persona={item.creator} size={hp(2)} style={{ marginHorizontal: wp(1.5) }} />
+              <AppTextHeading4 style={{ color: darkTheme.colors.placeholder }}>
+                {parsePersonaLabel(item.creator, true)}
+              </AppTextHeading4>
+            </Pressable>
           </Animated.View>
-          <Video
-            repeat
-            ref={ref => {
-              videoRef.current[index] = ref;
-            }}
-            poster={IPFStoURL(item.cover.cid)}
-            paused={!controlVisible || currentVisibleIndex !== index}
-            source={{ uri: IPFStoURL(item.data.cid) }}
-            style={styles.momentItemContainer}
-            resizeMode={'contain'}
-            muted={muted}
-          />
-        </Pressable>
+          <Animated.View style={[styles.rightContainer, controlAnimatedStyle]}>
+            <View style={{ marginBottom: hp(3) }}>
+              <AppIconButton
+                icon={item.liked ? iconMap.likeActive : iconMap.likeInactive}
+                color={item.liked ? darkTheme.colors.primary : darkTheme.colors.text}
+                size={wp(8)}
+                onPress={() => {}}
+              />
+              <AppTextHeading3
+                style={[styles.textCenter, { color: item.liked ? darkTheme.colors.primary : darkTheme.colors.text }]}>
+                {item.like}
+              </AppTextHeading3>
+            </View>
+            <View style={{ marginBottom: hp(3) }}>
+              <AppIconButton icon={iconMap.comment} color={darkTheme.colors.text} size={wp(8)} onPress={() => {}} />
+              <AppTextHeading3 style={[styles.textCenter, { color: darkTheme.colors.text }]}>
+                {item.comment}
+              </AppTextHeading3>
+            </View>
+            <View style={{ width: wp(12) }}>
+              <AppNFTRenderer
+                nft={item.nft!}
+                width={wp(12)}
+                imageSize={'xxs'}
+                onPress={() => {
+                  navigation.navigate('NFTDetails', { arg: item.nft!.id, mode: 'id' });
+                }}
+              />
+              <AppTextBody5
+                numberOfLines={1}
+                style={styles.nftLabel}>{`${item.nft?.symbol}#${item.nft?.serial}`}</AppTextBody5>
+            </View>
+          </Animated.View>
+        </View>
       );
     },
     [
       audioIndicatorAnimatedStyle,
+      controlAnimatedStyle,
       controlVisible,
       currentVisibleIndex,
       muted,
+      navigation,
       onLongPress,
       onPress,
       onPressOut,
       styles.audioIndicator,
       styles.audioIndicatorItem,
+      styles.creatorContainer,
+      styles.leftContainer,
       styles.momentItemContainer,
+      styles.nftLabel,
+      styles.ownerAvatar,
+      styles.ownerContainer,
+      styles.ownerLabel,
+      styles.rightContainer,
+      styles.textCenter,
     ],
   );
 
@@ -174,12 +274,11 @@ export default function AppMomentView({
         currentIndexRef.current = viewableItems[0].index;
       }
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
+    [opacity],
   );
 
   return momentView.loaded ? (
-    <AppResponseView color={'white'} status={momentView.reqStatus} style={styles.container}>
+    <AppResponseView color={darkTheme.colors.text} status={momentView.reqStatus} style={styles.container}>
       <FlatList
         ref={momentListRef}
         removeClippedSubviews={true}
@@ -206,8 +305,51 @@ export default function AppMomentView({
   );
 }
 
-const makeStyles = () =>
+const makeStyles = (insets: SafeAreaInsets) =>
   StyleSheet.create({
+    leftContainer: {
+      position: 'absolute',
+      height: hp(25),
+      width: wp(80),
+      marginBottom: insets.bottom,
+      bottom: 0,
+      left: 0,
+      paddingLeft: wp(3),
+      paddingBottom: hp(3),
+      justifyContent: 'flex-end',
+    },
+    ownerContainer: {
+      flexDirection: 'row',
+    },
+    ownerAvatar: {
+      marginRight: wp(3),
+    },
+    ownerLabel: {
+      color: darkTheme.colors.text,
+    },
+    creatorContainer: {
+      flexDirection: 'row',
+    },
+    rightContainer: {
+      position: 'absolute',
+      height: hp(45),
+      width: wp(20),
+      marginBottom: insets.bottom,
+      bottom: 0,
+      right: 0,
+      paddingRight: wp(3),
+      paddingBottom: hp(3.5),
+      justifyContent: 'flex-end',
+      alignItems: 'center',
+    },
+    textCenter: {
+      textAlign: 'center',
+    },
+    nftLabel: {
+      marginTop: hp(0.5),
+      color: darkTheme.colors.text,
+      alignSelf: 'center',
+    },
     momentItemContainer: {
       height: MOMENT_HEIGHT,
       width: wp(100),

@@ -50,13 +50,13 @@ export default function Moment({ navigation, route }: Props) {
 
   const onLongPressWorklet = React.useCallback(() => {
     'worklet';
-    pressableHolded.value = withTiming(1, { duration: 200 });
+    pressableHolded.value = withTiming(1, { duration: 250 });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onLongPressOutWorklet = React.useCallback(() => {
     'worklet';
-    pressableHolded.value = withTiming(0, { duration: 200 });
+    pressableHolded.value = withTiming(0, { duration: 250 });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

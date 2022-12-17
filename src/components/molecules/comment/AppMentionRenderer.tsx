@@ -1,7 +1,7 @@
 import React from 'react';
 import { Part, isMentionPartType, PartType, parseValue } from 'react-native-controlled-mentions';
 import { useTheme } from 'react-native-paper';
-import { Theme } from 'enevti-app/theme/default';
+import defaultTheme, { Theme } from 'enevti-app/theme/default';
 import { StyleProp, TextStyle } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { MentionData } from 'react-native-controlled-mentions/dist/types';
 import AppTextBodyCustom from 'enevti-app/components/atoms/text/AppTextBodyCustom';
 import AppTextHeadingCustom from 'enevti-app/components/atoms/text/AppTextHeadingCustom';
+import darkTheme from 'enevti-app/theme/dark';
 
 interface AppMentionRendererProps {
   text: string;
@@ -22,6 +23,8 @@ interface AppMentionRendererProps {
   title?: string;
   onTitlePress?: () => void;
   size?: number;
+  numberOfLines?: number;
+  theme?: 'dark' | 'light' | 'system';
 }
 
 export default function AppMentionRenderer({
@@ -33,10 +36,21 @@ export default function AppMentionRenderer({
   disabled,
   onTitlePress,
   size,
+  numberOfLines,
+  theme,
 }: AppMentionRendererProps) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const theme = useTheme() as Theme;
+  const paperTheme = useTheme() as Theme;
+  const selectedTheme = React.useMemo(() => {
+    if (theme === 'dark') {
+      return darkTheme;
+    }
+    if (theme === 'light') {
+      return defaultTheme;
+    }
+    return paperTheme;
+  }, [paperTheme, theme]);
 
   const profileMentionOnPress = React.useCallback(
     (data?: MentionData) => {
@@ -87,7 +101,7 @@ export default function AppMentionRenderer({
             <AppTextBodyCustom
               size={size === undefined ? 3.5 : size}
               key={`${index}-${part.data?.trigger}`}
-              style={{ color: disabled ? (color ? color : theme.colors.text) : theme.colors.link }}
+              style={{ color: disabled ? (color ? color : selectedTheme.colors.text) : selectedTheme.colors.link }}
               onPress={disabled ? undefined : () => profileMentionOnPress(part.data)}>
               {part.text}
             </AppTextBodyCustom>
@@ -97,7 +111,7 @@ export default function AppMentionRenderer({
             <AppTextBodyCustom
               size={size === undefined ? 3.5 : size}
               key={`${index}-${part.data?.trigger}`}
-              style={{ color: disabled ? (color ? color : theme.colors.text) : theme.colors.link }}
+              style={{ color: disabled ? (color ? color : selectedTheme.colors.text) : selectedTheme.colors.link }}
               onPress={disabled ? undefined : () => collectionMentionOnPress(part.data)}>
               {part.text}
             </AppTextBodyCustom>
@@ -107,7 +121,7 @@ export default function AppMentionRenderer({
             <AppTextBodyCustom
               size={size === undefined ? 3.5 : size}
               key={`${index}-${part.data?.trigger}`}
-              style={{ color: disabled ? (color ? color : theme.colors.text) : theme.colors.link }}
+              style={{ color: disabled ? (color ? color : selectedTheme.colors.text) : selectedTheme.colors.link }}
               onPress={disabled ? undefined : () => nftMentionOnPress(part.data)}>
               {part.text}
             </AppTextBodyCustom>
@@ -128,8 +142,8 @@ export default function AppMentionRenderer({
       nftMentionOnPress,
       profileMentionOnPress,
       size,
-      theme.colors.link,
-      theme.colors.text,
+      selectedTheme.colors.link,
+      selectedTheme.colors.text,
     ],
   );
 
@@ -142,7 +156,7 @@ export default function AppMentionRenderer({
   );
 
   return (
-    <AppTextBodyCustom size={size === undefined ? 3.5 : size} style={style}>
+    <AppTextBodyCustom numberOfLines={numberOfLines} size={size === undefined ? 3.5 : size} style={style}>
       {title ? (
         <AppTextHeadingCustom size={size === undefined ? 3.5 : size} onPress={onTitlePress}>
           {title}{' '}
