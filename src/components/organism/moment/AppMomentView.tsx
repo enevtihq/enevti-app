@@ -15,6 +15,8 @@ import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 import { IPFStoURL } from 'enevti-app/service/ipfs';
 import { EventRegister } from 'react-native-event-listeners';
 
+const MOMENT_HEIGHT = hp(100);
+
 interface AppMomentViewProps {
   navigation: StackNavigationProp<RootStackParamList>;
   route: RouteProp<RootStackParamList, 'Moment'>;
@@ -99,7 +101,7 @@ export default function AppMomentView({
   const getItemLayout = React.useCallback(
     (_, index) => ({
       length: wp(100),
-      offset: hp(100) * index,
+      offset: MOMENT_HEIGHT * index,
       index,
     }),
     [],
@@ -136,7 +138,7 @@ export default function AppMomentView({
 const makeStyles = () =>
   StyleSheet.create({
     momentItemContainer: {
-      height: hp(100),
+      height: MOMENT_HEIGHT,
       width: wp(100),
     },
   });

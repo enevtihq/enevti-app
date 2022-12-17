@@ -306,11 +306,7 @@ const makeStyles = (
     },
     contentContainerStyle: {
       paddingTop: hp(NFT_DETAILS_TOP_TABBAR_HEIGHT_PERCENTAGE) + collectionHeaderHeight,
-      minHeight:
-        hp(100) +
-        collectionHeaderHeight -
-        hp(HEADER_HEIGHT_PERCENTAGE) -
-        (Platform.OS === 'ios' ? insets.top * 0.9 : 0),
+      minHeight: hp(100) + collectionHeaderHeight - hp(HEADER_HEIGHT_PERCENTAGE) - insets.top * 0.9,
       display: displayed ? undefined : 'none',
     },
     collectionDetail: {

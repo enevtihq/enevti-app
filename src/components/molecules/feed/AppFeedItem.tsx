@@ -28,7 +28,7 @@ export default React.memo(
     const theme = useTheme() as Theme;
     const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
 
-    const canvasWidth = Dimensions.get('window').width * (MODE === 'flat' ? 1 : MODE === 'floating' ? 0.9 : 1);
+    const canvasWidth = Dimensions.get('screen').width * (MODE === 'flat' ? 1 : MODE === 'floating' ? 0.9 : 1);
 
     return (
       <View style={styles[MODE]}>

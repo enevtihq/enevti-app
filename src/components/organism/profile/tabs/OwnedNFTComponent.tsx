@@ -201,10 +201,7 @@ const makeStyles = (
     },
     contentContainerStyle: {
       paddingTop: hp(PROFILE_HEADER_HEIGHT_PERCENTAGE + TOP_TABBAR_HEIGHT_PERCENTAGE, insets) + headerHeight,
-      minHeight:
-        hp(PROFILE_HEADER_HEIGHT_PERCENTAGE + 100, insets) +
-        (Platform.OS === 'android' ? insets.top : 0) +
-        (disableHeaderAnimation ? 0 : headerHeight),
+      minHeight: hp(PROFILE_HEADER_HEIGHT_PERCENTAGE + 100, insets) + (disableHeaderAnimation ? 0 : headerHeight),
       display: displayed ? undefined : 'none',
     },
   });

@@ -37,7 +37,7 @@ import AppLikeReadyInstance from 'enevti-app/utils/app/likeReady';
 import { RootState } from 'enevti-app/store/state';
 
 export const COLLECTION_HEADER_VIEW_HEIGHT =
-  27 + (Dimensions.get('window').width * 0.5625 * 100) / Dimensions.get('window').height + STATUS_BAR_HEIGHT();
+  27 + (Dimensions.get('screen').width * 0.5625 * 100) / Dimensions.get('screen').height + STATUS_BAR_HEIGHT();
 
 interface AppCollectionHeaderProps {
   navigation: StackNavigationProp<RootStackParamList>;

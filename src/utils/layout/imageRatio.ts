@@ -10,11 +10,9 @@ export interface SafeAreaInsets {
 export type DimensionFunction = (dimension: number | string) => number;
 
 const ignoreOnPlatform: string[] = [];
-let screenWidth = Dimensions.get('window').width;
-let screenHeight = Dimensions.get('window').height;
 
 export function resizeImageRatio(initialWidth: number, initialHeight: number, ratio: number) {
-  const win = Dimensions.get('window');
+  const win = Dimensions.get('screen');
   const ratioWidth = win.width * ratio;
   const ratioHeight = (initialHeight * ratioWidth) / initialWidth;
 
@@ -25,7 +23,7 @@ export function resizeImageRatio(initialWidth: number, initialHeight: number, ra
 }
 
 export function resizeImageRatioHeight(initialWidth: number, initialHeight: number, ratio: number) {
-  const win = Dimensions.get('window');
+  const win = Dimensions.get('screen');
   const ratioHeight = win.height * ratio;
   const ratioWidth = (initialWidth * ratioHeight) / initialHeight;
 
@@ -36,18 +34,20 @@ export function resizeImageRatioHeight(initialWidth: number, initialHeight: numb
 }
 
 export function wp(widthPercent: string | number, insets?: SafeAreaInsets) {
+  const screenWidth = Dimensions.get('screen').width;
   const insetsSize = ignoreOnPlatform.includes(Platform.OS) || !insets ? 0 : insets.left + insets.right;
   const elemWidth = typeof widthPercent === 'number' ? widthPercent : parseFloat(widthPercent);
   return PixelRatio.roundToNearestPixel(((screenWidth - insetsSize) * elemWidth) / 100);
 }
 
 export function hp(heightPercent: string | number, insets?: SafeAreaInsets) {
+  const screenHeight = Dimensions.get('screen').height;
   const insetsSize = ignoreOnPlatform.includes(Platform.OS) || !insets ? 0 : insets.top + insets.bottom;
   const elemHeight = typeof heightPercent === 'number' ? heightPercent : parseFloat(heightPercent);
   return PixelRatio.roundToNearestPixel(((screenHeight - insetsSize) * elemHeight) / 100);
 }
 
 export function screenAspectRatio() {
-  const win = Dimensions.get('window');
+  const win = Dimensions.get('screen');
   return win.width / win.height;
 }

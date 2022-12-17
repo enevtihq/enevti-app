@@ -21,7 +21,7 @@ export default function NFTDetails({ navigation, route }: Props) {
   const dispatch = useDispatch();
   const theme = useTheme();
   const headerTreshold = React.useMemo(
-    () => hp(HEADER_HEIGHT_PERCENTAGE) + (getStatusBarHeight() / Dimensions.get('window').height) * 100,
+    () => hp(HEADER_HEIGHT_PERCENTAGE) + (getStatusBarHeight() / Dimensions.get('screen').height) * 100,
     [],
   );
   const screenRoute = React.useMemo(

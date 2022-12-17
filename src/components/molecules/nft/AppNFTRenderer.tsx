@@ -122,7 +122,7 @@ export default React.memo(
 
     return (
       <View style={[styles.nftContainer, style]}>
-        {width < Dimensions.get('window').width * THUMBNAIL_TRESHOLD && nft.template.thumbnail.length > 0
+        {width < Dimensions.get('screen').width * THUMBNAIL_TRESHOLD && nft.template.thumbnail.length > 0
           ? nft.template.thumbnail.map((templateItem, index) =>
               handleRenderNFTTemplate(templateItem, nft, index, width, imageSize, dataUri, realRatio, lazy),
             )

@@ -13,12 +13,12 @@ import { NFT } from 'enevti-app/types/core/chain/nft';
 import { STATUS_BAR_HEIGHT } from 'enevti-app/components/atoms/view/AppStatusBar';
 import { IPFStoURL } from 'enevti-app/service/ipfs';
 
-const NFT_WIDTH = Dimensions.get('window').width * 0.8;
+const NFT_WIDTH = Dimensions.get('screen').width * 0.8;
 export const NFT_DETAILS_HEADER_VIEW_HEIGHT =
   HEADER_HEIGHT_PERCENTAGE +
   0.5 +
   STATUS_BAR_HEIGHT() +
-  ((NFT_WIDTH + Dimensions.get('window').width * 0.125) / Dimensions.get('window').height) * 100;
+  ((NFT_WIDTH + Dimensions.get('screen').width * 0.125) / Dimensions.get('screen').height) * 100;
 
 interface AppNFTDetailsHeaderProps {
   nft: NFT;
