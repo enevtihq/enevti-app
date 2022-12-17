@@ -14,6 +14,7 @@ interface AppResponseViewProps {
   onReload?: () => void;
   progressViewOffset?: number;
   refreshing?: boolean;
+  color?: string;
 }
 
 export default function AppResponseView({
@@ -22,6 +23,7 @@ export default function AppResponseView({
   style,
   infoBoxStyle,
   onReload,
+  color,
   progressViewOffset = 0,
   refreshing = false,
 }: AppResponseViewProps) {
@@ -42,11 +44,11 @@ export default function AppResponseView({
       showsVerticalScrollIndicator={false}
       contentContainerStyle={[style, infoBoxStyle, styles.responseView]}>
       {status === 404 ? (
-        <AppMessageNotFound />
+        <AppMessageNotFound color={color} />
       ) : status === ERRORCODE.NETWORK_ERROR ? (
-        <AppMessageNoInternet />
+        <AppMessageNoInternet color={color} />
       ) : (
-        <AppMessageError />
+        <AppMessageError color={color} />
       )}
     </ScrollView>
   );

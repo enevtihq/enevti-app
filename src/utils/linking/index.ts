@@ -28,7 +28,8 @@ export type AppLinkNamespace =
   | 'profile-base32'
   | 'profile-address'
   | 'profile-username'
-  | 'send';
+  | 'send'
+  | 'moment-id';
 
 export const APP_LINK = 'enevti://';
 export const UNIVERSAL_LINK_HTTP = 'http://app.enevti.com';
@@ -61,6 +62,9 @@ const screens = {
   },
   SendToken: {
     path: 'send',
+  },
+  Moment: {
+    path: 'moment',
   },
 };
 const KNOWN_LINK = Object.keys(screens).map((key: any) => screens[key as keyof typeof screens].path);
@@ -213,6 +217,9 @@ export function getAppLink(namespace: AppLinkNamespace, arg: string, prefix: str
       break;
     case 'send':
       ret += `send?${arg}`;
+      break;
+    case 'moment-id':
+      ret += `moment?arg=${arg}`;
       break;
     default:
       break;

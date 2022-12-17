@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import Video from 'react-native-video';
 import React from 'react';
 import { FlatList } from '@stream-io/flat-list-mvcp';
@@ -14,6 +14,8 @@ import { Moment } from 'enevti-app/types/core/chain/moment';
 import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 import { IPFStoURL } from 'enevti-app/service/ipfs';
 import { EventRegister } from 'react-native-event-listeners';
+import AppResponseView from '../view/AppResponseView';
+import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
 
 const MOMENT_HEIGHT = hp(100);
 
@@ -113,25 +115,31 @@ export default function AppMomentView({
     }
   }, []);
 
-  return (
-    <FlatList
-      ref={momentListRef}
-      removeClippedSubviews={true}
-      windowSize={5}
-      getItemLayout={getItemLayout}
-      renderItem={renderItem}
-      keyExtractor={keyExtractor}
-      pagingEnabled={true}
-      data={momentView.moments}
-      showsVerticalScrollIndicator={false}
-      onViewableItemsChanged={onViewableItemsChanged}
-      viewabilityConfig={{
-        itemVisiblePercentThreshold: 100,
-      }}
-      maintainVisibleContentPosition={{
-        minIndexForVisible: 0,
-      }}
-    />
+  return momentView.loaded ? (
+    <AppResponseView color={'white'} status={momentView.reqStatus} style={styles.container}>
+      <FlatList
+        ref={momentListRef}
+        removeClippedSubviews={true}
+        windowSize={5}
+        getItemLayout={getItemLayout}
+        renderItem={renderItem}
+        keyExtractor={keyExtractor}
+        pagingEnabled={true}
+        data={momentView.moments}
+        showsVerticalScrollIndicator={false}
+        onViewableItemsChanged={onViewableItemsChanged}
+        viewabilityConfig={{
+          itemVisiblePercentThreshold: 100,
+        }}
+        maintainVisibleContentPosition={{
+          minIndexForVisible: 0,
+        }}
+      />
+    </AppResponseView>
+  ) : (
+    <View style={styles.loaderContainer}>
+      <AppActivityIndicator animating />
+    </View>
   );
 }
 
@@ -140,5 +148,14 @@ const makeStyles = () =>
     momentItemContainer: {
       height: MOMENT_HEIGHT,
       width: wp(100),
+    },
+    container: {
+      flex: 1,
+    },
+    loaderContainer: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: '100%',
+      height: '100%',
     },
   });

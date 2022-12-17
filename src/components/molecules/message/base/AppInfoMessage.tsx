@@ -15,20 +15,29 @@ interface AppInfoMessageProps {
   title?: string;
   box?: boolean;
   style?: StyleProp<ViewStyle>;
+  color?: string;
 }
 
-function Component({ icon, title, message, box, style }: AppInfoMessageProps) {
+function Component({ icon, title, message, box, style, color }: AppInfoMessageProps) {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
   const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
 
   return (
     <View style={[box ? styles.boxed : styles.normal, style]}>
-      <AppIconComponent name={icon} size={wp('15%', insets)} color={theme.colors.placeholder} style={styles.info} />
+      <AppIconComponent
+        name={icon}
+        size={wp('15%', insets)}
+        color={color ?? theme.colors.placeholder}
+        style={styles.info}
+      />
       {title ? (
-        <AppTextHeading3 style={[styles.infoMsg, { marginBottom: hp('1%', insets) }]}>{title}</AppTextHeading3>
+        <AppTextHeading3
+          style={[styles.infoMsg, { marginBottom: hp('1%', insets), color: color ?? theme.colors.placeholder }]}>
+          {title}
+        </AppTextHeading3>
       ) : null}
-      <AppTextBody4 style={styles.infoMsg} numberOfLines={2}>
+      <AppTextBody4 style={[styles.infoMsg, { color: color ?? theme.colors.placeholder }]} numberOfLines={2}>
         {message}
       </AppTextBody4>
     </View>
@@ -56,7 +65,6 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
     },
     infoMsg: {
       alignSelf: 'center',
-      color: theme.colors.placeholder,
       textAlign: 'center',
     },
   });
