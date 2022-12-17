@@ -293,6 +293,7 @@ export default function AppNFTDetails({ onScrollWorklet, navigation, route }: Ap
     () => (
       <NFTMomentListComponent
         ref={momentRef}
+        navigation={navigation}
         route={route}
         collectionHeaderHeight={totalHeaderHeight}
         scrollEnabled={scrollEnabled}
@@ -304,6 +305,7 @@ export default function AppNFTDetails({ onScrollWorklet, navigation, route }: Ap
     ),
     [
       momentRef,
+      navigation,
       route,
       totalHeaderHeight,
       scrollEnabled,

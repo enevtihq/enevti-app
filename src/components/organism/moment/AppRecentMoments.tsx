@@ -30,19 +30,15 @@ export default function AppRecentMoments({ navigation }: AppRecentMomentsProps) 
   const momentsUndefined = useSelector(isRecentMomentUndefined);
 
   const onMomentsPress = React.useCallback(
-    (arg: string, index: number) => {
-      navigation.navigate('Moment', { mode: 'feed', index, arg });
+    (index: number) => {
+      navigation.navigate('Moment', { mode: 'feed', index });
     },
     [navigation],
   );
 
   const renderItem = React.useCallback(
     ({ item, index }: { item: MomentBase; index: number }) => (
-      <AppMomentItem
-        moment={item}
-        style={{ marginRight: wp('2%', insets) }}
-        onPress={() => onMomentsPress(item.id, index)}
-      />
+      <AppMomentItem moment={item} style={{ marginRight: wp('2%', insets) }} onPress={() => onMomentsPress(index)} />
     ),
     [onMomentsPress, insets],
   );

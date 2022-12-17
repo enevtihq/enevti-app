@@ -331,6 +331,7 @@ export default function AppCollection({ onScrollWorklet, navigation, route }: Ap
     () => (
       <MomentCreatedListComponent
         ref={momentRef}
+        navigation={navigation}
         route={route}
         collectionHeaderHeight={totalHeaderHeight}
         scrollEnabled={scrollEnabled}
@@ -343,6 +344,7 @@ export default function AppCollection({ onScrollWorklet, navigation, route }: Ap
     ),
     [
       momentRef,
+      navigation,
       route,
       totalHeaderHeight,
       scrollEnabled,

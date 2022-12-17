@@ -48,7 +48,6 @@ interface MomentCreatedListComponentProps {
 
 function Component(
   {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     navigation,
     route,
     onScroll,
@@ -131,9 +130,22 @@ function Component(
     [render.momentCreated, styles.loaderContainer],
   );
 
+  const onMomentPress = React.useCallback(
+    (index: number) => {
+      if (isMyProfile) {
+        navigation.navigate('Moment', { mode: 'myProfile', index });
+      } else {
+        navigation.navigate('Moment', { mode: 'profile', index, arg: route.key });
+      }
+    },
+    [isMyProfile, navigation, route.key],
+  );
+
   const renderItem = React.useCallback(
-    ({ item }) => <AppMomentItem showLike width={32.75} moment={item} onPress={() => {}} style={styles.moment} />,
-    [styles.moment],
+    ({ item, index }) => (
+      <AppMomentItem showLike width={32.75} moment={item} onPress={() => onMomentPress(index)} style={styles.moment} />
+    ),
+    [onMomentPress, styles.moment],
   );
 
   const keyExtractor = React.useCallback((item: Moment) => item.id, []);

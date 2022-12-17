@@ -18,11 +18,13 @@ import { loadMoreMoment } from 'enevti-app/store/middleware/thunk/ui/view/nftDet
 import { FlatGrid, FlatGridProps } from 'react-native-super-grid';
 import { MomentBase } from 'enevti-app/types/core/chain/moment';
 import AppMomentItem from '../../moment/AppMomentItem';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 const AnimatedFlatGrid = Animated.createAnimatedComponent<FlatGridProps<MomentBase>>(FlatGrid);
 
 interface NFTMomentListComponentProps {
   route: RouteProp<RootStackParamList, 'NFTDetails'>;
+  navigation: StackNavigationProp<RootStackParamList>;
   onScroll?: any;
   onMomentumScroll?: any;
   collectionHeaderHeight?: any;
@@ -34,6 +36,7 @@ interface NFTMomentListComponentProps {
 function Component(
   {
     route,
+    navigation,
     onScroll,
     onMomentumScroll,
     collectionHeaderHeight,
@@ -98,9 +101,18 @@ function Component(
     [nftDetails.render.moment, styles.loaderContainer],
   );
 
+  const onMomentPress = React.useCallback(
+    (index: number) => {
+      navigation.navigate('Moment', { mode: 'nft', index, arg: route.key });
+    },
+    [navigation, route.key],
+  );
+
   const renderItem = React.useCallback(
-    ({ item }) => <AppMomentItem showLike width={32.75} moment={item} onPress={() => {}} style={styles.moment} />,
-    [styles.moment],
+    ({ item, index }) => (
+      <AppMomentItem showLike width={32.75} moment={item} onPress={() => onMomentPress(index)} style={styles.moment} />
+    ),
+    [onMomentPress, styles.moment],
   );
 
   const keyExtractor = React.useCallback((item: NFT['moment'][0]) => item.id, []);

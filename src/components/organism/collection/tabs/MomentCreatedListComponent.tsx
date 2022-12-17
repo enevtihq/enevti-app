@@ -19,10 +19,12 @@ import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivit
 import AppMomentItem from '../../moment/AppMomentItem';
 import { MomentBase } from 'enevti-app/types/core/chain/moment';
 import { FlatGrid, FlatGridProps } from 'react-native-super-grid';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 const AnimatedFlatGrid = Animated.createAnimatedComponent<FlatGridProps<MomentBase>>(FlatGrid);
 
 interface MomentCreatedListComponentProps {
+  navigation: StackNavigationProp<RootStackParamList>;
   route: RouteProp<RootStackParamList, 'Collection'>;
   onScroll?: any;
   onMomentumScroll?: any;
@@ -35,6 +37,7 @@ interface MomentCreatedListComponentProps {
 
 function Component(
   {
+    navigation,
     route,
     onScroll,
     onMomentumScroll,
@@ -101,9 +104,18 @@ function Component(
     [collection.render.moment, styles.loaderContainer],
   );
 
+  const onMomentPress = React.useCallback(
+    (index: number) => {
+      navigation.navigate('Moment', { mode: 'collection', index, arg: route.key });
+    },
+    [navigation, route.key],
+  );
+
   const renderItem = React.useCallback(
-    ({ item }) => <AppMomentItem showLike width={32.75} moment={item} onPress={() => {}} style={styles.moment} />,
-    [styles.moment],
+    ({ item, index }) => (
+      <AppMomentItem showLike width={32.75} moment={item} onPress={() => onMomentPress(index)} style={styles.moment} />
+    ),
+    [onMomentPress, styles.moment],
   );
 
   const keyExtractor = React.useCallback((item: Collection['moment'][0]) => item.id, []);
