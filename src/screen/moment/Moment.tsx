@@ -5,7 +5,7 @@ import AppView from 'enevti-app/components/atoms/view/AppView';
 import AppHeader from 'enevti-app/components/atoms/view/AppHeader';
 import AppMomentView from 'enevti-app/components/organism/moment/AppMomentView';
 import { interpolateColor, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import { useDispatch } from 'react-redux';
 import {
   resetStatusBarState,
@@ -64,7 +64,7 @@ export default function Moment({ navigation, route }: Props) {
     <AppView
       darken
       withLoader
-      edges={['left', 'right']}
+      edges={Platform.OS === 'ios' ? ['left', 'right'] : undefined}
       headerOffset={0}
       contentContainerStyle={styles.container}
       header={
@@ -75,6 +75,7 @@ export default function Moment({ navigation, route }: Props) {
           backgroundStyle={styles.background}
           textStyle={headerStyle}
           iconStyle={headerStyle}
+          marginTop={Platform.OS === 'android' ? 0 : undefined}
         />
       }>
       <AppMomentView

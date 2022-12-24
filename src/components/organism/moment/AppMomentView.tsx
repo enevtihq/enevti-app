@@ -30,8 +30,11 @@ import darkTheme from 'enevti-app/theme/dark';
 import AppIconButton from 'enevti-app/components/atoms/icon/AppIconButton';
 import AppNFTRenderer from 'enevti-app/components/molecules/nft/AppNFTRenderer';
 import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
+import { useTheme } from 'react-native-paper';
+import { Theme } from 'enevti-app/theme/default';
 
-const MOMENT_HEIGHT = hp(100);
+const DIM_CONFIG = 'window';
+const MOMENT_HEIGHT = hp(100, undefined, { dim: DIM_CONFIG });
 
 interface AppMomentViewProps {
   navigation: StackNavigationProp<RootStackParamList>;
@@ -47,8 +50,9 @@ export default function AppMomentView({
   onLongPressOutWorklet,
 }: AppMomentViewProps) {
   const dispatch = useDispatch();
+  const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
-  const styles = React.useMemo(() => makeStyles(insets), [insets]);
+  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
 
   const [controlVisible, setControlVisible] = React.useState<boolean>(true);
   const [muted, setMuted] = React.useState<boolean>(false);
@@ -147,9 +151,9 @@ export default function AppMomentView({
               <View style={styles.audioIndicatorItem}>
                 <AppIconComponent
                   name={muted ? iconMap.volumeOff : iconMap.volumeOn}
-                  size={hp(3)}
+                  size={hp(3, undefined, { dim: DIM_CONFIG })}
                   color={darkTheme.colors.text}
-                  style={{ padding: hp(2) }}
+                  style={{ padding: hp(2, undefined, { dim: DIM_CONFIG }) }}
                 />
               </View>
             </Animated.View>
@@ -170,10 +174,14 @@ export default function AppMomentView({
             <Pressable
               onPress={() => navigation.push('Profile', { mode: 'a', arg: item.owner.address })}
               style={styles.ownerContainer}>
-              <AppAvatarRenderer persona={item.owner} size={hp(3)} style={styles.ownerAvatar} />
+              <AppAvatarRenderer
+                persona={item.owner}
+                size={hp(3, undefined, { dim: DIM_CONFIG })}
+                style={styles.ownerAvatar}
+              />
               <AppTextHeading3 style={styles.ownerLabel}>{parsePersonaLabel(item.owner, true)}</AppTextHeading3>
             </Pressable>
-            <View style={{ marginVertical: hp(2) }}>
+            <View style={{ marginVertical: hp(2, undefined, { dim: DIM_CONFIG }) }}>
               <AppMentionRenderer
                 numberOfLines={2}
                 navigation={navigation}
@@ -186,18 +194,22 @@ export default function AppMomentView({
               onPress={() => navigation.push('Profile', { mode: 'a', arg: item.creator.address })}
               style={styles.creatorContainer}>
               <AppTextBody4 style={{ color: darkTheme.colors.placeholder }}>with :</AppTextBody4>
-              <AppAvatarRenderer persona={item.creator} size={hp(2)} style={{ marginHorizontal: wp(1.5) }} />
+              <AppAvatarRenderer
+                persona={item.creator}
+                size={hp(2, undefined, { dim: DIM_CONFIG })}
+                style={{ marginHorizontal: wp(1.5, undefined, { dim: DIM_CONFIG }) }}
+              />
               <AppTextHeading4 style={{ color: darkTheme.colors.placeholder }}>
                 {parsePersonaLabel(item.creator, true)}
               </AppTextHeading4>
             </Pressable>
           </Animated.View>
           <Animated.View style={[styles.rightContainer, controlAnimatedStyle]}>
-            <View style={{ marginBottom: hp(3) }}>
+            <View style={{ marginBottom: hp(3, undefined, { dim: DIM_CONFIG }) }}>
               <AppIconButton
                 icon={item.liked ? iconMap.likeActive : iconMap.likeInactive}
                 color={item.liked ? darkTheme.colors.primary : darkTheme.colors.text}
-                size={wp(8)}
+                size={wp(8, undefined, { dim: DIM_CONFIG })}
                 onPress={() => {}}
               />
               <AppTextHeading3
@@ -205,17 +217,26 @@ export default function AppMomentView({
                 {item.like}
               </AppTextHeading3>
             </View>
-            <View style={{ marginBottom: hp(3) }}>
-              <AppIconButton icon={iconMap.comment} color={darkTheme.colors.text} size={wp(8)} onPress={() => {}} />
+            <View style={{ marginBottom: hp(3, undefined, { dim: DIM_CONFIG }) }}>
+              <AppIconButton
+                icon={iconMap.comment}
+                color={darkTheme.colors.text}
+                size={wp(8, undefined, { dim: DIM_CONFIG })}
+                onPress={() => {}}
+              />
               <AppTextHeading3 style={[styles.textCenter, { color: darkTheme.colors.text }]}>
                 {item.comment}
               </AppTextHeading3>
             </View>
-            <View style={{ width: wp(12) }}>
+            <View
+              style={{
+                width: wp(12, undefined, { dim: DIM_CONFIG }),
+              }}>
               <AppNFTRenderer
                 nft={item.nft!}
-                width={wp(12)}
-                imageSize={'xxs'}
+                style={styles.nft}
+                width={wp(12, undefined, { dim: DIM_CONFIG })}
+                imageSize={'xs'}
                 onPress={() => {
                   navigation.push('NFTDetails', { arg: item.nft!.id, mode: 'id' });
                 }}
@@ -243,6 +264,7 @@ export default function AppMomentView({
       styles.creatorContainer,
       styles.leftContainer,
       styles.momentItemContainer,
+      styles.nft,
       styles.nftLabel,
       styles.ownerAvatar,
       styles.ownerContainer,
@@ -256,7 +278,7 @@ export default function AppMomentView({
 
   const getItemLayout = React.useCallback(
     (_, index) => ({
-      length: wp(100),
+      length: wp(100, undefined, { dim: DIM_CONFIG }),
       offset: MOMENT_HEIGHT * index,
       index,
     }),
@@ -297,7 +319,7 @@ export default function AppMomentView({
         showsVerticalScrollIndicator={false}
         onViewableItemsChanged={onViewableItemsChanged}
         viewabilityConfig={{
-          itemVisiblePercentThreshold: 100,
+          itemVisiblePercentThreshold: 80,
         }}
         maintainVisibleContentPosition={{
           minIndexForVisible: 0,
@@ -311,24 +333,30 @@ export default function AppMomentView({
   );
 }
 
-const makeStyles = (insets: SafeAreaInsets) =>
+const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
   StyleSheet.create({
+    nft: {
+      borderRadius: theme.roundness,
+      borderWidth: wp(0.25, undefined, { dim: DIM_CONFIG }),
+      borderColor: darkTheme.colors.text,
+      overflow: 'hidden',
+    },
     leftContainer: {
       position: 'absolute',
-      height: hp(25),
-      width: wp(80),
+      height: hp(25, undefined, { dim: DIM_CONFIG }),
+      width: wp(80, undefined, { dim: DIM_CONFIG }),
       marginBottom: insets.bottom,
       bottom: 0,
       left: 0,
-      paddingLeft: wp(3),
-      paddingBottom: hp(3),
+      paddingLeft: wp(3, undefined, { dim: DIM_CONFIG }),
+      paddingBottom: hp(3, undefined, { dim: DIM_CONFIG }),
       justifyContent: 'flex-end',
     },
     ownerContainer: {
       flexDirection: 'row',
     },
     ownerAvatar: {
-      marginRight: wp(3),
+      marginRight: wp(3, undefined, { dim: DIM_CONFIG }),
     },
     ownerLabel: {
       color: darkTheme.colors.text,
@@ -338,13 +366,13 @@ const makeStyles = (insets: SafeAreaInsets) =>
     },
     rightContainer: {
       position: 'absolute',
-      height: hp(45),
-      width: wp(20),
+      height: hp(45, undefined, { dim: DIM_CONFIG }),
+      width: wp(20, undefined, { dim: DIM_CONFIG }),
       marginBottom: insets.bottom,
       bottom: 0,
       right: 0,
-      paddingRight: wp(3),
-      paddingBottom: hp(3.5),
+      paddingRight: wp(3, undefined, { dim: DIM_CONFIG }),
+      paddingBottom: hp(3.5, undefined, { dim: DIM_CONFIG }),
       justifyContent: 'flex-end',
       alignItems: 'center',
     },
@@ -352,13 +380,13 @@ const makeStyles = (insets: SafeAreaInsets) =>
       textAlign: 'center',
     },
     nftLabel: {
-      marginTop: hp(0.5),
+      marginTop: hp(0.5, undefined, { dim: DIM_CONFIG }),
       color: darkTheme.colors.text,
       alignSelf: 'center',
     },
     momentItemContainer: {
       height: MOMENT_HEIGHT,
-      width: wp(100),
+      width: wp(100, undefined, { dim: DIM_CONFIG }),
     },
     container: {
       flex: 1,
@@ -378,7 +406,7 @@ const makeStyles = (insets: SafeAreaInsets) =>
       zIndex: 1,
     },
     audioIndicatorItem: {
-      borderRadius: hp(5),
+      borderRadius: hp(5, undefined, { dim: DIM_CONFIG }),
       backgroundColor: Color('black').alpha(0.5).rgb().string(),
     },
   });

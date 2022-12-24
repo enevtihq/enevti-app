@@ -9,7 +9,13 @@ export interface SafeAreaInsets {
 
 export type DimensionFunction = (dimension: number | string) => number;
 
+type DimensionOptions = {
+  aspectRatio?: number;
+  dim?: 'window' | 'screen';
+};
+
 const ignoreOnPlatform: string[] = [];
+const DEFAULT_DIM = 'screen';
 
 export function resizeImageRatio(initialWidth: number, initialHeight: number, ratio: number) {
   const win = Dimensions.get('screen');
@@ -33,15 +39,19 @@ export function resizeImageRatioHeight(initialWidth: number, initialHeight: numb
   };
 }
 
-export function wp(widthPercent: string | number, insets?: SafeAreaInsets) {
-  const screenWidth = Dimensions.get('screen').width;
+export function wp(widthPercent: string | number, insets?: SafeAreaInsets, options?: DimensionOptions) {
+  const dim = options && options.dim ? options.dim : DEFAULT_DIM;
+  const screenHeight = Dimensions.get(dim).height;
+  const screenWidth = options && options.aspectRatio ? screenHeight * options.aspectRatio : Dimensions.get(dim).width;
   const insetsSize = ignoreOnPlatform.includes(Platform.OS) || !insets ? 0 : insets.left + insets.right;
   const elemWidth = typeof widthPercent === 'number' ? widthPercent : parseFloat(widthPercent);
   return PixelRatio.roundToNearestPixel(((screenWidth - insetsSize) * elemWidth) / 100);
 }
 
-export function hp(heightPercent: string | number, insets?: SafeAreaInsets) {
-  const screenHeight = Dimensions.get('screen').height;
+export function hp(heightPercent: string | number, insets?: SafeAreaInsets, options?: DimensionOptions) {
+  const dim = options && options.dim ? options.dim : DEFAULT_DIM;
+  const screenWidth = Dimensions.get(dim).width;
+  const screenHeight = options && options.aspectRatio ? screenWidth / options.aspectRatio : Dimensions.get(dim).height;
   const insetsSize = ignoreOnPlatform.includes(Platform.OS) || !insets ? 0 : insets.top + insets.bottom;
   const elemHeight = typeof heightPercent === 'number' ? heightPercent : parseFloat(heightPercent);
   return PixelRatio.roundToNearestPixel(((screenHeight - insetsSize) * elemHeight) / 100);
