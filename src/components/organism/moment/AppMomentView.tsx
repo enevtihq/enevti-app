@@ -174,14 +174,10 @@ export default function AppMomentView({
             <Pressable
               onPress={() => navigation.push('Profile', { mode: 'a', arg: item.owner.address })}
               style={styles.ownerContainer}>
-              <AppAvatarRenderer
-                persona={item.owner}
-                size={hp(3, undefined, { dim: DIM_CONFIG })}
-                style={styles.ownerAvatar}
-              />
+              <AppAvatarRenderer persona={item.owner} size={hp(3)} style={styles.ownerAvatar} />
               <AppTextHeading3 style={styles.ownerLabel}>{parsePersonaLabel(item.owner, true)}</AppTextHeading3>
             </Pressable>
-            <View style={{ marginVertical: hp(2, undefined, { dim: DIM_CONFIG }) }}>
+            <View style={{ marginVertical: hp(2) }}>
               <AppMentionRenderer
                 numberOfLines={2}
                 navigation={navigation}
@@ -194,22 +190,18 @@ export default function AppMomentView({
               onPress={() => navigation.push('Profile', { mode: 'a', arg: item.creator.address })}
               style={styles.creatorContainer}>
               <AppTextBody4 style={{ color: darkTheme.colors.placeholder }}>with :</AppTextBody4>
-              <AppAvatarRenderer
-                persona={item.creator}
-                size={hp(2, undefined, { dim: DIM_CONFIG })}
-                style={{ marginHorizontal: wp(1.5, undefined, { dim: DIM_CONFIG }) }}
-              />
+              <AppAvatarRenderer persona={item.creator} size={hp(2)} style={{ marginHorizontal: wp(1.5) }} />
               <AppTextHeading4 style={{ color: darkTheme.colors.placeholder }}>
                 {parsePersonaLabel(item.creator, true)}
               </AppTextHeading4>
             </Pressable>
           </Animated.View>
           <Animated.View style={[styles.rightContainer, controlAnimatedStyle]}>
-            <View style={{ marginBottom: hp(3, undefined, { dim: DIM_CONFIG }) }}>
+            <View style={{ marginBottom: hp(3) }}>
               <AppIconButton
                 icon={item.liked ? iconMap.likeActive : iconMap.likeInactive}
                 color={item.liked ? darkTheme.colors.primary : darkTheme.colors.text}
-                size={wp(8, undefined, { dim: DIM_CONFIG })}
+                size={wp(8)}
                 onPress={() => {}}
               />
               <AppTextHeading3
@@ -217,25 +209,20 @@ export default function AppMomentView({
                 {item.like}
               </AppTextHeading3>
             </View>
-            <View style={{ marginBottom: hp(3, undefined, { dim: DIM_CONFIG }) }}>
-              <AppIconButton
-                icon={iconMap.comment}
-                color={darkTheme.colors.text}
-                size={wp(8, undefined, { dim: DIM_CONFIG })}
-                onPress={() => {}}
-              />
+            <View style={{ marginBottom: hp(3) }}>
+              <AppIconButton icon={iconMap.comment} color={darkTheme.colors.text} size={wp(8)} onPress={() => {}} />
               <AppTextHeading3 style={[styles.textCenter, { color: darkTheme.colors.text }]}>
                 {item.comment}
               </AppTextHeading3>
             </View>
             <View
               style={{
-                width: wp(12, undefined, { dim: DIM_CONFIG }),
+                width: wp(12),
               }}>
               <AppNFTRenderer
                 nft={item.nft!}
                 style={styles.nft}
-                width={wp(12, undefined, { dim: DIM_CONFIG })}
+                width={wp(12)}
                 imageSize={'xs'}
                 onPress={() => {
                   navigation.push('NFTDetails', { arg: item.nft!.id, mode: 'id' });
@@ -278,7 +265,7 @@ export default function AppMomentView({
 
   const getItemLayout = React.useCallback(
     (_, index) => ({
-      length: wp(100, undefined, { dim: DIM_CONFIG }),
+      length: MOMENT_HEIGHT,
       offset: MOMENT_HEIGHT * index,
       index,
     }),
@@ -337,26 +324,26 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
   StyleSheet.create({
     nft: {
       borderRadius: theme.roundness,
-      borderWidth: wp(0.25, undefined, { dim: DIM_CONFIG }),
+      borderWidth: wp(0.25),
       borderColor: darkTheme.colors.text,
       overflow: 'hidden',
     },
     leftContainer: {
       position: 'absolute',
-      height: hp(25, undefined, { dim: DIM_CONFIG }),
-      width: wp(80, undefined, { dim: DIM_CONFIG }),
+      height: hp(25),
+      width: wp(80),
       marginBottom: insets.bottom,
       bottom: 0,
       left: 0,
-      paddingLeft: wp(3, undefined, { dim: DIM_CONFIG }),
-      paddingBottom: hp(3, undefined, { dim: DIM_CONFIG }),
+      paddingLeft: wp(3),
+      paddingBottom: hp(3),
       justifyContent: 'flex-end',
     },
     ownerContainer: {
       flexDirection: 'row',
     },
     ownerAvatar: {
-      marginRight: wp(3, undefined, { dim: DIM_CONFIG }),
+      marginRight: wp(3),
     },
     ownerLabel: {
       color: darkTheme.colors.text,
@@ -366,13 +353,13 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
     },
     rightContainer: {
       position: 'absolute',
-      height: hp(45, undefined, { dim: DIM_CONFIG }),
-      width: wp(20, undefined, { dim: DIM_CONFIG }),
+      height: hp(45),
+      width: wp(20),
       marginBottom: insets.bottom,
       bottom: 0,
       right: 0,
-      paddingRight: wp(3, undefined, { dim: DIM_CONFIG }),
-      paddingBottom: hp(3.5, undefined, { dim: DIM_CONFIG }),
+      paddingRight: wp(3),
+      paddingBottom: hp(3.5),
       justifyContent: 'flex-end',
       alignItems: 'center',
     },
@@ -380,7 +367,7 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
       textAlign: 'center',
     },
     nftLabel: {
-      marginTop: hp(0.5, undefined, { dim: DIM_CONFIG }),
+      marginTop: hp(0.5),
       color: darkTheme.colors.text,
       alignSelf: 'center',
     },
@@ -406,7 +393,7 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
       zIndex: 1,
     },
     audioIndicatorItem: {
-      borderRadius: hp(5, undefined, { dim: DIM_CONFIG }),
+      borderRadius: hp(5),
       backgroundColor: Color('black').alpha(0.5).rgb().string(),
     },
   });
