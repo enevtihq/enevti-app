@@ -1,8 +1,7 @@
 import React from 'react';
 import AppQuaternaryButton from 'enevti-app/components/atoms/button/AppQuaternaryButton';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { hp, SafeAreaInsets } from 'enevti-app/utils/layout/imageRatio';
+import { hp } from 'enevti-app/utils/layout/imageRatio';
 import Animated, { runOnJS, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import { useTheme } from 'react-native-paper';
@@ -21,9 +20,8 @@ interface AppFloatingNotifButtonProps {
 }
 
 export default function AppFloatingNotifButton({ show, label, onPress, onClose, style }: AppFloatingNotifButtonProps) {
-  const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
-  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
+  const styles = React.useMemo(() => makeStyles(theme), [theme]);
 
   const [visible, setVisible] = React.useState<boolean>(() => show);
   const translateY = useSharedValue(-100);
@@ -64,7 +62,7 @@ export default function AppFloatingNotifButton({ show, label, onPress, onClose, 
   );
 }
 
-const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
+const makeStyles = (theme: Theme) =>
   StyleSheet.create({
     buttonContainer: {
       position: 'absolute',
@@ -80,7 +78,7 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
       borderRadius: theme.roundness,
     },
     button: {
-      height: hp('5%', insets),
+      height: hp('5%'),
       backgroundColor: 'transparent',
     },
     dropShadow: {

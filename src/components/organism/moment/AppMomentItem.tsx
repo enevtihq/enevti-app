@@ -5,10 +5,9 @@ import AppNetworkImage from 'enevti-app/components/atoms/image/AppNetworkImage';
 import { MomentBase } from 'enevti-app/types/core/chain/moment';
 import { fetchIPFS, IPFStoURL } from 'enevti-app/service/ipfs';
 import AppIconComponent, { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
+import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import { numberKMB } from 'enevti-app/utils/format/amount';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface AppMomentItemProps {
   moment: MomentBase;
@@ -19,8 +18,7 @@ interface AppMomentItemProps {
 }
 
 export default function AppMomentItem({ moment, showLike, style, onPress, width = 25 }: AppMomentItemProps) {
-  const insets = useSafeAreaInsets();
-  const styles = React.useMemo(() => makeStyles(insets, width), [insets, width]);
+  const styles = React.useMemo(() => makeStyles(width), [width]);
   const [title, setTitle] = React.useState<string>(() => moment.textPlain ?? '');
 
   const onLoad = React.useCallback(async () => {
@@ -57,7 +55,7 @@ export default function AppMomentItem({ moment, showLike, style, onPress, width 
   );
 }
 
-const makeStyles = (insets: SafeAreaInsets, width: number) =>
+const makeStyles = (width: number) =>
   StyleSheet.create({
     image: {
       width: '100%',
@@ -69,7 +67,7 @@ const makeStyles = (insets: SafeAreaInsets, width: number) =>
       flexDirection: 'row',
       position: 'absolute',
       padding: 3,
-      top: wp(width, insets) * 1.45,
+      top: wp(width) * 1.45,
       left: wp('1%'),
     },
     likeText: {

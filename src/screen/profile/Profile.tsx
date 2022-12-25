@@ -16,7 +16,7 @@ export default function Profile({ navigation, route }: Props) {
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const styles = React.useMemo(() => makeStyles(), []);
-  const headerHeight = hp(HEADER_HEIGHT_PERCENTAGE, insets);
+  const headerHeight = hp(HEADER_HEIGHT_PERCENTAGE);
   const screenRoute = React.useMemo(
     () => ({ key: route.key, name: route.name, params: route.params, path: route.path }),
     [route.key, route.params, route.name, route.path],

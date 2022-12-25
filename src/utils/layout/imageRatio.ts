@@ -1,4 +1,4 @@
-import { Dimensions, PixelRatio, Platform } from 'react-native';
+import { Dimensions, PixelRatio } from 'react-native';
 
 export interface SafeAreaInsets {
   top: number;
@@ -10,12 +10,19 @@ export interface SafeAreaInsets {
 export type DimensionFunction = (dimension: number | string) => number;
 
 type DimensionOptions = {
-  aspectRatio?: number;
+  maxARVertical?: number;
+  maxARHorizontal?: number;
   dim?: 'window' | 'screen';
 };
 
-const ignoreOnPlatform: string[] = [];
+const SCREEN_ASPECT_RATIO = screenAspectRatio();
+const DEFAULT_MAX_AR_VERTICAL = 0.5086;
+const DEFAULT_MAX_AR_HORIZONTAL = screenAspectRatio();
 const DEFAULT_DIM = 'screen';
+
+const clamp = (value: number, lowerBound: number, upperBound: number) => {
+  return Math.min(Math.max(lowerBound, value), upperBound);
+};
 
 export function resizeImageRatio(initialWidth: number, initialHeight: number, ratio: number) {
   const win = Dimensions.get('screen');
@@ -39,22 +46,24 @@ export function resizeImageRatioHeight(initialWidth: number, initialHeight: numb
   };
 }
 
-export function wp(widthPercent: string | number, insets?: SafeAreaInsets, options?: DimensionOptions) {
+export function wp(widthPercent: string | number, options?: DimensionOptions) {
   const dim = options && options.dim ? options.dim : DEFAULT_DIM;
+  const maxAr = options && options.maxARHorizontal ? options.maxARHorizontal : DEFAULT_MAX_AR_HORIZONTAL;
+  const ar = clamp(SCREEN_ASPECT_RATIO, maxAr, 99);
   const screenHeight = Dimensions.get(dim).height;
-  const screenWidth = options && options.aspectRatio ? screenHeight * options.aspectRatio : Dimensions.get(dim).width;
-  const insetsSize = ignoreOnPlatform.includes(Platform.OS) || !insets ? 0 : insets.left + insets.right;
+  const screenWidth = screenHeight * ar;
   const elemWidth = typeof widthPercent === 'number' ? widthPercent : parseFloat(widthPercent);
-  return PixelRatio.roundToNearestPixel(((screenWidth - insetsSize) * elemWidth) / 100);
+  return PixelRatio.roundToNearestPixel((screenWidth * elemWidth) / 100);
 }
 
-export function hp(heightPercent: string | number, insets?: SafeAreaInsets, options?: DimensionOptions) {
+export function hp(heightPercent: string | number, options?: DimensionOptions) {
   const dim = options && options.dim ? options.dim : DEFAULT_DIM;
+  const maxAr = options && options.maxARVertical ? options.maxARVertical : DEFAULT_MAX_AR_VERTICAL;
+  const ar = clamp(SCREEN_ASPECT_RATIO, maxAr, 99);
   const screenWidth = Dimensions.get(dim).width;
-  const screenHeight = options && options.aspectRatio ? screenWidth / options.aspectRatio : Dimensions.get(dim).height;
-  const insetsSize = ignoreOnPlatform.includes(Platform.OS) || !insets ? 0 : insets.top + insets.bottom;
+  const screenHeight = screenWidth / ar;
   const elemHeight = typeof heightPercent === 'number' ? heightPercent : parseFloat(heightPercent);
-  return PixelRatio.roundToNearestPixel(((screenHeight - insetsSize) * elemHeight) / 100);
+  return PixelRatio.roundToNearestPixel((screenHeight * elemHeight) / 100);
 }
 
 export function screenAspectRatio() {

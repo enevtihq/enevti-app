@@ -1,6 +1,5 @@
 import { View, FlatList } from 'react-native';
 import React from 'react';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
 import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 import { useTranslation } from 'react-i18next';
@@ -23,7 +22,6 @@ interface AppRecentMomentsProps {
 
 export default function AppRecentMoments({ navigation }: AppRecentMomentsProps) {
   const { t } = useTranslation();
-  const insets = useSafeAreaInsets();
 
   const feeds = useSelector(selectFeedView);
   const moments = useSelector(selectRecentMoment);
@@ -38,24 +36,24 @@ export default function AppRecentMoments({ navigation }: AppRecentMomentsProps) 
 
   const renderItem = React.useCallback(
     ({ item, index }: { item: MomentBase; index: number }) => (
-      <AppMomentItem moment={item} style={{ marginRight: wp('2%', insets) }} onPress={() => onMomentsPress(index)} />
+      <AppMomentItem moment={item} style={{ marginRight: wp('2%') }} onPress={() => onMomentsPress(index)} />
     ),
-    [onMomentsPress, insets],
+    [onMomentsPress],
   );
 
   const listHeaderComponent = React.useCallback(() => <AppAddMoment navigation={navigation} />, [navigation]);
 
-  const listFooterComponent = React.useCallback(() => <View style={{ width: wp('3%', insets) }} />, [insets]);
+  const listFooterComponent = React.useCallback(() => <View style={{ width: wp('3%') }} />, []);
 
   const keyExtractor = React.useCallback(item => item.id, []);
 
   const getItemLayout = React.useCallback(
     (_, index) => ({
-      length: wp('27%', insets),
-      offset: wp('27%', insets) * index,
+      length: wp('27%'),
+      offset: wp('27%') * index,
       index,
     }),
-    [insets],
+    [],
   );
 
   return !momentsUndefined ? (
@@ -63,8 +61,8 @@ export default function AppRecentMoments({ navigation }: AppRecentMomentsProps) 
       <View>
         <View
           style={{
-            paddingHorizontal: wp('5%', insets),
-            marginVertical: hp('2%', insets),
+            paddingHorizontal: wp('5%'),
+            marginVertical: hp('2%'),
           }}>
           <AppTextHeading3>{t('home:recentMoments')}</AppTextHeading3>
         </View>
@@ -85,17 +83,17 @@ export default function AppRecentMoments({ navigation }: AppRecentMomentsProps) 
         />
         <Divider
           style={{
-            marginHorizontal: wp('5%', insets),
-            marginTop: hp('2%', insets),
-            marginBottom: wp('5%', insets),
+            marginHorizontal: wp('5%'),
+            marginTop: hp('2%'),
+            marginBottom: wp('5%'),
           }}
         />
       </View>
     ) : (
-      <View style={{ marginBottom: wp('5%', insets) }} />
+      <View style={{ marginBottom: wp('5%') }} />
     )
   ) : (
-    <View style={{ height: hp('32.75%', insets), justifyContent: center }}>
+    <View style={{ height: hp('32.75%'), justifyContent: center }}>
       <AppActivityIndicator animating />
     </View>
   );

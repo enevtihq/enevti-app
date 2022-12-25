@@ -1,10 +1,9 @@
 import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import React from 'react';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '@react-navigation/native';
 import Color from 'color';
 import { Theme } from 'enevti-app/theme/default';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
+import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 import { TouchableRipple } from 'react-native-paper';
 
 export const LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE = 1;
@@ -28,9 +27,8 @@ export default function AppListItem({
   rightContent,
   onPress,
 }: AppListItemProps) {
-  const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
-  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
+  const styles = React.useMemo(() => makeStyles(theme), [theme]);
   const opacity = disabled ? 0.5 : undefined;
 
   return (
@@ -46,11 +44,11 @@ export default function AppListItem({
   );
 }
 
-const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
+const makeStyles = (theme: Theme) =>
   StyleSheet.create({
     listContainer: {
-      marginHorizontal: wp('5%', insets),
-      marginVertical: hp(LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE / 2, insets),
+      marginHorizontal: wp('5%'),
+      marginVertical: hp(LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE / 2),
       backgroundColor: theme.colors.background,
       borderRadius: theme.roundness,
       borderWidth: StyleSheet.hairlineWidth,
@@ -59,8 +57,8 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
     },
     itemContainer: {
       flexDirection: 'row',
-      paddingVertical: wp('2%', insets),
-      paddingHorizontal: wp('3%', insets),
+      paddingVertical: wp('2%'),
+      paddingHorizontal: wp('3%'),
     },
     contentContainer: { justifyContent: 'center', flex: 1 },
   });

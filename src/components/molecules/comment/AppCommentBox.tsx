@@ -335,7 +335,7 @@ export default function AppCommentBox({ route, type, target, inputRef }: AppComm
       style={[styles.commentBoxContainer]}>
       <View pointerEvents={sending ? 'none' : 'auto'} style={styles.commentBox}>
         <View style={styles.avatarBox}>
-          <AppAvatarRenderer size={hp(5, insets)} persona={myPersona} />
+          <AppAvatarRenderer size={hp(5)} persona={myPersona} />
         </View>
         <View>
           {isReplying || isReplyingOnReply ? (
@@ -380,16 +380,12 @@ export default function AppCommentBox({ route, type, target, inputRef }: AppComm
               <AppIconButton
                 icon={iconMap.sendPost}
                 color={value.length > 0 ? theme.colors.primary : theme.colors.placeholder}
-                size={hp(4, insets)}
+                size={hp(4)}
                 onPress={value.length > 0 ? onComment : undefined}
               />
             </>
           ) : (
-            <AppActivityIndicator
-              animating
-              size={hp(3, insets)}
-              style={{ bottom: hp(1, insets), right: hp(1, insets) }}
-            />
+            <AppActivityIndicator animating size={hp(3)} style={{ bottom: hp(1), right: hp(1) }} />
           )}
         </View>
       </View>
@@ -409,7 +405,7 @@ const makeStyles = (
     commentBoxContainer: {
       position: 'absolute',
       bottom: 0,
-      marginBottom: Platform.OS === 'ios' ? undefined : hp(2, insets) + insets.bottom,
+      marginBottom: Platform.OS === 'ios' ? undefined : hp(2) + insets.bottom,
       width: '100%',
       backgroundColor: theme.colors.background,
     },
@@ -428,23 +424,23 @@ const makeStyles = (
     },
     avatarBox: {
       position: 'absolute',
-      bottom: hp(1, insets),
-      left: wp(3, insets),
+      bottom: hp(1),
+      left: wp(3),
     },
     commentInput: {
-      marginTop: Platform.OS === 'ios' ? hp(2, insets) : undefined,
-      marginLeft: wp(15, insets),
-      marginRight: wp(15, insets),
-      minHeight: hp(6, insets),
-      maxHeight: hp(14, insets),
+      marginTop: Platform.OS === 'ios' ? hp(2) : undefined,
+      marginLeft: wp(15),
+      marginRight: wp(15),
+      minHeight: hp(6),
+      maxHeight: hp(14),
       color: theme.colors.text,
       fontSize: 12,
       fontFamily: theme.fonts.regular.fontFamily,
     },
     commentActionContainer: {
       position: 'absolute',
-      bottom: hp(1, insets),
-      right: wp(4, insets),
+      bottom: hp(1),
+      right: wp(4),
       justifyContent: 'center',
     },
     commentActionBg: {
@@ -453,11 +449,11 @@ const makeStyles = (
       width: '50%',
       height: '50%',
       alignSelf: 'center',
-      borderRadius: hp(4, insets),
+      borderRadius: hp(4),
     },
     replyBoxContainer: {
       position: 'absolute',
-      bottom: commentBoxHeight + (Platform.OS === 'ios' ? hp(2, insets) : 0),
+      bottom: commentBoxHeight + (Platform.OS === 'ios' ? hp(2) : 0),
       width: '100%',
       height: hp(5),
       justifyContent: 'center',

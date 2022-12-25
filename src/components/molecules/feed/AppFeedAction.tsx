@@ -2,12 +2,11 @@ import { StyleSheet, View } from 'react-native';
 import React from 'react';
 import AppQuaternaryButton from 'enevti-app/components/atoms/button/AppQuaternaryButton';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
+import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import AppTextHeading4 from 'enevti-app/components/atoms/text/AppTextHeading4';
 import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
 import { Theme } from 'enevti-app/theme/default';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from 'react-native-paper';
 import { FeedItem } from 'enevti-app/types/core/service/feed';
 import { parseAmount } from 'enevti-app/utils/format/amount';
@@ -38,9 +37,8 @@ interface AppFeedActionProps {
 export default function AppFeedAction({ feed, index, navigation }: AppFeedActionProps) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
-  const styles = React.useMemo(() => makeStyles(insets), [insets]);
+  const styles = React.useMemo(() => makeStyles(), []);
   const [buyLoading, setBuyLoading] = React.useState<boolean>(false);
   const [likeLoading, setLikeLoading] = React.useState<boolean>(false);
   const paymentThunkRef = React.useRef<any>();
@@ -170,7 +168,7 @@ export default function AppFeedAction({ feed, index, navigation }: AppFeedAction
         loadingSize={15}
         loadingStyle={styles.likeButtonLoadingStyle}
         icon={feed.liked ? iconMap.likeActive : iconMap.likeInactive}
-        iconSize={wp('6%', insets)}
+        iconSize={wp('6%')}
         iconColor={feed.liked ? theme.colors.primary : theme.colors.text}
         style={styles.button}
         onPress={feed.liked ? onLikeDeactivate : onLikeActivate}>
@@ -180,7 +178,7 @@ export default function AppFeedAction({ feed, index, navigation }: AppFeedAction
         </AppTextBody4>
       </AppQuaternaryButton>
 
-      <AppQuaternaryButton icon={iconMap.comment} iconSize={wp('6%', insets)} style={styles.button} onPress={onComment}>
+      <AppQuaternaryButton icon={iconMap.comment} iconSize={wp('6%')} style={styles.button} onPress={onComment}>
         <AppTextBody4 style={styles.actionButtonText}>{feed.comment}</AppTextBody4>
       </AppQuaternaryButton>
 
@@ -191,7 +189,7 @@ export default function AppFeedAction({ feed, index, navigation }: AppFeedAction
         disabled={buyDisabled}
         loading={buyLoading}
         icon={iconMap.buy}
-        iconSize={wp('6%', insets)}
+        iconSize={wp('6%')}
         style={styles.buyButton}
         contentStyle={styles.buyButtonContentStyle}
         loadingStyle={styles.buyButtonLoadingStyle}
@@ -206,7 +204,7 @@ export default function AppFeedAction({ feed, index, navigation }: AppFeedAction
   );
 }
 
-const makeStyles = (insets: SafeAreaInsets) =>
+const makeStyles = () =>
   StyleSheet.create({
     button: {
       height: '100%',
@@ -215,16 +213,16 @@ const makeStyles = (insets: SafeAreaInsets) =>
       height: '100%',
     },
     buyButtonContentStyle: {
-      paddingVertical: hp('0.5%', insets),
-      paddingHorizontal: wp('1%', insets),
+      paddingVertical: hp('0.5%'),
+      paddingHorizontal: wp('1%'),
     },
     buyButtonLoadingStyle: {
-      marginRight: wp('8%', insets),
+      marginRight: wp('8%'),
       height: '100%',
     },
     likeButtonLoadingStyle: {
-      marginRight: wp('2.5%', insets),
-      marginLeft: wp('2.5%', insets),
+      marginRight: wp('2.5%'),
+      marginLeft: wp('2.5%'),
       height: '100%',
     },
     actionButtonText: {
@@ -236,8 +234,8 @@ const makeStyles = (insets: SafeAreaInsets) =>
     actionContainer: {
       flex: 1,
       flexDirection: 'row',
-      paddingVertical: wp('2%', insets),
-      paddingHorizontal: wp('3%', insets),
-      height: hp('6%', insets),
+      paddingVertical: wp('2%'),
+      paddingHorizontal: wp('3%'),
+      height: hp('6%'),
     },
   });

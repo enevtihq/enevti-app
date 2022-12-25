@@ -7,8 +7,7 @@ import { RootStackParamList } from 'enevti-app/navigation';
 import { RouteProp } from '@react-navigation/native';
 import AppCommentItemBase from './AppCommentItemBase';
 import AppReplyList from './AppReplyList';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 import { useDispatch } from 'react-redux';
 import { clearReplying, getCommentKey, setReplying } from 'enevti-app/store/middleware/thunk/ui/view/comment';
 import { fetchIPFS } from 'enevti-app/service/ipfs';
@@ -35,8 +34,7 @@ export default function AppCommentItem({
   onLikeReplyPress,
 }: AppCommentItemProps) {
   const dispatch = useDispatch();
-  const insets = useSafeAreaInsets();
-  const styles = React.useMemo(() => makeStyles(insets), [insets]);
+  const styles = React.useMemo(() => makeStyles(), []);
 
   const onLikeComment = React.useCallback(() => {
     onLikeCommentPress(comment.id, getCommentKey(route, type), parsePersonaLabel(comment.owner));
@@ -88,11 +86,11 @@ export default function AppCommentItem({
   );
 }
 
-const makeStyles = (insets: SafeAreaInsets) =>
+const makeStyles = () =>
   StyleSheet.create({
     commentItem: {
-      paddingHorizontal: wp(4, insets),
-      paddingVertical: hp(1.8, insets),
-      marginVertical: hp(0.2, insets),
+      paddingHorizontal: wp(4),
+      paddingVertical: hp(1.8),
+      marginVertical: hp(0.2),
     },
   });

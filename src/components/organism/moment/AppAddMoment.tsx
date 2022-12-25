@@ -1,7 +1,6 @@
 import React from 'react';
 import AppPortraitOverlayBox from 'enevti-app/components/molecules/list/AppPortraitOverlayBox';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectMyPersonaCache } from 'enevti-app/store/slices/entities/cache/myPersona';
 import AppAvatarRenderer from 'enevti-app/components/molecules/avatar/AppAvatarRenderer';
@@ -28,8 +27,7 @@ export default function AppAddMoment({ navigation }: AppAddMomentProps) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const theme = useTheme() as Theme;
-  const insets = useSafeAreaInsets();
-  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
+  const styles = React.useMemo(() => makeStyles(theme), [theme]);
 
   const createMomentQueue = useSelector(selectCreateMomentQueue);
   const myPersonaCache = useSelector(selectMyPersonaCache);
@@ -107,15 +105,15 @@ export default function AppAddMoment({ navigation }: AppAddMomentProps) {
   );
 }
 
-const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
+const makeStyles = (theme: Theme) =>
   StyleSheet.create({
     box: {
-      width: wp('25%', insets) - 4,
-      height: wp('25%', insets) * 1.78 - 4,
+      width: wp('25%') - 4,
+      height: wp('25%') * 1.78 - 4,
     },
     gradientBox: {
-      marginRight: wp('2%', insets),
-      marginLeft: wp('5%', insets),
+      marginRight: wp('2%'),
+      marginLeft: wp('5%'),
       borderRadius: theme.roundness,
       padding: 3,
     },

@@ -1,8 +1,7 @@
 import React from 'react';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '@react-navigation/native';
 import { Theme } from 'enevti-app/theme/default';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
+import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 import AppAvatarRenderer from 'enevti-app/components/molecules/avatar/AppAvatarRenderer';
 import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
 import AppIconButton from 'enevti-app/components/atoms/icon/AppIconButton';
@@ -25,9 +24,8 @@ interface AppStakerItemProps {
 
 export default function AppStakerItem({ staker }: AppStakerItemProps) {
   const dispatch = useDispatch();
-  const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
-  const styles = React.useMemo(() => makeStyles(insets), [insets]);
+  const styles = React.useMemo(() => makeStyles(), []);
   const myPersona = useSelector(selectMyPersonaCache);
 
   const onDelete = () => {
@@ -37,13 +35,13 @@ export default function AppStakerItem({ staker }: AppStakerItemProps) {
   return (
     <AppListItem
       style={styles.stakerContainer}
-      leftContent={<AppAvatarRenderer persona={staker.persona} size={wp('12%', insets)} style={styles.avatar} />}
+      leftContent={<AppAvatarRenderer persona={staker.persona} size={wp('12%')} style={styles.avatar} />}
       rightContent={
         myPersona.address === staker.persona.address ? (
           <AppIconButton size={20} icon={iconMap.delete} onPress={onDelete} style={styles.deleteIcon} />
         ) : undefined
       }>
-      <AppTextHeading3 numberOfLines={1} style={{ width: wp('50%', insets) }}>
+      <AppTextHeading3 numberOfLines={1} style={{ width: wp('50%') }}>
         #{staker.rank.toString()} {staker.persona.username ? staker.persona.username : staker.persona.address}
       </AppTextHeading3>
       <AppTextBody4 style={{ color: theme.colors.placeholder }} numberOfLines={1}>
@@ -53,16 +51,16 @@ export default function AppStakerItem({ staker }: AppStakerItemProps) {
   );
 }
 
-const makeStyles = (insets: SafeAreaInsets) =>
+const makeStyles = () =>
   StyleSheet.create({
     avatar: {
-      marginRight: wp('3%', insets),
+      marginRight: wp('3%'),
       alignSelf: 'center',
     },
     deleteIcon: {
       alignSelf: 'center',
     },
     stakerContainer: {
-      height: hp(STAKER_ITEM_HEIGHT_PERCENTAGE, insets),
+      height: hp(STAKER_ITEM_HEIGHT_PERCENTAGE),
     },
   });

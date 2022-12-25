@@ -1,8 +1,7 @@
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import React from 'react';
 import { TouchableRipple, useTheme } from 'react-native-paper';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { wp, SafeAreaInsets } from 'enevti-app/utils/layout/imageRatio';
+import { wp } from 'enevti-app/utils/layout/imageRatio';
 import { Theme } from 'enevti-app/theme/default';
 import { BlurView } from '@react-native-community/blur';
 import AppMentionRenderer from '../comment/AppMentionRenderer';
@@ -28,9 +27,8 @@ export default function AppPortraitOverlayBox({
   onPress,
   width = 25,
 }: AppPortraitOverlayBoxProps) {
-  const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
-  const styles = React.useMemo(() => makeStyles(theme, insets, width), [theme, insets, width]);
+  const styles = React.useMemo(() => makeStyles(theme, width), [theme, width]);
 
   return (
     <View style={[styles.container, style]}>
@@ -49,11 +47,11 @@ export default function AppPortraitOverlayBox({
   );
 }
 
-const makeStyles = (theme: Theme, insets: SafeAreaInsets, width: number) =>
+const makeStyles = (theme: Theme, width: number) =>
   StyleSheet.create({
     container: {
-      width: wp(width, insets),
-      height: wp(width, insets) * 1.78,
+      width: wp(width),
+      height: wp(width) * 1.78,
       borderRadius: theme.roundness,
       overflow: 'hidden',
     },
@@ -75,7 +73,7 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets, width: number) =>
       ...StyleSheet.absoluteFillObject,
       color: 'white',
       padding: 3,
-      top: wp(width, insets) * 1.35,
+      top: wp(width) * 1.35,
       left: wp('1%'),
     },
   });

@@ -5,8 +5,7 @@ import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
 import AppQuaternaryButton from 'enevti-app/components/atoms/button/AppQuaternaryButton';
 import AppIconButton from 'enevti-app/components/atoms/icon/AppIconButton';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 import { getCoinName } from 'enevti-app/utils/constant/identifier';
 import { useTranslation } from 'react-i18next';
 import { FeedItem } from 'enevti-app/types/core/service/feed';
@@ -32,8 +31,7 @@ export default function AppFeedHeader({ feed, navigation }: AppFeedHeaderProps) 
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const theme = useTheme() as Theme;
-  const insets = useSafeAreaInsets();
-  const styles = React.useMemo(() => makeStyles(insets), [insets]);
+  const styles = React.useMemo(() => makeStyles(), []);
 
   const [menuVisible, setMenuVisible] = React.useState<boolean>(false);
 
@@ -76,7 +74,7 @@ export default function AppFeedHeader({ feed, navigation }: AppFeedHeaderProps) 
 
   return (
     <View style={styles.headerContainer}>
-      <AppAvatarRenderer persona={feed.owner} size={wp('10%', insets)} />
+      <AppAvatarRenderer persona={feed.owner} size={wp('10%')} />
 
       <View style={styles.headerAvatarInfoContainer}>
         <AppPersonaLabel
@@ -106,12 +104,7 @@ export default function AppFeedHeader({ feed, navigation }: AppFeedHeaderProps) 
           onDismiss={onCloseMenu}
           snapPoints={[`${menuItemHeigtPercentage(3)}%`]}
           anchor={
-            <AppIconButton
-              icon={iconMap.dots}
-              size={wp('5%', insets)}
-              style={styles.headerMoreButton}
-              onPress={onOpenMenu}
-            />
+            <AppIconButton icon={iconMap.dots} size={wp('5%')} style={styles.headerMoreButton} onPress={onOpenMenu} />
           }>
           <AppMenuItem onPress={onFollow} title={t('home:follow')} />
           <AppMenuItem onPress={onReport} titleStyle={{ color: theme.colors.error }} title={t('home:report')} />
@@ -123,7 +116,7 @@ export default function AppFeedHeader({ feed, navigation }: AppFeedHeaderProps) 
   );
 }
 
-const makeStyles = (insets: SafeAreaInsets) =>
+const makeStyles = () =>
   StyleSheet.create({
     headerAction: {
       flex: 1,
@@ -132,19 +125,19 @@ const makeStyles = (insets: SafeAreaInsets) =>
     headerContainer: {
       flex: 1,
       flexDirection: 'row',
-      paddingVertical: wp('2%', insets),
-      paddingHorizontal: wp('3%', insets),
-      height: hp('7%', insets),
+      paddingVertical: wp('2%'),
+      paddingHorizontal: wp('3%'),
+      height: hp('7%'),
     },
     headerAvatarInfoContainer: {
       flex: 1,
       justifyContent: 'center',
-      marginHorizontal: wp('2%', insets),
+      marginHorizontal: wp('2%'),
     },
     headerPoolContainer: {
       justifyContent: 'center',
       alignItems: 'center',
-      width: wp('30%', insets),
+      width: wp('30%'),
       height: '100%',
     },
     headerPoolText: {
@@ -152,11 +145,11 @@ const makeStyles = (insets: SafeAreaInsets) =>
     },
     headerMoreButtonContainer: {
       justifyContent: 'center',
-      marginRight: -wp('1%', insets),
-      width: wp('8%', insets),
+      marginRight: -wp('1%'),
+      width: wp('8%'),
     },
     headerMoreButton: {
-      width: wp('6%', insets),
+      width: wp('6%'),
     },
     avatar: {
       width: '100%',

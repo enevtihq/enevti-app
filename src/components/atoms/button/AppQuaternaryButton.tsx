@@ -2,10 +2,9 @@ import React from 'react';
 import { StyleProp, ViewStyle, StyleSheet, View } from 'react-native';
 import { TouchableRipple } from 'react-native-paper';
 import { useTheme } from 'react-native-paper';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
+import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 
 import { Theme } from 'enevti-app/theme/default';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Color from 'color';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
@@ -50,8 +49,7 @@ export default function AppQuaternaryButton({
   contentContainerStyle,
 }: AppQuaternaryButtonProps): JSX.Element {
   const theme = useTheme() as Theme;
-  const insets = useSafeAreaInsets();
-  const styles = React.useMemo(() => makeStyles(theme, insets, box), [theme, insets, box]);
+  const styles = React.useMemo(() => makeStyles(theme, box), [theme, box]);
 
   const opacity = disabled ? 0.2 : 1;
 
@@ -100,21 +98,21 @@ export default function AppQuaternaryButton({
   );
 }
 
-const makeStyles = (theme: Theme, insets: SafeAreaInsets, box: boolean) =>
+const makeStyles = (theme: Theme, box: boolean) =>
   StyleSheet.create({
     quaternaryButton: {
       alignItems: 'center',
-      paddingHorizontal: wp('2%', insets),
+      paddingHorizontal: wp('2%'),
     },
     loading: {
-      height: hp('7.5%', insets),
+      height: hp('7.5%'),
       justifyContent: 'center',
     },
     buttonContainer: {
       borderWidth: box ? StyleSheet.hairlineWidth : 0,
       borderColor: Color(theme.colors.text).alpha(0.2).rgb().toString(),
       borderRadius: theme.roundness,
-      height: hp('7.5%', insets),
+      height: hp('7.5%'),
       alignItems: 'center',
       justifyContent: 'center',
       overflow: 'hidden',
@@ -125,6 +123,6 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets, box: boolean) =>
       alignItems: 'center',
     },
     icon: {
-      paddingRight: wp('1%', insets),
+      paddingRight: wp('1%'),
     },
   });

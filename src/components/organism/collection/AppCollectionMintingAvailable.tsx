@@ -3,9 +3,8 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { ProgressBar, useTheme } from 'react-native-paper';
 import { Theme } from 'enevti-app/theme/default';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Color from 'color';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
+import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import AppCountdown from 'enevti-app/components/atoms/date/AppCountdown';
@@ -22,8 +21,7 @@ interface AppCollectionMintingAvailableProps {
 export default function AppCollectionMintingAvailable({ collection, onFinish }: AppCollectionMintingAvailableProps) {
   const { t } = useTranslation();
   const theme = useTheme() as Theme;
-  const insets = useSafeAreaInsets();
-  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
+  const styles = React.useMemo(() => makeStyles(theme), [theme]);
   const now = React.useMemo(() => Date.now(), []);
 
   const until = React.useMemo(
@@ -70,27 +68,27 @@ export default function AppCollectionMintingAvailable({ collection, onFinish }: 
   );
 }
 
-const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
+const makeStyles = (theme: Theme) =>
   StyleSheet.create({
     mintingAvailableView: {
       backgroundColor: theme.dark
         ? Color(theme.colors.background).lighten(0.6).rgb().toString()
         : Color(theme.colors.background).darken(0.12).rgb().toString(),
       flexDirection: 'row',
-      height: hp(MINTING_AVAILABLE_VIEW_HEIGHT, insets),
+      height: hp(MINTING_AVAILABLE_VIEW_HEIGHT),
       alignItems: 'center',
-      paddingHorizontal: wp('5%', insets),
+      paddingHorizontal: wp('5%'),
     },
     mintingAvailableItem: {
       flex: 1,
     },
     progressBar: {
-      height: hp('1%', insets),
+      height: hp('1%'),
       borderRadius: theme.roundness,
     },
     progressBarLabel: {
       color: theme.colors.placeholder,
-      marginTop: hp('0.5%', insets),
+      marginTop: hp('0.5%'),
       textAlign: 'right',
     },
   });

@@ -2,10 +2,8 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Portal, Snackbar } from 'react-native-paper';
 import { SnackbarProps } from 'react-native-paper/lib/typescript/components/Snackbar';
-import { Theme } from 'react-native-paper/lib/typescript/types';
 import { useTheme } from 'react-native-paper';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
+import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 
 interface AppSnackbarProps extends Omit<SnackbarProps, 'theme'> {
   mode?: 'info' | 'error';
@@ -13,8 +11,7 @@ interface AppSnackbarProps extends Omit<SnackbarProps, 'theme'> {
 
 export default function AppSnackBar({ mode = 'info', ...props }: AppSnackbarProps) {
   const theme = useTheme();
-  const insets = useSafeAreaInsets();
-  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
+  const styles = React.useMemo(() => makeStyles(), []);
 
   if (mode === 'info') {
     return (
@@ -40,11 +37,11 @@ export default function AppSnackBar({ mode = 'info', ...props }: AppSnackbarProp
   }
 }
 
-const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
+const makeStyles = () =>
   StyleSheet.create({
     errorSnack: {
-      marginVertical: hp('10%', insets),
-      marginLeft: wp('5%', insets),
-      marginRight: wp('5%', insets),
+      marginVertical: hp('10%'),
+      marginLeft: wp('5%'),
+      marginRight: wp('5%'),
     },
   });

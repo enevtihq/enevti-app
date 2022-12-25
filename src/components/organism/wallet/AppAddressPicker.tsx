@@ -6,9 +6,9 @@ import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import { Theme } from 'enevti-app/theme/default';
 import Color from 'color';
 import { Divider, TextInput, useTheme } from 'react-native-paper';
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import AppIconButton from 'enevti-app/components/atoms/icon/AppIconButton';
-import { wp, SafeAreaInsets, hp } from 'enevti-app/utils/layout/imageRatio';
+import { wp, hp } from 'enevti-app/utils/layout/imageRatio';
 import AppFormTextInputWithError from 'enevti-app/components/molecules/form/AppFormTextInputWithError';
 import { useTranslation } from 'react-i18next';
 import { useDebounce } from 'use-debounce';
@@ -39,8 +39,7 @@ interface AppAddressPickerProps {
 export default function AppAddressPicker({ value, onSelected, loading = false }: AppAddressPickerProps) {
   const { t } = useTranslation();
   const theme = useTheme();
-  const insets = useSafeAreaInsets();
-  const styles = React.useMemo(() => makeStyles(theme as Theme, insets), [theme, insets]);
+  const styles = React.useMemo(() => makeStyles(theme as Theme), [theme]);
   const snapPoints = React.useMemo(() => ['105%'], []);
 
   const [visible, setVisible] = React.useState<boolean>(false);
@@ -198,7 +197,7 @@ export default function AppAddressPicker({ value, onSelected, loading = false }:
                 containerStyle={styles.accountCard}
                 leftContent={
                   <View style={styles.collectionCoverContainer}>
-                    <AppAvatarRenderer persona={persona} size={wp('12%', insets)} style={styles.avatar} />
+                    <AppAvatarRenderer persona={persona} size={wp('12%')} style={styles.avatar} />
                   </View>
                 }>
                 <AppTextHeading3 numberOfLines={1}>{parsePersonaLabel(persona)}</AppTextHeading3>
@@ -224,10 +223,10 @@ export default function AppAddressPicker({ value, onSelected, loading = false }:
   );
 }
 
-const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
+const makeStyles = (theme: Theme) =>
   StyleSheet.create({
     listIcon: {
-      marginRight: wp('3%', insets),
+      marginRight: wp('3%'),
       alignSelf: 'center',
     },
     pickerItem: {
@@ -236,7 +235,7 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
         : Color(theme.colors.background).darken(0.04).rgb().string(),
     },
     divider: {
-      marginBottom: hp('3%', insets),
+      marginBottom: hp('3%'),
     },
     errorText: {
       textAlign: 'center',
@@ -247,19 +246,19 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
       flex: 1,
     },
     headerInput: {
-      marginHorizontal: wp('3%', insets),
-      marginBottom: hp('3%', insets),
+      marginHorizontal: wp('3%'),
+      marginBottom: hp('3%'),
       flexDirection: 'row',
       alignItems: 'center',
     },
     backIcon: {
-      marginRight: wp('3%', insets),
+      marginRight: wp('3%'),
     },
     accountCard: {
-      marginHorizontal: wp('3%', insets),
+      marginHorizontal: wp('3%'),
     },
     collectionCoverContainer: {
-      marginRight: wp('3%', insets),
+      marginRight: wp('3%'),
       overflow: 'hidden',
       alignSelf: 'center',
     },

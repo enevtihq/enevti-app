@@ -105,8 +105,8 @@ export default function Home({ navigation }: Props) {
 
   const [uneligibleSheetVisible, setUneligibleSheetVisible] = React.useState<boolean>(false);
   const [restoreMenuVisible, setRestoreMenuVisible] = React.useState<boolean>(false);
-  const headerHeight = hp(HEADER_HEIGHT_PERCENTAGE, insets);
-  const tabBarHeight = hp(TABBAR_HEIGHT_PERCENTAGE, insets);
+  const headerHeight = hp(HEADER_HEIGHT_PERCENTAGE);
+  const tabBarHeight = hp(TABBAR_HEIGHT_PERCENTAGE);
 
   const socket = React.useRef<Socket | undefined>();
   const myProfileSocket = React.useRef<Socket | undefined>();
@@ -402,7 +402,7 @@ export default function Home({ navigation }: Props) {
           options={{
             tabBarLabel: t('home:createNFT'),
             tabBarBadge: canCreateNFT && !onceEligible ? t('home:eligible') : undefined,
-            tabBarBadgeStyle: { fontSize: hp('1.2%', insets) },
+            tabBarBadgeStyle: { fontSize: hp('1.2%') },
             tabBarIcon: ({ size }) =>
               canCreateNFT ? (
                 <AppIconGradient

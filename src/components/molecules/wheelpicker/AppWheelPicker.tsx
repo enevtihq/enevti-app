@@ -2,8 +2,7 @@ import { StyleSheet } from 'react-native';
 import React from 'react';
 import { CommonPicker } from '@yz1311/react-native-wheel-picker';
 import { useTheme } from 'react-native-paper';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
+import { wp } from 'enevti-app/utils/layout/imageRatio';
 import { Theme } from 'enevti-app/theme/default';
 import { useTranslation } from 'react-i18next';
 
@@ -18,8 +17,7 @@ interface AppWheelPickerProps {
 export default function AppWheelPicker({ onSelected, onCancel, onChange, items, value }: AppWheelPickerProps) {
   const { t } = useTranslation();
   const theme = useTheme() as Theme;
-  const insets = useSafeAreaInsets();
-  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
+  const styles = React.useMemo(() => makeStyles(theme), [theme]);
 
   return (
     <CommonPicker
@@ -42,17 +40,17 @@ export default function AppWheelPicker({ onSelected, onCancel, onChange, items, 
   );
 }
 
-const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
+const makeStyles = (theme: Theme) =>
   StyleSheet.create({
     pickerText: {
       fontFamily: theme.fonts.regular.fontFamily,
       fontWeight: theme.fonts.regular.fontWeight,
-      fontSize: wp('4.0%', insets),
+      fontSize: wp('4.0%'),
     },
     pickerItem: {
       fontFamily: theme.fonts.regular.fontFamily,
       fontWeight: theme.fonts.regular.fontWeight,
-      fontSize: wp('5.2%', insets),
+      fontSize: wp('5.2%'),
       color: theme.colors.text,
     },
   });

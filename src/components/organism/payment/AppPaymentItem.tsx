@@ -1,12 +1,9 @@
 import { StyleSheet, View } from 'react-native';
 import React from 'react';
 import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { hp, SafeAreaInsets } from 'enevti-app/utils/layout/imageRatio';
+import { hp } from 'enevti-app/utils/layout/imageRatio';
 import { parseAmount } from 'enevti-app/utils/format/amount';
 import AppTextBody3 from 'enevti-app/components/atoms/text/AppTextBody3';
-import { useTheme } from 'react-native-paper';
-import { Theme } from 'enevti-app/theme/default';
 import AppTextHeading5 from 'enevti-app/components/atoms/text/AppTextHeading5';
 import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
 import AppPoppableIcon from 'enevti-app/components/molecules/menu/AppPoppableIcon';
@@ -30,9 +27,7 @@ function Component({
   trailingComponent,
   bold,
 }: AppPaymentItemProps) {
-  const insets = useSafeAreaInsets();
-  const theme = useTheme() as Theme;
-  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
+  const styles = React.useMemo(() => makeStyles(), []);
   const AppText = bold ? AppTextHeading3 : AppTextBody3;
   const CurrencyText = bold ? AppTextHeading5 : AppTextBody5;
 
@@ -51,11 +46,11 @@ function Component({
   );
 }
 
-const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
+const makeStyles = () =>
   StyleSheet.create({
     paymentItemView: {
       flexDirection: 'row',
-      marginBottom: hp('1%', insets),
+      marginBottom: hp('1%'),
     },
     titleContainer: {
       flexDirection: 'row',

@@ -5,7 +5,6 @@ import { RootStackParamList } from 'enevti-app/navigation';
 import Animated, { runOnJS, useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated';
 import { StakerItem } from 'enevti-app/types/core/chain/stake';
 import { useDispatch, useSelector } from 'react-redux';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { hp } from 'enevti-app/utils/layout/imageRatio';
 import { RootState } from 'enevti-app/store/state';
 import {
@@ -43,9 +42,8 @@ interface AppStakePoolProps {
 export default function AppStakePool({ route }: AppStakePoolProps) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const insets = useSafeAreaInsets();
   const styles = React.useMemo(() => makeStyles(), []);
-  const extendedTreshold = hp('10%', insets);
+  const extendedTreshold = hp('10%');
 
   const [extended, setExtended] = React.useState(true);
   const UIExtended = useSharedValue(true);

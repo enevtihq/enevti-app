@@ -2,8 +2,7 @@ import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import React from 'react';
 import { Checkbox, TouchableRipple, useTheme } from 'react-native-paper';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
-import { SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { wp } from 'enevti-app/utils/layout/imageRatio';
 
 interface AppCheckboxProps {
   children: React.ReactNode;
@@ -16,8 +15,7 @@ interface AppCheckboxProps {
 
 export default function AppCheckbox({ children, value, style, disabled, onPress, uncheckedColor }: AppCheckboxProps) {
   const theme = useTheme();
-  const insets = useSafeAreaInsets();
-  const styles = React.useMemo(() => makeStyles(insets), [insets]);
+  const styles = React.useMemo(() => makeStyles(), []);
 
   return (
     <View style={[style]}>
@@ -41,22 +39,22 @@ export default function AppCheckbox({ children, value, style, disabled, onPress,
   );
 }
 
-const makeStyles = (insets: SafeAreaInsets) =>
+const makeStyles = () =>
   StyleSheet.create({
     appCheckboxView: {
       flexDirection: 'row',
-      marginTop: wp('2%', insets),
-      marginBottom: wp('2%', insets),
+      marginTop: wp('2%'),
+      marginBottom: wp('2%'),
     },
     checkbox: {
-      marginLeft: wp('2%', insets),
-      marginRight: wp('2%', insets),
+      marginLeft: wp('2%'),
+      marginRight: wp('2%'),
     },
     text: {
       alignSelf: 'flex-start',
     },
     textContainer: {
-      paddingRight: wp('2%', insets),
+      paddingRight: wp('2%'),
       alignSelf: 'center',
       flex: 1,
     },

@@ -178,7 +178,7 @@ export default function AppVideoCallChat({
               disabled={value.length > 0 ? false : true}
               icon={iconMap.sendPost}
               color={value.length > 0 ? theme.colors.primary : theme.colors.placeholder}
-              size={hp(4, insets)}
+              size={hp(4)}
               onPress={value.length > 0 ? onSend : undefined}
             />
           </View>
@@ -218,7 +218,7 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
       flexDirection: 'row',
       paddingHorizontal: wp(5),
       paddingTop: hp(1),
-      paddingBottom: Platform.OS === 'ios' ? insets.bottom : hp(2, insets) + insets.bottom,
+      paddingBottom: Platform.OS === 'ios' ? insets.bottom : hp(2) + insets.bottom,
       backgroundColor: theme.colors.background,
     },
     inputBox: {
@@ -231,7 +231,7 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
       overflow: 'hidden',
     },
     customBackIcon: {
-      marginLeft: wp('3%', insets),
+      marginLeft: wp('3%'),
     },
     header: {
       backgroundColor: 'transparent',

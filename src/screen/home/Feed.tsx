@@ -17,7 +17,6 @@ import AppFeedItem from 'enevti-app/components/molecules/feed/AppFeedItem';
 import Animated, { useAnimatedRef } from 'react-native-reanimated';
 import { handleError } from 'enevti-app/utils/error/handle';
 import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 import { loadFeeds, loadMoreFeeds } from 'enevti-app/store/middleware/thunk/ui/view/feed';
 import { AppAsyncThunk } from 'enevti-app/types/ui/store/AppAsyncThunk';
@@ -54,8 +53,7 @@ export default function Feed({ navigation, onScroll, headerHeight }: FeedProps) 
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const styles = React.useMemo(() => makeStyles(headerHeight), [headerHeight]);
-  const insets = useSafeAreaInsets();
-  const feedHeight = hp('24%', insets) + wp('95%', insets);
+  const feedHeight = hp('24%') + wp('95%');
   const [refreshing, setRefreshing] = React.useState<boolean>(false);
   const feedRef = useAnimatedRef<FlatList>();
   const isOnTopRef = React.useRef<boolean>(false);
@@ -173,7 +171,7 @@ export default function Feed({ navigation, onScroll, headerHeight }: FeedProps) 
               show={newUpdate}
               label={t('home:newFeedUpdate')}
               onPress={handleRefresh}
-              style={{ top: headerHeight + hp('2%', insets) }}
+              style={{ top: headerHeight + hp('2%') }}
               onClose={handleUpdateClosed}
             />
             <AnimatedFlatList

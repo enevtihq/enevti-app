@@ -2,9 +2,8 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { TextInputProps } from 'react-native-paper/lib/typescript/components/TextInput/TextInput';
 import { Theme } from 'react-native-paper/lib/typescript/types';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { shallowEqual } from 'react-redux';
-import { hp, SafeAreaInsets } from 'enevti-app/utils/layout/imageRatio';
+import { hp } from 'enevti-app/utils/layout/imageRatio';
 import AppFormTextInput from 'enevti-app/components/atoms/form/AppFormTextInput';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 
@@ -22,8 +21,7 @@ function AppFormTextInputWithError(
   { theme, errorText, showError, endComponent, hideMaxLengthIndicator, ...props }: AppFormTextInputWithErrorProps,
   ref: any,
 ) {
-  const insets = useSafeAreaInsets();
-  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
+  const styles = React.useMemo(() => makeStyles(theme), [theme]);
 
   return (
     <View style={[props.style]}>
@@ -40,11 +38,11 @@ function AppFormTextInputWithError(
   );
 }
 
-const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
+const makeStyles = (theme: Theme) =>
   StyleSheet.create({
     errorText: {
       color: theme.colors.error,
-      marginTop: hp('1%', insets),
+      marginTop: hp('1%'),
       marginLeft: 14,
       marginRight: 14,
     },

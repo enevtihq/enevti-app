@@ -1,11 +1,11 @@
 import React from 'react';
 import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
-import { Edge, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Edge } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { hideSnackbar, selectSnackBarState } from 'enevti-app/store/slices/ui/global/snackbar';
 import AppSnackbar from 'enevti-app/components/atoms/snackbar/AppSnackbar';
-import { SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
+import { wp } from 'enevti-app/utils/layout/imageRatio';
 import AppKeyboardDismissOnClickView from './AppKeyboardDismissOnClickView';
 import AppContainer from './AppContainer';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
@@ -45,8 +45,7 @@ export default function AppView({
   dismissKeyboard = false,
 }: AppViewProps) {
   const dispatch = useDispatch();
-  const insets = useSafeAreaInsets();
-  const styles = React.useMemo(() => makeStyles(insets), [insets]);
+  const styles = React.useMemo(() => makeStyles(), []);
   const snackbarState = useSelector(selectSnackBarState);
 
   return (
@@ -93,14 +92,14 @@ export default function AppView({
   );
 }
 
-const makeStyles = (insets: SafeAreaInsets) =>
+const makeStyles = () =>
   StyleSheet.create({
     view: {
       flex: 1,
     },
     snackbar: {
       alignSelf: 'center',
-      marginLeft: wp('5%', insets),
-      marginRight: wp('5%', insets),
+      marginLeft: wp('5%'),
+      marginRight: wp('5%'),
     },
   });

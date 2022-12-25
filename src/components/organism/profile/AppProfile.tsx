@@ -9,8 +9,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import AppProfileHeader, { PROFILE_HEADER_HEIGHT_PERCENTAGE } from './AppProfileHeader';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { diffClamp } from 'enevti-app/utils/layout/animation';
@@ -87,7 +86,6 @@ export default function AppProfile({
 }: AppProfileProps) {
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const insets = useSafeAreaInsets();
   const theme = useTheme();
   const newUpdateRef = React.useRef<boolean>(false);
   const headerCollapsedRef = React.useRef<boolean>(false);
@@ -104,7 +102,7 @@ export default function AppProfile({
   );
 
   const persona = profile.persona;
-  const styles = React.useMemo(() => makeStyles(headerHeight, insets), [headerHeight, insets]);
+  const styles = React.useMemo(() => makeStyles(headerHeight), [headerHeight]);
 
   const [ownedMounted, setOwnedMounted] = React.useState<boolean>(false);
   const [onSaleMounted, setOnSaleMounted] = React.useState<boolean>(false);
@@ -123,10 +121,7 @@ export default function AppProfile({
   const rawScrollY = useSharedValue(0);
   const tabScroll = useSharedValue(0);
 
-  const totalHeaderHeight = React.useMemo(
-    () => hp(PROFILE_HEADER_HEIGHT_PERCENTAGE, insets) + headerHeight,
-    [headerHeight, insets],
-  );
+  const totalHeaderHeight = React.useMemo(() => hp(PROFILE_HEADER_HEIGHT_PERCENTAGE) + headerHeight, [headerHeight]);
   const varHeaderHeight = React.useMemo(
     () => (disableHeaderAnimation ? headerHeight : 0),
     [disableHeaderAnimation, headerHeight],
@@ -470,7 +465,7 @@ export default function AppProfile({
     ],
   );
 
-  const progressViewOffset = React.useMemo(() => hp(HEADER_HEIGHT_PERCENTAGE, insets), [insets]);
+  const progressViewOffset = React.useMemo(() => hp(HEADER_HEIGHT_PERCENTAGE), []);
 
   return !profileUndefined ? (
     <AppResponseView
@@ -485,7 +480,7 @@ export default function AppProfile({
         show={newUpdate}
         label={t('profile:newUpdates')}
         onPress={onRefresh}
-        style={{ top: headerHeight + hp('2%', insets) }}
+        style={{ top: headerHeight + hp('2%') }}
         onClose={onUpdateClose}
       />
       <AppProfileBody
@@ -516,7 +511,7 @@ export default function AppProfile({
   );
 }
 
-const makeStyles = (headerHeight: number, insets: SafeAreaInsets) =>
+const makeStyles = (headerHeight: number) =>
   StyleSheet.create({
     profileContainer: {
       flex: 1,
@@ -528,8 +523,8 @@ const makeStyles = (headerHeight: number, insets: SafeAreaInsets) =>
     },
     mountedIndicator: {
       position: 'absolute',
-      top: hp(PROFILE_HEADER_HEIGHT_PERCENTAGE + 20, insets),
-      left: wp('48%', insets),
+      top: hp(PROFILE_HEADER_HEIGHT_PERCENTAGE + 20),
+      left: wp('48%'),
     },
     loaderContainer: {
       justifyContent: 'center',

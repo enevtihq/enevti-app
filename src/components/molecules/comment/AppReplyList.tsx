@@ -4,10 +4,9 @@ import { CommentItem, ReplyItem, setReplyText } from 'enevti-app/store/slices/ui
 import AppTextHeading4 from 'enevti-app/components/atoms/text/AppTextHeading4';
 import { t } from 'i18next';
 import Color from 'color';
-import { SafeAreaInsets, hp, wp } from 'enevti-app/utils/layout/imageRatio';
+import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 import { TouchableRipple, useTheme } from 'react-native-paper';
 import { Theme } from 'enevti-app/theme/default';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated from 'react-native-reanimated';
 import AppCommentItemBase from './AppCommentItemBase';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -48,8 +47,7 @@ export default function AppReplyList({
 }: AppReplyListProps) {
   const dispatch = useDispatch();
   const theme = useTheme() as Theme;
-  const insets = useSafeAreaInsets();
-  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
+  const styles = React.useMemo(() => makeStyles(theme), [theme]);
   const [isLoadingReply, setIsLoadingReply] = React.useState<boolean>(false);
   const [isLoadingMoreReply, setIsLoadingMoreReply] = React.useState<boolean>(false);
 
@@ -183,13 +181,13 @@ export default function AppReplyList({
   );
 }
 
-const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
+const makeStyles = (theme: Theme) =>
   StyleSheet.create({
     replyInitTouchable: {
-      paddingVertical: hp(1, insets),
+      paddingVertical: hp(1),
     },
     replyLoadMoreTouchable: {
-      paddingVertical: hp(1, insets),
+      paddingVertical: hp(1),
     },
     replyContainer: {
       flexDirection: 'row',
@@ -197,16 +195,16 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
     },
     replyLine: {
       height: 2,
-      width: wp(10, insets),
+      width: wp(10),
       backgroundColor: Color(theme.colors.placeholder).alpha(0.1).rgb().toString(),
       alignSelf: 'center',
-      marginRight: wp(4, insets),
+      marginRight: wp(4),
     },
     replyCounter: {
       color: theme.colors.placeholder,
     },
     replyItem: {
-      paddingVertical: hp(2, insets),
+      paddingVertical: hp(2),
       paddingLeft: wp(17),
       paddingRight: wp(4),
     },

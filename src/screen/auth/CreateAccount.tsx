@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -9,7 +8,7 @@ import { Theme } from 'enevti-app/theme/default';
 import AppBrandBanner from 'enevti-app/components/molecules/brand/AppBrandBanner';
 import AppHeaderWizard from 'enevti-app/components/molecules/view/AppHeaderWizard';
 import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
-import { hp, wp, SafeAreaInsets } from 'enevti-app/utils/layout/imageRatio';
+import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
 import AppSecondaryButton from 'enevti-app/components/atoms/button/AppSecondaryButton';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
@@ -22,8 +21,7 @@ type Props = StackScreenProps<RootStackParamList, 'CreateAccount'>;
 
 export default function CreateAccount({ navigation }: Props) {
   const theme = useTheme() as Theme;
-  const insets = useSafeAreaInsets();
-  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
+  const styles = React.useMemo(() => makeStyles(theme), [theme]);
   const { t } = useTranslation();
 
   return (
@@ -35,15 +33,15 @@ export default function CreateAccount({ navigation }: Props) {
       />
 
       <View style={styles.actionContainer}>
-        <View style={{ height: hp('3%', insets) }} />
+        <View style={{ height: hp('3%') }} />
         <AppTextBody5 style={styles.term}>{t('auth:term')}</AppTextBody5>
-        <View style={{ height: hp('6%', insets) }} />
+        <View style={{ height: hp('6%') }} />
 
         <AppSecondaryButton onPress={() => navigation.navigate('ImportPassphrase')} style={styles.createAccount}>
           {t('auth:importPassphrase')}
         </AppSecondaryButton>
 
-        <View style={{ height: hp('2%', insets) }} />
+        <View style={{ height: hp('2%') }} />
 
         <AppPrimaryButton onPress={() => navigation.navigate('SetupLocalPassword')} style={styles.createAccount}>
           {t('auth:createAccount')}
@@ -54,14 +52,14 @@ export default function CreateAccount({ navigation }: Props) {
           <AppTextBody4
             style={{
               color: theme.colors.placeholder,
-              marginBottom: hp('2%', insets),
+              marginBottom: hp('2%'),
             }}>
             {t('auth:or')}
           </AppTextBody4>
           <View style={styles.orLine} />
         </View>
 
-        <View style={{ height: hp('2%', insets) }} />
+        <View style={{ height: hp('2%') }} />
 
         <AppGoogleSignInButton
           onExistingAccount={() => {
@@ -79,15 +77,15 @@ export default function CreateAccount({ navigation }: Props) {
   );
 }
 
-const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
+const makeStyles = (theme: Theme) =>
   StyleSheet.create({
     actionContainer: {
       flex: 1,
       flexDirection: 'column-reverse',
     },
     createAccount: {
-      marginLeft: wp('5%', insets),
-      marginRight: wp('5%', insets),
+      marginLeft: wp('5%'),
+      marginRight: wp('5%'),
     },
     headerImage: {
       alignSelf: 'center',
@@ -95,11 +93,11 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
     orLine: {
       backgroundColor: theme.colors.placeholder,
       height: 1,
-      width: wp('7%', insets),
+      width: wp('7%'),
       alignSelf: 'center',
-      marginLeft: wp('2%', insets),
-      marginRight: wp('2%', insets),
-      marginBottom: hp('2%', insets),
+      marginLeft: wp('2%'),
+      marginRight: wp('2%'),
+      marginBottom: hp('2%'),
     },
     orView: {
       flexDirection: 'row',

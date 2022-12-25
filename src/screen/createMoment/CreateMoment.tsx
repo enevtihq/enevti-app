@@ -13,7 +13,7 @@ import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
+import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 import { Divider, useTheme } from 'react-native-paper';
 import { Theme } from 'enevti-app/theme/default';
 import AppMentionInput from 'enevti-app/components/molecules/form/AppMentionInput';
@@ -38,7 +38,7 @@ export default function CreateMoment({ navigation, route }: Props) {
   const dispatch = useDispatch();
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
-  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
+  const styles = React.useMemo(() => makeStyles(theme), [theme]);
 
   const inputRef = React.useRef<TextInput>(null);
   const canGoBack = React.useRef<boolean>(false);
@@ -156,7 +156,7 @@ export default function CreateMoment({ navigation, route }: Props) {
         </View>
       ) : null}
       <View style={styles.actionContainer}>
-        <View style={{ height: hp('2%', insets) }} />
+        <View style={{ height: hp('2%') }} />
         <AppPrimaryButton
           onPress={handleFormSubmit}
           loading={loading}
@@ -164,7 +164,7 @@ export default function CreateMoment({ navigation, route }: Props) {
           style={styles.actionButton}>
           {!createMomentQueueText ? t('createMoment:captionRequired') : t('createMoment:mintMoment')}
         </AppPrimaryButton>
-        <View style={{ height: Platform.OS === 'ios' ? insets.bottom : hp('2%', insets) }} />
+        <View style={{ height: Platform.OS === 'ios' ? insets.bottom : hp('2%') }} />
       </View>
       <AppConfirmationModal
         iconName={'question'}
@@ -181,7 +181,7 @@ export default function CreateMoment({ navigation, route }: Props) {
   );
 }
 
-const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
+const makeStyles = (theme: Theme) =>
   StyleSheet.create({
     thumbnailContainer: {
       height: hp(38),
@@ -216,8 +216,8 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
       justifyContent: 'center',
     },
     captionInput: {
-      minHeight: hp(6, insets),
-      maxHeight: hp(14, insets),
+      minHeight: hp(6),
+      maxHeight: hp(14),
       marginHorizontal: wp(3),
     },
     suggestionInput: {

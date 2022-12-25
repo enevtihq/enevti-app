@@ -3,11 +3,10 @@ import { StyleProp, ViewStyle, StyleSheet, View } from 'react-native';
 import { Button } from 'react-native-paper';
 import { IconSource } from 'react-native-paper/lib/typescript/components/Icon';
 import { useTheme } from 'react-native-paper';
-import { hp, SafeAreaInsets } from 'enevti-app/utils/layout/imageRatio';
+import { hp } from 'enevti-app/utils/layout/imageRatio';
 import Color from 'color';
 
 import { Theme } from 'enevti-app/theme/default';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
 
 interface AppTertiaryButtonProps {
@@ -31,8 +30,7 @@ export default function AppTertiaryButton({
 }: AppTertiaryButtonProps): JSX.Element {
   const paperTheme = useTheme() as Theme;
   const buttonTheme = theme ?? paperTheme;
-  const insets = useSafeAreaInsets();
-  const styles = React.useMemo(() => makeStyles(buttonTheme, insets), [buttonTheme, insets]);
+  const styles = React.useMemo(() => makeStyles(buttonTheme), [buttonTheme]);
 
   return loading ? (
     <View style={[styles.tertiaryLoading, styles.tertiaryButton, style]}>
@@ -54,11 +52,11 @@ export default function AppTertiaryButton({
   );
 }
 
-const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
+const makeStyles = (theme: Theme) =>
   StyleSheet.create({
     tertiaryButton: {
       borderRadius: theme.roundness,
-      height: hp('7.5%', insets),
+      height: hp('7.5%'),
     },
     tertiaryLoading: {
       borderStyle: 'solid',
@@ -69,10 +67,10 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
         .string(),
     },
     content: {
-      height: hp('7.5%', insets),
+      height: hp('7.5%'),
     },
     loading: {
-      height: hp('7.5%', insets),
+      height: hp('7.5%'),
       justifyContent: 'center',
     },
   });

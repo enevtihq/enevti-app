@@ -19,8 +19,7 @@ import { loadMoreTransactionHistory, loadWallet, unloadWallet } from 'enevti-app
 import { AppAsyncThunk } from 'enevti-app/types/ui/store/AppAsyncThunk';
 import Animated from 'react-native-reanimated';
 import { LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE } from 'enevti-app/components/molecules/list/AppListItem';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
+import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 import AppMessageEmpty from 'enevti-app/components/molecules/message/AppMessageEmpty';
 import AppWalletTransactionHistoryItem from './AppWalletTransactionHistoryItem';
 import { ProfileActivity } from 'enevti-app/types/core/account/profile';
@@ -41,13 +40,12 @@ interface AppWalletProps {
 export default function AppWallet({ navigation, route }: AppWalletProps) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const insets = useSafeAreaInsets();
-  const styles = React.useMemo(() => makeStyles(insets), [insets]);
+  const styles = React.useMemo(() => makeStyles(), []);
 
   const transactionHistoryRef = React.useRef<any>();
   const itemHeight = React.useMemo(
-    () => hp(TRANSACTION_HISTORY_ITEM_HEIGHT + LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE, insets),
-    [insets],
+    () => hp(TRANSACTION_HISTORY_ITEM_HEIGHT + LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE),
+    [],
   );
 
   const transactionHistory = useSelector((state: RootState) => selectWalletViewHistory(state, route.key));
@@ -167,7 +165,7 @@ export default function AppWallet({ navigation, route }: AppWalletProps) {
   );
 }
 
-const makeStyles = (insets: SafeAreaInsets) =>
+const makeStyles = () =>
   StyleSheet.create({
     loaderContainer: {
       justifyContent: 'center',
@@ -179,7 +177,7 @@ const makeStyles = (insets: SafeAreaInsets) =>
       minHeight: '100%',
     },
     activityLabel: {
-      paddingHorizontal: wp('8%', insets),
-      marginVertical: hp('2%', insets),
+      paddingHorizontal: wp('8%'),
+      marginVertical: hp('2%'),
     },
   });

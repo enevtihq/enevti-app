@@ -1,8 +1,7 @@
 import { View, ViewStyle, StyleProp, StyleSheet } from 'react-native';
 import React from 'react';
 import { NFTBase } from 'enevti-app/types/core/chain/nft';
-import { wp, SafeAreaInsets, hp } from 'enevti-app/utils/layout/imageRatio';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { wp, hp } from 'enevti-app/utils/layout/imageRatio';
 import { TouchableRipple, useTheme } from 'react-native-paper';
 import { Theme } from 'enevti-app/theme/default';
 import AppNFTRenderer from './AppNFTRenderer';
@@ -25,9 +24,8 @@ interface AppNFTCardProps {
 
 export default function AppNFTCard({ nft, width, style, navigation }: AppNFTCardProps) {
   const theme = useTheme() as Theme;
-  const insets = useSafeAreaInsets();
-  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
-  const nftWidth = React.useMemo(() => width - wp('1%', insets), [width, insets]);
+  const styles = React.useMemo(() => makeStyles(theme), [theme]);
+  const nftWidth = React.useMemo(() => width - wp('1%'), [width]);
 
   const onNavigate = React.useCallback(
     () => (navigation ? navigation.push('NFTDetails', { arg: nft.id, mode: 'id' }) : undefined),
@@ -71,12 +69,12 @@ export default function AppNFTCard({ nft, width, style, navigation }: AppNFTCard
   );
 }
 
-const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
+const makeStyles = (theme: Theme) =>
   StyleSheet.create({
     container: {
-      marginHorizontal: wp('0.5%', insets),
-      marginBottom: wp('1%', insets),
-      paddingTop: hp('2%', insets),
+      marginHorizontal: wp('0.5%'),
+      marginBottom: wp('1%'),
+      paddingTop: hp('2%'),
       backgroundColor: theme.colors.background,
       borderRadius: theme.roundness,
       overflow: 'hidden',
@@ -85,17 +83,17 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
     },
     collectionName: {
       color: theme.colors.placeholder,
-      marginTop: hp('1%', insets),
-      marginHorizontal: wp('3%', insets),
+      marginTop: hp('1%'),
+      marginHorizontal: wp('3%'),
     },
     collectionSerial: {
-      marginHorizontal: wp('3%', insets),
+      marginHorizontal: wp('3%'),
     },
     footer: {
       flexDirection: 'row',
       alignItems: 'center',
-      marginVertical: hp('1%', insets),
-      marginHorizontal: wp('3%', insets),
+      marginVertical: hp('1%'),
+      marginHorizontal: wp('3%'),
     },
     utility: {
       flex: 1,

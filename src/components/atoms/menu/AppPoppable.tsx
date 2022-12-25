@@ -39,7 +39,7 @@ export default function AppPoppable({ children, action, content, position, width
 const makeStyles = (theme: Theme, insets: SafeAreaInsets, width: number) =>
   StyleSheet.create({
     popableView: {
-      width: wp(width, insets),
+      width: wp(width),
       top: Platform.OS === 'android' ? -(insets.top / 2) : undefined,
     },
     popableContent: {

@@ -1,9 +1,8 @@
 import React from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { useTheme } from 'react-native-paper';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Theme } from 'enevti-app/theme/default';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
+import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 import AppIconComponent, { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
@@ -39,8 +38,7 @@ export default function AppListPickerItem({
   style,
 }: AppListPickerItemProps) {
   const theme = useTheme() as Theme;
-  const insets = useSafeAreaInsets();
-  const styles = React.useMemo(() => makeStyles(insets), [insets]);
+  const styles = React.useMemo(() => makeStyles(), []);
 
   return (
     <AppListItem
@@ -79,7 +77,7 @@ export default function AppListPickerItem({
       ) : (
         <View style={styles.listContent}>
           {title ? (
-            <AppTextHeading3 numberOfLines={1} style={{ width: wp('50%', insets) }}>
+            <AppTextHeading3 numberOfLines={1} style={{ width: wp('50%') }}>
               {title}
             </AppTextHeading3>
           ) : null}
@@ -92,22 +90,22 @@ export default function AppListPickerItem({
   );
 }
 
-const makeStyles = (insets: SafeAreaInsets) =>
+const makeStyles = () =>
   StyleSheet.create({
     listIcon: {
-      marginRight: wp('3%', insets),
+      marginRight: wp('3%'),
       alignSelf: 'center',
     },
     listDropDown: {
-      marginLeft: wp('3%', insets),
+      marginLeft: wp('3%'),
       alignSelf: 'center',
     },
     listContent: {
-      height: hp('5.5%', insets),
+      height: hp('5.5%'),
       justifyContent: 'center',
     },
     listLoader: {
-      height: hp('5.5%', insets),
+      height: hp('5.5%'),
       justifyContent: 'center',
       alignItems: 'center',
     },

@@ -174,21 +174,21 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
       alignItems: 'center',
     },
     actionButton: {
-      paddingHorizontal: wp('5%', insets),
-      marginTop: hp('4%', insets),
-      marginBottom: Platform.OS === 'ios' ? insets.bottom : hp('2%', insets),
+      paddingHorizontal: wp('5%'),
+      marginTop: hp('4%'),
+      marginBottom: Platform.OS === 'ios' ? insets.bottom : hp('2%'),
     },
     headerText1: {
-      marginTop: hp('2%', insets),
+      marginTop: hp('2%'),
       alignSelf: 'center',
       textAlign: 'center',
     },
     body1: {
       alignSelf: 'center',
       textAlign: 'center',
-      marginTop: hp('2%', insets),
-      marginRight: wp('5%', insets),
-      marginLeft: wp('5%', insets),
+      marginTop: hp('2%'),
+      marginRight: wp('5%'),
+      marginLeft: wp('5%'),
     },
     tipItemContainer: {
       width: wp(25),
@@ -207,16 +207,16 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
       alignItems: 'center',
     },
     formInput: {
-      marginBottom: hp('1%', insets),
-      marginLeft: wp('5%', insets),
-      marginRight: wp('5%', insets),
+      marginBottom: hp('1%'),
+      marginLeft: wp('5%'),
+      marginRight: wp('5%'),
     },
     accordionListView: {
       flexDirection: 'row',
-      marginLeft: wp('1%', insets),
+      marginLeft: wp('1%'),
     },
     accordionIcon: {
-      marginRight: wp('3%', insets),
+      marginRight: wp('3%'),
       alignSelf: 'center',
     },
   });

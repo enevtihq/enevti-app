@@ -13,13 +13,12 @@ import { IPFStoURL } from 'enevti-app/service/ipfs';
 import { Persona } from 'enevti-app/types/core/account/persona';
 import { NFTBase } from 'enevti-app/types/core/chain/nft';
 import { handleError } from 'enevti-app/utils/error/handle';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
+import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 import { useDebouncedCallback } from 'use-debounce';
 import AppAvatarRenderer from 'enevti-app/components/molecules/avatar/AppAvatarRenderer';
 import AppListItem from 'enevti-app/components/molecules/list/AppListItem';
 import AppNFTRenderer from 'enevti-app/components/molecules/nft/AppNFTRenderer';
 import Color from 'color';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
 
@@ -48,8 +47,7 @@ export default function AppMentionInput({
 }: AppMentionInputProps) {
   const { t } = useTranslation();
   const theme = useTheme() as Theme;
-  const insets = useSafeAreaInsets();
-  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
+  const styles = React.useMemo(() => makeStyles(theme), [theme]);
 
   const abortController = React.useRef<AbortController>();
   const [isError, setIsError] = React.useState<boolean>(false);
@@ -137,7 +135,7 @@ export default function AppMentionInput({
               containerStyle={styles.accountCard}
               leftContent={
                 <View style={styles.collectionCoverContainer}>
-                  <AppAvatarRenderer persona={suggestion} size={hp(5, insets)} style={styles.avatar} />
+                  <AppAvatarRenderer persona={suggestion} size={hp(5)} style={styles.avatar} />
                 </View>
               }>
               <AppTextHeading3 numberOfLines={1}>{parsePersonaLabel(suggestion)}</AppTextHeading3>
@@ -156,7 +154,6 @@ export default function AppMentionInput({
       SuggestionLoading,
       SuggestionNotFound,
       debouncedSetUsernameSuggestion,
-      insets,
       isError,
       loading,
       styles.accountCard,
@@ -217,10 +214,7 @@ export default function AppMentionInput({
               containerStyle={styles.accountCard}
               leftContent={
                 <View style={styles.collectionCoverContainer}>
-                  <AppNetworkImage
-                    style={{ width: hp(5, insets), height: hp(5, insets) }}
-                    url={IPFStoURL(suggestion.cover.cid)}
-                  />
+                  <AppNetworkImage style={{ width: hp(5), height: hp(5) }} url={IPFStoURL(suggestion.cover.cid)} />
                 </View>
               }>
               <AppTextHeading3 numberOfLines={1}>
@@ -240,7 +234,6 @@ export default function AppMentionInput({
       SuggestionNotFound,
       collectionSuggestion,
       debouncedSetCollectionSuggestion,
-      insets,
       isError,
       loading,
       styles.accountCard,
@@ -305,8 +298,8 @@ export default function AppMentionInput({
               containerStyle={styles.accountCard}
               leftContent={
                 <View style={styles.collectionCoverContainer}>
-                  <View style={{ height: hp(5, insets), width: hp(5, insets) }}>
-                    <AppNFTRenderer imageSize={'s'} nft={suggestion} width={hp(5, insets)} />
+                  <View style={{ height: hp(5), width: hp(5) }}>
+                    <AppNFTRenderer imageSize={'s'} nft={suggestion} width={hp(5)} />
                   </View>
                 </View>
               }>
@@ -327,7 +320,6 @@ export default function AppMentionInput({
       SuggestionLoading,
       SuggestionNotFound,
       debouncedSetNFTSuggestion,
-      insets,
       isError,
       loading,
       styles.accountCard,
@@ -383,7 +375,7 @@ export default function AppMentionInput({
   );
 }
 
-const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
+const makeStyles = (theme: Theme) =>
   StyleSheet.create({
     maxLength: {
       color: theme.colors.placeholder,
@@ -392,7 +384,7 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
       right: 15,
     },
     suggestionContainer: {
-      padding: hp(2, insets),
+      padding: hp(2),
       borderColor: Color(theme.colors.placeholder).alpha(0.05).rgb().toString(),
       borderBottomWidth: 1,
       backgroundColor: theme.colors.background,
@@ -417,7 +409,7 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
       borderColor: undefined,
     },
     collectionCoverContainer: {
-      marginRight: wp('3%', insets),
+      marginRight: wp('3%'),
       overflow: 'hidden',
       alignSelf: 'center',
     },

@@ -7,8 +7,7 @@ import Color from 'color';
 import { IconSource } from 'react-native-paper/lib/typescript/components/Icon';
 
 import { Theme } from 'enevti-app/theme/default';
-import { hp, SafeAreaInsets } from 'enevti-app/utils/layout/imageRatio';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { hp } from 'enevti-app/utils/layout/imageRatio';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
 
 interface AppPrimaryButtonProps {
@@ -32,8 +31,7 @@ export default function AppPrimaryButton({
 }: AppPrimaryButtonProps): JSX.Element {
   const paperTheme = useTheme() as Theme;
   const buttonTheme = theme ?? paperTheme;
-  const insets = useSafeAreaInsets();
-  const styles = React.useMemo(() => makeStyles(buttonTheme, insets), [buttonTheme, insets]);
+  const styles = React.useMemo(() => makeStyles(buttonTheme), [buttonTheme]);
   const primary = disabled ? Color('black').alpha(0.5).rgb().string() : buttonTheme.colors.primary;
   const secondary = disabled ? Color('black').alpha(0.5).rgb().string() : buttonTheme.colors.secondary;
 
@@ -58,17 +56,17 @@ export default function AppPrimaryButton({
   );
 }
 
-const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
+const makeStyles = (theme: Theme) =>
   StyleSheet.create({
     primaryButton: {
       borderRadius: theme.roundness,
-      height: hp('7.5%', insets),
+      height: hp('7.5%'),
     },
     loading: {
-      height: hp('7.5%', insets),
+      height: hp('7.5%'),
       justifyContent: 'center',
     },
     content: {
-      height: hp('7.5%', insets),
+      height: hp('7.5%'),
     },
   });

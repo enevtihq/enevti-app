@@ -4,9 +4,8 @@ import Color from 'color';
 import AppIconButton from 'enevti-app/components/atoms/icon/AppIconButton';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import AppTextHeading4 from 'enevti-app/components/atoms/text/AppTextHeading4';
-import { wp, hp, SafeAreaInsets } from 'enevti-app/utils/layout/imageRatio';
+import { wp, hp } from 'enevti-app/utils/layout/imageRatio';
 import AppAvatarRenderer from '../avatar/AppAvatarRenderer';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from 'react-native-paper';
 import { Theme } from 'enevti-app/theme/default';
 import { CommentItem, ReplyItem } from 'enevti-app/store/slices/ui/view/comment';
@@ -54,11 +53,10 @@ export default function AppCommentItemBase({
 }: AppCommentItemBaseProps) {
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
   const styles = React.useMemo(
-    () => makeStyles(theme, insets, commentOrReply, innerPadding),
-    [theme, insets, commentOrReply, innerPadding],
+    () => makeStyles(theme, commentOrReply, innerPadding),
+    [theme, commentOrReply, innerPadding],
   );
 
   React.useEffect(() => {
@@ -88,7 +86,7 @@ export default function AppCommentItemBase({
     <View pointerEvents={commentOrReply.isPosting ? 'none' : 'auto'} style={styles.commentItemContainer}>
       <View style={[styles.commentContainer, contentContainerStyle]}>
         <View style={styles.avatar}>
-          <AppAvatarRenderer persona={commentOrReply.owner} size={hp(avatarSize, insets)} />
+          <AppAvatarRenderer persona={commentOrReply.owner} size={hp(avatarSize)} />
         </View>
         <View style={styles.commentRightSection}>
           <View style={styles.commentTextAndLike}>
@@ -127,15 +125,10 @@ export default function AppCommentItemBase({
                   onPress={onAlreadyLiked}
                   color={theme.colors.primary}
                   icon={iconMap.likeActive}
-                  size={hp(2.25, insets)}
+                  size={hp(2.25)}
                 />
               ) : (
-                <AppIconButton
-                  onPress={onLike}
-                  color={theme.colors.text}
-                  icon={iconMap.likeInactive}
-                  size={hp(2.25, insets)}
-                />
+                <AppIconButton onPress={onLike} color={theme.colors.text} icon={iconMap.likeInactive} size={hp(2.25)} />
               )}
             </View>
           </View>
@@ -151,12 +144,7 @@ export default function AppCommentItemBase({
   );
 }
 
-const makeStyles = (
-  theme: Theme,
-  insets: SafeAreaInsets,
-  commentOrReply: CommentItem | ReplyItem,
-  innerPadding: number,
-) =>
+const makeStyles = (theme: Theme, commentOrReply: CommentItem | ReplyItem, innerPadding: number) =>
   StyleSheet.create({
     isPostingLoader: {
       position: 'absolute',
@@ -191,7 +179,7 @@ const makeStyles = (
         : undefined,
     },
     avatar: {
-      marginRight: wp(innerPadding, insets),
+      marginRight: wp(innerPadding),
     },
     commentText: {
       flex: 1,
@@ -204,23 +192,23 @@ const makeStyles = (
     },
     commentActionItem: {
       color: theme.colors.placeholder,
-      marginRight: wp(4, insets),
+      marginRight: wp(4),
     },
     replyContainer: {
       flexDirection: 'row',
-      marginTop: hp(2.5, insets),
+      marginTop: hp(2.5),
     },
     replyLine: {
       height: 2,
-      width: wp(10, insets),
+      width: wp(10),
       backgroundColor: Color(theme.colors.placeholder).alpha(0.1).rgb().toString(),
       alignSelf: 'center',
-      marginRight: wp(4, insets),
+      marginRight: wp(4),
     },
     replyCounter: {
       color: theme.colors.placeholder,
     },
     likeCommentButton: {
-      marginLeft: wp(innerPadding, insets),
+      marginLeft: wp(innerPadding),
     },
   });

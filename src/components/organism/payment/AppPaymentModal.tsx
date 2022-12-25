@@ -203,7 +203,7 @@ export default function AppPaymentModal() {
             leftContent={
               <AppIconGradient
                 name={paymentAction.icon}
-                size={wp('12%', insets)}
+                size={wp('12%')}
                 androidRenderingMode={'software'}
                 colors={[theme.colors.primary, theme.colors.secondary]}
                 style={styles.headerIcon}
@@ -257,7 +257,7 @@ export default function AppPaymentModal() {
             leftContent={
               <AppIconGradient
                 name={iconMap.shield}
-                size={wp('5%', insets)}
+                size={wp('5%')}
                 androidRenderingMode={'software'}
                 colors={[theme.colors.primary, theme.colors.secondary]}
                 style={styles.secureNoteIcon}
@@ -321,19 +321,19 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets, compactSecond: number)
       flex: 1,
     },
     payButton: {
-      paddingHorizontal: wp('5%', insets),
-      marginTop: hp('2%', insets),
-      marginBottom: Platform.OS === 'ios' ? insets.bottom : hp('2%', insets),
+      paddingHorizontal: wp('5%'),
+      marginTop: hp('2%'),
+      marginBottom: Platform.OS === 'ios' ? insets.bottom : hp('2%'),
     },
     headerIcon: {
-      marginRight: wp('3%', insets),
+      marginRight: wp('3%'),
       alignSelf: 'center',
     },
     headerTitle: {
-      width: wp('50%', insets),
+      width: wp('50%'),
     },
     dividerView: {
-      height: hp('1%', insets),
+      height: hp('1%'),
     },
     gasPickerButtonContainer: {
       marginHorizontal: wp(1),
@@ -352,30 +352,30 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets, compactSecond: number)
       backgroundColor: Color(theme.colors.placeholder).alpha(0.05).rgb().toString(),
     },
     bottomDivider: {
-      marginBottom: hp('1%', insets),
+      marginBottom: hp('1%'),
     },
     transactionItem: {
       flex: 1,
-      paddingHorizontal: wp('5%', insets),
+      paddingHorizontal: wp('5%'),
     },
     transactionDetailsHeading: {
-      marginBottom: hp('3%', insets),
-      marginTop: hp('2%', insets),
+      marginBottom: hp('3%'),
+      marginTop: hp('2%'),
     },
     secureNoteView: {
-      marginVertical: hp('2%', insets),
+      marginVertical: hp('2%'),
     },
     secureNoteIcon: {
-      marginRight: wp('3%', insets),
+      marginRight: wp('3%'),
       alignSelf: 'center',
     },
     secureNoteText: {
       color: theme.colors.placeholder,
     },
     snackPay: {
-      marginVertical: hp('10%', insets),
-      marginLeft: wp('5%', insets),
-      marginRight: wp('5%', insets),
+      marginVertical: hp('10%'),
+      marginLeft: wp('5%'),
+      marginRight: wp('5%'),
       opacity: compactSecond < 1 ? 0 : 1,
     },
   });

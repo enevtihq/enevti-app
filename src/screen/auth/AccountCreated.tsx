@@ -1,18 +1,15 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useTheme } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import { StackScreenProps } from '@react-navigation/stack';
 import { CommonActions } from '@react-navigation/native';
 
-import { Theme } from 'enevti-app/theme/default';
 import AppHeaderWizard from 'enevti-app/components/molecules/view/AppHeaderWizard';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
 import AppView from 'enevti-app/components/atoms/view/AppView';
-import { hp, wp, SafeAreaInsets } from 'enevti-app/utils/layout/imageRatio';
+import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import AppIconBanner from 'enevti-app/components/molecules/icon/AppIconBanner';
 import { COMMUNITY_IDENTIFIER } from 'enevti-app/utils/constant/identifier';
@@ -20,9 +17,7 @@ import { COMMUNITY_IDENTIFIER } from 'enevti-app/utils/constant/identifier';
 type Props = StackScreenProps<RootStackParamList, 'AccountCreated'>;
 
 export default function AccountCreated({ navigation }: Props) {
-  const theme = useTheme() as Theme;
-  const insets = useSafeAreaInsets();
-  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
+  const styles = React.useMemo(() => makeStyles(), []);
   const { t } = useTranslation();
 
   const handleFormSubmit = async () => {
@@ -65,7 +60,7 @@ export default function AccountCreated({ navigation }: Props) {
       </View>
 
       <View style={styles.actionContainer}>
-        <View style={{ height: hp('5%', insets) }} />
+        <View style={{ height: hp('5%') }} />
 
         <AppPrimaryButton onPress={() => handleFormSubmit()} style={styles.createAccount}>
           {t('auth:createAccountDoneButton')}
@@ -75,7 +70,7 @@ export default function AccountCreated({ navigation }: Props) {
   );
 }
 
-const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
+const makeStyles = () =>
   StyleSheet.create({
     actionContainer: {
       flex: 0.7,
@@ -85,22 +80,22 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
       fontWeight: 'bold',
     },
     briefItem: {
-      marginBottom: hp('2%', insets),
+      marginBottom: hp('2%'),
     },
     briefView: {
       flex: 1,
       alignItems: 'center',
-      paddingLeft: wp('12%', insets),
-      paddingRight: wp('12%', insets),
+      paddingLeft: wp('12%'),
+      paddingRight: wp('12%'),
     },
     createAccount: {
-      marginLeft: wp('5%', insets),
-      marginRight: wp('5%', insets),
+      marginLeft: wp('5%'),
+      marginRight: wp('5%'),
     },
     header: {
       flex: 1,
-      marginLeft: wp('3%', insets),
-      marginRight: wp('3%', insets),
+      marginLeft: wp('3%'),
+      marginRight: wp('3%'),
     },
     headerImage: {
       alignSelf: 'center',

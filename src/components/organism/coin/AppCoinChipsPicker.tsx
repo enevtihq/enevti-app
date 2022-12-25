@@ -1,7 +1,6 @@
 import React from 'react';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AppListItem from 'enevti-app/components/molecules/list/AppListItem';
-import { SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
+import { wp } from 'enevti-app/utils/layout/imageRatio';
 import AppBrandLogo from 'enevti-app/components/atoms/brand/AppBrandLogo';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import { getCoinName } from 'enevti-app/utils/constant/identifier';
@@ -12,8 +11,7 @@ interface AppCoinChipsPickerProps {
 }
 
 function Component({ dense }: AppCoinChipsPickerProps) {
-  const insets = useSafeAreaInsets();
-  const styles = React.useMemo(() => makeStyles(insets), [insets]);
+  const styles = React.useMemo(() => makeStyles(), []);
 
   const height = dense ? '85%' : '95%';
 
@@ -31,10 +29,10 @@ function Component({ dense }: AppCoinChipsPickerProps) {
   );
 }
 
-const makeStyles = (insets: SafeAreaInsets) =>
+const makeStyles = () =>
   StyleSheet.create({
     container: {
-      width: wp('23%', insets),
+      width: wp('23%'),
     },
     itemContainer: {
       marginHorizontal: 0,
@@ -51,7 +49,7 @@ const makeStyles = (insets: SafeAreaInsets) =>
       alignSelf: 'center',
     },
     coinLabel: {
-      width: wp('15%', insets),
+      width: wp('15%'),
       textAlign: 'center',
       paddingTop: 1,
     },

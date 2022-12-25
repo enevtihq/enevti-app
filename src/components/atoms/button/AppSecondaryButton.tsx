@@ -4,10 +4,9 @@ import { StyleProp, ViewStyle, StyleSheet, View } from 'react-native';
 import { Button } from 'react-native-paper';
 import { IconSource } from 'react-native-paper/lib/typescript/components/Icon';
 import { useTheme } from 'react-native-paper';
-import { hp, SafeAreaInsets } from 'enevti-app/utils/layout/imageRatio';
+import { hp } from 'enevti-app/utils/layout/imageRatio';
 
 import { Theme } from 'enevti-app/theme/default';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
 
 interface AppSecondaryButtonProps {
@@ -31,8 +30,7 @@ export default function AppSecondaryButton({
 }: AppSecondaryButtonProps): JSX.Element {
   const paperTheme = useTheme() as Theme;
   const buttonTheme = theme ?? paperTheme;
-  const insets = useSafeAreaInsets();
-  const styles = React.useMemo(() => makeStyles(buttonTheme, insets), [buttonTheme, insets]);
+  const styles = React.useMemo(() => makeStyles(buttonTheme), [buttonTheme]);
 
   return loading ? (
     <View style={[styles.secondaryButton, style]}>
@@ -54,20 +52,20 @@ export default function AppSecondaryButton({
   );
 }
 
-const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
+const makeStyles = (theme: Theme) =>
   StyleSheet.create({
     secondaryButton: {
       borderRadius: theme.roundness,
-      height: hp('7.5%', insets),
+      height: hp('7.5%'),
       backgroundColor: theme.dark
         ? Color(theme.colors.background).lighten(0.6).rgb().toString()
         : Color(theme.colors.background).darken(0.12).rgb().toString(),
     },
     content: {
-      height: hp('7.5%', insets),
+      height: hp('7.5%'),
     },
     loading: {
-      height: hp('7.5%', insets),
+      height: hp('7.5%'),
       justifyContent: 'center',
     },
   });

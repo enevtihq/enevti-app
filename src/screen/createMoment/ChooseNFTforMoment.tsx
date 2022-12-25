@@ -8,7 +8,7 @@ import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Theme } from 'enevti-app/theme/default';
 import { useTheme } from 'react-native-paper';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
+import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
 import { useTranslation } from 'react-i18next';
 import AppHeaderWizard from 'enevti-app/components/molecules/view/AppHeaderWizard';
@@ -49,7 +49,7 @@ export default function ChooseNFTforMoment({ navigation }: Props) {
   const { t } = useTranslation();
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
-  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
+  const styles = React.useMemo(() => makeStyles(theme), [theme]);
 
   const nftListRef = useAnimatedRef<FlatList>();
   const myPersona = useSelector(selectMyPersonaCache);
@@ -61,8 +61,8 @@ export default function ChooseNFTforMoment({ navigation }: Props) {
   const [pickerVisible, setPickerVisible] = React.useState<boolean>(false);
   const [responseCode, setResponseCode] = React.useState<number>(0);
   const progressViewOffset = React.useMemo(
-    () => hp(HEADER_HEIGHT_COMPACT_PERCENTAGE * (Platform.OS === 'android' ? 2 : 1), insets),
-    [insets],
+    () => hp(HEADER_HEIGHT_COMPACT_PERCENTAGE * (Platform.OS === 'android' ? 2 : 1)),
+    [],
   );
 
   const itemHeight = React.useMemo(() => hp(MOMENT_SLOT_ITEM_HEIGHT + LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE), []);
@@ -264,11 +264,11 @@ export default function ChooseNFTforMoment({ navigation }: Props) {
             onEndReached={onLoadMore}
           />
           <View style={styles.actionContainer}>
-            <View style={{ height: hp('2%', insets) }} />
+            <View style={{ height: hp('2%') }} />
             <AppPrimaryButton disabled={selectedNFT === ''} onPress={onNFTSelected} style={styles.actionButton}>
               {selectedNFT === '' ? t('createMoment:pleaseSelectNFT') : t('createMoment:attachToThis')}
             </AppPrimaryButton>
-            <View style={{ height: Platform.OS === 'ios' ? undefined : hp('2%', insets) }} />
+            <View style={{ height: Platform.OS === 'ios' ? undefined : hp('2%') }} />
           </View>
           <AppCameraGalleryPicker
             type={['videoCamera', 'videoGallery']}
@@ -286,7 +286,7 @@ export default function ChooseNFTforMoment({ navigation }: Props) {
   );
 }
 
-const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
+const makeStyles = (theme: Theme) =>
   StyleSheet.create({
     container: {
       flex: 1,
@@ -312,9 +312,9 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
     },
     header: {
       flex: 0,
-      marginLeft: wp('3%', insets),
-      marginRight: wp('3%', insets),
-      marginBottom: hp('3%', insets),
+      marginLeft: wp('3%'),
+      marginRight: wp('3%'),
+      marginBottom: hp('3%'),
     },
     scrollContainer: {
       zIndex: -9,
@@ -324,7 +324,7 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
       width: '100%',
     },
     actionButton: {
-      marginLeft: wp('5%', insets),
-      marginRight: wp('5%', insets),
+      marginLeft: wp('5%'),
+      marginRight: wp('5%'),
     },
   });

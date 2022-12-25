@@ -2,8 +2,7 @@ import React from 'react';
 import { AppState, NativeEventSubscription, StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import ReactNativeCountdownComponent from 'react-native-countdown-component';
 import { useTheme } from 'react-native-paper';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { hp, SafeAreaInsets } from 'enevti-app/utils/layout/imageRatio';
+import { hp } from 'enevti-app/utils/layout/imageRatio';
 import { Theme } from 'enevti-app/theme/default';
 import { useTranslation } from 'react-i18next';
 
@@ -31,8 +30,7 @@ export default function AppCountdown({ until, style, theme, onFinish }: AppCount
   const { t } = useTranslation();
   const paperTheme = useTheme() as Theme;
   const countdownTheme = theme ?? paperTheme;
-  const insets = useSafeAreaInsets();
-  const styles = React.useMemo(() => makeStyles(countdownTheme, insets), [countdownTheme, insets]);
+  const styles = React.useMemo(() => makeStyles(countdownTheme), [countdownTheme]);
   const timeLabels = React.useMemo(
     () => ({
       d: t('date:days'),
@@ -56,7 +54,7 @@ export default function AppCountdown({ until, style, theme, onFinish }: AppCount
   );
 }
 
-const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
+const makeStyles = (theme: Theme) =>
   StyleSheet.create({
     timeLabelStyle: {
       color: theme.colors.placeholder,
@@ -64,7 +62,7 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
     },
     digitStyle: {
       backgroundColor: 'transparent',
-      height: hp('2.25%', insets),
+      height: hp('2.25%'),
     },
     digitTxtStyle: {
       color: theme.colors.text,

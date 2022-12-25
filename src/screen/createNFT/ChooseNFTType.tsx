@@ -4,8 +4,7 @@ import AppView from 'enevti-app/components/atoms/view/AppView';
 import AppHeaderWizard from 'enevti-app/components/molecules/view/AppHeaderWizard';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
+import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 import AppListItem from 'enevti-app/components/molecules/list/AppListItem';
 import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
@@ -28,9 +27,8 @@ type Props = StackScreenProps<RootStackParamList, 'ChooseNFTType'>;
 export default function ChooseNFTType({ navigation }: Props) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
-  const styles = React.useMemo(() => makeStyles(insets), [insets]);
+  const styles = React.useMemo(() => makeStyles(), []);
 
   const [oneKindSheetVisible, setOneKindSheetVisible] = React.useState<boolean>(false);
 
@@ -66,7 +64,7 @@ export default function ChooseNFTType({ navigation }: Props) {
         style={styles.header}
       />
 
-      <View style={{ height: hp('3%', insets) }} />
+      <View style={{ height: hp('3%') }} />
 
       <AppListItem
         style={styles.nftTypeItem}
@@ -79,7 +77,7 @@ export default function ChooseNFTType({ navigation }: Props) {
             style={styles.nftTypeIcon}
           />
         }>
-        <AppTextHeading3 numberOfLines={1} style={{ width: wp('50%', insets) }}>
+        <AppTextHeading3 numberOfLines={1} style={{ width: wp('50%') }}>
           {t('createNFT:oneKindTitle')}
         </AppTextHeading3>
         <AppTextBody4 style={{ color: theme.colors.placeholder }}>{t('createNFT:oneKindDescription')}</AppTextBody4>
@@ -101,7 +99,7 @@ export default function ChooseNFTType({ navigation }: Props) {
             style={styles.nftTypeIcon}
           />
         }>
-        <AppTextHeading3 numberOfLines={1} style={{ width: wp('50%', insets) }}>
+        <AppTextHeading3 numberOfLines={1} style={{ width: wp('50%') }}>
           {t('createNFT:packTitle')}
         </AppTextHeading3>
         <AppTextBody4 style={{ color: theme.colors.placeholder }}>{t('createNFT:packDescription')}</AppTextBody4>
@@ -110,19 +108,19 @@ export default function ChooseNFTType({ navigation }: Props) {
   );
 }
 
-const makeStyles = (insets: SafeAreaInsets) =>
+const makeStyles = () =>
   StyleSheet.create({
     header: {
       flex: 0,
-      marginLeft: wp('3%', insets),
-      marginRight: wp('3%', insets),
+      marginLeft: wp('3%'),
+      marginRight: wp('3%'),
     },
     headerImage: {
       alignSelf: 'center',
-      marginVertical: hp('2%', insets),
+      marginVertical: hp('2%'),
     },
     nftTypeIcon: {
-      marginRight: wp('4%', insets),
+      marginRight: wp('4%'),
       alignSelf: 'center',
     },
     nftTypeItem: {

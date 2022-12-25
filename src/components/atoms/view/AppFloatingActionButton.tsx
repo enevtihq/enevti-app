@@ -1,8 +1,7 @@
 import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import React from 'react';
 import { AnimatedFAB, useTheme } from 'react-native-paper';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
+import { wp } from 'enevti-app/utils/layout/imageRatio';
 
 interface AppFloatingActionButtonProps {
   label: string;
@@ -21,8 +20,7 @@ export default function AppFloatingActionButton({
 }: AppFloatingActionButtonProps) {
   const theme = useTheme();
   theme.colors.accent = theme.colors.primary;
-  const insets = useSafeAreaInsets();
-  const styles = React.useMemo(() => makeStyles(insets), [insets]);
+  const styles = React.useMemo(() => makeStyles(), []);
 
   return (
     <AnimatedFAB
@@ -37,13 +35,13 @@ export default function AppFloatingActionButton({
   );
 }
 
-const makeStyles = (insets: SafeAreaInsets) =>
+const makeStyles = () =>
   StyleSheet.create({
     fab: {
       position: 'absolute',
       bottom: 0,
       right: 0,
-      margin: wp('6%', insets),
+      margin: wp('6%'),
       zIndex: 99,
     },
   });

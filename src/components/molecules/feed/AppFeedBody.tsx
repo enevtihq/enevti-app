@@ -1,5 +1,4 @@
 import React from 'react';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { FeedItem } from 'enevti-app/types/core/service/feed';
 import { hp } from 'enevti-app/utils/layout/imageRatio';
 import AppNFTListRenderer from 'enevti-app/components/molecules/nft/AppNFTListRenderer';
@@ -14,7 +13,6 @@ interface AppFeedBodyProps {
 }
 
 export default function AppFeedBody({ canvasWidth, navigation, feed }: AppFeedBodyProps) {
-  const insets = useSafeAreaInsets();
   const onPress = React.useCallback(() => {
     navigation.push('Collection', { arg: feed.id, mode: 'id' });
   }, [feed.id, navigation]);
@@ -34,7 +32,7 @@ export default function AppFeedBody({ canvasWidth, navigation, feed }: AppFeedBo
       imageSize={'l'}
       nft={feed.nft[0]}
       width={canvasWidth}
-      style={{ marginBottom: hp('1%', insets) }}
+      style={{ marginBottom: hp('1%') }}
       onPress={onPress}
     />
   );

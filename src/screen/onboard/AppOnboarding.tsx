@@ -4,7 +4,6 @@ import AppView from 'enevti-app/components/atoms/view/AppView';
 import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 import AppBrandBanner from 'enevti-app/components/molecules/brand/AppBrandBanner';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
 import AppTextHeading1 from 'enevti-app/components/atoms/text/AppTextHeading1';
 import AppTextBody3 from 'enevti-app/components/atoms/text/AppTextBody3';
@@ -23,12 +22,11 @@ export default function AppOnboarding({ navigation }: Props) {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const theme = useTheme() as Theme;
-  const insets = useSafeAreaInsets();
   const styles = React.useMemo(() => makeStyles(), []);
 
   const [index, setIndex] = React.useState<number>(0);
-  const itemWidth = React.useMemo(() => wp('100%', insets), [insets]);
-  const sliderWidth = React.useMemo(() => wp('100%', insets), [insets]);
+  const itemWidth = React.useMemo(() => wp('100%'), []);
+  const sliderWidth = React.useMemo(() => wp('100%'), []);
 
   const onboardingData = React.useMemo(() => {
     return [

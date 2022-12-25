@@ -2,8 +2,7 @@ import { View, StyleSheet } from 'react-native';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import AppAvatarRenderer from 'enevti-app/components/molecules/avatar/AppAvatarRenderer';
-import { hp, wp, SafeAreaInsets } from 'enevti-app/utils/layout/imageRatio';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 import { Persona } from 'enevti-app/types/core/account/persona';
 import AppTextHeading2 from 'enevti-app/components/atoms/text/AppTextHeading2';
 import AppTextBody3 from 'enevti-app/components/atoms/text/AppTextBody3';
@@ -47,9 +46,8 @@ export const PROFILE_HEADER_HEIGHT_PERCENTAGE = 42;
 export default function AppProfileHeader({ navigation, persona, profile }: AppProfileHeaderProps) {
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
-  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
+  const styles = React.useMemo(() => makeStyles(theme), [theme]);
   const myPersona = useSelector(selectMyPersonaCache);
   const isDeliverSecretProcessing = useSelector(selectDeliverSecretProcessing);
   const iAmDelivering = React.useMemo(
@@ -91,9 +89,9 @@ export default function AppProfileHeader({ navigation, persona, profile }: AppPr
 
   return (
     <View pointerEvents={'box-none'} style={styles.profileHeaderContainer}>
-      <AppAvatarRenderer persona={persona} size={wp('25%', insets)} style={{ marginBottom: hp('2%', insets) }} />
+      <AppAvatarRenderer persona={persona} size={wp('25%')} style={{ marginBottom: hp('2%') }} />
 
-      <View style={{ height: hp('3.3%', insets) }}>
+      <View style={{ height: hp('3.3%') }}>
         <AppPersonaLabel persona={persona} usernameComponent={AppTextHeading2} base32Component={AppTextBody3} />
       </View>
 
@@ -160,7 +158,7 @@ export default function AppProfileHeader({ navigation, persona, profile }: AppPr
             <AppQuaternaryButton
               box
               icon={iconMap.menu}
-              iconSize={hp('2%', insets)}
+              iconSize={hp('2%')}
               style={styles.profileActionMoreButton}
               iconStyle={styles.profileActionMoreButtonContent}
               onPress={() => setMenuVisible(true)}
@@ -196,10 +194,10 @@ export default function AppProfileHeader({ navigation, persona, profile }: AppPr
         {profile.social.twitter.link && profile.social.twitter.stat ? (
           <AppQuaternaryButton
             icon={iconMap.twitter}
-            iconSize={hp('3%', insets)}
+            iconSize={hp('3%')}
             iconColor={theme.colors.placeholder}
             style={{
-              height: hp('4%', insets),
+              height: hp('4%'),
             }}
             onPress={() => dispatch(showSnackbar({ mode: 'info', text: 'Coming Soon!' }))}>
             <AppTextBody4 style={{ color: theme.colors.placeholder }}>
@@ -209,10 +207,10 @@ export default function AppProfileHeader({ navigation, persona, profile }: AppPr
         ) : null}
         <AppQuaternaryButton
           icon={iconMap.wallet}
-          iconSize={hp('3%', insets)}
+          iconSize={hp('3%')}
           iconColor={theme.colors.placeholder}
           style={{
-            height: hp('4%', insets),
+            height: hp('4%'),
           }}
           onPress={() =>
             navigation.push('Wallet', {
@@ -227,7 +225,7 @@ export default function AppProfileHeader({ navigation, persona, profile }: AppPr
             <AppTextBody5
               style={{
                 color: theme.colors.placeholder,
-                marginLeft: wp('1%', insets),
+                marginLeft: wp('1%'),
               }}>
               {getCoinName()}
             </AppTextBody5>
@@ -237,10 +235,10 @@ export default function AppProfileHeader({ navigation, persona, profile }: AppPr
           <AppQuaternaryButton
             icon={iconMap.pendingNFT}
             loaderLeft={iAmDelivering}
-            iconSize={hp('3%', insets)}
+            iconSize={hp('3%')}
             iconColor={theme.colors.placeholder}
             style={{
-              height: hp('4%', insets),
+              height: hp('4%'),
             }}
             onPress={onPendingButtonPressed}>
             <View style={styles.profileHeaderChipsContent}>
@@ -250,7 +248,7 @@ export default function AppProfileHeader({ navigation, persona, profile }: AppPr
               <AppTextBody5
                 style={{
                   color: theme.colors.placeholder,
-                  marginLeft: wp('1%', insets),
+                  marginLeft: wp('1%'),
                 }}>
                 {iAmDelivering ? t('profile:delivering') : t('profile:pending')}
               </AppTextBody5>
@@ -299,30 +297,30 @@ export default function AppProfileHeader({ navigation, persona, profile }: AppPr
   );
 }
 
-const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
+const makeStyles = (theme: Theme) =>
   StyleSheet.create({
     contentContainer: {
       alignItems: 'center',
     },
     safeBackgroundBar: {
       position: 'absolute',
-      top: -hp(HEADER_HEIGHT_PERCENTAGE, insets),
-      width: wp('100%', insets),
-      height: hp(HEADER_HEIGHT_PERCENTAGE, insets),
+      top: -hp(HEADER_HEIGHT_PERCENTAGE),
+      width: wp('100%'),
+      height: hp(HEADER_HEIGHT_PERCENTAGE),
       backgroundColor: theme.colors.background,
     },
     profileHeaderContainer: {
       alignItems: 'center',
-      paddingVertical: hp('1%', insets),
-      height: hp(PROFILE_HEADER_HEIGHT_PERCENTAGE, insets),
-      width: wp('100%', insets),
+      paddingVertical: hp('1%'),
+      height: hp(PROFILE_HEADER_HEIGHT_PERCENTAGE),
+      width: wp('100%'),
       backgroundColor: theme.colors.background,
     },
     profileStatsContainer: {
       flexDirection: 'row',
-      width: wp('85%', insets),
-      marginTop: hp('2%', insets),
-      height: hp('5.2%', insets),
+      width: wp('85%'),
+      marginTop: hp('2%'),
+      height: hp('5.2%'),
     },
     profileStatsItem: {
       flex: 1,
@@ -336,17 +334,17 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
       borderColor: Color(theme.colors.placeholder).alpha(0.1).rgb().toString(),
     },
     profileActionContainer: {
-      marginTop: hp('2%', insets),
+      marginTop: hp('2%'),
       flexDirection: 'row',
     },
     profileActionButton: {
-      height: hp('6%', insets),
-      marginRight: wp('2%', insets),
+      height: hp('6%'),
+      marginRight: wp('2%'),
       justifyContent: 'center',
       alignItems: 'center',
     },
     profileActionMoreButton: {
-      height: hp('6%', insets),
+      height: hp('6%'),
       justifyContent: 'center',
       alignItems: 'center',
     },
@@ -354,8 +352,8 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
       paddingRight: 0,
     },
     profileHeaderChipsContainer: {
-      height: hp('3%', insets),
-      marginVertical: hp('3%', insets),
+      height: hp('3%'),
+      marginVertical: hp('3%'),
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',

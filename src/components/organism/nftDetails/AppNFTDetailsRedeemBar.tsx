@@ -1,10 +1,9 @@
 import { View, StyleSheet } from 'react-native';
 import React from 'react';
 import { Theme } from 'enevti-app/theme/default';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
+import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 import Color from 'color';
 import { Divider, TouchableRipple, useTheme } from 'react-native-paper';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AppIconGradient from 'enevti-app/components/molecules/icon/AppIconGradient';
 import utilityToIcon from 'enevti-app/utils/icon/utilityToIcon';
 import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
@@ -58,8 +57,7 @@ export default function AppNFTDetailsRedeemBar({ nft, navigation, route }: AppNF
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const theme = useTheme() as Theme;
-  const insets = useSafeAreaInsets();
-  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
+  const styles = React.useMemo(() => makeStyles(theme), [theme]);
 
   const canAddCalendar = React.useMemo(
     () =>
@@ -127,12 +125,12 @@ export default function AppNFTDetailsRedeemBar({ nft, navigation, route }: AppNF
   );
 }
 
-const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
+const makeStyles = (theme: Theme) =>
   StyleSheet.create({
     redeemContainer: {
-      marginHorizontal: wp('5%', insets),
-      paddingVertical: wp('2%', insets),
-      paddingHorizontal: wp('3%', insets),
+      marginHorizontal: wp('5%'),
+      paddingVertical: wp('2%'),
+      paddingHorizontal: wp('3%'),
       backgroundColor: theme.colors.background,
       borderRadius: theme.roundness,
       borderWidth: StyleSheet.hairlineWidth,
@@ -144,16 +142,16 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
     },
     redeemRowIcon: {
       alignSelf: 'center',
-      marginRight: wp('3%', insets),
+      marginRight: wp('3%'),
     },
     redeemBarUtilityContainer: {
       flex: 1,
     },
     redeemBarUtilityText: {
-      lineHeight: hp('1.5%', insets),
+      lineHeight: hp('1.5%'),
     },
     redeemBarButton: {
-      height: hp('4%', insets),
+      height: hp('4%'),
       justifyContent: 'center',
       alignSelf: 'center',
     },
@@ -161,22 +159,22 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
       color: 'white',
     },
     divider: {
-      marginVertical: wp('2%', insets),
+      marginVertical: wp('2%'),
     },
     calendarPressable: {
       justifyContent: 'center',
     },
     calendarLabelText: {
       color: theme.colors.placeholder,
-      lineHeight: hp('2.5%', insets),
+      lineHeight: hp('2.5%'),
     },
     calendarActionText: {
       color: theme.colors.primary,
-      lineHeight: hp('2.5%', insets),
+      lineHeight: hp('2.5%'),
     },
     popableInfoIcon: {
-      height: hp('4%', insets),
-      width: wp('7%', insets),
+      height: hp('4%'),
+      width: wp('7%'),
       justifyContent: 'center',
       alignItems: 'center',
     },

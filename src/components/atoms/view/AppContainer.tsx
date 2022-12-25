@@ -45,8 +45,7 @@ export default function AppContainer({
           {header ? (
             <View
               style={{
-                marginTop:
-                  typeof headerOffset === 'number' ? headerOffset : hp(HEADER_HEIGHT_PERCENTAGE, insets) + insets.top,
+                marginTop: typeof headerOffset === 'number' ? headerOffset : hp(HEADER_HEIGHT_PERCENTAGE) + insets.top,
               }}
             />
           ) : null}

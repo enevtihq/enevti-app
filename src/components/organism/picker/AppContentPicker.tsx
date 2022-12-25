@@ -5,8 +5,7 @@ import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import DocumentPicker, { DocumentPickerResponse } from 'react-native-document-picker';
 import { handleError } from 'enevti-app/utils/error/handle';
 import AppIconButton from 'enevti-app/components/atoms/icon/AppIconButton';
-import { SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { wp } from 'enevti-app/utils/layout/imageRatio';
 import mimeToIcon from 'enevti-app/utils/icon/mimeToIcon';
 import { fileSizeKMG } from 'enevti-app/utils/format/fileSize';
 import { shallowEqual } from 'react-redux';
@@ -53,8 +52,7 @@ function Component({
   memoKey,
 }: AppContentPickerProps) {
   const theme = useTheme() as Theme;
-  const insets = useSafeAreaInsets();
-  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
+  const styles = React.useMemo(() => makeStyles(theme), [theme]);
 
   const handleDocumentSelection = React.useCallback(async () => {
     try {
@@ -105,10 +103,10 @@ function Component({
   );
 }
 
-const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
+const makeStyles = (theme: Theme) =>
   StyleSheet.create({
     listDropDown: {
-      marginLeft: wp('3%', insets),
+      marginLeft: wp('3%'),
       alignSelf: 'center',
     },
     pickerItem: {

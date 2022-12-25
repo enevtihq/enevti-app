@@ -9,8 +9,7 @@ import { getCoinName } from 'enevti-app/utils/constant/identifier';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import AppFormTextInputWithError from 'enevti-app/components/molecules/form/AppFormTextInputWithError';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 import { useTheme } from 'react-native-paper';
 import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
 import AppHeaderWizard from 'enevti-app/components/molecules/view/AppHeaderWizard';
@@ -38,9 +37,8 @@ const validationSchema = Yup.object().shape({
 export default function SendToken({ navigation, route }: Props) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const insets = useSafeAreaInsets();
   const paperTheme = useTheme();
-  const styles = React.useMemo(() => makeStyles(insets), [insets]);
+  const styles = React.useMemo(() => makeStyles(), []);
   const paymentThunkRef = React.useRef<any>();
 
   const [persona, setPersona] = React.useState<Persona>();
@@ -159,7 +157,7 @@ export default function SendToken({ navigation, route }: Props) {
                 value={persona}
                 onSelected={onPersonaSelected(setFieldValue)}
               />
-              <View style={{ height: hp(2, insets) }} />
+              <View style={{ height: hp(2) }} />
               <AppFormTextInputWithError
                 theme={paperTheme}
                 label={t('wallet:amount')}
@@ -180,7 +178,7 @@ export default function SendToken({ navigation, route }: Props) {
             </View>
 
             <View style={styles.actionContainer}>
-              <View style={{ height: hp('5%', insets) }} />
+              <View style={{ height: hp('5%') }} />
 
               <AppPrimaryButton
                 onPress={submitForm}
@@ -197,23 +195,23 @@ export default function SendToken({ navigation, route }: Props) {
   );
 }
 
-const makeStyles = (insets: SafeAreaInsets) =>
+const makeStyles = () =>
   StyleSheet.create({
     brandLogo: {
       alignSelf: 'center',
       justifyContent: 'center',
-      marginBottom: hp('2%', insets),
+      marginBottom: hp('2%'),
     },
     header: {
       flex: 0,
-      marginLeft: wp('3%', insets),
-      marginRight: wp('3%', insets),
-      marginBottom: hp('5%', insets),
+      marginLeft: wp('3%'),
+      marginRight: wp('3%'),
+      marginBottom: hp('5%'),
     },
     formInput: {
-      marginBottom: hp('2%', insets),
-      marginLeft: wp('5%', insets),
-      marginRight: wp('5%', insets),
+      marginBottom: hp('2%'),
+      marginLeft: wp('5%'),
+      marginRight: wp('5%'),
     },
     inputView: {
       flex: 1,
@@ -223,7 +221,7 @@ const makeStyles = (insets: SafeAreaInsets) =>
       flexDirection: 'column-reverse',
     },
     sendButton: {
-      marginLeft: wp('5%', insets),
-      marginRight: wp('5%', insets),
+      marginLeft: wp('5%'),
+      marginRight: wp('5%'),
     },
   });

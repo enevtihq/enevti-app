@@ -157,7 +157,7 @@ export default function AppStakeButton({ persona, extended, route }: AppStakeBut
                   <AppPrimaryButton onPress={submitForm} disabled={!(isValid && dirty)} style={styles.dialogButton}>
                     {selfStake ? t('stake:selfStake') : t('stake:addStake')}
                   </AppPrimaryButton>
-                  <View style={{ height: hp('3%', insets) }} />
+                  <View style={{ height: hp('3%') }} />
                 </View>
               </View>
             )}
@@ -175,27 +175,27 @@ const makeStyles = (insets: SafeAreaInsets) =>
       paddingBottom: insets.bottom,
     },
     googleSignInButton: {
-      marginLeft: wp('5%', insets),
-      marginRight: wp('5%', insets),
+      marginLeft: wp('5%'),
+      marginRight: wp('5%'),
     },
     dialogAction: {
       width: '100%',
-      paddingHorizontal: wp('5%', insets),
+      paddingHorizontal: wp('5%'),
     },
     dialogButton: {
       width: '100%',
     },
     dialogContent: {
       width: '100%',
-      paddingLeft: wp('5%', insets),
-      paddingRight: wp('5%', insets),
-      marginBottom: hp('2%', insets),
+      paddingLeft: wp('5%'),
+      paddingRight: wp('5%'),
+      marginBottom: hp('2%'),
       flex: 1,
     },
     modalHeader: {
-      width: wp('85%', insets),
-      marginTop: hp('2%', insets),
-      marginBottom: hp('3%', insets),
+      width: wp('85%'),
+      marginTop: hp('2%'),
+      marginBottom: hp('3%'),
       alignSelf: 'center',
       flex: 0,
     },

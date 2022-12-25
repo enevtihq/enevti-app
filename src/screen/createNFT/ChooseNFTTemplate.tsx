@@ -6,10 +6,9 @@ import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { useTranslation } from 'react-i18next';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from 'react-native-paper';
 import { Theme } from 'enevti-app/theme/default';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
+import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
 import { getBuiltInNFTTemplate } from 'enevti-app/service/enevti/template';
 import { NFTTemplateAsset } from 'enevti-app/types/core/chain/nft/NFTTemplate';
@@ -44,9 +43,8 @@ type Props = StackScreenProps<RootStackParamList, 'ChooseNFTTemplate'>;
 export default function ChooseNFTTemplate({ navigation, route }: Props) {
   const { mode } = route.params;
   const { t } = useTranslation();
-  const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
-  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
+  const styles = React.useMemo(() => makeStyles(theme), [theme]);
   const dispatch = useDispatch();
 
   const [dataUri, setDataUri] = React.useState<string>('');
@@ -66,8 +64,8 @@ export default function ChooseNFTTemplate({ navigation, route }: Props) {
   };
   const template = builtInTemplate.concat(placeholderTemplate);
 
-  const itemWidth = React.useMemo(() => wp('85%', insets), [insets]);
-  const sliderWidth = React.useMemo(() => wp('100%', insets), [insets]);
+  const itemWidth = React.useMemo(() => wp('85%'), []);
+  const sliderWidth = React.useMemo(() => wp('100%'), []);
 
   const renderItem = React.useCallback(
     ({ item }: { index?: number; item: NFTTemplateAsset }) =>
@@ -156,8 +154,8 @@ export default function ChooseNFTTemplate({ navigation, route }: Props) {
           onSnapToItem={onSnapToItem}
         />
         <AppListItem
-          containerStyle={{ marginHorizontal: wp('12.5%', insets) }}
-          style={{ paddingHorizontal: wp('5%', insets) }}
+          containerStyle={{ marginHorizontal: wp('12.5%') }}
+          style={{ paddingHorizontal: wp('5%') }}
           rightContent={
             template[activeIndex].id !== 'create' ? (
               <AppIconButton
@@ -174,7 +172,7 @@ export default function ChooseNFTTemplate({ navigation, route }: Props) {
               />
             ) : null
           }>
-          <AppTextHeading3 numberOfLines={1} style={{ width: wp('50%', insets) }}>
+          <AppTextHeading3 numberOfLines={1} style={{ width: wp('50%') }}>
             {template[activeIndex].name}
           </AppTextHeading3>
           <AppTextBody4 numberOfLines={2} style={{ color: theme.colors.placeholder }}>
@@ -192,25 +190,25 @@ export default function ChooseNFTTemplate({ navigation, route }: Props) {
             ? t('createNFT:createTemplateButton')
             : t('createNFT:chooseNFTTemplateContinue')}
         </AppPrimaryButton>
-        <View style={{ height: hp('2%', insets) }} />
+        <View style={{ height: hp('2%') }} />
       </View>
     </AppView>
   );
 }
 
-const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
+const makeStyles = (theme: Theme) =>
   StyleSheet.create({
     header: {
       flex: 0,
-      marginLeft: wp('3%', insets),
-      marginRight: wp('3%', insets),
+      marginLeft: wp('3%'),
+      marginRight: wp('3%'),
     },
     actionContainer: {
-      marginTop: hp('6%', insets),
+      marginTop: hp('6%'),
     },
     continueButton: {
-      marginLeft: wp('5%', insets),
-      marginRight: wp('5%', insets),
+      marginLeft: wp('5%'),
+      marginRight: wp('5%'),
     },
     templateItem: {
       shadowColor: '#000000',
@@ -220,11 +218,11 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
     },
     templateCarousel: {
       flex: 1,
-      marginTop: hp('6%', insets),
+      marginTop: hp('6%'),
     },
     templateEdit: {
       alignSelf: 'center',
-      marginRight: -wp('1%', insets),
+      marginRight: -wp('1%'),
     },
     comingSoonBox: {
       backgroundColor: theme.colors.background,

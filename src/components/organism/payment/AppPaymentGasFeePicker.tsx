@@ -201,7 +201,7 @@ export default function AppPaymentGasFeePicker({ visible, onDismiss, onSave }: A
           leftContent={
             <AppIconGradient
               name={iconMap.calculator}
-              size={wp('12%', insets)}
+              size={wp('12%')}
               androidRenderingMode={'software'}
               colors={[theme.colors.primary, theme.colors.secondary]}
               style={styles.headerIcon}
@@ -281,64 +281,64 @@ const makeStyles = (insets: SafeAreaInsets) =>
     loaderContainer: {
       justifyContent: 'center',
       alignItems: 'center',
-      height: hp(15, insets),
+      height: hp(15),
       width: '100%',
-      marginBottom: hp('3%', insets),
+      marginBottom: hp('3%'),
     },
     menuContainer: {
       flex: 1,
     },
     container: {
-      padding: wp('5%', insets),
+      padding: wp('5%'),
     },
     gasFeeHeader: {
       textAlign: 'center',
     },
     gasFeeHeaderCoin: {
-      marginLeft: wp(3, insets),
+      marginLeft: wp(3),
       alignSelf: 'center',
     },
     saveButton: {
-      paddingHorizontal: wp('5%', insets),
-      marginTop: hp('2%', insets),
-      marginBottom: Platform.OS === 'ios' ? insets.bottom : hp('2%', insets),
+      paddingHorizontal: wp('5%'),
+      marginTop: hp('2%'),
+      marginBottom: Platform.OS === 'ios' ? insets.bottom : hp('2%'),
     },
     gasFeePriorityButton: {
-      height: hp(5, insets),
-      width: wp(25, insets),
-      marginHorizontal: wp(1, insets),
+      height: hp(5),
+      width: wp(25),
+      marginHorizontal: wp(1),
     },
     formInput: {
-      marginBottom: hp('1%', insets),
-      marginLeft: wp('5%', insets),
-      marginRight: wp('5%', insets),
+      marginBottom: hp('1%'),
+      marginLeft: wp('5%'),
+      marginRight: wp('5%'),
     },
     headerTitle: {
-      width: wp('50%', insets),
+      width: wp('50%'),
     },
     headerIcon: {
-      marginRight: wp('3%', insets),
+      marginRight: wp('3%'),
       alignSelf: 'center',
     },
     accordionListView: {
       flexDirection: 'row',
-      marginLeft: wp('1%', insets),
+      marginLeft: wp('1%'),
     },
     accordionIcon: {
-      marginRight: wp('3%', insets),
+      marginRight: wp('3%'),
       alignSelf: 'center',
     },
     priorityButtonContainer: {
       flexDirection: 'row',
       justifyContent: 'center',
-      height: hp(5, insets),
-      marginBottom: hp('2%', insets),
+      height: hp(5),
+      marginBottom: hp('2%'),
     },
     feeAmount: {
       flexDirection: 'row',
       justifyContent: 'center',
-      height: hp(8, insets),
-      marginBottom: hp('3%', insets),
+      height: hp(8),
+      marginBottom: hp('3%'),
     },
     gasPickerButtonDropdown: {
       flexDirection: 'row',

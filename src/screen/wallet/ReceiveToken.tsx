@@ -6,8 +6,7 @@ import { RootStackParamList } from 'enevti-app/navigation';
 import AppHeaderWizard from 'enevti-app/components/molecules/view/AppHeaderWizard';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import { useTranslation } from 'react-i18next';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 import AppQRCode from 'enevti-app/components/atoms/qr/AppQRCode';
 import AppQuaternaryButton from 'enevti-app/components/atoms/button/AppQuaternaryButton';
 import { useTheme } from 'react-native-paper';
@@ -35,10 +34,9 @@ type Props = StackScreenProps<RootStackParamList, 'ReceiveToken'>;
 export default function ReceiveToken({ navigation }: Props) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const insets = useSafeAreaInsets();
   const paperTheme = useTheme();
   const theme = paperTheme as Theme;
-  const styles = React.useMemo(() => makeStyles(insets), [insets]);
+  const styles = React.useMemo(() => makeStyles(), []);
   const myPersona = useSelector(selectMyPersonaCache);
 
   const [qrValue, setQrValue] = React.useState<string>(() =>
@@ -115,7 +113,7 @@ export default function ReceiveToken({ navigation }: Props) {
         containerStyle={styles.accountCard}
         leftContent={
           <View style={styles.collectionCoverContainer}>
-            <AppAvatarRenderer persona={myPersona} size={wp('12%', insets)} style={styles.avatar} />
+            <AppAvatarRenderer persona={myPersona} size={wp('12%')} style={styles.avatar} />
           </View>
         }
         rightContent={
@@ -136,10 +134,10 @@ export default function ReceiveToken({ navigation }: Props) {
         <View style={{ height: hp(3) }} />
         <AppQuaternaryButton
           icon={iconMap.copy}
-          iconSize={hp('3%', insets)}
+          iconSize={hp('3%')}
           iconColor={theme.colors.placeholder}
           style={{
-            height: hp('4%', insets),
+            height: hp('4%'),
           }}
           onPress={onQrCopy}>
           <AppTextBody4 style={{ color: theme.colors.placeholder }}>{t('wallet:copyQrValue')}</AppTextBody4>
@@ -171,7 +169,7 @@ export default function ReceiveToken({ navigation }: Props) {
   );
 }
 
-const makeStyles = (insets: SafeAreaInsets) =>
+const makeStyles = () =>
   StyleSheet.create({
     avatar: {
       alignSelf: 'center',
@@ -181,30 +179,30 @@ const makeStyles = (insets: SafeAreaInsets) =>
       width: '100%',
     },
     formInput: {
-      marginBottom: hp('1%', insets),
-      marginLeft: wp('5%', insets),
-      marginRight: wp('5%', insets),
+      marginBottom: hp('1%'),
+      marginLeft: wp('5%'),
+      marginRight: wp('5%'),
     },
     accountCard: {
-      marginVertical: hp('3%', insets),
-      marginHorizontal: wp('10%', insets),
+      marginVertical: hp('3%'),
+      marginHorizontal: wp('10%'),
     },
     header: {
       flex: 0,
-      marginLeft: wp('3%', insets),
-      marginRight: wp('3%', insets),
+      marginLeft: wp('3%'),
+      marginRight: wp('3%'),
     },
     qrContainer: {
       flex: 1,
       alignItems: 'center',
     },
     shareButton: {
-      marginBottom: hp('2%', insets),
-      marginLeft: wp('5%', insets),
-      marginRight: wp('5%', insets),
+      marginBottom: hp('2%'),
+      marginLeft: wp('5%'),
+      marginRight: wp('5%'),
     },
     collectionCoverContainer: {
-      marginRight: wp('3%', insets),
+      marginRight: wp('3%'),
       overflow: 'hidden',
       alignSelf: 'center',
     },

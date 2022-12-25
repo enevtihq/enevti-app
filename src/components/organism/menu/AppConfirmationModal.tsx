@@ -3,8 +3,7 @@ import React from 'react';
 import AppMenuContainer from 'enevti-app/components/atoms/menu/AppMenuContainer';
 import AppHeaderWizard from 'enevti-app/components/molecules/view/AppHeaderWizard';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 import AppSecondaryButton from 'enevti-app/components/atoms/button/AppSecondaryButton';
 import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
 
@@ -35,8 +34,7 @@ export default function AppConfirmationModal({
   enablePanDownToClose,
   tapEverywhereToDismiss = true,
 }: AppConfirmationModalProps) {
-  const insets = useSafeAreaInsets();
-  const styles = React.useMemo(() => makeStyles(insets), [insets]);
+  const styles = React.useMemo(() => makeStyles(), []);
   const snapPoints = React.useMemo(() => ['47%'], []);
   return (
     <AppMenuContainer
@@ -67,26 +65,26 @@ export default function AppConfirmationModal({
   );
 }
 
-const makeStyles = (insets: SafeAreaInsets) =>
+const makeStyles = () =>
   StyleSheet.create({
     container: {
-      width: wp('90%', insets),
+      width: wp('90%'),
       alignSelf: 'center',
       flex: 1,
     },
     titleStyle: {
-      marginTop: hp('1%', insets),
+      marginTop: hp('1%'),
     },
     buttonContainer: {
-      paddingHorizontal: wp('5%', insets),
-      paddingBottom: wp('10%', insets),
-      marginTop: hp('3%', insets),
+      paddingHorizontal: wp('5%'),
+      paddingBottom: wp('10%'),
+      marginTop: hp('3%'),
       flexDirection: 'row',
     },
     buttonItem: {
       flex: 1,
     },
     buttonContainerSpace: {
-      marginHorizontal: wp('1%', insets),
+      marginHorizontal: wp('1%'),
     },
   });

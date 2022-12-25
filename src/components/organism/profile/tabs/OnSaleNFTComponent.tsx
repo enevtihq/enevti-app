@@ -5,8 +5,7 @@ import { FlatGrid, FlatGridProps } from 'react-native-super-grid';
 import { NFTBase } from 'enevti-app/types/core/chain/nft';
 import { PROFILE_HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/organism/profile/AppProfileHeader';
 import { TOP_TABBAR_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppTopTabBar';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 import AppNFTCard from 'enevti-app/components/molecules/nft/AppNFTCard';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
@@ -40,24 +39,23 @@ function Component(
   }: OnSaleNFTComponentProps,
   ref: any,
 ) {
-  const insets = useSafeAreaInsets();
   const mounted = React.useRef<boolean>(false);
   const [displayed, setDisplayed] = React.useState<boolean>(false);
   const [refreshing, setRefreshing] = React.useState<boolean>(false);
 
   const styles = React.useMemo(
-    () => makeStyles(insets, headerHeight, displayed, disableHeaderAnimation),
-    [insets, headerHeight, displayed, disableHeaderAnimation],
+    () => makeStyles(headerHeight, displayed, disableHeaderAnimation),
+    [headerHeight, displayed, disableHeaderAnimation],
   );
   const isScrollEnabled = React.useMemo(() => (refreshing ? false : scrollEnabled), [refreshing, scrollEnabled]);
-  const spacing = React.useMemo(() => wp('1%', insets), [insets]);
-  const itemDimension = React.useMemo(() => wp('48%', insets), [insets]);
+  const spacing = React.useMemo(() => wp('1%'), []);
+  const itemDimension = React.useMemo(() => wp('48%'), []);
   const progressViewOffset = React.useMemo(
     () =>
       Platform.OS === 'ios'
         ? headerHeight
-        : hp(PROFILE_HEADER_HEIGHT_PERCENTAGE + TOP_TABBAR_HEIGHT_PERCENTAGE, insets) + headerHeight,
-    [headerHeight, insets],
+        : hp(PROFILE_HEADER_HEIGHT_PERCENTAGE + TOP_TABBAR_HEIGHT_PERCENTAGE) + headerHeight,
+    [headerHeight],
   );
 
   const handleRefresh = React.useCallback(() => {
@@ -113,16 +111,11 @@ function Component(
   );
 }
 
-const makeStyles = (
-  insets: SafeAreaInsets,
-  headerHeight: number,
-  displayed: boolean,
-  disableHeaderAnimation: boolean,
-) =>
+const makeStyles = (headerHeight: number, displayed: boolean, disableHeaderAnimation: boolean) =>
   StyleSheet.create({
     contentContainerStyle: {
-      paddingTop: hp(PROFILE_HEADER_HEIGHT_PERCENTAGE + TOP_TABBAR_HEIGHT_PERCENTAGE, insets) + headerHeight,
-      minHeight: hp(PROFILE_HEADER_HEIGHT_PERCENTAGE + 100, insets) + (disableHeaderAnimation ? 0 : headerHeight),
+      paddingTop: hp(PROFILE_HEADER_HEIGHT_PERCENTAGE + TOP_TABBAR_HEIGHT_PERCENTAGE) + headerHeight,
+      minHeight: hp(PROFILE_HEADER_HEIGHT_PERCENTAGE + 100) + (disableHeaderAnimation ? 0 : headerHeight),
       display: displayed ? undefined : 'none',
     },
   });

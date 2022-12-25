@@ -6,8 +6,7 @@ import { useTheme } from 'react-native-paper';
 import { Theme } from 'enevti-app/theme/default';
 import AppTextBody3 from 'enevti-app/components/atoms/text/AppTextBody3';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 import Color from 'color';
 import { useTranslation } from 'react-i18next';
 import { numberKMB, parseAmount } from 'enevti-app/utils/format/amount';
@@ -28,8 +27,7 @@ export default function AppCollectionDescriptionModal({
 }: AppCollectionDescriptionModalProps) {
   const { t } = useTranslation();
   const theme = useTheme() as Theme;
-  const insets = useSafeAreaInsets();
-  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
+  const styles = React.useMemo(() => makeStyles(theme), [theme]);
   const snapPoints = React.useMemo(() => ['75%'], []);
   return (
     <AppMenuContainer
@@ -40,8 +38,8 @@ export default function AppCollectionDescriptionModal({
       onDismiss={onDismiss}>
       <View
         style={{
-          paddingVertical: wp('2%', insets),
-          paddingHorizontal: wp('5%', insets),
+          paddingVertical: wp('2%'),
+          paddingHorizontal: wp('5%'),
         }}>
         <AppTextHeading2>
           {collection.name}{' '}
@@ -91,12 +89,12 @@ export default function AppCollectionDescriptionModal({
   );
 }
 
-const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
+const makeStyles = (theme: Theme) =>
   StyleSheet.create({
     collectionStatsContainer: {
       flexDirection: 'row',
-      marginVertical: hp('2%', insets),
-      height: hp('5.2%', insets),
+      marginVertical: hp('2%'),
+      height: hp('5.2%'),
     },
     collectionStatsItem: {
       flex: 1,

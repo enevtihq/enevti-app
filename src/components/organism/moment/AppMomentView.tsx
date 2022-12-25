@@ -34,7 +34,7 @@ import { useTheme } from 'react-native-paper';
 import { Theme } from 'enevti-app/theme/default';
 
 const DIM_CONFIG = 'window';
-const MOMENT_HEIGHT = hp(100, undefined, { dim: DIM_CONFIG });
+const MOMENT_HEIGHT = hp(100, { dim: DIM_CONFIG });
 
 interface AppMomentViewProps {
   navigation: StackNavigationProp<RootStackParamList>;
@@ -151,9 +151,9 @@ export default function AppMomentView({
               <View style={styles.audioIndicatorItem}>
                 <AppIconComponent
                   name={muted ? iconMap.volumeOff : iconMap.volumeOn}
-                  size={hp(3, undefined, { dim: DIM_CONFIG })}
+                  size={hp(3, { dim: DIM_CONFIG })}
                   color={darkTheme.colors.text}
-                  style={{ padding: hp(2, undefined, { dim: DIM_CONFIG }) }}
+                  style={{ padding: hp(2, { dim: DIM_CONFIG }) }}
                 />
               </View>
             </Animated.View>
@@ -373,7 +373,7 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
     },
     momentItemContainer: {
       height: MOMENT_HEIGHT,
-      width: wp(100, undefined, { dim: DIM_CONFIG }),
+      width: wp(100, { dim: DIM_CONFIG }),
     },
     container: {
       flex: 1,

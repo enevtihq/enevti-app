@@ -6,8 +6,7 @@ import { shallowEqual } from 'react-redux';
 import utilityToIcon from 'enevti-app/utils/icon/utilityToIcon';
 import AppIconComponent from 'enevti-app/components/atoms/icon/AppIconComponent';
 import { StyleSheet, View } from 'react-native';
-import { SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { wp } from 'enevti-app/utils/layout/imageRatio';
 import UtilityBackground from 'enevti-app/components/atoms/nft/utility/UtilityBackground';
 import { makeDummyNFT } from 'enevti-app/utils/dummy/nft';
 import { NFTUtility } from 'enevti-app/types/core/chain/nft/NFTUtility';
@@ -21,8 +20,7 @@ interface AppUtilityPickerProps {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function Component({ value, onSelected, memoKey }: AppUtilityPickerProps) {
   const { t } = useTranslation();
-  const insets = useSafeAreaInsets();
-  const styles = React.useMemo(() => makeStyles(insets), [insets]);
+  const styles = React.useMemo(() => makeStyles(), []);
 
   const LeftComponent = React.useCallback(
     (item: PickerItem) => (
@@ -98,16 +96,16 @@ const AppUtilityPicker = React.memo(Component, (prevProps, nextProps) => {
 });
 export default AppUtilityPicker;
 
-const makeStyles = (insets: SafeAreaInsets) =>
+const makeStyles = () =>
   StyleSheet.create({
     listIconContainer: {
-      marginRight: wp('3%', insets),
+      marginRight: wp('3%'),
       alignSelf: 'center',
-      width: wp('10%', insets),
-      height: wp('10%', insets),
+      width: wp('10%'),
+      height: wp('10%'),
       justifyContent: 'center',
       alignItems: 'center',
-      borderRadius: wp('10%', insets),
+      borderRadius: wp('10%'),
       overflow: 'hidden',
     },
   });

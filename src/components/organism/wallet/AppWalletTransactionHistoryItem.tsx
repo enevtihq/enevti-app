@@ -4,8 +4,7 @@ import AppListItem from 'enevti-app/components/molecules/list/AppListItem';
 import AppAvatarRenderer from 'enevti-app/components/molecules/avatar/AppAvatarRenderer';
 import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 import { useTheme } from 'react-native-paper';
 import { Theme } from 'enevti-app/theme/default';
 import AppActivityIcon from 'enevti-app/components/molecules/activity/AppActivityIcon';
@@ -34,7 +33,6 @@ interface AppWalletTransactionHistoryItemProps {
 
 export default function AppWalletTransactionHistoryItem({ item }: AppWalletTransactionHistoryItemProps) {
   const { t } = useTranslation();
-  const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
   const now = React.useMemo(() => Date.now(), []);
 
@@ -86,19 +84,19 @@ export default function AppWalletTransactionHistoryItem({ item }: AppWalletTrans
     }
   }, [item.from, item.name, item.to, t]);
 
-  const styles = React.useMemo(() => makeStyles(theme, insets, amount.type), [theme, insets, amount.type]);
+  const styles = React.useMemo(() => makeStyles(theme, amount.type), [theme, amount.type]);
 
   const LeftContent = React.useCallback(() => {
     if (AVATAR_ACTION.includes(item.name)) {
       if (item.name === 'tokenSent') {
-        return <AppAvatarRenderer persona={item.to} size={wp('12%', insets)} style={styles.avatar} />;
+        return <AppAvatarRenderer persona={item.to} size={wp('12%')} style={styles.avatar} />;
       } else {
-        return <AppAvatarRenderer persona={item.from} size={wp('12%', insets)} style={styles.avatar} />;
+        return <AppAvatarRenderer persona={item.from} size={wp('12%')} style={styles.avatar} />;
       }
     } else {
       return <AppActivityIcon activityName={item.name} style={styles.activityIcon} />;
     }
-  }, [insets, item, styles.avatar, styles.activityIcon]);
+  }, [item, styles.avatar, styles.activityIcon]);
 
   return (
     <AppListItem
@@ -131,13 +129,13 @@ export default function AppWalletTransactionHistoryItem({ item }: AppWalletTrans
   );
 }
 
-const makeStyles = (theme: Theme, insets: SafeAreaInsets, type: string) =>
+const makeStyles = (theme: Theme, type: string) =>
   StyleSheet.create({
     avatar: {
       alignSelf: 'center',
     },
     collectionItem: {
-      height: hp(TRANSACTION_HISTORY_ITEM_HEIGHT, insets),
+      height: hp(TRANSACTION_HISTORY_ITEM_HEIGHT),
     },
     collectionRightContent: {
       justifyContent: 'center',
@@ -152,18 +150,18 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets, type: string) =>
       color: Color(theme.colors.placeholder).alpha(0.25).rgb().toString(),
     },
     collectionCoverContainer: {
-      marginRight: wp('3%', insets),
+      marginRight: wp('3%'),
       overflow: 'hidden',
       alignSelf: 'center',
     },
     collectionCover: {
-      width: wp('14%', insets),
-      height: wp('14%', insets),
+      width: wp('14%'),
+      height: wp('14%'),
     },
     activityIcon: {
       marginRight: 0,
       marginLeft: 0,
-      width: wp('12%', insets),
-      height: wp('12%', insets),
+      width: wp('12%'),
+      height: wp('12%'),
     },
   });

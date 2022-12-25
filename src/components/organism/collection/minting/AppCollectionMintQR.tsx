@@ -71,7 +71,7 @@ export default function AppCollectionMintQR({ collectionId, onDismiss }: AppColl
             leftContent={
               <AppIconGradient
                 name={iconMap.utilityQR}
-                size={wp('12%', insets)}
+                size={wp('12%')}
                 androidRenderingMode={'software'}
                 colors={[theme.colors.primary, theme.colors.secondary]}
                 style={styles.headerIcon}
@@ -91,10 +91,10 @@ export default function AppCollectionMintQR({ collectionId, onDismiss }: AppColl
             <View style={{ height: hp(3) }} />
             <AppQuaternaryButton
               icon={iconMap.refresh}
-              iconSize={hp('3%', insets)}
+              iconSize={hp('3%')}
               iconColor={theme.colors.placeholder}
               style={{
-                height: hp('4%', insets),
+                height: hp('4%'),
               }}
               onPress={onRefresh}>
               <AppTextBody4 style={{ color: theme.colors.placeholder }}>{t('collection:refresh')}</AppTextBody4>
@@ -120,18 +120,18 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
       flex: 1,
     },
     doneButton: {
-      paddingHorizontal: wp('5%', insets),
-      marginTop: hp('2%', insets),
-      marginBottom: Platform.OS === 'ios' ? insets.bottom : hp('2%', insets),
+      paddingHorizontal: wp('5%'),
+      marginTop: hp('2%'),
+      marginBottom: Platform.OS === 'ios' ? insets.bottom : hp('2%'),
     },
     header: {
-      marginBottom: hp(0, insets),
+      marginBottom: hp(0),
     },
     headerTitle: {
-      width: wp('50%', insets),
+      width: wp('50%'),
     },
     headerIcon: {
-      marginRight: wp('3%', insets),
+      marginRight: wp('3%'),
       alignSelf: 'center',
     },
     qrContainer: {

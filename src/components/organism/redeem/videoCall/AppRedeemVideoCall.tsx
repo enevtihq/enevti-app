@@ -3,7 +3,7 @@ import React from 'react';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { Socket } from 'socket.io-client';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
+import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 import AppIconButton from 'enevti-app/components/atoms/icon/AppIconButton';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import AppMenuContainer from 'enevti-app/components/atoms/menu/AppMenuContainer';
@@ -64,7 +64,6 @@ import AppAlertModal from '../../menu/AppAlertModal';
 import AppConfirmationModal from '../../menu/AppConfirmationModal';
 import sleep from 'enevti-app/utils/dummy/sleep';
 import AppListItem from 'enevti-app/components/molecules/list/AppListItem';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AppAvatarRenderer from 'enevti-app/components/molecules/avatar/AppAvatarRenderer';
 import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
 import { Divider, useTheme } from 'react-native-paper';
@@ -100,11 +99,10 @@ const CREATOR_ASK_TO_SET_STATUS_LIMIT_SEC = 10;
 export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideoCallProps) {
   const { t } = useTranslation();
   const theme = useTheme() as Theme;
-  const insets = useSafeAreaInsets();
   const dispatch = useDispatch();
   const socket = React.useRef<Socket | undefined>();
   const nftSocket = React.useRef<Socket | undefined>();
-  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
+  const styles = React.useMemo(() => makeStyles(theme), [theme]);
 
   const myPersona = useSelector(selectMyPersonaCache);
   const [tipModalShow, setTipModalShow] = React.useState<boolean>(false);
@@ -1205,7 +1203,7 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
                 containerStyle={styles.accountCard}
                 leftContent={
                   <View style={styles.collectionCoverContainer}>
-                    <AppAvatarRenderer persona={participantPersona} size={wp('12%', insets)} style={styles.avatar} />
+                    <AppAvatarRenderer persona={participantPersona} size={wp('12%')} style={styles.avatar} />
                   </View>
                 }
                 rightContent={
@@ -1336,7 +1334,7 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
   );
 }
 
-const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
+const makeStyles = (theme: Theme) =>
   StyleSheet.create({
     container: {
       flex: 1,
@@ -1347,14 +1345,14 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
       color: theme.colors.text,
     },
     divider: {
-      marginVertical: wp('2%', insets),
+      marginVertical: wp('2%'),
       backgroundColor: Color(theme.colors.text).alpha(0.1).rgb().toString(),
     },
     nftInfoContainer: {
-      marginHorizontal: wp('5%', insets),
-      marginBottom: hp('3%', insets),
-      paddingVertical: wp('2%', insets),
-      paddingHorizontal: wp('3%', insets),
+      marginHorizontal: wp('5%'),
+      marginBottom: hp('3%'),
+      paddingVertical: wp('2%'),
+      paddingHorizontal: wp('3%'),
       backgroundColor: Color(theme.colors.background).lighten(0.3).alpha(0.95).rgb().toString(),
       borderRadius: theme.roundness,
       borderWidth: StyleSheet.hairlineWidth,
@@ -1384,13 +1382,13 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
       marginBottom: hp(1),
     },
     accountCard: {
-      marginVertical: hp('3%', insets),
+      marginVertical: hp('3%'),
       backgroundColor: Color(theme.colors.background).lighten(0.3).alpha(0.95).rgb().toString(),
       borderWidth: StyleSheet.hairlineWidth,
       borderColor: Color(theme.colors.text).alpha(0.05).rgb().toString(),
     },
     collectionCoverContainer: {
-      marginRight: wp('3%', insets),
+      marginRight: wp('3%'),
       overflow: 'hidden',
       alignSelf: 'center',
     },

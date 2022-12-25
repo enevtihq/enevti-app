@@ -1,6 +1,5 @@
 import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import React, { ComponentType } from 'react';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import AppTopTabBar from 'enevti-app/components/atoms/view/AppTopTabBar';
@@ -42,7 +41,6 @@ export default function AppProfileBody({
   isMyProfile = false,
 }: AppProfileBodyProps) {
   const { t } = useTranslation();
-  const insets = useSafeAreaInsets();
   const theme = useTheme();
   const backgroundColor = React.useContext(BackgroundColorContext);
   const styles = React.useMemo(() => makeStyles(), []);
@@ -61,7 +59,7 @@ export default function AppProfileBody({
             tabStyle={[
               styles.tabBarContainer,
               {
-                top: hp(PROFILE_HEADER_HEIGHT_PERCENTAGE, insets) + headerHeight,
+                top: hp(PROFILE_HEADER_HEIGHT_PERCENTAGE) + headerHeight,
               },
               animatedTabBarStyle,
             ]}

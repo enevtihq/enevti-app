@@ -1,8 +1,7 @@
 import { View, StyleSheet, Dimensions } from 'react-native';
 import React from 'react';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from 'react-native-paper';
-import { SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
+import { wp } from 'enevti-app/utils/layout/imageRatio';
 import { Theme } from 'enevti-app/theme/default';
 import Color from 'color';
 import AppFeedHeader from './AppFeedHeader';
@@ -24,9 +23,8 @@ interface AppFeedItemProps {
 
 export default React.memo(
   function AppFeedItem({ feed, navigation, index }: AppFeedItemProps) {
-    const insets = useSafeAreaInsets();
     const theme = useTheme() as Theme;
-    const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
+    const styles = React.useMemo(() => makeStyles(theme), [theme]);
 
     const canvasWidth = Dimensions.get('screen').width * (MODE === 'flat' ? 1 : MODE === 'floating' ? 0.9 : 1);
 
@@ -48,17 +46,17 @@ export default React.memo(
   },
 );
 
-const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
+const makeStyles = (theme: Theme) =>
   StyleSheet.create({
     floating: {
-      marginBottom: wp('5%', insets),
+      marginBottom: wp('5%'),
       backgroundColor: theme.colors.background,
-      marginHorizontal: wp('5%', insets),
+      marginHorizontal: wp('5%'),
       borderRadius: theme.roundness,
       borderWidth: StyleSheet.hairlineWidth,
       borderColor: Color(theme.colors.text).alpha(0.05).rgb().toString(),
     },
     flat: {
-      marginBottom: wp('5%', insets),
+      marginBottom: wp('5%'),
     },
   });

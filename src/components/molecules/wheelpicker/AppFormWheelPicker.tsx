@@ -3,8 +3,7 @@ import React from 'react';
 import AppIconComponent, { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import AppFormTextInputWithError from 'enevti-app/components/molecules/form/AppFormTextInputWithError';
 import { TouchableRipple, useTheme } from 'react-native-paper';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 import { Theme } from 'react-native-paper/lib/typescript/types';
 import { shallowEqual } from 'react-redux';
 import AppMenuContainer from 'enevti-app/components/atoms/menu/AppMenuContainer';
@@ -33,8 +32,7 @@ function Component({
   memoKey,
 }: AppFormWheelPickerProps) {
   const theme = useTheme();
-  const insets = useSafeAreaInsets();
-  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
+  const styles = React.useMemo(() => makeStyles(theme), [theme]);
 
   const [menuVisible, setMenuVisible] = React.useState<boolean>(false);
 
@@ -84,24 +82,24 @@ function Component({
   );
 }
 
-const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
+const makeStyles = (theme: Theme) =>
   StyleSheet.create({
     formInput: {
-      marginBottom: hp('1%', insets),
-      marginLeft: wp('5%', insets),
-      marginRight: wp('5%', insets),
+      marginBottom: hp('1%'),
+      marginLeft: wp('5%'),
+      marginRight: wp('5%'),
     },
     dropDownIcon: {
       justifyContent: 'center',
       height: '100%',
-      width: wp('10%', insets),
+      width: wp('10%'),
     },
     inputRippleContainer: {
       ...StyleSheet.absoluteFillObject,
-      marginBottom: hp('1%', insets),
-      marginLeft: wp('5%', insets),
-      marginRight: wp('5%', insets),
-      marginTop: wp('2%', insets),
+      marginBottom: hp('1%'),
+      marginLeft: wp('5%'),
+      marginRight: wp('5%'),
+      marginTop: wp('2%'),
       borderRadius: theme.roundness,
       overflow: 'hidden',
     },

@@ -3,7 +3,6 @@ import React from 'react';
 import AppNFTRenderer from './AppNFTRenderer';
 import AppPaginationIndicator from 'enevti-app/components/atoms/pagination/AppPaginationIndicator';
 import { hp } from 'enevti-app/utils/layout/imageRatio';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { NFTBase } from 'enevti-app/types/core/chain/nft';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
@@ -29,7 +28,6 @@ export default React.memo(
     itemWidth,
     imageSize = 'og',
   }: AppNFTListRedererProps) {
-    const insets = useSafeAreaInsets();
     const [currentPage, setCurrentPage] = React.useState<number>(0);
 
     const onScroll = (e: any) => {
@@ -89,8 +87,8 @@ export default React.memo(
         />
         <View
           style={{
-            height: hp('1%', insets),
-            marginTop: hp('0.5%', insets),
+            height: hp('1%'),
+            marginTop: hp('0.5%'),
           }}>
           <AppPaginationIndicator length={nft.length} active={currentPage} />
         </View>

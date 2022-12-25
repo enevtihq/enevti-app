@@ -60,11 +60,7 @@ export default function AppHeader({
 }: AppHeaderProps) {
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
-  const headerHeight = height
-    ? height
-    : compact
-    ? hp(HEADER_HEIGHT_COMPACT_PERCENTAGE, insets)
-    : hp(HEADER_HEIGHT_PERCENTAGE, insets);
+  const headerHeight = height ? height : compact ? hp(HEADER_HEIGHT_COMPACT_PERCENTAGE) : hp(HEADER_HEIGHT_PERCENTAGE);
   const styles = React.useMemo(
     () => makeStyles(theme, headerHeight, insets, marginTop),
     [theme, headerHeight, marginTop, insets],
@@ -86,7 +82,7 @@ export default function AppHeader({
         {!back && backComponent ? backComponent : null}
         {leftComponent ? leftComponent : null}
         {title ? (
-          <View style={{ marginLeft: wp('5%', insets) }}>
+          <View style={{ marginLeft: wp('5%') }}>
             <Animated.Text style={[styles.title, textStyle]}>{title}</Animated.Text>
             {subtitle ? <Animated.Text style={[styles.subtitle, subtitleStyle]}>{subtitle}</Animated.Text> : null}
           </View>
@@ -140,15 +136,15 @@ const makeStyles = (theme: Theme, height: number, insets: SafeAreaInsets, margin
       color: theme.colors.text,
       fontFamily: theme.fonts.medium.fontFamily,
       fontWeight: theme.fonts.medium.fontWeight,
-      fontSize: wp('5.2%', insets),
+      fontSize: wp('5.2%'),
     },
     subtitle: {
       color: theme.colors.placeholder,
       fontFamily: theme.fonts.light.fontFamily,
       fontWeight: theme.fonts.light.fontWeight,
-      fontSize: wp('4.0%', insets),
+      fontSize: wp('4.0%'),
     },
     customBackIcon: {
-      marginLeft: wp('3%', insets),
+      marginLeft: wp('3%'),
     },
   });

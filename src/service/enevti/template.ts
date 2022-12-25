@@ -8,16 +8,16 @@ import { APIResponse } from 'enevti-app/types/core/service/api';
 export function getBuiltInNFTTemplate(): NFTTemplateAsset[] {
   return [
     {
-      id: 'enevtiNFTTemplate',
-      name: 'Enevti.com Template',
-      description: 'Present utility traits of your NFT in a beautiful way!',
-      data: enevtiNFTTemplate,
-    },
-    {
       id: 'blankNFTTemplate',
       name: 'Blank Template',
       description: 'Template to fully highlight your creation!',
       data: blankNFTTemplate,
+    },
+    {
+      id: 'enevtiNFTTemplate',
+      name: 'Enevti.com Template',
+      description: 'Present utility traits of your NFT in a beautiful way!',
+      data: enevtiNFTTemplate,
     },
   ];
 }

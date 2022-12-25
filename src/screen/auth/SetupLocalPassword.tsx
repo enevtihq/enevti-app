@@ -1,7 +1,5 @@
 import React from 'react';
 import { StyleSheet, View, Keyboard } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useTheme } from 'react-native-paper';
 import { useTranslation } from 'react-i18next';
 import { StackScreenProps } from '@react-navigation/stack';
 import { Formik } from 'formik';
@@ -9,14 +7,13 @@ import * as Yup from 'yup';
 import YupPassword from 'yup-password';
 
 import { encryptWithPassword } from 'enevti-app/utils/cryptography';
-import { Theme } from 'enevti-app/theme/default';
 import AppHeaderWizard from 'enevti-app/components/molecules/view/AppHeaderWizard';
 import { RootStackParamList } from 'enevti-app/navigation';
 import AppFormSecureTextInput from 'enevti-app/components/organism/form/AppFormSecureTextInput';
 import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
 import AppView from 'enevti-app/components/atoms/view/AppView';
 import AppCheckbox from 'enevti-app/components/atoms/form/AppCheckbox';
-import { hp, wp, SafeAreaInsets } from 'enevti-app/utils/layout/imageRatio';
+import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 import { COMMUNITY_IDENTIFIER } from 'enevti-app/utils/constant/identifier';
 import { generatePassphrase } from 'enevti-app/utils/passphrase';
 
@@ -32,9 +29,7 @@ const validationSchema = Yup.object().shape({
 });
 
 export default function SetupLocalPassword({ navigation }: Props) {
-  const theme = useTheme() as Theme;
-  const insets = useSafeAreaInsets();
-  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
+  const styles = React.useMemo(() => makeStyles(), []);
   const { t } = useTranslation();
   const confirmPasswordInput = React.useRef<any>();
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
@@ -111,7 +106,7 @@ export default function SetupLocalPassword({ navigation }: Props) {
             </View>
 
             <View style={styles.actionContainer}>
-              <View style={{ height: hp('5%', insets) }} />
+              <View style={{ height: hp('5%') }} />
 
               <AppPrimaryButton
                 onPress={submitForm}
@@ -135,36 +130,36 @@ export default function SetupLocalPassword({ navigation }: Props) {
   );
 }
 
-const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
+const makeStyles = () =>
   StyleSheet.create({
     actionContainer: {
       flex: 0.8,
       flexDirection: 'column-reverse',
     },
     checkbox: {
-      marginBottom: hp('2%', insets),
-      marginLeft: wp('3%', insets),
-      marginRight: wp('3%', insets),
+      marginBottom: hp('2%'),
+      marginLeft: wp('3%'),
+      marginRight: wp('3%'),
     },
     createAccount: {
-      marginLeft: wp('5%', insets),
-      marginRight: wp('5%', insets),
+      marginLeft: wp('5%'),
+      marginRight: wp('5%'),
     },
     header: {
       flex: 1,
-      marginLeft: wp('3%', insets),
-      marginRight: wp('3%', insets),
+      marginLeft: wp('3%'),
+      marginRight: wp('3%'),
     },
     headerImage: {
-      fontSize: wp('20%', insets),
+      fontSize: wp('20%'),
       alignSelf: 'center',
     },
     passwordView: {
       flex: 1,
     },
     passwordInput: {
-      marginBottom: hp('2%', insets),
-      marginLeft: wp('5%', insets),
-      marginRight: wp('5%', insets),
+      marginBottom: hp('2%'),
+      marginLeft: wp('5%'),
+      marginRight: wp('5%'),
     },
   });

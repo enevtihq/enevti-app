@@ -1,9 +1,8 @@
 import { View, StyleSheet } from 'react-native';
 import React from 'react';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
+import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 import { Theme } from 'enevti-app/theme/default';
 import { RouteProp, useTheme } from '@react-navigation/native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { useSelector } from 'react-redux';
@@ -35,8 +34,7 @@ export const WALLET_HEADER_HEIGHT_PERCENTAGE = 41;
 export default function AppWalletHeader({ navigation, route }: AppWalletHeaderProps) {
   const { t } = useTranslation();
   const theme = useTheme() as Theme;
-  const insets = useSafeAreaInsets();
-  const styles = React.useMemo(() => makeStyles(theme, insets), [insets, theme]);
+  const styles = React.useMemo(() => makeStyles(theme), [theme]);
   const [address, setAddress] = React.useState<string>('');
   const [persona, setPersona] = React.useState<Persona | undefined>(undefined);
 
@@ -173,30 +171,30 @@ export default function AppWalletHeader({ navigation, route }: AppWalletHeaderPr
   );
 }
 
-const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
+const makeStyles = (theme: Theme) =>
   StyleSheet.create({
     avatar: {
       alignSelf: 'center',
     },
     walletHeaderContainer: {
       alignItems: 'center',
-      paddingVertical: hp('1%', insets),
-      height: hp(WALLET_HEADER_HEIGHT_PERCENTAGE, insets),
-      width: wp('100%', insets),
+      paddingVertical: hp('1%'),
+      height: hp(WALLET_HEADER_HEIGHT_PERCENTAGE),
+      width: wp('100%'),
       backgroundColor: theme.colors.background,
     },
     separator: {
-      marginBottom: hp('3%', insets),
+      marginBottom: hp('3%'),
     },
     amountHeader: {
-      marginBottom: hp('2%', insets),
+      marginBottom: hp('2%'),
     },
     headerImage: {
       alignSelf: 'center',
       justifyContent: 'center',
-      marginBottom: hp('2%', insets),
-      height: hp(10, insets),
-      width: hp(10, insets),
+      marginBottom: hp('2%'),
+      height: hp(10),
+      width: hp(10),
     },
     brandLogo: {
       position: 'absolute',
@@ -208,27 +206,27 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
       borderRadius: 50,
     },
     stakedButton: {
-      height: hp('5%', insets),
+      height: hp('5%'),
       borderRadius: theme.roundness * 2,
     },
     stakedButtonContent: {
-      paddingHorizontal: wp('5%', insets),
+      paddingHorizontal: wp('5%'),
     },
     walletActionContainer: {
       flexDirection: 'row',
-      height: hp('8%', insets),
+      height: hp('8%'),
     },
     walletActionLoader: {
       justifyContent: 'center',
       alignItems: 'center',
     },
     walletActionItem: {
-      marginHorizontal: wp('2%', insets),
-      width: wp('18%', insets),
+      marginHorizontal: wp('2%'),
+      width: wp('18%'),
     },
     walletActionItemGuest: {
-      marginHorizontal: wp('2%', insets),
-      width: wp('25%', insets),
+      marginHorizontal: wp('2%'),
+      width: wp('25%'),
     },
     walletActionIcon: {
       alignItems: 'center',
@@ -236,12 +234,12 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
     },
     walletActionLabel: {
       textAlign: 'center',
-      width: wp('18%', insets),
-      marginTop: hp('1%', insets),
+      width: wp('18%'),
+      marginTop: hp('1%'),
     },
     walletActionLabelGuest: {
       textAlign: 'center',
-      width: wp('25%', insets),
-      marginTop: hp('1%', insets),
+      width: wp('25%'),
+      marginTop: hp('1%'),
     },
   });

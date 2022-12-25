@@ -26,7 +26,7 @@ import AppFormTextInputWithError, {
 } from 'enevti-app/components/molecules/form/AppFormTextInputWithError';
 import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
 import AppView from 'enevti-app/components/atoms/view/AppView';
-import { hp, wp, SafeAreaInsets } from 'enevti-app/utils/layout/imageRatio';
+import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 import AppIconComponent, { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import { ScrollView } from 'react-native-gesture-handler';
 import AppTextBody3 from 'enevti-app/components/atoms/text/AppTextBody3';
@@ -139,9 +139,9 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
   const paperTheme = useTheme();
   const theme = paperTheme as Theme;
   const insets = useSafeAreaInsets();
-  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
+  const styles = React.useMemo(() => makeStyles(theme), [theme]);
   const timezoneOffset = React.useMemo(() => new Date().getTimezoneOffset(), []);
-  const itemWidth = React.useMemo(() => wp('90%', insets), [insets]);
+  const itemWidth = React.useMemo(() => wp('90%'), []);
   const paymentThunkRef = React.useRef<any>();
 
   const nameInput = React.useRef<TextInput>();
@@ -694,7 +694,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
 
         <View style={styles.formView}>
           <AppAccordion expanded={identityExpanded} onPress={identityHeaderCallback} title={identityHeader}>
-            <View style={{ height: hp('1%', insets) }} />
+            <View style={{ height: hp('1%') }} />
             {commonFormInput(
               formikProps,
               nameInput,
@@ -762,7 +762,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
                 },
               },
             )}
-            <View style={{ height: hp('0.5%', insets) }} />
+            <View style={{ height: hp('0.5%') }} />
             <AppContentPicker
               title={t('createNFT:selectCover')}
               description={t('createNFT:selectCoverDescription')}
@@ -774,7 +774,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
           </AppAccordion>
 
           <AppAccordion expanded={mintingExpanded} onPress={mintingHeaderCallback} title={mintingHeader}>
-            <View style={{ height: hp('1%', insets) }} />
+            <View style={{ height: hp('1%') }} />
             <AppMintingTypePicker value={formikProps.values.mintingType} onSelected={onSelectedMintingTypePicker} />
             {commonFormInput(
               formikProps,
@@ -837,7 +837,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
           </AppAccordion>
 
           <AppAccordion expanded={utilityExpanded} onPress={utilityHeaderCallback} title={utilityHeader}>
-            <View style={{ height: hp('1%', insets) }} />
+            <View style={{ height: hp('1%') }} />
             <AppUtilityPicker value={formikProps.values.utility} onSelected={onSelectedUtilityPicker} />
 
             {formikProps.values.utility === '' &&
@@ -847,7 +847,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
                 leftContent={
                   <AppIconGradient
                     name={iconMap.info}
-                    size={wp('5%', insets)}
+                    size={wp('5%')}
                     androidRenderingMode={'software'}
                     colors={[theme.colors.primary, theme.colors.secondary]}
                     style={styles.utilityTemplateIcon}
@@ -859,7 +859,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
               </AppListItem>
             ) : null}
 
-            <View style={{ height: hp('1%', insets) }} />
+            <View style={{ height: hp('1%') }} />
 
             {formikProps.values.utility && formikProps.values.utility === 'content' ? (
               <AppContentPicker
@@ -874,7 +874,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
             {formikProps.values.utility && formikProps.values.utility !== 'content' ? (
               <>
                 <AppRecurringPicker value={formikProps.values.recurring} onSelected={onSelectedRecurringPicker} />
-                <View style={{ height: hp('1%', insets) }} />
+                <View style={{ height: hp('1%') }} />
               </>
             ) : null}
 
@@ -948,7 +948,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
           </AppAccordion>
 
           <AppAccordion expanded={royaltyExpanded} onPress={royaltyHeaderCallback} title={royaltyHeader}>
-            <View style={{ height: hp('1%', insets) }} />
+            <View style={{ height: hp('1%') }} />
             {commonFormInput(
               formikProps,
               creatorRoyaltyInput,
@@ -975,7 +975,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
           </AppAccordion>
 
           <AppAccordion expanded={previewExpanded} onPress={previewHeaderCallback} title={previewHeader}>
-            <View style={{ height: hp('1%', insets) }} />
+            <View style={{ height: hp('1%') }} />
             {formikProps.values.name && formikProps.values.symbol && formikProps.values.utility ? (
               <View style={styles.formInput}>
                 <AppNFTRenderer nft={dummyNFT} width={itemWidth} dataUri={oneKindContractStore.data.uri} />
@@ -989,7 +989,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
                     onDismiss={previewChangeImageOnDismiss}
                     onSelected={onOneKindImagePicked}
                   />
-                  <View style={{ marginHorizontal: wp('1%', insets) }} />
+                  <View style={{ marginHorizontal: wp('1%') }} />
                   <AppQuaternaryButton
                     box
                     onPress={previewChangeTemplateOnPress}
@@ -1012,12 +1012,12 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
         </View>
         <View
           style={{
-            height: hp(Platform.OS === 'ios' ? '10%' : '12.5%', insets),
+            height: hp(Platform.OS === 'ios' ? '10%' : '12.5%'),
           }}
         />
       </ScrollView>
       <View style={styles.actionContainer}>
-        <View style={{ height: hp('2%', insets) }} />
+        <View style={{ height: hp('2%') }} />
         <AppPrimaryButton
           onPress={formikProps.submitForm}
           loading={isLoading}
@@ -1031,7 +1031,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
           style={styles.actionButton}>
           {t('createNFT:createButton')}
         </AppPrimaryButton>
-        <View style={{ height: Platform.OS === 'ios' ? insets.bottom : hp('2%', insets) }} />
+        <View style={{ height: Platform.OS === 'ios' ? insets.bottom : hp('2%') }} />
       </View>
       <AppConfirmationModal
         iconName={'question'}
@@ -1048,13 +1048,13 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
   );
 }
 
-const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
+const makeStyles = (theme: Theme) =>
   StyleSheet.create({
     utilityTemplateNote: {
-      marginVertical: hp('2%', insets),
+      marginVertical: hp('2%'),
     },
     utilityTemplateIcon: {
-      marginRight: wp('3%', insets),
+      marginRight: wp('3%'),
       alignSelf: 'center',
     },
     utilityTemplateText: {
@@ -1065,10 +1065,10 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
     },
     accordionListView: {
       flexDirection: 'row',
-      marginLeft: wp('1%', insets),
+      marginLeft: wp('1%'),
     },
     accordionIcon: {
-      marginRight: wp('3%', insets),
+      marginRight: wp('3%'),
       alignSelf: 'center',
     },
     actionContainer: {
@@ -1078,53 +1078,53 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
       bottom: 0,
     },
     actionButton: {
-      marginLeft: wp('5%', insets),
-      marginRight: wp('5%', insets),
+      marginLeft: wp('5%'),
+      marginRight: wp('5%'),
     },
     header: {
       flex: 0,
-      marginLeft: wp('3%', insets),
-      marginRight: wp('3%', insets),
-      marginBottom: hp('3%', insets),
+      marginLeft: wp('3%'),
+      marginRight: wp('3%'),
+      marginBottom: hp('3%'),
     },
     formView: {
       flex: 0,
     },
     formInput: {
-      marginBottom: hp('1%', insets),
-      marginLeft: wp('5%', insets),
-      marginRight: wp('5%', insets),
+      marginBottom: hp('1%'),
+      marginLeft: wp('5%'),
+      marginRight: wp('5%'),
     },
     previewAction: {
       flexDirection: 'row',
-      marginTop: hp('1%', insets),
+      marginTop: hp('1%'),
     },
     previewActionButton: {
       flex: 1,
-      height: hp('5.2%', insets),
+      height: hp('5.2%'),
     },
     previewActionButtonItem: {
       flex: 1,
-      height: hp('5.2%', insets),
+      height: hp('5.2%'),
       width: '100%',
     },
     closeMenuContainer: {
-      width: wp('90%', insets),
+      width: wp('90%'),
       alignSelf: 'center',
       flex: 0,
     },
     closeMenuTitle: {
-      marginTop: hp('1%', insets),
+      marginTop: hp('1%'),
     },
     closeMenuAction: {
-      paddingHorizontal: wp('5%', insets),
-      marginTop: hp('3%', insets),
+      paddingHorizontal: wp('5%'),
+      marginTop: hp('3%'),
       flexDirection: 'row',
     },
     closeMenuItemAction: {
       flex: 1,
     },
     closeMenuActionSpace: {
-      marginHorizontal: wp('1%', insets),
+      marginHorizontal: wp('1%'),
     },
   });

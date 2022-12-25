@@ -1,13 +1,12 @@
 import React from 'react';
 import { View, StyleSheet, ViewStyle, StyleProp } from 'react-native';
 import { TouchableRipple, useTheme } from 'react-native-paper';
-import { SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
+import { wp } from 'enevti-app/utils/layout/imageRatio';
 import Color from 'color';
 
 import { Theme } from 'enevti-app/theme/default';
 import AppTextHeading1 from 'enevti-app/components/atoms/text/AppTextHeading1';
 import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
@@ -22,8 +21,7 @@ export default function AppPassphraseBox({ passphrase, style }: AppPassphraseBox
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const theme = useTheme() as Theme;
-  const insets = useSafeAreaInsets();
-  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
+  const styles = React.useMemo(() => makeStyles(theme), [theme]);
 
   return (
     <View style={styles.container}>
@@ -45,7 +43,7 @@ export default function AppPassphraseBox({ passphrase, style }: AppPassphraseBox
   );
 }
 
-const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
+const makeStyles = (theme: Theme) =>
   StyleSheet.create({
     container: {
       borderRadius: theme.roundness,
@@ -67,15 +65,15 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
     },
     textBox: {
       flex: 1,
-      marginLeft: wp('10%', insets),
-      marginRight: wp('10%', insets),
+      marginLeft: wp('10%'),
+      marginRight: wp('10%'),
       textAlign: 'center',
       alignItems: 'center',
       justifyContent: 'center',
     },
     subText: {
       textAlign: 'center',
-      marginTop: wp('3%', insets),
-      marginBottom: wp('3%', insets),
+      marginTop: wp('3%'),
+      marginBottom: wp('3%'),
     },
   });

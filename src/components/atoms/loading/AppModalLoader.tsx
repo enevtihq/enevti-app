@@ -4,8 +4,7 @@ import AppListItem from 'enevti-app/components/molecules/list/AppListItem';
 import AppActivityIndicator from './AppActivityIndicator';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import { useTranslation } from 'react-i18next';
-import { wp, hp, SafeAreaInsets } from 'enevti-app/utils/layout/imageRatio';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { wp, hp } from 'enevti-app/utils/layout/imageRatio';
 import { useSelector } from 'react-redux';
 import {
   selectModalLoaderMode,
@@ -19,9 +18,8 @@ import AppTextBody5 from '../text/AppTextBody5';
 
 export default function AppModalLoader() {
   const { t } = useTranslation();
-  const insets = useSafeAreaInsets();
   const theme = useTheme();
-  const styles = React.useMemo(() => makeStyles(insets), [insets]);
+  const styles = React.useMemo(() => makeStyles(), []);
   const mode = useSelector(selectModalLoaderMode);
   const visible = useSelector(selectModalLoaderShow);
   const message = useSelector(selectModalLoaderMessage);
@@ -43,15 +41,15 @@ export default function AppModalLoader() {
   );
 }
 
-const makeStyles = (insets: SafeAreaInsets) =>
+const makeStyles = () =>
   StyleSheet.create({
     box: {
-      margin: wp('5%', insets),
-      height: hp('5%', insets),
+      margin: wp('5%'),
+      height: hp('5%'),
     },
     activityIndicator: {
-      marginRight: wp('3%', insets),
-      width: wp('7%', insets),
+      marginRight: wp('3%'),
+      width: wp('7%'),
       alignSelf: 'center',
     },
   });

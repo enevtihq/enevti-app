@@ -5,8 +5,7 @@ import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import AppMenuContainer from 'enevti-app/components/atoms/menu/AppMenuContainer';
 import AppHeaderWizard from 'enevti-app/components/molecules/view/AppHeaderWizard';
 import { StyleSheet, View } from 'react-native';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 import Carousel from 'react-native-snap-carousel';
 import { NativeViewGestureHandler } from 'react-native-gesture-handler';
 import { selectSocialRaffleConfig } from 'enevti-app/store/slices/entities/chainConfig/socialRaffle';
@@ -50,20 +49,16 @@ function Component({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const theme = useTheme() as Theme;
-  const insets = useSafeAreaInsets();
   const socialRaffleConfig = useSelector(selectSocialRaffleConfig);
   const myProfile = useSelector(selectMyProfileCache);
   const chainConfigSynced = useSelector(selectChainConfigSynced);
   const [blockTime, setBlockTime] = React.useState<number>();
   const [menuVisible, setMenuVisible] = React.useState<boolean>(false);
 
-  const itemWidth = React.useMemo(() => wp('80%', insets), [insets]);
-  const itemHeight = React.useMemo(() => hp('35%', insets), [insets]);
-  const sliderWidth = React.useMemo(() => wp('100%', insets), [insets]);
-  const styles = React.useMemo(
-    () => makeStyles(theme, insets, itemWidth, itemHeight),
-    [theme, insets, itemWidth, itemHeight],
-  );
+  const itemWidth = React.useMemo(() => wp('80%'), []);
+  const itemHeight = React.useMemo(() => hp('35%'), []);
+  const sliderWidth = React.useMemo(() => wp('100%'), []);
+  const styles = React.useMemo(() => makeStyles(theme, itemWidth, itemHeight), [theme, itemWidth, itemHeight]);
 
   const snapPoints = React.useMemo(() => ['85%'], []);
   const onMenuDismiss = React.useCallback(() => {
@@ -323,10 +318,10 @@ function Component({
   );
 }
 
-const makeStyles = (theme: Theme, insets: SafeAreaInsets, itemWidth: number, itemHeight: number) =>
+const makeStyles = (theme: Theme, itemWidth: number, itemHeight: number) =>
   StyleSheet.create({
     alertContainer: {
-      marginBottom: hp('3%', insets),
+      marginBottom: hp('3%'),
       flex: 0,
     },
     items: {
@@ -357,16 +352,16 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets, itemWidth: number, ite
       height: '100%',
     },
     buttonContainer: {
-      paddingHorizontal: wp('5%', insets),
-      paddingBottom: wp('10%', insets),
-      marginTop: hp('3%', insets),
+      paddingHorizontal: wp('5%'),
+      paddingBottom: wp('10%'),
+      marginTop: hp('3%'),
       flexDirection: 'row',
     },
     buttonItem: {
       flex: 1,
     },
     buttonContainerSpace: {
-      marginHorizontal: wp('1%', insets),
+      marginHorizontal: wp('1%'),
     },
     eligibilityContainer: {
       marginTop: hp(3),

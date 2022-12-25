@@ -2,8 +2,7 @@ import { StyleSheet, View } from 'react-native';
 import React from 'react';
 import AppMenuContainer from 'enevti-app/components/atoms/menu/AppMenuContainer';
 import AppHeaderWizard from 'enevti-app/components/molecules/view/AppHeaderWizard';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 import AppSecondaryButton from 'enevti-app/components/atoms/button/AppSecondaryButton';
 import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
@@ -50,9 +49,8 @@ export default function AppAlertModal({
   tapEverywhereToDismiss,
   height,
 }: AppAlertModalProps) {
-  const insets = useSafeAreaInsets();
   const theme = useTheme();
-  const styles = React.useMemo(() => makeStyles(insets), [insets]);
+  const styles = React.useMemo(() => makeStyles(), []);
   const snapPoints = React.useMemo(
     () =>
       height ?? 43 + (primaryButtonText ? 8.5 : 0) + (secondaryButtonText ? 8.5 : 0) + (tertiaryButtonText ? 8.5 : 0),
@@ -74,13 +72,13 @@ export default function AppAlertModal({
         title={title}
         description={description}
       />
-      <View style={{ padding: wp('10%', insets) }}>
+      <View style={{ padding: wp('10%') }}>
         {primaryButtonText ? (
           <View>
             <AppPrimaryButton loading={primaryButtonIsLoading} onPress={primaryButtonOnPress}>
               {primaryButtonText}
             </AppPrimaryButton>
-            <View style={{ height: hp('1%', insets) }} />
+            <View style={{ height: hp('1%') }} />
           </View>
         ) : null}
         {secondaryButtonText ? (
@@ -88,7 +86,7 @@ export default function AppAlertModal({
             <AppSecondaryButton loading={secondaryButtonIsLoading} onPress={secondaryButtonOnPress}>
               {secondaryButtonText}
             </AppSecondaryButton>
-            <View style={{ height: hp('1%', insets) }} />
+            <View style={{ height: hp('1%') }} />
           </View>
         ) : null}
         {tertiaryButtonText ? (
@@ -104,11 +102,11 @@ export default function AppAlertModal({
   );
 }
 
-const makeStyles = (insets: SafeAreaInsets) =>
+const makeStyles = () =>
   StyleSheet.create({
     alertContainer: {
-      width: wp('90%', insets),
-      marginTop: hp('3%', insets),
+      width: wp('90%'),
+      marginTop: hp('3%'),
       alignSelf: 'center',
       flex: 1,
     },
