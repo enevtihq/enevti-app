@@ -13,12 +13,12 @@ import { NFT } from 'enevti-app/types/core/chain/nft';
 import { STATUS_BAR_HEIGHT } from 'enevti-app/components/atoms/view/AppStatusBar';
 import { IPFStoURL } from 'enevti-app/service/ipfs';
 
-const NFT_WIDTH = Dimensions.get('screen').width * 0.8;
+const NFT_WIDTH = () => Dimensions.get('screen').width * 0.8;
 export const NFT_DETAILS_HEADER_VIEW_HEIGHT =
   HEADER_HEIGHT_PERCENTAGE +
   5.5 +
   STATUS_BAR_HEIGHT() +
-  ((NFT_WIDTH + Dimensions.get('screen').width * 0.125) / Dimensions.get('screen').height) * 100;
+  ((NFT_WIDTH() + Dimensions.get('screen').width * 0.125) / Dimensions.get('screen').height) * 100;
 
 interface AppNFTDetailsHeaderProps {
   nft: NFT;
@@ -32,7 +32,7 @@ export default function AppNFTDetailsHeader({ nft }: AppNFTDetailsHeaderProps) {
   const styles = React.useMemo(() => makeStyles(), []);
 
   const nftContainerPaddingTop = React.useMemo(() => insets.top + hp(HEADER_HEIGHT_PERCENTAGE), [insets.top, hp]);
-  const nftWidth = React.useMemo(() => NFT_WIDTH, []);
+  const nftWidth = React.useMemo(() => NFT_WIDTH(), []);
   const nftContainerWidth = React.useMemo(() => wp('100%'), [wp]);
   const totalHeight = React.useMemo(() => NFT_DETAILS_HEADER_VIEW_HEIGHT, []);
 

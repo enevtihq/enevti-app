@@ -1,4 +1,4 @@
-import { Dimensions, Platform, Pressable, RefreshControl, StyleSheet, View } from 'react-native';
+import { Platform, Pressable, RefreshControl, ScaledSize, StyleSheet, useWindowDimensions, View } from 'react-native';
 import React from 'react';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
@@ -13,7 +13,7 @@ import AppAvatarRenderer from 'enevti-app/components/molecules/avatar/AppAvatarR
 import AppPersonaLabel from 'enevti-app/components/molecules/avatar/AppPersonaLabel';
 import useDimension from 'enevti-app/utils/hook/useDimension';
 import { Theme } from 'enevti-app/theme/default';
-import { DimensionFunction, SafeAreaInsets } from 'enevti-app/utils/layout/imageRatio';
+import { DimensionFunction, SafeAreaInsets, windowFullHeight } from 'enevti-app/utils/layout/imageRatio';
 import Animated from 'react-native-reanimated';
 import { NFT_DETAILS_TOP_TABBAR_HEIGHT_PERCENTAGE } from '../AppNFTDetailsBody';
 import { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
@@ -66,6 +66,7 @@ function Component(
   const { hp, wp } = useDimension();
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
+  const dimension = useWindowDimensions();
 
   const mounted = React.useRef<boolean>(false);
   const likeThunkRef = React.useRef<any>();
@@ -84,8 +85,8 @@ function Component(
   );
 
   const styles = React.useMemo(
-    () => makeStyles(hp, wp, displayed, collectionHeaderHeight, insets, theme),
-    [hp, wp, displayed, collectionHeaderHeight, insets, theme],
+    () => makeStyles(hp, wp, displayed, collectionHeaderHeight, insets, theme, dimension),
+    [hp, wp, displayed, collectionHeaderHeight, insets, theme, dimension],
   );
   const isScrollEnabled = React.useMemo(() => (refreshing ? false : scrollEnabled), [refreshing, scrollEnabled]);
 
@@ -297,6 +298,7 @@ const makeStyles = (
   collectionHeaderHeight: number,
   insets: SafeAreaInsets,
   theme: Theme,
+  dimension: ScaledSize,
 ) =>
   StyleSheet.create({
     likeButtonLoadingStyle: {
@@ -306,12 +308,7 @@ const makeStyles = (
     },
     contentContainerStyle: {
       paddingTop: hp(NFT_DETAILS_TOP_TABBAR_HEIGHT_PERCENTAGE) + collectionHeaderHeight,
-      minHeight:
-        Dimensions.get('screen').height +
-        collectionHeaderHeight -
-        hp(HEADER_HEIGHT_PERCENTAGE) -
-        insets.top -
-        insets.bottom,
+      minHeight: windowFullHeight(dimension, insets) + collectionHeaderHeight - hp(HEADER_HEIGHT_PERCENTAGE),
       display: displayed ? undefined : 'none',
     },
     collectionDetail: {

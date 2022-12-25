@@ -1,12 +1,12 @@
 import React from 'react';
-import { Dimensions, Platform, RefreshControl, StyleSheet, View } from 'react-native';
+import { Platform, RefreshControl, ScaledSize, StyleSheet, useWindowDimensions, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { FlatGrid, FlatGridProps } from 'react-native-super-grid';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { NFTBase } from 'enevti-app/types/core/chain/nft';
 import { TOP_TABBAR_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppTopTabBar';
 import { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
-import { DimensionFunction, SafeAreaInsets } from 'enevti-app/utils/layout/imageRatio';
+import { DimensionFunction, SafeAreaInsets, windowFullHeight } from 'enevti-app/utils/layout/imageRatio';
 import useDimension from 'enevti-app/utils/hook/useDimension';
 import AppNFTCard from 'enevti-app/components/molecules/nft/AppNFTCard';
 import { MINT_BUTTON_HEIGHT } from 'enevti-app/components/organism/collection/AppCollectionMintButton';
@@ -55,6 +55,7 @@ function Component(
   const dispatch = useDispatch();
   const { hp, wp } = useDimension();
   const insets = useSafeAreaInsets();
+  const dimension = useWindowDimensions();
   const mounted = React.useRef<boolean>(false);
   const [displayed, setDisplayed] = React.useState<boolean>(false);
   const [refreshing, setRefreshing] = React.useState<boolean>(false);
@@ -71,8 +72,8 @@ function Component(
   );
 
   const styles = React.useMemo(
-    () => makeStyles(hp, displayed, collectionHeaderHeight, insets),
-    [hp, displayed, collectionHeaderHeight, insets],
+    () => makeStyles(hp, displayed, collectionHeaderHeight, insets, dimension),
+    [hp, displayed, collectionHeaderHeight, insets, dimension],
   );
   const isScrollEnabled = React.useMemo(() => (refreshing ? false : scrollEnabled), [refreshing, scrollEnabled]);
   const spacing = React.useMemo(() => wp('1%'), [wp]);
@@ -177,6 +178,7 @@ const makeStyles = (
   displayed: boolean,
   collectionHeaderHeight: number,
   insets: SafeAreaInsets,
+  dimension: ScaledSize,
 ) =>
   StyleSheet.create({
     loaderContainer: {
@@ -187,12 +189,7 @@ const makeStyles = (
     },
     contentContainerStyle: {
       paddingTop: hp(TOP_TABBAR_HEIGHT_PERCENTAGE) + collectionHeaderHeight,
-      minHeight:
-        Dimensions.get('screen').height +
-        collectionHeaderHeight -
-        hp(HEADER_HEIGHT_PERCENTAGE) -
-        insets.top -
-        insets.bottom,
+      minHeight: windowFullHeight(dimension, insets) + collectionHeaderHeight - hp(HEADER_HEIGHT_PERCENTAGE),
       display: displayed ? undefined : 'none',
     },
   });

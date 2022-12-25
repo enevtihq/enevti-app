@@ -1,4 +1,4 @@
-import { Dimensions, Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
 import Video from 'react-native-video';
 import React from 'react';
 import { FlatList } from '@stream-io/flat-list-mvcp';
@@ -33,9 +33,6 @@ import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
 import { useTheme } from 'react-native-paper';
 import { Theme } from 'enevti-app/theme/default';
 
-const DIM_CONFIG = 'window';
-const MOMENT_HEIGHT = Dimensions.get('window').height;
-
 interface AppMomentViewProps {
   navigation: StackNavigationProp<RootStackParamList>;
   route: RouteProp<RootStackParamList, 'Moment'>;
@@ -52,7 +49,8 @@ export default function AppMomentView({
   const dispatch = useDispatch();
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
-  const styles = React.useMemo(() => makeStyles(theme, insets), [theme, insets]);
+  const dimension = useWindowDimensions();
+  const styles = React.useMemo(() => makeStyles(theme, insets, dimension.height), [theme, insets, dimension.height]);
 
   const [controlVisible, setControlVisible] = React.useState<boolean>(true);
   const [muted, setMuted] = React.useState<boolean>(false);
@@ -151,9 +149,9 @@ export default function AppMomentView({
               <View style={styles.audioIndicatorItem}>
                 <AppIconComponent
                   name={muted ? iconMap.volumeOff : iconMap.volumeOn}
-                  size={hp(3, { dim: DIM_CONFIG })}
+                  size={hp(3)}
                   color={darkTheme.colors.text}
-                  style={{ padding: hp(2, { dim: DIM_CONFIG }) }}
+                  style={{ padding: hp(2) }}
                 />
               </View>
             </Animated.View>
@@ -197,40 +195,42 @@ export default function AppMomentView({
             </Pressable>
           </Animated.View>
           <Animated.View style={[styles.rightContainer, controlAnimatedStyle]}>
-            <View style={{ marginBottom: hp(3) }}>
-              <AppIconButton
-                icon={item.liked ? iconMap.likeActive : iconMap.likeInactive}
-                color={item.liked ? darkTheme.colors.primary : darkTheme.colors.text}
-                size={wp(8)}
-                onPress={() => {}}
-              />
-              <AppTextHeading3
-                style={[styles.textCenter, { color: item.liked ? darkTheme.colors.primary : darkTheme.colors.text }]}>
-                {item.like}
-              </AppTextHeading3>
-            </View>
-            <View style={{ marginBottom: hp(3) }}>
-              <AppIconButton icon={iconMap.comment} color={darkTheme.colors.text} size={wp(8)} onPress={() => {}} />
-              <AppTextHeading3 style={[styles.textCenter, { color: darkTheme.colors.text }]}>
-                {item.comment}
-              </AppTextHeading3>
-            </View>
-            <View
-              style={{
-                width: wp(12),
-              }}>
-              <AppNFTRenderer
-                nft={item.nft!}
-                style={styles.nft}
-                width={wp(12)}
-                imageSize={'xs'}
-                onPress={() => {
-                  navigation.push('NFTDetails', { arg: item.nft!.id, mode: 'id' });
-                }}
-              />
-              <AppTextBody5
-                numberOfLines={1}
-                style={styles.nftLabel}>{`${item.nft?.symbol}#${item.nft?.serial}`}</AppTextBody5>
+            <View style={styles.rightContent}>
+              <View style={{ marginBottom: hp(3) }}>
+                <AppIconButton
+                  icon={item.liked ? iconMap.likeActive : iconMap.likeInactive}
+                  color={item.liked ? darkTheme.colors.primary : darkTheme.colors.text}
+                  size={wp(8)}
+                  onPress={() => {}}
+                />
+                <AppTextHeading3
+                  style={[styles.textCenter, { color: item.liked ? darkTheme.colors.primary : darkTheme.colors.text }]}>
+                  {item.like}
+                </AppTextHeading3>
+              </View>
+              <View style={{ marginBottom: hp(3) }}>
+                <AppIconButton icon={iconMap.comment} color={darkTheme.colors.text} size={wp(8)} onPress={() => {}} />
+                <AppTextHeading3 style={[styles.textCenter, { color: darkTheme.colors.text }]}>
+                  {item.comment}
+                </AppTextHeading3>
+              </View>
+              <View
+                style={{
+                  width: wp(12),
+                }}>
+                <AppNFTRenderer
+                  nft={item.nft!}
+                  style={styles.nft}
+                  width={wp(12)}
+                  imageSize={'xs'}
+                  onPress={() => {
+                    navigation.push('NFTDetails', { arg: item.nft!.id, mode: 'id' });
+                  }}
+                />
+                <AppTextBody5
+                  numberOfLines={1}
+                  style={styles.nftLabel}>{`${item.nft?.symbol}#${item.nft?.serial}`}</AppTextBody5>
+              </View>
             </View>
           </Animated.View>
         </View>
@@ -257,6 +257,7 @@ export default function AppMomentView({
       styles.ownerContainer,
       styles.ownerLabel,
       styles.rightContainer,
+      styles.rightContent,
       styles.textCenter,
     ],
   );
@@ -265,11 +266,11 @@ export default function AppMomentView({
 
   const getItemLayout = React.useCallback(
     (_, index) => ({
-      length: MOMENT_HEIGHT,
-      offset: MOMENT_HEIGHT * index,
+      length: dimension.height,
+      offset: dimension.height * index,
       index,
     }),
-    [],
+    [dimension.height],
   );
 
   const onViewableItemsChanged = React.useCallback(
@@ -320,7 +321,7 @@ export default function AppMomentView({
   );
 }
 
-const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
+const makeStyles = (theme: Theme, insets: SafeAreaInsets, momentHeight: number) =>
   StyleSheet.create({
     nft: {
       borderRadius: theme.roundness,
@@ -361,7 +362,11 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
       paddingRight: wp(3),
       paddingBottom: hp(3.5),
       justifyContent: 'flex-end',
+      alignItems: 'flex-end',
+    },
+    rightContent: {
       alignItems: 'center',
+      justifyContent: 'center',
     },
     textCenter: {
       textAlign: 'center',
@@ -372,8 +377,8 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets) =>
       alignSelf: 'center',
     },
     momentItemContainer: {
-      height: MOMENT_HEIGHT,
-      width: wp(100, { dim: DIM_CONFIG }),
+      height: momentHeight,
+      width: wp(100),
     },
     container: {
       flex: 1,

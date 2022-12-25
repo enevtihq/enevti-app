@@ -36,7 +36,7 @@ import {
 import AppLikeReadyInstance from 'enevti-app/utils/app/likeReady';
 import { RootState } from 'enevti-app/store/state';
 
-export const COLLECTION_HEADER_VIEW_HEIGHT =
+export const COLLECTION_HEADER_VIEW_HEIGHT = () =>
   30 + (Dimensions.get('screen').width * 0.5625 * 100) / Dimensions.get('screen').height + STATUS_BAR_HEIGHT();
 
 interface AppCollectionHeaderProps {
@@ -69,7 +69,7 @@ export default function AppCollectionHeader({
   const coverWidth = React.useMemo(() => wp('100%'), [wp]);
   const coverHeight = React.useMemo(() => insets.top + coverWidth * 0.5625, [coverWidth, insets]);
   const totalHeight = React.useMemo(
-    () => COLLECTION_HEADER_VIEW_HEIGHT + (mintingAvailable ? MINTING_AVAILABLE_VIEW_HEIGHT : 0),
+    () => COLLECTION_HEADER_VIEW_HEIGHT() + (mintingAvailable ? MINTING_AVAILABLE_VIEW_HEIGHT : 0),
     [mintingAvailable],
   );
 

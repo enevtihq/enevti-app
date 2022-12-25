@@ -104,7 +104,7 @@ export default function AppCollection({ onScrollWorklet, navigation, route }: Ap
     [collection],
   );
   const headerPercentage = React.useMemo(
-    () => COLLECTION_HEADER_VIEW_HEIGHT + (mintingAvailable ? MINTING_AVAILABLE_VIEW_HEIGHT : 0),
+    () => COLLECTION_HEADER_VIEW_HEIGHT() + (mintingAvailable ? MINTING_AVAILABLE_VIEW_HEIGHT : 0),
     [mintingAvailable],
   );
   const totalHeaderHeight = React.useMemo(() => hp(headerPercentage), [hp, headerPercentage]);

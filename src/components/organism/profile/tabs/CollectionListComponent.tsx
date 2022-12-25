@@ -1,9 +1,18 @@
 import React from 'react';
-import { Dimensions, FlatList, FlatListProps, Platform, RefreshControl, StyleSheet, View } from 'react-native';
+import {
+  FlatList,
+  FlatListProps,
+  Platform,
+  RefreshControl,
+  ScaledSize,
+  StyleSheet,
+  useWindowDimensions,
+  View,
+} from 'react-native';
 import Animated from 'react-native-reanimated';
 import { PROFILE_HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/organism/profile/AppProfileHeader';
 import { TOP_TABBAR_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppTopTabBar';
-import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
+import { hp, SafeAreaInsets, windowFullHeight, wp } from 'enevti-app/utils/layout/imageRatio';
 import { CollectionBase } from 'enevti-app/types/core/chain/collection';
 import AppListItem, { LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE } from 'enevti-app/components/molecules/list/AppListItem';
 import AppNetworkImage from 'enevti-app/components/atoms/image/AppNetworkImage';
@@ -78,6 +87,7 @@ function Component(
   const { t } = useTranslation();
   const theme = useTheme();
   const insets = useSafeAreaInsets();
+  const dimension = useWindowDimensions();
   const mounted = React.useRef<boolean>(false);
   const [displayed, setDisplayed] = React.useState<boolean>(false);
   const [refreshing, setRefreshing] = React.useState<boolean>(false);
@@ -105,8 +115,8 @@ function Component(
   );
 
   const styles = React.useMemo(
-    () => makeStyles(headerHeight, displayed, disableHeaderAnimation, insets),
-    [headerHeight, displayed, disableHeaderAnimation, insets],
+    () => makeStyles(headerHeight, displayed, disableHeaderAnimation, insets, dimension),
+    [headerHeight, displayed, disableHeaderAnimation, insets, dimension],
   );
   const isScrollEnabled = React.useMemo(() => (refreshing ? false : scrollEnabled), [refreshing, scrollEnabled]);
   const progressViewOffset = React.useMemo(
@@ -264,6 +274,7 @@ const makeStyles = (
   displayed: boolean,
   disableHeaderAnimation: boolean,
   insets: SafeAreaInsets,
+  dimension: ScaledSize,
 ) =>
   StyleSheet.create({
     loaderContainer: {
@@ -275,10 +286,8 @@ const makeStyles = (
     contentContainerStyle: {
       paddingTop: hp(PROFILE_HEADER_HEIGHT_PERCENTAGE + TOP_TABBAR_HEIGHT_PERCENTAGE) + headerHeight,
       minHeight:
-        Dimensions.get('screen').height +
-        hp(PROFILE_HEADER_HEIGHT_PERCENTAGE) -
-        insets.top -
-        insets.bottom +
+        windowFullHeight(dimension, insets) +
+        hp(PROFILE_HEADER_HEIGHT_PERCENTAGE) +
         (disableHeaderAnimation ? 0 : headerHeight),
       display: displayed ? undefined : 'none',
     },

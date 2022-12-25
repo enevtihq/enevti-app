@@ -1,7 +1,7 @@
 import React from 'react';
-import { Dimensions, Platform, RefreshControl, StyleSheet, View } from 'react-native';
+import { Platform, RefreshControl, ScaledSize, StyleSheet, useWindowDimensions, View } from 'react-native';
 import Animated from 'react-native-reanimated';
-import { DimensionFunction, SafeAreaInsets } from 'enevti-app/utils/layout/imageRatio';
+import { DimensionFunction, SafeAreaInsets, windowFullHeight } from 'enevti-app/utils/layout/imageRatio';
 import useDimension from 'enevti-app/utils/hook/useDimension';
 import { NFT } from 'enevti-app/types/core/chain/nft';
 import { NFT_DETAILS_TOP_TABBAR_HEIGHT_PERCENTAGE } from '../AppNFTDetailsBody';
@@ -49,6 +49,7 @@ function Component(
   const dispatch = useDispatch();
   const { hp, wp } = useDimension();
   const insets = useSafeAreaInsets();
+  const dimension = useWindowDimensions();
   const mounted = React.useRef<boolean>(false);
   const [displayed, setDisplayed] = React.useState<boolean>(false);
   const [refreshing, setRefreshing] = React.useState<boolean>(false);
@@ -64,8 +65,8 @@ function Component(
   );
 
   const styles = React.useMemo(
-    () => makeStyles(hp, wp, displayed, collectionHeaderHeight, insets),
-    [hp, wp, displayed, collectionHeaderHeight, insets],
+    () => makeStyles(hp, wp, displayed, collectionHeaderHeight, insets, dimension),
+    [hp, wp, displayed, collectionHeaderHeight, insets, dimension],
   );
   const isScrollEnabled = React.useMemo(() => (refreshing ? false : scrollEnabled), [refreshing, scrollEnabled]);
   const spacing = React.useMemo(() => wp('0.583%'), [wp]);
@@ -177,6 +178,7 @@ const makeStyles = (
   displayed: boolean,
   collectionHeaderHeight: number,
   insets: SafeAreaInsets,
+  dimension: ScaledSize,
 ) =>
   StyleSheet.create({
     loaderContainer: {
@@ -187,12 +189,7 @@ const makeStyles = (
     },
     contentContainerStyle: {
       paddingTop: hp(NFT_DETAILS_TOP_TABBAR_HEIGHT_PERCENTAGE) + collectionHeaderHeight,
-      minHeight:
-        Dimensions.get('screen').height +
-        collectionHeaderHeight -
-        hp(HEADER_HEIGHT_PERCENTAGE) -
-        insets.top -
-        insets.bottom,
+      minHeight: windowFullHeight(dimension, insets) + collectionHeaderHeight - hp(HEADER_HEIGHT_PERCENTAGE),
       display: displayed ? undefined : 'none',
     },
     collectionRightContent: {
