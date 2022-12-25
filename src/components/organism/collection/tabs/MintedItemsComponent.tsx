@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, RefreshControl, StyleSheet, View } from 'react-native';
+import { Dimensions, Platform, RefreshControl, StyleSheet, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { FlatGrid, FlatGridProps } from 'react-native-super-grid';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -187,7 +187,12 @@ const makeStyles = (
     },
     contentContainerStyle: {
       paddingTop: hp(TOP_TABBAR_HEIGHT_PERCENTAGE) + collectionHeaderHeight,
-      minHeight: hp(100) + collectionHeaderHeight - hp(HEADER_HEIGHT_PERCENTAGE) - insets.top,
+      minHeight:
+        Dimensions.get('screen').height +
+        collectionHeaderHeight -
+        hp(HEADER_HEIGHT_PERCENTAGE) -
+        insets.top -
+        insets.bottom,
       display: displayed ? undefined : 'none',
     },
   });

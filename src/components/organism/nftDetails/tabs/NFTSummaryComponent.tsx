@@ -1,4 +1,4 @@
-import { Platform, Pressable, RefreshControl, StyleSheet, View } from 'react-native';
+import { Dimensions, Platform, Pressable, RefreshControl, StyleSheet, View } from 'react-native';
 import React from 'react';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
@@ -306,7 +306,12 @@ const makeStyles = (
     },
     contentContainerStyle: {
       paddingTop: hp(NFT_DETAILS_TOP_TABBAR_HEIGHT_PERCENTAGE) + collectionHeaderHeight,
-      minHeight: hp(100) + collectionHeaderHeight - hp(HEADER_HEIGHT_PERCENTAGE) - insets.top * 0.9,
+      minHeight:
+        Dimensions.get('screen').height +
+        collectionHeaderHeight -
+        hp(HEADER_HEIGHT_PERCENTAGE) -
+        insets.top -
+        insets.bottom,
       display: displayed ? undefined : 'none',
     },
     collectionDetail: {

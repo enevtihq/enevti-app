@@ -16,7 +16,7 @@ import { IPFStoURL } from 'enevti-app/service/ipfs';
 const NFT_WIDTH = Dimensions.get('screen').width * 0.8;
 export const NFT_DETAILS_HEADER_VIEW_HEIGHT =
   HEADER_HEIGHT_PERCENTAGE +
-  0.5 +
+  5.5 +
   STATUS_BAR_HEIGHT() +
   ((NFT_WIDTH + Dimensions.get('screen').width * 0.125) / Dimensions.get('screen').height) * 100;
 

@@ -1,11 +1,11 @@
 import React from 'react';
-import { Platform, RefreshControl, StyleSheet, View } from 'react-native';
+import { Dimensions, Platform, RefreshControl, StyleSheet, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { FlatGrid, FlatGridProps } from 'react-native-super-grid';
 import { NFTBase } from 'enevti-app/types/core/chain/nft';
 import { PROFILE_HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/organism/profile/AppProfileHeader';
 import { TOP_TABBAR_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppTopTabBar';
-import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
+import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
 import AppNFTRenderer from 'enevti-app/components/molecules/nft/AppNFTRenderer';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
@@ -28,6 +28,7 @@ import {
 } from 'enevti-app/store/slices/ui/view/profile';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
 import { TABBAR_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppTabBar';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const AnimatedFlatGrid = Animated.createAnimatedComponent<FlatGridProps<NFTBase>>(FlatGrid);
 
@@ -62,6 +63,7 @@ function Component(
   ref: any,
 ) {
   const dispatch = useDispatch();
+  const insets = useSafeAreaInsets();
   const mounted = React.useRef<boolean>(false);
   const [displayed, setDisplayed] = React.useState<boolean>(false);
   const [refreshing, setRefreshing] = React.useState<boolean>(false);
@@ -89,8 +91,8 @@ function Component(
   );
 
   const styles = React.useMemo(
-    () => makeStyles(headerHeight, displayed, disableHeaderAnimation),
-    [headerHeight, displayed, disableHeaderAnimation],
+    () => makeStyles(headerHeight, displayed, disableHeaderAnimation, insets),
+    [headerHeight, displayed, disableHeaderAnimation, insets],
   );
   const isScrollEnabled = React.useMemo(() => (refreshing ? false : scrollEnabled), [refreshing, scrollEnabled]);
   const spacing = React.useMemo(() => wp('0.5%'), []);
@@ -184,7 +186,12 @@ function Component(
   );
 }
 
-const makeStyles = (headerHeight: number, displayed: boolean, disableHeaderAnimation: boolean) =>
+const makeStyles = (
+  headerHeight: number,
+  displayed: boolean,
+  disableHeaderAnimation: boolean,
+  insets: SafeAreaInsets,
+) =>
   StyleSheet.create({
     loaderContainer: {
       justifyContent: 'center',
@@ -194,7 +201,12 @@ const makeStyles = (headerHeight: number, displayed: boolean, disableHeaderAnima
     },
     contentContainerStyle: {
       paddingTop: hp(PROFILE_HEADER_HEIGHT_PERCENTAGE + TOP_TABBAR_HEIGHT_PERCENTAGE) + headerHeight,
-      minHeight: hp(PROFILE_HEADER_HEIGHT_PERCENTAGE + 100) + (disableHeaderAnimation ? 0 : headerHeight),
+      minHeight:
+        Dimensions.get('screen').height +
+        hp(PROFILE_HEADER_HEIGHT_PERCENTAGE) -
+        insets.top -
+        insets.bottom +
+        (disableHeaderAnimation ? 0 : headerHeight),
       display: displayed ? undefined : 'none',
     },
   });

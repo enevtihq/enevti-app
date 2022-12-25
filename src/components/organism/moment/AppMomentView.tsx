@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Dimensions, Pressable, StyleSheet, View } from 'react-native';
 import Video from 'react-native-video';
 import React from 'react';
 import { FlatList } from '@stream-io/flat-list-mvcp';
@@ -34,7 +34,7 @@ import { useTheme } from 'react-native-paper';
 import { Theme } from 'enevti-app/theme/default';
 
 const DIM_CONFIG = 'window';
-const MOMENT_HEIGHT = hp(100, { dim: DIM_CONFIG });
+const MOMENT_HEIGHT = Dimensions.get('window').height;
 
 interface AppMomentViewProps {
   navigation: StackNavigationProp<RootStackParamList>;

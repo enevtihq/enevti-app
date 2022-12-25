@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, RefreshControl, StyleSheet, View } from 'react-native';
+import { Dimensions, Platform, RefreshControl, StyleSheet, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { DimensionFunction, SafeAreaInsets } from 'enevti-app/utils/layout/imageRatio';
 import useDimension from 'enevti-app/utils/hook/useDimension';
@@ -187,7 +187,12 @@ const makeStyles = (
     },
     contentContainerStyle: {
       paddingTop: hp(NFT_DETAILS_TOP_TABBAR_HEIGHT_PERCENTAGE) + collectionHeaderHeight,
-      minHeight: hp(100) + collectionHeaderHeight - hp(HEADER_HEIGHT_PERCENTAGE) - insets.top * 0.9,
+      minHeight:
+        Dimensions.get('screen').height +
+        collectionHeaderHeight -
+        hp(HEADER_HEIGHT_PERCENTAGE) -
+        insets.top -
+        insets.bottom,
       display: displayed ? undefined : 'none',
     },
     collectionRightContent: {
