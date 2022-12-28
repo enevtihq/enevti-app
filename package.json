@@ -63,6 +63,7 @@
     "isomorphic-webcrypto": "^2.3.8",
     "lottie-react-native": "^5.1.4",
     "moment": "^2.29.1",
+    "nano-memoize": "^2.0.0",
     "patch-package": "^6.4.7",
     "path-browserify": "0.0.0",
     "process": "^0.11.10",

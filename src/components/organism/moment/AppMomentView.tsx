@@ -54,6 +54,7 @@ export default function AppMomentView({
 
   const [controlVisible, setControlVisible] = React.useState<boolean>(true);
   const [muted, setMuted] = React.useState<boolean>(false);
+  const [visible, setVisible] = React.useState<number>(0);
   const [currentVisibleIndex, setCurrentVisibleIndex] = React.useState<number>(route.params.index ?? 0);
 
   const showAudioIndicatorTimeout = React.useRef<any>();
@@ -113,6 +114,7 @@ export default function AppMomentView({
   React.useEffect(() => {
     const unsubscribe = EventRegister.addEventListener(route.key, () => {
       EventRegister.removeEventListener(unsubscribe.toString());
+      setVisible(1);
       if (route.params.mode !== undefined) {
         momentListRef.current?.scrollToIndex({ animated: false, index: route.params.index! });
       }
@@ -306,6 +308,7 @@ export default function AppMomentView({
         data={momentView.moments}
         showsVerticalScrollIndicator={false}
         onViewableItemsChanged={onViewableItemsChanged}
+        style={{ opacity: visible }}
         viewabilityConfig={{
           itemVisiblePercentThreshold: 80,
         }}
