@@ -36,6 +36,10 @@ const recentMomentSlice = createSlice({
     setRecentMomentState: (recentMoment, action: PayloadAction<Partial<RecentMomentState>>) => {
       assignDeep(recentMoment, action.payload);
     },
+    addRecentMomentLike: (recentMoment, action: PayloadAction<{ index: number }>) => {
+      recentMoment.items[action.payload.index].liked = true;
+      recentMoment.items[action.payload.index].like++;
+    },
     setRecentMoment: (recentMoment, action: PayloadAction<Moments>) => {
       recentMoment.items = action.payload.slice();
     },
@@ -59,6 +63,7 @@ const recentMomentSlice = createSlice({
 
 export const {
   setRecentMomentAlertShow,
+  addRecentMomentLike,
   setRecentMomentState,
   setRecentMoment,
   setRecentMomentVersion,

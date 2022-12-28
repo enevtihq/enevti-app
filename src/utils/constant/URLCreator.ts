@@ -160,9 +160,12 @@ export function urlGetCollectionMintedNFTById(
   offset: number = 0,
   limit: number = 10,
   version: number = 0,
+  viewer: string,
   host: string = ENEVTI_DEFAULT_API,
 ) {
-  return encodeURI(`${host}/collection/id/${id}/minted?offset=${offset}&limit=${limit}&version=${version}`);
+  return encodeURI(
+    `${host}/collection/id/${id}/minted?offset=${offset}&limit=${limit}&version=${version}&viewer=${viewer}`,
+  );
 }
 
 export function urlGetCollectionMomentNFTById(
@@ -180,9 +183,12 @@ export function urlGetCollectionActivityById(
   offset: number = 0,
   limit: number = 10,
   version: number = 0,
+  viewer: string,
   host: string = ENEVTI_DEFAULT_API,
 ) {
-  return encodeURI(`${host}/collection/id/${id}/activity?offset=${offset}&limit=${limit}&version=${version}`);
+  return encodeURI(
+    `${host}/collection/id/${id}/activity?offset=${offset}&limit=${limit}&version=${version}&viewer=${viewer}`,
+  );
 }
 
 export function urlGetCollectionByName(
@@ -267,9 +273,10 @@ export function urlGetNFTMomentById(
   offset: number = 0,
   limit: number = 10,
   version: number = 0,
+  viewer: string,
   host: string = ENEVTI_DEFAULT_API,
 ) {
-  return encodeURI(`${host}/nft/id/${id}/moment?offset=${offset}&limit=${limit}&version=${version}`);
+  return encodeURI(`${host}/nft/id/${id}/moment?offset=${offset}&limit=${limit}&version=${version}&viewer=${viewer}`);
 }
 
 export function urlGetNFTBySerial(
@@ -301,11 +308,13 @@ export function urlGetPersonaByUsername(username: string, host: string = ENEVTI_
 
 export function urlGetProfile(
   address: string,
+  viewer: string,
   withPersona: boolean = false,
   withInitialData: boolean = false,
   host: string = ENEVTI_DEFAULT_API,
 ) {
   const url = new URL(`${host}/profile/${address}`);
+  url.searchParams.append('viewer', viewer);
   if (withPersona) {
     url.searchParams.append('persona', 'true');
   }
@@ -333,9 +342,12 @@ export function urlGetProfileCollection(
   offset: number = 0,
   limit: number = 10,
   version: number = 0,
+  viewer: string,
   host: string = ENEVTI_DEFAULT_API,
 ) {
-  return encodeURI(`${host}/profile/${address}/collection?offset=${offset}&limit=${limit}&version=${version}`);
+  return encodeURI(
+    `${host}/profile/${address}/collection?offset=${offset}&limit=${limit}&version=${version}&viewer=${viewer}`,
+  );
 }
 
 export function urlGetProfileNonce(address: string, host: string = ENEVTI_DEFAULT_API) {
@@ -355,9 +367,12 @@ export function urlGetProfileMoment(
   offset: number = 0,
   limit: number = 10,
   version: number = 0,
+  viewer: string,
   host: string = ENEVTI_DEFAULT_API,
 ) {
-  return encodeURI(`${host}/profile/${address}/moment?offset=${offset}&limit=${limit}&version=${version}`);
+  return encodeURI(
+    `${host}/profile/${address}/moment?offset=${offset}&limit=${limit}&version=${version}&viewer=${viewer}`,
+  );
 }
 
 export function urlGetProfileMomentSlot(
@@ -465,13 +480,22 @@ export function urlGetActivityProfile(
   offset: number = 0,
   limit: number = 10,
   version: number = 0,
+  viewer: string,
   host: string = ENEVTI_DEFAULT_API,
 ) {
-  return encodeURI(`${host}/activity/profile/${address}?offset=${offset}&limit=${limit}&version=${version}`);
+  return encodeURI(
+    `${host}/activity/profile/${address}?offset=${offset}&limit=${limit}&version=${version}&viewer=${viewer}`,
+  );
 }
 
-export function urlGetWallet(address: string, withInitialData: boolean = false, host: string = ENEVTI_DEFAULT_API) {
+export function urlGetWallet(
+  address: string,
+  withInitialData: boolean = false,
+  viewer: string,
+  host: string = ENEVTI_DEFAULT_API,
+) {
   const url = new URL(`${host}/wallet/${address}`);
+  url.searchParams.append('viewer', viewer);
   if (withInitialData) {
     url.searchParams.append('history', WALLET_HISTORY_INITIAL_LENGTH.toString());
   }

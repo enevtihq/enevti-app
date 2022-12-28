@@ -14,7 +14,6 @@ type NFTDetailsViewState = NFT & {
   fetchedVersion: number;
   reqStatus: number;
   loaded: boolean;
-  liked: boolean;
   render: Record<'summary' | 'activity' | 'moment', boolean>;
 };
 
@@ -163,6 +162,10 @@ const nftDetailsViewSlice = createSlice({
     setNFTDetailsViewLike: (nftDetails, action: PayloadAction<{ key: string; value: number }>) => {
       nftDetails[action.payload.key].like = action.payload.value;
     },
+    addNFTDetailsViewMomentLike: (nftDetails, action: PayloadAction<{ key: string; index: number }>) => {
+      nftDetails[action.payload.key].moment[action.payload.index].liked = true;
+      nftDetails[action.payload.key].moment[action.payload.index].like++;
+    },
     addNFTDetailsViewLike: (nftDetails, action: PayloadAction<{ key: string }>) => {
       nftDetails[action.payload.key].liked = true;
       nftDetails[action.payload.key].like++;
@@ -224,6 +227,7 @@ export const {
   initNFTDetailsView,
   setNFTDetailsRender,
   setNFTDetailsView,
+  addNFTDetailsViewMomentLike,
   addNFTDetailsViewLike,
   setNFTDetailsViewLike,
   unshiftNFTDetailsViewActivity,

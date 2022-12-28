@@ -1,4 +1,4 @@
-import { base32ToAddress, usernameToAddress } from 'enevti-app/service/enevti/persona';
+import { base32ToAddress, getMyAddress, usernameToAddress } from 'enevti-app/service/enevti/persona';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { apiFetchVersioned, apiFetchVersionRoot } from 'enevti-app/utils/app/network';
@@ -14,7 +14,11 @@ async function fetchWallet(
   withInitialData: boolean,
   signal?: AbortController['signal'],
 ): Promise<APIResponseVersionRoot<WalletView, { history: number }>> {
-  return await apiFetchVersionRoot<WalletView, { history: number }>(urlGetWallet(address, withInitialData), signal);
+  const myAddress = await getMyAddress();
+  return await apiFetchVersionRoot<WalletView, { history: number }>(
+    urlGetWallet(address, withInitialData, myAddress),
+    signal,
+  );
 }
 
 async function fetchTransactionHistory(
@@ -24,7 +28,11 @@ async function fetchTransactionHistory(
   version: number,
   signal?: AbortController['signal'],
 ): Promise<APIResponseVersioned<WalletView['history']>> {
-  return await apiFetchVersioned<WalletView['history']>(urlGetActivityProfile(address, offset, limit, version), signal);
+  const myAddress = await getMyAddress();
+  return await apiFetchVersioned<WalletView['history']>(
+    urlGetActivityProfile(address, offset, limit, version, myAddress),
+    signal,
+  );
 }
 
 export async function getWallet(

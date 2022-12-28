@@ -87,6 +87,10 @@ const profileViewSlice = createSlice({
         [action.payload.key]: action.payload.value,
       });
     },
+    addProfileViewMomentLike: (profile, action: PayloadAction<{ key: string; index: number }>) => {
+      profile[action.payload.key].momentCreated[action.payload.index].liked = true;
+      profile[action.payload.key].momentCreated[action.payload.index].like++;
+    },
     unshiftProfileViewOwnedNFT: (profile, action: PayloadAction<{ key: string; value: NFTBase[] }>) => {
       profile[action.payload.key].owned = action.payload.value.concat(profile[action.payload.key].owned);
     },
@@ -151,6 +155,7 @@ export const {
   unshiftProfileViewOwnedNFT,
   unshiftProfileViewOnsaleNFT,
   unshiftProfileViewCollection,
+  addProfileViewMomentLike,
   pushProfileViewOwnedNFT,
   pushProfileViewOnsaleNFT,
   pushProfileViewCollection,

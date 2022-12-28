@@ -5,7 +5,7 @@ import { PaginationStore } from 'enevti-app/types/ui/store/PaginationStore';
 import { assignDeep } from 'enevti-app/utils/primitive/object';
 import { Moment } from 'enevti-app/types/core/chain/moment';
 
-type MomentsData = Moment & { liked?: boolean };
+export type MomentsData = Moment & { isLiking?: boolean };
 
 type MomentViewState = {
   momentPagination: PaginationStore;
@@ -52,6 +52,15 @@ const momentViewSlice = createSlice({
       moment[action.payload.key].moments = action.payload.value.concat(moment[action.payload.key].moments);
       moment[action.payload.key].momentPagination = { ...action.payload.pagination };
     },
+    setMoment: (moment, action: PayloadAction<{ key: string; momentIndex: number; value: Partial<MomentsData> }>) => {
+      assignDeep(moment, {
+        [action.payload.key]: assignDeep({}, moment[action.payload.key], {
+          moments: moment[action.payload.key].moments.map((c, i) =>
+            i === action.payload.momentIndex ? assignDeep({}, c, action.payload.value) : c,
+          ),
+        }),
+      });
+    },
     pushMomentView: (
       moment,
       action: PayloadAction<{ key: string; value: MomentsData[]; pagination: PaginationStore }>,
@@ -76,6 +85,7 @@ export const {
   setMomentViewLoaded,
   setMomentView,
   unshiftMomentView,
+  setMoment,
   pushMomentView,
   clearMomentByKey,
   resetMomentByKey,

@@ -45,6 +45,7 @@ export interface NFT extends NFTBase {
   royalty: NFTRoyalty;
   activity: NFTActivity[];
   moment: MomentBase[];
+  liked?: boolean;
 }
 
 export interface NFTAsset
@@ -62,6 +63,7 @@ export interface NFTAsset
     | 'networkIdentifier'
     | 'createdOn'
     | 'moment'
+    | 'liked'
   > {
   id: NFTIdAsset;
   collectionId: CollectionIdAsset;

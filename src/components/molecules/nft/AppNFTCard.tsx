@@ -1,6 +1,6 @@
 import { View, ViewStyle, StyleProp, StyleSheet } from 'react-native';
 import React from 'react';
-import { NFTBase } from 'enevti-app/types/core/chain/nft';
+import { NFT } from 'enevti-app/types/core/chain/nft';
 import { wp, hp } from 'enevti-app/utils/layout/imageRatio';
 import { TouchableRipple, useTheme } from 'react-native-paper';
 import { Theme } from 'enevti-app/theme/default';
@@ -8,7 +8,7 @@ import AppNFTRenderer from './AppNFTRenderer';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
 import AppTextHeading4 from 'enevti-app/components/atoms/text/AppTextHeading4';
-import { parseAmount } from 'enevti-app/utils/format/amount';
+import { numberKMB, parseAmount } from 'enevti-app/utils/format/amount';
 import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
 import AppIconComponent, { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import Color from 'color';
@@ -16,7 +16,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 
 interface AppNFTCardProps {
-  nft: NFTBase;
+  nft: NFT;
   width: number;
   style?: StyleProp<ViewStyle>;
   navigation?: StackNavigationProp<RootStackParamList>;
@@ -55,7 +55,12 @@ export default function AppNFTCard({ nft, width, style, navigation }: AppNFTCard
             </AppTextHeading4>
           ) : (
             <AppTextHeading4 numberOfLines={1}>
-              <AppIconComponent name={iconMap.likeInactive} size={10} color={theme.colors.text} /> {nft.like}
+              <AppIconComponent
+                name={nft.liked ? iconMap.likeActive : iconMap.likeInactive}
+                size={10}
+                color={nft.liked ? theme.colors.primary : theme.colors.text}
+              />{' '}
+              {numberKMB(nft.like, 2, true, ['K', 'M', 'B'], 10000)}
             </AppTextHeading4>
           )}
         </View>

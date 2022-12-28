@@ -34,6 +34,7 @@ export interface Moment {
   like: number;
   text: string;
   textPlain?: string;
+  liked?: boolean;
 
   nftId: string;
   nft?: NFTBase;
@@ -48,7 +49,11 @@ export interface Moment {
 
 export type MomentBase = Moment;
 
-export interface MomentAsset extends Omit<Moment, 'id' | 'nftId' | 'activity' | 'owner' | 'creator' | 'createdOn'> {
+export interface MomentAsset
+  extends Omit<
+    Moment,
+    'id' | 'nftId' | 'activity' | 'owner' | 'creator' | 'createdOn' | 'textPlain' | 'nft' | 'liked'
+  > {
   id: MomentIdAsset;
   nftId: NFTIdAsset;
   owner: PersonaAsset;

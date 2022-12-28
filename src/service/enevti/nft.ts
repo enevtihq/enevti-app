@@ -117,7 +117,8 @@ async function fetchNFTMoment(
   version: number,
   signal?: AbortController['signal'],
 ): Promise<APIResponseVersioned<MomentBase[]>> {
-  return await apiFetchVersioned<MomentBase[]>(urlGetNFTMomentById(id, offset, limit, version), signal);
+  const myAddress = await getMyAddress();
+  return await apiFetchVersioned<MomentBase[]>(urlGetNFTMomentById(id, offset, limit, version, myAddress), signal);
 }
 
 export async function getIsNFTOwnerOrCreator(id: string, signal?: AbortController['signal']) {

@@ -73,12 +73,13 @@ export interface Collection extends CollectionBase {
   moment: MomentBase[];
   promoted: boolean;
   raffled: number;
+  liked?: boolean;
 }
 
 export interface CollectionAsset
   extends Omit<
     Collection,
-    'creator' | 'id' | 'minted' | 'activity' | 'social' | 'stat' | 'minting' | 'createdOn' | 'moment'
+    'creator' | 'id' | 'minted' | 'activity' | 'social' | 'stat' | 'minting' | 'createdOn' | 'moment' | 'liked'
   > {
   id: CollectionIdAsset;
   creator: PersonaAsset;

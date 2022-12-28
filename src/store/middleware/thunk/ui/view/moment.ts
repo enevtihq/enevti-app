@@ -7,26 +7,39 @@ import { getNFTMoment } from 'enevti-app/service/enevti/nft';
 import { getMyAddress } from 'enevti-app/service/enevti/persona';
 import { getProfileMoment } from 'enevti-app/service/enevti/profile';
 import { hideModalLoader, showModalLoader } from 'enevti-app/store/slices/ui/global/modalLoader';
-import { pushCollectionViewMoment, selectCollectionView } from 'enevti-app/store/slices/ui/view/collection';
+import {
+  addCollectionViewMomentLike,
+  pushCollectionViewMoment,
+  selectCollectionView,
+} from 'enevti-app/store/slices/ui/view/collection';
 import {
   clearMomentByKey,
   momentInitialStateItem,
+  MomentsData,
   pushMomentView,
+  selectMomentView,
+  setMoment,
   setMomentView,
   setMomentViewLoaded,
 } from 'enevti-app/store/slices/ui/view/moment';
 import {
+  addMyProfileViewMomentLike,
   selectMyProfileView,
   selectMyProfileViewMomentCreated,
   setMyProfileView,
 } from 'enevti-app/store/slices/ui/view/myProfile';
-import { pushNFTDetailsViewMoment, selectNFTDetailsView } from 'enevti-app/store/slices/ui/view/nftDetails';
 import {
+  addNFTDetailsViewMomentLike,
+  pushNFTDetailsViewMoment,
+  selectNFTDetailsView,
+} from 'enevti-app/store/slices/ui/view/nftDetails';
+import {
+  addProfileViewMomentLike,
   selectProfileView,
   selectProfileViewMomentCreated,
   setProfileView,
 } from 'enevti-app/store/slices/ui/view/profile';
-import { selectRecentMomentState } from 'enevti-app/store/slices/ui/view/recentMoment';
+import { addRecentMomentLike, selectRecentMomentState } from 'enevti-app/store/slices/ui/view/recentMoment';
 import { AppThunk, AsyncThunkAPI, RootState } from 'enevti-app/store/state';
 import {
   COLLECTION_MOMENT_RESPONSE_LIMIT,
@@ -101,6 +114,62 @@ export const loadMoreMoment = createAsyncThunk<void, LoadMomentArgs, AsyncThunkA
     }
   },
 );
+
+export const setMomentById =
+  ({ route, id, moment }: { route: MomentRoute; id: string; moment: Partial<MomentsData> }): AppThunk =>
+  (dispatch, getState) => {
+    const momentState = selectMomentView(getState(), route.key);
+    const index = momentState.moments.findIndex(c => c.id === id);
+    if (index !== -1) {
+      dispatch(setMoment({ key: route.key, momentIndex: index, value: moment }));
+    }
+  };
+
+export const addMomentLikeById =
+  ({ route, id }: { route: MomentRoute; id: string }): AppThunk =>
+  (dispatch, getState) => {
+    const momentState = selectMomentView(getState(), route.key);
+    const index = momentState.moments.findIndex(c => c.id === id);
+    if (index !== -1) {
+      dispatch(setMoment({ key: route.key, momentIndex: index, value: { like: momentState.moments[index].like + 1 } }));
+    }
+
+    if (route.params.mode === 'feed') {
+      const state = selectRecentMomentState(getState());
+      const stateIndex = state.items.findIndex(c => c.id === id);
+      if (stateIndex !== -1) {
+        dispatch(addRecentMomentLike({ index: stateIndex }));
+      }
+    }
+    if (route.params.mode === 'profile') {
+      const state = selectProfileView(getState(), route.params.arg!);
+      const stateIndex = state.momentCreated.findIndex(c => c.id === id);
+      if (stateIndex !== -1) {
+        dispatch(addProfileViewMomentLike({ key: route.params.arg!, index: stateIndex }));
+      }
+    }
+    if (route.params.mode === 'myProfile') {
+      const state = selectMyProfileView(getState());
+      const stateIndex = state.momentCreated.findIndex(c => c.id === id);
+      if (stateIndex !== -1) {
+        dispatch(addMyProfileViewMomentLike({ index: stateIndex }));
+      }
+    }
+    if (route.params.mode === 'nft') {
+      const state = selectNFTDetailsView(getState(), route.params.arg!);
+      const stateIndex = state.moment.findIndex(c => c.id === id);
+      if (stateIndex !== -1) {
+        dispatch(addNFTDetailsViewMomentLike({ key: route.params.arg!, index: stateIndex }));
+      }
+    }
+    if (route.params.mode === 'collection') {
+      const state = selectCollectionView(getState(), route.params.arg!);
+      const stateIndex = state.moment.findIndex(c => c.id === id);
+      if (stateIndex !== -1) {
+        dispatch(addCollectionViewMomentLike({ key: route.params.arg!, index: stateIndex }));
+      }
+    }
+  };
 
 export const unloadMoment =
   (key: string): AppThunk =>

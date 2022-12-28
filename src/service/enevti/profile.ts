@@ -72,8 +72,9 @@ async function fetchProfile(
   withInitialData: boolean = false,
   signal?: AbortController['signal'],
 ): Promise<APIResponseVersionRoot<ProfileAPIResponse, ProfileAPIVersion>> {
+  const myAddress = await getMyAddress();
   return await apiFetchVersionRoot<ProfileAPIResponse, ProfileAPIVersion>(
-    urlGetProfile(address, withPersona, withInitialData),
+    urlGetProfile(address, myAddress, withPersona, withInitialData),
     signal,
   );
 }
@@ -102,7 +103,8 @@ async function fetchProfileMoment(
   version: number,
   signal?: AbortController['signal'],
 ): Promise<APIResponseVersioned<MomentBase[]>> {
-  return await apiFetchVersioned<MomentBase[]>(urlGetProfileMoment(address, offset, limit, version), signal);
+  const myAddress = await getMyAddress();
+  return await apiFetchVersioned<MomentBase[]>(urlGetProfileMoment(address, offset, limit, version, myAddress), signal);
 }
 
 async function fetchProfileOwned(
@@ -122,8 +124,9 @@ async function fetchProfileCollection(
   version: number,
   signal?: AbortController['signal'],
 ): Promise<APIResponseVersioned<Profile['collection']>> {
+  const myAddress = await getMyAddress();
   return await apiFetchVersioned<Profile['collection']>(
-    urlGetProfileCollection(address, offset, limit, version),
+    urlGetProfileCollection(address, offset, limit, version, myAddress),
     signal,
   );
 }

@@ -17,7 +17,6 @@ type CollectionViewState = Omit<Collection, 'collectionType'> & {
   version: number;
   loaded: boolean;
   reqStatus: number;
-  liked: boolean;
   likeDisabled: boolean;
   render: Record<'minted' | 'activity' | 'moment', boolean>;
 };
@@ -118,6 +117,10 @@ const collectionViewSlice = createSlice({
     setCollectionViewLikeDisabled: (collection, action: PayloadAction<{ key: string; value: boolean }>) => {
       collection[action.payload.key].likeDisabled = action.payload.value;
     },
+    addCollectionViewMomentLike: (collection, action: PayloadAction<{ key: string; index: number }>) => {
+      collection[action.payload.key].moment[action.payload.index].liked = true;
+      collection[action.payload.key].moment[action.payload.index].like++;
+    },
     addCollectionViewLike: (collection, action: PayloadAction<{ key: string }>) => {
       collection[action.payload.key].liked = true;
       collection[action.payload.key].like++;
@@ -194,6 +197,7 @@ export const {
   setCollectionView,
   setCollectionViewLike,
   setCollectionViewLikeDisabled,
+  addCollectionViewMomentLike,
   addCollectionViewLike,
   unshiftCollectionViewMinted,
   unshiftCollectionViewActivity,

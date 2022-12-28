@@ -41,6 +41,8 @@ export default {
   payTransferTokenDescription: 'to {{base32}}',
   payLikeCollectionName: 'Like Collection',
   payLikeCollectionDescription: 'Give like for {{name}}',
+  payLikeMomentName: 'Like Moment',
+  payLikeMomentDescription: 'Give like for {{name}}',
   payLikeCommentName: 'Like Comment',
   payLikeCommentDescription: 'Give like for comment by {{name}}',
   payLikeReplyName: 'Like Reply',

@@ -8,6 +8,7 @@ import AppIconComponent, { iconMap } from 'enevti-app/components/atoms/icon/AppI
 import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import { numberKMB } from 'enevti-app/utils/format/amount';
+import darkTheme from 'enevti-app/theme/dark';
 
 interface AppMomentItemProps {
   moment: MomentBase;
@@ -40,7 +41,12 @@ export default function AppMomentItem({ moment, showLike, style, onPress, width 
       titleComponent={
         showLike ? (
           <View style={styles.showLikeContainer}>
-            <AppIconComponent name={iconMap.likeInactive} color={'white'} size={hp(2)} style={{ marginRight: wp(1) }} />
+            <AppIconComponent
+              name={moment.liked ? iconMap.likeActive : iconMap.likeInactive}
+              color={moment.liked ? darkTheme.colors.primary : 'white'}
+              size={hp(2)}
+              style={{ marginRight: wp(1) }}
+            />
             <AppTextBody4 style={styles.likeText} numberOfLines={1}>
               {numberKMB(moment.like, 2, true, ['K', 'M', 'B'], 10000)}
             </AppTextBody4>

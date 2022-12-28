@@ -6,11 +6,15 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { RouteProp } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
-import { loadMoment, unloadMoment } from 'enevti-app/store/middleware/thunk/ui/view/moment';
+import {
+  addMomentLikeById,
+  loadMoment,
+  setMomentById,
+  unloadMoment,
+} from 'enevti-app/store/middleware/thunk/ui/view/moment';
 import { AppAsyncThunk } from 'enevti-app/types/ui/store/AppAsyncThunk';
-import { selectMomentView } from 'enevti-app/store/slices/ui/view/moment';
+import { MomentsData, selectMomentView } from 'enevti-app/store/slices/ui/view/moment';
 import { RootState } from 'enevti-app/store/state';
-import { Moment } from 'enevti-app/types/core/chain/moment';
 import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
 import { IPFStoURL } from 'enevti-app/service/ipfs';
 import { EventRegister } from 'react-native-event-listeners';
@@ -32,6 +36,13 @@ import AppNFTRenderer from 'enevti-app/components/molecules/nft/AppNFTRenderer';
 import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
 import { useTheme } from 'react-native-paper';
 import { Theme } from 'enevti-app/theme/default';
+import usePaymentCallback from 'enevti-app/utils/hook/usePaymentCallback';
+import { PaymentStatus } from 'enevti-app/types/ui/store/Payment';
+import { directPayLikeMoment } from 'enevti-app/store/middleware/thunk/payment/direct/directPayLikeMoment';
+import AppLikeReadyInstance from 'enevti-app/utils/app/likeReady';
+import { useTranslation } from 'react-i18next';
+import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
+import { numberKMB } from 'enevti-app/utils/format/amount';
 
 interface AppMomentViewProps {
   navigation: StackNavigationProp<RootStackParamList>;
@@ -47,6 +58,7 @@ export default function AppMomentView({
   onLongPressOutWorklet,
 }: AppMomentViewProps) {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const theme = useTheme() as Theme;
   const insets = useSafeAreaInsets();
   const dimension = useWindowDimensions();
@@ -63,6 +75,8 @@ export default function AppMomentView({
   const touchedRef = React.useRef<boolean>(false);
   const videoRef = React.useRef<Record<number, any>>({});
   const currentIndexRef = React.useRef<number>(route.params.index ?? 0);
+  const paymentThunkRef = React.useRef<any>();
+
   const momentView = useSelector((state: RootState) => selectMomentView(state, route.key));
   const opacity = useSharedValue(0);
   const controlOpacity = useSharedValue(1);
@@ -111,6 +125,63 @@ export default function AppMomentView({
     [dispatch, route],
   ) as AppAsyncThunk;
 
+  const onLikePress = React.useCallback(
+    (id: string, target: string) => {
+      dispatch(setMomentById({ route, id, moment: { isLiking: true } }));
+      paymentThunkRef.current = dispatch(directPayLikeMoment({ id, key: route.key, target }));
+    },
+    [dispatch, route],
+  );
+
+  const onAlreadyLiked = React.useCallback(() => {
+    dispatch(showSnackbar({ mode: 'info', text: t('home:cannotLike') }));
+  }, [dispatch, t]);
+
+  const paymentCondition = React.useCallback(
+    (paymentStatus: PaymentStatus) => {
+      return (
+        paymentStatus.action !== undefined &&
+        ['likeMoment'].includes(paymentStatus.action) &&
+        paymentStatus.key === route.key
+      );
+    },
+    [route],
+  );
+
+  const paymentIdleCallback = React.useCallback(
+    (paymentStatus: PaymentStatus) => {
+      switch (paymentStatus.action) {
+        case 'likeMoment':
+          dispatch(setMomentById({ route, id: paymentStatus.id, moment: { isLiking: false } }));
+          break;
+        default:
+          break;
+      }
+      AppLikeReadyInstance.setReady();
+    },
+    [dispatch, route],
+  );
+
+  const paymentSuccessCallback = React.useCallback(
+    async (paymentStatus: PaymentStatus) => {
+      switch (paymentStatus.action) {
+        case 'likeMoment':
+          dispatch(addMomentLikeById({ route, id: paymentStatus.id }));
+          dispatch(setMomentById({ route, id: paymentStatus.id, moment: { liked: true } }));
+          break;
+        default:
+          break;
+      }
+    },
+    [dispatch, route],
+  );
+
+  usePaymentCallback({
+    condition: paymentCondition,
+    onIdle: paymentIdleCallback,
+    onSuccess: paymentSuccessCallback,
+  });
+
   React.useEffect(() => {
     const unsubscribe = EventRegister.addEventListener(route.key, () => {
       EventRegister.removeEventListener(unsubscribe.toString());
@@ -143,7 +214,7 @@ export default function AppMomentView({
   }, [navigation, dispatch]);
 
   const renderItem = React.useCallback(
-    ({ item, index }: { item: Moment & { liked?: boolean }; index: number }) => {
+    ({ item, index }: { item: MomentsData; index: number }) => {
       return (
         <View style={styles.momentItemContainer}>
           <Pressable onLongPress={onLongPress} onPress={onPress} onPressOut={onPressOut}>
@@ -198,22 +269,34 @@ export default function AppMomentView({
           </Animated.View>
           <Animated.View style={[styles.rightContainer, controlAnimatedStyle]}>
             <View style={styles.rightContent}>
-              <View style={{ marginBottom: hp(3) }}>
-                <AppIconButton
-                  icon={item.liked ? iconMap.likeActive : iconMap.likeInactive}
-                  color={item.liked ? darkTheme.colors.primary : darkTheme.colors.text}
-                  size={wp(8)}
-                  onPress={() => {}}
-                />
-                <AppTextHeading3
-                  style={[styles.textCenter, { color: item.liked ? darkTheme.colors.primary : darkTheme.colors.text }]}>
-                  {item.like}
-                </AppTextHeading3>
-              </View>
-              <View style={{ marginBottom: hp(3) }}>
+              {item.isLiking ? (
+                <View style={styles.rightContentItem}>
+                  <AppActivityIndicator animating />
+                </View>
+              ) : (
+                <View style={styles.rightContentItem}>
+                  <AppIconButton
+                    icon={item.liked ? iconMap.likeActive : iconMap.likeInactive}
+                    color={item.liked ? darkTheme.colors.primary : darkTheme.colors.text}
+                    size={wp(8)}
+                    onPress={() =>
+                      item.liked ? onAlreadyLiked() : onLikePress(item.id, parsePersonaLabel(item.owner))
+                    }
+                  />
+                  <AppTextHeading3
+                    numberOfLines={1}
+                    style={[
+                      styles.textCenter,
+                      { color: item.liked ? darkTheme.colors.primary : darkTheme.colors.text },
+                    ]}>
+                    {numberKMB(item.like, 2, true, ['K', 'M', 'B'], 10000)}
+                  </AppTextHeading3>
+                </View>
+              )}
+              <View style={styles.rightContentItem}>
                 <AppIconButton icon={iconMap.comment} color={darkTheme.colors.text} size={wp(8)} onPress={() => {}} />
-                <AppTextHeading3 style={[styles.textCenter, { color: darkTheme.colors.text }]}>
-                  {item.comment}
+                <AppTextHeading3 numberOfLines={1} style={[styles.textCenter, { color: darkTheme.colors.text }]}>
+                  {numberKMB(item.comment, 2, true, ['K', 'M', 'B'], 10000)}
                 </AppTextHeading3>
               </View>
               <View
@@ -245,9 +328,11 @@ export default function AppMomentView({
       currentVisibleIndex,
       muted,
       navigation,
+      onLikePress,
       onLongPress,
       onPress,
       onPressOut,
+      onAlreadyLiked,
       styles.audioIndicator,
       styles.audioIndicatorItem,
       styles.creatorContainer,
@@ -261,6 +346,7 @@ export default function AppMomentView({
       styles.rightContainer,
       styles.rightContent,
       styles.textCenter,
+      styles.rightContentItem,
     ],
   );
 
@@ -370,6 +456,13 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets, momentHeight: number) 
     rightContent: {
       alignItems: 'center',
       justifyContent: 'center',
+    },
+    rightContentItem: {
+      height: hp(8),
+      width: wp(12),
+      marginBottom: hp(3),
+      justifyContent: 'center',
+      alignItems: 'center',
     },
     textCenter: {
       textAlign: 'center',

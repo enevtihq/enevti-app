@@ -79,7 +79,11 @@ async function fetchCollectionMinted(
   version: number,
   signal?: AbortController['signal'],
 ): Promise<APIResponseVersioned<NFTBase[]>> {
-  return await apiFetchVersioned<NFTBase[]>(urlGetCollectionMintedNFTById(id, offset, limit, version), signal);
+  const myAddress = await getMyAddress();
+  return await apiFetchVersioned<NFTBase[]>(
+    urlGetCollectionMintedNFTById(id, offset, limit, version, myAddress),
+    signal,
+  );
 }
 
 async function fetchCollectionMoment(
@@ -99,8 +103,9 @@ async function fetchCollectionActivity(
   version: number,
   signal?: AbortController['signal'],
 ): Promise<APIResponseVersioned<CollectionActivity[]>> {
+  const myAddress = await getMyAddress();
   return await apiFetchVersioned<CollectionActivity[]>(
-    urlGetCollectionActivityById(id, offset, limit, version),
+    urlGetCollectionActivityById(id, offset, limit, version, myAddress),
     signal,
   );
 }

@@ -76,6 +76,10 @@ const myProfileViewSlice = createSlice({
     setMyProfileRender: (profile, action: PayloadAction<Partial<MyProfileViewState['render']>>) => {
       assignDeep(profile.render, action.payload);
     },
+    addMyProfileViewMomentLike: (profile, action: PayloadAction<{ index: number }>) => {
+      profile.momentCreated[action.payload.index].liked = true;
+      profile.momentCreated[action.payload.index].like++;
+    },
     unshiftMyProfileViewOwnedNFT: (profile, action: PayloadAction<NFTBase[]>) => {
       profile.owned = action.payload.concat(profile.owned);
     },
@@ -130,6 +134,7 @@ const myProfileViewSlice = createSlice({
 export const {
   setMyProfileView,
   setMyProfileRender,
+  addMyProfileViewMomentLike,
   unshiftMyProfileViewOwnedNFT,
   unshiftMyProfileViewOnsaleNFT,
   unshiftMyProfileViewCollection,
