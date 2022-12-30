@@ -1,4 +1,14 @@
-import { Keyboard, KeyboardAvoidingView, LayoutChangeEvent, Platform, StyleSheet, TextInput, View } from 'react-native';
+import {
+  Keyboard,
+  KeyboardAvoidingView,
+  LayoutChangeEvent,
+  Platform,
+  StyleProp,
+  StyleSheet,
+  TextInput,
+  View,
+  ViewStyle,
+} from 'react-native';
 import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
@@ -59,15 +69,27 @@ import { payReplyCommentClubs } from 'enevti-app/store/middleware/thunk/payment/
 import { payCommentCollectionClubs } from 'enevti-app/store/middleware/thunk/payment/creator/payCommentCollectionClubs';
 import { payCommentNFTClubs } from 'enevti-app/store/middleware/thunk/payment/creator/payCommentNFTClubs';
 import AppMentionInput from '../form/AppMentionInput';
+import AppMenuMentionInput from '../form/AppMenuMentionInput';
+import { payCommentMomentClubs } from 'enevti-app/store/middleware/thunk/payment/creator/payCommentMomentClubs';
+import { payCommentMoment } from 'enevti-app/store/middleware/thunk/payment/creator/payCommentMoment';
 
 interface AppCommentBoxProps {
   route: RouteProp<RootStackParamList, 'Comment'>;
   type: 'common' | 'clubs';
   target: string;
   inputRef: React.RefObject<TextInput>;
+  withModal?: boolean;
+  commentBoxStyle?: StyleProp<ViewStyle>;
 }
 
-export default function AppCommentBox({ route, type, target, inputRef }: AppCommentBoxProps) {
+export default function AppCommentBox({
+  route,
+  type,
+  target,
+  inputRef,
+  commentBoxStyle,
+  withModal = false,
+}: AppCommentBoxProps) {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
@@ -101,6 +123,8 @@ export default function AppCommentBox({ route, type, target, inputRef }: AppComm
     () => makeStyles(theme, insets, keyboardHeight, commentBoxHeight, sending),
     [theme, insets, keyboardHeight, commentBoxHeight, sending],
   );
+
+  const MentionInputComponent = React.useMemo(() => (withModal ? AppMenuMentionInput : AppMentionInput), [withModal]);
 
   const onReplyClose = React.useCallback(() => {
     dispatch(clearReplying({ route, type }));
@@ -139,11 +163,13 @@ export default function AppCommentBox({ route, type, target, inputRef }: AppComm
     (paymentStatus: PaymentStatus) => {
       return type === 'common'
         ? paymentStatus.action !== undefined &&
-            ['commentCollection', 'commentNFT', 'replyComment'].includes(paymentStatus.action) &&
+            ['commentCollection', 'commentNFT', 'commentMoment', 'replyComment'].includes(paymentStatus.action) &&
             paymentStatus.key === getCommentKey(route, type)
         : type === 'clubs'
         ? paymentStatus.action !== undefined &&
-          ['commentCollectionClubs', 'commentNFTClubs', 'replyCommentClubs'].includes(paymentStatus.action) &&
+          ['commentCollectionClubs', 'commentNFTClubs', 'commentMomentClubs', 'replyCommentClubs'].includes(
+            paymentStatus.action,
+          ) &&
           paymentStatus.key === getCommentKey(route, type)
         : false;
     },
@@ -159,8 +185,10 @@ export default function AppCommentBox({ route, type, target, inputRef }: AppComm
       switch (paymentStatus.action) {
         case 'commentCollection':
         case 'commentNFT':
+        case 'commentMoment':
         case 'commentCollectionClubs':
         case 'commentNFTClubs':
+        case 'commentMomentClubs':
           dispatch(
             unshiftComment({
               key: getCommentKey(route, type),
@@ -198,8 +226,10 @@ export default function AppCommentBox({ route, type, target, inputRef }: AppComm
       switch (paymentStatus.action) {
         case 'commentCollection':
         case 'commentNFT':
+        case 'commentMoment':
         case 'commentCollectionClubs':
         case 'commentNFTClubs':
+        case 'commentMomentClubs':
           setSending(false);
           dispatch(
             setCommentById({ route, type, id: getCommentKey(route, type), comment: { id: paymentStatus.message } }),
@@ -268,8 +298,10 @@ export default function AppCommentBox({ route, type, target, inputRef }: AppComm
       switch (paymentStatus.action) {
         case 'commentCollection':
         case 'commentNFT':
+        case 'commentMoment':
         case 'commentCollectionClubs':
         case 'commentNFTClubs':
+        case 'commentMomentClubs':
           dispatch(shiftComment({ key: getCommentKey(route, type) }));
           dispatch(subtractCommentViewPaginationVersion({ key: getCommentKey(route, type) }));
           dispatch(subtractCommentViewPaginationCheckpoint({ key: getCommentKey(route, type) }));
@@ -319,6 +351,12 @@ export default function AppCommentBox({ route, type, target, inputRef }: AppComm
         } else if (type === 'clubs') {
           paymentThunkRef.current = dispatch(payCommentNFTClubs({ route, comment: value }));
         }
+      } else if (route.params.type === 'moment') {
+        if (type === 'common') {
+          paymentThunkRef.current = dispatch(payCommentMoment({ route, comment: value }));
+        } else if (type === 'clubs') {
+          paymentThunkRef.current = dispatch(payCommentMomentClubs({ route, comment: value }));
+        }
       }
     }
   }, [commentView.comment, commentView.replying, dispatch, isReplying, route, type, value]);
@@ -329,11 +367,11 @@ export default function AppCommentBox({ route, type, target, inputRef }: AppComm
 
   return (
     <KeyboardAvoidingView
-      enabled={Platform.OS === 'ios' ? true : false}
+      enabled={Platform.OS === 'ios' && !withModal ? true : false}
       keyboardVerticalOffset={hp(HEADER_HEIGHT_PERCENTAGE) + hp(TOP_TABBAR_HEIGHT_PERCENTAGE) + insets.top}
       behavior={'position'}
       style={[styles.commentBoxContainer]}>
-      <View pointerEvents={sending ? 'none' : 'auto'} style={styles.commentBox}>
+      <View pointerEvents={sending ? 'none' : 'auto'} style={[styles.commentBox, commentBoxStyle]}>
         <View style={styles.avatarBox}>
           <AppAvatarRenderer size={hp(5)} persona={myPersona} />
         </View>
@@ -361,7 +399,7 @@ export default function AppCommentBox({ route, type, target, inputRef }: AppComm
               </View>
             </View>
           ) : null}
-          <AppMentionInput
+          <MentionInputComponent
             inputRef={inputRef}
             onLayout={commentBoxLayoutHandler}
             value={value}

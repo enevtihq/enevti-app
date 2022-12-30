@@ -243,6 +243,10 @@ export function urlGetIsNFTOwnerOrCreator(id: string, address: string, host: str
   return encodeURI(`${host}/authorized/nft/${id}?address=${address}`);
 }
 
+export function urlGetIsMomentOwnerOrCreator(id: string, address: string, host: string = ENEVTI_DEFAULT_API) {
+  return encodeURI(`${host}/authorized/moment/${id}?address=${address}`);
+}
+
 export function urlGetNFTById(
   id: string,
   viewer: string,
@@ -549,6 +553,30 @@ export function urlGetCommentClubsNFT(
 ) {
   return encodeURI(
     `${host}/comment/nft/clubs/${id}?offset=${offset}&limit=${limit}&version=${version}&viewer=${viewer}`,
+  );
+}
+
+export function urlGetCommentMoment(
+  id: string,
+  offset: number = 0,
+  limit: number = 10,
+  version: number = 0,
+  viewer: string,
+  host: string = ENEVTI_DEFAULT_API,
+) {
+  return encodeURI(`${host}/comment/moment/${id}?offset=${offset}&limit=${limit}&version=${version}&viewer=${viewer}`);
+}
+
+export function urlGetCommentClubsMoment(
+  id: string,
+  offset: number = 0,
+  limit: number = 10,
+  version: number = 0,
+  viewer: string,
+  host: string = ENEVTI_DEFAULT_API,
+) {
+  return encodeURI(
+    `${host}/comment/moment/clubs/${id}?offset=${offset}&limit=${limit}&version=${version}&viewer=${viewer}`,
   );
 }
 

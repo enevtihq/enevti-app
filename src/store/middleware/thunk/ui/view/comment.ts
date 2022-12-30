@@ -16,8 +16,12 @@ import {
   getInitialCollectionCommentClubsByRouteParam,
   getInitialCommentClubsReply,
   getInitialCommentReply,
+  getInitialMomentComment,
+  getInitialMomentCommentClubs,
   getInitialNFTCommentByRouteParam,
   getInitialNFTCommentClubsByRouteParam,
+  getMomentComment,
+  getMomentCommentClubs,
   getNFTCommentByRouteParam,
   getNFTCommentClubsByRouteParam,
   initCommentViewState,
@@ -52,6 +56,7 @@ import i18n from 'enevti-app/translations/i18n';
 import { COMMENT_LIMIT, REPLY_LIMIT } from 'enevti-app/utils/constant/limit';
 import { getIsNFTOwnerOrCreatorByRouteParam } from 'enevti-app/service/enevti/nft';
 import { getIsCollectionOwnerOrCreatorByRouteParam } from 'enevti-app/service/enevti/collection';
+import { getIsMomentOwnerOrCreator } from 'enevti-app/service/enevti/moment';
 
 type CommentRoute = StackScreenProps<RootStackParamList, 'Comment'>['route'];
 type LoadCommentArgs = { route: CommentRoute; type: 'common' | 'clubs'; reload?: boolean };
@@ -83,6 +88,13 @@ export const loadComment = createAsyncThunk<void, LoadCommentArgs, AsyncThunkAPI
             dispatch(setCommentAuthorized({ key, value: false }));
             return;
           }
+        } else if (route.params.type === 'moment') {
+          const isOwnerOrCreatorResponse = await getIsMomentOwnerOrCreator(route.params.arg, signal);
+          status = isOwnerOrCreatorResponse.status;
+          if (isOwnerOrCreatorResponse.status === 200 && !isOwnerOrCreatorResponse.data) {
+            dispatch(setCommentAuthorized({ key, value: false }));
+            return;
+          }
         }
       }
 
@@ -99,6 +111,12 @@ export const loadComment = createAsyncThunk<void, LoadCommentArgs, AsyncThunkAPI
           commentResponse = await getInitialCollectionCommentByRouteParam(route.params, signal);
         } else if (type === 'clubs') {
           commentResponse = await getInitialCollectionCommentClubsByRouteParam(route.params, signal);
+        }
+      } else if (route.params.type === 'moment') {
+        if (type === 'common') {
+          commentResponse = await getInitialMomentComment(route.params.arg, signal);
+        } else if (type === 'clubs') {
+          commentResponse = await getInitialMomentCommentClubs(route.params.arg, signal);
         }
       }
 
@@ -180,6 +198,12 @@ export const loadMoreComment = createAsyncThunk<void, LoadCommentArgs, AsyncThun
               version,
               signal,
             );
+          }
+        } else if (route.params.type === 'moment') {
+          if (type === 'common') {
+            commentResponse = await getMomentComment(route.params.arg, offset, COMMENT_LIMIT, version, signal);
+          } else if (type === 'clubs') {
+            commentResponse = await getMomentCommentClubs(route.params.arg, offset, COMMENT_LIMIT, version, signal);
           }
         }
 

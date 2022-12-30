@@ -1,4 +1,14 @@
-import { View, StyleSheet, FlatListProps, FlatList, RefreshControl, TextInput, Platform } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  FlatListProps,
+  FlatList,
+  RefreshControl,
+  TextInput,
+  Platform,
+  StyleProp,
+  ViewStyle,
+} from 'react-native';
 import React from 'react';
 import AppCommentItem from 'enevti-app/components/molecules/comment/AppCommentItem';
 import AppCommentBox from 'enevti-app/components/molecules/comment/AppCommentBox';
@@ -50,14 +60,25 @@ interface AppCommentTabsProps {
   navigation: StackNavigationProp<RootStackParamList>;
   route: RouteProp<RootStackParamList, 'Comment'>;
   type: 'common' | 'clubs';
+  withModal?: boolean;
+  commentBoxStyle?: StyleProp<ViewStyle>;
 }
 
-export default function AppCommentTabs({ route, navigation, type }: AppCommentTabsProps) {
+export default function AppCommentTabs({
+  route,
+  navigation,
+  type,
+  commentBoxStyle,
+  withModal = false,
+}: AppCommentTabsProps) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { keyboardHeight } = useKeyboard();
   const keyboardState = useSelector(selectKeyboardStatus);
-  const styles = React.useMemo(() => makeStyles(keyboardState, keyboardHeight), [keyboardState, keyboardHeight]);
+  const styles = React.useMemo(
+    () => makeStyles(keyboardState, keyboardHeight, withModal),
+    [keyboardState, keyboardHeight, withModal],
+  );
 
   const [targetId, setTargetId] = React.useState<string>('');
   const comment = useSelector((state: RootState) => selectCommentView(state, getCommentKey(route, type)));
@@ -72,6 +93,9 @@ export default function AppCommentTabs({ route, navigation, type }: AppCommentTa
       setTargetId(`${type}${id}`);
     } else if (route.params.type === 'nft') {
       const id = await getNFTIdFromRouteParam(route.params);
+      setTargetId(`${type}${id}`);
+    } else if (route.params.type === 'moment') {
+      const id = route.params.arg;
       setTargetId(`${type}${id}`);
     }
   }, [route.params, type]);
@@ -275,7 +299,14 @@ export default function AppCommentTabs({ route, navigation, type }: AppCommentTa
           onEndReachedThreshold={0.1}
           onEndReached={handleLoadMore}
         />
-        <AppCommentBox type={type} inputRef={commentBoxInputRef} route={route} target={targetId} />
+        <AppCommentBox
+          commentBoxStyle={commentBoxStyle}
+          withModal={withModal}
+          type={type}
+          inputRef={commentBoxInputRef}
+          route={route}
+          target={targetId}
+        />
       </AppResponseView>
     ) : (
       <View style={styles.notAuthorizedContainer}>
@@ -293,7 +324,7 @@ export default function AppCommentTabs({ route, navigation, type }: AppCommentTa
   );
 }
 
-const makeStyles = (keyboardState: 'show' | 'hide', keyboardHeight: number) =>
+const makeStyles = (keyboardState: 'show' | 'hide', keyboardHeight: number, withModal?: boolean) =>
   StyleSheet.create({
     container: {
       flex: 1,
@@ -309,7 +340,7 @@ const makeStyles = (keyboardState: 'show' | 'hide', keyboardHeight: number) =>
     },
     listContentContainer: {
       paddingTop: hp(1),
-      paddingBottom: hp(14) + (keyboardState === 'show' && Platform.OS === 'ios' ? keyboardHeight : 0),
+      paddingBottom: hp(14) + (keyboardState === 'show' && Platform.OS === 'ios' && !withModal ? keyboardHeight : 0),
     },
     listContentEmptyContainer: {
       flex: 0.9,

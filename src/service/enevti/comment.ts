@@ -3,8 +3,10 @@ import { RootStackParamList } from 'enevti-app/navigation';
 import { apiFetchVersioned } from 'enevti-app/utils/app/network';
 import {
   urlGetCommentClubsCollection,
+  urlGetCommentClubsMoment,
   urlGetCommentClubsNFT,
   urlGetCommentCollection,
+  urlGetCommentMoment,
   urlGetCommentNFT,
   urlGetReplyComment,
   urlGetReplyCommentClubs,
@@ -64,6 +66,31 @@ async function fetchNFTCommentClubs(
 ): Promise<APIResponseVersioned<CommentClubsAt>> {
   const myAddress = await getMyAddress();
   return await apiFetchVersioned<CommentClubsAt>(urlGetCommentClubsNFT(id, offset, limit, version, myAddress), signal);
+}
+
+async function fetchMomentComment(
+  id: string,
+  offset: number,
+  limit: number,
+  version: number,
+  signal?: AbortController['signal'],
+): Promise<APIResponseVersioned<CommentAt>> {
+  const myAddress = await getMyAddress();
+  return await apiFetchVersioned<CommentAt>(urlGetCommentMoment(id, offset, limit, version, myAddress), signal);
+}
+
+async function fetchMomentCommentClubs(
+  id: string,
+  offset: number,
+  limit: number,
+  version: number,
+  signal?: AbortController['signal'],
+): Promise<APIResponseVersioned<CommentClubsAt>> {
+  const myAddress = await getMyAddress();
+  return await apiFetchVersioned<CommentClubsAt>(
+    urlGetCommentClubsMoment(id, offset, limit, version, myAddress),
+    signal,
+  );
 }
 
 async function fetchCommentReply(
@@ -128,6 +155,26 @@ export async function getNFTCommentClubs(
   return await fetchNFTCommentClubs(id, offset, limit, version, signal);
 }
 
+export async function getMomentComment(
+  id: string,
+  offset: number,
+  limit: number,
+  version: number,
+  signal?: AbortController['signal'],
+): Promise<APIResponseVersioned<CommentAt>> {
+  return await fetchMomentComment(id, offset, limit, version, signal);
+}
+
+export async function getMomentCommentClubs(
+  id: string,
+  offset: number,
+  limit: number,
+  version: number,
+  signal?: AbortController['signal'],
+): Promise<APIResponseVersioned<CommentClubsAt>> {
+  return await fetchMomentCommentClubs(id, offset, limit, version, signal);
+}
+
 export async function getCommentReply(
   id: string,
   offset: number,
@@ -174,6 +221,20 @@ export async function getInitialNFTCommentClubs(
   signal?: AbortController['signal'],
 ): Promise<APIResponseVersioned<CommentClubsAt>> {
   return await fetchNFTCommentClubs(id, 0, COMMENT_INITIAL_LENGTH, 0, signal);
+}
+
+export async function getInitialMomentComment(
+  id: string,
+  signal?: AbortController['signal'],
+): Promise<APIResponseVersioned<CommentAt>> {
+  return await fetchMomentComment(id, 0, COMMENT_INITIAL_LENGTH, 0, signal);
+}
+
+export async function getInitialMomentCommentClubs(
+  id: string,
+  signal?: AbortController['signal'],
+): Promise<APIResponseVersioned<CommentClubsAt>> {
+  return await fetchMomentCommentClubs(id, 0, COMMENT_INITIAL_LENGTH, 0, signal);
 }
 
 export async function getInitialCommentReply(

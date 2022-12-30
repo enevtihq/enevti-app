@@ -17,6 +17,7 @@ export function handleError(err: any, key: string = 'message', silent: boolean =
   if (silentError.some(includeSubstring(error))) {
     return;
   } else {
+    console.warn(error);
     if (!silent) {
       store.dispatch(
         showSnackbar({

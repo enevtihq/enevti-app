@@ -1,4 +1,13 @@
-import { LayoutChangeEvent, StyleProp, StyleSheet, TextInput, View, ViewStyle } from 'react-native';
+import {
+  LayoutChangeEvent,
+  NativeSyntheticEvent,
+  StyleProp,
+  StyleSheet,
+  TextInput,
+  TextInputFocusEventData,
+  View,
+  ViewStyle,
+} from 'react-native';
 import React from 'react';
 import { MentionInput, MentionSuggestionsProps } from 'react-native-controlled-mentions';
 import { useTheme } from 'react-native-paper';
@@ -22,7 +31,7 @@ import Color from 'color';
 import { useTranslation } from 'react-i18next';
 import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
 
-interface AppMentionInputProps {
+export interface AppMentionInputProps {
   value: string;
   onChange: (e: string) => void;
   maxLength?: number;
@@ -32,6 +41,8 @@ interface AppMentionInputProps {
   placeholder?: string;
   style?: StyleProp<ViewStyle>;
   suggestionStyle?: StyleProp<ViewStyle>;
+  onFocus?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
+  onBlur?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
 }
 
 export default function AppMentionInput({
@@ -44,6 +55,8 @@ export default function AppMentionInput({
   style,
   suggestionStyle,
   inputRef,
+  onFocus,
+  onBlur,
 }: AppMentionInputProps) {
   const { t } = useTranslation();
   const theme = useTheme() as Theme;
@@ -336,6 +349,8 @@ export default function AppMentionInput({
       <MentionInput
         inputRef={inputRef}
         onLayout={onLayout}
+        onFocus={onFocus}
+        onBlur={onBlur}
         value={value}
         onChange={e => {
           onChange(e);

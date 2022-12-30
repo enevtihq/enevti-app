@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
+import { Platform, Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
 import Video from 'react-native-video';
 import React from 'react';
 import { FlatList } from '@stream-io/flat-list-mvcp';
@@ -43,6 +43,8 @@ import AppLikeReadyInstance from 'enevti-app/utils/app/likeReady';
 import { useTranslation } from 'react-i18next';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 import { numberKMB } from 'enevti-app/utils/format/amount';
+import AppMenuContainer from 'enevti-app/components/atoms/menu/AppMenuContainer';
+import AppComment from '../comment/AppComment';
 
 interface AppMomentViewProps {
   navigation: StackNavigationProp<RootStackParamList>;
@@ -63,11 +65,23 @@ export default function AppMomentView({
   const insets = useSafeAreaInsets();
   const dimension = useWindowDimensions();
   const styles = React.useMemo(() => makeStyles(theme, insets, dimension.height), [theme, insets, dimension.height]);
+  const snapPoints = React.useMemo(() => ['70%'], []);
 
   const [controlVisible, setControlVisible] = React.useState<boolean>(true);
   const [muted, setMuted] = React.useState<boolean>(false);
   const [visible, setVisible] = React.useState<number>(0);
+  const [commentId, setCommentId] = React.useState<string>('');
   const [currentVisibleIndex, setCurrentVisibleIndex] = React.useState<number>(route.params.index ?? 0);
+
+  const commentRoute = React.useMemo(
+    () => ({
+      key: route.key,
+      name: route.name,
+      params: { type: 'moment', mode: 'id', arg: commentId },
+      path: route.path,
+    }),
+    [commentId, route.key, route.name, route.path],
+  ) as unknown as RouteProp<RootStackParamList, 'Comment'>;
 
   const showAudioIndicatorTimeout = React.useRef<any>();
   const momentListRef = React.useRef<FlatList>(null);
@@ -132,6 +146,14 @@ export default function AppMomentView({
     },
     [dispatch, route],
   );
+
+  const onCommentPress = React.useCallback((id: string) => {
+    setCommentId(id);
+  }, []);
+
+  const onCommentDismiss = React.useCallback(() => {
+    setCommentId('');
+  }, []);
 
   const onAlreadyLiked = React.useCallback(() => {
     dispatch(showSnackbar({ mode: 'info', text: t('home:cannotLike') }));
@@ -294,7 +316,12 @@ export default function AppMomentView({
                 </View>
               )}
               <View style={styles.rightContentItem}>
-                <AppIconButton icon={iconMap.comment} color={darkTheme.colors.text} size={wp(8)} onPress={() => {}} />
+                <AppIconButton
+                  icon={iconMap.comment}
+                  color={darkTheme.colors.text}
+                  size={wp(8)}
+                  onPress={() => onCommentPress(item.id)}
+                />
                 <AppTextHeading3 numberOfLines={1} style={[styles.textCenter, { color: darkTheme.colors.text }]}>
                   {numberKMB(item.comment, 2, true, ['K', 'M', 'B'], 10000)}
                 </AppTextHeading3>
@@ -333,6 +360,7 @@ export default function AppMomentView({
       onPress,
       onPressOut,
       onAlreadyLiked,
+      onCommentPress,
       styles.audioIndicator,
       styles.audioIndicatorItem,
       styles.creatorContainer,
@@ -402,6 +430,16 @@ export default function AppMomentView({
           minIndexForVisible: 0,
         }}
       />
+      <AppMenuContainer
+        enableContentPanningGesture={false}
+        tapEverywhereToDismiss={true}
+        visible={!!commentId}
+        onDismiss={onCommentDismiss}
+        snapPoints={snapPoints}>
+        {commentId ? (
+          <AppComment withModal commentBoxStyle={styles.comment} navigation={navigation} route={commentRoute} />
+        ) : null}
+      </AppMenuContainer>
     </AppResponseView>
   ) : (
     <View style={styles.loaderContainer}>
@@ -412,6 +450,9 @@ export default function AppMomentView({
 
 const makeStyles = (theme: Theme, insets: SafeAreaInsets, momentHeight: number) =>
   StyleSheet.create({
+    comment: {
+      marginBottom: Platform.OS === 'ios' ? insets.bottom : undefined,
+    },
     nft: {
       borderRadius: theme.roundness,
       borderWidth: wp(0.25),

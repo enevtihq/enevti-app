@@ -12,6 +12,7 @@ import {
   setStatusBarBackground,
   setStatusBarTint,
 } from 'enevti-app/store/slices/ui/global/statusbar';
+import { RouteProp } from '@react-navigation/native';
 
 type Props = StackScreenProps<RootStackParamList, 'Moment'>;
 
@@ -19,6 +20,11 @@ export default function Moment({ navigation, route }: Props) {
   const dispatch = useDispatch();
   const styles = React.useMemo(() => makeStyles(), []);
   const pressableHolded = useSharedValue(0);
+
+  const screenRoute = React.useMemo(
+    () => ({ key: route.key, name: route.name, params: route.params, path: route.path }),
+    [route.key, route.params, route.name, route.path],
+  ) as RouteProp<RootStackParamList, 'Moment'>;
 
   const onLoaded = React.useCallback(() => {
     dispatch(setStatusBarBackground('transparent'));
@@ -64,6 +70,7 @@ export default function Moment({ navigation, route }: Props) {
     <AppView
       darken
       withLoader
+      withModal
       edges={Platform.OS === 'ios' ? ['left', 'right'] : undefined}
       headerOffset={0}
       contentContainerStyle={styles.container}
@@ -80,7 +87,7 @@ export default function Moment({ navigation, route }: Props) {
       }>
       <AppMomentView
         navigation={navigation}
-        route={route}
+        route={screenRoute}
         onLongPressWorklet={onLongPressWorklet}
         onLongPressOutWorklet={onLongPressOutWorklet}
       />

@@ -65,6 +65,7 @@ const commentViewSlice = createSlice({
       });
     },
     setCommentAuthorized: (comment, action: PayloadAction<{ key: string; value: boolean }>) => {
+      comment[action.payload.key].loaded = true;
       comment[action.payload.key].authorized = action.payload.value;
     },
     setCommentFetchedVersion: (comment, action: PayloadAction<{ key: string; value: number }>) => {

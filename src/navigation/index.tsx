@@ -117,7 +117,7 @@ export type RootStackParamList = {
     redeem?: string;
   };
   Comment: {
-    type: 'nft' | 'collection';
+    type: 'nft' | 'collection' | 'moment';
     arg: string;
     mode: 'id' | 's';
   };

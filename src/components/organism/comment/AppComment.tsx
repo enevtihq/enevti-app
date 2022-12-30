@@ -1,4 +1,4 @@
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import React from 'react';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import AppTopTabBar from 'enevti-app/components/atoms/view/AppTopTabBar';
@@ -17,21 +17,39 @@ const Tab = createMaterialTopTabNavigator();
 interface AppCommentProps {
   navigation: StackNavigationProp<RootStackParamList>;
   route: RouteProp<RootStackParamList, 'Comment'>;
+  withModal?: boolean;
+  commentBoxStyle?: StyleProp<ViewStyle>;
 }
 
-export default function AppComment({ navigation, route }: AppCommentProps) {
+export default function AppComment({ navigation, route, commentBoxStyle, withModal = false }: AppCommentProps) {
   const { t } = useTranslation();
   const theme = useTheme();
   const backgroundColor = React.useContext(BackgroundColorContext);
   const styles = React.useMemo(() => makeStyles(), []);
 
   const commonCommentScreen = React.useCallback(
-    () => <AppCommentTabs navigation={navigation} route={route} type={'common'} />,
-    [navigation, route],
+    () => (
+      <AppCommentTabs
+        commentBoxStyle={commentBoxStyle}
+        withModal={withModal}
+        navigation={navigation}
+        route={route}
+        type={'common'}
+      />
+    ),
+    [navigation, route, withModal, commentBoxStyle],
   );
   const clubsCommentScreen = React.useCallback(
-    () => <AppCommentTabs navigation={navigation} route={route} type={'clubs'} />,
-    [navigation, route],
+    () => (
+      <AppCommentTabs
+        commentBoxStyle={commentBoxStyle}
+        withModal={withModal}
+        navigation={navigation}
+        route={route}
+        type={'clubs'}
+      />
+    ),
+    [navigation, route, withModal, commentBoxStyle],
   );
 
   return (
