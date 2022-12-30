@@ -74,6 +74,7 @@ export default function AppReplyList({
   const onLoadReply = React.useCallback(async () => {
     setIsLoadingReply(true);
     await loadReplyCallback().unwrap();
+    setIsLoadingReply(false);
   }, [loadReplyCallback]);
 
   const onLoadMoreReply = React.useCallback(async () => {
