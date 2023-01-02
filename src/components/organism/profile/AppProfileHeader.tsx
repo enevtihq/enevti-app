@@ -34,6 +34,7 @@ import AppConfirmationModal from 'enevti-app/components/organism/menu/AppConfirm
 import AppAlertModal from '../menu/AppAlertModal';
 import { payManualDeliverSecret } from 'enevti-app/store/middleware/thunk/payment/creator/payDeliverSecret';
 import { selectDeliverSecretProcessing } from 'enevti-app/store/slices/session/transaction/processing';
+import useDebouncedNavigation from 'enevti-app/utils/hook/useDebouncedNavigation';
 
 interface AppProfileHeaderProps {
   navigation: StackNavigationProp<RootStackParamList>;
@@ -48,6 +49,8 @@ export default function AppProfileHeader({ navigation, persona, profile }: AppPr
   const { t } = useTranslation();
   const theme = useTheme() as Theme;
   const styles = React.useMemo(() => makeStyles(theme), [theme]);
+  const dnavigation = useDebouncedNavigation(navigation);
+
   const myPersona = useSelector(selectMyPersonaCache);
   const isDeliverSecretProcessing = useSelector(selectDeliverSecretProcessing);
   const iAmDelivering = React.useMemo(
@@ -124,7 +127,7 @@ export default function AppProfileHeader({ navigation, persona, profile }: AppPr
             style={styles.profileActionButton}
             icon={iconMap.pool}
             onPress={() =>
-              navigation.push('StakePool', {
+              dnavigation('StakePool', {
                 arg: persona.address,
                 mode: 'a',
               })
@@ -141,7 +144,7 @@ export default function AppProfileHeader({ navigation, persona, profile }: AppPr
           <AppSecondaryButton
             style={styles.profileActionButton}
             icon={iconMap.setupPool}
-            onPress={() => navigation.push('SetupUsername')}>
+            onPress={() => dnavigation('SetupUsername')}>
             {t('profile:setupStake')}
           </AppSecondaryButton>
         ) : (
@@ -213,7 +216,7 @@ export default function AppProfileHeader({ navigation, persona, profile }: AppPr
             height: hp('4%'),
           }}
           onPress={() =>
-            navigation.push('Wallet', {
+            dnavigation('Wallet', {
               arg: persona.address,
               mode: 'a',
             })

@@ -25,6 +25,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { RouteProp } from '@react-navigation/native';
 import i18n from 'enevti-app/translations/i18n';
+import useDebouncedNavigation from 'enevti-app/utils/hook/useDebouncedNavigation';
 
 interface AppNFTDetailsRedeemBarProps {
   nft: NFT;
@@ -56,6 +57,7 @@ export async function getRedeemErrors(nft: NFT): Promise<[boolean, string]> {
 export default function AppNFTDetailsRedeemBar({ nft, navigation, route }: AppNFTDetailsRedeemBarProps) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const dnavigation = useDebouncedNavigation(navigation);
   const theme = useTheme() as Theme;
   const styles = React.useMemo(() => makeStyles(theme), [theme]);
 
@@ -71,8 +73,8 @@ export default function AppNFTDetailsRedeemBar({ nft, navigation, route }: AppNF
   const [redeemButtonDisabled, setRedeemButtonDisabled] = React.useState<boolean>(false);
 
   const onRedeem = React.useCallback(() => {
-    dispatch(reduceRedeem(nft, navigation, route));
-  }, [dispatch, nft, navigation, route]);
+    dispatch(reduceRedeem(nft, dnavigation, route));
+  }, [dispatch, nft, dnavigation, route]);
 
   const onAddEvent = React.useCallback(async () => {
     await addRedeemCalendarEvent(nft);

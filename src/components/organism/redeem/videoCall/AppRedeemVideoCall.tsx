@@ -85,6 +85,7 @@ import AppVideoCallTipModal from './AppVideoCallTipModal';
 import { payTransferToken } from 'enevti-app/store/middleware/thunk/payment/creator/payTransferToken';
 import { parseAmount } from 'enevti-app/utils/format/amount';
 import { getCoinName } from 'enevti-app/utils/constant/identifier';
+import useDebouncedNavigation from 'enevti-app/utils/hook/useDebouncedNavigation';
 
 interface AppRedeemVideoCallProps {
   navigation: StackNavigationProp<RootStackParamList>;
@@ -103,6 +104,7 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
   const socket = React.useRef<Socket | undefined>();
   const nftSocket = React.useRef<Socket | undefined>();
   const styles = React.useMemo(() => makeStyles(theme), [theme]);
+  const dnavigation = useDebouncedNavigation(navigation);
 
   const myPersona = useSelector(selectMyPersonaCache);
   const [tipModalShow, setTipModalShow] = React.useState<boolean>(false);
@@ -262,12 +264,12 @@ export default function AppRedeemVideoCall({ navigation, route }: AppRedeemVideo
         navigation.goBack();
         if (param && param.someoneIsCalling) {
           sleep(500).then(() => {
-            navigation.navigate('NFTDetails', { mode: 'id', arg: someoneIsCallingNftId.current, redeem: 'true' });
+            dnavigation('NFTDetails', { mode: 'id', arg: someoneIsCallingNftId.current, redeem: 'true' });
           });
         }
       });
     },
-    [cleanCall, navigation],
+    [cleanCall, navigation, dnavigation],
   );
 
   const onCallRejected = React.useCallback(

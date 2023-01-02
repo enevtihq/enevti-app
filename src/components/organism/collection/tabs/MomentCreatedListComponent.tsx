@@ -20,6 +20,7 @@ import AppMomentItem from '../../moment/AppMomentItem';
 import { MomentBase } from 'enevti-app/types/core/chain/moment';
 import { FlatGrid, FlatGridProps } from 'react-native-super-grid';
 import { StackNavigationProp } from '@react-navigation/stack';
+import useDebouncedNavigation from 'enevti-app/utils/hook/useDebouncedNavigation';
 
 const AnimatedFlatGrid = Animated.createAnimatedComponent<FlatGridProps<MomentBase>>(FlatGrid);
 
@@ -54,6 +55,8 @@ function Component(
   const insets = useSafeAreaInsets();
   const dimension = useWindowDimensions();
   const mounted = React.useRef<boolean>(false);
+  const dnavigation = useDebouncedNavigation(navigation);
+
   const [displayed, setDisplayed] = React.useState<boolean>(false);
   const [refreshing, setRefreshing] = React.useState<boolean>(false);
 
@@ -107,9 +110,9 @@ function Component(
 
   const onMomentPress = React.useCallback(
     (index: number) => {
-      navigation.push('Moment', { mode: 'collection', index, arg: route.key });
+      dnavigation('Moment', { mode: 'collection', index, arg: route.key });
     },
-    [navigation, route.key],
+    [dnavigation, route.key],
   );
 
   const renderItem = React.useCallback(

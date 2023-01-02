@@ -76,6 +76,7 @@ import BackgroundFetch from 'react-native-background-fetch';
 import { initAPNToken } from 'enevti-app/store/middleware/thunk/session/apn';
 import { reduceMyTotalMomentSlotChanged } from 'enevti-app/store/middleware/thunk/socket/profile/totalMomentSlotChanged';
 import { selectRecentMomentAlertShow, setRecentMomentAlertShow } from 'enevti-app/store/slices/ui/view/recentMoment';
+import useDebouncedNavigation from 'enevti-app/utils/hook/useDebouncedNavigation';
 
 const Tab = createBottomTabNavigator();
 
@@ -86,6 +87,7 @@ export default function Home({ navigation }: Props) {
   const dispatch = useDispatch();
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
+  const dnavigation = useDebouncedNavigation(navigation);
 
   const myPersona = useSelector(selectMyPersonaCache);
   const myProfile = useSelector(selectMyProfileCache);
@@ -201,11 +203,11 @@ export default function Home({ navigation }: Props) {
 
   const notEligibleStakeAction = React.useCallback(() => {
     setUneligibleSheetVisible(false);
-    navigation.navigate('StakePool', {
+    dnavigation('StakePool', {
       arg: myPersona.address,
       mode: 'a',
     });
-  }, [myPersona.address, navigation]);
+  }, [myPersona.address, dnavigation]);
 
   const restoreMenuOnDismiss = React.useCallback(() => setRestoreMenuVisible(false), []);
 
@@ -221,13 +223,13 @@ export default function Home({ navigation }: Props) {
     dispatch(clearCreateNFTQueueRoute());
     cleanTMPImage();
     setRestoreMenuVisible(false);
-    navigation.navigate('ChooseNFTType');
-  }, [dispatch, navigation, createType]);
+    dnavigation('ChooseNFTType');
+  }, [dispatch, dnavigation, createType]);
 
   const restoreCallback = React.useCallback(() => {
     setRestoreMenuVisible(false);
-    createQueue && navigation.navigate(createQueue);
-  }, [createQueue, navigation]);
+    createQueue && dnavigation(createQueue);
+  }, [createQueue, dnavigation]);
 
   const MyProfileComponent = (props: any) => (
     <MyProfile navigation={props.navigation} route={props.route as any} headerHeight={headerHeight} />
@@ -357,7 +359,7 @@ export default function Home({ navigation }: Props) {
                   onPress={() => dispatch(showSnackbar({ mode: 'info', text: 'Coming Soon!' }))}
                 />
                 <View>
-                  <AppHeaderAction icon={iconMap.notification} onPress={() => navigation.push('Notification')} />
+                  <AppHeaderAction icon={iconMap.notification} onPress={() => dnavigation('Notification')} />
                   {unreadNotification > 0 ? (
                     <AppBadge
                       offset={hp(1)}
@@ -392,7 +394,7 @@ export default function Home({ navigation }: Props) {
                 if (createQueue) {
                   setRestoreMenuVisible(!restoreMenuVisible);
                 } else {
-                  navigation.navigate('ChooseNFTType');
+                  dnavigation('ChooseNFTType');
                 }
               } else {
                 setUneligibleSheetVisible(!uneligibleSheetVisible);

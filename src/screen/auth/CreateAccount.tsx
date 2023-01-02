@@ -16,12 +16,14 @@ import { RootStackParamList } from 'enevti-app/navigation';
 import AppView from 'enevti-app/components/atoms/view/AppView';
 import AppGoogleSignInButton from 'enevti-app/components/organism/google/AppGoogleSignInButton';
 import { CommonActions } from '@react-navigation/native';
+import useDebouncedNavigation from 'enevti-app/utils/hook/useDebouncedNavigation';
 
 type Props = StackScreenProps<RootStackParamList, 'CreateAccount'>;
 
 export default function CreateAccount({ navigation }: Props) {
   const theme = useTheme() as Theme;
   const styles = React.useMemo(() => makeStyles(theme), [theme]);
+  const dnavigation = useDebouncedNavigation(navigation);
   const { t } = useTranslation();
 
   return (
@@ -37,13 +39,13 @@ export default function CreateAccount({ navigation }: Props) {
         <AppTextBody5 style={styles.term}>{t('auth:term')}</AppTextBody5>
         <View style={{ height: hp('6%') }} />
 
-        <AppSecondaryButton onPress={() => navigation.navigate('ImportPassphrase')} style={styles.createAccount}>
+        <AppSecondaryButton onPress={() => dnavigation('ImportPassphrase')} style={styles.createAccount}>
           {t('auth:importPassphrase')}
         </AppSecondaryButton>
 
         <View style={{ height: hp('2%') }} />
 
-        <AppPrimaryButton onPress={() => navigation.navigate('SetupLocalPassword')} style={styles.createAccount}>
+        <AppPrimaryButton onPress={() => dnavigation('SetupLocalPassword')} style={styles.createAccount}>
           {t('auth:createAccount')}
         </AppPrimaryButton>
 
@@ -70,7 +72,7 @@ export default function CreateAccount({ navigation }: Props) {
               }),
             );
           }}
-          onNewAccount={() => navigation.navigate('SetupGoogleBinderPassword')}
+          onNewAccount={() => dnavigation('SetupGoogleBinderPassword')}
         />
       </View>
     </AppView>

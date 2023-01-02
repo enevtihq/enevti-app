@@ -23,6 +23,7 @@ import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivit
 import { Persona } from 'enevti-app/types/core/account/persona';
 import AppAvatarRenderer from 'enevti-app/components/molecules/avatar/AppAvatarRenderer';
 import Color from 'color';
+import useDebouncedNavigation from 'enevti-app/utils/hook/useDebouncedNavigation';
 
 interface AppWalletHeaderProps {
   navigation: StackNavigationProp<RootStackParamList>;
@@ -35,6 +36,7 @@ export default function AppWalletHeader({ navigation, route }: AppWalletHeaderPr
   const { t } = useTranslation();
   const theme = useTheme() as Theme;
   const styles = React.useMemo(() => makeStyles(theme), [theme]);
+  const dnavigation = useDebouncedNavigation(navigation);
   const [address, setAddress] = React.useState<string>('');
   const [persona, setPersona] = React.useState<Persona | undefined>(undefined);
 
@@ -56,18 +58,18 @@ export default function AppWalletHeader({ navigation, route }: AppWalletHeaderPr
   }, [route.params]);
 
   const onSend = React.useCallback(() => {
-    navigation.push('SendToken', {});
-  }, [navigation]);
+    dnavigation('SendToken', {});
+  }, [dnavigation]);
 
   const onReceive = React.useCallback(() => {
-    navigation.push('ReceiveToken');
-  }, [navigation]);
+    dnavigation('ReceiveToken');
+  }, [dnavigation]);
 
   const onTopUp = React.useCallback(() => {}, []);
 
   const onSendHere = React.useCallback(() => {
-    navigation.push('SendToken', { base32: addressToBase32(address) });
-  }, [address, navigation]);
+    dnavigation('SendToken', { base32: addressToBase32(address) });
+  }, [address, dnavigation]);
 
   return (
     <View style={styles.walletHeaderContainer}>

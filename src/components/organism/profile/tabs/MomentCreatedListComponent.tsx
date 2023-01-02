@@ -29,6 +29,7 @@ import { TABBAR_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppTa
 import { Moment, MomentBase } from 'enevti-app/types/core/chain/moment';
 import AppMomentItem from '../../moment/AppMomentItem';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import useDebouncedNavigation from 'enevti-app/utils/hook/useDebouncedNavigation';
 
 const AnimatedFlatGrid = Animated.createAnimatedComponent<FlatGridProps<MomentBase>>(FlatGrid);
 
@@ -66,6 +67,7 @@ function Component(
   const insets = useSafeAreaInsets();
   const dimension = useWindowDimensions();
   const mounted = React.useRef<boolean>(false);
+  const dnavigation = useDebouncedNavigation(navigation);
   const [displayed, setDisplayed] = React.useState<boolean>(false);
   const [refreshing, setRefreshing] = React.useState<boolean>(false);
 
@@ -134,12 +136,12 @@ function Component(
   const onMomentPress = React.useCallback(
     (index: number) => {
       if (isMyProfile) {
-        navigation.push('Moment', { mode: 'myProfile', index });
+        dnavigation('Moment', { mode: 'myProfile', index });
       } else {
-        navigation.push('Moment', { mode: 'profile', index, arg: route.key });
+        dnavigation('Moment', { mode: 'profile', index, arg: route.key });
       }
     },
-    [isMyProfile, navigation, route.key],
+    [isMyProfile, dnavigation, route.key],
   );
 
   const renderItem = React.useCallback(

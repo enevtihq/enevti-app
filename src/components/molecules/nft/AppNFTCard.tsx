@@ -14,6 +14,7 @@ import AppIconComponent, { iconMap } from 'enevti-app/components/atoms/icon/AppI
 import Color from 'color';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
+import useDebouncedNavigation from 'enevti-app/utils/hook/useDebouncedNavigation';
 
 interface AppNFTCardProps {
   nft: NFT;
@@ -26,10 +27,11 @@ export default function AppNFTCard({ nft, width, style, navigation }: AppNFTCard
   const theme = useTheme() as Theme;
   const styles = React.useMemo(() => makeStyles(theme), [theme]);
   const nftWidth = React.useMemo(() => width - wp('1%'), [width]);
+  const dnavigation = useDebouncedNavigation(navigation!);
 
   const onNavigate = React.useCallback(
-    () => (navigation ? navigation.push('NFTDetails', { arg: nft.id, mode: 'id' }) : undefined),
-    [navigation, nft.id],
+    () => (navigation ? dnavigation('NFTDetails', { arg: nft.id, mode: 'id' }) : undefined),
+    [navigation, dnavigation, nft.id],
   );
 
   return (

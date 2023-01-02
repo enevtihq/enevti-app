@@ -48,6 +48,7 @@ import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivit
 import { isMintingAvailable } from 'enevti-app/utils/collection';
 import { TABBAR_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppTabBar';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import useDebouncedNavigation from 'enevti-app/utils/hook/useDebouncedNavigation';
 
 const PROFILE_COLLECTION_ITEM_HEIGHT = 9;
 
@@ -89,6 +90,8 @@ function Component(
   const insets = useSafeAreaInsets();
   const dimension = useWindowDimensions();
   const mounted = React.useRef<boolean>(false);
+  const dnavigation = useDebouncedNavigation(navigation);
+
   const [displayed, setDisplayed] = React.useState<boolean>(false);
   const [refreshing, setRefreshing] = React.useState<boolean>(false);
 
@@ -166,9 +169,9 @@ function Component(
 
   const onCollectionClick = React.useCallback(
     id => () => {
-      navigation.push('Collection', { arg: id, mode: 'id' });
+      dnavigation('Collection', { arg: id, mode: 'id' });
     },
-    [navigation],
+    [dnavigation],
   );
 
   const handleLoadMore = React.useCallback(() => {

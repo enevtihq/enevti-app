@@ -13,6 +13,7 @@ import AppMomentItem from './AppMomentItem';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { MomentBase } from 'enevti-app/types/core/chain/moment';
+import useDebouncedNavigation from 'enevti-app/utils/hook/useDebouncedNavigation';
 
 const center = 'center';
 
@@ -22,6 +23,7 @@ interface AppRecentMomentsProps {
 
 export default function AppRecentMoments({ navigation }: AppRecentMomentsProps) {
   const { t } = useTranslation();
+  const dnavigation = useDebouncedNavigation(navigation);
 
   const feeds = useSelector(selectFeedView);
   const moments = useSelector(selectRecentMoment);
@@ -29,9 +31,9 @@ export default function AppRecentMoments({ navigation }: AppRecentMomentsProps) 
 
   const onMomentsPress = React.useCallback(
     (index: number) => {
-      navigation.push('Moment', { mode: 'feed', index });
+      dnavigation('Moment', { mode: 'feed', index });
     },
-    [navigation],
+    [dnavigation],
   );
 
   const renderItem = React.useCallback(

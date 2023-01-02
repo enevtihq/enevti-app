@@ -44,6 +44,7 @@ import { getRedeemErrors } from './AppNFTDetailsRedeemBar';
 import { reduceRedeem } from 'enevti-app/store/middleware/thunk/redeem';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 import NFTMomentListComponent from './tabs/NFTMomentListComponent';
+import useDebouncedNavigation from 'enevti-app/utils/hook/useDebouncedNavigation';
 
 const noDisplay = 'none';
 const visible = 1;
@@ -61,6 +62,7 @@ export default function AppNFTDetails({ onScrollWorklet, navigation, route }: Ap
   const { hp, wp } = useDimension();
   const theme = useTheme();
   const insets = useSafeAreaInsets();
+  const dnavigation = useDebouncedNavigation(navigation);
   const headerHeight = hp(HEADER_HEIGHT_PERCENTAGE) + insets.top;
   const styles = React.useMemo(() => makeStyles(hp, wp), [hp, wp]);
 
@@ -81,10 +83,10 @@ export default function AppNFTDetails({ onScrollWorklet, navigation, route }: Ap
       if (redeemErrors[0]) {
         dispatch(showSnackbar({ mode: 'info', text: t('nftDetails:redeemFailed') }));
       } else {
-        dispatch(reduceRedeem(nftDetails, navigation, route));
+        dispatch(reduceRedeem(nftDetails, dnavigation, route));
       }
     }
-  }, [dispatch, navigation, nftDetails, route, t]);
+  }, [dispatch, dnavigation, nftDetails, route, t]);
 
   React.useEffect(() => {
     onCheckRouteAutoRedeem();

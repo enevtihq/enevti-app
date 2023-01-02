@@ -18,6 +18,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { TouchableRipple } from 'react-native-paper';
 import { SizeCode } from 'enevti-app/types/core/service/api';
+import useDebouncedNavigation from 'enevti-app/utils/hook/useDebouncedNavigation';
 
 interface AppNFTRendererProps {
   nft: NFTBase;
@@ -46,9 +47,11 @@ export default React.memo(
     imageSize = 'og',
   }: AppNFTRendererProps) {
     const styles = React.useMemo(() => makeStyles(), []);
+    const dnavigation = useDebouncedNavigation(navigation!);
+
     const onNavigate = React.useCallback(
-      () => (onPress ? onPress() : navigation ? navigation.push('NFTDetails', { arg: nft.id, mode: 'id' }) : undefined),
-      [navigation, nft.id, onPress],
+      () => (onPress ? onPress() : navigation ? dnavigation('NFTDetails', { arg: nft.id, mode: 'id' }) : undefined),
+      [navigation, dnavigation, nft.id, onPress],
     );
 
     const handleRenderNFTTemplate = React.useCallback(

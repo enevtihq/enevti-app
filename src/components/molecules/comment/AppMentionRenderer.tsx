@@ -13,6 +13,7 @@ import { MentionData } from 'react-native-controlled-mentions/dist/types';
 import AppTextBodyCustom from 'enevti-app/components/atoms/text/AppTextBodyCustom';
 import AppTextHeadingCustom from 'enevti-app/components/atoms/text/AppTextHeadingCustom';
 import darkTheme from 'enevti-app/theme/dark';
+import useDebouncedNavigation from 'enevti-app/utils/hook/useDebouncedNavigation';
 
 interface AppMentionRendererProps {
   text: string;
@@ -42,6 +43,7 @@ export default function AppMentionRenderer({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const paperTheme = useTheme() as Theme;
+  const dnavigation = useDebouncedNavigation(navigation!);
   const selectedTheme = React.useMemo(() => {
     if (theme === 'dark') {
       return darkTheme;
@@ -55,34 +57,34 @@ export default function AppMentionRenderer({
   const profileMentionOnPress = React.useCallback(
     (data?: MentionData) => {
       if (navigation && data) {
-        navigation.push('Profile', { mode: 'u', arg: data.id });
+        dnavigation('Profile', { mode: 'u', arg: data.id });
       } else {
         dispatch(showSnackbar({ mode: 'info', text: t('error:dataUnavailable') }));
       }
     },
-    [dispatch, navigation, t],
+    [dispatch, dnavigation, navigation, t],
   );
 
   const collectionMentionOnPress = React.useCallback(
     (data?: MentionData) => {
       if (navigation && data) {
-        navigation.push('Collection', { mode: 's', arg: data.id });
+        dnavigation('Collection', { mode: 's', arg: data.id });
       } else {
         dispatch(showSnackbar({ mode: 'info', text: t('error:dataUnavailable') }));
       }
     },
-    [dispatch, navigation, t],
+    [dispatch, dnavigation, navigation, t],
   );
 
   const nftMentionOnPress = React.useCallback(
     (data?: MentionData) => {
       if (navigation && data) {
-        navigation.push('NFTDetails', { mode: 's', arg: data.id });
+        dnavigation('NFTDetails', { mode: 's', arg: data.id });
       } else {
         dispatch(showSnackbar({ mode: 'info', text: t('error:dataUnavailable') }));
       }
     },
-    [dispatch, navigation, t],
+    [dispatch, dnavigation, navigation, t],
   );
 
   const renderPart = React.useCallback(

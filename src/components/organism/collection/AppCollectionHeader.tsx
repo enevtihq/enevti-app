@@ -35,6 +35,7 @@ import {
 } from 'enevti-app/store/slices/ui/view/collection';
 import AppLikeReadyInstance from 'enevti-app/utils/app/likeReady';
 import { RootState } from 'enevti-app/store/state';
+import useDebouncedNavigation from 'enevti-app/utils/hook/useDebouncedNavigation';
 
 export const COLLECTION_HEADER_VIEW_HEIGHT = () =>
   30 + (Dimensions.get('screen').width * 0.5625 * 100) / Dimensions.get('screen').height + STATUS_BAR_HEIGHT();
@@ -58,6 +59,7 @@ export default function AppCollectionHeader({
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
   const styles = React.useMemo(() => makeStyles(hp, wp), [hp, wp]);
+  const dnavigation = useDebouncedNavigation(navigation);
 
   const likeThunkRef = React.useRef<any>();
   const [descriptionVisible, setDescriptionVisible] = React.useState<boolean>(false);
@@ -75,14 +77,14 @@ export default function AppCollectionHeader({
 
   const onCreatorDetail = React.useCallback(() => {
     if (collection.creator.address) {
-      navigation.push('Profile', {
+      dnavigation('Profile', {
         arg: collection.creator.address,
         mode: 'a',
       });
     } else {
       dispatch(showSnackbar({ mode: 'info', text: t('error:dataUnavailable') }));
     }
-  }, [navigation, collection.creator.address, dispatch, t]);
+  }, [dnavigation, collection.creator.address, dispatch, t]);
 
   const onLikeActivate = React.useCallback(async () => {
     if (onceLike) {
@@ -207,7 +209,7 @@ export default function AppCollectionHeader({
             style={{
               height: hp('4%'),
             }}
-            onPress={() => navigation.push('Comment', { type: 'collection', mode: 'id', arg: collection.id })}>
+            onPress={() => dnavigation('Comment', { type: 'collection', mode: 'id', arg: collection.id })}>
             <AppTextBody4>{numberKMB(collection.comment, 2)}</AppTextBody4>
           </AppQuaternaryButton>
           {collection.social.twitter.link ? (

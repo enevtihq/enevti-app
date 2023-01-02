@@ -40,6 +40,6 @@ export function openVideoEditor({ navigation, source, duration, onSuccess, onFai
     const failedEventId = onFailed ? EventRegister.addEventListener('onVideoEditorFailed', onFailed) : false;
     const successEvent = typeof successEventId === 'string' ? successEventId : undefined;
     const failedEvent = typeof failedEventId === 'string' ? failedEventId : undefined;
-    navigation.navigate('VideoEditor', { successEvent, failedEvent, source, duration });
+    navigation.push('VideoEditor', { successEvent, failedEvent, source, duration });
   }
 }

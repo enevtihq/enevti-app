@@ -21,6 +21,7 @@ import { RouteProp } from '@react-navigation/native';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 import { getCommentKey } from 'enevti-app/store/middleware/thunk/ui/view/comment';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
+import useDebouncedNavigation from 'enevti-app/utils/hook/useDebouncedNavigation';
 
 interface AppCommentItemBaseProps {
   commentOrReply: CommentItem | ReplyItem;
@@ -54,6 +55,7 @@ export default function AppCommentItemBase({
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const theme = useTheme() as Theme;
+  const dnavigation = useDebouncedNavigation(navigation);
   const styles = React.useMemo(
     () => makeStyles(theme, commentOrReply, innerPadding),
     [theme, commentOrReply, innerPadding],
@@ -65,14 +67,14 @@ export default function AppCommentItemBase({
 
   const onOwnerDetail = React.useCallback(() => {
     if (commentOrReply.owner.address) {
-      navigation.push('Profile', {
+      dnavigation('Profile', {
         arg: commentOrReply.owner.address,
         mode: 'a',
       });
     } else {
       dispatch(showSnackbar({ mode: 'info', text: t('error:dataUnavailable') }));
     }
-  }, [commentOrReply.owner.address, navigation, dispatch, t]);
+  }, [commentOrReply.owner.address, dnavigation, dispatch, t]);
 
   const onLike = React.useCallback(() => {
     onLikePress(commentOrReply.id, getCommentKey(route, type), parsePersonaLabel(commentOrReply.owner));

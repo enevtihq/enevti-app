@@ -5,6 +5,7 @@ import AppNFTListRenderer from 'enevti-app/components/molecules/nft/AppNFTListRe
 import AppNFTRenderer from 'enevti-app/components/molecules/nft/AppNFTRenderer';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
+import useDebouncedNavigation from 'enevti-app/utils/hook/useDebouncedNavigation';
 
 interface AppFeedBodyProps {
   canvasWidth: number;
@@ -13,9 +14,11 @@ interface AppFeedBodyProps {
 }
 
 export default function AppFeedBody({ canvasWidth, navigation, feed }: AppFeedBodyProps) {
+  const dnavigation = useDebouncedNavigation(navigation);
+
   const onPress = React.useCallback(() => {
-    navigation.push('Collection', { arg: feed.id, mode: 'id' });
-  }, [feed.id, navigation]);
+    dnavigation('Collection', { arg: feed.id, mode: 'id' });
+  }, [feed.id, dnavigation]);
 
   return feed.nft.length > 1 ? (
     <AppNFTListRenderer

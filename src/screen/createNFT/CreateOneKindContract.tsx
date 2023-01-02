@@ -70,6 +70,7 @@ import AppMintingTypePicker from 'enevti-app/components/organism/picker/AppMinti
 import { ImageOrVideoToDocument } from 'enevti-app/utils/format/documentPicker';
 import { PaymentStatus } from 'enevti-app/types/ui/store/Payment';
 import AppSocialRafflePicker from 'enevti-app/components/organism/picker/AppSocialRafflePicker';
+import useDebouncedNavigation from 'enevti-app/utils/hook/useDebouncedNavigation';
 
 type Props = StackScreenProps<RootStackParamList, 'CreateOneKindContract'>;
 
@@ -143,6 +144,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
   const timezoneOffset = React.useMemo(() => new Date().getTimezoneOffset(), []);
   const itemWidth = React.useMemo(() => wp('90%'), []);
   const paymentThunkRef = React.useRef<any>();
+  const dnavigation = useDebouncedNavigation(navigation);
 
   const nameInput = React.useRef<TextInput>();
   const descriptionInput = React.useRef<TextInput>();
@@ -666,10 +668,10 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
 
   const previewChangeTemplateOnPress = React.useCallback(
     () =>
-      navigation.navigate('ChooseNFTTemplate', {
+      dnavigation('ChooseNFTTemplate', {
         mode: 'change',
       }),
-    [navigation],
+    [dnavigation],
   );
 
   const closeMenuOnDismiss = React.useCallback(() => setCloseMenuVisible(false), []);

@@ -25,8 +25,8 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { FEED_CACHE_MAX_LENGTH } from 'enevti-app/service/enevti/feed';
 import { addFeedItemsCacheLike } from 'enevti-app/store/slices/entities/cache/feed';
-import { useDebouncedCallback } from 'use-debounce';
 import AppLikeReadyInstance from 'enevti-app/utils/app/likeReady';
+import useDebouncedNavigation from 'enevti-app/utils/hook/useDebouncedNavigation';
 
 interface AppFeedActionProps {
   feed: FeedItem;
@@ -45,14 +45,7 @@ export default function AppFeedAction({ feed, index, navigation }: AppFeedAction
   const likeThunkRef = React.useRef<any>();
   const onceLike = useSelector(selectOnceLike);
   const buyDisabled = useSelector(isFeedBuyDisabled);
-
-  const debouncedNavigateComment = useDebouncedCallback(
-    () => {
-      navigation.push('Comment', { type: 'collection', mode: 'id', arg: feed.id });
-    },
-    750,
-    { leading: true, trailing: false },
-  );
+  const dnavigation = useDebouncedNavigation(navigation);
 
   const onLikeActivate = React.useCallback(async () => {
     if (onceLike) {
@@ -68,8 +61,8 @@ export default function AppFeedAction({ feed, index, navigation }: AppFeedAction
   }, [dispatch, t]);
 
   const onComment = React.useCallback(() => {
-    debouncedNavigateComment();
-  }, [debouncedNavigateComment]);
+    dnavigation('Comment', { type: 'collection', mode: 'id', arg: feed.id });
+  }, [dnavigation, feed.id]);
 
   const paymentIdleCallback = React.useCallback(
     (paymentStatus: PaymentStatus) => {

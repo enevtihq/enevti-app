@@ -20,6 +20,6 @@ export function openQRScanner({ navigation, onSuccess, onFailed, onFocus, onBlur
     const failedEvent = typeof failedEventId === 'string' ? failedEventId : undefined;
     const focusEvent = typeof focusEventId === 'string' ? focusEventId : undefined;
     const blurEvent = typeof blurEventId === 'string' ? blurEventId : undefined;
-    navigation.navigate('QRScanner', { successEvent, failedEvent, focusEvent, blurEvent, fullscreen });
+    navigation.push('QRScanner', { successEvent, failedEvent, focusEvent, blurEvent, fullscreen });
   }
 }

@@ -36,6 +36,7 @@ import { directPayLikeNFT } from 'enevti-app/store/middleware/thunk/payment/dire
 import { PaymentStatus } from 'enevti-app/types/ui/store/Payment';
 import usePaymentCallback from 'enevti-app/utils/hook/usePaymentCallback';
 import AppLikeReadyInstance from 'enevti-app/utils/app/likeReady';
+import useDebouncedNavigation from 'enevti-app/utils/hook/useDebouncedNavigation';
 
 interface NFTSummaryComponentProps {
   route: RouteProp<RootStackParamList, 'NFTDetails'>;
@@ -67,6 +68,7 @@ function Component(
   const insets = useSafeAreaInsets();
   const theme = useTheme() as Theme;
   const dimension = useWindowDimensions();
+  const dnavigation = useDebouncedNavigation(navigation);
 
   const mounted = React.useRef<boolean>(false);
   const likeThunkRef = React.useRef<any>();
@@ -121,25 +123,25 @@ function Component(
 
   const onCreatorDetail = React.useCallback(() => {
     if (nft.creator.address) {
-      navigation.push('Profile', {
+      dnavigation('Profile', {
         arg: nft.creator.address,
         mode: 'a',
       });
     } else {
       dispatch(showSnackbar({ mode: 'info', text: t('error:dataUnavailable') }));
     }
-  }, [dispatch, navigation, nft.creator.address, t]);
+  }, [dispatch, dnavigation, nft.creator.address, t]);
 
   const onOwnerDetail = React.useCallback(() => {
     if (nft.owner.address) {
-      navigation.push('Profile', {
+      dnavigation('Profile', {
         arg: nft.owner.address,
         mode: 'a',
       });
     } else {
       dispatch(showSnackbar({ mode: 'info', text: t('error:dataUnavailable') }));
     }
-  }, [dispatch, t, navigation, nft.owner.address]);
+  }, [dispatch, t, dnavigation, nft.owner.address]);
 
   const paymentIdleCallback = React.useCallback((paymentStatus: PaymentStatus) => {
     if (paymentStatus.action === 'likeNFT') {
@@ -242,7 +244,7 @@ function Component(
           style={{
             height: hp('4%'),
           }}
-          onPress={() => navigation.push('Comment', { type: 'nft', mode: 'id', arg: nft.id })}>
+          onPress={() => dnavigation('Comment', { type: 'nft', mode: 'id', arg: nft.id })}>
           <AppTextBody4>{numberKMB(nft.comment, 2)}</AppTextBody4>
         </AppQuaternaryButton>
       </View>
@@ -275,7 +277,7 @@ function Component(
               <Pressable
                 style={styles.collectionDetail}
                 onPress={() =>
-                  navigation.push('Collection', {
+                  dnavigation('Collection', {
                     arg: nft.collectionId,
                     mode: 'id',
                   })

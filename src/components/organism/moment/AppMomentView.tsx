@@ -45,6 +45,7 @@ import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 import { numberKMB } from 'enevti-app/utils/format/amount';
 import AppMenuContainer from 'enevti-app/components/atoms/menu/AppMenuContainer';
 import AppComment from '../comment/AppComment';
+import useDebouncedNavigation from 'enevti-app/utils/hook/useDebouncedNavigation';
 
 interface AppMomentViewProps {
   navigation: StackNavigationProp<RootStackParamList>;
@@ -66,6 +67,7 @@ export default function AppMomentView({
   const dimension = useWindowDimensions();
   const styles = React.useMemo(() => makeStyles(theme, insets, dimension.height), [theme, insets, dimension.height]);
   const snapPoints = React.useMemo(() => ['70%'], []);
+  const dnavigation = useDebouncedNavigation(navigation);
 
   const [controlVisible, setControlVisible] = React.useState<boolean>(true);
   const [muted, setMuted] = React.useState<boolean>(false);
@@ -265,7 +267,7 @@ export default function AppMomentView({
           </Pressable>
           <Animated.View style={[styles.leftContainer, controlAnimatedStyle]}>
             <Pressable
-              onPress={() => navigation.push('Profile', { mode: 'a', arg: item.owner.address })}
+              onPress={() => dnavigation('Profile', { mode: 'a', arg: item.owner.address })}
               style={styles.ownerContainer}>
               <AppAvatarRenderer persona={item.owner} size={hp(3)} style={styles.ownerAvatar} />
               <AppTextHeading3 style={styles.ownerLabel}>{parsePersonaLabel(item.owner, true)}</AppTextHeading3>
@@ -280,7 +282,7 @@ export default function AppMomentView({
               />
             </View>
             <Pressable
-              onPress={() => navigation.push('Profile', { mode: 'a', arg: item.creator.address })}
+              onPress={() => dnavigation('Profile', { mode: 'a', arg: item.creator.address })}
               style={styles.creatorContainer}>
               <AppTextBody4 style={{ color: darkTheme.colors.placeholder }}>with :</AppTextBody4>
               <AppAvatarRenderer persona={item.creator} size={hp(2)} style={{ marginHorizontal: wp(1.5) }} />
@@ -336,7 +338,7 @@ export default function AppMomentView({
                   width={wp(12)}
                   imageSize={'xs'}
                   onPress={() => {
-                    navigation.push('NFTDetails', { arg: item.nft!.id, mode: 'id' });
+                    dnavigation('NFTDetails', { arg: item.nft!.id, mode: 'id' });
                   }}
                 />
                 <AppTextBody5
@@ -355,6 +357,7 @@ export default function AppMomentView({
       currentVisibleIndex,
       muted,
       navigation,
+      dnavigation,
       onLikePress,
       onLongPress,
       onPress,

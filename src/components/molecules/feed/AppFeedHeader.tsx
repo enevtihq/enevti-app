@@ -21,6 +21,7 @@ import { RootStackParamList } from 'enevti-app/navigation';
 import AppPersonaLabel from 'enevti-app/components/molecules/avatar/AppPersonaLabel';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 import { useDispatch } from 'react-redux';
+import useDebouncedNavigation from 'enevti-app/utils/hook/useDebouncedNavigation';
 
 interface AppFeedHeaderProps {
   feed: FeedItem;
@@ -32,22 +33,23 @@ export default function AppFeedHeader({ feed, navigation }: AppFeedHeaderProps) 
   const { t } = useTranslation();
   const theme = useTheme() as Theme;
   const styles = React.useMemo(() => makeStyles(), []);
+  const dnavigation = useDebouncedNavigation(navigation);
 
   const [menuVisible, setMenuVisible] = React.useState<boolean>(false);
 
   const onProfileDetail = React.useCallback(() => {
     if (feed.owner.address) {
-      navigation.push('Profile', { arg: feed.owner.address, mode: 'a' });
+      dnavigation('Profile', { arg: feed.owner.address, mode: 'a' });
     } else {
       dispatch(showSnackbar({ mode: 'info', text: t('error:dataUnavailable') }));
     }
-  }, [navigation, feed.owner.address, dispatch, t]);
+  }, [dnavigation, feed.owner.address, dispatch, t]);
 
   const onPromoteInfo = () => {};
 
   const onStake = React.useCallback(() => {
-    navigation.push('StakePool', { arg: feed.owner.address, mode: 'a' });
-  }, [navigation, feed.owner]);
+    dnavigation('StakePool', { arg: feed.owner.address, mode: 'a' });
+  }, [dnavigation, feed.owner]);
 
   const onOpenMenu = () => {
     setMenuVisible(true);

@@ -18,6 +18,7 @@ import { setRecentMomentAlertShow } from 'enevti-app/store/slices/ui/view/recent
 import { clearCreateMomentQueue, selectCreateMomentQueue } from 'enevti-app/store/slices/queue/moment/create';
 import { cleanTMPImage } from 'enevti-app/service/enevti/nft';
 import AppConfirmationModal from '../menu/AppConfirmationModal';
+import useDebouncedNavigation from 'enevti-app/utils/hook/useDebouncedNavigation';
 
 interface AppAddMomentProps {
   navigation: StackNavigationProp<RootStackParamList>;
@@ -28,6 +29,7 @@ export default function AppAddMoment({ navigation }: AppAddMomentProps) {
   const dispatch = useDispatch();
   const theme = useTheme() as Theme;
   const styles = React.useMemo(() => makeStyles(theme), [theme]);
+  const dnavigation = useDebouncedNavigation(navigation);
 
   const createMomentQueue = useSelector(selectCreateMomentQueue);
   const myPersonaCache = useSelector(selectMyPersonaCache);
@@ -44,25 +46,25 @@ export default function AppAddMoment({ navigation }: AppAddMomentProps) {
     dispatch(clearCreateMomentQueue());
     cleanTMPImage();
     setRestoreMomentVisible(false);
-    navigation.navigate('ChooseNFTforMoment');
-  }, [dispatch, navigation]);
+    dnavigation('ChooseNFTforMoment');
+  }, [dispatch, dnavigation]);
 
   const restoreMomentCallback = React.useCallback(() => {
     setRestoreMomentVisible(false);
-    navigation.navigate('CreateMoment', {});
-  }, [navigation]);
+    dnavigation('CreateMoment', {});
+  }, [dnavigation]);
 
   const onAddMomentPress = React.useCallback(() => {
     if (isEligibile) {
       if (createMomentQueue.nft) {
         setRestoreMomentVisible(true);
       } else {
-        navigation.navigate('ChooseNFTforMoment');
+        dnavigation('ChooseNFTforMoment');
       }
     } else {
       dispatch(setRecentMomentAlertShow(true));
     }
-  }, [createMomentQueue.nft, dispatch, isEligibile, navigation]);
+  }, [createMomentQueue.nft, dispatch, isEligibile, dnavigation]);
 
   return (
     <>
