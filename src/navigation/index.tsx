@@ -145,7 +145,7 @@ export type RootStackParamList = {
   };
 };
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<RootStackParamList>();
 
 export default function AppNavigationContainer() {
   const dispatch = useDispatch();

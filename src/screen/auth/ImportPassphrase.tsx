@@ -19,7 +19,7 @@ import YupBIP39 from 'enevti-app/utils/yup/bip39';
 import { useDispatch } from 'react-redux';
 import { initPassphrase } from 'enevti-app/store/middleware/thunk/session/initPassphrase';
 
-type Props = StackScreenProps<RootStackParamList, 'SetupLocalPassword'>;
+type Props = StackScreenProps<RootStackParamList, 'ImportPassphrase'>;
 YupPassword(Yup);
 YupBIP39(Yup);
 
