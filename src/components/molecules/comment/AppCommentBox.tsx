@@ -100,10 +100,10 @@ export default function AppCommentBox({
 
   const abortController = React.useRef<AbortController>();
   const paymentThunkRef = React.useRef<any>();
-  const socket = React.useRef<Socket | undefined>();
-  const replySocket = React.useRef<Socket | undefined>();
-  const postCommentTimer = React.useRef<any>();
-  const postReplyTimer = React.useRef<any>();
+  const socket = React.useRef<{ [key: string]: Socket | undefined }>({});
+  const replySocket = React.useRef<{ [key: string]: Socket | undefined }>({});
+  const postCommentTimer = React.useRef<{ [key: string]: any }>({});
+  const postReplyTimer = React.useRef<{ [key: string]: any }>({});
   const myPersona = useSelector(selectMyPersonaCache);
 
   const commentView = useSelector((state: RootState) => selectCommentView(state, getCommentKey(route, type)));
@@ -142,10 +142,14 @@ export default function AppCommentBox({
     abortController.current = new AbortController();
     return () => {
       abortController.current && abortController.current.abort();
-      socket.current?.disconnect();
-      replySocket.current?.disconnect();
-      clearTimeout(postCommentTimer.current);
-      clearTimeout(postReplyTimer.current);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      Object.keys(socket.current).forEach(k => socket.current[k]?.disconnect());
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      Object.keys(replySocket.current).forEach(k => replySocket.current[k]?.disconnect());
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      Object.keys(postCommentTimer.current).forEach(k => clearTimeout(postCommentTimer.current[k]));
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      Object.keys(postReplyTimer.current).forEach(k => clearTimeout(postReplyTimer.current[k]));
     };
   }, []);
 
@@ -235,25 +239,35 @@ export default function AppCommentBox({
             setCommentById({ route, type, id: getCommentKey(route, type), comment: { id: paymentStatus.message } }),
           );
 
-          postCommentTimer.current = setTimeout(async () => {
-            const status = await getTransactionStatus(paymentStatus.message, abortController.current?.signal);
-            if (status.data === 'sent') {
-              dispatch(setCommentById({ route, type, id: paymentStatus.message, comment: { isPosting: false } }));
-              dispatch(showSnackbar({ mode: 'info', text: t('explorer:commentSuccess') }));
-            } else {
+          postCommentTimer.current[paymentStatus.message] = setTimeout(async () => {
+            try {
+              const status = await getTransactionStatus(paymentStatus.message, abortController.current?.signal);
+              if (status.data === 'sent') {
+                dispatch(setCommentById({ route, type, id: paymentStatus.message, comment: { isPosting: false } }));
+                dispatch(showSnackbar({ mode: 'info', text: t('explorer:commentSuccess') }));
+              } else {
+                dispatch(deleteCommentById({ route, type, id: paymentStatus.message }));
+                dispatch(showSnackbar({ mode: 'info', text: t('explorer:commentQueued') }));
+              }
+            } catch {
               dispatch(deleteCommentById({ route, type, id: paymentStatus.message }));
               dispatch(showSnackbar({ mode: 'info', text: t('explorer:commentQueued') }));
+            } finally {
+              socket.current[paymentStatus.message]?.disconnect();
+              clearTimeout(postCommentTimer.current[paymentStatus.message]);
+              delete socket.current[paymentStatus.message];
+              delete postCommentTimer.current[paymentStatus.message];
             }
-            socket.current?.disconnect();
-            clearTimeout(postCommentTimer.current);
           }, (await BLOCK_TIME()) * 3);
 
-          socket.current = appSocket(`transaction:${paymentStatus.message}`);
-          socket.current.on('processed', () => {
+          socket.current[paymentStatus.message] = appSocket(`transaction:${paymentStatus.message}`);
+          socket.current[paymentStatus.message]?.on('processed', () => {
             dispatch(setCommentById({ route, type, id: paymentStatus.message, comment: { isPosting: false } }));
             dispatch(showSnackbar({ mode: 'info', text: t('explorer:commentSuccess') }));
-            socket.current?.disconnect();
-            clearTimeout(postCommentTimer.current);
+            socket.current[paymentStatus.message]?.disconnect();
+            clearTimeout(postCommentTimer.current[paymentStatus.message]);
+            delete socket.current[paymentStatus.message];
+            delete postCommentTimer.current[paymentStatus.message];
           });
           break;
         case 'replyComment':
@@ -261,29 +275,39 @@ export default function AppCommentBox({
           setSending(false);
           onReplyClose();
 
-          postReplyTimer.current = setTimeout(async () => {
-            const status = await getTransactionStatus(paymentStatus.message, abortController.current?.signal);
-            if (status.data === 'sent') {
+          postReplyTimer.current[paymentStatus.message] = setTimeout(async () => {
+            try {
+              const status = await getTransactionStatus(paymentStatus.message, abortController.current?.signal);
+              if (status.data === 'sent') {
+                dispatch(setCommentById({ route, type, id: paymentStatus.id, comment: { isPosting: false } }));
+                dispatch(addCommentReplyCountById({ route, type, id: paymentStatus.id }));
+                dispatch(addReplyPaginationVersionByCommentId({ route, type, commentId: paymentStatus.id }));
+                dispatch(showSnackbar({ mode: 'info', text: t('explorer:replySuccess') }));
+              } else {
+                dispatch(setCommentById({ route, type, id: paymentStatus.id, comment: { isPosting: false } }));
+                dispatch(showSnackbar({ mode: 'info', text: t('explorer:replyQueued') }));
+              }
+            } catch {
               dispatch(setCommentById({ route, type, id: paymentStatus.id, comment: { isPosting: false } }));
-              dispatch(addCommentReplyCountById({ route, type, id: paymentStatus.id }));
-              dispatch(addReplyPaginationVersionByCommentId({ route, type, commentId: paymentStatus.id }));
-              dispatch(showSnackbar({ mode: 'info', text: t('explorer:replySuccess') }));
-            } else {
-              dispatch(setCommentById({ route, type, id: paymentStatus.id, comment: { isPosting: true } }));
               dispatch(showSnackbar({ mode: 'info', text: t('explorer:replyQueued') }));
+            } finally {
+              replySocket.current[paymentStatus.message]?.disconnect();
+              clearTimeout(postReplyTimer.current[paymentStatus.message]);
+              delete replySocket.current[paymentStatus.message];
+              delete postReplyTimer.current[paymentStatus.message];
             }
-            replySocket.current?.disconnect();
-            clearTimeout(postReplyTimer.current);
           }, (await BLOCK_TIME()) * 3);
 
-          replySocket.current = appSocket(`transaction:${paymentStatus.message}`);
-          replySocket.current.on('processed', () => {
+          replySocket.current[paymentStatus.message] = appSocket(`transaction:${paymentStatus.message}`);
+          replySocket.current[paymentStatus.message]?.on('processed', () => {
             dispatch(setCommentById({ route, type, id: paymentStatus.id, comment: { isPosting: false } }));
             dispatch(addCommentReplyCountById({ route, type, id: paymentStatus.id }));
             dispatch(addReplyPaginationVersionByCommentId({ route, type, commentId: paymentStatus.id }));
             dispatch(showSnackbar({ mode: 'info', text: t('explorer:replySuccess') }));
-            replySocket.current?.disconnect();
-            clearTimeout(postReplyTimer.current);
+            replySocket.current[paymentStatus.message]?.disconnect();
+            clearTimeout(postReplyTimer.current[paymentStatus.message]);
+            delete replySocket.current[paymentStatus.message];
+            delete postReplyTimer.current[paymentStatus.message];
           });
           break;
         default:
