@@ -815,7 +815,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.enevti.app;
 				PRODUCT_NAME = Enevti;
-				PROVISIONING_PROFILE_SPECIFIER = "Enevti Mobile App";
+				PROVISIONING_PROFILE_SPECIFIER = "Enevti Development Proifle";
 				SWIFT_OBJC_BRIDGING_HEADER = "RNVideoProcessing/Enevti-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -960,7 +960,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.enevti.app;
 				PRODUCT_NAME = Enevti;
-				PROVISIONING_PROFILE_SPECIFIER = "Enevti Mobile App";
+				PROVISIONING_PROFILE_SPECIFIER = "Enevti Development Proifle";
 				SWIFT_OBJC_BRIDGING_HEADER = "RNVideoProcessing/Enevti-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";

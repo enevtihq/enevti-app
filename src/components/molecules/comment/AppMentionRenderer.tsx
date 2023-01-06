@@ -43,7 +43,7 @@ export default function AppMentionRenderer({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const paperTheme = useTheme() as Theme;
-  const dnavigation = useDebouncedNavigation(navigation!);
+  const dnavigation = useDebouncedNavigation(navigation);
   const selectedTheme = React.useMemo(() => {
     if (theme === 'dark') {
       return darkTheme;

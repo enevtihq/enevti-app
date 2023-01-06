@@ -47,7 +47,7 @@ export default React.memo(
     imageSize = 'og',
   }: AppNFTRendererProps) {
     const styles = React.useMemo(() => makeStyles(), []);
-    const dnavigation = useDebouncedNavigation(navigation!);
+    const dnavigation = useDebouncedNavigation(navigation);
 
     const onNavigate = React.useCallback(
       () => (onPress ? onPress() : navigation ? dnavigation('NFTDetails', { arg: nft.id, mode: 'id' }) : undefined),

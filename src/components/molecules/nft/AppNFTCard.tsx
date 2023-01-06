@@ -27,7 +27,7 @@ export default function AppNFTCard({ nft, width, style, navigation }: AppNFTCard
   const theme = useTheme() as Theme;
   const styles = React.useMemo(() => makeStyles(theme), [theme]);
   const nftWidth = React.useMemo(() => width - wp('1%'), [width]);
-  const dnavigation = useDebouncedNavigation(navigation!);
+  const dnavigation = useDebouncedNavigation(navigation);
 
   const onNavigate = React.useCallback(
     () => (navigation ? dnavigation('NFTDetails', { arg: nft.id, mode: 'id' }) : undefined),
