@@ -11,7 +11,8 @@
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "link": "./node_modules/.bin/rn-nodeify --hack --install",
-    "postinstall": "patch-package"
+    "postinstall": "patch-package",
+    "postversion": "react-native-version"
   },
   "dependencies": {
     "@bob.hardcoder/react-native-incoming-call": "^1.0.3",
@@ -42,6 +43,7 @@
     "@types/react-native-snap-carousel": "^3.8.5",
     "@types/react-native-vector-icons": "^6.4.10",
     "@types/react-native-video": "^5.0.14",
+    "@types/semver": "^7.3.13",
     "@yz1311/react-native-wheel-picker": "^0.3.9",
     "assert": "^1.5.0",
     "asyncstorage-down": "^4.2.0",
@@ -146,6 +148,7 @@
     "reselect": "^4.1.5",
     "rn-android-overlay-permission": "^1.0.5",
     "rn-nodeify": "^10.3.0",
+    "semver": "^7.3.8",
     "socket.io-client": "^4.5.0",
     "stream-browserify": "^1.0.0",
     "string_decoder": "^0.10.31",
@@ -177,6 +180,7 @@
     "jest": "^26.6.3",
     "metro-react-native-babel-preset": "^0.66.2",
     "react-native-svg-transformer": "^1.0.0",
+    "react-native-version": "^4.0.0",
     "react-test-renderer": "17.0.2",
     "typescript": "^4.4.4"
   },

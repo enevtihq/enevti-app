@@ -57,6 +57,7 @@ import ChooseNFTforMoment from 'enevti-app/screen/createMoment/ChooseNFTforMomen
 import VideoEditor from 'enevti-app/screen/editor/video/VideoEditor';
 import CreateMoment from 'enevti-app/screen/createMoment/CreateMoment';
 import Moment from 'enevti-app/screen/moment/Moment';
+import { clearCacheIfNewVersion } from 'enevti-app/store/middleware/thunk/ui/cache/clearCacheIfNewVersion';
 
 export type RootStackParamList = {
   AppOnboarding: undefined;
@@ -176,6 +177,10 @@ export default function AppNavigationContainer() {
 
   useLockScreen();
   useScreenDisplayed();
+
+  React.useEffect(() => {
+    dispatch(clearCacheIfNewVersion());
+  }, [dispatch]);
 
   React.useEffect(() => {
     if (auth.encrypted && localSession.key === '' && locked && currentRoute !== 'Login') {
