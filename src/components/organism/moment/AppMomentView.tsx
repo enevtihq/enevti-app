@@ -1,4 +1,4 @@
-import { Platform, Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
+import { Platform, Pressable, RefreshControl, StyleSheet, useWindowDimensions, View } from 'react-native';
 import Video from 'react-native-video';
 import React from 'react';
 import { FlatList } from '@stream-io/flat-list-mvcp';
@@ -140,6 +140,11 @@ export default function AppMomentView({
     (reload: boolean = false) => dispatch(loadMoment({ route, reload })),
     [dispatch, route],
   ) as AppAsyncThunk;
+
+  const onMomentReload = React.useCallback(async () => {
+    await onMomentLoaded(true).unwrap();
+    videoRef.current[currentIndexRef.current]?.setNativeProps({ paused: false });
+  }, [onMomentLoaded]);
 
   const onLikePress = React.useCallback(
     (id: string, target: string) => {
@@ -382,6 +387,11 @@ export default function AppMomentView({
     ],
   );
 
+  const refreshControl = React.useMemo(
+    () => <RefreshControl refreshing={false} onRefresh={onMomentReload} progressViewOffset={insets.top} />,
+    [onMomentReload, insets],
+  );
+
   const keyExtractor = React.useCallback(item => item.id, []);
 
   const getItemLayout = React.useCallback(
@@ -426,6 +436,7 @@ export default function AppMomentView({
         data={momentView.moments}
         showsVerticalScrollIndicator={false}
         onViewableItemsChanged={onViewableItemsChanged}
+        refreshControl={refreshControl}
         style={{ opacity: visible }}
         viewabilityConfig={{
           itemVisiblePercentThreshold: 80,

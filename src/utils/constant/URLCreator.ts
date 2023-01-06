@@ -671,3 +671,13 @@ export function urlDeleteAPNAddress(host: string = ENEVTI_DEFAULT_API) {
 export function urlGetMomentById(id: string, viewer: string, host: string = ENEVTI_DEFAULT_API) {
   return encodeURI(`${host}/moment/${id}?viewer=${viewer}`);
 }
+
+export function urlGetAllMoment(
+  offset: number = 0,
+  limit: number = 10,
+  version: number = 0,
+  viewer: string,
+  host: string = ENEVTI_DEFAULT_API,
+) {
+  return encodeURI(`${host}/moment?offset=${offset}&limit=${limit}&version=${version}&viewer=${viewer}`);
+}

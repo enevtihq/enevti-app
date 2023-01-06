@@ -1,10 +1,11 @@
 import { ProfileAPIVersion } from 'enevti-app/types/core/account/profile';
-import { APIResponse, APIResponseVersionRoot } from 'enevti-app/types/core/service/api';
+import { APIResponse, APIResponseVersioned, APIResponseVersionRoot } from 'enevti-app/types/core/service/api';
 import { Feeds, HomeFeeds, Moments } from 'enevti-app/types/core/service/feed';
 import { HOME_FEED_LIMIT } from 'enevti-app/utils/constant/limit';
-import { urlGetFeeds, urlGetHome } from 'enevti-app/utils/constant/URLCreator';
-import { apiFetch, apiFetchVersionRoot } from 'enevti-app/utils/app/network';
+import { urlGetAllMoment, urlGetFeeds, urlGetHome } from 'enevti-app/utils/constant/URLCreator';
+import { apiFetch, apiFetchVersioned, apiFetchVersionRoot } from 'enevti-app/utils/app/network';
 import { getMyAddress } from './persona';
+import { MomentBase } from 'enevti-app/types/core/chain/moment';
 
 type FeedResponse = { data: Feeds; checkpoint: number; version: number };
 export const FEED_CACHE_MAX_LENGTH = HOME_FEED_LIMIT;
@@ -21,6 +22,17 @@ async function fetchHome(
     silent,
     { data: [], offset: 0, version: 0 },
   );
+}
+
+async function fetchFeedMoment(
+  signal?: AbortController['signal'],
+  offset?: number,
+  limit?: number,
+  version?: number,
+  silent?: boolean,
+): Promise<APIResponseVersioned<MomentBase[]>> {
+  const myAddress = await getMyAddress();
+  return await apiFetchVersioned<MomentBase[]>(urlGetAllMoment(offset, limit, version, myAddress), signal, silent);
 }
 
 async function fetchFeeds(
@@ -58,6 +70,21 @@ export async function getFeeds(
   silent?: boolean,
 ): Promise<APIResponse<FeedResponse>> {
   return await fetchFeeds(signal, undefined, undefined, undefined, silent);
+}
+
+export async function getFeedMoment(
+  signal?: AbortController['signal'],
+  silent?: boolean,
+): Promise<APIResponseVersioned<MomentBase[]>> {
+  return await fetchFeedMoment(signal, undefined, undefined, undefined, silent);
+}
+
+export async function getMoreFeedMoment(
+  offset: number,
+  version: number,
+  signal?: AbortController['signal'],
+): Promise<APIResponseVersioned<MomentBase[]>> {
+  return await fetchFeedMoment(signal, offset, FEED_LIMIT_PER_REQ, version);
 }
 
 export async function getMoreFeeds(

@@ -17,7 +17,7 @@ import {
   setFeedViewState,
 } from 'enevti-app/store/slices/ui/view/feed';
 import { lastFetchTimeout } from 'enevti-app/utils/constant/lastFetch';
-import { getHome, getMoreFeeds, parseFeedCache, parseMomentCache } from 'enevti-app/service/enevti/feed';
+import { getFeedMoment, getHome, getMoreFeeds, parseFeedCache, parseMomentCache } from 'enevti-app/service/enevti/feed';
 import i18n from 'enevti-app/translations/i18n';
 import {
   HOME_FEED_LIMIT,
@@ -186,6 +186,42 @@ export const loadMoreFeeds = createAsyncThunk<void, undefined, AsyncThunkAPI>(
       }
     } catch (err: any) {
       handleError(err);
+    }
+  },
+);
+
+export const loadFeedsMoment = createAsyncThunk<void, loadFeedsArgs, AsyncThunkAPI>(
+  'feedView/loadFeedsMoment',
+  async ({ reload = false }, { dispatch, getState, signal }) => {
+    try {
+      const now = Date.now();
+      dispatch(setFeedViewVersion(now));
+      dispatch(setRecentMomentVersion(now));
+
+      if (reload || now - selectLastFetchFeedCache(getState()) > lastFetchTimeout.home) {
+        const momentResponse = await getFeedMoment(signal, !reload);
+        dispatch(
+          setRecentMomentState({
+            checkpoint: HOME_MOMENT_LIMIT,
+            items: momentResponse.data.data,
+            reqStatus: momentResponse.status,
+            reqVersion: momentResponse.data.version,
+            loaded: true,
+          }),
+        );
+
+        if (momentResponse.status === 200 && !isErrorResponse(momentResponse)) {
+          dispatch(setFeedCacheState({ lastFetch: now }));
+          dispatch(setMomentItemsCache(parseMomentCache(momentResponse.data.data)));
+        } else {
+          throw { message: i18n.t('error:clientError'), code: momentResponse.status };
+        }
+      } else {
+        dispatch(loadFeedFromCache() as unknown as AnyAction);
+      }
+    } catch (err: any) {
+      handleError(err);
+      dispatch(loadFeedFromCache() as unknown as AnyAction);
     }
   },
 );

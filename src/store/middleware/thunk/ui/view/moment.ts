@@ -51,6 +51,10 @@ import sleep from 'enevti-app/utils/dummy/sleep';
 import { handleError } from 'enevti-app/utils/error/handle';
 import { Platform } from 'react-native';
 import { EventRegister } from 'react-native-event-listeners';
+import { loadFeedsMoment } from './feed';
+import { loadProfile } from './profile';
+import { loadNFTDetails } from './nftDetails';
+import { loadCollection } from './collection';
 
 type MomentRoute = StackScreenProps<RootStackParamList, 'Moment'>['route'];
 type LoadMomentArgs = { route: MomentRoute; reload?: boolean };
@@ -225,6 +229,10 @@ const loadMomentFromFeed = async (
       Platform.OS === 'ios' ? (reloadTime = Date.now()) : {};
       dispatch(showModalLoader());
     }
+    if (payload.reload) {
+      await dispatch(loadFeedsMoment({ reload: true }) as unknown as AnyAction).unwrap();
+      await sleep(1);
+    }
     const index = payload.reload ? 0 : payload.route.params.index!;
     const feedMomentState = selectRecentMomentState(getState());
     dispatch(
@@ -275,6 +283,21 @@ const loadMomentFromProfile = async (
     if (payload.reload) {
       Platform.OS === 'ios' ? (reloadTime = Date.now()) : {};
       dispatch(showModalLoader());
+    }
+    if (payload.reload) {
+      const profileState = selectProfileView(getState(), payload.route.params.arg!);
+      await dispatch(
+        loadProfile({
+          route: {
+            name: 'Profile',
+            key: payload.route.params.arg!,
+            params: { mode: 'a', arg: profileState.persona.address },
+          },
+          reload: true,
+          isMyProfile: false,
+        }) as unknown as AnyAction,
+      ).unwrap();
+      await sleep(1);
     }
     const index = payload.reload ? 0 : payload.route.params.index!;
     const profileState = selectProfileView(getState(), payload.route.params.arg!);
@@ -327,6 +350,16 @@ const loadMomentFromMyProfile = async (
       Platform.OS === 'ios' ? (reloadTime = Date.now()) : {};
       dispatch(showModalLoader());
     }
+    if (payload.reload) {
+      await dispatch(
+        loadProfile({
+          route: { name: 'Profile', key: '', params: { mode: 'a', arg: '' } },
+          reload: true,
+          isMyProfile: true,
+        }) as unknown as AnyAction,
+      ).unwrap();
+      await sleep(1);
+    }
     const index = payload.reload ? 0 : payload.route.params.index!;
     const profileState = selectMyProfileView(getState());
     dispatch(
@@ -378,6 +411,20 @@ const loadMomentFromNFT = async (
       Platform.OS === 'ios' ? (reloadTime = Date.now()) : {};
       dispatch(showModalLoader());
     }
+    if (payload.reload) {
+      const nftDetailsState = selectNFTDetailsView(getState(), payload.route.params.arg!);
+      await dispatch(
+        loadNFTDetails({
+          route: {
+            name: 'NFTDetails',
+            key: payload.route.params.arg!,
+            params: { mode: 'id', arg: nftDetailsState.id },
+          },
+          reload: true,
+        }) as unknown as AnyAction,
+      ).unwrap();
+      await sleep(1);
+    }
     const index = payload.reload ? 0 : payload.route.params.index!;
     const nftDetailsState = selectNFTDetailsView(getState(), payload.route.params.arg!);
     dispatch(
@@ -428,6 +475,20 @@ const loadMomentFromCollection = async (
     if (payload.reload) {
       Platform.OS === 'ios' ? (reloadTime = Date.now()) : {};
       dispatch(showModalLoader());
+    }
+    if (payload.reload) {
+      const collectionState = selectCollectionView(getState(), payload.route.params.arg!);
+      await dispatch(
+        loadCollection({
+          route: {
+            name: 'Collection',
+            key: payload.route.params.arg!,
+            params: { mode: 'id', arg: collectionState.id },
+          },
+          reload: true,
+        }) as unknown as AnyAction,
+      ).unwrap();
+      await sleep(1);
     }
     const index = payload.reload ? 0 : payload.route.params.index!;
     const collectionState = selectCollectionView(getState(), payload.route.params.arg!);
