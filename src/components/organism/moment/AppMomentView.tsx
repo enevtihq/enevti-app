@@ -284,7 +284,7 @@ export default function AppMomentView({
             <Pressable
               onPress={() => dnavigation('Profile', { mode: 'a', arg: item.creator.address })}
               style={styles.creatorContainer}>
-              <AppTextBody4 style={{ color: darkTheme.colors.placeholder }}>with :</AppTextBody4>
+              <AppTextBody4 style={{ color: darkTheme.colors.placeholder }}>{t('moment:momentWith')}</AppTextBody4>
               <AppAvatarRenderer persona={item.creator} size={hp(2)} style={{ marginHorizontal: wp(1.5) }} />
               <AppTextHeading4 style={{ color: darkTheme.colors.placeholder }}>
                 {parsePersonaLabel(item.creator, true)}
@@ -351,6 +351,7 @@ export default function AppMomentView({
       );
     },
     [
+      t,
       audioIndicatorAnimatedStyle,
       controlAnimatedStyle,
       controlVisible,

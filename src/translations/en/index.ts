@@ -19,6 +19,7 @@ import redeem from './redeem';
 import onboarding from './onboarding';
 import createMoment from './createMoment';
 import editor from './editor';
+import moment from './moment';
 
 export default {
   auth,
@@ -42,4 +43,5 @@ export default {
   onboarding,
   createMoment,
   editor,
+  moment,
 };

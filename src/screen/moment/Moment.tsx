@@ -13,10 +13,12 @@ import {
   setStatusBarTint,
 } from 'enevti-app/store/slices/ui/global/statusbar';
 import { RouteProp } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 
 type Props = StackScreenProps<RootStackParamList, 'Moment'>;
 
 export default function Moment({ navigation, route }: Props) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const styles = React.useMemo(() => makeStyles(), []);
   const pressableHolded = useSharedValue(0);
@@ -78,7 +80,7 @@ export default function Moment({ navigation, route }: Props) {
         <AppHeader
           back
           navigation={navigation}
-          title={'Moment'}
+          title={t('moment:momentScreenTitle')}
           backgroundStyle={styles.background}
           textStyle={headerStyle}
           iconStyle={headerStyle}
