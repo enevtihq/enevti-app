@@ -84,7 +84,7 @@ export default function SetupUsername({ navigation, route }: Props) {
   });
 
   return (
-    <AppView withModal withLoader withPayment withSnackbar dismissKeyboard={true}>
+    <AppView withModal withLoader withPayment withSnackbar dismissKeyboard={true} navigation={navigation}>
       <AppHeaderWizard
         back
         navigation={navigation}

@@ -106,6 +106,7 @@ export default function Collection({ navigation, route }: Props) {
       withModal
       withLoader
       withPayment
+      navigation={navigation}
       edges={['bottom', 'left', 'right']}
       headerOffset={0}
       header={

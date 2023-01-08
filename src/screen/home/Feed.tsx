@@ -158,7 +158,7 @@ export default function Feed({ navigation, onScroll, headerHeight }: FeedProps) 
   }, [newUpdate]);
 
   return (
-    <AppView darken withLoader withPaymentOnly>
+    <AppView darken withLoader withPaymentOnly navigation={navigation}>
       <View style={styles.textContainer}>
         {!feedsUndefined ? (
           <AppResponseView

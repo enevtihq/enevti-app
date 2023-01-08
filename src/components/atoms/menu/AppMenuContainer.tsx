@@ -90,7 +90,6 @@ function Component({
 
   const onChange = (index: number) => {
     if (index < 0) {
-      onDismiss();
       isVisible.current = false;
     } else {
       if (!isVisible.current) {
@@ -118,6 +117,7 @@ function Component({
       {anchor}
       <BottomSheetModal
         ref={bottomSheetRef}
+        onDismiss={onDismiss}
         handleIndicatorStyle={[{ backgroundColor: theme.colors.placeholder }, handleIndicatorStyle]}
         enableContentPanningGesture={enableContentPanningGesture}
         keyboardBehavior={'interactive'}

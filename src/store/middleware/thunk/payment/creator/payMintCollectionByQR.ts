@@ -1,10 +1,9 @@
 import { iconMap, UNDEFINED_ICON } from 'enevti-app/components/atoms/icon/AppIconComponent';
-import { setPaymentStatus, showPayment, hidePayment, setPaymentState } from 'enevti-app/store/slices/payment';
+import { setPaymentStatus, showPayment, setPaymentState } from 'enevti-app/store/slices/payment';
 import { AsyncThunkAPI } from 'enevti-app/store/state';
 import { attachFee, calculateBaseFee, calculateGasFee, createTransaction } from 'enevti-app/service/enevti/transaction';
 import i18n from 'enevti-app/translations/i18n';
 import { AnyAction, createAsyncThunk } from '@reduxjs/toolkit';
-import { handleError } from 'enevti-app/utils/error/handle';
 import { Collection } from 'enevti-app/types/core/chain/collection';
 import { AppTransaction } from 'enevti-app/types/core/service/transaction';
 import { redeemableNftModule } from 'enevti-app/utils/constant/transaction';
@@ -12,6 +11,7 @@ import { MintNFTByQR, MintNFTByQRUI } from 'enevti-app/types/core/asset/redeemab
 import base64 from 'react-native-base64';
 import { getCollectionById } from 'enevti-app/service/enevti/collection';
 import { cleanPayment } from '../utils/cleanPayment';
+import onPaymentCreatorError from '../utils/onPaymentCreatorError';
 
 type PayMintCollectionByQRPayload = { key: string; collection: Collection; payload: string };
 
@@ -92,17 +92,13 @@ export const payMintCollectionByQR = createAsyncThunk<void, PayMintCollectionByQ
         }),
       );
     } catch (err) {
-      handleError(err);
-      dispatch(hidePayment());
-      dispatch(
-        setPaymentStatus({
-          id: payload.collection.id,
-          key: payload.key,
-          action: 'mintCollectionByQR',
-          type: 'error',
-          message: (err as Record<string, any>).message.toString(),
-        }),
-      );
+      await onPaymentCreatorError({
+        dispatch,
+        err,
+        id: payload.collection.id,
+        key: payload.key,
+        action: 'mintCollectionByQR',
+      });
     }
   },
 );

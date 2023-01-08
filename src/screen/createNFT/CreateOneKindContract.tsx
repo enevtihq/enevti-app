@@ -681,6 +681,7 @@ export default function CreateOneKindContract({ navigation, route }: Props) {
       withModal
       withPayment
       withLoader
+      navigation={navigation}
       edges={['bottom', 'left', 'right']}
       headerOffset={insets.top}
       header={

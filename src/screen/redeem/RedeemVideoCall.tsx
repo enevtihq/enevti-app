@@ -15,7 +15,13 @@ export default function RedeemVideoCall({ navigation, route }: Props) {
   ) as RouteProp<RootStackParamList, 'RedeemVideoCall'>;
 
   return (
-    <AppView darken withModal withPayment edges={['left', 'right']} contentContainerStyle={{ backgroundColor: BLACK }}>
+    <AppView
+      darken
+      withModal
+      withPayment
+      navigation={navigation}
+      edges={['left', 'right']}
+      contentContainerStyle={{ backgroundColor: BLACK }}>
       <AppRedeemVideoCall navigation={navigation} route={screenRoute} />
     </AppView>
   );

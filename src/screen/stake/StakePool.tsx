@@ -23,6 +23,7 @@ export default function StakePool({ navigation, route }: Props) {
       withModal
       withLoader
       withPayment
+      navigation={navigation}
       edges={['left', 'bottom', 'right']}
       header={<AppHeader back navigation={navigation} title={t('stake:stakePool')} />}>
       <AppStakePool route={screenRoute} />

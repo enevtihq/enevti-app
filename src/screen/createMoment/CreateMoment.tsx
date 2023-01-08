@@ -121,6 +121,7 @@ export default function CreateMoment({ navigation, route }: Props) {
       withModal
       withPayment
       withLoader
+      navigation={navigation}
       edges={['bottom', 'left', 'right']}
       headerOffset={insets.top + hp(HEADER_HEIGHT_PERCENTAGE)}
       header={

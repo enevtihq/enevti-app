@@ -117,6 +117,7 @@ export default function SendToken({ navigation, route }: Props) {
       withLoader
       withPayment
       withModal
+      navigation={navigation}
       edges={['left', 'bottom', 'right']}
       header={<AppHeader back navigation={navigation} title={' '} />}>
       <AppHeaderWizard
