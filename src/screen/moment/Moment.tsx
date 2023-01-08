@@ -4,7 +4,7 @@ import { RootStackParamList } from 'enevti-app/navigation';
 import AppView from 'enevti-app/components/atoms/view/AppView';
 import AppHeader from 'enevti-app/components/atoms/view/AppHeader';
 import AppMomentView from 'enevti-app/components/organism/moment/AppMomentView';
-import { interpolateColor, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import { interpolate, interpolateColor, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { Platform, StyleSheet } from 'react-native';
 import { useDispatch } from 'react-redux';
 import {
@@ -56,6 +56,12 @@ export default function Moment({ navigation, route }: Props) {
     };
   });
 
+  const gradientBackgroundStyle = useAnimatedStyle(() => {
+    return {
+      opacity: interpolate(pressableHolded.value, [0, 1], [1, 0]),
+    };
+  });
+
   const onLongPressWorklet = React.useCallback(() => {
     'worklet';
     pressableHolded.value = withTiming(1, { duration: 250 });
@@ -79,6 +85,9 @@ export default function Moment({ navigation, route }: Props) {
       header={
         <AppHeader
           back
+          withAnimatedGradient
+          gradientBackgroundStyle={gradientBackgroundStyle}
+          gradientBackgroundAlpha={0.25}
           navigation={navigation}
           title={t('moment:momentScreenTitle')}
           backgroundStyle={styles.background}

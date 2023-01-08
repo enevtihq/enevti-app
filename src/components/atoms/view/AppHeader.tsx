@@ -11,6 +11,9 @@ import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
 import AppBrandBanner from 'enevti-app/components/molecules/brand/AppBrandBanner';
 import AppIconButton from 'enevti-app/components/atoms/icon/AppIconButton';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
+import Color from 'color';
+
+const AnimatedLinearGradient = Animated.createAnimatedComponent(LinearGradient);
 
 export const HEADER_HEIGHT_PERCENTAGE = 7.5;
 export const HEADER_HEIGHT_COMPACT_PERCENTAGE = 6;
@@ -25,6 +28,8 @@ interface AppHeaderProps {
   style?: StyleProp<ViewStyle>;
   headerStyle?: StyleProp<ViewStyle>;
   backgroundStyle?: StyleProp<ViewStyle>;
+  gradientBackgroundStyle?: StyleProp<ViewStyle>;
+  gradientBackgroundAlpha?: number;
   textStyle?: StyleProp<TextStyle>;
   subtitleStyle?: StyleProp<TextStyle>;
   iconStyle?: StyleProp<TextStyle>;
@@ -43,6 +48,8 @@ export default function AppHeader({
   backComponent,
   leftComponent,
   backgroundStyle,
+  gradientBackgroundStyle,
+  gradientBackgroundAlpha = 0.5,
   textStyle,
   subtitleStyle,
   iconStyle,
@@ -94,7 +101,10 @@ export default function AppHeader({
       </Appbar.Header>
       <Animated.View style={[styles.headerBar, backgroundStyle]} />
       {withAnimatedGradient ? (
-        <LinearGradient colors={['#000000', 'transparent']} style={styles.headerGradientBar} />
+        <AnimatedLinearGradient
+          colors={[Color('#000000').alpha(gradientBackgroundAlpha).rgb().toString(), 'transparent']}
+          style={[styles.headerGradientBar, gradientBackgroundStyle]}
+        />
       ) : null}
     </Animated.View>
   );

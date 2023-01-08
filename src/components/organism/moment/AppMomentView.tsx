@@ -46,6 +46,9 @@ import { numberKMB } from 'enevti-app/utils/format/amount';
 import AppMenuContainer from 'enevti-app/components/atoms/menu/AppMenuContainer';
 import AppComment from '../comment/AppComment';
 import useDebouncedNavigation from 'enevti-app/utils/hook/useDebouncedNavigation';
+import LinearGradient from 'react-native-linear-gradient';
+
+const AnimatedLinearGradient = Animated.createAnimatedComponent(LinearGradient);
 
 interface AppMomentViewProps {
   navigation: StackNavigationProp<RootStackParamList>;
@@ -270,6 +273,10 @@ export default function AppMomentView({
               muted={muted}
             />
           </Pressable>
+          <AnimatedLinearGradient
+            colors={['transparent', Color('#000000').alpha(0.25).rgb().toString()]}
+            style={[styles.gradientBottom, controlAnimatedStyle]}
+          />
           <Animated.View style={[styles.leftContainer, controlAnimatedStyle]}>
             <Pressable
               onPress={() => dnavigation('Profile', { mode: 'a', arg: item.owner.address })}
@@ -384,6 +391,7 @@ export default function AppMomentView({
       styles.rightContent,
       styles.textCenter,
       styles.rightContentItem,
+      styles.gradientBottom,
     ],
   );
 
@@ -552,5 +560,11 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets, momentHeight: number) 
     audioIndicatorItem: {
       borderRadius: hp(5),
       backgroundColor: Color('black').alpha(0.5).rgb().string(),
+    },
+    gradientBottom: {
+      height: hp(45),
+      width: '100%',
+      bottom: 0,
+      position: 'absolute',
     },
   });
