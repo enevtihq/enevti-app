@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleProp, TextStyle } from 'react-native';
+import { NativeSyntheticEvent, StyleProp, TextLayoutEventData, TextStyle } from 'react-native';
 import AppTextBase from './base/AppTextBase';
 
 interface AppTextBody5Props {
@@ -8,6 +8,7 @@ interface AppTextBody5Props {
   style?: StyleProp<TextStyle>;
   readMoreLimit?: number;
   onPress?: () => void;
+  onTextLayout?: (event: NativeSyntheticEvent<TextLayoutEventData>) => void;
   selectable?: boolean;
 }
 
@@ -17,10 +18,12 @@ export default function AppTextBody5({
   style,
   readMoreLimit,
   onPress,
+  onTextLayout,
   selectable,
 }: AppTextBody5Props): JSX.Element {
   return (
     <AppTextBase
+      onTextLayout={onTextLayout}
       selectable={selectable}
       onPress={onPress}
       weight={'normal'}

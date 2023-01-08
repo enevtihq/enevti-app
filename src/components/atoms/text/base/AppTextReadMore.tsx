@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleProp, Text, TextStyle, Pressable } from 'react-native';
+import { StyleProp, Text, TextStyle, Pressable, NativeSyntheticEvent, TextLayoutEventData } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from 'react-native-paper';
 import { Theme } from 'enevti-app/theme/default';
@@ -9,10 +9,18 @@ interface AppTextReadMoreProps {
   style?: StyleProp<TextStyle>;
   readMoreLimit?: number;
   onPress?: () => void;
+  onTextLayout?: (event: NativeSyntheticEvent<TextLayoutEventData>) => void;
   selectable?: boolean;
 }
 
-export default function AppTextReadMore({ children, selectable, style, readMoreLimit, onPress }: AppTextReadMoreProps) {
+export default function AppTextReadMore({
+  children,
+  selectable,
+  style,
+  readMoreLimit,
+  onPress,
+  onTextLayout,
+}: AppTextReadMoreProps) {
   const { t } = useTranslation();
   const theme = useTheme() as Theme;
 
@@ -28,7 +36,7 @@ export default function AppTextReadMore({ children, selectable, style, readMoreL
 
   return (
     <Pressable onPress={onReadMorePress}>
-      <Text selectable={selectable} style={style} onPress={onPress}>
+      <Text onTextLayout={onTextLayout} selectable={selectable} style={style} onPress={onPress}>
         {text}{' '}
         <Text
           style={{

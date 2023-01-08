@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleProp, TextStyle } from 'react-native';
+import { NativeSyntheticEvent, StyleProp, TextLayoutEventData, TextStyle } from 'react-native';
 import AppTextBase from './base/AppTextBase';
 
 interface AppTextHeadingCustomProps {
@@ -9,6 +9,7 @@ interface AppTextHeadingCustomProps {
   style?: StyleProp<TextStyle>;
   readMoreLimit?: number;
   onPress?: () => void;
+  onTextLayout?: (event: NativeSyntheticEvent<TextLayoutEventData>) => void;
   selectable?: boolean;
 }
 
@@ -19,10 +20,12 @@ export default function AppTextHeadingCustom({
   readMoreLimit,
   size,
   onPress,
+  onTextLayout,
   selectable,
 }: AppTextHeadingCustomProps): JSX.Element {
   return (
     <AppTextBase
+      onTextLayout={onTextLayout}
       selectable={selectable}
       onPress={onPress}
       weight={'bold'}

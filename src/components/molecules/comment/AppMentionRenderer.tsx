@@ -2,7 +2,7 @@ import React from 'react';
 import { Part, isMentionPartType, PartType, parseValue } from 'react-native-controlled-mentions';
 import { useTheme } from 'react-native-paper';
 import defaultTheme, { Theme } from 'enevti-app/theme/default';
-import { StyleProp, TextStyle } from 'react-native';
+import { NativeSyntheticEvent, StyleProp, TextLayoutEventData, TextStyle } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { COLLECTION_MENTION_TRIGGER, NFT_MENTION_TRIGGER, PROFILE_MENTION_TRIGGER } from 'enevti-app/utils/mention';
@@ -22,7 +22,9 @@ interface AppMentionRendererProps {
   style?: StyleProp<TextStyle>;
   color?: string;
   title?: string;
+  onTextPress?: () => void;
   onTitlePress?: () => void;
+  onTextLayout?: (event: NativeSyntheticEvent<TextLayoutEventData>) => void;
   size?: number;
   numberOfLines?: number;
   theme?: 'dark' | 'light' | 'system';
@@ -35,7 +37,9 @@ export default function AppMentionRenderer({
   color,
   title,
   disabled,
+  onTextPress,
   onTitlePress,
+  onTextLayout,
   size,
   numberOfLines,
   theme,
@@ -91,7 +95,7 @@ export default function AppMentionRenderer({
     (part: Part, index: number) => {
       if (!part.partType) {
         return (
-          <AppTextBodyCustom size={size === undefined ? 3.5 : size} key={index} style={{ color }}>
+          <AppTextBodyCustom onPress={onTextPress} size={size === undefined ? 3.5 : size} key={index} style={{ color }}>
             {part.text}
           </AppTextBodyCustom>
         );
@@ -139,6 +143,7 @@ export default function AppMentionRenderer({
     },
     [
       collectionMentionOnPress,
+      onTextPress,
       color,
       disabled,
       nftMentionOnPress,
@@ -158,7 +163,11 @@ export default function AppMentionRenderer({
   );
 
   return (
-    <AppTextBodyCustom numberOfLines={numberOfLines} size={size === undefined ? 3.5 : size} style={style}>
+    <AppTextBodyCustom
+      onTextLayout={onTextLayout}
+      numberOfLines={numberOfLines}
+      size={size === undefined ? 3.5 : size}
+      style={style}>
       {title ? (
         <AppTextHeadingCustom size={size === undefined ? 3.5 : size} onPress={onTitlePress}>
           {title}{' '}

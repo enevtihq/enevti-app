@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleProp, StyleSheet, TextStyle } from 'react-native';
+import { NativeSyntheticEvent, StyleProp, StyleSheet, TextLayoutEventData, TextStyle } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { Theme } from 'enevti-app/theme/default';
 import { wp } from 'enevti-app/utils/layout/imageRatio';
@@ -14,6 +14,7 @@ interface AppTextBaseProps {
   style?: StyleProp<TextStyle>;
   readMoreLimit?: number;
   onPress?: () => void;
+  onTextLayout?: (event: NativeSyntheticEvent<TextLayoutEventData>) => void;
   selectable?: boolean;
 }
 
@@ -25,6 +26,7 @@ export default function AppTextBase({
   style,
   readMoreLimit,
   onPress,
+  onTextLayout,
   selectable,
 }: AppTextBaseProps): JSX.Element {
   const theme = useTheme() as Theme;
@@ -37,6 +39,7 @@ export default function AppTextBase({
 
   return readMoreActivate ? (
     <AppTextReadMore
+      onTextLayout={onTextLayout}
       selectable={selectable}
       style={[styles.text, style]}
       readMoreLimit={readMoreLimit}
@@ -44,7 +47,12 @@ export default function AppTextBase({
       {children}
     </AppTextReadMore>
   ) : (
-    <AppText selectable={selectable} numberOfLines={numberOfLines} style={[styles.text, style]} onPress={onPress}>
+    <AppText
+      onTextLayout={onTextLayout}
+      selectable={selectable}
+      numberOfLines={numberOfLines}
+      style={[styles.text, style]}
+      onPress={onPress}>
       {children}
     </AppText>
   );
