@@ -113,8 +113,8 @@ function Component(
       setLineHeight(lines[0].height);
       if (lines.length > 2) {
         setCaptionCollapsed(false);
-        animatedCollapsed.value = false;
       }
+      animatedCollapsed.value = false;
       textMountedRef.current = true;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
