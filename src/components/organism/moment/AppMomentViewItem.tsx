@@ -176,7 +176,7 @@ function Component(
               onTextPress={lineLength > 2 ? onCaptionPress : undefined}
               onTextLayout={onTextLayout}
               navigation={navigation}
-              text={item.textPlain!.repeat(15)}
+              text={item.textPlain!}
               color={darkTheme.colors.text}
               theme={'dark'}
             />
