@@ -235,6 +235,7 @@ export default function AppMomentView({
           onCommentPress={onCommentPress}
           onLikePress={onLikePress}
           audioIndicatorAnimatedStyle={audioIndicatorAnimatedStyle}
+          controlOpacity={controlOpacity}
           controlAnimatedStyle={controlAnimatedStyle}
           muted={muted}
           navigation={navigation}
@@ -254,6 +255,7 @@ export default function AppMomentView({
       onLongPress,
       onPress,
       onPressOut,
+      controlOpacity,
     ],
   );
 

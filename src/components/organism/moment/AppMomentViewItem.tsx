@@ -8,7 +8,7 @@ import {
   NativeSyntheticEvent,
   TextLayoutEventData,
 } from 'react-native';
-import Animated from 'react-native-reanimated';
+import Animated, { SharedValue, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import React from 'react';
 import Color from 'color';
 import AppIconButton from 'enevti-app/components/atoms/icon/AppIconButton';
@@ -52,6 +52,7 @@ interface AppMomentViewItemProps {
   onPressOut: () => void;
   onCommentPress: (id: string) => void;
   onLikePress: (id: string, target: string) => void;
+  controlOpacity: SharedValue<number>;
   audioIndicatorAnimatedStyle: StyleProp<ViewStyle>;
   controlAnimatedStyle: StyleProp<ViewStyle>;
   muted: boolean;
@@ -70,6 +71,7 @@ function Component(
     onPressOut,
     onCommentPress,
     onLikePress,
+    controlOpacity,
     audioIndicatorAnimatedStyle,
     controlAnimatedStyle,
     muted,
@@ -87,15 +89,35 @@ function Component(
   const [lineHeight, setLineHeight] = React.useState<number>(0);
   const [captionCollapsed, setCaptionCollapsed] = React.useState<boolean>(true);
   const textMountedRef = React.useRef<boolean>(false);
+  const opacity = useSharedValue(0);
+  const animatedCollapsed = useSharedValue(true);
+
+  const captionBackdropAnimatedStyle = useAnimatedStyle(() => {
+    return { opacity: animatedCollapsed.value && controlOpacity.value < 1 ? controlOpacity.value : opacity.value };
+  }, [controlOpacity]);
+
+  const onCaptionPress = React.useCallback(() => {
+    animatedCollapsed.value = !animatedCollapsed.value;
+    if (captionCollapsed) {
+      opacity.value = withTiming(0, { duration: 500 });
+    } else {
+      opacity.value = withTiming(1, { duration: 500 });
+    }
+    setCaptionCollapsed(old => !old);
+  }, [captionCollapsed, opacity, animatedCollapsed]);
 
   const onTextLayout = React.useCallback((e: NativeSyntheticEvent<TextLayoutEventData>) => {
     if (!textMountedRef.current) {
       const lines = e.nativeEvent.lines;
       setLineLength(lines.length);
       setLineHeight(lines[0].height);
-      setCaptionCollapsed(false);
+      if (lines.length > 2) {
+        setCaptionCollapsed(false);
+        animatedCollapsed.value = false;
+      }
       textMountedRef.current = true;
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onAlreadyLiked = React.useCallback(() => {
@@ -127,10 +149,15 @@ function Component(
         />
       </Pressable>
       <AnimatedLinearGradient
+        pointerEvents={'none'}
         colors={['transparent', Color('#000000').alpha(0.25).rgb().toString()]}
         style={[styles.gradientBottom, controlAnimatedStyle]}
       />
-      <Animated.View style={[styles.leftContainer, controlAnimatedStyle]}>
+      <Animated.View
+        pointerEvents={'none'}
+        style={[styles.momentItemContainer, styles.captionBackdrop, captionBackdropAnimatedStyle]}
+      />
+      <Animated.View pointerEvents={'box-none'} style={[styles.leftContainer, controlAnimatedStyle]}>
         <Pressable
           onPress={() => dnavigation('Profile', { mode: 'a', arg: item.owner.address })}
           style={styles.ownerContainer}>
@@ -141,15 +168,15 @@ function Component(
           style={{
             marginVertical: hp(2),
             height: lineHeight * (captionCollapsed ? lineLength : lineLength >= 2 ? 2 : 1),
-            maxHeight: lineHeight * 10,
+            maxHeight: hp(20),
           }}>
           <ScrollView nestedScrollEnabled scrollEnabled={captionCollapsed}>
             <AppMentionRenderer
               numberOfLines={captionCollapsed ? undefined : 2}
-              onTextPress={lineLength > 2 ? () => setCaptionCollapsed(old => !old) : undefined}
+              onTextPress={lineLength > 2 ? onCaptionPress : undefined}
               onTextLayout={onTextLayout}
               navigation={navigation}
-              text={item.textPlain!}
+              text={item.textPlain!.repeat(15)}
               color={darkTheme.colors.text}
               theme={'dark'}
             />
@@ -165,7 +192,7 @@ function Component(
           </AppTextHeading4>
         </Pressable>
       </Animated.View>
-      <Animated.View style={[styles.rightContainer, controlAnimatedStyle]}>
+      <Animated.View pointerEvents={'box-none'} style={[styles.rightContainer, controlAnimatedStyle]}>
         <View style={styles.rightContent}>
           {item.isLiking ? (
             <View style={styles.rightContentItem}>
@@ -225,6 +252,11 @@ export default AppMomentViewItem;
 
 const makeStyles = (theme: Theme, insets: SafeAreaInsets, momentHeight: number) =>
   StyleSheet.create({
+    captionBackdrop: {
+      position: 'absolute',
+      backgroundColor: Color('black').alpha(0.5).rgb().toString(),
+      zIndex: 1,
+    },
     nft: {
       borderRadius: theme.roundness,
       borderWidth: wp(0.25),
@@ -233,7 +265,7 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets, momentHeight: number) 
     },
     leftContainer: {
       position: 'absolute',
-      height: hp(25),
+      height: hp(45),
       width: wp(80),
       marginBottom: insets.bottom,
       bottom: 0,
@@ -241,6 +273,7 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets, momentHeight: number) 
       paddingLeft: wp(3),
       paddingBottom: hp(3),
       justifyContent: 'flex-end',
+      zIndex: 2,
     },
     ownerContainer: {
       flexDirection: 'row',
@@ -265,6 +298,7 @@ const makeStyles = (theme: Theme, insets: SafeAreaInsets, momentHeight: number) 
       paddingBottom: hp(3.5),
       justifyContent: 'flex-end',
       alignItems: 'flex-end',
+      zIndex: 2,
     },
     rightContent: {
       alignItems: 'center',
