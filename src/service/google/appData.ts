@@ -1,8 +1,6 @@
-import { setGoogleAPIToken, selectGoogleAPITokenState } from 'enevti-app/store/slices/session/google';
-import { store } from 'enevti-app/store/state';
 import { EncryptedData } from 'enevti-app/types/core/service/cryptography';
 import { appFetch, isInternetReachable } from 'enevti-app/utils/app/network';
-import { getGoogleAccessToken, googleInit, googleSignIn } from './signIn';
+import { getGoogleAccessToken } from './signIn';
 
 const url = 'https://www.googleapis.com/drive/v3';
 const uploadUrl = 'https://www.googleapis.com/upload/drive/v3';
@@ -18,8 +16,6 @@ export interface SecretAppData {
   device: EncryptedData;
   encrypted: EncryptedData;
 }
-
-const stateStore = store;
 
 function queryParams() {
   return encodeURIComponent("name = 'enevti-secret.json'");
@@ -45,14 +41,7 @@ function createMultipartBody(body: any, isUpdate = false) {
 }
 
 async function configurePostOptions(bodyLength: string, isUpdate = false) {
-  let apiToken = selectGoogleAPITokenState(stateStore.getState());
-  if (!apiToken) {
-    googleInit();
-    await googleSignIn();
-    const newApiToken = await getGoogleAccessToken();
-    stateStore.dispatch(setGoogleAPIToken(newApiToken));
-    apiToken = newApiToken;
-  }
+  const apiToken = await getGoogleAccessToken();
   const headers = new Headers();
   headers.append('Authorization', `Bearer ${apiToken}`);
   headers.append('Content-Type', `multipart/related; boundary=${boundaryString}`);
@@ -64,14 +53,7 @@ async function configurePostOptions(bodyLength: string, isUpdate = false) {
 }
 
 async function configureGetOptions() {
-  let apiToken = selectGoogleAPITokenState(stateStore.getState());
-  if (!apiToken) {
-    googleInit();
-    await googleSignIn();
-    const newApiToken = await getGoogleAccessToken();
-    stateStore.dispatch(setGoogleAPIToken(newApiToken));
-    apiToken = newApiToken;
-  }
+  const apiToken = await getGoogleAccessToken();
   const headers = new Headers();
   headers.append('Authorization', `Bearer ${apiToken}`);
   return {

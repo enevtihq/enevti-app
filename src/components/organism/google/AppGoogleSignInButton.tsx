@@ -2,13 +2,12 @@ import { View, StyleSheet, Keyboard } from 'react-native';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import YupPassword from 'yup-password';
 
-import { getGoogleAccessToken, googleInit, googleSignIn } from 'enevti-app/service/google/signIn';
-import { selectGoogleAPITokenState, setGoogleAPIToken } from 'enevti-app/store/slices/session/google';
+import { googleInit, googleSignOut } from 'enevti-app/service/google/signIn';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 import AppMenuFormSecureTextInput from 'enevti-app/components/organism/menu/AppMenuFormSecureTextInput';
 import AppPrimaryButton from 'enevti-app/components/atoms/button/AppPrimaryButton';
@@ -66,7 +65,6 @@ export default function AppGoogleSignInButton({ onNewAccount, onExistingAccount 
   const dispatch = useDispatch();
   const insets = useSafeAreaInsets();
   const styles = React.useMemo(() => makeStyles(insets), [insets]);
-  const apiToken = useSelector(selectGoogleAPITokenState);
 
   const snapPoints = React.useMemo(() => ['62%'], []);
   const secretDataRef = React.useRef<SecretAppData>(initialSecretData);
@@ -83,12 +81,6 @@ export default function AppGoogleSignInButton({ onNewAccount, onExistingAccount 
     setIsLoadingGoogle(true);
 
     try {
-      if (!apiToken) {
-        await googleSignIn();
-        const newApiToken = await getGoogleAccessToken();
-        dispatch(setGoogleAPIToken(newApiToken));
-      }
-
       const data = await getSecretAppData();
       secretDataRef.current = data;
 
@@ -113,6 +105,7 @@ export default function AppGoogleSignInButton({ onNewAccount, onExistingAccount 
         onNewAccount();
       }
     } catch (err: any) {
+      await googleSignOut();
       handleError(err);
     } finally {
       setIsLoadingGoogle(false);

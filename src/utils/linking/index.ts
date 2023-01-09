@@ -130,13 +130,14 @@ export const linking: AppLinking = (initialRouteName, currentRoute) => {
     async getInitialURL() {
       const appOnboarded = selectAppOnboarded(store.getState());
       const auth = selectAuthState(store.getState());
-      const initialRoute = !appOnboarded
-        ? 'AppOnboarding'
-        : auth.encrypted
-        ? 'Login'
-        : auth.token
-        ? 'Home'
-        : 'CreateAccount';
+      const initialRoute =
+        !appOnboarded && !(auth.encrypted || auth.token)
+          ? 'AppOnboarding'
+          : auth.encrypted
+          ? 'Login'
+          : auth.token
+          ? 'Home'
+          : 'CreateAccount';
 
       if (initialRoute === 'Login') {
         const url = await Linking.getInitialURL();

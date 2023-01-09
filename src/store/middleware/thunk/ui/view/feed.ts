@@ -32,6 +32,7 @@ import { selectMomentItemsCache, setMomentItemsCache } from 'enevti-app/store/sl
 import { selectMyProfileCache, setMyProfileCache } from 'enevti-app/store/slices/entities/cache/myProfile';
 import { parseProfileCache } from 'enevti-app/service/enevti/profile';
 import { Profile } from 'enevti-app/types/core/account/profile';
+import { setMyPersonaCache } from 'enevti-app/store/slices/entities/cache/myPersona';
 
 type loadFeedsArgs = { reload: boolean };
 
@@ -125,6 +126,7 @@ export const loadFeeds = createAsyncThunk<void, loadFeedsArgs, AsyncThunkAPI>(
               },
             }),
           );
+          dispatch(setMyPersonaCache({ ...homeResponse.data.profile.persona }));
         } else {
           throw { message: i18n.t('error:clientError'), code: homeResponse.status };
         }

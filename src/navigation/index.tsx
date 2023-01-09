@@ -166,13 +166,14 @@ export default function AppNavigationContainer() {
 
   const appOnboarded = useSelector(selectAppOnboarded);
   const auth = useSelector(selectAuthState);
-  const initialRoute = !appOnboarded
-    ? 'AppOnboarding'
-    : auth.encrypted
-    ? 'Login'
-    : auth.token
-    ? 'Home'
-    : 'CreateAccount';
+  const initialRoute =
+    !appOnboarded && !(auth.encrypted || auth.token)
+      ? 'AppOnboarding'
+      : auth.encrypted
+      ? 'Login'
+      : auth.token
+      ? 'Home'
+      : 'CreateAccount';
   const navLinking = React.useMemo(() => linking(initialRoute, currentRoute), [initialRoute, currentRoute]);
 
   useLockScreen();
