@@ -17,10 +17,15 @@ import { useDispatch } from 'react-redux';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 import { ImageOrVideo } from 'react-native-image-crop-picker';
 import { setCreateNFTQueueType } from 'enevti-app/store/slices/queue/nft/create/type';
-import { setCreateNFTOneKindData } from 'enevti-app/store/slices/queue/nft/create/onekind';
+import {
+  setCreateNFTOneKindChosenTemplate,
+  setCreateNFTOneKindData,
+} from 'enevti-app/store/slices/queue/nft/create/onekind';
 import AppCameraGalleryPicker from 'enevti-app/components/organism/picker/AppCameraGalleryPicker';
 import getFileExtension from 'enevti-app/utils/mime/getFileExtension';
 import { ImageOrVideoToDocument } from 'enevti-app/utils/format/documentPicker';
+import { setCreateNFTQueueRoute } from 'enevti-app/store/slices/queue/nft/create/route';
+import blankNFTTemplate from 'enevti-app/components/atoms/nft/template/blankNFTTemplate';
 
 type Props = StackScreenProps<RootStackParamList, 'ChooseNFTType'>;
 
@@ -36,6 +41,15 @@ export default function ChooseNFTType({ navigation }: Props) {
     (image: ImageOrVideo) => {
       dispatch(setCreateNFTQueueType('onekind'));
       dispatch(
+        setCreateNFTOneKindChosenTemplate({
+          id: 'blankNFTTemplate',
+          name: 'Blank Template',
+          description: 'Template to fully highlight your creation!',
+          data: blankNFTTemplate,
+        }),
+      );
+      dispatch(setCreateNFTQueueRoute('CreateOneKindContract'));
+      dispatch(
         setCreateNFTOneKindData({
           uri: image.path,
           mime: image.mime,
@@ -44,7 +58,7 @@ export default function ChooseNFTType({ navigation }: Props) {
         }),
       );
       setOneKindSheetVisible(false);
-      navigation.replace('ChooseNFTTemplate', { mode: 'normal' });
+      navigation.replace('CreateOneKindContract', { normal: true });
     },
     [dispatch, navigation],
   );

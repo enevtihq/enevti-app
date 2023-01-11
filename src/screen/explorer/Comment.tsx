@@ -25,6 +25,9 @@ export default function Comment({ navigation, route }: Props) {
   return (
     <AppView
       darken
+      withModal
+      withPayment
+      navigation={navigation}
       edges={['left', 'bottom', 'right']}
       contentContainerStyle={styles.view}
       header={<AppHeader back navigation={navigation} title={t('explorer:commentTitle')} />}>

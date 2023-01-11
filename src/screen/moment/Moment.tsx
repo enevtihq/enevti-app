@@ -79,6 +79,8 @@ export default function Moment({ navigation, route }: Props) {
       darken
       withLoader
       withModal
+      withPayment
+      navigation={navigation}
       edges={Platform.OS === 'ios' ? ['left', 'right'] : undefined}
       headerOffset={0}
       contentContainerStyle={styles.container}

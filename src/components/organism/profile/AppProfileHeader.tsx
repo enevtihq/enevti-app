@@ -156,7 +156,7 @@ export default function AppProfileHeader({ navigation, persona, profile }: AppPr
           tapEverywhereToDismiss
           visible={menuVisible}
           onDismiss={() => setMenuVisible(false)}
-          snapPoints={[`${menuItemHeigtPercentage(3)}%`]}
+          snapPoints={[`${menuItemHeigtPercentage(2)}%`]}
           anchor={
             <AppQuaternaryButton
               box
@@ -167,13 +167,6 @@ export default function AppProfileHeader({ navigation, persona, profile }: AppPr
               onPress={() => setMenuVisible(true)}
             />
           }>
-          <AppMenuItem
-            onPress={() => {
-              setMenuVisible(false);
-              dispatch(showSnackbar({ mode: 'info', text: 'Coming Soon!' }));
-            }}
-            title={t('home:follow')}
-          />
           <AppMenuItem
             onPress={() => {
               Clipboard.setString(persona.base32);

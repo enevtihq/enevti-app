@@ -3,19 +3,12 @@ import React from 'react';
 import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
 import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
 import AppQuaternaryButton from 'enevti-app/components/atoms/button/AppQuaternaryButton';
-import AppIconButton from 'enevti-app/components/atoms/icon/AppIconButton';
-import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 import { getCoinName } from 'enevti-app/utils/constant/identifier';
 import { useTranslation } from 'react-i18next';
 import { FeedItem } from 'enevti-app/types/core/service/feed';
 import { parseAmount } from 'enevti-app/utils/format/amount';
-import { Divider, useTheme } from 'react-native-paper';
-import { Theme } from 'enevti-app/theme/default';
 import AppAvatarRenderer from 'enevti-app/components/molecules/avatar/AppAvatarRenderer';
-import AppMenuContainer from 'enevti-app/components/atoms/menu/AppMenuContainer';
-import AppMenuItem from 'enevti-app/components/atoms/menu/AppMenuItem';
-import { menuItemHeigtPercentage } from 'enevti-app/utils/layout/menuItemHeigtPercentage';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import AppPersonaLabel from 'enevti-app/components/molecules/avatar/AppPersonaLabel';
@@ -31,11 +24,11 @@ interface AppFeedHeaderProps {
 export default function AppFeedHeader({ feed, navigation }: AppFeedHeaderProps) {
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const theme = useTheme() as Theme;
+  // const theme = useTheme() as Theme;
   const styles = React.useMemo(() => makeStyles(), []);
   const dnavigation = useDebouncedNavigation(navigation);
 
-  const [menuVisible, setMenuVisible] = React.useState<boolean>(false);
+  // const [menuVisible, setMenuVisible] = React.useState<boolean>(false);
 
   const onProfileDetail = React.useCallback(() => {
     if (feed.owner.address) {
@@ -51,28 +44,28 @@ export default function AppFeedHeader({ feed, navigation }: AppFeedHeaderProps) 
     dnavigation('StakePool', { arg: feed.owner.address, mode: 'a' });
   }, [dnavigation, feed.owner]);
 
-  const onOpenMenu = () => {
-    setMenuVisible(true);
-  };
+  // const onOpenMenu = () => {
+  //   setMenuVisible(true);
+  // };
 
-  const onCloseMenu = () => {
-    setMenuVisible(false);
-  };
+  // const onCloseMenu = () => {
+  //   setMenuVisible(false);
+  // };
 
-  const onFollow = () => {
-    setMenuVisible(false);
-    dispatch(showSnackbar({ mode: 'info', text: 'Coming Soon!' }));
-  };
+  // const onFollow = () => {
+  //   setMenuVisible(false);
+  //   dispatch(showSnackbar({ mode: 'info', text: 'Coming Soon!' }));
+  // };
 
-  const onReport = () => {
-    setMenuVisible(false);
-    dispatch(showSnackbar({ mode: 'info', text: 'Coming Soon!' }));
-  };
+  // const onReport = () => {
+  //   setMenuVisible(false);
+  //   dispatch(showSnackbar({ mode: 'info', text: 'Coming Soon!' }));
+  // };
 
-  const onPromote = () => {
-    setMenuVisible(false);
-    dispatch(showSnackbar({ mode: 'info', text: 'Coming Soon!' }));
-  };
+  // const onPromote = () => {
+  //   setMenuVisible(false);
+  //   dispatch(showSnackbar({ mode: 'info', text: 'Coming Soon!' }));
+  // };
 
   return (
     <View style={styles.headerContainer}>
@@ -99,7 +92,7 @@ export default function AppFeedHeader({ feed, navigation }: AppFeedHeaderProps) 
         <AppTextBody5 style={styles.headerPoolText}>{getCoinName()}</AppTextBody5>
       </AppQuaternaryButton>
 
-      <View style={styles.headerMoreButtonContainer}>
+      {/* <View style={styles.headerMoreButtonContainer}>
         <AppMenuContainer
           tapEverywhereToDismiss
           visible={menuVisible}
@@ -113,7 +106,7 @@ export default function AppFeedHeader({ feed, navigation }: AppFeedHeaderProps) 
           <Divider />
           <AppMenuItem onPress={onPromote} disabled={!feed.delegate} title={t('home:promote')} />
         </AppMenuContainer>
-      </View>
+      </View> */}
     </View>
   );
 }

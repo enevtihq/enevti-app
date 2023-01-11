@@ -38,7 +38,14 @@ export default function AppPortraitOverlayBox({
       {titleComponent ? (
         titleComponent
       ) : title ? (
-        <AppMentionRenderer disabled size={2.2} text={title} style={styles.textOverlay} color={'white'} />
+        <AppMentionRenderer
+          disabled
+          numberOfLines={2}
+          size={2.2}
+          text={title}
+          style={styles.textOverlay}
+          color={'white'}
+        />
       ) : null}
       <TouchableRipple style={styles.rippleOverlay} onPress={onPress}>
         <View />
