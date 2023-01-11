@@ -1,6 +1,6 @@
 import { StyleSheet, View } from 'react-native';
 import React from 'react';
-import { ProcessingManager, Trimmer, VideoPlayer } from 'react-native-video-processing';
+import { ProcessingManager, Trimmer } from 'react-native-video-processing';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
@@ -21,6 +21,7 @@ import { cleanTMPImage } from 'enevti-app/service/enevti/nft';
 import RNVideoHelper from 'react-native-video-helper';
 import { useTranslation } from 'react-i18next';
 import { Video } from 'react-native-compressor';
+import RNVideo from 'react-native-video';
 
 const TRIMMER_HEIGHT_PERCENTAGE = 8;
 const TRIMMER_WIDTH_PERCENTAGE = 80;
@@ -32,9 +33,9 @@ export default function VideoEditor({ navigation, route }: Props) {
   const dispatch = useDispatch();
   const theme = useTheme() as Theme;
   const styles = React.useMemo(() => makeStyles(theme), [theme]);
+  const videoPlayerRef = React.useRef<RNVideo>(null);
 
   const [play, setPlay] = React.useState<boolean>(true);
-  const [portrait, setPortrait] = React.useState<boolean>(false);
   const [muted, setMuted] = React.useState<boolean>(false);
   const [videoMounted, setVideoMounted] = React.useState<boolean>(false);
 
@@ -50,9 +51,6 @@ export default function VideoEditor({ navigation, route }: Props) {
 
   const initPlayerTime = React.useCallback(async () => {
     const result = await ProcessingManager.getVideoInfo(route.params.source);
-    if (result.size.height > result.size.width) {
-      setPortrait(true);
-    }
     setPlayerEndTime(result.duration);
     setTrimmerEndTime(result.duration);
     setVideoMounted(true);
@@ -83,6 +81,8 @@ export default function VideoEditor({ navigation, route }: Props) {
       setPlayerStartTime(e.startTime);
       setPlayerEndTime(e.endTime);
       await remountVideo();
+
+      videoPlayerRef.current?.seek(e.startTime);
     },
     100,
     { leading: false, trailing: true },
@@ -136,18 +136,21 @@ export default function VideoEditor({ navigation, route }: Props) {
     <AppView withModal contentContainerStyle={styles.container}>
       <View style={styles.videoContainer}>
         {videoMounted ? (
-          <VideoPlayer
-            volume={muted ? 0 : 1}
-            startTime={playerStartTime}
-            endTime={playerEndTime}
-            play={play}
-            replay={true}
-            rotate={portrait}
-            source={route.params.source}
-            playerWidth={wp(100)}
-            playerHeight={hp(70)}
-            style={styles.video}
-            resizeMode={VideoPlayer.Constants.resizeMode.CONTAIN}
+          <RNVideo
+            ref={videoPlayerRef}
+            paused={!play}
+            onProgress={data => {
+              if (data.currentTime >= playerEndTime) {
+                videoPlayerRef.current?.seek(playerStartTime);
+              }
+            }}
+            onEnd={() => {
+              videoPlayerRef.current?.seek(playerStartTime);
+            }}
+            source={{ uri: route.params.source }}
+            style={[styles.video, { width: wp(100), height: hp(70) }]}
+            resizeMode={'contain'}
+            muted={muted}
           />
         ) : null}
       </View>

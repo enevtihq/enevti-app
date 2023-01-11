@@ -5,6 +5,6 @@ declare module 'react-native-video-helper' {
 
   export const compress: (
     source: string,
-    options: { startTime?: number; endTime?: number; quality: 'low' | 'medium' | 'high' },
+    options: { startTime?: number; endTime?: number; quality: 'low' | 'medium' | 'high'; defaultOrientation?: number },
   ) => ProgressPromise<string>;
 }

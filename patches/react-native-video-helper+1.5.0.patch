@@ -1,3 +1,31 @@
+diff --git a/node_modules/react-native-video-helper/ios/RNVideoHelper.m b/node_modules/react-native-video-helper/ios/RNVideoHelper.m
+index f135660..dad129d 100644
+--- a/node_modules/react-native-video-helper/ios/RNVideoHelper.m
++++ b/node_modules/react-native-video-helper/ios/RNVideoHelper.m
+@@ -76,9 +76,21 @@ RCT_EXPORT_METHOD(compress:(NSString *)source options:(NSDictionary *)options re
+     
+     CGSize transformedVideoSize =
+     CGSizeApplyAffineTransform(videoTrack.naturalSize, videoTrack.preferredTransform);
+-    bool videoIsPortrait = transformedVideoSize.width < transformedVideoSize.height;
++    bool videoIsUpOrDown = false;
++
++    if (naturalSize.width == videoTrack.preferredTransform.tx && naturalSize.height == videoTrack.preferredTransform.ty) {
++      NSLog(@"left");
++    } else if (videoTrack.preferredTransform.tx == 0 && videoTrack.preferredTransform.ty == 0) {
++      NSLog(@"right");
++    } else if (videoTrack.preferredTransform.tx == 0 && videoTrack.preferredTransform.ty == naturalSize.width) {
++      NSLog(@"down");
++      videoIsUpOrDown = true;
++    } else {
++      NSLog(@"up");
++      videoIsUpOrDown = true;
++    }
+ 
+-    if (videoIsPortrait && (originalWidth > originalHeight)) {
++    if (videoIsUpOrDown) {
+         originalWidth = naturalSize.height;
+         originalHeight = naturalSize.width;
+     }
 diff --git a/node_modules/react-native-video-helper/react-native-video-helper.podspec b/node_modules/react-native-video-helper/react-native-video-helper.podspec
 index b647564..c3a21c1 100644
 --- a/node_modules/react-native-video-helper/react-native-video-helper.podspec

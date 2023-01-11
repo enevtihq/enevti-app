@@ -122,7 +122,7 @@ declare module 'react-native-video-processing' {
     /**
      * callback are iOS only
      */
-    static trim(source: string, options: TrimOptions, callback?: iOSProcessingCallback): Promise<{ source: string }>;
+    static trim(source: string, options: TrimOptions, callback?: iOSProcessingCallback): Promise<string>;
 
     /**
      * callback are iOS only
