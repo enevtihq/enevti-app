@@ -3,7 +3,7 @@ import React from 'react';
 import ImageBlurLoading from 'react-native-image-blur-loading';
 import * as Progress from 'react-native-progress';
 import { createImageProgress } from 'react-native-image-progress';
-import FI, { ImageStyle } from 'react-native-fast-image';
+import FI, { ImageStyle, ResizeMode } from 'react-native-fast-image';
 import { useTheme } from 'react-native-paper';
 
 import { Theme } from 'enevti-app/theme/default';
@@ -20,6 +20,7 @@ interface AppNetworkImageProps {
   loaderSize?: number;
   onLoad?: (width: number, height: number) => void;
   onError?: () => void;
+  resizeMode?: ResizeMode;
 }
 
 export default function AppNetworkImage({
@@ -31,6 +32,7 @@ export default function AppNetworkImage({
   onLoad,
   onError,
   loaderSize = 30,
+  resizeMode = 'cover',
 }: AppNetworkImageProps) {
   const theme = useTheme() as Theme;
   const styles = React.useMemo(() => makeStyles(), []);
@@ -62,7 +64,14 @@ export default function AppNetworkImage({
       />
     )
   ) : fallbackError ? (
-    <AppFastImage url={fallbackUrl!} style={style} onLoad={onLoad} onError={onShowError} loaderSize={loaderSize} />
+    <AppFastImage
+      url={fallbackUrl!}
+      resizeMode={resizeMode}
+      style={style}
+      onLoad={onLoad}
+      onError={onShowError}
+      loaderSize={loaderSize}
+    />
   ) : (
     <AppFastImage
       url={url}
@@ -71,17 +80,27 @@ export default function AppNetworkImage({
       onLoad={onLoad}
       onError={onFallbackError}
       loaderSize={loaderSize}
+      resizeMode={resizeMode}
     />
   );
 }
 
-function AppFastImage({ url, thumb, style, onLoad, onError, loaderSize = 30 }: AppNetworkImageProps) {
+function AppFastImage({
+  url,
+  thumb,
+  style,
+  onLoad,
+  onError,
+  loaderSize = 30,
+  resizeMode = 'cover',
+}: AppNetworkImageProps) {
   const theme = useTheme() as Theme;
 
   return thumb ? (
     <ImageBlurLoading
       withIndicator
       fastImage
+      resizeMode={resizeMode}
       onLayout={e => onLoad && onLoad(e.nativeEvent.layout.width, e.nativeEvent.layout.height)}
       onError={onError}
       thumbnailSource={{ uri: thumb }}
@@ -97,7 +116,7 @@ function AppFastImage({ url, thumb, style, onLoad, onError, loaderSize = 30 }: A
         uri: url,
         priority: FI.priority.high,
       }}
-      resizeMode={FI.resizeMode.cover}
+      resizeMode={resizeMode}
       indicator={Progress.Circle}
       indicatorProps={{
         color: theme.colors.text,

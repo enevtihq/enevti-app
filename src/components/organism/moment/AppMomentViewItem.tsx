@@ -1,14 +1,5 @@
-import {
-  View,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  StyleProp,
-  ViewStyle,
-  NativeSyntheticEvent,
-  TextLayoutEventData,
-} from 'react-native';
-import Animated, { SharedValue, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import { View, Pressable, ScrollView, StyleSheet, NativeSyntheticEvent, TextLayoutEventData } from 'react-native';
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import React from 'react';
 import Color from 'color';
 import AppIconButton from 'enevti-app/components/atoms/icon/AppIconButton';
@@ -43,18 +34,12 @@ const AnimatedLinearGradient = Animated.createAnimatedComponent(LinearGradient);
 
 interface AppMomentViewItemProps {
   item: MomentsData;
-  index: number;
   momentHeight: number;
-  controlVisible: boolean;
-  currentVisibleIndex: number;
   onLongPress: () => void;
   onPress: () => void;
   onPressOut: () => void;
   onCommentPress: (id: string) => void;
   onLikePress: (id: string, target: string) => void;
-  controlOpacity: SharedValue<number>;
-  audioIndicatorAnimatedStyle: StyleProp<ViewStyle>;
-  controlAnimatedStyle: StyleProp<ViewStyle>;
   muted: boolean;
   navigation: StackNavigationProp<RootStackParamList>;
 }
@@ -62,18 +47,12 @@ interface AppMomentViewItemProps {
 function Component(
   {
     item,
-    index,
     momentHeight,
-    controlVisible,
-    currentVisibleIndex,
     onLongPress,
     onPress,
     onPressOut,
     onCommentPress,
     onLikePress,
-    controlOpacity,
-    audioIndicatorAnimatedStyle,
-    controlAnimatedStyle,
     muted,
     navigation,
   }: AppMomentViewItemProps,
@@ -85,12 +64,37 @@ function Component(
   const insets = useSafeAreaInsets();
   const styles = React.useMemo(() => makeStyles(theme, insets, momentHeight), [theme, insets, momentHeight]);
   const dnavigation = useDebouncedNavigation(navigation);
+
   const [lineLength, setLineLength] = React.useState<number>(0);
   const [lineHeight, setLineHeight] = React.useState<number>(0);
   const [captionCollapsed, setCaptionCollapsed] = React.useState<boolean>(true);
+
   const textMountedRef = React.useRef<boolean>(false);
+  const showAudioIndicatorTimeout = React.useRef<any>();
+  const isLongPressRef = React.useRef<boolean>(false);
+
   const opacity = useSharedValue(0);
   const animatedCollapsed = useSharedValue(true);
+  const audioOpacity = useSharedValue(0);
+  const controlOpacity = useSharedValue(1);
+
+  const audioIndicatorAnimatedStyle = useAnimatedStyle(() => {
+    return { opacity: audioOpacity.value };
+  });
+
+  const controlAnimatedStyle = useAnimatedStyle(() => {
+    return { opacity: controlOpacity.value };
+  });
+
+  const muteCallback = React.useCallback(() => {
+    clearTimeout(showAudioIndicatorTimeout.current);
+    audioOpacity.value = 1;
+    showAudioIndicatorTimeout.current = setTimeout(() => {
+      audioOpacity.value = withTiming(0, { duration: 500 });
+      clearTimeout(showAudioIndicatorTimeout.current);
+    }, 1000);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const captionBackdropAnimatedStyle = useAnimatedStyle(() => {
     return { opacity: animatedCollapsed.value && controlOpacity.value < 1 ? controlOpacity.value : opacity.value };
@@ -124,9 +128,28 @@ function Component(
     dispatch(showSnackbar({ mode: 'info', text: t('home:cannotLike') }));
   }, [dispatch, t]);
 
+  const onPressablePress = React.useCallback(() => {
+    muteCallback();
+    onPress();
+  }, [muteCallback, onPress]);
+
+  const onPressableLongPress = React.useCallback(() => {
+    isLongPressRef.current = true;
+    controlOpacity.value = withTiming(0, { duration: 250 });
+    onLongPress();
+  }, [controlOpacity, onLongPress]);
+
+  const onPressablePressOut = React.useCallback(() => {
+    if (isLongPressRef.current) {
+      controlOpacity.value = withTiming(1, { duration: 250 });
+      isLongPressRef.current = false;
+    }
+    onPressOut();
+  }, [controlOpacity, onPressOut]);
+
   return (
     <View style={styles.momentItemContainer}>
-      <Pressable onLongPress={onLongPress} onPress={onPress} onPressOut={onPressOut}>
+      <Pressable onLongPress={onPressableLongPress} onPress={onPressablePress} onPressOut={onPressablePressOut}>
         <Animated.View style={[styles.audioIndicator, audioIndicatorAnimatedStyle]}>
           <View style={styles.audioIndicatorItem}>
             <AppIconComponent
@@ -141,7 +164,7 @@ function Component(
           repeat
           ref={ref}
           poster={IPFStoURL(item.cover.cid)}
-          paused={!controlVisible || currentVisibleIndex !== index}
+          paused={true}
           source={{ uri: IPFStoURL(item.data.cid) }}
           style={styles.momentItemContainer}
           resizeMode={'contain'}

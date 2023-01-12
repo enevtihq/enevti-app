@@ -18,7 +18,6 @@ import { SafeAreaInsets } from 'enevti-app/utils/layout/imageRatio';
 import { EventRegister } from 'react-native-event-listeners';
 import AppResponseView from '../view/AppResponseView';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
-import { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import darkTheme from 'enevti-app/theme/dark';
 import usePaymentCallback from 'enevti-app/utils/hook/usePaymentCallback';
@@ -48,11 +47,9 @@ export default function AppMomentView({
   const styles = React.useMemo(() => makeStyles(insets), [insets]);
   const snapPoints = React.useMemo(() => ['70%'], []);
 
-  const [controlVisible, setControlVisible] = React.useState<boolean>(true);
   const [muted, setMuted] = React.useState<boolean>(false);
   const [visible, setVisible] = React.useState<number>(0);
   const [commentId, setCommentId] = React.useState<string>('');
-  const [currentVisibleIndex, setCurrentVisibleIndex] = React.useState<number>(route.params.index ?? 0);
 
   const commentRoute = React.useMemo(
     () => ({
@@ -64,7 +61,6 @@ export default function AppMomentView({
     [commentId, route.key, route.name, route.path],
   ) as unknown as RouteProp<RootStackParamList, 'Comment'>;
 
-  const showAudioIndicatorTimeout = React.useRef<any>();
   const momentListRef = React.useRef<FlatList>(null);
   const isLongPressRef = React.useRef<boolean>(false);
   const touchedRef = React.useRef<boolean>(false);
@@ -73,47 +69,25 @@ export default function AppMomentView({
   const paymentThunkRef = React.useRef<any>();
 
   const momentView = useSelector((state: RootState) => selectMomentView(state, route.key));
-  const opacity = useSharedValue(0);
-  const controlOpacity = useSharedValue(1);
-
-  const audioIndicatorAnimatedStyle = useAnimatedStyle(() => {
-    return { opacity: opacity.value };
-  });
-
-  const controlAnimatedStyle = useAnimatedStyle(() => {
-    return { opacity: controlOpacity.value };
-  });
-
-  const muteCallback = React.useCallback(() => {
-    clearTimeout(showAudioIndicatorTimeout.current);
-    opacity.value = 1;
-    showAudioIndicatorTimeout.current = setTimeout(() => {
-      opacity.value = withTiming(0, { duration: 500 });
-      clearTimeout(showAudioIndicatorTimeout.current);
-    }, 1000);
-  }, [opacity]);
 
   const onLongPress = React.useCallback(() => {
-    controlOpacity.value = withTiming(0, { duration: 250 });
     onLongPressWorklet();
     isLongPressRef.current = true;
-    setControlVisible(false);
-  }, [controlOpacity, onLongPressWorklet]);
+    videoRef.current[currentIndexRef.current]?.setNativeProps({ paused: true });
+  }, [onLongPressWorklet]);
 
   const onPress = React.useCallback(() => {
     setMuted(old => !old);
-    muteCallback();
-  }, [muteCallback]);
+  }, []);
 
   const onPressOut = React.useCallback(() => {
     if (isLongPressRef.current) {
-      controlOpacity.value = withTiming(1, { duration: 250 });
       onLongPressOutWorklet();
       isLongPressRef.current = false;
-      setControlVisible(true);
+      videoRef.current[currentIndexRef.current]?.setNativeProps({ paused: false });
       return;
     }
-  }, [controlOpacity, onLongPressOutWorklet]);
+  }, [onLongPressOutWorklet]);
 
   const onMomentLoaded = React.useCallback(
     (reload: boolean = false) => dispatch(loadMoment({ route, reload })),
@@ -225,38 +199,18 @@ export default function AppMomentView({
             videoRef.current[index] = ref;
           }}
           item={item}
-          index={index}
           momentHeight={dimension.height}
-          controlVisible={controlVisible}
-          currentVisibleIndex={currentVisibleIndex}
+          muted={muted}
+          navigation={navigation}
           onLongPress={onLongPress}
           onPress={onPress}
           onPressOut={onPressOut}
           onCommentPress={onCommentPress}
           onLikePress={onLikePress}
-          audioIndicatorAnimatedStyle={audioIndicatorAnimatedStyle}
-          controlOpacity={controlOpacity}
-          controlAnimatedStyle={controlAnimatedStyle}
-          muted={muted}
-          navigation={navigation}
         />
       );
     },
-    [
-      audioIndicatorAnimatedStyle,
-      controlAnimatedStyle,
-      controlVisible,
-      currentVisibleIndex,
-      dimension.height,
-      muted,
-      navigation,
-      onCommentPress,
-      onLikePress,
-      onLongPress,
-      onPress,
-      onPressOut,
-      controlOpacity,
-    ],
+    [dimension.height, muted, navigation, onLongPress, onPress, onPressOut, onCommentPress, onLikePress],
   );
 
   const refreshControl = React.useMemo(
@@ -275,25 +229,20 @@ export default function AppMomentView({
     [dimension.height],
   );
 
-  const onViewableItemsChanged = React.useCallback(
-    ({ viewableItems }) => {
-      if (viewableItems.length > 0) {
-        opacity.value = 0;
-        clearTimeout(showAudioIndicatorTimeout.current);
-        setCurrentVisibleIndex(viewableItems[0].index);
+  const onViewableItemsChanged = React.useCallback(({ viewableItems }) => {
+    if (viewableItems.length > 0) {
+      videoRef.current[viewableItems[0].index]?.setNativeProps({ paused: false });
 
-        if (touchedRef.current) {
-          videoRef.current[currentIndexRef.current]?.setNativeProps({ paused: true });
-          videoRef.current[currentIndexRef.current]?.seek(0);
-        } else {
-          touchedRef.current = true;
-        }
-
-        currentIndexRef.current = viewableItems[0].index;
+      if (touchedRef.current) {
+        videoRef.current[currentIndexRef.current]?.setNativeProps({ paused: true });
+        videoRef.current[currentIndexRef.current]?.seek(0);
+      } else {
+        touchedRef.current = true;
       }
-    },
-    [opacity],
-  );
+
+      currentIndexRef.current = viewableItems[0].index;
+    }
+  }, []);
 
   return momentView.loaded ? (
     <AppResponseView color={darkTheme.colors.text} status={momentView.reqStatus} style={styles.container}>
@@ -301,6 +250,8 @@ export default function AppMomentView({
         ref={momentListRef}
         removeClippedSubviews={true}
         windowSize={5}
+        maxToRenderPerBatch={5}
+        initialNumToRender={1}
         getItemLayout={getItemLayout}
         renderItem={renderItem}
         keyExtractor={keyExtractor}
