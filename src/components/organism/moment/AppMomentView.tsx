@@ -8,13 +8,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   addMomentLikeById,
   loadMoment,
+  loadMoreMoment,
   setMomentById,
   unloadMoment,
 } from 'enevti-app/store/middleware/thunk/ui/view/moment';
 import { AppAsyncThunk } from 'enevti-app/types/ui/store/AppAsyncThunk';
 import { MomentsData, selectMomentView } from 'enevti-app/store/slices/ui/view/moment';
 import { RootState } from 'enevti-app/store/state';
-import { SafeAreaInsets } from 'enevti-app/utils/layout/imageRatio';
+import { SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
 import { EventRegister } from 'react-native-event-listeners';
 import AppResponseView from '../view/AppResponseView';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
@@ -44,7 +45,7 @@ export default function AppMomentView({
   const dispatch = useDispatch();
   const insets = useSafeAreaInsets();
   const dimension = useWindowDimensions();
-  const styles = React.useMemo(() => makeStyles(insets), [insets]);
+  const styles = React.useMemo(() => makeStyles(insets, dimension.height), [insets, dimension.height]);
   const snapPoints = React.useMemo(() => ['70%'], []);
 
   const [muted, setMuted] = React.useState<boolean>(false);
@@ -98,6 +99,11 @@ export default function AppMomentView({
     await onMomentLoaded(true).unwrap();
     videoRef.current[currentIndexRef.current]?.setNativeProps({ paused: false });
   }, [onMomentLoaded]);
+
+  const onMomentLoadMore = React.useCallback(
+    () => dispatch(loadMoreMoment({ route })),
+    [dispatch, route],
+  ) as AppAsyncThunk;
 
   const onLikePress = React.useCallback(
     (id: string, target: string) => {
@@ -191,6 +197,18 @@ export default function AppMomentView({
     };
   }, [navigation, dispatch]);
 
+  const listFooter = React.useMemo(
+    () =>
+      momentView.momentPagination &&
+      momentView.momentPagination.version !== momentView.moments.length &&
+      momentView.moments.length !== 0 ? (
+        <View style={styles.footer}>
+          <AppActivityIndicator animating />
+        </View>
+      ) : undefined,
+    [momentView.momentPagination, momentView.moments.length, styles.footer],
+  );
+
   const renderItem = React.useCallback(
     ({ item, index }: { item: MomentsData; index: number }) => {
       return (
@@ -261,11 +279,11 @@ export default function AppMomentView({
         onViewableItemsChanged={onViewableItemsChanged}
         refreshControl={refreshControl}
         style={{ opacity: visible }}
+        ListFooterComponent={listFooter}
+        onEndReachedThreshold={1}
+        onEndReached={onMomentLoadMore}
         viewabilityConfig={{
           itemVisiblePercentThreshold: 80,
-        }}
-        maintainVisibleContentPosition={{
-          minIndexForVisible: 0,
         }}
       />
       <AppMenuContainer
@@ -286,8 +304,14 @@ export default function AppMomentView({
   );
 }
 
-const makeStyles = (insets: SafeAreaInsets) =>
+const makeStyles = (insets: SafeAreaInsets, momentHeight: number) =>
   StyleSheet.create({
+    footer: {
+      height: momentHeight,
+      width: wp(100),
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
     comment: {
       marginBottom: Platform.OS === 'ios' ? insets.bottom : undefined,
     },
