@@ -117,6 +117,7 @@ export default function AppProfile({
   const momentRef = useAnimatedRef<FlatList>();
   const collectionRef = useAnimatedRef<FlatList>();
 
+  const animatedFocus = useSharedValue(true);
   const headerCollapsed = useSharedValue(true);
   const rawScrollY = useSharedValue(0);
   const tabScroll = useSharedValue(0);
@@ -149,6 +150,20 @@ export default function AppProfile({
       promise.abort();
     };
   }, [onProfileScreenLoaded, dispatch, route, isMyProfile]);
+
+  React.useEffect(() => {
+    const unsubscribeBlur = navigation?.addListener('blur', () => {
+      animatedFocus.value = false;
+    });
+    const unsubscribeFocus = navigation?.addListener('focus', () => {
+      animatedFocus.value = true;
+    });
+    return () => {
+      unsubscribeBlur && unsubscribeBlur();
+      unsubscribeFocus && unsubscribeFocus();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   React.useEffect(() => {
     const run = async () => {
@@ -187,15 +202,19 @@ export default function AppProfile({
         if (event.contentOffset.y < totalHeaderHeight - varHeaderHeight) {
           if (!headerCollapsed.value) {
             headerCollapsed.value = true;
-            for (let i = 0; i < scrollRefList.length; i++) {
-              scrollTo(scrollRefList[i], 0, totalHeaderHeight - varHeaderHeight, false);
+            if (animatedFocus.value) {
+              for (let i = 0; i < scrollRefList.length; i++) {
+                scrollTo(scrollRefList[i], 0, totalHeaderHeight - varHeaderHeight, false);
+              }
             }
           }
         } else {
           if (headerCollapsed.value) {
             headerCollapsed.value = false;
-            for (let i = 0; i < scrollRefList.length; i++) {
-              scrollTo(scrollRefList[i], 0, totalHeaderHeight - varHeaderHeight, false);
+            if (animatedFocus.value) {
+              for (let i = 0; i < scrollRefList.length; i++) {
+                scrollTo(scrollRefList[i], 0, totalHeaderHeight - varHeaderHeight, false);
+              }
             }
           }
         }
@@ -238,8 +257,10 @@ export default function AppProfile({
             ctx.current = totalHeaderHeight;
           }
         } else {
-          for (let i = 0; i < scrollRefList.length; i++) {
-            scrollTo(scrollRefList[i], 0, event.contentOffset.y, false);
+          if (animatedFocus.value) {
+            for (let i = 0; i < scrollRefList.length; i++) {
+              scrollTo(scrollRefList[i], 0, event.contentOffset.y, false);
+            }
           }
         }
         !disableHeaderAnimation && onEndDragWorklet && onEndDragWorklet(event.contentOffset.y);
@@ -260,8 +281,10 @@ export default function AppProfile({
             ctx.current = totalHeaderHeight;
           }
         } else {
-          for (let i = 0; i < scrollRefList.length; i++) {
-            scrollTo(scrollRefList[i], 0, event.contentOffset.y, false);
+          if (animatedFocus.value) {
+            for (let i = 0; i < scrollRefList.length; i++) {
+              scrollTo(scrollRefList[i], 0, event.contentOffset.y, false);
+            }
           }
         }
         !disableHeaderAnimation && onMomentumEndWorklet && onMomentumEndWorklet(event.contentOffset.y);

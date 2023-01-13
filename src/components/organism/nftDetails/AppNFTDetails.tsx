@@ -118,6 +118,7 @@ export default function AppNFTDetails({ onScrollWorklet, navigation, route }: Ap
   const activityRef = useAnimatedRef<FlatList>();
   const momentRef = useAnimatedRef<FlatList>();
 
+  const animatedFocus = useSharedValue(true);
   const headerCollapsed = useSharedValue(true);
   const rawScrollY = useSharedValue(0);
   const tabScroll = useSharedValue(0);
@@ -145,6 +146,20 @@ export default function AppNFTDetails({ onScrollWorklet, navigation, route }: Ap
     };
   }, [dispatch, onNFTDetailsScreenLoaded, route.key]);
 
+  React.useEffect(() => {
+    const unsubscribeBlur = navigation?.addListener('blur', () => {
+      animatedFocus.value = false;
+    });
+    const unsubscribeFocus = navigation?.addListener('focus', () => {
+      animatedFocus.value = true;
+    });
+    return () => {
+      unsubscribeBlur && unsubscribeBlur();
+      unsubscribeFocus && unsubscribeFocus();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const summaryOnMounted = React.useCallback(() => setSummaryMounted(true), []);
 
   const momentOnMounted = React.useCallback(() => setMomentMounted(true), []);
@@ -159,15 +174,19 @@ export default function AppNFTDetails({ onScrollWorklet, navigation, route }: Ap
         if (event.contentOffset.y < totalHeaderHeight - headerHeight) {
           if (!headerCollapsed.value) {
             headerCollapsed.value = true;
-            for (let i = 0; i < scrollRefList.length; i++) {
-              scrollTo(scrollRefList[i], 0, totalHeaderHeight - headerHeight, false);
+            if (animatedFocus.value) {
+              for (let i = 0; i < scrollRefList.length; i++) {
+                scrollTo(scrollRefList[i], 0, totalHeaderHeight - headerHeight, false);
+              }
             }
           }
         } else {
           if (headerCollapsed.value) {
             headerCollapsed.value = false;
-            for (let i = 0; i < scrollRefList.length; i++) {
-              scrollTo(scrollRefList[i], 0, totalHeaderHeight - headerHeight, false);
+            if (animatedFocus.value) {
+              for (let i = 0; i < scrollRefList.length; i++) {
+                scrollTo(scrollRefList[i], 0, totalHeaderHeight - headerHeight, false);
+              }
             }
           }
         }
@@ -195,8 +214,10 @@ export default function AppNFTDetails({ onScrollWorklet, navigation, route }: Ap
             ctx.current = totalHeaderHeight;
           }
         } else {
-          for (let i = 0; i < scrollRefList.length; i++) {
-            scrollTo(scrollRefList[i], 0, event.contentOffset.y, false);
+          if (animatedFocus.value) {
+            for (let i = 0; i < scrollRefList.length; i++) {
+              scrollTo(scrollRefList[i], 0, event.contentOffset.y, false);
+            }
           }
         }
       },
@@ -211,8 +232,10 @@ export default function AppNFTDetails({ onScrollWorklet, navigation, route }: Ap
             ctx.current = totalHeaderHeight;
           }
         } else {
-          for (let i = 0; i < scrollRefList.length; i++) {
-            scrollTo(scrollRefList[i], 0, event.contentOffset.y, false);
+          if (animatedFocus.value) {
+            for (let i = 0; i < scrollRefList.length; i++) {
+              scrollTo(scrollRefList[i], 0, event.contentOffset.y, false);
+            }
           }
         }
       },
