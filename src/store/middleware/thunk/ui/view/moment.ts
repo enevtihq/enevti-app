@@ -242,25 +242,15 @@ const loadMomentFromFeed = async (
       await dispatch(loadFeedsMoment({ reload: true }) as unknown as AnyAction).unwrap();
       await sleep(1);
     }
-    const index = payload.reload ? 0 : payload.route.params.index!;
     const feedMomentState = selectRecentMomentState(getState());
     dispatch(
       setMomentView({
         key: payload.route.key,
         value: {
           ...momentInitialStateItem,
-          moments: [feedMomentState.items[index]],
+          moments: feedMomentState.items,
           loaded: true,
           reqStatus: 200,
-        },
-      }),
-    );
-    await sleep(1);
-    dispatch(
-      setMomentView({
-        key: payload.route.key,
-        value: {
-          moments: feedMomentState.items,
           momentPagination: {
             checkpoint: feedMomentState.checkpoint,
             version: feedMomentState.reqVersion,
@@ -308,25 +298,15 @@ const loadMomentFromProfile = async (
       ).unwrap();
       await sleep(1);
     }
-    const index = payload.reload ? 0 : payload.route.params.index!;
     const profileState = selectProfileView(getState(), payload.route.params.arg!);
     dispatch(
       setMomentView({
         key: payload.route.key,
         value: {
           ...momentInitialStateItem,
-          moments: [profileState.momentCreated[index]],
+          moments: profileState.momentCreated,
           loaded: true,
           reqStatus: 200,
-        },
-      }),
-    );
-    await sleep(1);
-    dispatch(
-      setMomentView({
-        key: payload.route.key,
-        value: {
-          moments: profileState.momentCreated,
           momentPagination: {
             checkpoint: profileState.momentPagination.checkpoint,
             version: profileState.momentPagination.version,
@@ -369,25 +349,15 @@ const loadMomentFromMyProfile = async (
       ).unwrap();
       await sleep(1);
     }
-    const index = payload.reload ? 0 : payload.route.params.index!;
     const profileState = selectMyProfileView(getState());
     dispatch(
       setMomentView({
         key: payload.route.key,
         value: {
           ...momentInitialStateItem,
-          moments: [profileState.momentCreated[index]],
+          moments: profileState.momentCreated,
           loaded: true,
           reqStatus: 200,
-        },
-      }),
-    );
-    await sleep(1);
-    dispatch(
-      setMomentView({
-        key: payload.route.key,
-        value: {
-          moments: profileState.momentCreated,
           momentPagination: {
             checkpoint: profileState.momentPagination.checkpoint,
             version: profileState.momentPagination.version,
@@ -434,25 +404,15 @@ const loadMomentFromNFT = async (
       ).unwrap();
       await sleep(1);
     }
-    const index = payload.reload ? 0 : payload.route.params.index!;
     const nftDetailsState = selectNFTDetailsView(getState(), payload.route.params.arg!);
     dispatch(
       setMomentView({
         key: payload.route.key,
         value: {
           ...momentInitialStateItem,
-          moments: [nftDetailsState.moment[index]],
+          moments: nftDetailsState.moment,
           loaded: true,
           reqStatus: 200,
-        },
-      }),
-    );
-    await sleep(1);
-    dispatch(
-      setMomentView({
-        key: payload.route.key,
-        value: {
-          moments: nftDetailsState.moment,
           momentPagination: {
             checkpoint: nftDetailsState.momentPagination.checkpoint,
             version: nftDetailsState.momentPagination.version,
@@ -499,25 +459,15 @@ const loadMomentFromCollection = async (
       ).unwrap();
       await sleep(1);
     }
-    const index = payload.reload ? 0 : payload.route.params.index!;
     const collectionState = selectCollectionView(getState(), payload.route.params.arg!);
     dispatch(
       setMomentView({
         key: payload.route.key,
         value: {
           ...momentInitialStateItem,
-          moments: [collectionState.moment[index]],
+          moments: collectionState.moment,
           loaded: true,
           reqStatus: 200,
-        },
-      }),
-    );
-    await sleep(1);
-    dispatch(
-      setMomentView({
-        key: payload.route.key,
-        value: {
-          moments: collectionState.moment,
           momentPagination: {
             checkpoint: collectionState.momentPagination.checkpoint,
             version: collectionState.momentPagination.version,
