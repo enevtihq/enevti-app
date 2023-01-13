@@ -93,7 +93,6 @@ export default function AppRecentMoments({ navigation }: AppRecentMomentsProps) 
           renderItem={renderItem}
           keyExtractor={keyExtractor}
           showsHorizontalScrollIndicator={false}
-          removeClippedSubviews={true}
           initialNumToRender={4}
           maxToRenderPerBatch={7}
           updateCellsBatchingPeriod={500}
