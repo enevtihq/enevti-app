@@ -39,7 +39,11 @@ import {
   selectProfileViewMomentCreated,
   setProfileView,
 } from 'enevti-app/store/slices/ui/view/profile';
-import { addRecentMomentLike, selectRecentMomentState } from 'enevti-app/store/slices/ui/view/recentMoment';
+import {
+  pushRecentMoment,
+  addRecentMomentLike,
+  selectRecentMomentState,
+} from 'enevti-app/store/slices/ui/view/recentMoment';
 import { AppThunk, AsyncThunkAPI, RootState } from 'enevti-app/store/state';
 import {
   COLLECTION_MOMENT_RESPONSE_LIMIT,
@@ -55,6 +59,7 @@ import { loadFeedsMoment } from './feed';
 import { loadProfile } from './profile';
 import { loadNFTDetails } from './nftDetails';
 import { loadCollection } from './collection';
+import { getMoreFeedMoment } from 'enevti-app/service/enevti/feed';
 
 type MomentRoute = StackScreenProps<RootStackParamList, 'Moment'>['route'];
 type LoadMomentArgs = { route: MomentRoute; reload?: boolean };
@@ -206,6 +211,10 @@ const loadMomentFromId = async (
           moments: [momentResponse.data],
           loaded: true,
           reqStatus: momentResponse.status,
+          momentPagination: {
+            checkpoint: 1,
+            version: 1,
+          },
         },
       }),
     );
@@ -535,16 +544,39 @@ const loadMoreMomentFromId = async (
   _getState: () => RootState,
   _signal: AbortController['signal'],
 ) => {
-  // TODO: implement
+  // NOTE: nothing for now, in the future will be exploring related moment
 };
 
 const loadMoreMomentFromFeed = async (
-  _payload: LoadMomentArgs,
-  _dispatch: Dispatch<AnyAction>,
-  _getState: () => RootState,
-  _signal: AbortController['signal'],
+  payload: LoadMomentArgs,
+  dispatch: Dispatch<AnyAction>,
+  getState: () => RootState,
+  signal: AbortController['signal'],
 ) => {
-  // TODO: implement
+  try {
+    const feedMomentState = selectRecentMomentState(getState());
+    const offset = feedMomentState.checkpoint;
+    const version = feedMomentState.reqVersion;
+    if (feedMomentState.items.length !== version) {
+      const momentResponse = await getMoreFeedMoment(offset, version, signal);
+      dispatch(
+        pushRecentMoment({
+          moment: momentResponse.data.data,
+          checkpoint: momentResponse.data.checkpoint,
+          reqVersion: momentResponse.data.version,
+        }),
+      );
+      dispatch(
+        pushMomentView({
+          key: payload.route.key,
+          value: momentResponse.data.data,
+          pagination: { checkpoint: momentResponse.data.checkpoint, version: momentResponse.data.version },
+        }),
+      );
+    }
+  } catch (err: any) {
+    handleError(err);
+  }
 };
 
 const loadMoreMomentFromProfile = async (

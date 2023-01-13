@@ -40,6 +40,14 @@ const recentMomentSlice = createSlice({
       recentMoment.items[action.payload.index].liked = true;
       recentMoment.items[action.payload.index].like++;
     },
+    pushRecentMoment: (
+      recentMoment,
+      action: PayloadAction<{ moment: Moments; reqVersion: number; checkpoint: number }>,
+    ) => {
+      recentMoment.items = recentMoment.items.concat(action.payload.moment);
+      recentMoment.checkpoint = action.payload.checkpoint;
+      recentMoment.reqVersion = action.payload.reqVersion;
+    },
     setRecentMoment: (recentMoment, action: PayloadAction<Moments>) => {
       recentMoment.items = action.payload.slice();
     },
@@ -64,6 +72,7 @@ const recentMomentSlice = createSlice({
 export const {
   setRecentMomentAlertShow,
   addRecentMomentLike,
+  pushRecentMoment,
   setRecentMomentState,
   setRecentMoment,
   setRecentMomentVersion,

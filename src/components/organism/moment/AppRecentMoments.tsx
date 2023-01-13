@@ -1,12 +1,12 @@
-import { View, FlatList } from 'react-native';
+import { View, FlatList, StyleSheet } from 'react-native';
 import React from 'react';
 import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
 import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 import { useTranslation } from 'react-i18next';
-import { Divider } from 'react-native-paper';
+import { Divider, useTheme } from 'react-native-paper';
 import AppActivityIndicator from '../../atoms/loading/AppActivityIndicator';
-import { useSelector } from 'react-redux';
-import { isRecentMomentUndefined, selectRecentMoment } from 'enevti-app/store/slices/ui/view/recentMoment';
+import { useDispatch, useSelector } from 'react-redux';
+import { isRecentMomentUndefined, selectRecentMomentState } from 'enevti-app/store/slices/ui/view/recentMoment';
 import { selectFeedView } from 'enevti-app/store/slices/ui/view/feed';
 import AppAddMoment from './AppAddMoment';
 import AppMomentItem from './AppMomentItem';
@@ -14,6 +14,8 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { MomentBase } from 'enevti-app/types/core/chain/moment';
 import useDebouncedNavigation from 'enevti-app/utils/hook/useDebouncedNavigation';
+import { Theme } from 'enevti-app/theme/default';
+import { loadMoreFeedsMoment } from 'enevti-app/store/middleware/thunk/ui/view/feed';
 
 const center = 'center';
 
@@ -22,11 +24,14 @@ interface AppRecentMomentsProps {
 }
 
 export default function AppRecentMoments({ navigation }: AppRecentMomentsProps) {
+  const dispatch = useDispatch();
   const { t } = useTranslation();
+  const theme = useTheme() as Theme;
+  const styles = React.useMemo(() => makeStyles(theme), [theme]);
   const dnavigation = useDebouncedNavigation(navigation);
 
   const feeds = useSelector(selectFeedView);
-  const moments = useSelector(selectRecentMoment);
+  const recentMomentState = useSelector(selectRecentMomentState);
   const momentsUndefined = useSelector(isRecentMomentUndefined);
 
   const onMomentsPress = React.useCallback(
@@ -45,7 +50,19 @@ export default function AppRecentMoments({ navigation }: AppRecentMomentsProps) 
 
   const listHeaderComponent = React.useCallback(() => <AppAddMoment navigation={navigation} />, [navigation]);
 
-  const listFooterComponent = React.useCallback(() => <View style={{ width: wp('3%') }} />, []);
+  const listFooterComponent = React.useCallback(() => {
+    return recentMomentState.reqVersion !== recentMomentState.items.length && recentMomentState.items.length !== 0 ? (
+      <View style={styles.footerLoading}>
+        <AppActivityIndicator animating />
+      </View>
+    ) : (
+      <View style={styles.footer} />
+    );
+  }, [recentMomentState.items.length, recentMomentState.reqVersion, styles.footer, styles.footerLoading]);
+
+  const handleLoadMore = React.useCallback(() => {
+    dispatch(loadMoreFeedsMoment());
+  }, [dispatch]);
 
   const keyExtractor = React.useCallback(item => item.id, []);
 
@@ -70,7 +87,7 @@ export default function AppRecentMoments({ navigation }: AppRecentMomentsProps) 
         </View>
         <FlatList
           horizontal
-          data={moments}
+          data={recentMomentState.items}
           ListHeaderComponent={listHeaderComponent}
           ListFooterComponent={listFooterComponent}
           renderItem={renderItem}
@@ -78,10 +95,12 @@ export default function AppRecentMoments({ navigation }: AppRecentMomentsProps) 
           showsHorizontalScrollIndicator={false}
           removeClippedSubviews={true}
           initialNumToRender={4}
-          maxToRenderPerBatch={1}
+          maxToRenderPerBatch={7}
           updateCellsBatchingPeriod={500}
           windowSize={7}
           getItemLayout={getItemLayout}
+          onEndReachedThreshold={0.25}
+          onEndReached={handleLoadMore}
         />
         <Divider
           style={{
@@ -100,3 +119,20 @@ export default function AppRecentMoments({ navigation }: AppRecentMomentsProps) 
     </View>
   );
 }
+
+const makeStyles = (theme: Theme) =>
+  StyleSheet.create({
+    footerLoading: {
+      height: wp(25) * 1.78,
+      width: wp(25),
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: theme.colors.background,
+      borderRadius: theme.roundness,
+      overflow: 'hidden',
+      marginRight: wp('3%'),
+    },
+    footer: {
+      width: wp('3%'),
+    },
+  });

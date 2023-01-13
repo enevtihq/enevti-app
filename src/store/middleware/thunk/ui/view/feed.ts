@@ -17,7 +17,14 @@ import {
   setFeedViewState,
 } from 'enevti-app/store/slices/ui/view/feed';
 import { lastFetchTimeout } from 'enevti-app/utils/constant/lastFetch';
-import { getFeedMoment, getHome, getMoreFeeds, parseFeedCache, parseMomentCache } from 'enevti-app/service/enevti/feed';
+import {
+  getFeedMoment,
+  getHome,
+  getMoreFeedMoment,
+  getMoreFeeds,
+  parseFeedCache,
+  parseMomentCache,
+} from 'enevti-app/service/enevti/feed';
 import i18n from 'enevti-app/translations/i18n';
 import {
   HOME_FEED_LIMIT,
@@ -27,7 +34,12 @@ import {
   PROFILE_OWNED_INITIAL_LENGTH,
 } from 'enevti-app/utils/constant/limit';
 import { myProfileInitialState, setMyProfileView } from 'enevti-app/store/slices/ui/view/myProfile';
-import { setRecentMomentState, setRecentMomentVersion } from 'enevti-app/store/slices/ui/view/recentMoment';
+import {
+  pushRecentMoment,
+  selectRecentMomentState,
+  setRecentMomentState,
+  setRecentMomentVersion,
+} from 'enevti-app/store/slices/ui/view/recentMoment';
 import { selectMomentItemsCache, setMomentItemsCache } from 'enevti-app/store/slices/entities/cache/moment';
 import { selectMyProfileCache, setMyProfileCache } from 'enevti-app/store/slices/entities/cache/myProfile';
 import { parseProfileCache } from 'enevti-app/service/enevti/profile';
@@ -228,7 +240,28 @@ export const loadFeedsMoment = createAsyncThunk<void, loadFeedsArgs, AsyncThunkA
   },
 );
 
-// TODO: load more moments
+export const loadMoreFeedsMoment = createAsyncThunk<void, undefined, AsyncThunkAPI>(
+  'feedView/loadMoreFeedsMoment',
+  async (_, { dispatch, getState, signal }) => {
+    try {
+      const feedMomentState = selectRecentMomentState(getState());
+      const offset = feedMomentState.checkpoint;
+      const version = feedMomentState.reqVersion;
+      if (feedMomentState.items.length !== version) {
+        const momentResponse = await getMoreFeedMoment(offset, version, signal);
+        dispatch(
+          pushRecentMoment({
+            moment: momentResponse.data.data,
+            checkpoint: momentResponse.data.checkpoint,
+            reqVersion: momentResponse.data.version,
+          }),
+        );
+      }
+    } catch (err: any) {
+      handleError(err);
+    }
+  },
+);
 
 export const unloadFeeds = (): AppThunk => dispatch => {
   dispatch(resetFeedView());
