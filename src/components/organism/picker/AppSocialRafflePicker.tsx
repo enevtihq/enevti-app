@@ -269,10 +269,10 @@ function Component({
                 color={isEligible ? theme.colors.success : theme.colors.error}
               />
             }>
-            <AppTextHeadingCustom size={3.5} numberOfLines={1}>
+            <AppTextHeadingCustom size={1.8} numberOfLines={1}>
               {isEligible ? t('createNFT:socialRaffleIsEligible') : t('createNFT:socialRaffleIsNotEligible')}
             </AppTextHeadingCustom>
-            <AppTextBodyCustom size={2.8} style={styles.eligibilityDescription}>
+            <AppTextBodyCustom size={1.38} style={styles.eligibilityDescription}>
               {eligibility}
             </AppTextBodyCustom>
           </AppListItem>

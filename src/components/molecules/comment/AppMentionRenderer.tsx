@@ -95,7 +95,7 @@ export default function AppMentionRenderer({
     (part: Part, index: number) => {
       if (!part.partType) {
         return (
-          <AppTextBodyCustom onPress={onTextPress} size={size === undefined ? 3.5 : size} key={index} style={{ color }}>
+          <AppTextBodyCustom onPress={onTextPress} size={size === undefined ? 1.8 : size} key={index} style={{ color }}>
             {part.text}
           </AppTextBodyCustom>
         );
@@ -105,7 +105,7 @@ export default function AppMentionRenderer({
         if (part.partType.trigger === PROFILE_MENTION_TRIGGER) {
           return (
             <AppTextBodyCustom
-              size={size === undefined ? 3.5 : size}
+              size={size === undefined ? 1.8 : size}
               key={`${index}-${part.data?.trigger}`}
               style={{ color: disabled ? (color ? color : selectedTheme.colors.text) : selectedTheme.colors.link }}
               onPress={disabled ? undefined : () => profileMentionOnPress(part.data)}>
@@ -115,7 +115,7 @@ export default function AppMentionRenderer({
         } else if (part.partType.trigger === COLLECTION_MENTION_TRIGGER) {
           return (
             <AppTextBodyCustom
-              size={size === undefined ? 3.5 : size}
+              size={size === undefined ? 1.8 : size}
               key={`${index}-${part.data?.trigger}`}
               style={{ color: disabled ? (color ? color : selectedTheme.colors.text) : selectedTheme.colors.link }}
               onPress={disabled ? undefined : () => collectionMentionOnPress(part.data)}>
@@ -125,7 +125,7 @@ export default function AppMentionRenderer({
         } else if (part.partType.trigger === NFT_MENTION_TRIGGER) {
           return (
             <AppTextBodyCustom
-              size={size === undefined ? 3.5 : size}
+              size={size === undefined ? 1.8 : size}
               key={`${index}-${part.data?.trigger}`}
               style={{ color: disabled ? (color ? color : selectedTheme.colors.text) : selectedTheme.colors.link }}
               onPress={disabled ? undefined : () => nftMentionOnPress(part.data)}>
@@ -136,7 +136,7 @@ export default function AppMentionRenderer({
       }
 
       return (
-        <AppTextBodyCustom size={size === undefined ? 3.5 : size} key={`${index}-pattern`}>
+        <AppTextBodyCustom size={size === undefined ? 1.8 : size} key={`${index}-pattern`}>
           {part.text}
         </AppTextBodyCustom>
       );
@@ -166,10 +166,10 @@ export default function AppMentionRenderer({
     <AppTextBodyCustom
       onTextLayout={onTextLayout}
       numberOfLines={numberOfLines}
-      size={size === undefined ? 3.5 : size}
+      size={size === undefined ? 1.8 : size}
       style={style}>
       {title ? (
-        <AppTextHeadingCustom size={size === undefined ? 3.5 : size} onPress={onTitlePress}>
+        <AppTextHeadingCustom size={size === undefined ? 1.8 : size} onPress={onTitlePress}>
           {title}{' '}
         </AppTextHeadingCustom>
       ) : null}

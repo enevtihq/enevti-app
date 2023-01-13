@@ -41,7 +41,7 @@ export default function AppPortraitOverlayBox({
         <AppMentionRenderer
           disabled
           numberOfLines={2}
-          size={2.2}
+          size={1.14}
           text={title}
           style={styles.textOverlay}
           color={'white'}

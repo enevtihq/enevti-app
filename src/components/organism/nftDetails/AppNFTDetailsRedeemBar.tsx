@@ -106,7 +106,7 @@ export default function AppNFTDetailsRedeemBar({ nft, navigation, route }: AppNF
           <AppTextHeading3>{utilityToLabel(nft.utility)}</AppTextHeading3>
         </View>
         <AppPrimaryButton disabled={redeemButtonDisabled} style={styles.redeemBarButton} onPress={onRedeem}>
-          <AppTextHeadingCustom size={3} style={styles.redeemBarButtonText}>
+          <AppTextHeadingCustom size={1.55} style={styles.redeemBarButtonText}>
             {t('nftDetails:redeem')}
           </AppTextHeadingCustom>
         </AppPrimaryButton>

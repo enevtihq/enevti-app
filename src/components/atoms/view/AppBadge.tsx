@@ -15,7 +15,7 @@ export default function AppBadge({ offset, content }: AppBadgeProps) {
 
   return (
     <View pointerEvents={'none'} style={styles.container}>
-      <AppTextBodyCustom size={2.6} style={styles.content}>
+      <AppTextBodyCustom size={1.3} style={styles.content}>
         {content}
       </AppTextBodyCustom>
     </View>

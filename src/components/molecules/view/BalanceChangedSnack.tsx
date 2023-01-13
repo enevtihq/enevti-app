@@ -49,10 +49,10 @@ export default function BalanceChangedSnack({ onAnimationEnd, onAnimationStart, 
 
   return diff !== '0' ? (
     <Animated.View style={[style, styles.container, { opacity: fadeAnim }]}>
-      <AppTextHeadingCustom numberOfLines={1} size={2.0} style={styles.text}>
+      <AppTextHeadingCustom numberOfLines={1} size={1.03} style={styles.text}>
         {added ? '+' : '-'}
         {parseAmount(diff)}{' '}
-        <AppTextBodyCustom numberOfLines={1} size={1.2} style={styles.text}>
+        <AppTextBodyCustom numberOfLines={1} size={0.7} style={styles.text}>
           {getCoinName()}
         </AppTextBodyCustom>
       </AppTextHeadingCustom>

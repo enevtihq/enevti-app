@@ -2,7 +2,7 @@ import React from 'react';
 import { NativeSyntheticEvent, StyleProp, StyleSheet, TextLayoutEventData, TextStyle } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { Theme } from 'enevti-app/theme/default';
-import { wp } from 'enevti-app/utils/layout/imageRatio';
+import { hp } from 'enevti-app/utils/layout/imageRatio';
 import AppText from './AppText';
 import AppTextReadMore from './AppTextReadMore';
 
@@ -64,6 +64,6 @@ const makeStyles = (theme: Theme, weight: 'bold' | 'normal', size: number) =>
       color: theme.colors.text,
       fontFamily: weight === 'normal' ? theme.fonts.regular.fontFamily : theme.fonts.medium.fontFamily,
       fontWeight: weight === 'normal' ? theme.fonts.regular.fontWeight : theme.fonts.medium.fontWeight,
-      fontSize: wp(size),
+      fontSize: hp(size),
     },
   });

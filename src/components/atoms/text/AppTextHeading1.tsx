@@ -27,7 +27,7 @@ export default function AppTextHeading1({
       selectable={selectable}
       onPress={onPress}
       weight={'bold'}
-      size={5.8}
+      size={2.95}
       numberOfLines={numberOfLines}
       readMoreLimit={readMoreLimit}
       style={style}>

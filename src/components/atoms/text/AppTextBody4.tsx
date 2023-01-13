@@ -27,7 +27,7 @@ export default function AppTextBody4({
       selectable={selectable}
       onPress={onPress}
       weight={'normal'}
-      size={3.5}
+      size={1.8}
       numberOfLines={numberOfLines}
       readMoreLimit={readMoreLimit}
       style={style}>

@@ -220,7 +220,7 @@ export default function AppPaymentGasFeePicker({ visible, onDismiss, onSave }: A
             {!feeLoading ? (
               <View>
                 <View style={styles.feeAmount}>
-                  <AppTextBodyCustom size={10} style={styles.gasFeeHeader}>
+                  <AppTextBodyCustom size={5.05} style={styles.gasFeeHeader}>
                     {parseAmount(fee.toString())}
                   </AppTextBodyCustom>
                   <AppTextBody4 style={styles.gasFeeHeaderCoin}>{getCoinName()}</AppTextBody4>
