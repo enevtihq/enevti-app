@@ -259,8 +259,8 @@ export default function Home({ navigation }: Props) {
           visible={!welcome}
           iconName={'welcome'}
           onDismiss={requestFaucets}
-          title={'Welcome to our Alpha App!'}
-          description={"We'll give you 2K test coin to explore our alphanet, don't forget to give us feedback :)"}
+          title={'Welcome to our Alpha App v2!'}
+          description={"We'll give you 2K test coin to explore our testnet, don't forget to give us feedback :)"}
           secondaryButtonText={"I'm Super Excited!"}
           secondaryButtonOnPress={() => dispatch(touchOnceWelcome())}
         />
@@ -271,7 +271,7 @@ export default function Home({ navigation }: Props) {
           iconName={'survey'}
           onDismiss={() => dispatch(addAppOpenCounter())}
           title={'We Need Feedback!'}
-          description={'Would you mind filling out a quick survey for our MVP feedback? Only 1 minute'}
+          description={'Would you mind filling out a quick survey for our App feedback? Only 1 minute'}
           secondaryButtonText={'Of Course!'}
           secondaryButtonOnPress={() => {
             Linking.openURL('https://link.enevti.com/testnet-feedback-en');
