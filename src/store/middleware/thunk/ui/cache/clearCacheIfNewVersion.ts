@@ -11,7 +11,7 @@ export const clearCacheIfNewVersion = createAsyncThunk<void, undefined, AsyncThu
   async (_, { dispatch, getState }) => {
     const currentVersion = DeviceInfo.getVersion();
     const cacheVersion = selectCacheVersion(getState());
-    if (semver.gt(currentVersion, cacheVersion)) {
+    if (semver.neq(currentVersion, cacheVersion)) {
       dispatch(setCacheVersion(currentVersion));
       dispatch(resetFeedCache());
       dispatch(resetMyProfileCache());
