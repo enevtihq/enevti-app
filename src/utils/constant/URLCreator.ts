@@ -15,12 +15,12 @@ import {
   WALLET_HISTORY_INITIAL_LENGTH,
 } from './limit';
 
-export const ENEVTI_DEFAULT_API = 'http://192.168.0.105:8880';
-export const ENEVTI_FAUCET_API = 'http://192.168.0.105:8881';
-export const ENEVTI_SOCKET_IO = 'ws://192.168.0.105:8882';
-export const ENEVTI_VIDEOCALL_SOCKET = 'ws://192.168.0.105:8883';
-export const ENEVTI_SERVICE_API = 'http://192.168.0.105:9901';
-export const ENEVTI_CORE_WS = 'ws://192.168.0.105:8082/ws';
+export const ENEVTI_DEFAULT_API = 'http://testnet.enevti.com:8880';
+export const ENEVTI_FAUCET_API = 'http://testnet.enevti.com:8881';
+export const ENEVTI_SOCKET_IO = 'ws://testnet.enevti.com:8882';
+export const ENEVTI_VIDEOCALL_SOCKET = 'ws://testnet.enevti.com:8883';
+export const ENEVTI_SERVICE_API = 'http://testnet.enevti.com:9901';
+export const ENEVTI_CORE_WS = 'ws://testnet.enevti.com:8082/ws';
 export const IPFS_GATEWAY = '.ipfs.nftstorage.link';
 export const NFT_STORAGE_URL = 'https://api.nft.storage/upload';
 export const WEB3_STORAGE_URL = 'https://api.web3.storage/upload';

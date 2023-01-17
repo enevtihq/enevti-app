@@ -274,7 +274,7 @@ export default function Home({ navigation }: Props) {
           description={'Would you mind filling out a quick survey for our MVP feedback? Only 1 minute'}
           secondaryButtonText={'Of Course!'}
           secondaryButtonOnPress={() => {
-            Linking.openURL('https://link.enevti.com/mvp-feedback-en');
+            Linking.openURL('https://link.enevti.com/testnet-feedback-en');
           }}
         />
       ) : null}
