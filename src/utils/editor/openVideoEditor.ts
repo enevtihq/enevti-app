@@ -17,8 +17,8 @@ interface OpenVideoEditorProps {
 }
 
 export function openVideoEditor({ navigation, source, duration, onSuccess, onFailed }: OpenVideoEditorProps) {
+  const timeDuration = Math.floor(duration / 1000);
   if (Platform.OS === 'android') {
-    const timeDuration = Math.floor(duration / 1000);
     navigateToTrimmer(
       source,
       timeDuration.toString(),
@@ -40,6 +40,6 @@ export function openVideoEditor({ navigation, source, duration, onSuccess, onFai
     const failedEventId = onFailed ? EventRegister.addEventListener('onVideoEditorFailed', onFailed) : false;
     const successEvent = typeof successEventId === 'string' ? successEventId : undefined;
     const failedEvent = typeof failedEventId === 'string' ? failedEventId : undefined;
-    navigation.push('VideoEditor', { successEvent, failedEvent, source, duration });
+    navigation.push('VideoEditor', { successEvent, failedEvent, source, duration: timeDuration });
   }
 }
