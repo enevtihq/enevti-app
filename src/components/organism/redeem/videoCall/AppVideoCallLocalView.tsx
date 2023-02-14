@@ -2,7 +2,7 @@ import Color from 'color';
 import AppIconComponent, { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import AppAvatarRenderer from 'enevti-app/components/molecules/avatar/AppAvatarRenderer';
 import darkTheme from 'enevti-app/theme/dark';
-import { Persona } from 'enevti-app/types/core/account/persona';
+import { Persona } from 'enevti-types/account/persona';
 import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';

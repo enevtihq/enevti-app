@@ -32,11 +32,11 @@ import {
   TipReceived,
   TokenReceivedParam,
   VideoCallStatusChangedParams,
-} from 'enevti-app/types/core/service/call';
+} from 'enevti-types/service/call';
 import defaultTheme, { Theme } from 'enevti-app/theme/default';
 import { selectMyPersonaCache } from 'enevti-app/store/slices/entities/cache/myPersona';
 import AppVideoCallParticipantView from './AppVideoCallParticipantView';
-import { Persona } from 'enevti-app/types/core/account/persona';
+import { Persona } from 'enevti-types/account/persona';
 import { getNFTActivity, getNFTbyId } from 'enevti-app/service/enevti/nft';
 import AppVideoCallHeader from './AppVideoCallHeader';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
@@ -53,7 +53,7 @@ import {
   stopCallingSound,
   stopCallSound,
 } from 'enevti-app/service/call/device/sound';
-import { NFT } from 'enevti-app/types/core/chain/nft';
+import { NFT } from 'enevti-types/chain/nft';
 import {
   hideModalLoader,
   resetModalLoaderState,

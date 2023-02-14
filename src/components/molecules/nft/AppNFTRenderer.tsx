@@ -1,8 +1,8 @@
 import { Dimensions, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import React from 'react';
-import { NFTBase } from 'enevti-app/types/core/chain/nft';
+import { NFTBase } from 'enevti-types/chain/nft';
 import UtilityBackground from 'enevti-app/components/atoms/nft/utility/UtilityBackground';
-import { NFTTemplateItem } from 'enevti-app/types/core/chain/nft/NFTTemplate';
+import { NFTTemplateItem } from 'enevti-types/chain/nft/NFTTemplate';
 import NFTData from 'enevti-app/components/atoms/nft/data/NFTData';
 import Box from 'enevti-app/components/atoms/nft/misc/Box';
 import RarityIcon from 'enevti-app/components/atoms/nft/rarity/RarityIcon';
@@ -17,7 +17,7 @@ import UtilityLabel from 'enevti-app/components/atoms/nft/utility/UtilityLabel';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { TouchableRipple } from 'react-native-paper';
-import { SizeCode } from 'enevti-app/types/core/service/api';
+import { SizeCode } from 'enevti-types/service/api';
 import useDebouncedNavigation from 'enevti-app/utils/hook/useDebouncedNavigation';
 
 interface AppNFTRendererProps {

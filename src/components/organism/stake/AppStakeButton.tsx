@@ -11,7 +11,7 @@ import { hp, SafeAreaInsets, wp } from 'enevti-app/utils/layout/imageRatio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectMyPersonaCache } from 'enevti-app/store/slices/entities/cache/myPersona';
-import { Persona } from 'enevti-app/types/core/account/persona';
+import { Persona } from 'enevti-types/account/persona';
 import { useTranslation } from 'react-i18next';
 import AppCoinChipsPicker from 'enevti-app/components/organism/coin/AppCoinChipsPicker';
 import AppMenuFormTextInputWithError from 'enevti-app/components/molecules/menu/AppMenuFormTextInputWithError';

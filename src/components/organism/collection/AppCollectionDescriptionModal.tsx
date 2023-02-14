@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { numberKMB, parseAmount } from 'enevti-app/utils/format/amount';
 import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
 import AppCurrencyIcon from 'enevti-app/components/atoms/icon/AppCurrencyIcon';
-import { Collection } from 'enevti-app/types/core/chain/collection';
+import { Collection } from 'enevti-types/chain/collection';
 
 interface AppCollectionDescriptionModalProps {
   collection: Collection;

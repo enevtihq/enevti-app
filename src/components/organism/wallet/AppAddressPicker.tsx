@@ -22,7 +22,7 @@ import {
   isValidBase32,
   parsePersonaLabel,
 } from 'enevti-app/service/enevti/persona';
-import { Persona } from 'enevti-app/types/core/account/persona';
+import { Persona } from 'enevti-types/account/persona';
 import AppListItem from 'enevti-app/components/molecules/list/AppListItem';
 import AppAvatarRenderer from 'enevti-app/components/molecules/avatar/AppAvatarRenderer';
 import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';

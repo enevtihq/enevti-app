@@ -8,10 +8,10 @@ import {
 import { getMyAddress, getMyPassphrase, getMyPublicKey } from './persona';
 import { appFetch, isInternetReachable } from 'enevti-app/utils/app/network';
 import { handleError, handleResponseCode, responseError } from 'enevti-app/utils/error/handle';
-import { APIResponse, ResponseJSON } from 'enevti-app/types/core/service/api';
+import { APIResponse, ResponseJSON } from 'enevti-types/service/api';
 import base64 from 'react-native-base64';
 import i18n from 'enevti-app/translations/i18n';
-import { AppTransaction } from 'enevti-app/types/core/service/transaction';
+import { AppTransaction } from 'enevti-types/service/transaction';
 import { store } from 'enevti-app/store/state';
 import {
   selectTransactionNonce,
@@ -23,7 +23,7 @@ import { getProfileNonce } from './profile';
 import { selectProcessedTransactionThisBlock } from 'enevti-app/store/slices/session/transaction/processedThisBlock';
 import { MAX_TRANSACTION_PER_ACCOUNT } from 'enevti-app/utils/constant/identifier';
 import awaitNewBlock from 'enevti-app/utils/chain/awaitNewBlock';
-import { TransactionStatus } from 'enevti-app/types/core/service/transaction';
+import { TransactionStatus } from 'enevti-types/service/transaction';
 
 export async function postTransaction<T>(
   payload: AppTransaction<T>,

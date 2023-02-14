@@ -9,7 +9,7 @@ import AppIconButton from 'enevti-app/components/atoms/icon/AppIconButton';
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import { Theme } from 'enevti-app/theme/default';
 import DropShadow from 'react-native-drop-shadow';
-import { Persona } from 'enevti-app/types/core/account/persona';
+import { Persona } from 'enevti-types/account/persona';
 import AppAvatarRenderer from 'enevti-app/components/molecules/avatar/AppAvatarRenderer';
 
 interface AppVideoCallChatFloatingNotificationProps {

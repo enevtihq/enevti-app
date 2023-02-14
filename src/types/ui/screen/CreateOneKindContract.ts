@@ -1,5 +1,5 @@
-import { NFTRecurring } from 'enevti-app/types/core/chain/nft/NFTRedeem';
-import { NFTUtility } from 'enevti-app/types/core/chain/nft/NFTUtility';
+import { NFTRecurring } from 'enevti-types/chain/nft/NFTRedeem';
+import { NFTUtility } from 'enevti-types/chain/nft/NFTUtility';
 
 export type OneKindContractForm = {
   name: string;

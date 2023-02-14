@@ -13,7 +13,7 @@ import Animated from 'react-native-reanimated';
 import { PROFILE_HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/organism/profile/AppProfileHeader';
 import { TOP_TABBAR_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppTopTabBar';
 import { hp, SafeAreaInsets, windowFullHeight, wp } from 'enevti-app/utils/layout/imageRatio';
-import { CollectionBase } from 'enevti-app/types/core/chain/collection';
+import { CollectionBase } from 'enevti-types/chain/collection';
 import AppListItem, { LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE } from 'enevti-app/components/molecules/list/AppListItem';
 import AppNetworkImage from 'enevti-app/components/atoms/image/AppNetworkImage';
 import { IPFSImagetoURL } from 'enevti-app/service/ipfs';

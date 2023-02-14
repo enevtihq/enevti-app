@@ -8,7 +8,7 @@ import AppTextHeading4 from 'enevti-app/components/atoms/text/AppTextHeading4';
 import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
 import { Theme } from 'enevti-app/theme/default';
 import { useTheme } from 'react-native-paper';
-import { FeedItem } from 'enevti-app/types/core/service/feed';
+import { FeedItem } from 'enevti-types/service/feed';
 import { parseAmount } from 'enevti-app/utils/format/amount';
 import { useDispatch, useSelector } from 'react-redux';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';

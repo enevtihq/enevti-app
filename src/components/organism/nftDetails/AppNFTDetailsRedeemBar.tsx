@@ -20,7 +20,7 @@ import nftToRedeemScheduleLabel from 'enevti-app/utils/date/nftToRedeemScheduleL
 import { getMyAddress } from 'enevti-app/service/enevti/persona';
 import { isRedeemTimeUTC } from 'enevti-app/utils/date/redeemDate';
 import AppPoppableIcon from 'enevti-app/components/molecules/menu/AppPoppableIcon';
-import { NFT } from 'enevti-app/types/core/chain/nft';
+import { NFT } from 'enevti-types/chain/nft';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { RouteProp } from '@react-navigation/native';

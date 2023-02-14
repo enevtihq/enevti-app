@@ -1,4 +1,4 @@
-import { CollectionBase } from 'enevti-app/types/core/chain/collection';
+import { CollectionBase } from 'enevti-types/chain/collection';
 
 export function isMintingAvailable(collection: CollectionBase) {
   const now = Date.now();

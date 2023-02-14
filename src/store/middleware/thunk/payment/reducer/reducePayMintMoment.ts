@@ -13,9 +13,9 @@ import {
 import { AppThunk } from 'enevti-app/store/state';
 import { handleError } from 'enevti-app/utils/error/handle';
 import i18n from 'enevti-app/translations/i18n';
-import { AppTransaction } from 'enevti-app/types/core/service/transaction';
+import { AppTransaction } from 'enevti-types/service/transaction';
 import { postTransaction } from 'enevti-app/service/enevti/transaction';
-import { MintMomentUI } from 'enevti-app/types/core/asset/redeemable_nft/mint_moment_asset';
+import { MintMomentUI } from 'enevti-types/asset/redeemable_nft/mint_moment_asset';
 
 export const reducePayMintMoment = (): AppThunk => async (dispatch, getState) => {
   try {

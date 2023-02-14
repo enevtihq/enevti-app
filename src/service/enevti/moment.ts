@@ -1,5 +1,5 @@
-import { Moment } from 'enevti-app/types/core/chain/moment';
-import { APIResponse } from 'enevti-app/types/core/service/api';
+import { Moment } from 'enevti-types/chain/moment';
+import { APIResponse } from 'enevti-types/service/api';
 import { apiFetch } from 'enevti-app/utils/app/network';
 import { urlGetIsMomentOwnerOrCreator, urlGetMomentById } from 'enevti-app/utils/constant/URLCreator';
 import { getMyAddress } from './persona';

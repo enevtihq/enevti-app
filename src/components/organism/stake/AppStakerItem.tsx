@@ -9,7 +9,7 @@ import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import AppListItem from 'enevti-app/components/molecules/list/AppListItem';
 import { StyleSheet } from 'react-native';
-import { StakerItem } from 'enevti-app/types/core/chain/stake';
+import { StakerItem } from 'enevti-types/chain/stake';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectMyPersonaCache } from 'enevti-app/store/slices/entities/cache/myPersona';
 import { parseAmount } from 'enevti-app/utils/format/amount';

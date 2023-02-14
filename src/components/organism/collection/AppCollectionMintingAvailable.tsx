@@ -9,7 +9,7 @@ import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
 import AppCountdown from 'enevti-app/components/atoms/date/AppCountdown';
 import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
-import { Collection } from 'enevti-app/types/core/chain/collection';
+import { Collection } from 'enevti-types/chain/collection';
 
 export const MINTING_AVAILABLE_VIEW_HEIGHT = 7;
 

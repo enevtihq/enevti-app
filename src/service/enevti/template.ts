@@ -1,9 +1,9 @@
-import { NFTTemplateAsset } from 'enevti-app/types/core/chain/nft/NFTTemplate';
+import { NFTTemplateAsset } from 'enevti-types/chain/nft/NFTTemplate';
 import enevtiNFTTemplate from 'enevti-app/components/atoms/nft/template/enevtiNFTTemplate';
 import blankNFTTemplate from 'enevti-app/components/atoms/nft/template/blankNFTTemplate';
 import { apiFetch } from 'enevti-app/utils/app/network';
 import { urlGetAllNFTTemplate } from 'enevti-app/utils/constant/URLCreator';
-import { APIResponse } from 'enevti-app/types/core/service/api';
+import { APIResponse } from 'enevti-types/service/api';
 
 export function getBuiltInNFTTemplate(): NFTTemplateAsset[] {
   return [

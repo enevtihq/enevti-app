@@ -4,11 +4,11 @@ import { AsyncThunkAPI } from 'enevti-app/store/state';
 import { attachFee, calculateBaseFee, calculateGasFee, createTransaction } from 'enevti-app/service/enevti/transaction';
 import i18n from 'enevti-app/translations/i18n';
 import { AnyAction, createAsyncThunk } from '@reduxjs/toolkit';
-import { AppTransaction } from 'enevti-app/types/core/service/transaction';
+import { AppTransaction } from 'enevti-types/service/transaction';
 import { redeemableNftModule } from 'enevti-app/utils/constant/transaction';
-import { SetVideoCallAnsweredUI } from 'enevti-app/types/core/asset/redeemable_nft/set_video_call_answered_asset';
+import { SetVideoCallAnsweredUI } from 'enevti-types/asset/redeemable_nft/set_video_call_answered_asset';
 import { COIN_NAME } from 'enevti-app/utils/constant/identifier';
-import { NFT } from 'enevti-app/types/core/chain/nft';
+import { NFT } from 'enevti-types/chain/nft';
 import { cleanPayment } from '../utils/cleanPayment';
 import onPaymentCreatorError from '../utils/onPaymentCreatorError';
 

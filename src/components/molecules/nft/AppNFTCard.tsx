@@ -1,6 +1,6 @@
 import { View, ViewStyle, StyleProp, StyleSheet } from 'react-native';
 import React from 'react';
-import { NFT } from 'enevti-app/types/core/chain/nft';
+import { NFT } from 'enevti-types/chain/nft';
 import { wp, hp } from 'enevti-app/utils/layout/imageRatio';
 import { TouchableRipple, useTheme } from 'react-native-paper';
 import { Theme } from 'enevti-app/theme/default';

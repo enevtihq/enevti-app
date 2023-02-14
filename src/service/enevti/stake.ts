@@ -1,4 +1,4 @@
-import { StakePoolData, StakerItem } from 'enevti-app/types/core/chain/stake';
+import { StakePoolData, StakerItem } from 'enevti-types/chain/stake';
 import { base32ToAddress } from 'enevti-app/service/enevti/persona';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
@@ -8,7 +8,7 @@ import {
   urlGetStakePoolByUsername,
   urlGetStaker,
 } from 'enevti-app/utils/constant/URLCreator';
-import { APIResponseVersioned, APIResponseVersionRoot } from 'enevti-app/types/core/service/api';
+import { APIResponseVersioned, APIResponseVersionRoot } from 'enevti-types/service/api';
 import { STAKER_INITIAL_LENGTH } from 'enevti-app/utils/constant/limit';
 
 type StakePoolRoute = StackScreenProps<RootStackParamList, 'StakePool'>['route']['params'];

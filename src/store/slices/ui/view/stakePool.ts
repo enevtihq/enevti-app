@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
 import { RootState } from 'enevti-app/store/state';
-import { StakePoolData, StakerItem } from 'enevti-app/types/core/chain/stake';
+import { StakePoolData, StakerItem } from 'enevti-types/chain/stake';
 import { PaginationStore } from 'enevti-app/types/ui/store/PaginationStore';
 import { assignDeep } from 'enevti-app/utils/primitive/object';
 

@@ -8,7 +8,7 @@ import {
   passphraseToAddress,
   passphraseToPublicAndPrivateKey,
 } from 'enevti-app/service/enevti/persona';
-import { EncryptedData } from 'enevti-app/types/core/service/cryptography';
+import { EncryptedData } from 'enevti-types/service/cryptography';
 import { AnyAction } from '@reduxjs/toolkit';
 import { updateFCMToken } from './fcm';
 import { updateAPNToken } from './apn';

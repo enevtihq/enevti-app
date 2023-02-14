@@ -7,7 +7,7 @@ import Color from 'color';
 import AppFeedHeader from './AppFeedHeader';
 import AppFeedAction from './AppFeedAction';
 import AppFeedFooter from './AppFeedFooter';
-import { FeedItem } from 'enevti-app/types/core/service/feed';
+import { FeedItem } from 'enevti-types/service/feed';
 import AppFeedBody from './AppFeedBody';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';

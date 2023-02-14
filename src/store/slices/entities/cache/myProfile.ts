@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
-import { Profile } from 'enevti-app/types/core/account/profile';
+import { Profile } from 'enevti-types/account/profile';
 import { RootState } from 'enevti-app/store/state';
-import { NFTBase } from 'enevti-app/types/core/chain/nft';
-import { CollectionBase } from 'enevti-app/types/core/chain/collection';
+import { NFTBase } from 'enevti-types/chain/nft';
+import { CollectionBase } from 'enevti-types/chain/collection';
 import { PaginationStore } from 'enevti-app/types/ui/store/PaginationStore';
 import { assignDeep } from 'enevti-app/utils/primitive/object';
 

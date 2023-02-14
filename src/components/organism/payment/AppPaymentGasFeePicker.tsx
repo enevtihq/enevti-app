@@ -34,7 +34,7 @@ import {
   calculateGasFeeHigh,
   calculateMinGasFee,
 } from 'enevti-app/service/enevti/transaction';
-import { AppTransaction } from 'enevti-app/types/core/service/transaction';
+import { AppTransaction } from 'enevti-types/service/transaction';
 import { PaymentFee } from 'enevti-app/types/ui/store/Payment';
 
 interface AppPaymentGasFeePickerProps {

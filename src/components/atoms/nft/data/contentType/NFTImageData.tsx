@@ -1,10 +1,10 @@
 import { StyleSheet, Image } from 'react-native';
 import React from 'react';
-import { NFTBase } from 'enevti-app/types/core/chain/nft';
+import { NFTBase } from 'enevti-types/chain/nft';
 import AppNetworkImage from 'enevti-app/components/atoms/image/AppNetworkImage';
 import { IPFSImagetoURL } from 'enevti-app/service/ipfs';
 import { shallowEqual } from 'react-redux';
-import { SizeCode } from 'enevti-app/types/core/service/api';
+import { SizeCode } from 'enevti-types/service/api';
 import AppIconComponent, { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import { useTheme } from 'react-native-paper';
 import { Theme } from 'enevti-app/theme/default';

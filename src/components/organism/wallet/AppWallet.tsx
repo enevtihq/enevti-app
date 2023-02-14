@@ -22,7 +22,7 @@ import { LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE } from 'enevti-app/components/mole
 import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 import AppMessageEmpty from 'enevti-app/components/molecules/message/AppMessageEmpty';
 import AppWalletTransactionHistoryItem from './AppWalletTransactionHistoryItem';
-import { ProfileActivity } from 'enevti-app/types/core/account/profile';
+import { ProfileActivity } from 'enevti-types/account/profile';
 import AppTextBody2 from 'enevti-app/components/atoms/text/AppTextBody2';
 import { useTranslation } from 'react-i18next';
 import AppResponseView from '../view/AppResponseView';

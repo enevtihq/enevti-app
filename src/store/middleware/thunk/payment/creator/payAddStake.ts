@@ -5,10 +5,10 @@ import { attachFee, calculateBaseFee, calculateGasFee, createTransaction } from 
 import i18n from 'enevti-app/translations/i18n';
 import { AnyAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { parsePersonaLabel } from 'enevti-app/service/enevti/persona';
-import { Persona } from 'enevti-app/types/core/account/persona';
-import { NFTPrice } from 'enevti-app/types/core/chain/nft/NFTPrice';
-import { AddStakeUI } from 'enevti-app/types/core/asset/chain/add_stake_asset';
-import { AppTransaction } from 'enevti-app/types/core/service/transaction';
+import { Persona } from 'enevti-types/account/persona';
+import { NFTPrice } from 'enevti-types/chain/nft/NFTPrice';
+import { AddStakeUI } from 'enevti-types/asset/chain/add_stake_asset';
+import { AppTransaction } from 'enevti-types/service/transaction';
 import { stakingModule } from 'enevti-app/utils/constant/transaction';
 import { cleanPayment } from '../utils/cleanPayment';
 import onPaymentCreatorError from '../utils/onPaymentCreatorError';

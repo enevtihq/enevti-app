@@ -3,7 +3,7 @@ import { createSelector } from 'reselect';
 import { RootState } from 'enevti-app/store/state';
 import { PaginationStore } from 'enevti-app/types/ui/store/PaginationStore';
 import { assignDeep } from 'enevti-app/utils/primitive/object';
-import { Moment } from 'enevti-app/types/core/chain/moment';
+import { Moment } from 'enevti-types/chain/moment';
 
 export type MomentsData = Moment & { isLiking?: boolean };
 

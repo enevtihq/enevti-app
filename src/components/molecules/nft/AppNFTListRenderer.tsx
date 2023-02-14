@@ -3,10 +3,10 @@ import React from 'react';
 import AppNFTRenderer from './AppNFTRenderer';
 import AppPaginationIndicator from 'enevti-app/components/atoms/pagination/AppPaginationIndicator';
 import { hp } from 'enevti-app/utils/layout/imageRatio';
-import { NFTBase } from 'enevti-app/types/core/chain/nft';
+import { NFTBase } from 'enevti-types/chain/nft';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
-import { SizeCode } from 'enevti-app/types/core/service/api';
+import { SizeCode } from 'enevti-types/service/api';
 
 interface AppNFTListRedererProps {
   nft: NFTBase[];

@@ -26,7 +26,7 @@ import {
 } from 'enevti-app/store/slices/ui/view/profile';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
 import { TABBAR_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppTabBar';
-import { Moment, MomentBase } from 'enevti-app/types/core/chain/moment';
+import { Moment, MomentBase } from 'enevti-types/chain/moment';
 import AppMomentItem from '../../moment/AppMomentItem';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import useDebouncedNavigation from 'enevti-app/utils/hook/useDebouncedNavigation';

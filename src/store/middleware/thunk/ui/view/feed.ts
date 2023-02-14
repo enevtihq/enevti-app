@@ -43,7 +43,7 @@ import {
 import { selectMomentItemsCache, setMomentItemsCache } from 'enevti-app/store/slices/entities/cache/moment';
 import { selectMyProfileCache, setMyProfileCache } from 'enevti-app/store/slices/entities/cache/myProfile';
 import { parseProfileCache } from 'enevti-app/service/enevti/profile';
-import { Profile } from 'enevti-app/types/core/account/profile';
+import { Profile } from 'enevti-types/account/profile';
 import { setMyPersonaCache } from 'enevti-app/store/slices/entities/cache/myPersona';
 
 type loadFeedsArgs = { reload: boolean };

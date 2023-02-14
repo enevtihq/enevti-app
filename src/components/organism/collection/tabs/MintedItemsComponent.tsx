@@ -3,7 +3,7 @@ import { Platform, RefreshControl, ScaledSize, StyleSheet, useWindowDimensions, 
 import Animated from 'react-native-reanimated';
 import { FlatGrid, FlatGridProps } from 'react-native-super-grid';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { NFTBase } from 'enevti-app/types/core/chain/nft';
+import { NFTBase } from 'enevti-types/chain/nft';
 import { TOP_TABBAR_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppTopTabBar';
 import { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
 import { DimensionFunction, SafeAreaInsets, windowFullHeight } from 'enevti-app/utils/layout/imageRatio';

@@ -1,5 +1,5 @@
 import i18n from 'enevti-app/translations/i18n';
-import { NFTUtility } from 'enevti-app/types/core/chain/nft/NFTUtility';
+import { NFTUtility } from 'enevti-types/chain/nft/NFTUtility';
 
 export default function utilityToLabel(utility: NFTUtility) {
   let text: string = '';

@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
 import { RootState } from 'enevti-app/store/state';
-import { Comment } from 'enevti-app/types/core/chain/engagement';
+import { Comment } from 'enevti-types/chain/engagement';
 import { assignDeep } from 'enevti-app/utils/primitive/object';
 
 type CommentSessionState = {

@@ -3,8 +3,8 @@ import { createTransaction, postTransaction } from 'enevti-app/service/enevti/tr
 import { setDeliverSecretProcessing } from 'enevti-app/store/slices/session/transaction/processing';
 import { store } from 'enevti-app/store/state';
 import i18n from 'enevti-app/translations/i18n';
-import { DeliverSecretUI } from 'enevti-app/types/core/asset/redeemable_nft/deliver_secret_asset';
-import { AppTransaction } from 'enevti-app/types/core/service/transaction';
+import { DeliverSecretUI } from 'enevti-types/asset/redeemable_nft/deliver_secret_asset';
+import { AppTransaction } from 'enevti-types/service/transaction';
 import { DeliverSecretPayload } from 'enevti-app/types/ui/task/deliverSecret';
 import { BLOCK_TIME } from 'enevti-app/utils/constant/identifier';
 import { redeemableNftModule } from 'enevti-app/utils/constant/transaction';

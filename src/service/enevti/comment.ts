@@ -11,9 +11,9 @@ import {
   urlGetReplyComment,
   urlGetReplyCommentClubs,
 } from 'enevti-app/utils/constant/URLCreator';
-import { APIResponseVersioned } from 'enevti-app/types/core/service/api';
+import { APIResponseVersioned } from 'enevti-types/service/api';
 import { COMMENT_INITIAL_LENGTH, REPLY_INITIAL_LENGTH } from 'enevti-app/utils/constant/limit';
-import { Comment, CommentAt, CommentClubsAt, ReplyAt } from 'enevti-app/types/core/chain/engagement';
+import { Comment, CommentAt, CommentClubsAt, ReplyAt } from 'enevti-types/chain/engagement';
 import { getCollectionIdFromRouteParam } from './collection';
 import { getNFTIdFromRouteParam } from './nft';
 import { getMyAddress } from './persona';

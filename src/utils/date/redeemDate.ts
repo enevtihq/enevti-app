@@ -1,4 +1,4 @@
-import { NFT } from 'enevti-app/types/core/chain/nft';
+import { NFT } from 'enevti-types/chain/nft';
 import i18n from 'enevti-app/translations/i18n';
 import moment from 'moment';
 

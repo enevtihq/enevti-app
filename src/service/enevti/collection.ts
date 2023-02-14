@@ -1,5 +1,5 @@
 import { StackScreenProps } from '@react-navigation/stack';
-import { Collection, CollectionActivity } from 'enevti-app/types/core/chain/collection';
+import { Collection, CollectionActivity } from 'enevti-types/chain/collection';
 import { RootStackParamList } from 'enevti-app/navigation';
 import {
   urlGetCollectionActivityById,
@@ -12,8 +12,8 @@ import {
   urlGetSymbolToCollectionId,
 } from 'enevti-app/utils/constant/URLCreator';
 import { apiFetch, apiFetchVersioned, apiFetchVersionRoot } from 'enevti-app/utils/app/network';
-import { APIResponse, APIResponseVersioned, APIResponseVersionRoot } from 'enevti-app/types/core/service/api';
-import { NFTBase } from 'enevti-app/types/core/chain/nft';
+import { APIResponse, APIResponseVersioned, APIResponseVersionRoot } from 'enevti-types/service/api';
+import { NFTBase } from 'enevti-types/chain/nft';
 import {
   COLLECTION_ACTIVITY_INITIAL_LENGTH,
   COLLECTION_MINTED_INITIAL_LENGTH,
@@ -21,7 +21,7 @@ import {
 } from 'enevti-app/utils/constant/limit';
 import { getMyAddress } from './persona';
 import i18n from 'enevti-app/translations/i18n';
-import { MomentBase } from 'enevti-app/types/core/chain/moment';
+import { MomentBase } from 'enevti-types/chain/moment';
 
 type CollectionRoute = StackScreenProps<RootStackParamList, 'Collection'>['route']['params'];
 type CollectionVersions = { activity: number; minted: number; moment: number };

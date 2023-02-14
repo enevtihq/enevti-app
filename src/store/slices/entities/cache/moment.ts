@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
 import { RootState } from 'enevti-app/store/state';
-import { Moments } from 'enevti-app/types/core/service/feed';
+import { Moments } from 'enevti-types/service/feed';
 
 type MomentsCacheState = { items: Moments };
 

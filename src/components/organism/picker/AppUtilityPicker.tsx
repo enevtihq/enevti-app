@@ -9,7 +9,7 @@ import { StyleSheet, View } from 'react-native';
 import { wp } from 'enevti-app/utils/layout/imageRatio';
 import UtilityBackground from 'enevti-app/components/atoms/nft/utility/UtilityBackground';
 import { makeDummyNFT } from 'enevti-app/utils/dummy/nft';
-import { NFTUtility } from 'enevti-app/types/core/chain/nft/NFTUtility';
+import { NFTUtility } from 'enevti-types/chain/nft/NFTUtility';
 
 interface AppUtilityPickerProps {
   value?: string;

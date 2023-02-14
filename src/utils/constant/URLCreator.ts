@@ -1,4 +1,4 @@
-import { SizeCode } from 'enevti-app/types/core/service/api';
+import { SizeCode } from 'enevti-types/service/api';
 import {
   COLLECTION_ACTIVITY_INITIAL_LENGTH,
   COLLECTION_MINTED_INITIAL_LENGTH,

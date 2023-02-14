@@ -3,7 +3,7 @@ import base64 from 'react-native-base64';
 import DeviceInfo from 'react-native-device-info';
 import { getMyPassphrase } from 'enevti-app/service/enevti/persona';
 import { trimExtension } from 'enevti-app/utils/format/directory';
-import { DecryptedData, DecryptedFile, EncryptedData, EncryptedFile } from 'enevti-app/types/core/service/cryptography';
+import { DecryptedData, DecryptedFile, EncryptedData, EncryptedFile } from 'enevti-types/service/cryptography';
 import { appCrypto } from './versions';
 import i18n from 'enevti-app/translations/i18n';
 import { stringToBuffer } from '../primitive/string';

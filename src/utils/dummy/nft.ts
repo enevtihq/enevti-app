@@ -1,7 +1,7 @@
 import blankNFTTemplate from 'enevti-app/components/atoms/nft/template/blankNFTTemplate';
-import { NFTBase } from 'enevti-app/types/core/chain/nft';
-import { NFTTemplateData } from 'enevti-app/types/core/chain/nft/NFTTemplate';
-import { NFTUtility } from 'enevti-app/types/core/chain/nft/NFTUtility';
+import { NFTBase } from 'enevti-types/chain/nft';
+import { NFTTemplateData } from 'enevti-types/chain/nft/NFTTemplate';
+import { NFTUtility } from 'enevti-types/chain/nft/NFTUtility';
 import { shuffleArray } from 'enevti-app/utils/primitive/array';
 import { makeDummyIPFS } from './ipfs';
 

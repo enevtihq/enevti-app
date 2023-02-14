@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
 import { RootState } from 'enevti-app/store/state';
 import { PaginationStore } from 'enevti-app/types/ui/store/PaginationStore';
-import { WalletView } from 'enevti-app/types/core/service/wallet';
+import { WalletView } from 'enevti-types/service/wallet';
 import { assignDeep } from 'enevti-app/utils/primitive/object';
 
 export type WalletViewState = WalletView & {

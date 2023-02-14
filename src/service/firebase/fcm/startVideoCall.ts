@@ -4,7 +4,7 @@ import { getMyPublicKey, parsePersonaLabel } from 'enevti-app/service/enevti/per
 import { CALL_AWAIT_TIME, displayIncomingCall } from 'enevti-app/service/call/device';
 import { makeUrl } from 'enevti-app/utils/constant/URLCreator';
 import i18n from 'enevti-app/translations/i18n';
-import { StartVideoCallPayload } from 'enevti-app/types/core/service/call';
+import { StartVideoCallPayload } from 'enevti-types/service/call';
 import { Platform } from 'react-native';
 import { videoCallSocketBase } from 'enevti-app/utils/app/network';
 import { EventRegister } from 'react-native-event-listeners';

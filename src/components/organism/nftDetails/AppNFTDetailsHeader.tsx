@@ -9,7 +9,7 @@ import { RootStackParamList } from 'enevti-app/navigation';
 import { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
 import AppNFTRenderer from 'enevti-app/components/molecules/nft/AppNFTRenderer';
 import NFTData from 'enevti-app/components/atoms/nft/data/NFTData';
-import { NFT } from 'enevti-app/types/core/chain/nft';
+import { NFT } from 'enevti-types/chain/nft';
 import { STATUS_BAR_HEIGHT } from 'enevti-app/components/atoms/view/AppStatusBar';
 import { IPFStoURL } from 'enevti-app/service/ipfs';
 

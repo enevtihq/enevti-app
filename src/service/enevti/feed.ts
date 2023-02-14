@@ -1,11 +1,11 @@
-import { ProfileAPIVersion } from 'enevti-app/types/core/account/profile';
-import { APIResponse, APIResponseVersioned, APIResponseVersionRoot } from 'enevti-app/types/core/service/api';
-import { Feeds, HomeFeeds, Moments } from 'enevti-app/types/core/service/feed';
+import { ProfileAPIVersion } from 'enevti-types/account/profile';
+import { APIResponse, APIResponseVersioned, APIResponseVersionRoot } from 'enevti-types/service/api';
+import { Feeds, HomeFeeds, Moments } from 'enevti-types/service/feed';
 import { HOME_FEED_LIMIT } from 'enevti-app/utils/constant/limit';
 import { urlGetAllMoment, urlGetFeeds, urlGetHome } from 'enevti-app/utils/constant/URLCreator';
 import { apiFetch, apiFetchVersioned, apiFetchVersionRoot } from 'enevti-app/utils/app/network';
 import { getMyAddress } from './persona';
-import { MomentBase } from 'enevti-app/types/core/chain/moment';
+import { MomentBase } from 'enevti-types/chain/moment';
 
 type FeedResponse = { data: Feeds; checkpoint: number; version: number };
 export const FEED_CACHE_MAX_LENGTH = HOME_FEED_LIMIT;

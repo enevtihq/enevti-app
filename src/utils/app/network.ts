@@ -6,12 +6,7 @@ import io from 'socket.io-client';
 import { urlSocketIO, urlVideoCallSocketIO } from '../constant/URLCreator';
 import ReactNativeBlobUtil, { ReactNativeBlobUtilConfig } from 'react-native-blob-util';
 import { checkPermissionStorage } from './permission';
-import {
-  APIResponse,
-  APIResponseVersioned,
-  APIResponseVersionRoot,
-  ResponseJSON,
-} from 'enevti-app/types/core/service/api';
+import { APIResponse, APIResponseVersioned, APIResponseVersionRoot, ResponseJSON } from 'enevti-types/service/api';
 import { handleError, handleResponseCode, responseError } from '../error/handle';
 
 export async function isInternetReachable(): Promise<boolean> {

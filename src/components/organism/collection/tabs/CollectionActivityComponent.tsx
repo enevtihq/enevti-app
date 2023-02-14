@@ -11,7 +11,7 @@ import AppListItem, { LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE } from 'enevti-app/co
 import AppNFTRenderer from 'enevti-app/components/molecules/nft/AppNFTRenderer';
 import AppTextHeading3 from 'enevti-app/components/atoms/text/AppTextHeading3';
 import AppTextBody4 from 'enevti-app/components/atoms/text/AppTextBody4';
-import { Collection } from 'enevti-app/types/core/chain/collection';
+import { Collection } from 'enevti-types/chain/collection';
 import { parseAmount } from 'enevti-app/utils/format/amount';
 import moment from 'moment';
 import { useTranslation } from 'react-i18next';

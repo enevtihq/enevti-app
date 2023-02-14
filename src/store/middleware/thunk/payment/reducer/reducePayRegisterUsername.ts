@@ -1,8 +1,8 @@
 import { selectPaymentActionPayload, setPaymentStatusInReducer } from 'enevti-app/store/slices/payment';
 import { AppThunk } from 'enevti-app/store/state';
 import { hideModalLoader, showModalLoader } from 'enevti-app/store/slices/ui/global/modalLoader';
-import { AppTransaction } from 'enevti-app/types/core/service/transaction';
-import { RegisterUsernameUI } from 'enevti-app/types/core/asset/chain/register_username';
+import { AppTransaction } from 'enevti-types/service/transaction';
+import { RegisterUsernameUI } from 'enevti-types/asset/chain/register_username';
 import { postTransaction } from 'enevti-app/service/enevti/transaction';
 import { handleError } from 'enevti-app/utils/error/handle';
 

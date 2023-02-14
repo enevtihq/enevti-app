@@ -6,7 +6,7 @@ import { TOP_TABBAR_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/A
 import { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
 import { DimensionFunction, SafeAreaInsets, windowFullHeight } from 'enevti-app/utils/layout/imageRatio';
 import useDimension from 'enevti-app/utils/hook/useDimension';
-import { Collection } from 'enevti-app/types/core/chain/collection';
+import { Collection } from 'enevti-types/chain/collection';
 import { MINT_BUTTON_HEIGHT } from 'enevti-app/components/organism/collection/AppCollectionMintButton';
 import AppMessageEmpty from 'enevti-app/components/molecules/message/AppMessageEmpty';
 import { loadMoreMoment } from 'enevti-app/store/middleware/thunk/ui/view/collection';
@@ -17,7 +17,7 @@ import { RootState } from 'enevti-app/store/state';
 import { selectCollectionView, setCollectionRender } from 'enevti-app/store/slices/ui/view/collection';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
 import AppMomentItem from '../../moment/AppMomentItem';
-import { MomentBase } from 'enevti-app/types/core/chain/moment';
+import { MomentBase } from 'enevti-types/chain/moment';
 import { FlatGrid, FlatGridProps } from 'react-native-super-grid';
 import { StackNavigationProp } from '@react-navigation/stack';
 import useDebouncedNavigation from 'enevti-app/utils/hook/useDebouncedNavigation';

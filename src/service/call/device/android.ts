@@ -1,5 +1,5 @@
 import { DisplayInitialState } from 'enevti-app/store/slices/ui/screen/display';
-import { StartVideoCallPayload } from 'enevti-app/types/core/service/call';
+import { StartVideoCallPayload } from 'enevti-types/service/call';
 import { EmitterSubscription, Platform, DeviceEventEmitter } from 'react-native';
 import { EventRegister } from 'react-native-event-listeners';
 import { Socket } from 'socket.io-client';

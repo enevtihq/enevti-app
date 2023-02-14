@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
 import { RootState } from 'enevti-app/store/state';
 import { PaginationStore } from 'enevti-app/types/ui/store/PaginationStore';
-import { Comment, Reply } from 'enevti-app/types/core/chain/engagement';
+import { Comment, Reply } from 'enevti-types/chain/engagement';
 import { assignDeep } from 'enevti-app/utils/primitive/object';
 
 type EngagementItemBase = {

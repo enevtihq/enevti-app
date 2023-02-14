@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
-import { Persona } from 'enevti-app/types/core/account/persona';
+import { Persona } from 'enevti-types/account/persona';
 import { RootState } from 'enevti-app/store/state';
 import { assignDeep } from 'enevti-app/utils/primitive/object';
 

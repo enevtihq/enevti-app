@@ -2,8 +2,8 @@ import { StyleSheet } from 'react-native';
 import React from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { NFTBase } from 'enevti-app/types/core/chain/nft';
-import { TemplateArgs } from 'enevti-app/types/core/chain/nft/NFTTemplate';
+import { NFTBase } from 'enevti-types/chain/nft';
+import { TemplateArgs } from 'enevti-types/chain/nft/NFTTemplate';
 import utilityToIcon from 'enevti-app/utils/icon/utilityToIcon';
 
 interface UtilityIconProps {

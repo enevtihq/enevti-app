@@ -3,7 +3,7 @@ import { Platform } from 'react-native';
 import RNCallKeep, { IOptions, CONSTANTS } from 'react-native-callkeep';
 import IncomingCall from '@bob.hardcoder/react-native-incoming-call';
 import VoipPushNotification from 'react-native-voip-push-notification';
-import { StartVideoCallPayloadIOS } from 'enevti-app/types/core/service/call';
+import { StartVideoCallPayloadIOS } from 'enevti-types/service/call';
 import { store } from 'enevti-app/store/state';
 import { initAPNToken } from 'enevti-app/store/middleware/thunk/session/apn';
 import { AnyAction } from '@reduxjs/toolkit';

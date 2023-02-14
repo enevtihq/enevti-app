@@ -13,7 +13,7 @@ import { parseAmount } from 'enevti-app/utils/format/amount';
 import { commifyAmount } from 'enevti-app/utils/primitive/string';
 import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
 import { getCoinName } from 'enevti-app/utils/constant/identifier';
-import { ProfileActivity } from 'enevti-app/types/core/account/profile';
+import { ProfileActivity } from 'enevti-types/account/profile';
 import { parsePersonaLabel } from 'enevti-app/service/enevti/persona';
 import { useTranslation } from 'react-i18next';
 import Color from 'color';

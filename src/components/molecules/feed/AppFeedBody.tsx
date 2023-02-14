@@ -1,5 +1,5 @@
 import React from 'react';
-import { FeedItem } from 'enevti-app/types/core/service/feed';
+import { FeedItem } from 'enevti-types/service/feed';
 import { hp } from 'enevti-app/utils/layout/imageRatio';
 import AppNFTListRenderer from 'enevti-app/components/molecules/nft/AppNFTListRenderer';
 import AppNFTRenderer from 'enevti-app/components/molecules/nft/AppNFTRenderer';

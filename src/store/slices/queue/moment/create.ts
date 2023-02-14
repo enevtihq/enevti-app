@@ -2,8 +2,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
 import { RootState } from 'enevti-app/store/state';
 import { assignDeep } from 'enevti-app/utils/primitive/object';
-import { MintMomentUI } from 'enevti-app/types/core/asset/redeemable_nft/mint_moment_asset';
-import { NFTBase } from 'enevti-app/types/core/chain/nft';
+import { MintMomentUI } from 'enevti-types/asset/redeemable_nft/mint_moment_asset';
+import { NFTBase } from 'enevti-types/chain/nft';
 
 export type CreateMomentState = Omit<MintMomentUI, 'nftId'> & { nft?: NFTBase };
 

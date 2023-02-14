@@ -3,7 +3,7 @@ import { Platform, RefreshControl, ScaledSize, StyleSheet, useWindowDimensions, 
 import Animated from 'react-native-reanimated';
 import { DimensionFunction, SafeAreaInsets, windowFullHeight } from 'enevti-app/utils/layout/imageRatio';
 import useDimension from 'enevti-app/utils/hook/useDimension';
-import { NFT } from 'enevti-app/types/core/chain/nft';
+import { NFT } from 'enevti-types/chain/nft';
 import { NFT_DETAILS_TOP_TABBAR_HEIGHT_PERCENTAGE } from '../AppNFTDetailsBody';
 import { HEADER_HEIGHT_PERCENTAGE } from 'enevti-app/components/atoms/view/AppHeader';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -16,7 +16,7 @@ import { RootState } from 'enevti-app/store/state';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
 import { loadMoreMoment } from 'enevti-app/store/middleware/thunk/ui/view/nftDetails';
 import { FlatGrid, FlatGridProps } from 'react-native-super-grid';
-import { MomentBase } from 'enevti-app/types/core/chain/moment';
+import { MomentBase } from 'enevti-types/chain/moment';
 import AppMomentItem from '../../moment/AppMomentItem';
 import { StackNavigationProp } from '@react-navigation/stack';
 import useDebouncedNavigation from 'enevti-app/utils/hook/useDebouncedNavigation';

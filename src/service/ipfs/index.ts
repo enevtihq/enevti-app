@@ -9,7 +9,7 @@ import { appFetch, appFetchBlob, isInternetReachable } from 'enevti-app/utils/ap
 import i18n from 'enevti-app/translations/i18n';
 import * as Hash from 'ipfs-only-hash';
 import { handleError } from 'enevti-app/utils/error/handle';
-import { SizeCode } from 'enevti-app/types/core/service/api';
+import { SizeCode } from 'enevti-types/service/api';
 
 export const IPFStoURL = (hash: string) => urlGetIPFS(hash);
 

@@ -14,7 +14,7 @@ import { useTranslation } from 'react-i18next';
 import AppHeaderWizard from 'enevti-app/components/molecules/view/AppHeaderWizard';
 import { getProfileInitialMomentSlot, getProfileMomentSlot } from 'enevti-app/service/enevti/profile';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
-import { NFTBase } from 'enevti-app/types/core/chain/nft';
+import { NFTBase } from 'enevti-types/chain/nft';
 import { PaginationStore } from 'enevti-app/types/ui/store/PaginationStore';
 import Animated, { useAnimatedRef } from 'react-native-reanimated';
 import AppListItem, { LIST_ITEM_VERTICAL_MARGIN_PERCENTAGE } from 'enevti-app/components/molecules/list/AppListItem';

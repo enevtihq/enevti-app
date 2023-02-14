@@ -1,6 +1,6 @@
 import ImageCropPicker from 'react-native-image-crop-picker';
 import { handleError, handleResponseCode } from 'enevti-app/utils/error/handle';
-import { NFT } from 'enevti-app/types/core/chain/nft';
+import { NFT } from 'enevti-types/chain/nft';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import {
@@ -20,17 +20,12 @@ import {
   urlGetIsNFTOwnerOrCreator,
   urlGetNFTMomentById,
 } from 'enevti-app/utils/constant/URLCreator';
-import {
-  APIResponse,
-  APIResponseVersioned,
-  APIResponseVersionRoot,
-  ResponseJSON,
-} from 'enevti-app/types/core/service/api';
-import { NFTActivity } from 'enevti-app/types/core/chain/nft/NFTActivity';
+import { APIResponse, APIResponseVersioned, APIResponseVersionRoot, ResponseJSON } from 'enevti-types/service/api';
+import { NFTActivity } from 'enevti-types/chain/nft/NFTActivity';
 import { NFT_ACTIVITY_INITIAL_LENGTH, NFT_MOMENT_INITIAL_LENGTH } from 'enevti-app/utils/constant/limit';
 import { getMyAddress } from './persona';
 import i18n from 'enevti-app/translations/i18n';
-import { MomentBase } from 'enevti-app/types/core/chain/moment';
+import { MomentBase } from 'enevti-types/chain/moment';
 
 type NFTDetailsRoute = StackScreenProps<RootStackParamList, 'NFTDetails'>['route']['params'];
 type NFTDetailsVersions = { activity: number; moment: number };

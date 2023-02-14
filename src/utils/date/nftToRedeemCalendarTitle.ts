@@ -1,6 +1,6 @@
-import { NFT } from 'enevti-app/types/core/chain/nft';
+import { NFT } from 'enevti-types/chain/nft';
 import i18n from 'enevti-app/translations/i18n';
-import { NFTUtility } from 'enevti-app/types/core/chain/nft/NFTUtility';
+import { NFTUtility } from 'enevti-types/chain/nft/NFTUtility';
 import utilityToLabel from '../format/utilityToLabel';
 
 const fromUtility: NFTUtility[] = ['content', 'gift', 'qr'];

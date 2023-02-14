@@ -5,8 +5,8 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 
-import { APIResponseVersioned } from 'enevti-app/types/core/service/api';
-import { Comment, CommentAt, CommentClubsAt } from 'enevti-app/types/core/chain/engagement';
+import { APIResponseVersioned } from 'enevti-types/service/api';
+import { Comment, CommentAt, CommentClubsAt } from 'enevti-types/chain/engagement';
 import {
   getCollectionCommentByRouteParam,
   getCollectionCommentClubsByRouteParam,

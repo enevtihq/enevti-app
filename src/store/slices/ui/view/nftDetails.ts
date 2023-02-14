@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
 import { RootState } from 'enevti-app/store/state';
-import { NFT } from 'enevti-app/types/core/chain/nft';
-import { NFTActivity } from 'enevti-app/types/core/chain/nft/NFTActivity';
+import { NFT } from 'enevti-types/chain/nft';
+import { NFTActivity } from 'enevti-types/chain/nft/NFTActivity';
 import { PaginationStore } from 'enevti-app/types/ui/store/PaginationStore';
 import { assignDeep } from 'enevti-app/utils/primitive/object';
-import { MomentBase } from 'enevti-app/types/core/chain/moment';
+import { MomentBase } from 'enevti-types/chain/moment';
 
 type NFTDetailsViewState = NFT & {
   activityPagination: PaginationStore;

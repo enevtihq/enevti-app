@@ -6,7 +6,7 @@ import { useTheme } from 'react-native-paper';
 import { Theme } from 'enevti-app/theme/default';
 import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 import { useTranslation } from 'react-i18next';
-import { FeedItem } from 'enevti-app/types/core/service/feed';
+import { FeedItem } from 'enevti-types/service/feed';
 import AppTextHeading5 from 'enevti-app/components/atoms/text/AppTextHeading5';
 import AppTextBody5 from 'enevti-app/components/atoms/text/AppTextBody5';
 import moment from 'moment';

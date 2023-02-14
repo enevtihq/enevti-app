@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { payMintCollection } from 'enevti-app/store/middleware/thunk/payment/creator/payMintCollection';
 import DropShadow from 'react-native-drop-shadow';
 import usePaymentCallback from 'enevti-app/utils/hook/usePaymentCallback';
-import { Collection } from 'enevti-app/types/core/chain/collection';
+import { Collection } from 'enevti-types/chain/collection';
 import { selectMyPersonaCache } from 'enevti-app/store/slices/entities/cache/myPersona';
 import AppCollectionMintOptions from './minting/AppCollectionMintOptions';
 import { StackNavigationProp } from '@react-navigation/stack';

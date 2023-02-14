@@ -5,7 +5,7 @@ import timezoneOffsetLabel from 'enevti-app/utils/date/timezoneOffsetLabel';
 import { dateToHourMinuteString, dayToString, monthToString } from 'enevti-app/utils/date/dateToString';
 import { ordinalWithSuffix } from '../format/number';
 import { getRedeemTimeUTC } from './redeemDate';
-import { NFT } from 'enevti-app/types/core/chain/nft';
+import { NFT } from 'enevti-types/chain/nft';
 
 export default function nftToRedeemScheduleLabel(nft: NFT) {
   let ret: string = '';

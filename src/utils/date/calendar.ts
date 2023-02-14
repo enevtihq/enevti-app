@@ -7,7 +7,7 @@ import { dateOfNearestDayUTC, getRedeemTimeUTC } from 'enevti-app/utils/date/red
 
 import { handleError } from '../error/handle';
 import { getAppLink } from '../linking';
-import { NFT } from 'enevti-app/types/core/chain/nft';
+import { NFT } from 'enevti-types/chain/nft';
 
 export const addCalendarEvent = async (title: string, event: CalendarEventWritable) => {
   let permissions;

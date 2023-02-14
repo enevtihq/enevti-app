@@ -1,5 +1,5 @@
 import i18n from 'enevti-app/translations/i18n';
-import { NFTRecurring } from 'enevti-app/types/core/chain/nft/NFTRedeem';
+import { NFTRecurring } from 'enevti-types/chain/nft/NFTRedeem';
 
 export default function recurringToLabel(recurring: NFTRecurring | '') {
   let text: string = '';

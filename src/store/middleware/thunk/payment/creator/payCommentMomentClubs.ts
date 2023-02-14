@@ -4,7 +4,7 @@ import { AsyncThunkAPI } from 'enevti-app/store/state';
 import { attachFee, calculateBaseFee, calculateGasFee, createTransaction } from 'enevti-app/service/enevti/transaction';
 import i18n from 'enevti-app/translations/i18n';
 import { AnyAction, createAsyncThunk } from '@reduxjs/toolkit';
-import { AppTransaction } from 'enevti-app/types/core/service/transaction';
+import { AppTransaction } from 'enevti-types/service/transaction';
 import { redeemableNftModule } from 'enevti-app/utils/constant/transaction';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from 'enevti-app/navigation';
@@ -12,7 +12,7 @@ import { COIN_NAME } from 'enevti-app/utils/constant/identifier';
 import { getCommentKey } from '../../ui/view/comment';
 import { makeDummyIPFS } from 'enevti-app/utils/dummy/ipfs';
 import { cleanPayment } from '../utils/cleanPayment';
-import { CommentMomentClubsUI } from 'enevti-app/types/core/asset/redeemable_nft/comment_moment_clubs_asset';
+import { CommentMomentClubsUI } from 'enevti-types/asset/redeemable_nft/comment_moment_clubs_asset';
 import onPaymentCreatorError from '../utils/onPaymentCreatorError';
 
 type CommentRoute = RouteProp<RootStackParamList, 'Comment'>;

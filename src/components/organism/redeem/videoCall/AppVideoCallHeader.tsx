@@ -1,7 +1,7 @@
 import { View, StyleSheet } from 'react-native';
 import React from 'react';
-import { Persona } from 'enevti-app/types/core/account/persona';
-import { CallStatus } from 'enevti-app/types/core/service/call';
+import { Persona } from 'enevti-types/account/persona';
+import { CallStatus } from 'enevti-types/service/call';
 import { useTranslation } from 'react-i18next';
 import AppAvatarRenderer from 'enevti-app/components/molecules/avatar/AppAvatarRenderer';
 import AppTextBody3 from 'enevti-app/components/atoms/text/AppTextBody3';

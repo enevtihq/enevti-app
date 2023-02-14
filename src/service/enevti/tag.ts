@@ -1,7 +1,7 @@
-import { Persona } from 'enevti-app/types/core/account/persona';
-import { Collection } from 'enevti-app/types/core/chain/collection';
-import { NFTBase } from 'enevti-app/types/core/chain/nft';
-import { APIResponse } from 'enevti-app/types/core/service/api';
+import { Persona } from 'enevti-types/account/persona';
+import { Collection } from 'enevti-types/chain/collection';
+import { NFTBase } from 'enevti-types/chain/nft';
+import { APIResponse } from 'enevti-types/service/api';
 import { urlGetTagCollection, urlGetTagNFT, urlGetTagUsername } from 'enevti-app/utils/constant/URLCreator';
 import { apiFetch } from 'enevti-app/utils/app/network';
 

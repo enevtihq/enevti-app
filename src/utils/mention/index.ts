@@ -1,6 +1,6 @@
-import { Persona } from 'enevti-app/types/core/account/persona';
-import { Collection } from 'enevti-app/types/core/chain/collection';
-import { NFT } from 'enevti-app/types/core/chain/nft';
+import { Persona } from 'enevti-types/account/persona';
+import { Collection } from 'enevti-types/chain/collection';
+import { NFT } from 'enevti-types/chain/nft';
 
 export const PROFILE_MENTION_TRIGGER = '@';
 export const COLLECTION_MENTION_TRIGGER = '$';

@@ -1,5 +1,5 @@
 import { AppThunk } from 'enevti-app/store/state';
-import { NFT } from 'enevti-app/types/core/chain/nft';
+import { NFT } from 'enevti-types/chain/nft';
 import { AppNavigationType } from 'enevti-app/utils/hook/useDebouncedNavigation';
 
 export const reduceRedeemVideoCall =

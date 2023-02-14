@@ -1,4 +1,4 @@
-import { APIResponse, ResponseJSON } from 'enevti-app/types/core/service/api';
+import { APIResponse, ResponseJSON } from 'enevti-types/service/api';
 import {
   urlDeleteFCMAddress,
   urlGetFCMIsAddressRegistered,

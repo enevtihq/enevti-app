@@ -25,7 +25,7 @@ import useLockScreen from 'enevti-app/utils/hook/useLockScreen';
 import useScreenDisplayed from 'enevti-app/utils/hook/useScreenDisplayed';
 import { selectLockedState } from 'enevti-app/store/slices/ui/screen/locked';
 import NFTDetails from 'enevti-app/screen/nftDetails/NFTDetails';
-import { EncryptedData } from 'enevti-app/types/core/service/cryptography';
+import { EncryptedData } from 'enevti-types/service/cryptography';
 import { linking } from 'enevti-app/utils/linking';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
 import { useTheme } from 'react-native-paper';

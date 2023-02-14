@@ -20,7 +20,7 @@ import { commifyAmount } from 'enevti-app/utils/primitive/string';
 import { selectMyPersonaCache } from 'enevti-app/store/slices/entities/cache/myPersona';
 import { addressToBase32, getBasePersonaByRouteParam, routeParamToAddress } from 'enevti-app/service/enevti/persona';
 import AppActivityIndicator from 'enevti-app/components/atoms/loading/AppActivityIndicator';
-import { Persona } from 'enevti-app/types/core/account/persona';
+import { Persona } from 'enevti-types/account/persona';
 import AppAvatarRenderer from 'enevti-app/components/molecules/avatar/AppAvatarRenderer';
 import Color from 'color';
 import useDebouncedNavigation from 'enevti-app/utils/hook/useDebouncedNavigation';

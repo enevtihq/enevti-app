@@ -1,5 +1,5 @@
 import { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
-import { NFTUtility } from 'enevti-app/types/core/chain/nft/NFTUtility';
+import { NFTUtility } from 'enevti-types/chain/nft/NFTUtility';
 
 export default function utilityToIcon(utility: NFTUtility) {
   let icon: string = 'help-circle-outline';

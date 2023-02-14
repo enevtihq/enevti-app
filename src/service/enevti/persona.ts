@@ -1,4 +1,4 @@
-import { Persona } from 'enevti-app/types/core/account/persona';
+import { Persona } from 'enevti-types/account/persona';
 import { store } from 'enevti-app/store/state';
 import { decryptWithDevice, decryptWithPassword } from 'enevti-app/utils/cryptography';
 import * as Lisk from '@liskhq/lisk-client';
@@ -18,7 +18,7 @@ import { COIN_NAME } from 'enevti-app/utils/constant/identifier';
 import { apiFetch } from 'enevti-app/utils/app/network';
 import { urlGetPersonaByAddress, urlGetPersonaByUsername } from 'enevti-app/utils/constant/URLCreator';
 import { isErrorResponse } from 'enevti-app/utils/error/handle';
-import { APIResponse } from 'enevti-app/types/core/service/api';
+import { APIResponse } from 'enevti-types/service/api';
 import i18n from 'enevti-app/translations/i18n';
 import { selectMyPublicKeyCache, setMyPublicKeyCache } from 'enevti-app/store/slices/entities/cache/myPublicKey';
 

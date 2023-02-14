@@ -1,12 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
-import { Collection, CollectionActivity } from 'enevti-app/types/core/chain/collection';
+import { Collection, CollectionActivity } from 'enevti-types/chain/collection';
 import { RootState } from 'enevti-app/store/state';
-import { NFTType } from 'enevti-app/types/core/chain/nft/NFTType';
-import { NFTBase } from 'enevti-app/types/core/chain/nft';
+import { NFTType } from 'enevti-types/chain/nft/NFTType';
+import { NFTBase } from 'enevti-types/chain/nft';
 import { PaginationStore } from 'enevti-app/types/ui/store/PaginationStore';
 import { assignDeep } from 'enevti-app/utils/primitive/object';
-import { MomentBase } from 'enevti-app/types/core/chain/moment';
+import { MomentBase } from 'enevti-types/chain/moment';
 
 type CollectionViewState = Omit<Collection, 'collectionType'> & {
   mintedPagination: PaginationStore;

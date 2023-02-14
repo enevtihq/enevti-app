@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js';
-import { Profile, ProfileAPIResponse, ProfileAPIVersion } from 'enevti-app/types/core/account/profile';
+import { Profile, ProfileAPIResponse, ProfileAPIVersion } from 'enevti-types/account/profile';
 import { store } from 'enevti-app/store/state';
 import sleep from 'enevti-app/utils/dummy/sleep';
 import {
@@ -24,8 +24,8 @@ import {
   urlGetUsernameToAddress,
 } from 'enevti-app/utils/constant/URLCreator';
 import { isErrorResponse } from 'enevti-app/utils/error/handle';
-import { APIResponse, APIResponseVersioned, APIResponseVersionRoot } from 'enevti-app/types/core/service/api';
-import { NFTSecret } from 'enevti-app/types/core/chain/nft/NFTSecret';
+import { APIResponse, APIResponseVersioned, APIResponseVersionRoot } from 'enevti-types/service/api';
+import { NFTSecret } from 'enevti-types/chain/nft/NFTSecret';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { StackScreenProps } from '@react-navigation/stack';
 import {
@@ -34,9 +34,9 @@ import {
   PROFILE_MOMENT_SLOT_INITIAL_LENGTH,
   PROFILE_MOMENT_INITIAL_LENGTH,
 } from 'enevti-app/utils/constant/limit';
-import { NFTBase } from 'enevti-app/types/core/chain/nft';
+import { NFTBase } from 'enevti-types/chain/nft';
 import { selectMyPersonaCache, setMyPersonaCache } from 'enevti-app/store/slices/entities/cache/myPersona';
-import { MomentBase } from 'enevti-app/types/core/chain/moment';
+import { MomentBase } from 'enevti-types/chain/moment';
 
 export const MINIMUM_BASIC_UNIT_STAKE_ELIGIBILITY = 1000;
 type ProfileRoute = StackScreenProps<RootStackParamList, 'Profile'>['route']['params'];

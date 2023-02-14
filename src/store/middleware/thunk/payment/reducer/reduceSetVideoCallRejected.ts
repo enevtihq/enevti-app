@@ -2,9 +2,9 @@ import { selectPaymentActionPayload, setPaymentStatusInReducer } from 'enevti-ap
 import { AppThunk } from 'enevti-app/store/state';
 import { hideModalLoader, showModalLoader } from 'enevti-app/store/slices/ui/global/modalLoader';
 import { handleError } from 'enevti-app/utils/error/handle';
-import { AppTransaction } from 'enevti-app/types/core/service/transaction';
+import { AppTransaction } from 'enevti-types/service/transaction';
 import { postTransaction } from 'enevti-app/service/enevti/transaction';
-import { SetVideoCallRejectedUI } from 'enevti-app/types/core/asset/redeemable_nft/set_video_call_rejected_asset';
+import { SetVideoCallRejectedUI } from 'enevti-types/asset/redeemable_nft/set_video_call_rejected_asset';
 
 export const reduceSetVideoCallRejected = (): AppThunk => async (dispatch, getState) => {
   try {

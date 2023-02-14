@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
 import { RootState } from 'enevti-app/store/state';
-import { EncryptedData } from 'enevti-app/types/core/service/cryptography';
+import { EncryptedData } from 'enevti-types/service/cryptography';
 
 const initialState = { type: '', encrypted: false, token: '', version: 0 };
 

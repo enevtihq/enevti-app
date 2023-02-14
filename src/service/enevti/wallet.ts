@@ -3,9 +3,9 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
 import { apiFetchVersioned, apiFetchVersionRoot } from 'enevti-app/utils/app/network';
 import { urlGetActivityProfile, urlGetWallet } from 'enevti-app/utils/constant/URLCreator';
-import { APIResponseVersioned, APIResponseVersionRoot } from 'enevti-app/types/core/service/api';
+import { APIResponseVersioned, APIResponseVersionRoot } from 'enevti-types/service/api';
 import { WALLET_HISTORY_INITIAL_LENGTH } from 'enevti-app/utils/constant/limit';
-import { WalletView } from 'enevti-app/types/core/service/wallet';
+import { WalletView } from 'enevti-types/service/wallet';
 
 type WalletRoute = StackScreenProps<RootStackParamList, 'Wallet'>['route']['params'];
 

@@ -6,7 +6,7 @@ import AppQuaternaryButton from 'enevti-app/components/atoms/button/AppQuaternar
 import { hp, wp } from 'enevti-app/utils/layout/imageRatio';
 import { getCoinName } from 'enevti-app/utils/constant/identifier';
 import { useTranslation } from 'react-i18next';
-import { FeedItem } from 'enevti-app/types/core/service/feed';
+import { FeedItem } from 'enevti-types/service/feed';
 import { parseAmount } from 'enevti-app/utils/format/amount';
 import AppAvatarRenderer from 'enevti-app/components/molecules/avatar/AppAvatarRenderer';
 import { StackNavigationProp } from '@react-navigation/stack';

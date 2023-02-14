@@ -44,7 +44,7 @@ import AppRedeemLimitPicker from 'enevti-app/components/organism/picker/AppRedee
 import AppContentPicker from 'enevti-app/components/organism/picker/AppContentPicker';
 import AppMintingPeriodPicker from 'enevti-app/components/organism/picker/AppMintingPeriodPicker';
 import AppAccordion from 'enevti-app/components/atoms/accordion/AppAccordion';
-import { NFTBase } from 'enevti-app/types/core/chain/nft';
+import { NFTBase } from 'enevti-types/chain/nft';
 import { makeDummyNFT } from 'enevti-app/utils/dummy/nft';
 import AppNFTRenderer from 'enevti-app/components/molecules/nft/AppNFTRenderer';
 import AppInfoMessage from 'enevti-app/components/molecules/message/base/AppInfoMessage';

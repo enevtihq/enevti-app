@@ -3,7 +3,7 @@ import React from 'react';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from 'enevti-app/navigation';
 import Animated, { runOnJS, useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated';
-import { StakerItem } from 'enevti-app/types/core/chain/stake';
+import { StakerItem } from 'enevti-types/chain/stake';
 import { useDispatch, useSelector } from 'react-redux';
 import { hp } from 'enevti-app/utils/layout/imageRatio';
 import { RootState } from 'enevti-app/store/state';

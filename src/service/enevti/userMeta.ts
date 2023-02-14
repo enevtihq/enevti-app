@@ -1,4 +1,4 @@
-import { APIResponse, ResponseJSON } from 'enevti-app/types/core/service/api';
+import { APIResponse, ResponseJSON } from 'enevti-types/service/api';
 import { urlPostUserMeta } from 'enevti-app/utils/constant/URLCreator';
 import { createSignature } from 'enevti-app/utils/cryptography';
 import { handleError, handleResponseCode, responseError } from 'enevti-app/utils/error/handle';

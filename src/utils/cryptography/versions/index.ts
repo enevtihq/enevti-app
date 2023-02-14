@@ -1,4 +1,4 @@
-import { DecryptedData, DecryptedFile, EncryptedData, EncryptedFile } from 'enevti-app/types/core/service/cryptography';
+import { DecryptedData, DecryptedFile, EncryptedData, EncryptedFile } from 'enevti-types/service/cryptography';
 import { encryptText_v1, decryptText_v1, encryptFile_v1, decryptFile_v1 } from './1';
 
 interface AppCrypto {

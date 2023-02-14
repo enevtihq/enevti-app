@@ -1,5 +1,5 @@
 import { DisplayInitialState } from 'enevti-app/store/slices/ui/screen/display';
-import { StartVideoCallPayloadIOS } from 'enevti-app/types/core/service/call';
+import { StartVideoCallPayloadIOS } from 'enevti-types/service/call';
 import AppReadyInstance from 'enevti-app/utils/app/ready';
 import { Platform } from 'react-native';
 import RNCallKeep from 'react-native-callkeep';

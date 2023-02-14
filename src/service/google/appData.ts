@@ -1,4 +1,4 @@
-import { EncryptedData } from 'enevti-app/types/core/service/cryptography';
+import { EncryptedData } from 'enevti-types/service/cryptography';
 import { appFetch, isInternetReachable } from 'enevti-app/utils/app/network';
 import { getGoogleAccessToken } from './signIn';
 

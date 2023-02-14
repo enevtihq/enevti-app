@@ -14,8 +14,8 @@ import { AppThunk } from 'enevti-app/store/state';
 import { CreateNFTOneKindMeta, CreateNFTOneKindTransaction } from 'enevti-app/types/ui/store/CreateNFTQueue';
 import { handleError } from 'enevti-app/utils/error/handle';
 import i18n from 'enevti-app/translations/i18n';
-import { CreateOneKindNFTUI } from 'enevti-app/types/core/asset/redeemable_nft/create_onekind_nft_asset';
-import { AppTransaction } from 'enevti-app/types/core/service/transaction';
+import { CreateOneKindNFTUI } from 'enevti-types/asset/redeemable_nft/create_onekind_nft_asset';
+import { AppTransaction } from 'enevti-types/service/transaction';
 import { postTransaction } from 'enevti-app/service/enevti/transaction';
 import { dateOfNearestDay } from 'enevti-app/utils/date/redeemDate';
 

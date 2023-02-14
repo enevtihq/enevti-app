@@ -1,4 +1,4 @@
-import { APIResponse } from 'enevti-app/types/core/service/api';
+import { APIResponse } from 'enevti-types/service/api';
 import { urlGetAvatarUrl } from 'enevti-app/utils/constant/URLCreator';
 import { apiFetch } from 'enevti-app/utils/app/network';
 

@@ -1,14 +1,14 @@
-import { Collection, CollectionBase } from 'enevti-app/types/core/chain/collection';
+import { Collection, CollectionBase } from 'enevti-types/chain/collection';
 import { COIN_NAME } from 'enevti-app/utils/constant/identifier';
 import enevtiNFTTemplate from 'enevti-app/components/atoms/nft/template/enevtiNFTTemplate';
-import { NFT, NFTBase } from 'enevti-app/types/core/chain/nft/index';
-import { NFTUtility } from 'enevti-app/types/core/chain/nft/NFTUtility';
+import { NFT, NFTBase } from 'enevti-types/chain/nft/index';
+import { NFTUtility } from 'enevti-types/chain/nft/NFTUtility';
 import { shuffleArray } from 'enevti-app/utils/primitive/array';
-import { StakePoolData } from 'enevti-app/types/core/chain/stake';
-import { FeedItem, MomentItem } from 'enevti-app/types/core/service/feed';
+import { StakePoolData } from 'enevti-types/chain/stake';
+import { FeedItem, MomentItem } from 'enevti-types/service/feed';
 import { appFetch, isInternetReachable } from 'enevti-app/utils/app/network';
 import { urlPostRequestFaucet } from 'enevti-app/utils/constant/URLCreator';
-import { ResponseJSON } from 'enevti-app/types/core/service/api';
+import { ResponseJSON } from 'enevti-types/service/api';
 import { handleError, handleResponseCode, responseError } from 'enevti-app/utils/error/handle';
 
 export const requestFaucet = async (address: string) => {

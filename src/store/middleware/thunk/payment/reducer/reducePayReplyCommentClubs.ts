@@ -4,10 +4,10 @@ import {
   setPaymentStatusInReducer,
 } from 'enevti-app/store/slices/payment';
 import { AppThunk } from 'enevti-app/store/state';
-import { AppTransaction } from 'enevti-app/types/core/service/transaction';
+import { AppTransaction } from 'enevti-types/service/transaction';
 import { postTransaction } from 'enevti-app/service/enevti/transaction';
 import { handleError } from 'enevti-app/utils/error/handle';
-import { ReplyCommentClubsUI } from 'enevti-app/types/core/asset/redeemable_nft/reply_comment_clubs_asset';
+import { ReplyCommentClubsUI } from 'enevti-types/asset/redeemable_nft/reply_comment_clubs_asset';
 import { uploadTextToIPFS } from 'enevti-app/service/ipfs';
 
 export const reducePayReplyCommentClubs = (): AppThunk => async (dispatch, getState) => {

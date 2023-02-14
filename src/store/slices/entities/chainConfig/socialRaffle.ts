@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
 import { RootState } from 'enevti-app/store/state';
-import { SocialRaffleGenesisConfig } from 'enevti-app/types/core/chain/config/SocialRaffleGenesisConfig';
+import { SocialRaffleGenesisConfig } from 'enevti-types/chain/config/SocialRaffleGenesisConfig';
 import { assignDeep } from 'enevti-app/utils/primitive/object';
 
 const initialState: SocialRaffleGenesisConfig['socialRaffle'] = {

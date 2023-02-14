@@ -20,7 +20,7 @@ import { payTransferToken } from 'enevti-app/store/middleware/thunk/payment/crea
 import usePaymentCallback from 'enevti-app/utils/hook/usePaymentCallback';
 import { showSnackbar } from 'enevti-app/store/slices/ui/global/snackbar';
 import AppAddressPicker from 'enevti-app/components/organism/wallet/AppAddressPicker';
-import { Persona } from 'enevti-app/types/core/account/persona';
+import { Persona } from 'enevti-types/account/persona';
 import { base32ToAddress, getBasePersona } from 'enevti-app/service/enevti/persona';
 import { PaymentStatus } from 'enevti-app/types/ui/store/Payment';
 

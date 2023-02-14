@@ -12,7 +12,7 @@ import AppAddMoment from './AppAddMoment';
 import AppMomentItem from './AppMomentItem';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from 'enevti-app/navigation';
-import { MomentBase } from 'enevti-app/types/core/chain/moment';
+import { MomentBase } from 'enevti-types/chain/moment';
 import useDebouncedNavigation from 'enevti-app/utils/hook/useDebouncedNavigation';
 import { Theme } from 'enevti-app/theme/default';
 import { loadMoreFeedsMoment } from 'enevti-app/store/middleware/thunk/ui/view/feed';

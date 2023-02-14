@@ -3,7 +3,7 @@ import { handleError } from 'enevti-app/utils/error/handle';
 import { reduceRedeemContent } from './reduceRedeemContent';
 import { getMyAddress } from 'enevti-app/service/enevti/persona';
 import i18n from 'enevti-app/translations/i18n';
-import { NFT } from 'enevti-app/types/core/chain/nft';
+import { NFT } from 'enevti-types/chain/nft';
 import { reduceRedeemVideoCall } from './reduceRedeemVideoCall';
 import { AppNavigationType } from 'enevti-app/utils/hook/useDebouncedNavigation';
 

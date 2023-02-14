@@ -1,7 +1,7 @@
 import React from 'react';
 import { getCollectionById } from 'enevti-app/service/enevti/collection';
 import AppMenuContainer from 'enevti-app/components/atoms/menu/AppMenuContainer';
-import { MintNFTByQR } from 'enevti-app/types/core/asset/redeemable_nft/mint_nft_type_qr_asset';
+import { MintNFTByQR } from 'enevti-types/asset/redeemable_nft/mint_nft_type_qr_asset';
 import { isErrorResponse } from 'enevti-app/utils/error/handle';
 import { getMyPublicKey } from 'enevti-app/service/enevti/persona';
 import { createSignature } from 'enevti-app/utils/cryptography';

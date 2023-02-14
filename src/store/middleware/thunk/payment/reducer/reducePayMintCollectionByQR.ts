@@ -2,9 +2,9 @@ import { selectPaymentActionPayload, setPaymentStatusInReducer } from 'enevti-ap
 import { AppThunk } from 'enevti-app/store/state';
 import { hideModalLoader, showModalLoader } from 'enevti-app/store/slices/ui/global/modalLoader';
 import { handleError } from 'enevti-app/utils/error/handle';
-import { AppTransaction } from 'enevti-app/types/core/service/transaction';
+import { AppTransaction } from 'enevti-types/service/transaction';
 import { postTransaction } from 'enevti-app/service/enevti/transaction';
-import { MintNFTByQRUI } from 'enevti-app/types/core/asset/redeemable_nft/mint_nft_type_qr_asset';
+import { MintNFTByQRUI } from 'enevti-types/asset/redeemable_nft/mint_nft_type_qr_asset';
 
 export const reducePayMintCollectionByQR = (): AppThunk => async (dispatch, getState) => {
   try {

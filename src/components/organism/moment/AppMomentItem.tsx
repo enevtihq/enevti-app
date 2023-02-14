@@ -2,7 +2,7 @@ import React from 'react';
 import AppPortraitOverlayBox from 'enevti-app/components/molecules/list/AppPortraitOverlayBox';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import AppNetworkImage from 'enevti-app/components/atoms/image/AppNetworkImage';
-import { MomentBase } from 'enevti-app/types/core/chain/moment';
+import { MomentBase } from 'enevti-types/chain/moment';
 import { fetchIPFS, IPFStoURL } from 'enevti-app/service/ipfs';
 import AppIconComponent, { iconMap } from 'enevti-app/components/atoms/icon/AppIconComponent';
 import { hp, wp } from 'enevti-app/utils/layout/imageRatio';

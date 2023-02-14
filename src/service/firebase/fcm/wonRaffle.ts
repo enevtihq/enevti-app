@@ -6,7 +6,7 @@ import {
 } from 'enevti-app/store/slices/entities/notification';
 import { store } from 'enevti-app/store/state';
 import i18n from 'enevti-app/translations/i18n';
-import { Collection } from 'enevti-app/types/core/chain/collection';
+import { Collection } from 'enevti-types/chain/collection';
 import { createCollectionMention } from 'enevti-app/utils/mention';
 import { showNotification } from 'enevti-app/utils/notification';
 

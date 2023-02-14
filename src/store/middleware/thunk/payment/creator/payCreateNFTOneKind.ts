@@ -7,11 +7,11 @@ import { attachFee, calculateBaseFee, calculateGasFee, createTransaction } from 
 import { makeDummyIPFS } from 'enevti-app/utils/dummy/ipfs';
 import i18n from 'enevti-app/translations/i18n';
 import { AnyAction, createAsyncThunk } from '@reduxjs/toolkit';
-import { CreateOneKindNFTUI } from 'enevti-app/types/core/asset/redeemable_nft/create_onekind_nft_asset';
+import { CreateOneKindNFTUI } from 'enevti-types/asset/redeemable_nft/create_onekind_nft_asset';
 import generateRandomKey from 'enevti-app/utils/passphrase';
 import { encryptAsymmetric, createSignature, encryptFile } from 'enevti-app/utils/cryptography';
 import { getMyPublicKey } from 'enevti-app/service/enevti/persona';
-import { AppTransaction } from 'enevti-app/types/core/service/transaction';
+import { AppTransaction } from 'enevti-types/service/transaction';
 import { redeemableNftModule } from 'enevti-app/utils/constant/transaction';
 import RNFS from 'react-native-fs';
 import { completeTokenUnit } from 'enevti-app/utils/format/amount';
