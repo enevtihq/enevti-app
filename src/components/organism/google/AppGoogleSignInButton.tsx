@@ -33,7 +33,7 @@ import { isValidPassphrase } from 'enevti-app/utils/passphrase';
 import AppMenuContainer from 'enevti-app/components/atoms/menu/AppMenuContainer';
 import AppHeaderWizard from 'enevti-app/components/molecules/view/AppHeaderWizard';
 import base64 from 'react-native-base64';
-import { EncryptedBase } from 'enevti-types/service/cryptography';
+import { EncryptedBase } from 'enevti-app/types/utils/cryptography';
 
 YupPassword(Yup);
 
